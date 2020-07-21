@@ -1,0 +1,87 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - '*'
+    branches:
+      - main
+
+env:
+  # Set the DOTNET_SKIP_FIRST_TIME_EXPERIENCE environment variable to stop wasting time caching packages
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # Disable sending usage data to Microsoft
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+
+  ###################################################
+  # BUILD
+  ###################################################
+
+  build:
+    name: Build
+    if: "!contains(github.event.head_commit.message, 'skip-ci')"
+    strategy:
+      matrix:
+        kind: ['linux', 'windows', 'macOS']
+        include:
+          - kind: linux
+            os: ubuntu-latest
+          - kind: windows
+            os: windows-latest
+          - kind: macOS
+            os: macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: 'Get Git tags'
+        run: git fetch --tags
+        shell: bash
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.301
+
+      - name: Build
+        shell: bash
+        run: |
+          dotnet tool restore
+          dotnet cake
+
+  ###################################################
+  # PUBLISH
+  ###################################################
+
+  publish:
+    name: Publish
+    needs: [build]
+    if: "!contains(github.event.head_commit.message, 'skip-ci')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: 'Get Git tags'
+        run: git fetch --tags
+        shell: bash
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.301
+
+      - name: Publish
+        shell: bash
+        run: |
+          dotnet tool restore
+          dotnet cake --target="publish" \
+            --nuget-key="${{secrets.NUGET_API_KEY}}" \
+            --github-key="${{secrets.GITHUB_TOKEN}}"
