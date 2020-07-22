@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace Spectre.Console
 {
@@ -62,22 +63,27 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(console));
             }
 
-            console.WriteLine(null);
+            console.Write(Environment.NewLine);
         }
 
         /// <summary>
         /// Writes a line to the console.
         /// </summary>
         /// <param name="console">The console to write to.</param>
-        /// <param name="content">The content to write.</param>
-        public static void WriteLine(this IAnsiConsole console, string content)
+        /// <param name="value">The value to write.</param>
+        public static void WriteLine(this IAnsiConsole console, string value)
         {
             if (console is null)
             {
                 throw new ArgumentNullException(nameof(console));
             }
 
-            console.WriteLine(content);
+            if (value != null)
+            {
+                console.Write(value);
+            }
+
+            console.WriteLine();
         }
     }
 }

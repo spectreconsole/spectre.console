@@ -105,17 +105,5 @@ namespace Spectre.Console.Internal
         {
             _out.Write(text);
         }
-
-        public void WriteLine(string text)
-        {
-            if (text == null)
-            {
-                _out.WriteLine();
-            }
-            else
-            {
-                _out.WriteLine(text);
-            }
-        }
     }
 }

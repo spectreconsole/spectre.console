@@ -78,23 +78,5 @@ namespace Spectre.Console.Internal
                 Foreground,
                 Background));
         }
-
-        public void WriteLine(string text)
-        {
-            if (text == null)
-            {
-                _out.WriteLine();
-            }
-            else
-            {
-                _out.WriteLine(
-                    AnsiBuilder.GetAnsi(
-                        _system,
-                        text,
-                        Style,
-                        Foreground,
-                        Background));
-            }
-        }
     }
 }
