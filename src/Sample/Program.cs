@@ -12,9 +12,9 @@ namespace Sample
             AnsiConsole.Style = Styles.Underline | Styles.Bold;
             AnsiConsole.WriteLine("Hello World!");
             AnsiConsole.Reset();
-            AnsiConsole.WriteLine("Capabilities: {0}", AnsiConsole.Capabilities);
+            AnsiConsole.MarkupLine("Capabilities: [yellow underline]{0}[/]", AnsiConsole.Capabilities);
             AnsiConsole.WriteLine($"Width={AnsiConsole.Width}, Height={AnsiConsole.Height}");
-            AnsiConsole.WriteLine("Good bye!");
+            AnsiConsole.MarkupLine("[white on red]Good[/] [red]bye[/]!");
             AnsiConsole.WriteLine();
 
             // We can get the default console via the static API.
@@ -37,7 +37,7 @@ namespace Sample
             console.ResetColors();
             console.ResetStyle();
             console.WriteLine("Capabilities: {0}", AnsiConsole.Capabilities);
-            console.WriteLine($"Width={AnsiConsole.Width}, Height={AnsiConsole.Height}");
+            console.MarkupLine("Width=[yellow]{0}[/], Height=[yellow]{1}[/]", AnsiConsole.Width, AnsiConsole.Height);
             console.WriteLine("Good bye!");
             console.WriteLine();
         }

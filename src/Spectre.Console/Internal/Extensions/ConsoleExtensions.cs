@@ -12,7 +12,7 @@ namespace Spectre.Console.Internal
                 throw new ArgumentNullException(nameof(console));
             }
 
-            var current = console.Foreground;
+            var current = foreground ? console.Foreground : console.Background;
             console.SetColor(color, foreground);
             return new ColorScope(console, current, foreground);
         }

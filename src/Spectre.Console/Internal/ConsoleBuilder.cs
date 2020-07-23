@@ -1,7 +1,6 @@
 using System;
-using Spectre.Console.Internal;
 
-namespace Spectre.Console
+namespace Spectre.Console.Internal
 {
     internal static class ConsoleBuilder
     {
