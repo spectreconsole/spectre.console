@@ -6,7 +6,7 @@ namespace Spectre.Console
     /// <summary>
     /// A console capable of writing ANSI escape sequences.
     /// </summary>
-    public static class AnsiConsole
+    public static partial class AnsiConsole
     {
         private static readonly Lazy<IAnsiConsole> _console = new Lazy<IAnsiConsole>(() =>
         {
@@ -104,32 +104,6 @@ namespace Spectre.Console
         public static void ResetColors()
         {
             Console.ResetColors();
-        }
-
-        /// <summary>
-        /// Writes the content to the console.
-        /// </summary>
-        /// <param name="content">The content to write.</param>
-        public static void Write(string content)
-        {
-            Console.Write(content);
-        }
-
-        /// <summary>
-        /// Writes an empty line to the console.
-        /// </summary>
-        public static void WriteLine()
-        {
-            Console.WriteLine();
-        }
-
-        /// <summary>
-        /// Writes a line to the console.
-        /// </summary>
-        /// <param name="content">The content to write.</param>
-        public static void WriteLine(string content)
-        {
-            Console.WriteLine(content);
         }
     }
 }

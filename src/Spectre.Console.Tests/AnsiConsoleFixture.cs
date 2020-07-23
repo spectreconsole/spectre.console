@@ -11,13 +11,13 @@ namespace Spectre.Console.Tests
 
         public string Output => _writer.ToString();
 
-        public AnsiConsoleFixture(ColorSystem system)
+        public AnsiConsoleFixture(ColorSystem system, AnsiSupport ansi = AnsiSupport.Yes)
         {
             _writer = new StringWriter();
 
             Console = AnsiConsole.Create(new AnsiConsoleSettings
             {
-                Ansi = AnsiSupport.Yes,
+                Ansi = ansi,
                 ColorSystem = (ColorSystemSupport)system,
                 Out = _writer,
             });

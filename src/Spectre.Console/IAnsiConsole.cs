@@ -40,13 +40,5 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="text">The string to write.</param>
         void Write(string text);
-
-        /// <summary>
-        /// Writes a string followed by a line terminator to the console.
-        /// </summary>
-        /// <param name="text">
-        /// The string to write. If value is null, only the line terminator is written.
-        /// </param>
-        void WriteLine(string text);
     }
 }

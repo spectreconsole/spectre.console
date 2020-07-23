@@ -12,6 +12,12 @@
     <Compile Update="Color.*.cs">
       <DependentUpon>Color.cs</DependentUpon>
     </Compile>
+    <Compile Update="AnsiConsole.*.cs">
+      <DependentUpon>AnsiConsole.cs</DependentUpon>
+    </Compile>
+    <Compile Update="ConsoleExtensions.*.cs">
+      <DependentUpon>ConsoleExtensions.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

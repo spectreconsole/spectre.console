@@ -5,7 +5,7 @@ namespace Spectre.Console
     /// <summary>
     /// Contains extension methods for <see cref="IAnsiConsole"/>.
     /// </summary>
-    public static class ConsoleExtensions
+    public static partial class ConsoleExtensions
     {
         /// <summary>
         /// Resets both colors and style for the console.
@@ -49,35 +49,6 @@ namespace Spectre.Console
 
             console.Foreground = Color.Default;
             console.Background = Color.Default;
-        }
-
-        /// <summary>
-        /// Writes an empty line to the console.
-        /// </summary>
-        /// <param name="console">The console to write to.</param>
-        public static void WriteLine(this IAnsiConsole console)
-        {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
-
-            console.WriteLine(null);
-        }
-
-        /// <summary>
-        /// Writes a line to the console.
-        /// </summary>
-        /// <param name="console">The console to write to.</param>
-        /// <param name="content">The content to write.</param>
-        public static void WriteLine(this IAnsiConsole console, string content)
-        {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
-
-            console.WriteLine(content);
         }
     }
 }
