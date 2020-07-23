@@ -3,8 +3,7 @@ using System.IO;
 namespace Spectre.Console
 {
     /// <summary>
-    /// Settings used by <see cref="ConsoleBuilder"/>
-    /// when building a <see cref="IAnsiConsole"/>.
+    /// Settings used when building a <see cref="IAnsiConsole"/>.
     /// </summary>
     public sealed class AnsiConsoleSettings
     {
