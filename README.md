@@ -45,7 +45,6 @@ AnsiConsole.WriteLine("Hello World!");
 
 AnsiConsole.Reset();
 AnsiConsole.WriteLine("Good bye!");
-AnsiConsole.WriteLine();
 ```
 
 If you want to get a reference to the default `IAnsiConsole`, 
