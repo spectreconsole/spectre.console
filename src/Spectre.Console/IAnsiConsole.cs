@@ -8,17 +8,17 @@ namespace Spectre.Console
         /// <summary>
         /// Gets the console's capabilities.
         /// </summary>
-        public AnsiConsoleCapabilities Capabilities { get; }
+        AnsiConsoleCapabilities Capabilities { get; }
 
         /// <summary>
         /// Gets the buffer width of the console.
         /// </summary>
-        public int Width { get; }
+        int Width { get; }
 
         /// <summary>
         /// Gets the buffer height of the console.
         /// </summary>
-        public int Height { get; }
+        int Height { get; }
 
         /// <summary>
         /// Gets or sets the current style.
