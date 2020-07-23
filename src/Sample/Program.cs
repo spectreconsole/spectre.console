@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using Spectre.Console;
 
 namespace Sample
@@ -17,7 +12,7 @@ namespace Sample
             AnsiConsole.Style = Styles.Underline | Styles.Bold;
             AnsiConsole.WriteLine("Hello World!");
             AnsiConsole.Reset();
-            AnsiConsole.WriteLine($"Capabilities: {AnsiConsole.Capabilities}");
+            AnsiConsole.WriteLine("Capabilities: {0}", AnsiConsole.Capabilities);
             AnsiConsole.WriteLine($"Width={AnsiConsole.Width}, Height={AnsiConsole.Height}");
             AnsiConsole.WriteLine("Good bye!");
             AnsiConsole.WriteLine();
@@ -41,7 +36,7 @@ namespace Sample
             console.WriteLine("Hello World!");
             console.ResetColors();
             console.ResetStyle();
-            console.WriteLine($"Capabilities: {console.Capabilities}");
+            console.WriteLine("Capabilities: {0}", AnsiConsole.Capabilities);
             console.WriteLine($"Width={AnsiConsole.Width}, Height={AnsiConsole.Height}");
             console.WriteLine("Good bye!");
             console.WriteLine();
