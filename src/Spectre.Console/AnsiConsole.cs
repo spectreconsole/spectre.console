@@ -109,10 +109,10 @@ namespace Spectre.Console
         /// <summary>
         /// Writes the content to the console.
         /// </summary>
-        /// <param name="content">The content to write.</param>
-        public static void Write(string content)
+        /// <param name="value">The value to write.</param>
+        public static void Write(string value)
         {
-            Console.Write(content);
+            Console.Write(value);
         }
 
         /// <summary>
@@ -126,10 +126,10 @@ namespace Spectre.Console
         /// <summary>
         /// Writes a line to the console.
         /// </summary>
-        /// <param name="content">The content to write.</param>
-        public static void WriteLine(string content)
+        /// <param name="value">The value to write.</param>
+        public static void WriteLine(string value)
         {
-            Console.WriteLine(content);
+            Console.WriteLine(value);
         }
     }
 }
