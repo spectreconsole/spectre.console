@@ -14,7 +14,7 @@ for Python.
    3.1. [Using the static API](#using-the-static-api)  
    3.2. [Creating a console](#creating-a-console)
 4. [Available styles](#available-styles)
-5. [Predefiend colors](#predefined-colors)
+5. [Predefined colors](#predefined-colors)
 
 ## Features
 
