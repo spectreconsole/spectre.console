@@ -17,6 +17,13 @@ namespace Sample
             AnsiConsole.MarkupLine("[white on red]Good[/] [red]bye[/]!");
             AnsiConsole.WriteLine();
 
+            // We can also use System.ConsoleColor with AnsiConsole.
+            foreach (ConsoleColor value in Enum.GetValues(typeof(ConsoleColor)))
+            {
+                AnsiConsole.Foreground = value;
+                AnsiConsole.WriteLine("ConsoleColor.{0}", value);
+            }
+
             // We can get the default console via the static API.
             var console = AnsiConsole.Console;
 
@@ -31,6 +38,7 @@ namespace Sample
 
             // In this case, we will find the closest colors
             // and downgrade them to the specified color system.
+            console.WriteLine();
             console.Foreground = Color.Chartreuse2;
             console.Style = Styles.Underline | Styles.Bold;
             console.WriteLine("Hello World!");
