@@ -5,12 +5,12 @@ namespace Spectre.Console.Internal
 {
     internal static class MarkupParser
     {
-        public static IMarkupNode Parse(string text)
+        public static IRenderable Parse(string text)
         {
             using var tokenizer = new MarkupTokenizer(text);
-            var root = new MarkupBlockNode();
+            var root = new BlockElement();
 
-            var stack = new Stack<MarkupBlockNode>();
+            var stack = new Stack<BlockElement>();
             var current = root;
 
             while (true)
@@ -23,14 +23,14 @@ namespace Spectre.Console.Internal
 
                 if (token.Kind == MarkupTokenKind.Text)
                 {
-                    current.Append(new MarkupTextNode(token.Value));
+                    current.Append(new TextElement(token.Value));
                     continue;
                 }
                 else if (token.Kind == MarkupTokenKind.Open)
                 {
                     var (style, foreground, background) = MarkupStyleParser.Parse(token.Value);
-                    var content = new MarkupBlockNode();
-                    current.Append(new MarkupStyleNode(style, foreground, background, content));
+                    var content = new BlockElement();
+                    current.Append(new StyleElement(style, foreground, background, content));
 
                     current = content;
                     stack.Push(current);

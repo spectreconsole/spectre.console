@@ -2,20 +2,24 @@ using System.Collections.Generic;
 
 namespace Spectre.Console.Internal
 {
-    internal sealed class MarkupBlockNode : IMarkupNode
+    internal sealed class BlockElement : IRenderable
     {
-        private readonly List<IMarkupNode> _elements;
+        private readonly List<IRenderable> _elements;
 
-        public MarkupBlockNode()
+        public IReadOnlyList<IRenderable> Elements => _elements;
+        public int Width { get; private set; }
+
+        public BlockElement()
         {
-            _elements = new List<IMarkupNode>();
+            _elements = new List<IRenderable>();
         }
 
-        public void Append(IMarkupNode element)
+        public void Append(IRenderable element)
         {
             if (element != null)
             {
                 _elements.Add(element);
+                Width += element.Width;
             }
         }
 

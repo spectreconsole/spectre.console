@@ -2,18 +2,20 @@ using System;
 
 namespace Spectre.Console.Internal
 {
-    internal sealed class MarkupStyleNode : IMarkupNode
+    internal sealed class StyleElement : IRenderable
     {
         private readonly Styles? _style;
         private readonly Color? _foreground;
         private readonly Color? _background;
-        private readonly IMarkupNode _element;
+        private readonly IRenderable _element;
 
-        public MarkupStyleNode(
+        public int Width => _element.Width;
+
+        public StyleElement(
             Styles? style,
             Color? foreground,
             Color? background,
-            IMarkupNode element)
+            IRenderable element)
         {
             _style = style;
             _foreground = foreground;

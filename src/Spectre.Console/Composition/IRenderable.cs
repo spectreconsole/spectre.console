@@ -3,8 +3,13 @@ namespace Spectre.Console.Internal
     /// <summary>
     /// Represents a parsed markup node.
     /// </summary>
-    internal interface IMarkupNode
+    public interface IRenderable
     {
+        /// <summary>
+        /// Gets the width of the element.
+        /// </summary>
+        int Width { get; }
+
         /// <summary>
         /// Renders the node using the specified renderer.
         /// </summary>
