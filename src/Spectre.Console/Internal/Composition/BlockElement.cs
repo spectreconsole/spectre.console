@@ -2,19 +2,19 @@ using System.Collections.Generic;
 
 namespace Spectre.Console.Internal
 {
-    internal sealed class BlockElement : IRenderable
+    internal sealed class BlockElement : IConsoleElement
     {
-        private readonly List<IRenderable> _elements;
+        private readonly List<IConsoleElement> _elements;
 
-        public IReadOnlyList<IRenderable> Elements => _elements;
+        public IReadOnlyList<IConsoleElement> Elements => _elements;
         public int Width { get; private set; }
 
         public BlockElement()
         {
-            _elements = new List<IRenderable>();
+            _elements = new List<IConsoleElement>();
         }
 
-        public void Append(IRenderable element)
+        public void Append(IConsoleElement element)
         {
             if (element != null)
             {

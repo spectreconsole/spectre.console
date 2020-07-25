@@ -2,7 +2,7 @@ using System;
 
 namespace Spectre.Console.Internal
 {
-    internal sealed class LineBreakElement : IRenderable
+    internal sealed class LineBreakElement : IConsoleElement
     {
         public int Width => 0;
 

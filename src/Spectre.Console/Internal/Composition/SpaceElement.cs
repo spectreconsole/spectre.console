@@ -1,6 +1,6 @@
 namespace Spectre.Console.Internal
 {
-    internal sealed class SpaceElement : IRenderable
+    internal sealed class SpaceElement : IConsoleElement
     {
         private readonly RepeatingElement _element;
 

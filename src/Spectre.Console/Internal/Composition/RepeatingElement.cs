@@ -1,13 +1,13 @@
 namespace Spectre.Console.Internal
 {
-    internal sealed class RepeatingElement : IRenderable
+    internal sealed class RepeatingElement : IConsoleElement
     {
         private readonly int _repetitions;
-        private readonly IRenderable _element;
+        private readonly IConsoleElement _element;
 
         public int Width => _element.Width * _repetitions;
 
-        public RepeatingElement(int repetitions, IRenderable element)
+        public RepeatingElement(int repetitions, IConsoleElement element)
         {
             _repetitions = repetitions;
             _element = element;

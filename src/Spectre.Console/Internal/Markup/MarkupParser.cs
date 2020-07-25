@@ -5,7 +5,7 @@ namespace Spectre.Console.Internal
 {
     internal static class MarkupParser
     {
-        public static IRenderable Parse(string text)
+        public static IConsoleElement Parse(string text)
         {
             using var tokenizer = new MarkupTokenizer(text);
             var root = new BlockElement();

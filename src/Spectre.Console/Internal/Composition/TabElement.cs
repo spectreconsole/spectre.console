@@ -1,6 +1,6 @@
 namespace Spectre.Console.Internal
 {
-    internal sealed class TabElement : IRenderable
+    internal sealed class TabElement : IConsoleElement
     {
         private readonly RepeatingElement _element;
 

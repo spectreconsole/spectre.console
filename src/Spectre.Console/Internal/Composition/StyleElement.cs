@@ -2,12 +2,12 @@ using System;
 
 namespace Spectre.Console.Internal
 {
-    internal sealed class StyleElement : IRenderable
+    internal sealed class StyleElement : IConsoleElement
     {
         private readonly Styles? _style;
         private readonly Color? _foreground;
         private readonly Color? _background;
-        private readonly IRenderable _element;
+        private readonly IConsoleElement _element;
 
         public int Width => _element.Width;
 
@@ -15,7 +15,7 @@ namespace Spectre.Console.Internal
             Styles? style,
             Color? foreground,
             Color? background,
-            IRenderable element)
+            IConsoleElement element)
         {
             _style = style;
             _foreground = foreground;

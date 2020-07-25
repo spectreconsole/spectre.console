@@ -2,7 +2,7 @@ using System;
 
 namespace Spectre.Console.Internal
 {
-    internal sealed class TextElement : IRenderable
+    internal sealed class TextElement : IConsoleElement
     {
         public string Text { get; }
 

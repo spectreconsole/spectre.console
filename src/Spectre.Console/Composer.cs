@@ -8,12 +8,12 @@ namespace Spectre.Console
     /// A utility that makes it easy to create
     /// formatted text programatically.
     /// </summary>
-    public sealed class Composer : IRenderable
+    public sealed class Composer : IConsoleElement
     {
         private readonly BlockElement _root;
 
         /// <inheritdoc/>
-        int IRenderable.Width => _root.Width;
+        int IConsoleElement.Width => _root.Width;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Composer"/> class.

@@ -1,8 +1,8 @@
 namespace Spectre.Console.Internal
 {
-    internal sealed class MarkupElement : IRenderable
+    internal sealed class MarkupElement : IConsoleElement
     {
-        private readonly IRenderable _inner;
+        private readonly IConsoleElement _inner;
 
         public int Width => _inner.Width;
 
