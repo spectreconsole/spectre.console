@@ -1,5 +1,3 @@
-using Spectre.Console.Internal;
-
 namespace Spectre.Console.Internal
 {
     internal sealed class RepeatingElement : IRenderable

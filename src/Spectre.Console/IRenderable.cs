@@ -1,4 +1,4 @@
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     /// <summary>
     /// Represents a parsed markup node.
