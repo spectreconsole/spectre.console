@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 
 namespace Spectre.Console.Internal
 {
@@ -8,7 +9,8 @@ namespace Spectre.Console.Internal
         private readonly TextWriter _out;
         private readonly ColorSystem _system;
 
-        public AnsiConsoleCapabilities Capabilities { get; }
+        public Capabilities Capabilities { get; }
+        public Encoding Encoding { get; }
         public Styles Style { get; set; }
         public Color Foreground { get; set; }
         public Color Background { get; set; }
@@ -44,7 +46,8 @@ namespace Spectre.Console.Internal
             _out = @out ?? throw new ArgumentNullException(nameof(@out));
             _system = system;
 
-            Capabilities = new AnsiConsoleCapabilities(true, system);
+            Capabilities = new Capabilities(true, system);
+            Encoding = @out.IsStandardOut() ? System.Console.OutputEncoding : Encoding.UTF8;
             Foreground = Color.Default;
             Background = Color.Default;
             Style = Styles.None;
@@ -73,7 +76,7 @@ namespace Spectre.Console.Internal
 
             _out.Write(AnsiBuilder.GetAnsi(
                 _system,
-                text,
+                text.NormalizeLineEndings(native: true),
                 Style,
                 Foreground,
                 Background));

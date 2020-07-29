@@ -13,7 +13,7 @@ namespace Sample
             AnsiConsole.WriteLine("Hello World!");
             AnsiConsole.Reset();
             AnsiConsole.MarkupLine("Capabilities: [yellow underline]{0}[/]", AnsiConsole.Capabilities);
-            AnsiConsole.WriteLine($"Width={AnsiConsole.Width}, Height={AnsiConsole.Height}");
+            AnsiConsole.MarkupLine("Width=[yellow]{0}[/], Height=[yellow]{1}[/]", AnsiConsole.Width, AnsiConsole.Height);
             AnsiConsole.MarkupLine("[white on red]Good[/] [red]bye[/]!");
             AnsiConsole.WriteLine();
 
@@ -44,13 +44,41 @@ namespace Sample
             console.WriteLine("Hello World!");
             console.ResetColors();
             console.ResetStyle();
-            console.WriteLine("Capabilities: {0}", AnsiConsole.Capabilities);
-            console.MarkupLine("Width=[yellow]{0}[/], Height=[yellow]{1}[/]", AnsiConsole.Width, AnsiConsole.Height);
-            console.WriteLine("Good bye!");
+            console.MarkupLine("Capabilities: [yellow underline]{0}[/]", console.Capabilities);
+            console.MarkupLine("Width=[yellow]{0}[/], Height=[yellow]{1}[/]", console.Width, console.Height);
+            console.MarkupLine("[white on red]Good[/] [red]bye[/]!");
             console.WriteLine();
+
+            // Nest some panels and text
+            AnsiConsole.Foreground = Color.Maroon;
+            AnsiConsole.Render(new Panel(new Panel(new Panel(new Panel(
+                Text.New(
+                    "I heard you like 📦\n\n\n\nSo I put a 📦 in a 📦",
+                    foreground: Color.White,
+                    justify: Justify.Center))))));
+
+            // Reset colors
+            AnsiConsole.ResetColors();
+
+            // Left adjusted panel with text
+            AnsiConsole.Render(new Panel(
+                Text.New("Left adjusted\nLeft",
+                    foreground: Color.White),
+                fit: true));
+
+            // Centered panel with text
+            AnsiConsole.Render(new Panel(
+                Text.New("Centered\nCenter",
+                    foreground: Color.White,
+                    justify: Justify.Center),
+                fit: true));
+
+            // Right adjusted panel with text
+            AnsiConsole.Render(new Panel(
+                Text.New("Right adjusted\nRight",
+                    foreground: Color.White,
+                    justify: Justify.Right),
+                fit: true));
         }
     }
 }
-
-
-

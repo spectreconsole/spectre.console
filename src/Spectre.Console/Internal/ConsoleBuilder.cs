@@ -14,7 +14,7 @@ namespace Spectre.Console.Internal
             var buffer = settings.Out ?? System.Console.Out;
 
             var supportsAnsi = settings.Ansi == AnsiSupport.Detect
-                ? AnsiDetector.SupportsAnsi(true)
+                ? AnsiDetector.Detect(true)
                 : settings.Ansi == AnsiSupport.Yes;
 
             var colorSystem = settings.ColorSystem == ColorSystemSupport.Detect
