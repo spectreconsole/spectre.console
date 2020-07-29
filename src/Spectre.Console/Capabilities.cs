@@ -3,7 +3,7 @@ namespace Spectre.Console
     /// <summary>
     /// Represents console capabilities.
     /// </summary>
-    public sealed class AnsiConsoleCapabilities
+    public sealed class Capabilities
     {
         /// <summary>
         /// Gets a value indicating whether or not
@@ -16,7 +16,7 @@ namespace Spectre.Console
         /// </summary>
         public ColorSystem ColorSystem { get; }
 
-        internal AnsiConsoleCapabilities(bool supportsAnsi, ColorSystem colorSystem)
+        internal Capabilities(bool supportsAnsi, ColorSystem colorSystem)
         {
             SupportsAnsi = supportsAnsi;
             ColorSystem = colorSystem;

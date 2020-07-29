@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Spectre.Console
 {
     /// <summary>
@@ -8,7 +10,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets the console's capabilities.
         /// </summary>
-        AnsiConsoleCapabilities Capabilities { get; }
+        Capabilities Capabilities { get; }
 
         /// <summary>
         /// Gets the buffer width of the console.
@@ -19,6 +21,11 @@ namespace Spectre.Console
         /// Gets the buffer height of the console.
         /// </summary>
         int Height { get; }
+
+        /// <summary>
+        /// Gets the console output encoding.
+        /// </summary>
+        Encoding Encoding { get; }
 
         /// <summary>
         /// Gets or sets the current style.

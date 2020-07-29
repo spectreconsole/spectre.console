@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using Spectre.Console.Internal;
 
@@ -206,6 +207,12 @@ namespace Spectre.Console
                 ConsoleColor.Yellow => Yellow,
                 _ => Default,
             };
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return Name ?? string.Format(CultureInfo.InvariantCulture, "#{0:2X}{1:2X}{2:2X}", R, G, B);
         }
     }
 }

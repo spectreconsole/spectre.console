@@ -26,7 +26,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets the console's capabilities.
         /// </summary>
-        public static AnsiConsoleCapabilities Capabilities => Console.Capabilities;
+        public static Capabilities Capabilities => Console.Capabilities;
 
         /// <summary>
         /// Gets the buffer width of the console.

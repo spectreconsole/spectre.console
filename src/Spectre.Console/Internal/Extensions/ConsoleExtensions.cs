@@ -1,10 +1,25 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using Spectre.Console.Composition;
 
 namespace Spectre.Console.Internal
 {
     internal static class ConsoleExtensions
     {
+        public static IDisposable PushAppearance(this IAnsiConsole console, Appearance appearance)
+        {
+            if (console is null)
+            {
+                throw new ArgumentNullException(nameof(console));
+            }
+
+            var current = new Appearance(console.Foreground, console.Background, console.Style);
+            console.SetColor(appearance.Foreground, true);
+            console.SetColor(appearance.Background, false);
+            console.Style = appearance.Style;
+            return new AppearanceScope(console, current);
+        }
+
         public static IDisposable PushColor(this IAnsiConsole console, Color color, bool foreground)
         {
             if (console is null)
@@ -44,6 +59,33 @@ namespace Spectre.Console.Internal
             {
                 console.Background = color;
             }
+        }
+    }
+
+    internal sealed class AppearanceScope : IDisposable
+    {
+        private readonly IAnsiConsole _console;
+        private readonly Appearance _apperance;
+
+        public AppearanceScope(IAnsiConsole console, Appearance appearance)
+        {
+            _console = console ?? throw new ArgumentNullException(nameof(console));
+            _apperance = appearance;
+        }
+
+        [SuppressMessage("Design", "CA1065:Do not raise exceptions in unexpected locations")]
+        [SuppressMessage("Performance", "CA1821:Remove empty Finalizers")]
+        ~AppearanceScope()
+        {
+            throw new InvalidOperationException("Appearance scope was not disposed.");
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            _console.SetColor(_apperance.Foreground, true);
+            _console.SetColor(_apperance.Background, false);
+            _console.Style = _apperance.Style;
         }
     }
 

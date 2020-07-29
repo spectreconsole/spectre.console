@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 
 namespace Spectre.Console.Internal
 {
@@ -13,7 +14,9 @@ namespace Spectre.Console.Internal
         private ConsoleColor _foreground;
         private ConsoleColor _background;
 
-        public AnsiConsoleCapabilities Capabilities { get; }
+        public Capabilities Capabilities { get; }
+
+        public Encoding Encoding { get; }
 
         public int Width
         {
@@ -87,23 +90,27 @@ namespace Spectre.Console.Internal
             _out = @out;
             _system = system;
 
-            Capabilities = new AnsiConsoleCapabilities(false, _system);
-
             if (_out.IsStandardOut())
             {
                 _defaultForeground = System.Console.ForegroundColor;
                 _defaultBackground = System.Console.BackgroundColor;
+
+                Encoding = System.Console.OutputEncoding;
             }
             else
             {
                 _defaultForeground = ConsoleColor.Gray;
                 _defaultBackground = ConsoleColor.Black;
+
+                Encoding = Encoding.UTF8;
             }
+
+            Capabilities = new Capabilities(false, _system);
         }
 
         public void Write(string text)
         {
-            _out.Write(text);
+            _out.Write(text.NormalizeLineEndings(native: true));
         }
     }
 }

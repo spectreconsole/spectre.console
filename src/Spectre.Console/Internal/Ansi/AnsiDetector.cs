@@ -13,7 +13,7 @@ namespace Spectre.Console.Internal
 {
     internal static class AnsiDetector
     {
-        private static readonly Regex[] Regexes = new[]
+        private static readonly Regex[] _regexes = new[]
         {
             new Regex("^xterm"), // xterm, PuTTY, Mintty
             new Regex("^rxvt"), // RXVT
@@ -32,7 +32,7 @@ namespace Spectre.Console.Internal
             new Regex("bvterm"), // Bitvise SSH Client
         };
 
-        public static bool SupportsAnsi(bool upgrade)
+        public static bool Detect(bool upgrade)
         {
             // Github action doesn't setup a correct PTY but supports ANSI.
             if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("GITHUB_ACTION")))
@@ -57,7 +57,7 @@ namespace Spectre.Console.Internal
             var term = Environment.GetEnvironmentVariable("TERM");
             if (!string.IsNullOrWhiteSpace(term))
             {
-                if (Regexes.Any(regex => regex.IsMatch(term)))
+                if (_regexes.Any(regex => regex.IsMatch(term)))
                 {
                     return true;
                 }
@@ -71,8 +71,10 @@ namespace Spectre.Console.Internal
         {
             [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:Field names should not contain underscore")]
             private const int STD_OUTPUT_HANDLE = -11;
+
             [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:Field names should not contain underscore")]
             private const uint ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
+
             [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:Field names should not contain underscore")]
             private const uint DISABLE_NEWLINE_AUTO_RETURN = 0x0008;
 
@@ -94,7 +96,7 @@ namespace Spectre.Console.Internal
                 try
                 {
                     var @out = GetStdHandle(STD_OUTPUT_HANDLE);
-                    if (!GetConsoleMode(@out, out uint mode))
+                    if (!GetConsoleMode(@out, out var mode))
                     {
                         // Could not get console mode.
                         return false;
