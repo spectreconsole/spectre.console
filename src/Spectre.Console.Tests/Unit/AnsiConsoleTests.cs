@@ -3,7 +3,7 @@ using System.Globalization;
 using Shouldly;
 using Xunit;
 
-namespace Spectre.Console.Tests
+namespace Spectre.Console.Tests.Unit
 {
     public partial class AnsiConsoleTests
     {

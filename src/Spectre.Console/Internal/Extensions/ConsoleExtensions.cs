@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Spectre.Console.Composition;
 
 namespace Spectre.Console.Internal
 {

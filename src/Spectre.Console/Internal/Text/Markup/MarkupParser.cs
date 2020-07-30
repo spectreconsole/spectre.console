@@ -5,37 +5,23 @@ namespace Spectre.Console.Internal
 {
     internal static class MarkupParser
     {
-        public static IMarkupNode Parse(string text)
+        public static Text Parse(string text, Appearance appearance = null)
         {
+            appearance ??= Appearance.Plain;
+
+            var result = new Text(string.Empty);
             using var tokenizer = new MarkupTokenizer(text);
-            var root = new MarkupBlockNode();
 
-            var stack = new Stack<MarkupBlockNode>();
-            var current = root;
+            var stack = new Stack<Appearance>();
 
-            while (true)
+            while (tokenizer.MoveNext())
             {
-                var token = tokenizer.GetNext();
-                if (token == null)
-                {
-                    break;
-                }
+                var token = tokenizer.Current;
 
-                if (token.Kind == MarkupTokenKind.Text)
-                {
-                    current.Append(new MarkupTextNode(token.Value));
-                    continue;
-                }
-                else if (token.Kind == MarkupTokenKind.Open)
+                if (token.Kind == MarkupTokenKind.Open)
                 {
                     var (style, foreground, background) = MarkupStyleParser.Parse(token.Value);
-                    var content = new MarkupBlockNode();
-                    current.Append(new MarkupStyleNode(style, foreground, background, content));
-
-                    current = content;
-                    stack.Push(current);
-
-                    continue;
+                    stack.Push(new Appearance(foreground, background, style));
                 }
                 else if (token.Kind == MarkupTokenKind.Close)
                 {
@@ -45,20 +31,17 @@ namespace Spectre.Console.Internal
                     }
 
                     stack.Pop();
-
-                    if (stack.Count == 0)
-                    {
-                        current = root;
-                    }
-                    else
-                    {
-                        current = stack.Peek();
-                    }
-
-                    continue;
                 }
-
-                throw new InvalidOperationException("Encountered unkown markup token.");
+                else if (token.Kind == MarkupTokenKind.Text)
+                {
+                    // Get the effecive style.
+                    var style = appearance.Combine(stack);
+                    result.Append(token.Value, style);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Encountered unkown markup token.");
+                }
             }
 
             if (stack.Count > 0)
@@ -66,7 +49,7 @@ namespace Spectre.Console.Internal
                 throw new InvalidOperationException("Unbalanced markup stack. Did you forget to close a tag?");
             }
 
-            return root;
+            return result;
         }
     }
 }

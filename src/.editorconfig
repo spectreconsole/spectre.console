@@ -75,3 +75,6 @@ dotnet_diagnostic.CA1032.severity = none
 
 # CA1826: Do not use Enumerable methods on indexable collections. Instead use the collection directly
 dotnet_diagnostic.CA1826.severity = none
+
+# RCS1079: Throwing of new NotImplementedException.
+dotnet_diagnostic.RCS1079.severity = warning
