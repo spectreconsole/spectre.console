@@ -1,8 +1,7 @@
 using Shouldly;
-using Spectre.Console.Composition;
 using Xunit;
 
-namespace Spectre.Console.Tests.Unit.Composition
+namespace Spectre.Console.Tests.Unit
 {
     public sealed class PanelTests
     {
@@ -13,7 +12,7 @@ namespace Spectre.Console.Tests.Unit.Composition
             var console = new PlainConsole(width: 80);
 
             // When
-            console.Render(new Panel(new Text("Hello World")));
+            console.Render(new Panel(Text.New("Hello World")));
 
             // Then
             console.Lines.Count.ShouldBe(3);
@@ -29,7 +28,7 @@ namespace Spectre.Console.Tests.Unit.Composition
             var console = new PlainConsole(width: 80);
 
             // When
-            console.Render(new Panel(new Text(" \n💩\n ")));
+            console.Render(new Panel(Text.New(" \n💩\n ")));
 
             // Then
             console.Lines.Count.ShouldBe(5);
@@ -47,7 +46,7 @@ namespace Spectre.Console.Tests.Unit.Composition
             var console = new PlainConsole(width: 80);
 
             // When
-            console.Render(new Panel(new Text("Hello World\nFoo Bar")));
+            console.Render(new Panel(Text.New("Hello World\nFoo Bar")));
 
             // Then
             console.Lines.Count.ShouldBe(4);
@@ -58,13 +57,36 @@ namespace Spectre.Console.Tests.Unit.Composition
         }
 
         [Fact]
+        public void Should_Preserve_Explicit_Line_Ending()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var text = new Panel(
+                Text.New("I heard [underline on blue]you[/] like 📦\n\n\n\nSo I put a 📦 in a 📦"),
+                content: Justify.Center);
+
+            // When
+            console.Render(text);
+
+            // Then
+            console.Lines.Count.ShouldBe(7);
+            console.Lines[0].ShouldBe("┌───────────────────────┐");
+            console.Lines[1].ShouldBe("│  I heard you like 📦  │");
+            console.Lines[2].ShouldBe("│                       │");
+            console.Lines[3].ShouldBe("│                       │");
+            console.Lines[4].ShouldBe("│                       │");
+            console.Lines[5].ShouldBe("│ So I put a 📦 in a 📦 │");
+            console.Lines[6].ShouldBe("└───────────────────────┘");
+        }
+
+        [Fact]
         public void Should_Fit_Panel_To_Parent_If_Enabled()
         {
             // Given
             var console = new PlainConsole(width: 25);
 
             // When
-            console.Render(new Panel(new Text("Hello World"), fit: true));
+            console.Render(new Panel(Text.New("Hello World"), fit: true));
 
             // Then
             console.Lines.Count.ShouldBe(3);
@@ -80,7 +102,7 @@ namespace Spectre.Console.Tests.Unit.Composition
             var console = new PlainConsole(width: 25);
 
             // When
-            console.Render(new Panel(new Text("Hello World", justify: Justify.Right), fit: true));
+            console.Render(new Panel(Text.New("Hello World"), fit: true, content: Justify.Right));
 
             // Then
             console.Lines.Count.ShouldBe(3);
@@ -96,7 +118,7 @@ namespace Spectre.Console.Tests.Unit.Composition
             var console = new PlainConsole(width: 25);
 
             // When
-            console.Render(new Panel(new Text("Hello World", justify: Justify.Center), fit: true));
+            console.Render(new Panel(Text.New("Hello World"), fit: true, content: Justify.Center));
 
             // Then
             console.Lines.Count.ShouldBe(3);
@@ -112,7 +134,7 @@ namespace Spectre.Console.Tests.Unit.Composition
             var console = new PlainConsole(width: 80);
 
             // When
-            console.Render(new Panel(new Panel(new Text("Hello World"))));
+            console.Render(new Panel(new Panel(Text.New("Hello World"))));
 
             // Then
             console.Lines.Count.ShouldBe(5);

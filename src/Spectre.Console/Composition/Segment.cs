@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Spectre.Console.Internal;
@@ -9,12 +10,19 @@ namespace Spectre.Console.Composition
     /// <summary>
     /// Represents a renderable segment.
     /// </summary>
-    public sealed class Segment
+    [DebuggerDisplay("{Text,nq}")]
+    public class Segment
     {
         /// <summary>
         /// Gets the segment text.
         /// </summary>
         public string Text { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether or not this is an expicit line break
+        /// that should be preserved.
+        /// </summary>
+        public bool IsLineBreak { get; }
 
         /// <summary>
         /// Gets the appearance of the segment.
@@ -36,9 +44,24 @@ namespace Spectre.Console.Composition
         /// <param name="text">The segment text.</param>
         /// <param name="appearance">The segment appearance.</param>
         public Segment(string text, Appearance appearance)
+            : this(text, appearance, false)
+        {
+        }
+
+        private Segment(string text, Appearance appearance, bool lineBreak)
         {
             Text = text?.NormalizeLineEndings() ?? throw new ArgumentNullException(nameof(text));
             Appearance = appearance;
+            IsLineBreak = lineBreak;
+        }
+
+        /// <summary>
+        /// Creates a segment that represents an implicit line break.
+        /// </summary>
+        /// <returns>A segment that represents an implicit line break.</returns>
+        public static Segment LineBreak()
+        {
+            return new Segment("\n", Appearance.Plain, true);
         }
 
         /// <summary>
@@ -62,11 +85,44 @@ namespace Spectre.Console.Composition
         }
 
         /// <summary>
+        /// Splits the segment at the offset.
+        /// </summary>
+        /// <param name="offset">The offset where to split the segment.</param>
+        /// <returns>One or two new segments representing the split.</returns>
+        public (Segment First, Segment Second) Split(int offset)
+        {
+            if (offset < 0)
+            {
+                return (this, null);
+            }
+
+            if (offset >= Text.Length)
+            {
+                return (this, null);
+            }
+
+            return (
+                new Segment(Text.Substring(0, offset), Appearance),
+                new Segment(Text.Substring(offset, Text.Length - offset), Appearance));
+        }
+
+        /// <summary>
         /// Splits the provided segments into lines.
         /// </summary>
         /// <param name="segments">The segments to split.</param>
         /// <returns>A collection of lines.</returns>
-        public static List<SegmentLine> Split(IEnumerable<Segment> segments)
+        public static List<SegmentLine> SplitLines(IEnumerable<Segment> segments)
+        {
+            return SplitLines(segments, int.MaxValue);
+        }
+
+        /// <summary>
+        /// Splits the provided segments into lines with a maximum width.
+        /// </summary>
+        /// <param name="segments">The segments to split into lines.</param>
+        /// <param name="maxWidth">The maximum width.</param>
+        /// <returns>A list of lines.</returns>
+        public static List<SegmentLine> SplitLines(IEnumerable<Segment> segments, int maxWidth)
         {
             if (segments is null)
             {
@@ -76,14 +132,41 @@ namespace Spectre.Console.Composition
             var lines = new List<SegmentLine>();
             var line = new SegmentLine();
 
-            foreach (var segment in segments)
+            var stack = new Stack<Segment>(segments.Reverse());
+
+            while (stack.Count > 0)
             {
+                var segment = stack.Pop();
+
+                if (line.Length + segment.Text.Length > maxWidth)
+                {
+                    var diff = -(maxWidth - (line.Length + segment.Text.Length));
+                    var offset = segment.Text.Length - diff;
+
+                    var (first, second) = segment.Split(offset);
+
+                    line.Add(first);
+                    lines.Add(line);
+                    line = new SegmentLine();
+
+                    if (second != null)
+                    {
+                        stack.Push(second);
+                    }
+
+                    continue;
+                }
+
                 if (segment.Text.Contains("\n"))
                 {
                     if (segment.Text == "\n")
                     {
-                        lines.Add(line);
-                        line = new SegmentLine();
+                        if (line.Length > 0 || segment.IsLineBreak)
+                        {
+                            lines.Add(line);
+                            line = new SegmentLine();
+                        }
+
                         continue;
                     }
 
@@ -93,19 +176,21 @@ namespace Spectre.Console.Composition
                         var parts = text.SplitLines();
                         if (parts.Length > 0)
                         {
-                            line.Add(new Segment(parts[0], segment.Appearance));
+                            if (parts[0].Length > 0)
+                            {
+                                line.Add(new Segment(parts[0], segment.Appearance));
+                            }
                         }
 
                         if (parts.Length > 1)
                         {
-                            lines.Add(line);
-                            line = new SegmentLine();
+                            if (line.Length > 0)
+                            {
+                                lines.Add(line);
+                                line = new SegmentLine();
+                            }
 
                             text = string.Concat(parts.Skip(1).Take(parts.Length - 1));
-                            if (string.IsNullOrWhiteSpace(text))
-                            {
-                                text = null;
-                            }
                         }
                         else
                         {

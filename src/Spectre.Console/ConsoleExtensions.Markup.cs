@@ -29,8 +29,7 @@ namespace Spectre.Console
         /// <param name="args">An array of objects to write.</param>
         public static void Markup(this IAnsiConsole console, IFormatProvider provider, string format, params object[] args)
         {
-            var result = MarkupParser.Parse(string.Format(provider, format, args));
-            result.Render(console);
+            console.Render(MarkupParser.Parse(string.Format(provider, format, args)));
         }
 
         /// <summary>

@@ -11,16 +11,17 @@ namespace Spectre.Console.Tests
 
         public string Output => _writer.ToString();
 
-        public AnsiConsoleFixture(ColorSystem system, AnsiSupport ansi = AnsiSupport.Yes)
+        public AnsiConsoleFixture(ColorSystem system, AnsiSupport ansi = AnsiSupport.Yes, int width = 80)
         {
             _writer = new StringWriter();
 
-            Console = AnsiConsole.Create(new AnsiConsoleSettings
-            {
-                Ansi = ansi,
-                ColorSystem = (ColorSystemSupport)system,
-                Out = _writer,
-            });
+            Console = new ConsoleWithWidth(
+                AnsiConsole.Create(new AnsiConsoleSettings
+                {
+                    Ansi = ansi,
+                    ColorSystem = (ColorSystemSupport)system,
+                    Out = _writer,
+                }), width);
         }
 
         public void Dispose()

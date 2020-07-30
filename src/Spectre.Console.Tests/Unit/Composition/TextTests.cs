@@ -1,61 +1,77 @@
 using Shouldly;
-using Spectre.Console.Composition;
 using Xunit;
 
-namespace Spectre.Console.Tests.Composition
+namespace Spectre.Console.Tests.Unit
 {
     public sealed class TextTests
     {
         [Fact]
-        public void Should_Render_Text_To_Console()
+        public void Should_Render_Unstyled_Text_As_Expected()
         {
             // Given
-            var console = new PlainConsole();
+            var fixture = new PlainConsole(width: 80);
+            var text = Text.New("Hello World");
 
             // When
-            console.Render(new Text("Hello World"));
+            fixture.Render(text);
 
             // Then
-            console.Output.ShouldBe("Hello World");
+            fixture.Output
+                .NormalizeLineEndings()
+                .ShouldBe("Hello World");
         }
 
         [Fact]
-        public void Should_Right_Align_Text_To_Parent()
+        public void Should_Split_Unstyled_Text_To_New_Lines_If_Width_Exceeds_Console_Width()
         {
             // Given
-            var console = new PlainConsole(width: 15);
+            var fixture = new PlainConsole(width: 5);
+            var text = Text.New("Hello World");
 
             // When
-            console.Render(new Text("Hello World", justify: Justify.Right));
+            fixture.Render(text);
 
             // Then
-            console.Output.ShouldBe("    Hello World");
+            fixture.Output
+                .NormalizeLineEndings()
+                .ShouldBe("Hello\n Worl\nd");
         }
 
-        [Fact]
-        public void Should_Center_Text_To_Parent()
+        public sealed class TheStylizeMethod
         {
-            // Given
-            var console = new PlainConsole(width: 15);
+            [Fact]
+            public void Should_Apply_Style_To_Text()
+            {
+                // Given
+                var fixture = new AnsiConsoleFixture(ColorSystem.Standard);
+                var text = Text.New("Hello World");
+                text.Stylize(start: 3, end: 8, new Appearance(style: Styles.Underline));
 
-            // When
-            console.Render(new Text("Hello World", justify: Justify.Center));
+                // When
+                fixture.Console.Render(text);
 
-            // Then
-            console.Output.ShouldBe("  Hello World  ");
-        }
+                // Then
+                fixture.Output
+                    .NormalizeLineEndings()
+                    .ShouldBe("Hel[4mlo Wo[0mrld");
+            }
 
-        [Fact]
-        public void Should_Split_Text_To_Multiple_Lines_If_It_Does_Not_Fit()
-        {
-            // Given
-            var console = new PlainConsole(width: 5);
+            [Fact]
+            public void Should_Apply_Style_To_Text_Which_Spans_Over_Multiple_Lines()
+            {
+                // Given
+                var fixture = new AnsiConsoleFixture(ColorSystem.Standard, width: 5);
+                var text = Text.New("Hello World");
+                text.Stylize(start: 3, end: 8, new Appearance(style: Styles.Underline));
 
-            // When
-            console.Render(new Text("Hello World"));
+                // When
+                fixture.Console.Render(text);
 
-            // Then
-            console.Output.ShouldBe("Hello\n Worl\nd");
+                // Then
+                fixture.Output
+                    .NormalizeLineEndings()
+                    .ShouldBe("Hel[4mlo[0m\n[4m Wo[0mrl\nd");
+            }
         }
     }
 }

@@ -26,12 +26,7 @@ namespace Spectre.Console
         /// Gets an <see cref="Appearance"/> with the
         /// default color and without style.
         /// </summary>
-        public static Appearance Plain { get; }
-
-        static Appearance()
-        {
-            Plain = new Appearance();
-        }
+        public static Appearance Plain { get; } = new Appearance();
 
         private Appearance()
             : this(null, null, null)
@@ -49,6 +44,33 @@ namespace Spectre.Console
             Foreground = foreground ?? Color.Default;
             Background = background ?? Color.Default;
             Style = style ?? Styles.None;
+        }
+
+        /// <summary>
+        /// Combines this appearance with another one.
+        /// </summary>
+        /// <param name="other">The item to combine with this.</param>
+        /// <returns>A new appearance representing a combination of this and the other one.</returns>
+        public Appearance Combine(Appearance other)
+        {
+            if (other is null)
+            {
+                throw new ArgumentNullException(nameof(other));
+            }
+
+            var foreground = Foreground;
+            if (!other.Foreground.IsDefault)
+            {
+                foreground = other.Foreground;
+            }
+
+            var background = Background;
+            if (!other.Background.IsDefault)
+            {
+                background = other.Background;
+            }
+
+            return new Appearance(foreground, background, Style | other.Style);
         }
 
         /// <inheritdoc/>

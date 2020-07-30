@@ -53,9 +53,10 @@ namespace Sample
             AnsiConsole.Foreground = Color.Maroon;
             AnsiConsole.Render(new Panel(new Panel(new Panel(new Panel(
                 Text.New(
-                    "I heard you like 📦\n\n\n\nSo I put a 📦 in a 📦",
-                    foreground: Color.White,
-                    justify: Justify.Center))))));
+                    "[underline]I[/] heard [underline on blue]you[/] like 📦\n\n\n\n" +
+                    "So I put a 📦 in a 📦\nin a 📦 in a 📦\n\n" +
+                    "😅",
+                    foreground: Color.White), content: Justify.Center)))));
 
             // Reset colors
             AnsiConsole.ResetColors();
@@ -69,16 +70,14 @@ namespace Sample
             // Centered panel with text
             AnsiConsole.Render(new Panel(
                 Text.New("Centered\nCenter",
-                    foreground: Color.White,
-                    justify: Justify.Center),
-                fit: true));
+                    foreground: Color.White),
+                fit: true, content: Justify.Center));
 
             // Right adjusted panel with text
             AnsiConsole.Render(new Panel(
                 Text.New("Right adjusted\nRight",
-                    foreground: Color.White,
-                    justify: Justify.Right),
-                fit: true));
+                    foreground: Color.White),
+                fit: true, content: Justify.Right));
         }
     }
 }

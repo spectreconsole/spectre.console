@@ -7,6 +7,8 @@ namespace Spectre.Console.Internal
     {
         private readonly StringBuffer _reader;
 
+        public MarkupToken Current { get; private set; }
+
         public MarkupTokenizer(string text)
         {
             _reader = new StringBuffer(text ?? throw new ArgumentNullException(nameof(text)));
@@ -17,11 +19,11 @@ namespace Spectre.Console.Internal
             _reader.Dispose();
         }
 
-        public MarkupToken GetNext()
+        public bool MoveNext()
         {
             if (_reader.Eof)
             {
-                return null;
+                return false;
             }
 
             var current = _reader.Peek();
@@ -40,7 +42,8 @@ namespace Spectre.Console.Internal
                 if (current == '[')
                 {
                     _reader.Read();
-                    return new MarkupToken(MarkupTokenKind.Text, "[", position);
+                    Current = new MarkupToken(MarkupTokenKind.Text, "[", position);
+                    return true;
                 }
 
                 if (current == '/')
@@ -59,7 +62,8 @@ namespace Spectre.Console.Internal
                     }
 
                     _reader.Read();
-                    return new MarkupToken(MarkupTokenKind.Close, string.Empty, position);
+                    Current = new MarkupToken(MarkupTokenKind.Close, string.Empty, position);
+                    return true;
                 }
 
                 var builder = new StringBuilder();
@@ -80,7 +84,8 @@ namespace Spectre.Console.Internal
                 }
 
                 _reader.Read();
-                return new MarkupToken(MarkupTokenKind.Open, builder.ToString(), position);
+                Current = new MarkupToken(MarkupTokenKind.Open, builder.ToString(), position);
+                return true;
             }
             else
             {
@@ -97,7 +102,8 @@ namespace Spectre.Console.Internal
                     builder.Append(_reader.Read());
                 }
 
-                return new MarkupToken(MarkupTokenKind.Text, builder.ToString(), position);
+                Current = new MarkupToken(MarkupTokenKind.Text, builder.ToString(), position);
+                return true;
             }
         }
     }

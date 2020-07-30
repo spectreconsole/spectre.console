@@ -92,12 +92,7 @@ namespace Spectre.Console.Internal
         internal static Color ExactOrClosest(ColorSystem system, Color color)
         {
             var exact = Exact(system, color);
-            if (exact != null)
-            {
-                return exact.Value;
-            }
-
-            return Closest(system, color);
+            return exact ?? Closest(system, color);
         }
 
         private static Color? Exact(ColorSystem system, Color color)
