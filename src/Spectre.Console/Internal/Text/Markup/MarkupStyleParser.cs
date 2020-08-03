@@ -20,7 +20,7 @@ namespace Spectre.Console.Internal
                     continue;
                 }
 
-                var style = Lookup.Instance.GetStyle(part);
+                var style = StyleTable.GetStyle(part);
                 if (style != null)
                 {
                     if (effectiveStyle == null)
@@ -32,7 +32,7 @@ namespace Spectre.Console.Internal
                 }
                 else
                 {
-                    var color = Lookup.Instance.GetColor(part);
+                    var color = ColorTable.GetColor(part);
                     if (color == null)
                     {
                         throw new InvalidOperationException("Could not find color..");

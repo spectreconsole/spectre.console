@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using Spectre.Console.Internal;
 
 namespace Spectre.Console
@@ -18,7 +17,7 @@ namespace Spectre.Console
 
         static Color()
         {
-            Default = new Color(0, "default", 0, 0, 0, true);
+            Default = new Color(0, 0, 0, 0, true);
         }
 
         /// <summary>
@@ -35,11 +34,6 @@ namespace Spectre.Console
         /// Gets the blue component.
         /// </summary>
         public byte B { get; }
-
-        /// <summary>
-        /// Gets the name of the color, if any.
-        /// </summary>
-        public string Name { get; }
 
         /// <summary>
         /// Gets the number of the color, if any.
@@ -63,7 +57,6 @@ namespace Spectre.Console
             G = green;
             B = blue;
             IsDefault = false;
-            Name = null;
             Number = null;
         }
 
@@ -89,7 +82,7 @@ namespace Spectre.Console
         /// <inheritdoc/>
         public bool Equals(Color other)
         {
-            return Number == other.Number || (R == other.R && G == other.G && B == other.B);
+            return R == other.R && G == other.G && B == other.B;
         }
 
         /// <summary>
@@ -115,6 +108,15 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Convers a <see cref="int"/> to a <see cref="Color"/>.
+        /// </summary>
+        /// <param name="number">The color number to convert.</param>
+        public static implicit operator Color(int number)
+        {
+            return FromInt32(number);
+        }
+
+        /// <summary>
         /// Convers a <see cref="ConsoleColor"/> to a <see cref="Color"/>.
         /// </summary>
         /// <param name="color">The color to convert.</param>
@@ -124,18 +126,12 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Convers a color number into a <see cref="Color"/>.
+        /// Convers a <see cref="Color"/> to a <see cref="ConsoleColor"/>.
         /// </summary>
-        /// <param name="number">The color number.</param>
-        /// <returns>The color representing the specified color number.</returns>
-        public static Color FromColorNumber(int number)
+        /// <param name="color">The console color to convert.</param>
+        public static implicit operator ConsoleColor(Color color)
         {
-            if (number < 0 || number > 255)
-            {
-                throw new InvalidOperationException("Color number must be between 0 and 255");
-            }
-
-            return ColorPalette.EightBit.First(x => x.Number == number);
+            return ToConsoleColor(color);
         }
 
         /// <summary>
@@ -181,6 +177,16 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Convers a color number into a <see cref="Color"/>.
+        /// </summary>
+        /// <param name="number">The color number.</param>
+        /// <returns>The color representing the specified color number.</returns>
+        public static Color FromInt32(int number)
+        {
+            return ColorTable.GetColor(number);
+        }
+
+        /// <summary>
         /// Convers a <see cref="ConsoleColor"/> to a <see cref="Color"/>.
         /// </summary>
         /// <param name="color">The color to convert.</param>
@@ -212,7 +218,16 @@ namespace Spectre.Console
         /// <inheritdoc/>
         public override string ToString()
         {
-            return Name ?? string.Format(CultureInfo.InvariantCulture, "#{0:2X}{1:2X}{2:2X}", R, G, B);
+            if (Number != null)
+            {
+                var name = ColorTable.GetName(Number.Value);
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    return name;
+                }
+            }
+
+            return string.Format(CultureInfo.InvariantCulture, "#{0:X2}{1:X2}{2:X2} (RGB={0},{1},{2})", R, G, B);
         }
     }
 }
