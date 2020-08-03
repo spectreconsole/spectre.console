@@ -5,14 +5,14 @@ namespace Spectre.Console.Internal
 {
     internal static class MarkupParser
     {
-        public static Text Parse(string text, Appearance appearance = null)
+        public static Text Parse(string text, Style style = null)
         {
-            appearance ??= Appearance.Plain;
+            style ??= Style.Plain;
 
             var result = new Text(string.Empty);
             using var tokenizer = new MarkupTokenizer(text);
 
-            var stack = new Stack<Appearance>();
+            var stack = new Stack<Style>();
 
             while (tokenizer.MoveNext())
             {
@@ -20,8 +20,8 @@ namespace Spectre.Console.Internal
 
                 if (token.Kind == MarkupTokenKind.Open)
                 {
-                    var (style, foreground, background) = MarkupStyleParser.Parse(token.Value);
-                    stack.Push(new Appearance(foreground, background, style));
+                    var parsedStyle = StyleParser.Parse(token.Value);
+                    stack.Push(parsedStyle);
                 }
                 else if (token.Kind == MarkupTokenKind.Close)
                 {
@@ -35,8 +35,8 @@ namespace Spectre.Console.Internal
                 else if (token.Kind == MarkupTokenKind.Text)
                 {
                     // Get the effecive style.
-                    var style = appearance.Combine(stack);
-                    result.Append(token.Value, style);
+                    var effectiveStyle = style.Combine(stack);
+                    result.Append(token.Value, effectiveStyle);
                 }
                 else
                 {

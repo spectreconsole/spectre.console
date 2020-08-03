@@ -44,7 +44,7 @@ namespace Spectre.Console.Internal
             }
         }
 
-        public Styles Style { get; set; }
+        public Decoration Decoration { get; set; }
 
         public Color Foreground
         {

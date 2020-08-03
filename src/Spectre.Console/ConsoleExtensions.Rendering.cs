@@ -28,9 +28,9 @@ namespace Spectre.Console
 
             foreach (var segment in renderable.Render(console.Encoding, console.Width))
             {
-                if (!segment.Appearance.Equals(Appearance.Plain))
+                if (!segment.Style.Equals(Style.Plain))
                 {
-                    using (var appearance = console.PushAppearance(segment.Appearance))
+                    using (var style = console.PushStyle(segment.Style))
                     {
                         console.Write(segment.Text);
                     }

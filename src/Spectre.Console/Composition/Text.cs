@@ -9,7 +9,7 @@ using Spectre.Console.Internal;
 namespace Spectre.Console
 {
     /// <summary>
-    /// Represents text with color and style.
+    /// Represents text with color and decorations.
     /// </summary>
     [SuppressMessage("Naming", "CA1724:Type names should not match namespaces")]
     public sealed class Text : IRenderable
@@ -21,13 +21,13 @@ namespace Spectre.Console
         {
             public int Start { get; }
             public int End { get; }
-            public Appearance Appearance { get; }
+            public Style Style { get; }
 
-            public Span(int start, int end, Appearance appearance)
+            public Span(int start, int end, Style style)
             {
                 Start = start;
                 End = end;
-                Appearance = appearance ?? Appearance.Plain;
+                Style = style ?? Style.Plain;
             }
         }
 
@@ -47,21 +47,21 @@ namespace Spectre.Console
         /// <param name="text">The text.</param>
         /// <param name="foreground">The foreground.</param>
         /// <param name="background">The background.</param>
-        /// <param name="style">The style.</param>
+        /// <param name="decoration">The text decoration.</param>
         /// <returns>A <see cref="Text"/> instance.</returns>
         public static Text New(
-            string text, Color? foreground = null, Color? background = null, Styles? style = null)
+            string text, Color? foreground = null, Color? background = null, Decoration? decoration = null)
         {
-            var result = MarkupParser.Parse(text, new Appearance(foreground, background, style));
+            var result = MarkupParser.Parse(text, new Style(foreground, background, decoration));
             return result;
         }
 
         /// <summary>
-        /// Appends some text with a style.
+        /// Appends some text with the specified color and decorations.
         /// </summary>
         /// <param name="text">The text to append.</param>
-        /// <param name="appearance">The appearance of the text.</param>
-        public void Append(string text, Appearance appearance)
+        /// <param name="style">The text style.</param>
+        public void Append(string text, Style style)
         {
             if (text == null)
             {
@@ -73,7 +73,7 @@ namespace Spectre.Console
 
             _text += text;
 
-            Stylize(start, end, appearance);
+            Stylize(start, end, style);
         }
 
         /// <summary>
@@ -81,8 +81,8 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="start">The start position.</param>
         /// <param name="end">The end position.</param>
-        /// <param name="appearance">The color and style to apply.</param>
-        public void Stylize(int start, int end, Appearance appearance)
+        /// <param name="style">The style to apply.</param>
+        public void Stylize(int start, int end, Style style)
         {
             if (start >= end)
             {
@@ -92,7 +92,7 @@ namespace Spectre.Console
             start = Math.Max(start, 0);
             end = Math.Min(end, _text.Length);
 
-            _spans.Add(new Span(start, end, appearance));
+            _spans.Add(new Span(start, end, style));
         }
 
         /// <inheritdoc/>
@@ -149,7 +149,7 @@ namespace Spectre.Console
                     }
 
                     result.Add(Segment.LineBreak());
-                    queue.Enqueue(new Segment(second.Text.Substring(1), second.Appearance));
+                    queue.Enqueue(new Segment(second.Text.Substring(1), second.Style));
                 }
             }
 
@@ -162,8 +162,8 @@ namespace Spectre.Console
             // https://github.com/willmcgugan/rich/blob/eb2f0d5277c159d8693636ec60c79c5442fd2e43/rich/text.py#L492
 
             // Create the style map.
-            var styleMap = _spans.SelectIndex((span, index) => (span, index)).ToDictionary(x => x.index + 1, x => x.span.Appearance);
-            styleMap[0] = Appearance.Plain;
+            var styleMap = _spans.SelectIndex((span, index) => (span, index)).ToDictionary(x => x.index + 1, x => x.span.Style);
+            styleMap[0] = Style.Plain;
 
             // Create a span list.
             var spans = new List<(int Offset, bool Leaving, int Style)>();
@@ -173,7 +173,7 @@ namespace Spectre.Console
             spans.Add((_text.Length, true, 0));
             spans = spans.OrderBy(x => x.Offset).ThenBy(x => !x.Leaving).ToList();
 
-            // Keep track of applied appearances using a stack
+            // Keep track of applied styles using a stack
             var styleStack = new Stack<int>();
 
             // Now build the segments.
@@ -195,7 +195,7 @@ namespace Spectre.Console
                 {
                     // Build the current style from the stack
                     var styleIndices = styleStack.OrderBy(index => index).ToArray();
-                    var currentStyle = Appearance.Plain.Combine(styleIndices.Select(index => styleMap[index]));
+                    var currentStyle = Style.Plain.Combine(styleIndices.Select(index => styleMap[index]));
 
                     // Create segment
                     var text = _text.Substring(offset, Math.Min(_text.Length - offset, nextOffset - offset));

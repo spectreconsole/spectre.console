@@ -28,9 +28,9 @@ namespace Spectre.Console
         Encoding Encoding { get; }
 
         /// <summary>
-        /// Gets or sets the current style.
+        /// Gets or sets the current text decoration.
         /// </summary>
-        Styles Style { get; set; }
+        Decoration Decoration { get; set; }
 
         /// <summary>
         /// Gets or sets the current foreground.

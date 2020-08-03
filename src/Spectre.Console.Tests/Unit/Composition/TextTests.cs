@@ -45,7 +45,7 @@ namespace Spectre.Console.Tests.Unit
                 // Given
                 var fixture = new AnsiConsoleFixture(ColorSystem.Standard);
                 var text = Text.New("Hello World");
-                text.Stylize(start: 3, end: 8, new Appearance(style: Styles.Underline));
+                text.Stylize(start: 3, end: 8, new Style(decoration: Decoration.Underline));
 
                 // When
                 fixture.Console.Render(text);
@@ -62,7 +62,7 @@ namespace Spectre.Console.Tests.Unit
                 // Given
                 var fixture = new AnsiConsoleFixture(ColorSystem.Standard, width: 5);
                 var text = Text.New("Hello World");
-                text.Stylize(start: 3, end: 8, new Appearance(style: Styles.Underline));
+                text.Stylize(start: 3, end: 8, new Style(decoration: Decoration.Underline));
 
                 // When
                 fixture.Console.Render(text);

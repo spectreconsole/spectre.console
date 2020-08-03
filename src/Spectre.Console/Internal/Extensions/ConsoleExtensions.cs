@@ -5,18 +5,23 @@ namespace Spectre.Console.Internal
 {
     internal static class ConsoleExtensions
     {
-        public static IDisposable PushAppearance(this IAnsiConsole console, Appearance appearance)
+        public static IDisposable PushStyle(this IAnsiConsole console, Style style)
         {
             if (console is null)
             {
                 throw new ArgumentNullException(nameof(console));
             }
 
-            var current = new Appearance(console.Foreground, console.Background, console.Style);
-            console.SetColor(appearance.Foreground, true);
-            console.SetColor(appearance.Background, false);
-            console.Style = appearance.Style;
-            return new AppearanceScope(console, current);
+            if (style is null)
+            {
+                throw new ArgumentNullException(nameof(style));
+            }
+
+            var current = new Style(console.Foreground, console.Background, console.Decoration);
+            console.SetColor(style.Foreground, true);
+            console.SetColor(style.Background, false);
+            console.Decoration = style.Decoration;
+            return new StyleScope(console, current);
         }
 
         public static IDisposable PushColor(this IAnsiConsole console, Color color, bool foreground)
@@ -31,16 +36,16 @@ namespace Spectre.Console.Internal
             return new ColorScope(console, current, foreground);
         }
 
-        public static IDisposable PushStyle(this IAnsiConsole console, Styles style)
+        public static IDisposable PushDecoration(this IAnsiConsole console, Decoration decoration)
         {
             if (console is null)
             {
                 throw new ArgumentNullException(nameof(console));
             }
 
-            var current = console.Style;
-            console.Style = style;
-            return new StyleScope(console, current);
+            var current = console.Decoration;
+            console.Decoration = decoration;
+            return new DecorationScope(console, current);
         }
 
         public static void SetColor(this IAnsiConsole console, Color color, bool foreground)
@@ -61,30 +66,30 @@ namespace Spectre.Console.Internal
         }
     }
 
-    internal sealed class AppearanceScope : IDisposable
+    internal sealed class StyleScope : IDisposable
     {
         private readonly IAnsiConsole _console;
-        private readonly Appearance _apperance;
+        private readonly Style _style;
 
-        public AppearanceScope(IAnsiConsole console, Appearance appearance)
+        public StyleScope(IAnsiConsole console, Style style)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
-            _apperance = appearance;
+            _style = style ?? throw new ArgumentNullException(nameof(style));
         }
 
         [SuppressMessage("Design", "CA1065:Do not raise exceptions in unexpected locations")]
         [SuppressMessage("Performance", "CA1821:Remove empty Finalizers")]
-        ~AppearanceScope()
+        ~StyleScope()
         {
-            throw new InvalidOperationException("Appearance scope was not disposed.");
+            throw new InvalidOperationException("Style scope was not disposed.");
         }
 
         public void Dispose()
         {
             GC.SuppressFinalize(this);
-            _console.SetColor(_apperance.Foreground, true);
-            _console.SetColor(_apperance.Background, false);
-            _console.Style = _apperance.Style;
+            _console.SetColor(_style.Foreground, true);
+            _console.SetColor(_style.Background, false);
+            _console.Decoration = _style.Decoration;
         }
     }
 
@@ -115,28 +120,28 @@ namespace Spectre.Console.Internal
         }
     }
 
-    internal sealed class StyleScope : IDisposable
+    internal sealed class DecorationScope : IDisposable
     {
         private readonly IAnsiConsole _console;
-        private readonly Styles _style;
+        private readonly Decoration _decoration;
 
-        public StyleScope(IAnsiConsole console, Styles color)
+        public DecorationScope(IAnsiConsole console, Decoration decoration)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
-            _style = color;
+            _decoration = decoration;
         }
 
         [SuppressMessage("Design", "CA1065:Do not raise exceptions in unexpected locations")]
         [SuppressMessage("Performance", "CA1821:Remove empty Finalizers")]
-        ~StyleScope()
+        ~DecorationScope()
         {
-            throw new InvalidOperationException("Style scope was not disposed.");
+            throw new InvalidOperationException("Decoration scope was not disposed.");
         }
 
         public void Dispose()
         {
             GC.SuppressFinalize(this);
-            _console.Style = _style;
+            _console.Decoration = _decoration;
         }
     }
 }

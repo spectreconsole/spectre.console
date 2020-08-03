@@ -11,7 +11,7 @@ namespace Spectre.Console.Internal
 
         public Capabilities Capabilities { get; }
         public Encoding Encoding { get; }
-        public Styles Style { get; set; }
+        public Decoration Decoration { get; set; }
         public Color Foreground { get; set; }
         public Color Background { get; set; }
 
@@ -50,21 +50,7 @@ namespace Spectre.Console.Internal
             Encoding = @out.IsStandardOut() ? System.Console.OutputEncoding : Encoding.UTF8;
             Foreground = Color.Default;
             Background = Color.Default;
-            Style = Styles.None;
-        }
-
-        public void Reset(bool colors, bool styles)
-        {
-            if (colors)
-            {
-                Foreground = Color.Default;
-                Background = Color.Default;
-            }
-
-            if (styles)
-            {
-                Style = Styles.None;
-            }
+            Decoration = Decoration.None;
         }
 
         public void Write(string text)
@@ -77,7 +63,7 @@ namespace Spectre.Console.Internal
             _out.Write(AnsiBuilder.GetAnsi(
                 _system,
                 text.NormalizeLineEndings(native: true),
-                Style,
+                Decoration,
                 Foreground,
                 Background));
         }

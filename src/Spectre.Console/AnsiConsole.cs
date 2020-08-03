@@ -63,12 +63,12 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Gets or sets the style.
+        /// Gets or sets the text decoration.
         /// </summary>
-        public static Styles Style
+        public static Decoration Decoration
         {
-            get => Console.Style;
-            set => Console.Style = value;
+            get => Console.Decoration;
+            set => Console.Decoration = value;
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Resets colors and styles to the default ones.
+        /// Resets colors and text decorations.
         /// </summary>
         public static void Reset()
         {
@@ -91,15 +91,15 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Resets the current style back to the default one.
+        /// Resets the current applied text decorations.
         /// </summary>
-        public static void ResetStyle()
+        public static void ResetDecoration()
         {
-            Console.ResetStyle();
+            Console.ResetDecoration();
         }
 
         /// <summary>
-        /// Resets the foreground and background colors to the default ones.
+        /// Resets the current applied foreground and background colors.
         /// </summary>
         public static void ResetColors()
         {
