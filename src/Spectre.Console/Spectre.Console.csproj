@@ -9,6 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="**/ColorPalette.*.cs">
+      <DependentUpon>**/ColorPalette.cs</DependentUpon>
+    </Compile>
     <Compile Update="Color.*.cs">
       <DependentUpon>Color.cs</DependentUpon>
     </Compile>
@@ -18,6 +21,7 @@
     <Compile Update="ConsoleExtensions.*.cs">
       <DependentUpon>ConsoleExtensions.cs</DependentUpon>
     </Compile>
+
   </ItemGroup>
 
   <ItemGroup>
