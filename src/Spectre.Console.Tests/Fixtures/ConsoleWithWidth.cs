@@ -13,7 +13,7 @@ namespace Spectre.Console.Tests
 
         public Encoding Encoding => _console.Encoding;
 
-        public Styles Style { get => _console.Style; set => _console.Style = value; }
+        public Decoration Decoration { get => _console.Decoration; set => _console.Decoration = value; }
         public Color Foreground { get => _console.Foreground; set => _console.Foreground = value; }
         public Color Background { get => _console.Background; set => _console.Background = value; }
 

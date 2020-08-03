@@ -7,11 +7,11 @@ namespace Spectre.Console.Internal
         public static string GetAnsi(
             ColorSystem system,
             string text,
-            Styles style,
+            Decoration decoration,
             Color foreground,
             Color background)
         {
-            var codes = AnsiStyleBuilder.GetAnsiCodes(style);
+            var codes = AnsiDecorationBuilder.GetAnsiCodes(decoration);
 
             // Got foreground?
             if (foreground != Color.Default)

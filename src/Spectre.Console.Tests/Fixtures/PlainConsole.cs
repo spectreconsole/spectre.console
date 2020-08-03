@@ -13,7 +13,7 @@ namespace Spectre.Console.Tests
         public int Width { get; }
         public int Height { get; }
 
-        public Styles Style { get; set; }
+        public Decoration Decoration { get; set; }
         public Color Foreground { get; set; }
         public Color Background { get; set; }
 

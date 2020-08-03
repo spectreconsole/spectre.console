@@ -12,17 +12,17 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Split_Segment_Correctly()
             {
                 // Given
-                var appearance = new Appearance(Color.Red, Color.Green, Styles.Bold);
-                var segment = new Segment("Foo Bar", appearance);
+                var style = new Style(Color.Red, Color.Green, Decoration.Bold);
+                var segment = new Segment("Foo Bar", style);
 
                 // When
                 var (first, second) = segment.Split(3);
 
                 // Then
                 first.Text.ShouldBe("Foo");
-                first.Appearance.ShouldBe(appearance);
+                first.Style.ShouldBe(style);
                 second.Text.ShouldBe(" Bar");
-                second.Appearance.ShouldBe(appearance);
+                second.Style.ShouldBe(style);
             }
         }
 

@@ -8,13 +8,13 @@ namespace Spectre.Console.Tests.Unit
     public partial class AnsiConsoleTests
     {
         [Fact]
-        public void Should_Combine_Style_And_Colors()
+        public void Should_Combine_Decoration_And_Colors()
         {
             // Given
             var fixture = new AnsiConsoleFixture(ColorSystem.Standard);
             fixture.Console.Foreground = Color.RoyalBlue1;
             fixture.Console.Background = Color.NavajoWhite1;
-            fixture.Console.Style = Styles.Italic;
+            fixture.Console.Decoration = Decoration.Italic;
 
             // When
             fixture.Console.Write("Hello");
@@ -30,7 +30,7 @@ namespace Spectre.Console.Tests.Unit
             var fixture = new AnsiConsoleFixture(ColorSystem.Standard);
             fixture.Console.Foreground = Color.Default;
             fixture.Console.Background = Color.NavajoWhite1;
-            fixture.Console.Style = Styles.Italic;
+            fixture.Console.Decoration = Decoration.Italic;
 
             // When
             fixture.Console.Write("Hello");
@@ -46,7 +46,7 @@ namespace Spectre.Console.Tests.Unit
             var fixture = new AnsiConsoleFixture(ColorSystem.Standard);
             fixture.Console.Foreground = Color.RoyalBlue1;
             fixture.Console.Background = Color.Default;
-            fixture.Console.Style = Styles.Italic;
+            fixture.Console.Decoration = Decoration.Italic;
 
             // When
             fixture.Console.Write("Hello");
@@ -56,13 +56,13 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Should_Not_Include_Style_If_Set_To_None()
+        public void Should_Not_Include_Decoration_If_Set_To_None()
         {
             // Given
             var fixture = new AnsiConsoleFixture(ColorSystem.Standard);
             fixture.Console.Foreground = Color.RoyalBlue1;
             fixture.Console.Background = Color.NavajoWhite1;
-            fixture.Console.Style = Styles.None;
+            fixture.Console.Decoration = Decoration.None;
 
             // When
             fixture.Console.Write("Hello");

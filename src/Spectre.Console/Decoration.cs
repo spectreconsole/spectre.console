@@ -1,18 +1,20 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Spectre.Console
 {
     /// <summary>
-    /// Represents a style.
+    /// Represents text decoration.
     /// </summary>
     /// <remarks>
-    /// Support for different styles is up to the terminal.
+    /// Support for text decorations is up to the terminal.
     /// </remarks>
     [Flags]
-    public enum Styles
+    [SuppressMessage("Naming", "CA1714:Flags enums should have plural names")]
+    public enum Decoration
     {
         /// <summary>
-        /// No style.
+        /// No text decoration.
         /// </summary>
         None = 0,
 

@@ -9,7 +9,7 @@ namespace Sample
         {
             // Use the static API to write some things to the console.
             AnsiConsole.Foreground = Color.Chartreuse2;
-            AnsiConsole.Style = Styles.Underline | Styles.Bold;
+            AnsiConsole.Decoration = Decoration.Underline | Decoration.Bold;
             AnsiConsole.WriteLine("Hello World!");
             AnsiConsole.Reset();
             AnsiConsole.MarkupLine("Capabilities: [yellow underline]{0}[/]", AnsiConsole.Capabilities);
@@ -40,10 +40,10 @@ namespace Sample
             // and downgrade them to the specified color system.
             console.WriteLine();
             console.Foreground = Color.Chartreuse2;
-            console.Style = Styles.Underline | Styles.Bold;
+            console.Decoration = Decoration.Underline | Decoration.Bold;
             console.WriteLine("Hello World!");
             console.ResetColors();
-            console.ResetStyle();
+            console.ResetDecoration();
             console.MarkupLine("Capabilities: [yellow underline]{0}[/]", console.Capabilities);
             console.MarkupLine("Width=[yellow]{0}[/], Height=[yellow]{1}[/]", console.Width, console.Height);
             console.MarkupLine("[white on red]Good[/] [red]bye[/]!");

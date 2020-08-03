@@ -25,16 +25,16 @@ namespace Spectre.Console.Composition
         public bool IsLineBreak { get; }
 
         /// <summary>
-        /// Gets the appearance of the segment.
+        /// Gets the segment style.
         /// </summary>
-        public Appearance Appearance { get; }
+        public Style Style { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Segment"/> class.
         /// </summary>
         /// <param name="text">The segment text.</param>
         public Segment(string text)
-            : this(text, Appearance.Plain)
+            : this(text, Style.Plain)
         {
         }
 
@@ -42,16 +42,16 @@ namespace Spectre.Console.Composition
         /// Initializes a new instance of the <see cref="Segment"/> class.
         /// </summary>
         /// <param name="text">The segment text.</param>
-        /// <param name="appearance">The segment appearance.</param>
-        public Segment(string text, Appearance appearance)
-            : this(text, appearance, false)
+        /// <param name="style">The segment style.</param>
+        public Segment(string text, Style style)
+            : this(text, style, false)
         {
         }
 
-        private Segment(string text, Appearance appearance, bool lineBreak)
+        private Segment(string text, Style style, bool lineBreak)
         {
             Text = text?.NormalizeLineEndings() ?? throw new ArgumentNullException(nameof(text));
-            Appearance = appearance;
+            Style = style;
             IsLineBreak = lineBreak;
         }
 
@@ -61,7 +61,7 @@ namespace Spectre.Console.Composition
         /// <returns>A segment that represents an implicit line break.</returns>
         public static Segment LineBreak()
         {
-            return new Segment("\n", Appearance.Plain, true);
+            return new Segment("\n", Style.Plain, true);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Spectre.Console.Composition
         /// <returns>A new segment without any trailing line endings.</returns>
         public Segment StripLineEndings()
         {
-            return new Segment(Text.TrimEnd('\n'), Appearance);
+            return new Segment(Text.TrimEnd('\n'), Style);
         }
 
         /// <summary>
@@ -102,8 +102,8 @@ namespace Spectre.Console.Composition
             }
 
             return (
-                new Segment(Text.Substring(0, offset), Appearance),
-                new Segment(Text.Substring(offset, Text.Length - offset), Appearance));
+                new Segment(Text.Substring(0, offset), Style),
+                new Segment(Text.Substring(offset, Text.Length - offset), Style));
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Spectre.Console.Composition
                         {
                             if (parts[0].Length > 0)
                             {
-                                line.Add(new Segment(parts[0], segment.Appearance));
+                                line.Add(new Segment(parts[0], segment.Style));
                             }
                         }
 

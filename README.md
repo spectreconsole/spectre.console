@@ -50,11 +50,11 @@ like you usually do with the `System.Console` API, but prettier.
 
 ```csharp
 AnsiConsole.Foreground = Color.CornflowerBlue;
-AnsiConsole.Style = Styles.Underline | Styles.Bold;
+AnsiConsole.Decoration = Decoration.Underline | Decoration.Bold;
 AnsiConsole.WriteLine("Hello World!");
 
 AnsiConsole.Reset();
-AnsiConsole.MarkupLine("[yellow]{0}[/] [underline]world[/]!", "Goodbye");
+AnsiConsole.MarkupLine("[bold yellow on red]{0}[/] [underline]world[/]!", "Goodbye");
 ```
 
 If you want to get a reference to the default `IAnsiConsole`, 
@@ -64,7 +64,10 @@ you can access it via `AnsiConsole.Console`.
 
 Sometimes it's useful to explicitly create a console with specific 
 capabilities, such as during unit testing when you want control 
-over the environment your code runs in.
+over the environment your code runs in. 
+
+It's recommended to not use `AnsiConsole` in code that run as 
+part of a unit test.
 
 ```csharp
 IAnsiConsole console = AnsiConsole.Create(

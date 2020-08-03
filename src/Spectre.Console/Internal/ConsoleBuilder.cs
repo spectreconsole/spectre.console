@@ -25,7 +25,7 @@ namespace Spectre.Console.Internal
             {
                 return new AnsiConsoleRenderer(buffer, colorSystem)
                 {
-                    Style = Styles.None,
+                    Decoration = Decoration.None,
                 };
             }
 
