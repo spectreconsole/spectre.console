@@ -6,13 +6,18 @@ namespace Spectre.Console
     public enum BorderKind
     {
         /// <summary>
+        /// No border.
+        /// </summary>
+        None = 0,
+
+        /// <summary>
         /// A square border.
         /// </summary>
-        Square = 0,
+        Square = 1,
 
         /// <summary>
         /// An old school ASCII border.
         /// </summary>
-        Ascii = 1,
+        Ascii = 2,
     }
 }
