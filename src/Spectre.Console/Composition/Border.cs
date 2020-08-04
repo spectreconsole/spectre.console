@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace Spectre.Console.Composition
 {
@@ -9,10 +10,11 @@ namespace Spectre.Console.Composition
     /// </summary>
     public abstract class Border
     {
-        private readonly Dictionary<BorderPart, char> _lookup;
+        private readonly Dictionary<BorderPart, string> _lookup;
 
         private static readonly Dictionary<BorderKind, Border> _borders = new Dictionary<BorderKind, Border>
         {
+            { BorderKind.None, new NoBorder() },
             { BorderKind.Ascii, new AsciiBorder() },
             { BorderKind.Square, new SquareBorder() },
         };
@@ -40,11 +42,17 @@ namespace Spectre.Console.Composition
             return border;
         }
 
-        private Dictionary<BorderPart, char> Initialize()
+        private Dictionary<BorderPart, string> Initialize()
         {
-            var lookup = new Dictionary<BorderPart, char>();
+            var lookup = new Dictionary<BorderPart, string>();
             foreach (BorderPart part in Enum.GetValues(typeof(BorderPart)))
             {
+                var text = GetBoxPart(part);
+                if (text.Length > 1)
+                {
+                    throw new InvalidOperationException("A box part cannot contain more than one character.");
+                }
+
                 lookup.Add(part, GetBoxPart(part));
             }
 
@@ -59,7 +67,8 @@ namespace Spectre.Console.Composition
         /// <returns>A string representation of the specified border part.</returns>
         public string GetPart(BorderPart part, int count)
         {
-            return new string(GetBoxPart(part), count);
+            // TODO: This need some optimization...
+            return string.Join(string.Empty, Enumerable.Repeat(GetBoxPart(part)[0], count));
         }
 
         /// <summary>
@@ -77,6 +86,6 @@ namespace Spectre.Console.Composition
         /// </summary>
         /// <param name="part">The part to get the character representation for.</param>
         /// <returns>A character representation of the specified border part.</returns>
-        protected abstract char GetBoxPart(BorderPart part);
+        protected abstract string GetBoxPart(BorderPart part);
     }
 }

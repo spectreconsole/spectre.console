@@ -15,6 +15,7 @@ namespace Spectre.Console
         private readonly List<Text> _columns;
         private readonly List<List<Text>> _rows;
         private readonly Border _border;
+        private readonly BorderKind _borderKind;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Table"/> class.
@@ -25,6 +26,7 @@ namespace Spectre.Console
             _columns = new List<Text>();
             _rows = new List<List<Text>>();
             _border = Border.GetBorder(border);
+            _borderKind = border;
         }
 
         /// <summary>
@@ -104,8 +106,15 @@ namespace Spectre.Console
         /// <inheritdoc/>
         public IEnumerable<Segment> Render(Encoding encoding, int width)
         {
+            var showBorder = _borderKind != BorderKind.None;
+            var hideBorder = _borderKind == BorderKind.None;
+
+            var leftRightBorderWidth = _borderKind == BorderKind.None ? 0 : 2;
+            var columnPadding = _borderKind == BorderKind.None ? _columns.Count : _columns.Count * 2;
+            var separatorCount = _borderKind == BorderKind.None ? 0 : _columns.Count - 1;
+
             // Calculate the max width for each column.
-            var maxColumnWidth = (width - (2 + (_columns.Count * 2) + (_columns.Count - 1))) / _columns.Count;
+            var maxColumnWidth = (width - (leftRightBorderWidth + columnPadding + separatorCount)) / _columns.Count;
             var columnWidths = _columns.Select(c => c.Measure(encoding, maxColumnWidth)).ToArray();
             for (var rowIndex = 0; rowIndex < _rows.Count; rowIndex++)
             {
@@ -120,7 +129,7 @@ namespace Spectre.Console
             }
 
             // We now know the max width of each column, so let's recalculate the width.
-            width = columnWidths.Sum() + 2 + (_columns.Count * 2) + (_columns.Count - 1);
+            width = columnWidths.Sum() + leftRightBorderWidth + columnPadding + separatorCount;
 
             // Create the rows.
             var rows = new List<List<Text>>();
@@ -133,9 +142,8 @@ namespace Spectre.Console
             {
                 var cellHeight = 1;
 
-                // Get the list of cells for the row.
+                // Get the list of cells for the row and calculate the cell height.
                 var cells = new List<List<SegmentLine>>();
-
                 foreach (var (rowWidth, cell) in columnWidths.Zip(row, (f, s) => (f, s)))
                 {
                     var lines = Segment.SplitLines(cell.Render(encoding, rowWidth));
@@ -143,7 +151,8 @@ namespace Spectre.Console
                     cells.Add(lines);
                 }
 
-                if (firstRow)
+                // Show top of header?
+                if (firstRow && showBorder)
                 {
                     result.Add(new Segment(_border.GetPart(BorderPart.HeaderTopLeft)));
                     foreach (var (columnIndex, _, lastColumn, columnWidth) in columnWidths.Enumerate())
@@ -171,31 +180,42 @@ namespace Spectre.Console
                     var w00t = cells.Enumerate().ToArray();
                     foreach (var (cellIndex, firstCell, lastCell, cell) in w00t)
                     {
-                        if (firstCell)
+                        if (firstCell && showBorder)
                         {
+                            // Show left column edge
                             result.Add(new Segment(_border.GetPart(BorderPart.CellLeft)));
                         }
 
-                        result.Add(new Segment(" "));
+                        // Pad column on left side.
+                        if (showBorder)
+                        {
+                            result.Add(new Segment(" "));
+                        }
+
+                        // Add content
                         result.AddRange(cell[cellRowIndex]);
 
-                        // Pad cell right
+                        // Pad cell content right
                         var length = cell[cellRowIndex].Sum(segment => segment.CellLength(encoding));
                         if (length < columnWidths[cellIndex])
                         {
                             result.Add(new Segment(new string(' ', columnWidths[cellIndex] - length)));
                         }
 
-                        result.Add(new Segment(" "));
-
-                        if (lastCell)
+                        // Pad column on the right side
+                        if (showBorder || (hideBorder && !lastCell))
                         {
-                            // Separator
+                            result.Add(new Segment(" "));
+                        }
+
+                        if (lastCell && showBorder)
+                        {
+                            // Add right column edge
                             result.Add(new Segment(_border.GetPart(BorderPart.ColumnRight)));
                         }
-                        else
+                        else if (showBorder || (hideBorder && !lastCell))
                         {
-                            // Separator
+                            // Add column separator
                             result.Add(new Segment(_border.GetPart(BorderPart.CellSeparator)));
                         }
                     }
@@ -203,7 +223,8 @@ namespace Spectre.Console
                     result.Add(Segment.LineBreak());
                 }
 
-                if (firstRow)
+                // Show bottom of header?
+                if (firstRow && showBorder)
                 {
                     result.Add(new Segment(_border.GetPart(BorderPart.HeaderBottomLeft)));
                     foreach (var (columnIndex, first, lastColumn, columnWidth) in columnWidths.Enumerate())
@@ -222,7 +243,8 @@ namespace Spectre.Console
                     result.Add(Segment.LineBreak());
                 }
 
-                if (lastRow)
+                // Show bottom of footer?
+                if (lastRow && showBorder)
                 {
                     result.Add(new Segment(_border.GetPart(BorderPart.FooterBottomLeft)));
                     foreach (var (columnIndex, first, lastColumn, columnWidth) in columnWidths.Enumerate())
