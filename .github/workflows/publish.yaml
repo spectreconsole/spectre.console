@@ -8,9 +8,7 @@ on:
       - main
 
 env:
-  # Set the DOTNET_SKIP_FIRST_TIME_EXPERIENCE environment variable to stop wasting time caching packages
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  # Disable sending usage data to Microsoft
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
@@ -39,10 +37,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: 'Get Git tags'
-        run: git fetch --tags
-        shell: bash
-
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
@@ -68,10 +62,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
-      - name: 'Get Git tags'
-        run: git fetch --tags
-        shell: bash
 
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
