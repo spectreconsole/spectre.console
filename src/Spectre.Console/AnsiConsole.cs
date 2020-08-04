@@ -10,12 +10,14 @@ namespace Spectre.Console
     {
         private static readonly Lazy<IAnsiConsole> _console = new Lazy<IAnsiConsole>(() =>
         {
-            return Create(new AnsiConsoleSettings
+            var console = Create(new AnsiConsoleSettings
             {
                 Ansi = AnsiSupport.Detect,
                 ColorSystem = ColorSystemSupport.Detect,
                 Out = System.Console.Out,
             });
+            Created = true;
+            return console;
         });
 
         /// <summary>
@@ -27,6 +29,8 @@ namespace Spectre.Console
         /// Gets the console's capabilities.
         /// </summary>
         public static Capabilities Capabilities => Console.Capabilities;
+
+        internal static bool Created { get; private set; }
 
         /// <summary>
         /// Gets the buffer width of the console.

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Spectre.Console.Internal
 {
@@ -35,7 +36,7 @@ namespace Spectre.Console.Internal
                 else if (token.Kind == MarkupTokenKind.Text)
                 {
                     // Get the effecive style.
-                    var effectiveStyle = style.Combine(stack);
+                    var effectiveStyle = style.Combine(stack.Reverse());
                     result.Append(token.Value, effectiveStyle);
                 }
                 else

@@ -197,7 +197,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Throw_If_Foreground_Is_Set_Twice()
             {
                 // Given, When
-                var result = Style.TryParse("green yellow", out var style);
+                var result = Style.TryParse("green yellow", out _);
 
                 // Then
                 result.ShouldBeFalse();
@@ -207,7 +207,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Throw_If_Background_Is_Set_Twice()
             {
                 // Given, When
-                var result = Style.TryParse("green on blue yellow", out var style);
+                var result = Style.TryParse("green on blue yellow", out _);
 
                 // Then
                 result.ShouldBeFalse();
@@ -217,7 +217,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Throw_If_Color_Name_Could_Not_Be_Found()
             {
                 // Given, When
-                var result = Style.TryParse("bold lol", out var style);
+                var result = Style.TryParse("bold lol", out _);
 
                 // Then
                 result.ShouldBeFalse();
@@ -227,7 +227,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Throw_If_Background_Color_Name_Could_Not_Be_Found()
             {
                 // Given, When
-                var result = Style.TryParse("blue on lol", out var style);
+                var result = Style.TryParse("blue on lol", out _);
 
                 // Then
                 result.ShouldBeFalse();

@@ -18,12 +18,7 @@ namespace Spectre.Console.Internal
         public static bool TryParse(string text, out Style style)
         {
             style = Parse(text, out var error);
-            if (error != null)
-            {
-                return false;
-            }
-
-            return true;
+            return error == null;
         }
 
         private static Style Parse(string text, out string error)
