@@ -140,11 +140,11 @@ namespace Spectre.Console
         {
             // Creates individual segments of line breaks.
             var result = new List<Segment>();
-            var queue = new Queue<Segment>(segments);
+            var queue = new Stack<Segment>(segments.Reverse());
 
             while (queue.Count > 0)
             {
-                var segment = queue.Dequeue();
+                var segment = queue.Pop();
 
                 var index = segment.Text.IndexOf("\n", StringComparison.OrdinalIgnoreCase);
                 if (index == -1)
@@ -160,7 +160,7 @@ namespace Spectre.Console
                     }
 
                     result.Add(Segment.LineBreak());
-                    queue.Enqueue(new Segment(second.Text.Substring(1), second.Style));
+                    queue.Push(new Segment(second.Text.Substring(1), second.Style));
                 }
             }
 
@@ -178,10 +178,8 @@ namespace Spectre.Console
 
             // Create a span list.
             var spans = new List<(int Offset, bool Leaving, int Style)>();
-            spans.Add((0, false, 0));
             spans.AddRange(_spans.SelectIndex((span, index) => (span.Start, false, index + 1)));
             spans.AddRange(_spans.SelectIndex((span, index) => (span.End, true, index + 1)));
-            spans.Add((_text.Length, true, 0));
             spans = spans.OrderBy(x => x.Offset).ThenBy(x => !x.Leaving).ToList();
 
             // Keep track of applied styles using a stack

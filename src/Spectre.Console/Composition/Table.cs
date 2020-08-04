@@ -16,17 +16,25 @@ namespace Spectre.Console
         private readonly List<List<Text>> _rows;
         private readonly Border _border;
         private readonly BorderKind _borderKind;
+        private readonly bool _showHeaders;
+
+        /// <summary>
+        /// Gets the number of columns in the table.
+        /// </summary>
+        public int ColumnCount => _columns.Count;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Table"/> class.
         /// </summary>
         /// <param name="border">The border to use.</param>
-        public Table(BorderKind border = BorderKind.Square)
+        /// <param name="showHeaders">Whether or not to show table headers.</param>
+        public Table(BorderKind border = BorderKind.Square, bool showHeaders = true)
         {
             _columns = new List<Text>();
             _rows = new List<List<Text>>();
             _border = Border.GetBorder(border);
             _borderKind = border;
+            _showHeaders = showHeaders;
         }
 
         /// <summary>
@@ -84,7 +92,7 @@ namespace Spectre.Console
         /// <inheritdoc/>
         public int Measure(Encoding encoding, int maxWidth)
         {
-            // Calculate the max width for each column.
+            // Calculate the max width for each column
             var maxColumnWidth = (maxWidth - (2 + (_columns.Count * 2) + (_columns.Count - 1))) / _columns.Count;
             var columnWidths = _columns.Select(c => c.Measure(encoding, maxColumnWidth)).ToArray();
             for (var rowIndex = 0; rowIndex < _rows.Count; rowIndex++)
@@ -99,7 +107,7 @@ namespace Spectre.Console
                 }
             }
 
-            // We now know the max width of each column, so let's recalculate the width.
+            // We now know the max width of each column, so let's recalculate the width
             return columnWidths.Sum() + 2 + (_columns.Count * 2) + (_columns.Count - 1);
         }
 
@@ -128,12 +136,17 @@ namespace Spectre.Console
                 }
             }
 
-            // We now know the max width of each column, so let's recalculate the width.
+            // We now know the max width of each column, so let's recalculate the width
             width = columnWidths.Sum() + leftRightBorderWidth + columnPadding + separatorCount;
 
-            // Create the rows.
             var rows = new List<List<Text>>();
-            rows.Add(new List<Text>(_columns));
+            if (_showHeaders)
+            {
+                // Add columns to top of rows
+                rows.Add(new List<Text>(_columns));
+            }
+
+            // Add tows.
             rows.AddRange(_rows);
 
             // Iterate all rows.
@@ -142,7 +155,7 @@ namespace Spectre.Console
             {
                 var cellHeight = 1;
 
-                // Get the list of cells for the row and calculate the cell height.
+                // Get the list of cells for the row and calculate the cell height
                 var cells = new List<List<SegmentLine>>();
                 foreach (var (rowWidth, cell) in columnWidths.Zip(row, (f, s) => (f, s)))
                 {
