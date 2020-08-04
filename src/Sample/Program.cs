@@ -94,6 +94,17 @@ namespace Sample
             table.AddRow("Lorem ipsum dolor sit amet, consectetur [blue]adipiscing[/] elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", "◀ Strange language");
             table.AddRow("Hej 👋", "[green]Världen[/]");
             AnsiConsole.Render(table);
+
+            AnsiConsole.WriteLine();
+            AnsiConsole.MarkupLine("  Usage: [grey]dotnet [blue]run[/] [[options] [[[[--] <additional arguments>...]][/]");
+            AnsiConsole.WriteLine();
+            var grid = new Grid();
+            grid.AddColumns(3);
+            grid.AddRow("  Options", "", "");
+            grid.AddRow("    [blue]-h[/], [blue]--help[/]", "   ", "Show command line help.");
+            grid.AddRow("    [blue]-c[/], [blue]--configuration[/] <CONFIGURATION>", "   ", "The configuration to run for.\nThe default for most projects is [green]Debug[/].");
+            grid.AddRow("    [blue]-v[/], [blue]--verbosity[/] <LEVEL>", "   ", "Set the MSBuild verbosity level.\nAllowed values are q[grey][[uiet][/], m[grey][[inimal][/], n[grey][[ormal][/], d[grey][[etailed][/], and diag[grey][[nostic][/].");
+            AnsiConsole.Render(grid);
         }
     }
 }
