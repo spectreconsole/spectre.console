@@ -41,12 +41,12 @@ namespace Spectre.Console.Internal
             }
         }
 
-        public AnsiConsoleRenderer(TextWriter @out, ColorSystem system)
+        public AnsiConsoleRenderer(TextWriter @out, ColorSystem system, bool legacyConsole)
         {
             _out = @out ?? throw new ArgumentNullException(nameof(@out));
             _system = system;
 
-            Capabilities = new Capabilities(true, system);
+            Capabilities = new Capabilities(true, system, legacyConsole);
             Encoding = @out.IsStandardOut() ? System.Console.OutputEncoding : Encoding.UTF8;
             Foreground = Color.Default;
             Background = Color.Default;

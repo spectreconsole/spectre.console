@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Spectre.Console
     /// Represents text with color and decorations.
     /// </summary>
     [SuppressMessage("Naming", "CA1724:Type names should not match namespaces")]
+    [DebuggerDisplay("{_text,nq}")]
     public sealed class Text : IRenderable
     {
         private readonly List<Span> _spans;
@@ -98,15 +100,24 @@ namespace Spectre.Console
         /// <inheritdoc/>
         public int Measure(Encoding encoding, int maxWidth)
         {
-            var lines = _text.SplitLines();
-            return lines.Max(x => x.CellLength(encoding));
+            var lines = Segment.SplitLines(Render(encoding, maxWidth));
+            if (lines.Count == 0)
+            {
+                return 0;
+            }
+
+            return lines.Max(x => x.Length);
         }
 
         /// <inheritdoc/>
         public IEnumerable<Segment> Render(Encoding encoding, int width)
         {
-            var result = new List<Segment>();
+            if (string.IsNullOrWhiteSpace(_text))
+            {
+                return Array.Empty<Segment>();
+            }
 
+            var result = new List<Segment>();
             var segments = SplitLineBreaks(CreateSegments());
 
             foreach (var (_, _, last, line) in Segment.SplitLines(segments, width).Enumerate())

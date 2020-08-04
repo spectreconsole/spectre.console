@@ -32,12 +32,12 @@ namespace Spectre.Console.Internal
             new Regex("bvterm"), // Bitvise SSH Client
         };
 
-        public static bool Detect(bool upgrade)
+        public static (bool SupportsAnsi, bool LegacyConsole) Detect(bool upgrade)
         {
             // Github action doesn't setup a correct PTY but supports ANSI.
             if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("GITHUB_ACTION")))
             {
-                return true;
+                return (true, false);
             }
 
             // Running on Windows?
@@ -47,10 +47,11 @@ namespace Spectre.Console.Internal
                 var conEmu = Environment.GetEnvironmentVariable("ConEmuANSI");
                 if (!string.IsNullOrEmpty(conEmu) && conEmu.Equals("On", StringComparison.OrdinalIgnoreCase))
                 {
-                    return true;
+                    return (true, false);
                 }
 
-                return Windows.SupportsAnsi(upgrade);
+                var supportsAnsi = Windows.SupportsAnsi(upgrade, out var legacyConsole);
+                return (supportsAnsi, legacyConsole);
             }
 
             // Check if the terminal is of type ANSI/VT100/xterm compatible.
@@ -59,11 +60,11 @@ namespace Spectre.Console.Internal
             {
                 if (_regexes.Any(regex => regex.IsMatch(term)))
                 {
-                    return true;
+                    return (true, false);
                 }
             }
 
-            return false;
+            return (false, true);
         }
 
         [SuppressMessage("Design", "CA1060:Move pinvokes to native methods class")]
@@ -91,8 +92,10 @@ namespace Spectre.Console.Internal
             public static extern uint GetLastError();
 
             [SuppressMessage("Design", "CA1031:Do not catch general exception types")]
-            public static bool SupportsAnsi(bool upgrade)
+            public static bool SupportsAnsi(bool upgrade, out bool isLegacy)
             {
+                isLegacy = false;
+
                 try
                 {
                     var @out = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -104,6 +107,8 @@ namespace Spectre.Console.Internal
 
                     if ((mode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == 0)
                     {
+                        isLegacy = true;
+
                         if (!upgrade)
                         {
                             return false;

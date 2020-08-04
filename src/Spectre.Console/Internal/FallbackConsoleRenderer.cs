@@ -85,7 +85,7 @@ namespace Spectre.Console.Internal
             }
         }
 
-        public FallbackConsoleRenderer(TextWriter @out, ColorSystem system)
+        public FallbackConsoleRenderer(TextWriter @out, ColorSystem system, bool legacyConsole)
         {
             _out = @out;
             _system = system;
@@ -105,7 +105,7 @@ namespace Spectre.Console.Internal
                 Encoding = Encoding.UTF8;
             }
 
-            Capabilities = new Capabilities(false, _system);
+            Capabilities = new Capabilities(false, _system, legacyConsole);
         }
 
         public void Write(string text)
