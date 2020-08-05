@@ -18,6 +18,7 @@
     <Authors>Patrik Svensson</Authors>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/spectresystems/spectre.console</RepositoryUrl>
+    <PackageIcon>small-logo.png</PackageIcon>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/spectresystems/spectre.console</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
