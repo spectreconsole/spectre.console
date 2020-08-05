@@ -15,7 +15,7 @@ namespace Spectre.Console.Tests.Unit.Composition
                 var table = new Table();
 
                 // When
-                var result = Record.Exception(() => table.AddColumn(null));
+                var result = Record.Exception(() => table.AddColumn((string)null));
 
                 // Then
                 result.ShouldBeOfType<ArgumentNullException>()
@@ -89,6 +89,31 @@ namespace Spectre.Console.Tests.Unit.Composition
         }
 
         [Fact]
+        public void Should_Measure_Table_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var table = new Table();
+            table.AddColumns("Foo", "Bar", "Baz");
+            table.AddRow("Qux", "Corgi", "Waldo");
+            table.AddRow("Grault", "Garply", "Fred");
+
+            // When
+            console.Render(new Panel(table));
+
+            // Then
+            console.Lines.Count.ShouldBe(8);
+            console.Lines[0].ShouldBe("┌─────────────────────────────┐");
+            console.Lines[1].ShouldBe("│ ┌────────┬────────┬───────┐ │");
+            console.Lines[2].ShouldBe("│ │ Foo    │ Bar    │ Baz   │ │");
+            console.Lines[3].ShouldBe("│ ├────────┼────────┼───────┤ │");
+            console.Lines[4].ShouldBe("│ │ Qux    │ Corgi  │ Waldo │ │");
+            console.Lines[5].ShouldBe("│ │ Grault │ Garply │ Fred  │ │");
+            console.Lines[6].ShouldBe("│ └────────┴────────┴───────┘ │");
+            console.Lines[7].ShouldBe("└─────────────────────────────┘");
+        }
+
+        [Fact]
         public void Should_Render_Table_Correctly()
         {
             // Given
@@ -102,6 +127,7 @@ namespace Spectre.Console.Tests.Unit.Composition
             console.Render(table);
 
             // Then
+            console.Lines.Count.ShouldBe(6);
             console.Lines[0].ShouldBe("┌────────┬────────┬───────┐");
             console.Lines[1].ShouldBe("│ Foo    │ Bar    │ Baz   │");
             console.Lines[2].ShouldBe("├────────┼────────┼───────┤");
@@ -111,11 +137,11 @@ namespace Spectre.Console.Tests.Unit.Composition
         }
 
         [Fact]
-        public void Should_Render_Table_With_Ascii_Border_Correctly()
+        public void Should_Expand_Table_To_Available_Space_If_Specified()
         {
             // Given
             var console = new PlainConsole(width: 80);
-            var table = new Table(BorderKind.Ascii);
+            var table = new Table() { Expand = true };
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");
@@ -124,6 +150,31 @@ namespace Spectre.Console.Tests.Unit.Composition
             console.Render(table);
 
             // Then
+            console.Lines.Count.ShouldBe(6);
+            console.Lines[0].Length.ShouldBe(80);
+            console.Lines[0].ShouldBe("┌───────────────────────────┬───────────────────────────┬──────────────────────┐");
+            console.Lines[1].ShouldBe("│ Foo                       │ Bar                       │ Baz                  │");
+            console.Lines[2].ShouldBe("├───────────────────────────┼───────────────────────────┼──────────────────────┤");
+            console.Lines[3].ShouldBe("│ Qux                       │ Corgi                     │ Waldo                │");
+            console.Lines[4].ShouldBe("│ Grault                    │ Garply                    │ Fred                 │");
+            console.Lines[5].ShouldBe("└───────────────────────────┴───────────────────────────┴──────────────────────┘");
+        }
+
+        [Fact]
+        public void Should_Render_Table_With_Ascii_Border_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var table = new Table { Border = BorderKind.Ascii };
+            table.AddColumns("Foo", "Bar", "Baz");
+            table.AddRow("Qux", "Corgi", "Waldo");
+            table.AddRow("Grault", "Garply", "Fred");
+
+            // When
+            console.Render(table);
+
+            // Then
+            console.Lines.Count.ShouldBe(6);
             console.Lines[0].ShouldBe("+-------------------------+");
             console.Lines[1].ShouldBe("| Foo    | Bar    | Baz   |");
             console.Lines[2].ShouldBe("|--------+--------+-------|");
@@ -137,7 +188,7 @@ namespace Spectre.Console.Tests.Unit.Composition
         {
             // Given
             var console = new PlainConsole(width: 80);
-            var table = new Table(BorderKind.Rounded);
+            var table = new Table { Border = BorderKind.Rounded };
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");
@@ -146,6 +197,7 @@ namespace Spectre.Console.Tests.Unit.Composition
             console.Render(table);
 
             // Then
+            console.Lines.Count.ShouldBe(6);
             console.Lines[0].ShouldBe("╭────────┬────────┬───────╮");
             console.Lines[1].ShouldBe("│ Foo    │ Bar    │ Baz   │");
             console.Lines[2].ShouldBe("├────────┼────────┼───────┤");
@@ -159,7 +211,7 @@ namespace Spectre.Console.Tests.Unit.Composition
         {
             // Given
             var console = new PlainConsole(width: 80);
-            var table = new Table(BorderKind.None);
+            var table = new Table { Border = BorderKind.None };
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");
@@ -188,6 +240,7 @@ namespace Spectre.Console.Tests.Unit.Composition
             console.Render(table);
 
             // Then
+            console.Lines.Count.ShouldBe(7);
             console.Lines[0].ShouldBe("┌────────┬────────┬───────┐");
             console.Lines[1].ShouldBe("│ Foo    │ Bar    │ Baz   │");
             console.Lines[2].ShouldBe("├────────┼────────┼───────┤");

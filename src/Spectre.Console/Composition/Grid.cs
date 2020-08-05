@@ -17,23 +17,27 @@ namespace Spectre.Console
         /// </summary>
         public Grid()
         {
-            _table = new Table(BorderKind.None, showHeaders: false);
+            _table = new Table
+            {
+                Border = BorderKind.None,
+                ShowHeaders = false,
+            };
         }
 
         /// <inheritdoc/>
-        public int Measure(Encoding encoding, int maxWidth)
+        public Measurement Measure(Encoding encoding, int maxWidth)
         {
-            return _table.Measure(encoding, maxWidth);
+            return ((IRenderable)_table).Measure(encoding, maxWidth);
         }
 
         /// <inheritdoc/>
         public IEnumerable<Segment> Render(Encoding encoding, int width)
         {
-            return _table.Render(encoding, width);
+            return ((IRenderable)_table).Render(encoding, width);
         }
 
         /// <summary>
-        /// Adds a single column to the grid.
+        /// Adds a column to the grid.
         /// </summary>
         public void AddColumn()
         {
@@ -41,15 +45,23 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Adds the specified number of columns to the grid.
+        /// Adds a column to the grid.
         /// </summary>
-        /// <param name="count">The number of columns.</param>
-        public void AddColumns(int count)
+        /// <param name="column">The column to add.</param>
+        public void AddColumn(GridColumn column)
         {
-            for (var i = 0; i < count; i++)
+            if (column is null)
             {
-                _table.AddColumn(string.Empty);
+                throw new ArgumentNullException(nameof(column));
             }
+
+            _table.AddColumn(new TableColumn(string.Empty)
+            {
+                Width = column.Width,
+                NoWrap = column.NoWrap,
+                LeftPadding = 0,
+                RightPadding = 1,
+            });
         }
 
         /// <summary>

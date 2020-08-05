@@ -211,5 +211,21 @@ namespace Spectre.Console.Composition
 
             return lines;
         }
+
+        internal static List<List<SegmentLine>> MakeSameHeight(int cellHeight, List<List<SegmentLine>> cells)
+        {
+            foreach (var cell in cells)
+            {
+                if (cell.Count < cellHeight)
+                {
+                    while (cell.Count != cellHeight)
+                    {
+                        cell.Add(new SegmentLine());
+                    }
+                }
+            }
+
+            return cells;
+        }
     }
 }

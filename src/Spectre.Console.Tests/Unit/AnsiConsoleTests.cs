@@ -246,6 +246,23 @@ namespace Spectre.Console.Tests.Unit
 
         public sealed class WriteLine
         {
+            [Fact]
+            public void Should_Reset_Colors_Correctly()
+            {
+                // Given
+                var fixture = new AnsiConsoleFixture(ColorSystem.Standard, AnsiSupport.Yes);
+
+                // When
+                fixture.Console.Background = ConsoleColor.Red;
+                fixture.Console.WriteLine("Hello");
+                fixture.Console.Background = ConsoleColor.Green;
+                fixture.Console.WriteLine("World");
+
+                // Then
+                fixture.Output.NormalizeLineEndings()
+                    .ShouldBe("[101mHello[0m\n[102mWorld[0m\n");
+            }
+
             [Theory]
             [InlineData(AnsiSupport.Yes)]
             [InlineData(AnsiSupport.No)]

@@ -98,19 +98,22 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        public int Measure(Encoding encoding, int maxWidth)
+        Measurement IRenderable.Measure(Encoding encoding, int maxWidth)
         {
-            var lines = Segment.SplitLines(Render(encoding, maxWidth));
+            var lines = Segment.SplitLines(((IRenderable)this).Render(encoding, maxWidth));
             if (lines.Count == 0)
             {
-                return 0;
+                return new Measurement(0, maxWidth);
             }
 
-            return lines.Max(x => x.Length);
+            var max = lines.Max(line => line.Length);
+            var min = lines.SelectMany(line => line.Select(segment => segment.Text.Length)).Max();
+
+            return new Measurement(min, max);
         }
 
         /// <inheritdoc/>
-        public IEnumerable<Segment> Render(Encoding encoding, int width)
+        IEnumerable<Segment> IRenderable.Render(Encoding encoding, int width)
         {
             if (string.IsNullOrWhiteSpace(_text))
             {
