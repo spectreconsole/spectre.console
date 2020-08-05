@@ -224,7 +224,7 @@ namespace Spectre.Console
                         if (lastCell && showBorder)
                         {
                             // Add right column edge
-                            result.Add(new Segment(_border.GetPart(BorderPart.ColumnRight)));
+                            result.Add(new Segment(_border.GetPart(BorderPart.CellRight)));
                         }
                         else if (showBorder || (hideBorder && !lastCell))
                         {

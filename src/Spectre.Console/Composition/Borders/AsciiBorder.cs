@@ -25,7 +25,7 @@ namespace Spectre.Console.Composition
                 BorderPart.HeaderBottomRight => "|",
                 BorderPart.CellLeft => "|",
                 BorderPart.CellSeparator => "|",
-                BorderPart.ColumnRight => "|",
+                BorderPart.CellRight => "|",
                 BorderPart.FooterBottomLeft => "+",
                 BorderPart.FooterBottom => "-",
                 BorderPart.FooterBottomSeparator => "-",
