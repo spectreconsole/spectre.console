@@ -1,6 +1,6 @@
 # `Spectre.Console`
 
-_[![Spectre.IO NuGet Version](https://img.shields.io/nuget/v/spectre.io.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_
+_[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.console.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_
 
 A .NET Standard 2.0 library that makes it easier to create beautiful console applications.  
 It is heavily inspired by the excellent [Rich library](https://github.com/willmcgugan/rich) 
