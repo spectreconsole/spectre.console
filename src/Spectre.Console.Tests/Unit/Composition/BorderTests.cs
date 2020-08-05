@@ -12,6 +12,7 @@ namespace Spectre.Console.Tests.Unit.Composition
             [Theory]
             [InlineData(BorderKind.Ascii, typeof(AsciiBorder))]
             [InlineData(BorderKind.Square, typeof(SquareBorder))]
+            [InlineData(BorderKind.Rounded, typeof(RoundedBorder))]
             public void Should_Return_Correct_Border_For_Specified_Kind(BorderKind kind, Type expected)
             {
                 // Given, When

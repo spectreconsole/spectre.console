@@ -19,5 +19,10 @@ namespace Spectre.Console
         /// An old school ASCII border.
         /// </summary>
         Ascii = 2,
+
+        /// <summary>
+        /// A rounded border.
+        /// </summary>
+        Rounded = 3,
     }
 }
