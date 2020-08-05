@@ -73,7 +73,7 @@ namespace Spectre.Console.Composition
         /// <summary>
         /// The right part of a cell.
         /// </summary>
-        ColumnRight,
+        CellRight,
 
         /// <summary>
         /// The bottom left part of a footer.

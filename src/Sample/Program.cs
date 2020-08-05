@@ -51,12 +51,18 @@ namespace Sample
 
             // Nest some panels and text
             AnsiConsole.Foreground = Color.Maroon;
-            AnsiConsole.Render(new Panel(new Panel(new Panel(new Panel(
-                Text.New(
-                    "[underline]I[/] heard [underline on blue]you[/] like 📦\n\n\n\n" +
-                    "So I put a 📦 in a 📦\nin a 📦 in a 📦\n\n" +
-                    "😅",
-                    foreground: Color.White), content: Justify.Center)))));
+            AnsiConsole.Render(
+                new Panel(
+                    new Panel(
+                        new Panel(
+                            new Panel(
+                                Text.New(
+                                    "[underline]I[/] heard [underline on blue]you[/] like 📦\n\n\n\n" +
+                                    "So I put a 📦 in a 📦\nin a 📦 in a 📦\n\n" +
+                                    "😅", foreground: Color.White),
+                                content: Justify.Center,
+                                border: BorderKind.Rounded))),
+                    border: BorderKind.Ascii));
 
             // Reset colors
             AnsiConsole.ResetColors();
