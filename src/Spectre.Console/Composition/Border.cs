@@ -17,6 +17,7 @@ namespace Spectre.Console.Composition
             { BorderKind.None, new NoBorder() },
             { BorderKind.Ascii, new AsciiBorder() },
             { BorderKind.Square, new SquareBorder() },
+            { BorderKind.Rounded, new RoundedBorder() },
         };
 
         /// <summary>

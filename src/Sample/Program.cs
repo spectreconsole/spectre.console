@@ -87,7 +87,7 @@ namespace Sample
             table.AddRow("Hej 👋", "[green]Världen[/]");
             AnsiConsole.Render(table);
 
-            table = new Table(BorderKind.Ascii);
+            table = new Table(BorderKind.Rounded);
             table.AddColumns("[red underline]Foo[/]", "Bar");
             table.AddRow("[blue][underline]Hell[/]o[/]", "World 🌍");
             table.AddRow("[yellow]Patrik [green]\"Lol[/]\" Svensson[/]", "Was [underline]here[/]!");
