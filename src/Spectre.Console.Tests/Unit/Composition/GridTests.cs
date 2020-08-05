@@ -27,7 +27,8 @@ namespace Spectre.Console.Tests.Unit.Composition
             {
                 // Given
                 var grid = new Grid();
-                grid.AddColumns(2);
+                grid.AddColumn();
+                grid.AddColumn();
 
                 // When
                 var result = Record.Exception(() => grid.AddRow("Foo"));
@@ -59,7 +60,9 @@ namespace Spectre.Console.Tests.Unit.Composition
             // Given
             var console = new PlainConsole(width: 80);
             var grid = new Grid();
-            grid.AddColumns(3);
+            grid.AddColumn();
+            grid.AddColumn();
+            grid.AddColumn();
             grid.AddRow("Qux", "Corgi", "Waldo");
             grid.AddRow("Grault", "Garply", "Fred");
 
@@ -75,22 +78,23 @@ namespace Spectre.Console.Tests.Unit.Composition
         [Fact]
         public void Should_Render_Grid()
         {
-            var console = new PlainConsole(width: 120);
+            var console = new PlainConsole(width: 80);
             var grid = new Grid();
-            grid.AddColumns(3);
-            grid.AddRow("[bold]Options[/]", string.Empty, string.Empty);
-            grid.AddRow("  [blue]-h[/], [blue]--help[/]", "   ", "Show command line help.");
-            grid.AddRow("  [blue]-c[/], [blue]--configuration[/]", "   ", "The configuration to run for.\nThe default for most projects is [green]Debug[/].");
+            grid.AddColumn(new GridColumn { NoWrap = true });
+            grid.AddColumn();
+            grid.AddRow("[bold]Options[/]", string.Empty);
+            grid.AddRow("  [blue]-h[/], [blue]--help[/]", "Show command line help.");
+            grid.AddRow("  [blue]-c[/], [blue]--configuration[/]", "The configuration to run for.\nThe default for most projects is [green]Debug[/].");
 
             // When
             console.Render(grid);
 
             // Then
             console.Lines.Count.ShouldBe(4);
-            console.Lines[0].ShouldBe("Options                                                         ");
-            console.Lines[1].ShouldBe("  -h, --help             Show command line help.                ");
-            console.Lines[2].ShouldBe("  -c, --configuration    The configuration to run for.          ");
-            console.Lines[3].ShouldBe("                         The default for most projects is Debug.");
+            console.Lines[0].ShouldBe("Options                                                                     ");
+            console.Lines[1].ShouldBe("  -h, --help           Show command line help.                              ");
+            console.Lines[2].ShouldBe("  -c, --configuration  The configuration to run for.                        ");
+            console.Lines[3].ShouldBe("                       The default for most projects is Debug.              ");
         }
     }
 }

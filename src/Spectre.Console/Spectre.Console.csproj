@@ -22,6 +22,9 @@
     <Compile Update="ConsoleExtensions.*.cs">
       <DependentUpon>ConsoleExtensions.cs</DependentUpon>
     </Compile>
+    <Compile Update="**/Table.*.cs">
+      <DependentUpon>**/Table.cs</DependentUpon>
+    </Compile>
 
   </ItemGroup>
 

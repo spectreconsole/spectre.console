@@ -13,8 +13,8 @@ namespace Spectre.Console.Composition
         /// </summary>
         /// <param name="encoding">The encoding to use.</param>
         /// <param name="maxWidth">The maximum allowed width.</param>
-        /// <returns>The width of the object.</returns>
-        int Measure(Encoding encoding, int maxWidth);
+        /// <returns>The minimum and maximum width of the object.</returns>
+        Measurement Measure(Encoding encoding, int maxWidth);
 
         /// <summary>
         /// Renders the object.

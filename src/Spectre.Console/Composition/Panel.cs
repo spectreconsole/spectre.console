@@ -35,19 +35,20 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        public int Measure(Encoding encoding, int maxWidth)
+        Measurement IRenderable.Measure(Encoding encoding, int maxWidth)
         {
             var childWidth = _child.Measure(encoding, maxWidth);
-            return childWidth + 4;
+            return new Measurement(childWidth.Min + 4, childWidth.Max + 4);
         }
 
         /// <inheritdoc/>
-        public IEnumerable<Segment> Render(Encoding encoding, int width)
+        IEnumerable<Segment> IRenderable.Render(Encoding encoding, int width)
         {
             var childWidth = width - 4;
             if (!_fit)
             {
-                childWidth = _child.Measure(encoding, width - 2);
+                var measurement = _child.Measure(encoding, width - 2);
+                childWidth = measurement.Max;
             }
 
             var result = new List<Segment>();
