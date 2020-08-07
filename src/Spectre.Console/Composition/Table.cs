@@ -53,6 +53,8 @@ namespace Spectre.Console
         /// </summary>
         public bool SafeBorder { get; set; } = true;
 
+        internal bool IsGrid { get; set; } = false;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Table"/> class.
         /// </summary>
@@ -102,6 +104,20 @@ namespace Spectre.Console
             }
 
             _columns.AddRange(columns.Select(column => new TableColumn(column)));
+        }
+
+        /// <summary>
+        /// Adds multiple columns to the table.
+        /// </summary>
+        /// <param name="columns">The columns to add.</param>
+        public void AddColumns(params TableColumn[] columns)
+        {
+            if (columns is null)
+            {
+                throw new ArgumentNullException(nameof(columns));
+            }
+
+            _columns.AddRange(columns.Select(column => column));
         }
 
         /// <summary>
@@ -175,7 +191,7 @@ namespace Spectre.Console
             var columnWidths = CalculateColumnWidths(context, maxWidth);
 
             // Update the table width.
-            width = columnWidths.Sum() + GetExtraWidth(includePadding: false);
+            width = columnWidths.Sum() + GetExtraWidth(includePadding: true);
 
             var rows = new List<List<Text>>();
             if (ShowHeaders)
@@ -195,9 +211,12 @@ namespace Spectre.Console
 
                 // Get the list of cells for the row and calculate the cell height
                 var cells = new List<List<SegmentLine>>();
-                foreach (var (rowWidth, cell) in columnWidths.Zip(row, (f, s) => (f, s)))
+                foreach (var (columnIndex, _, _, (rowWidth, cell)) in columnWidths.Zip(row).Enumerate())
                 {
-                    var lines = Segment.SplitLines(((IRenderable)cell).Render(context, rowWidth));
+                    var justification = _columns[columnIndex].Alignment;
+                    var childContext = context.WithJustification(justification);
+
+                    var lines = Segment.SplitLines(((IRenderable)cell).Render(childContext, rowWidth));
                     cellHeight = Math.Max(cellHeight, lines.Count);
                     cells.Add(lines);
                 }
@@ -208,9 +227,11 @@ namespace Spectre.Console
                     result.Add(new Segment(border.GetPart(BorderPart.HeaderTopLeft)));
                     foreach (var (columnIndex, _, lastColumn, columnWidth) in columnWidths.Enumerate())
                     {
-                        result.Add(new Segment(border.GetPart(BorderPart.HeaderTop))); // Left padding
+                        var padding = _columns[columnIndex].Padding;
+
+                        result.Add(new Segment(border.GetPart(BorderPart.HeaderTop, padding.Left))); // Left padding
                         result.Add(new Segment(border.GetPart(BorderPart.HeaderTop, columnWidth)));
-                        result.Add(new Segment(border.GetPart(BorderPart.HeaderTop))); // Right padding
+                        result.Add(new Segment(border.GetPart(BorderPart.HeaderTop, padding.Right))); // Right padding
 
                         if (!lastColumn)
                         {
@@ -237,9 +258,9 @@ namespace Spectre.Console
                         }
 
                         // Pad column on left side.
-                        if (showBorder)
+                        if (showBorder || IsGrid)
                         {
-                            var leftPadding = _columns[cellIndex].LeftPadding;
+                            var leftPadding = _columns[cellIndex].Padding.Left;
                             if (leftPadding > 0)
                             {
                                 result.Add(new Segment(new string(' ', leftPadding)));
@@ -257,9 +278,9 @@ namespace Spectre.Console
                         }
 
                         // Pad column on the right side
-                        if (showBorder || (hideBorder && !lastCell))
+                        if (showBorder || (hideBorder && !lastCell) || (IsGrid && !lastCell))
                         {
-                            var rightPadding = _columns[cellIndex].RightPadding;
+                            var rightPadding = _columns[cellIndex].Padding.Right;
                             if (rightPadding > 0)
                             {
                                 result.Add(new Segment(new string(' ', rightPadding)));
@@ -281,15 +302,17 @@ namespace Spectre.Console
                     result.Add(Segment.LineBreak());
                 }
 
-                // Show bottom of header?
+                // Show header separator?
                 if (firstRow && showBorder && ShowHeaders)
                 {
                     result.Add(new Segment(border.GetPart(BorderPart.HeaderBottomLeft)));
                     foreach (var (columnIndex, first, lastColumn, columnWidth) in columnWidths.Enumerate())
                     {
-                        result.Add(new Segment(border.GetPart(BorderPart.HeaderBottom))); // Left padding
+                        var padding = _columns[columnIndex].Padding;
+
+                        result.Add(new Segment(border.GetPart(BorderPart.HeaderBottom, padding.Left))); // Left padding
                         result.Add(new Segment(border.GetPart(BorderPart.HeaderBottom, columnWidth)));
-                        result.Add(new Segment(border.GetPart(BorderPart.HeaderBottom))); // Right padding
+                        result.Add(new Segment(border.GetPart(BorderPart.HeaderBottom, padding.Right))); // Right padding
 
                         if (!lastColumn)
                         {
@@ -307,9 +330,11 @@ namespace Spectre.Console
                     result.Add(new Segment(border.GetPart(BorderPart.FooterBottomLeft)));
                     foreach (var (columnIndex, first, lastColumn, columnWidth) in columnWidths.Enumerate())
                     {
-                        result.Add(new Segment(border.GetPart(BorderPart.FooterBottom)));
+                        var padding = _columns[columnIndex].Padding;
+
+                        result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, padding.Left))); // Left padding
                         result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, columnWidth)));
-                        result.Add(new Segment(border.GetPart(BorderPart.FooterBottom)));
+                        result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, padding.Right))); // Right padding
 
                         if (!lastColumn)
                         {

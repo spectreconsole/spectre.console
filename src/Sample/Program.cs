@@ -67,31 +67,38 @@ namespace Sample
                                 Text.New(
                                     "[underline]I[/] heard [underline on blue]you[/] like 📦\n\n\n\n" +
                                     "So I put a 📦 in a 📦\nin a 📦 in a 📦\n\n" +
-                                    "😅", foreground: Color.White),
-                                content: Justify.Center,
-                                border: BorderKind.Rounded))),
-                    border: BorderKind.Ascii));
+                                    "😅", foreground: Color.White))
+                            { Alignment = Justify.Center, Border = BorderKind.Rounded })))
+                {
+                    Border = BorderKind.Ascii
+                });
 
             // Reset colors
             AnsiConsole.ResetColors();
 
             // Left adjusted panel with text
             AnsiConsole.Render(new Panel(
-                Text.New("Left adjusted\nLeft",
-                    foreground: Color.White),
-                fit: true));
+                Text.New("Left adjusted\nLeft"))
+            {
+                Expand = true,
+                Alignment = Justify.Left,
+            });
 
             // Centered panel with text
             AnsiConsole.Render(new Panel(
-                Text.New("Centered\nCenter",
-                    foreground: Color.White),
-                fit: true, content: Justify.Center));
+                Text.New("Centered\nCenter"))
+            {
+                Expand = true,
+                Alignment = Justify.Center,
+            });
 
             // Right adjusted panel with text
             AnsiConsole.Render(new Panel(
-                Text.New("Right adjusted\nRight",
-                    foreground: Color.White),
-                fit: true, content: Justify.Right));
+                Text.New("Right adjusted\nRight"))
+            {
+                Expand = true,
+                Alignment = Justify.Right,
+            });
 
             // A normal, square table
             var table = new Table();
@@ -145,7 +152,7 @@ namespace Sample
             AnsiConsole.Render(table);
 
             // Render a table in some panels.
-            AnsiConsole.Render(new Panel(new Panel(table, border: BorderKind.Ascii)));
+            AnsiConsole.Render(new Panel(new Panel(table) { Border = BorderKind.Ascii }) { Padding = new Padding(0, 0) });
 
             // Draw another table
             table = new Table { Expand = false };

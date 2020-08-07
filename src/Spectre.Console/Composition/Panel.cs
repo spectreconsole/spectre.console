@@ -10,9 +10,6 @@ namespace Spectre.Console
     public sealed class Panel : IRenderable
     {
         private readonly IRenderable _child;
-        private readonly bool _fit;
-        private readonly Justify _content;
-        private readonly BorderKind _border;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not to use
@@ -22,112 +19,108 @@ namespace Spectre.Console
         public bool SafeBorder { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets the kind of border to use.
+        /// </summary>
+        public BorderKind Border { get; set; } = BorderKind.Square;
+
+        /// <summary>
+        /// Gets or sets the alignment of the panel contents.
+        /// </summary>
+        public Justify? Alignment { get; set; } = null;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the panel should
+        /// fit the available space. If <c>false</c>, the panel width will be
+        /// auto calculated. Defaults to <c>false</c>.
+        /// </summary>
+        public bool Expand { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the padding.
+        /// </summary>
+        public Padding Padding { get; set; } = new Padding(1, 1);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Panel"/> class.
         /// </summary>
-        /// <param name="child">The child.</param>
-        /// <param name="fit">Whether or not to fit the panel to it's parent.</param>
-        /// <param name="content">The justification of the panel content.</param>
-        /// <param name="border">The border to use.</param>
-        public Panel(
-            IRenderable child,
-            bool fit = false,
-            Justify content = Justify.Left,
-            BorderKind border = BorderKind.Square)
+        /// <param name="content">The panel content.</param>
+        public Panel(IRenderable content)
         {
-            _child = child ?? throw new System.ArgumentNullException(nameof(child));
-            _fit = fit;
-            _content = content;
-            _border = border;
+            _child = content ?? throw new System.ArgumentNullException(nameof(content));
         }
 
         /// <inheritdoc/>
         Measurement IRenderable.Measure(RenderContext context, int maxWidth)
         {
             var childWidth = _child.Measure(context, maxWidth);
-            return new Measurement(childWidth.Min + 4, childWidth.Max + 4);
+            return new Measurement(childWidth.Min + 2 + Padding.GetHorizontalPadding(), childWidth.Max + 2 + Padding.GetHorizontalPadding());
         }
 
         /// <inheritdoc/>
         IEnumerable<Segment> IRenderable.Render(RenderContext context, int width)
         {
-            var border = Border.GetBorder(_border, (context.LegacyConsole || !context.Unicode) && SafeBorder);
+            var border = Composition.Border.GetBorder(Border, (context.LegacyConsole || !context.Unicode) && SafeBorder);
 
-            var childWidth = width - 4;
-            if (!_fit)
+            var edgeWidth = 2;
+            var paddingWidth = Padding.GetHorizontalPadding();
+            var childWidth = width - edgeWidth - paddingWidth;
+
+            if (!Expand)
             {
-                var measurement = _child.Measure(context, width - 2);
+                var measurement = _child.Measure(context, width - edgeWidth - paddingWidth);
                 childWidth = measurement.Max;
             }
 
-            var result = new List<Segment>();
-            var panelWidth = childWidth + 2;
+            var panelWidth = childWidth + paddingWidth;
 
-            result.Add(new Segment(border.GetPart(BorderPart.HeaderTopLeft)));
-            result.Add(new Segment(border.GetPart(BorderPart.HeaderTop, panelWidth)));
-            result.Add(new Segment(border.GetPart(BorderPart.HeaderTopRight)));
-            result.Add(new Segment("\n"));
+            // Panel top
+            var result = new List<Segment>
+            {
+                new Segment(border.GetPart(BorderPart.HeaderTopLeft)),
+                new Segment(border.GetPart(BorderPart.HeaderTop, panelWidth)),
+                new Segment(border.GetPart(BorderPart.HeaderTopRight)),
+                new Segment("\n"),
+            };
 
             // Render the child.
-            var childSegments = _child.Render(context, childWidth);
+            var childContext = context.WithJustification(Alignment);
+            var childSegments = _child.Render(childContext, childWidth);
 
             // Split the child segments into lines.
-            var lines = Segment.SplitLines(childSegments, childWidth);
-            foreach (var line in lines)
+            foreach (var line in Segment.SplitLines(childSegments, panelWidth))
             {
                 result.Add(new Segment(border.GetPart(BorderPart.CellLeft)));
-                result.Add(new Segment(" ")); // Left padding
+
+                // Left padding
+                if (Padding.Left > 0)
+                {
+                    result.Add(new Segment(new string(' ', Padding.Left)));
+                }
 
                 var content = new List<Segment>();
+                content.AddRange(line);
 
+                // Do we need to pad the panel?
                 var length = line.Sum(segment => segment.CellLength(context.Encoding));
                 if (length < childWidth)
                 {
-                    // Justify right side
-                    if (_content == Justify.Right)
-                    {
-                        var diff = childWidth - length;
-                        content.Add(new Segment(new string(' ', diff)));
-                    }
-                    else if (_content == Justify.Center)
-                    {
-                        var diff = (childWidth - length) / 2;
-                        content.Add(new Segment(new string(' ', diff)));
-                    }
-                }
-
-                foreach (var segment in line)
-                {
-                    content.Add(segment.StripLineEndings());
-                }
-
-                // Justify left side
-                if (length < childWidth)
-                {
-                    if (_content == Justify.Left)
-                    {
-                        var diff = childWidth - length;
-                        content.Add(new Segment(new string(' ', diff)));
-                    }
-                    else if (_content == Justify.Center)
-                    {
-                        var diff = (childWidth - length) / 2;
-                        content.Add(new Segment(new string(' ', diff)));
-
-                        var remainder = (childWidth - length) % 2;
-                        if (remainder != 0)
-                        {
-                            content.Add(new Segment(new string(' ', remainder)));
-                        }
-                    }
+                    var diff = childWidth - length;
+                    content.Add(new Segment(new string(' ', diff)));
                 }
 
                 result.AddRange(content);
 
-                result.Add(new Segment(" "));
+                // Right padding
+                if (Padding.Right > 0)
+                {
+                    result.Add(new Segment(new string(' ', Padding.Right)));
+                }
+
                 result.Add(new Segment(border.GetPart(BorderPart.CellRight)));
                 result.Add(new Segment("\n"));
             }
 
+            // Panel bottom
             result.Add(new Segment(border.GetPart(BorderPart.FooterBottomLeft)));
             result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, panelWidth)));
             result.Add(new Segment(border.GetPart(BorderPart.FooterBottomRight)));
