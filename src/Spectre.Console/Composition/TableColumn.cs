@@ -19,26 +19,20 @@ namespace Spectre.Console
         public int? Width { get; set; }
 
         /// <summary>
-        /// Gets or sets the left padding.
+        /// Gets or sets the padding of the column.
         /// </summary>
-        public int LeftPadding { get; set; }
-
-        /// <summary>
-        /// Gets or sets the right padding.
-        /// </summary>
-        public int RightPadding { get; set; }
-
-        /// <summary>
-        /// Gets or sets the ratio to use when calculating column width.
-        /// If <c>null</c>, the column will adapt to it's contents.
-        /// </summary>
-        public int? Ratio { get; set; }
+        public Padding Padding { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether wrapping of
         /// text within the column should be prevented.
         /// </summary>
         public bool NoWrap { get; set; }
+
+        /// <summary>
+        /// Gets or sets the alignment of the column.
+        /// </summary>
+        public Justify? Alignment { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TableColumn"/> class.
@@ -48,20 +42,9 @@ namespace Spectre.Console
         {
             Text = Text.New(text ?? throw new ArgumentNullException(nameof(text)));
             Width = null;
-            LeftPadding = 1;
-            RightPadding = 1;
-            Ratio = null;
+            Padding = new Padding(1, 1);
             NoWrap = false;
-        }
-
-        internal int GetPadding()
-        {
-            return LeftPadding + RightPadding;
-        }
-
-        internal bool IsFlexible()
-        {
-            return Width == null;
+            Alignment = null;
         }
     }
 }

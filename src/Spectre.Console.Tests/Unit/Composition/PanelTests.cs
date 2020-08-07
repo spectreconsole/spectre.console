@@ -22,6 +22,25 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        public void Should_Render_Panel_With_Padding()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+
+            // When
+            console.Render(new Panel(Text.New("Hello World"))
+            {
+                Padding = new Padding(3, 5),
+            });
+
+            // Then
+            console.Lines.Count.ShouldBe(3);
+            console.Lines[0].ShouldBe("┌───────────────────┐");
+            console.Lines[1].ShouldBe("│   Hello World     │");
+            console.Lines[2].ShouldBe("└───────────────────┘");
+        }
+
+        [Fact]
         public void Should_Render_Panel_With_Unicode_Correctly()
         {
             // Given
@@ -62,8 +81,7 @@ namespace Spectre.Console.Tests.Unit
             // Given
             var console = new PlainConsole(width: 80);
             var text = new Panel(
-                Text.New("I heard [underline on blue]you[/] like 📦\n\n\n\nSo I put a 📦 in a 📦"),
-                content: Justify.Center);
+                Text.New("I heard [underline on blue]you[/] like 📦\n\n\n\nSo I put a 📦 in a 📦"));
 
             // When
             console.Render(text);
@@ -71,7 +89,7 @@ namespace Spectre.Console.Tests.Unit
             // Then
             console.Lines.Count.ShouldBe(7);
             console.Lines[0].ShouldBe("┌───────────────────────┐");
-            console.Lines[1].ShouldBe("│  I heard you like 📦  │");
+            console.Lines[1].ShouldBe("│ I heard you like 📦   │");
             console.Lines[2].ShouldBe("│                       │");
             console.Lines[3].ShouldBe("│                       │");
             console.Lines[4].ShouldBe("│                       │");
@@ -80,19 +98,23 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Should_Fit_Panel_To_Parent_If_Enabled()
+        public void Should_Expand_Panel_If_Enabled()
         {
             // Given
-            var console = new PlainConsole(width: 25);
+            var console = new PlainConsole(width: 80);
 
             // When
-            console.Render(new Panel(Text.New("Hello World"), fit: true));
+            console.Render(new Panel(Text.New("Hello World"))
+            {
+                Expand = true,
+            });
 
             // Then
             console.Lines.Count.ShouldBe(3);
-            console.Lines[0].ShouldBe("┌───────────────────────┐");
-            console.Lines[1].ShouldBe("│ Hello World           │");
-            console.Lines[2].ShouldBe("└───────────────────────┘");
+            console.Lines[0].Length.ShouldBe(80);
+            console.Lines[0].ShouldBe("┌──────────────────────────────────────────────────────────────────────────────┐");
+            console.Lines[1].ShouldBe("│ Hello World                                                                  │");
+            console.Lines[2].ShouldBe("└──────────────────────────────────────────────────────────────────────────────┘");
         }
 
         [Fact]
@@ -102,7 +124,12 @@ namespace Spectre.Console.Tests.Unit
             var console = new PlainConsole(width: 25);
 
             // When
-            console.Render(new Panel(Text.New("Hello World"), fit: true, content: Justify.Right));
+            console.Render(
+                new Panel(
+                    Text.New("Hello World").WithAlignment(Justify.Right))
+                {
+                    Expand = true,
+                });
 
             // Then
             console.Lines.Count.ShouldBe(3);
@@ -118,7 +145,12 @@ namespace Spectre.Console.Tests.Unit
             var console = new PlainConsole(width: 25);
 
             // When
-            console.Render(new Panel(Text.New("Hello World"), fit: true, content: Justify.Center));
+            console.Render(
+                new Panel(
+                    Text.New("Hello World").WithAlignment(Justify.Center))
+                {
+                    Expand = true,
+                });
 
             // Then
             console.Lines.Count.ShouldBe(3);

@@ -18,6 +18,11 @@ namespace Spectre.Console
         private readonly List<Span> _spans;
         private string _text;
 
+        /// <summary>
+        /// Gets or sets the text alignment.
+        /// </summary>
+        public Justify Alignment { get; set; } = Justify.Left;
+
         private sealed class Span
         {
             public int Start { get; }
@@ -38,7 +43,7 @@ namespace Spectre.Console
         /// <param name="text">The text.</param>
         internal Text(string text)
         {
-            _text = text ?? throw new ArgumentNullException(nameof(text));
+            _text = text?.NormalizeLineEndings() ?? throw new ArgumentNullException(nameof(text));
             _spans = new List<Span>();
         }
 
@@ -51,10 +56,24 @@ namespace Spectre.Console
         /// <param name="decoration">The text decoration.</param>
         /// <returns>A <see cref="Text"/> instance.</returns>
         public static Text New(
-            string text, Color? foreground = null, Color? background = null, Decoration? decoration = null)
+            string text,
+            Color? foreground = null,
+            Color? background = null,
+            Decoration? decoration = null)
         {
             var result = MarkupParser.Parse(text, new Style(foreground, background, decoration));
             return result;
+        }
+
+        /// <summary>
+        /// Sets the text alignment.
+        /// </summary>
+        /// <param name="alignment">The text alignment.</param>
+        /// <returns>The same <see cref="Text"/> instance.</returns>
+        public Text WithAlignment(Justify alignment)
+        {
+            Alignment = alignment;
+            return this;
         }
 
         /// <summary>
@@ -99,14 +118,17 @@ namespace Spectre.Console
         /// <inheritdoc/>
         Measurement IRenderable.Measure(RenderContext context, int maxWidth)
         {
-            var lines = Segment.SplitLines(((IRenderable)this).Render(context, maxWidth));
-            if (lines.Count == 0)
+            if (string.IsNullOrEmpty(_text))
             {
-                return new Measurement(0, maxWidth);
+                return new Measurement(1, 1);
             }
 
-            var max = lines.Max(line => line.Length);
-            var min = lines.SelectMany(line => line.Select(segment => segment.Text.Length)).Max();
+            // TODO: Write some kind of tokenizer for this
+            var min = Segment.SplitLines(((IRenderable)this).Render(context, maxWidth))
+                .SelectMany(line => line.Select(segment => segment.Text.Length))
+                .Max();
+
+            var max = _text.SplitLines().Max(x => Cell.GetCellLength(context.Encoding, x));
 
             return new Measurement(min, max);
         }
@@ -122,11 +144,47 @@ namespace Spectre.Console
             var result = new List<Segment>();
             var segments = SplitLineBreaks(CreateSegments());
 
+            var justification = context.Justification ?? Alignment;
+
             foreach (var (_, _, last, line) in Segment.SplitLines(segments, width).Enumerate())
             {
+                var length = line.Sum(l => l.StripLineEndings().CellLength(context.Encoding));
+
+                if (length < width)
+                {
+                    // Justify right side
+                    if (justification == Justify.Right)
+                    {
+                        var diff = width - length;
+                        result.Add(new Segment(new string(' ', diff)));
+                    }
+                    else if (justification == Justify.Center)
+                    {
+                        var diff = (width - length) / 2;
+                        result.Add(new Segment(new string(' ', diff)));
+                    }
+                }
+
+                // Render the line.
                 foreach (var segment in line)
                 {
                     result.Add(segment.StripLineEndings());
+                }
+
+                // Justify left side
+                if (length < width)
+                {
+                    if (justification == Justify.Center)
+                    {
+                        var diff = (width - length) / 2;
+                        result.Add(new Segment(new string(' ', diff)));
+
+                        var remainder = (width - length) % 2;
+                        if (remainder != 0)
+                        {
+                            result.Add(new Segment(new string(' ', remainder)));
+                        }
+                    }
                 }
 
                 if (!last)

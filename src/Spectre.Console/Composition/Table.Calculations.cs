@@ -21,47 +21,6 @@ namespace Spectre.Console
 
             var tableWidth = widths.Sum();
 
-            if (ShouldExpand())
-            {
-                var ratios = _columns.Select(c => c.Ratio ?? 0).ToList();
-                if (ratios.Any(r => r != 0))
-                {
-                    var fixedWidths = new List<int>();
-                    foreach (var (range, column) in width_ranges.Zip(_columns, (a, b) => (a, b)))
-                    {
-                        fixedWidths.Add(column.IsFlexible() ? 0 : range.Max);
-                    }
-
-                    var flexMinimum = new List<int>();
-                    foreach (var column in _columns)
-                    {
-                        if (column.IsFlexible())
-                        {
-                            flexMinimum.Add(column.Width ?? 1 + column.GetPadding());
-                        }
-                        else
-                        {
-                            flexMinimum.Add(0);
-                        }
-                    }
-
-                    var flexibleWidth = maxWidth - fixedWidths.Sum();
-                    var flexWidths = Ratio.Distribute(flexibleWidth, ratios, flexMinimum);
-
-                    var flexWidthsIterator = flexWidths.GetEnumerator();
-                    foreach (var (index, _, _, column) in _columns.Enumerate())
-                    {
-                        if (column.IsFlexible())
-                        {
-                            flexWidthsIterator.MoveNext();
-                            widths[index] = fixedWidths[index] + flexWidthsIterator.Current;
-                        }
-                    }
-                }
-            }
-
-            tableWidth = widths.Sum();
-
             if (tableWidth > maxWidth)
             {
                 var wrappable = _columns.Select(c => !c.NoWrap).ToList();
@@ -72,7 +31,7 @@ namespace Spectre.Console
                 if (tableWidth > maxWidth)
                 {
                     var excessWidth = tableWidth - maxWidth;
-                    widths = Ratio.Reduce(excessWidth, widths.Select(w => 1).ToList(), widths, widths);
+                    widths = Ratio.Reduce(excessWidth, widths.Select(_ => 1).ToList(), widths, widths);
                     tableWidth = widths.Sum();
                 }
             }
@@ -96,26 +55,17 @@ namespace Spectre.Console
 
             if (wrappable.AnyTrue())
             {
-                while (totalWidth > 0 && excessWidth > 0)
+                while (totalWidth != 0 && excessWidth > 0)
                 {
-                    var maxColumn = widths.Zip(wrappable, (first, second) => (width: first, isWrappable: second))
-                        .Where(x => x.isWrappable)
+                    var maxColumn = widths.Zip(wrappable, (first, second) => (width: first, allowWrap: second))
+                        .Where(x => x.allowWrap)
                         .Max(x => x.width);
 
-                    var secondMaxColumn = widths.Zip(wrappable, (width, isWrappable) => isWrappable && width != maxColumn ? maxColumn : 0).Max();
+                    var secondMaxColumn = widths.Zip(wrappable, (width, allowWrap) => allowWrap && width != maxColumn ? width : 0).Max();
                     var columnDifference = maxColumn - secondMaxColumn;
 
-                    var ratios = widths.Zip(wrappable, (width, allowWrap) =>
-                    {
-                        if (width == maxColumn && allowWrap)
-                        {
-                            return 1;
-                        }
-
-                        return 0;
-                    }).ToList();
-
-                    if (!ratios.Any(x => x > 0) || columnDifference == 0)
+                    var ratios = widths.Zip(wrappable, (width, allowWrap) => width == maxColumn && allowWrap ? 1 : 0).ToList();
+                    if (!ratios.Any(x => x != 0) || columnDifference == 0)
                     {
                         break;
                     }
@@ -133,10 +83,11 @@ namespace Spectre.Console
 
         private (int Min, int Max) MeasureColumn(TableColumn column, RenderContext options, int maxWidth)
         {
+            var padding = column.Padding.GetHorizontalPadding();
+
             // Predetermined width?
             if (column.Width != null)
             {
-                var padding = column.GetPadding();
                 return (column.Width.Value + padding, column.Width.Value + padding);
             }
 
@@ -152,7 +103,7 @@ namespace Spectre.Console
                 maxWidths.Add(measure.Max);
             }
 
-            return (minWidths.Count > 0 ? minWidths.Max() : 1,
+            return (minWidths.Count > 0 ? minWidths.Max() : padding,
                     maxWidths.Count > 0 ? maxWidths.Max() : maxWidth);
         }
 
@@ -160,7 +111,7 @@ namespace Spectre.Console
         {
             var edges = 2;
             var separators = _columns.Count - 1;
-            var padding = includePadding ? _columns.Select(x => x.GetPadding()).Sum() : 0;
+            var padding = includePadding ? _columns.Select(x => x.Padding.GetHorizontalPadding()).Sum() : 0;
             return separators + edges + padding;
         }
     }

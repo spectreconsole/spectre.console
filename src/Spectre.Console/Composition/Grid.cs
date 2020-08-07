@@ -20,6 +20,7 @@ namespace Spectre.Console
             {
                 Border = BorderKind.None,
                 ShowHeaders = false,
+                IsGrid = true,
             };
         }
 
@@ -40,7 +41,7 @@ namespace Spectre.Console
         /// </summary>
         public void AddColumn()
         {
-            _table.AddColumn(string.Empty);
+            AddColumn(new GridColumn());
         }
 
         /// <summary>
@@ -58,9 +59,38 @@ namespace Spectre.Console
             {
                 Width = column.Width,
                 NoWrap = column.NoWrap,
-                LeftPadding = 0,
-                RightPadding = 1,
+                Padding = column.Padding,
+                Alignment = column.Alignment,
             });
+        }
+
+        /// <summary>
+        /// Adds a column to the grid.
+        /// </summary>
+        /// <param name="count">The number of columns to add.</param>
+        public void AddColumns(int count)
+        {
+            for (var index = 0; index < count; index++)
+            {
+                AddColumn(new GridColumn());
+            }
+        }
+
+        /// <summary>
+        /// Adds a column to the grid.
+        /// </summary>
+        /// <param name="columns">The columns to add.</param>
+        public void AddColumns(params GridColumn[] columns)
+        {
+            if (columns is null)
+            {
+                throw new ArgumentNullException(nameof(columns));
+            }
+
+            foreach (var column in columns)
+            {
+                AddColumn(column);
+            }
         }
 
         /// <summary>

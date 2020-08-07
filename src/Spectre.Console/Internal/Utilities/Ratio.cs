@@ -14,7 +14,7 @@ namespace Spectre.Console.Internal
         {
             ratios = ratios.Zip(maximums, (a, b) => (ratio: a, max: b)).Select(a => a.max > 0 ? a.ratio : 0).ToList();
             var totalRatio = ratios.Sum();
-            if (totalRatio == 0)
+            if (totalRatio <= 0)
             {
                 return values;
             }
@@ -24,9 +24,9 @@ namespace Spectre.Console.Internal
 
             foreach (var (ratio, maximum, value) in ratios.Zip(maximums, values))
             {
-                if (ratio > 0 && totalRatio > 0)
+                if (ratio != 0 && totalRatio > 0)
                 {
-                    var distributed = (int)Math.Min(maximum, Math.Round(ratio * totalRemaining / (double)totalRatio));
+                    var distributed = (int)Math.Min(maximum, Math.Round((double)(ratio * totalRemaining / totalRatio)));
                     result.Add(value - distributed);
                     totalRemaining -= distributed;
                     totalRatio -= ratio;

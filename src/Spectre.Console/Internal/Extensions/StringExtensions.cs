@@ -17,6 +17,11 @@ namespace Spectre.Console.Internal
 
         public static string NormalizeLineEndings(this string text, bool native = false)
         {
+            if (text == null)
+            {
+                return null;
+            }
+
             var normalized = text?.Replace("\r\n", "\n")
                 ?.Replace("\r", string.Empty);
 

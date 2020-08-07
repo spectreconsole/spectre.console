@@ -32,7 +32,7 @@ namespace Spectre.Console.Tests.Unit.Composition
                 var table = new Table();
 
                 // When
-                var result = Record.Exception(() => table.AddColumns(null));
+                var result = Record.Exception(() => table.AddColumns((string[])null));
 
                 // Then
                 result.ShouldBeOfType<ArgumentNullException>()
@@ -89,31 +89,6 @@ namespace Spectre.Console.Tests.Unit.Composition
         }
 
         [Fact]
-        public void Should_Measure_Table_Correctly()
-        {
-            // Given
-            var console = new PlainConsole(width: 80);
-            var table = new Table();
-            table.AddColumns("Foo", "Bar", "Baz");
-            table.AddRow("Qux", "Corgi", "Waldo");
-            table.AddRow("Grault", "Garply", "Fred");
-
-            // When
-            console.Render(new Panel(table));
-
-            // Then
-            console.Lines.Count.ShouldBe(8);
-            console.Lines[0].ShouldBe("┌─────────────────────────────┐");
-            console.Lines[1].ShouldBe("│ ┌────────┬────────┬───────┐ │");
-            console.Lines[2].ShouldBe("│ │ Foo    │ Bar    │ Baz   │ │");
-            console.Lines[3].ShouldBe("│ ├────────┼────────┼───────┤ │");
-            console.Lines[4].ShouldBe("│ │ Qux    │ Corgi  │ Waldo │ │");
-            console.Lines[5].ShouldBe("│ │ Grault │ Garply │ Fred  │ │");
-            console.Lines[6].ShouldBe("│ └────────┴────────┴───────┘ │");
-            console.Lines[7].ShouldBe("└─────────────────────────────┘");
-        }
-
-        [Fact]
         public void Should_Render_Table_Correctly()
         {
             // Given
@@ -134,6 +109,64 @@ namespace Spectre.Console.Tests.Unit.Composition
             console.Lines[3].ShouldBe("│ Qux    │ Corgi  │ Waldo │");
             console.Lines[4].ShouldBe("│ Grault │ Garply │ Fred  │");
             console.Lines[5].ShouldBe("└────────┴────────┴───────┘");
+        }
+
+        [Fact]
+        public void Should_Render_Table_Nested_In_Panels_Correctly()
+        {
+            // A simple table
+            var console = new PlainConsole(width: 80);
+            var table = new Table() { Border = BorderKind.Rounded };
+            table.AddColumn("Foo");
+            table.AddColumn("Bar");
+            table.AddColumn(new TableColumn("Baz") { Alignment = Justify.Right });
+            table.AddRow("Qux\nQuuuuuux", "[blue]Corgi[/]", "Waldo");
+            table.AddRow("Grault", "Garply", "Fred");
+
+            // Render a table in some panels.
+            console.Render(new Panel(new Panel(table)
+            {
+                Border = BorderKind.Ascii,
+            }));
+
+            // Then
+            console.Lines.Count.ShouldBe(11);
+            console.Lines[00].ShouldBe("┌───────────────────────────────────┐");
+            console.Lines[01].ShouldBe("│ +-------------------------------+ │");
+            console.Lines[02].ShouldBe("│ | ╭──────────┬────────┬───────╮ | │");
+            console.Lines[03].ShouldBe("│ | │ Foo      │ Bar    │   Baz │ | │");
+            console.Lines[04].ShouldBe("│ | ├──────────┼────────┼───────┤ | │");
+            console.Lines[05].ShouldBe("│ | │ Qux      │ Corgi  │ Waldo │ | │");
+            console.Lines[06].ShouldBe("│ | │ Quuuuuux │        │       │ | │");
+            console.Lines[07].ShouldBe("│ | │ Grault   │ Garply │  Fred │ | │");
+            console.Lines[08].ShouldBe("│ | ╰──────────┴────────┴───────╯ | │");
+            console.Lines[09].ShouldBe("│ +-------------------------------+ │");
+            console.Lines[10].ShouldBe("└───────────────────────────────────┘");
+        }
+
+        [Fact]
+        public void Should_Render_Table_With_Column_Justification_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var table = new Table();
+            table.AddColumn(new TableColumn("Foo") { Alignment = Justify.Left });
+            table.AddColumn(new TableColumn("Bar") { Alignment = Justify.Right });
+            table.AddColumn(new TableColumn("Baz") { Alignment = Justify.Center });
+            table.AddRow("Qux", "Corgi", "Waldo");
+            table.AddRow("Grault", "Garply", "Lorem ipsum dolor sit amet");
+
+            // When
+            console.Render(table);
+
+            // Then
+            console.Lines.Count.ShouldBe(6);
+            console.Lines[0].ShouldBe("┌────────┬────────┬────────────────────────────┐");
+            console.Lines[1].ShouldBe("│ Foo    │    Bar │            Baz             │");
+            console.Lines[2].ShouldBe("├────────┼────────┼────────────────────────────┤");
+            console.Lines[3].ShouldBe("│ Qux    │  Corgi │           Waldo            │");
+            console.Lines[4].ShouldBe("│ Grault │ Garply │ Lorem ipsum dolor sit amet │");
+            console.Lines[5].ShouldBe("└────────┴────────┴────────────────────────────┘");
         }
 
         [Fact]
@@ -248,6 +281,31 @@ namespace Spectre.Console.Tests.Unit.Composition
             console.Lines[4].ShouldBe("│ Quuux  │        │       │");
             console.Lines[5].ShouldBe("│ Grault │ Garply │ Fred  │");
             console.Lines[6].ShouldBe("└────────┴────────┴───────┘");
+        }
+
+        [Fact]
+        public void Should_Render_Table_With_Cell_Padding_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var table = new Table();
+            table.AddColumns("Foo", "Bar");
+            table.AddColumn(new TableColumn("Baz") { Padding = new Padding(3, 2) });
+            table.AddRow("Qux\nQuuux", "Corgi", "Waldo");
+            table.AddRow("Grault", "Garply", "Fred");
+
+            // When
+            console.Render(table);
+
+            // Then
+            console.Lines.Count.ShouldBe(7);
+            console.Lines[0].ShouldBe("┌────────┬────────┬──────────┐");
+            console.Lines[1].ShouldBe("│ Foo    │ Bar    │   Baz    │");
+            console.Lines[2].ShouldBe("├────────┼────────┼──────────┤");
+            console.Lines[3].ShouldBe("│ Qux    │ Corgi  │   Waldo  │");
+            console.Lines[4].ShouldBe("│ Quuux  │        │          │");
+            console.Lines[5].ShouldBe("│ Grault │ Garply │   Fred   │");
+            console.Lines[6].ShouldBe("└────────┴────────┴──────────┘");
         }
     }
 }

@@ -23,15 +23,32 @@ namespace Spectre.Console.Composition
         public bool Unicode { get; }
 
         /// <summary>
+        /// Gets the current justification.
+        /// </summary>
+        public Justify? Justification { get; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="RenderContext"/> class.
         /// </summary>
         /// <param name="encoding">The console's output encoding.</param>
         /// <param name="legacyConsole">A value indicating whether or not this a legacy console (i.e. cmd.exe).</param>
-        public RenderContext(Encoding encoding, bool legacyConsole)
+        /// <param name="justification">The justification to use when rendering.</param>
+        public RenderContext(Encoding encoding, bool legacyConsole, Justify? justification = null)
         {
             Encoding = encoding ?? throw new System.ArgumentNullException(nameof(encoding));
             LegacyConsole = legacyConsole;
+            Justification = justification;
             Unicode = Encoding == Encoding.UTF8 || Encoding == Encoding.Unicode;
+        }
+
+        /// <summary>
+        /// Creates a new context with the specified justification.
+        /// </summary>
+        /// <param name="justification">The justification.</param>
+        /// <returns>A new <see cref="RenderContext"/> instance with the specified justification.</returns>
+        public RenderContext WithJustification(Justify? justification)
+        {
+            return new RenderContext(Encoding, LegacyConsole, justification);
         }
     }
 }
