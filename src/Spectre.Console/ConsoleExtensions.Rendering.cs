@@ -26,7 +26,9 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(renderable));
             }
 
-            foreach (var segment in renderable.Render(console.Encoding, console.Width))
+            var options = new RenderContext(console.Encoding, console.Capabilities.LegacyConsole);
+
+            foreach (var segment in renderable.Render(options, console.Width))
             {
                 if (!segment.Style.Equals(Style.Plain))
                 {

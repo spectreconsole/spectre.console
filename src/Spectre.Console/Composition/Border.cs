@@ -20,6 +20,11 @@ namespace Spectre.Console.Composition
             { BorderKind.Rounded, new RoundedBorder() },
         };
 
+        private static readonly Dictionary<BorderKind, BorderKind> _safeLookup = new Dictionary<BorderKind, BorderKind>
+        {
+            { BorderKind.Rounded, BorderKind.Square },
+        };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Border"/> class.
         /// </summary>
@@ -32,9 +37,15 @@ namespace Spectre.Console.Composition
         /// Gets a <see cref="Border"/> represented by the specified <see cref="BorderKind"/>.
         /// </summary>
         /// <param name="kind">The kind of border to get.</param>
+        /// <param name="safe">Whether or not to get a "safe" border that can be rendered in a legacy console.</param>
         /// <returns>A <see cref="Border"/> instance representing the specified <see cref="BorderKind"/>.</returns>
-        public static Border GetBorder(BorderKind kind)
+        public static Border GetBorder(BorderKind kind, bool safe)
         {
+            if (safe && _safeLookup.TryGetValue(kind, out var safeKind))
+            {
+                kind = safeKind;
+            }
+
             if (!_borders.TryGetValue(kind, out var border))
             {
                 throw new InvalidOperationException("Unknown border kind");

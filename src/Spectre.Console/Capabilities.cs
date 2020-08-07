@@ -25,7 +25,13 @@ namespace Spectre.Console
         /// </remarks>
         public bool LegacyConsole { get; }
 
-        internal Capabilities(bool supportsAnsi, ColorSystem colorSystem, bool legacyConsole)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Capabilities"/> class.
+        /// </summary>
+        /// <param name="supportsAnsi">Whether or not ANSI escape sequences are supported.</param>
+        /// <param name="colorSystem">The color system that is supported.</param>
+        /// <param name="legacyConsole">Whether or not this is a legacy console.</param>
+        public Capabilities(bool supportsAnsi, ColorSystem colorSystem, bool legacyConsole)
         {
             SupportsAnsi = supportsAnsi;
             ColorSystem = colorSystem;

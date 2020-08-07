@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Spectre.Console.Composition;
 
 namespace Spectre.Console
@@ -25,15 +24,15 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        public Measurement Measure(Encoding encoding, int maxWidth)
+        public Measurement Measure(RenderContext context, int maxWidth)
         {
-            return ((IRenderable)_table).Measure(encoding, maxWidth);
+            return ((IRenderable)_table).Measure(context, maxWidth);
         }
 
         /// <inheritdoc/>
-        public IEnumerable<Segment> Render(Encoding encoding, int width)
+        public IEnumerable<Segment> Render(RenderContext context, int width)
         {
-            return ((IRenderable)_table).Render(encoding, width);
+            return ((IRenderable)_table).Render(context, width);
         }
 
         /// <summary>

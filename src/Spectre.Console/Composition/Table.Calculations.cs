@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Spectre.Console.Composition;
 using Spectre.Console.Internal;
 
@@ -15,9 +14,9 @@ namespace Spectre.Console
         // Calculate the widths of each column, including padding, not including borders.
         // Ported from Rich by Will McGugan, licensed under MIT.
         // https://github.com/willmcgugan/rich/blob/527475837ebbfc427530b3ee0d4d0741d2d0fc6d/rich/table.py#L394
-        private List<int> CalculateColumnWidths(Encoding encoding, int maxWidth)
+        private List<int> CalculateColumnWidths(RenderContext options, int maxWidth)
         {
-            var width_ranges = _columns.Select(column => MeasureColumn(column, encoding, maxWidth));
+            var width_ranges = _columns.Select(column => MeasureColumn(column, options, maxWidth));
             var widths = width_ranges.Select(range => range.Max).ToList();
 
             var tableWidth = widths.Sum();
@@ -132,7 +131,7 @@ namespace Spectre.Console
             return widths;
         }
 
-        private (int Min, int Max) MeasureColumn(TableColumn column, Encoding encoding, int maxWidth)
+        private (int Min, int Max) MeasureColumn(TableColumn column, RenderContext options, int maxWidth)
         {
             // Predetermined width?
             if (column.Width != null)
@@ -148,7 +147,7 @@ namespace Spectre.Console
             var maxWidths = new List<int>();
             foreach (var row in rows)
             {
-                var measure = ((IRenderable)row).Measure(encoding, maxWidth);
+                var measure = ((IRenderable)row).Measure(options, maxWidth);
                 minWidths.Add(measure.Min);
                 maxWidths.Add(measure.Max);
             }

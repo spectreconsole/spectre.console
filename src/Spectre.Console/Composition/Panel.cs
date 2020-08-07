@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Spectre.Console.Composition;
 
 namespace Spectre.Console
@@ -13,7 +12,14 @@ namespace Spectre.Console
         private readonly IRenderable _child;
         private readonly bool _fit;
         private readonly Justify _content;
-        private readonly Border _border;
+        private readonly BorderKind _border;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not to use
+        /// a "safe" border on legacy consoles that might not be able
+        /// to render non-ASCII characters. Defaults to <c>true</c>.
+        /// </summary>
+        public bool SafeBorder { get; set; } = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Panel"/> class.
@@ -31,47 +37,49 @@ namespace Spectre.Console
             _child = child ?? throw new System.ArgumentNullException(nameof(child));
             _fit = fit;
             _content = content;
-            _border = Border.GetBorder(border);
+            _border = border;
         }
 
         /// <inheritdoc/>
-        Measurement IRenderable.Measure(Encoding encoding, int maxWidth)
+        Measurement IRenderable.Measure(RenderContext context, int maxWidth)
         {
-            var childWidth = _child.Measure(encoding, maxWidth);
+            var childWidth = _child.Measure(context, maxWidth);
             return new Measurement(childWidth.Min + 4, childWidth.Max + 4);
         }
 
         /// <inheritdoc/>
-        IEnumerable<Segment> IRenderable.Render(Encoding encoding, int width)
+        IEnumerable<Segment> IRenderable.Render(RenderContext context, int width)
         {
+            var border = Border.GetBorder(_border, (context.LegacyConsole || !context.Unicode) && SafeBorder);
+
             var childWidth = width - 4;
             if (!_fit)
             {
-                var measurement = _child.Measure(encoding, width - 2);
+                var measurement = _child.Measure(context, width - 2);
                 childWidth = measurement.Max;
             }
 
             var result = new List<Segment>();
             var panelWidth = childWidth + 2;
 
-            result.Add(new Segment(_border.GetPart(BorderPart.HeaderTopLeft)));
-            result.Add(new Segment(_border.GetPart(BorderPart.HeaderTop, panelWidth)));
-            result.Add(new Segment(_border.GetPart(BorderPart.HeaderTopRight)));
+            result.Add(new Segment(border.GetPart(BorderPart.HeaderTopLeft)));
+            result.Add(new Segment(border.GetPart(BorderPart.HeaderTop, panelWidth)));
+            result.Add(new Segment(border.GetPart(BorderPart.HeaderTopRight)));
             result.Add(new Segment("\n"));
 
             // Render the child.
-            var childSegments = _child.Render(encoding, childWidth);
+            var childSegments = _child.Render(context, childWidth);
 
             // Split the child segments into lines.
             var lines = Segment.SplitLines(childSegments, childWidth);
             foreach (var line in lines)
             {
-                result.Add(new Segment(_border.GetPart(BorderPart.CellLeft)));
+                result.Add(new Segment(border.GetPart(BorderPart.CellLeft)));
                 result.Add(new Segment(" ")); // Left padding
 
                 var content = new List<Segment>();
 
-                var length = line.Sum(segment => segment.CellLength(encoding));
+                var length = line.Sum(segment => segment.CellLength(context.Encoding));
                 if (length < childWidth)
                 {
                     // Justify right side
@@ -116,13 +124,13 @@ namespace Spectre.Console
                 result.AddRange(content);
 
                 result.Add(new Segment(" "));
-                result.Add(new Segment(_border.GetPart(BorderPart.CellRight)));
+                result.Add(new Segment(border.GetPart(BorderPart.CellRight)));
                 result.Add(new Segment("\n"));
             }
 
-            result.Add(new Segment(_border.GetPart(BorderPart.FooterBottomLeft)));
-            result.Add(new Segment(_border.GetPart(BorderPart.FooterBottom, panelWidth)));
-            result.Add(new Segment(_border.GetPart(BorderPart.FooterBottomRight)));
+            result.Add(new Segment(border.GetPart(BorderPart.FooterBottomLeft)));
+            result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, panelWidth)));
+            result.Add(new Segment(border.GetPart(BorderPart.FooterBottomRight)));
             result.Add(new Segment("\n"));
 
             return result;

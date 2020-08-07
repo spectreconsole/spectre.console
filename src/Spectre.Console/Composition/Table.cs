@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Spectre.Console.Composition;
 using Spectre.Console.Internal;
 
@@ -46,6 +45,13 @@ namespace Spectre.Console
         /// Gets or sets the width of the table.
         /// </summary>
         public int? Width { get; set; } = null;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not to use
+        /// a "safe" border on legacy consoles that might not be able
+        /// to render non-ASCII characters. Defaults to <c>true</c>.
+        /// </summary>
+        public bool SafeBorder { get; set; } = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Table"/> class.
@@ -123,8 +129,13 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        Measurement IRenderable.Measure(Encoding encoding, int maxWidth)
+        Measurement IRenderable.Measure(RenderContext context, int maxWidth)
         {
+            if (context is null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             if (Width != null)
             {
                 maxWidth = Math.Min(Width.Value, maxWidth);
@@ -132,7 +143,7 @@ namespace Spectre.Console
 
             maxWidth -= GetExtraWidth(includePadding: true);
 
-            var measurements = _columns.Select(column => MeasureColumn(column, encoding, maxWidth)).ToList();
+            var measurements = _columns.Select(column => MeasureColumn(column, context, maxWidth)).ToList();
             var min = measurements.Sum(x => x.Min) + GetExtraWidth(includePadding: true);
             var max = Width ?? measurements.Sum(x => x.Max) + GetExtraWidth(includePadding: true);
 
@@ -140,9 +151,14 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        IEnumerable<Segment> IRenderable.Render(Encoding encoding, int width)
+        IEnumerable<Segment> IRenderable.Render(RenderContext context, int width)
         {
-            var border = Composition.Border.GetBorder(Border);
+            if (context is null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            var border = Composition.Border.GetBorder(Border, (context.LegacyConsole || !context.Unicode) && SafeBorder);
 
             var showBorder = Border != BorderKind.None;
             var hideBorder = Border == BorderKind.None;
@@ -156,7 +172,7 @@ namespace Spectre.Console
             maxWidth -= GetExtraWidth(includePadding: true);
 
             // Calculate the column and table widths
-            var columnWidths = CalculateColumnWidths(encoding, maxWidth);
+            var columnWidths = CalculateColumnWidths(context, maxWidth);
 
             // Update the table width.
             width = columnWidths.Sum() + GetExtraWidth(includePadding: false);
@@ -181,7 +197,7 @@ namespace Spectre.Console
                 var cells = new List<List<SegmentLine>>();
                 foreach (var (rowWidth, cell) in columnWidths.Zip(row, (f, s) => (f, s)))
                 {
-                    var lines = Segment.SplitLines(((IRenderable)cell).Render(encoding, rowWidth));
+                    var lines = Segment.SplitLines(((IRenderable)cell).Render(context, rowWidth));
                     cellHeight = Math.Max(cellHeight, lines.Count);
                     cells.Add(lines);
                 }
@@ -234,7 +250,7 @@ namespace Spectre.Console
                         result.AddRange(cell[cellRowIndex]);
 
                         // Pad cell content right
-                        var length = cell[cellRowIndex].Sum(segment => segment.CellLength(encoding));
+                        var length = cell[cellRowIndex].Sum(segment => segment.CellLength(context.Encoding));
                         if (length < columnWidths[cellIndex])
                         {
                             result.Add(new Segment(new string(' ', columnWidths[cellIndex] - length)));

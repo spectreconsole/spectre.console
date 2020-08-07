@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
 using Spectre.Console.Composition;
 using Spectre.Console.Internal;
 
@@ -98,9 +97,9 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        Measurement IRenderable.Measure(Encoding encoding, int maxWidth)
+        Measurement IRenderable.Measure(RenderContext context, int maxWidth)
         {
-            var lines = Segment.SplitLines(((IRenderable)this).Render(encoding, maxWidth));
+            var lines = Segment.SplitLines(((IRenderable)this).Render(context, maxWidth));
             if (lines.Count == 0)
             {
                 return new Measurement(0, maxWidth);
@@ -113,7 +112,7 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        IEnumerable<Segment> IRenderable.Render(Encoding encoding, int width)
+        IEnumerable<Segment> IRenderable.Render(RenderContext context, int width)
         {
             if (string.IsNullOrWhiteSpace(_text))
             {

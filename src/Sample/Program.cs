@@ -13,6 +13,7 @@ namespace Sample
             AnsiConsole.WriteLine("Hello World!");
             AnsiConsole.Reset();
             AnsiConsole.MarkupLine("Capabilities: [yellow underline]{0}[/]", AnsiConsole.Capabilities);
+            AnsiConsole.MarkupLine("Encoding: [yellow underline]{0}[/]", AnsiConsole.Console.Encoding.EncodingName);
             AnsiConsole.MarkupLine("Width=[yellow]{0}[/], Height=[yellow]{1}[/]", AnsiConsole.Width, AnsiConsole.Height);
             AnsiConsole.MarkupLine("[white on red]Good[/] [red]bye[/]!");
             AnsiConsole.WriteLine();
@@ -51,6 +52,7 @@ namespace Sample
             console.ResetColors();
             console.ResetDecoration();
             console.MarkupLine("Capabilities: [yellow underline]{0}[/]", console.Capabilities);
+            console.MarkupLine("Encoding: [yellow underline]{0}[/]", AnsiConsole.Console.Encoding.EncodingName);
             console.MarkupLine("Width=[yellow]{0}[/], Height=[yellow]{1}[/]", console.Width, console.Height);
             console.MarkupLine("[white on red]Good[/] [red]bye[/]!");
             console.WriteLine();
