@@ -82,7 +82,8 @@ namespace Spectre.Console
         /// <inheritdoc/>
         public bool Equals(Color other)
         {
-            return R == other.R && G == other.G && B == other.B;
+            return (IsDefault && other.IsDefault) ||
+                   (IsDefault == other.IsDefault && R == other.R && G == other.G && B == other.B);
         }
 
         /// <summary>
