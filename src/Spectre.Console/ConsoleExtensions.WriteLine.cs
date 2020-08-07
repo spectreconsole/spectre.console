@@ -1,6 +1,5 @@
 using System;
 using System.Globalization;
-using Spectre.Console.Internal;
 
 namespace Spectre.Console
 {
@@ -20,12 +19,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(console));
             }
 
-            using (console.PushColor(Color.Default, true))
-            using (console.PushColor(Color.Default, false))
-            using (console.PushDecoration(Decoration.None))
-            {
-                console.Write(Environment.NewLine);
-            }
+            console.Write(Environment.NewLine);
         }
 
         /// <summary>

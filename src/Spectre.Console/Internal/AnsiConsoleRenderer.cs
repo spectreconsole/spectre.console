@@ -60,12 +60,19 @@ namespace Spectre.Console.Internal
                 return;
             }
 
-            _out.Write(AnsiBuilder.GetAnsi(
-                _system,
-                text.NormalizeLineEndings(native: true),
-                Decoration,
-                Foreground,
-                Background));
+            var parts = text.NormalizeLineEndings().Split(new[] { '\n' });
+            foreach (var (_, _, last, part) in parts.Enumerate())
+            {
+                if (!string.IsNullOrEmpty(part))
+                {
+                    _out.Write(AnsiBuilder.GetAnsi(_system, part, Decoration, Foreground, Background));
+                }
+
+                if (!last)
+                {
+                    _out.Write(Environment.NewLine);
+                }
+            }
         }
     }
 }
