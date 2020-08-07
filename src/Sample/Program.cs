@@ -18,11 +18,22 @@ namespace Sample
             AnsiConsole.WriteLine();
 
             // We can also use System.ConsoleColor with AnsiConsole.
+            // To set the Foreground color
             foreach (ConsoleColor value in Enum.GetValues(typeof(ConsoleColor)))
             {
                 AnsiConsole.Foreground = value;
-                AnsiConsole.WriteLine("ConsoleColor.{0}", value);
+                AnsiConsole.WriteLine("Foreground: ConsoleColor.{0}", value);
             }
+
+            AnsiConsole.WriteLine();
+            AnsiConsole.Foreground = Color.Chartreuse2;
+            // As well as the background color
+            foreach (ConsoleColor value in Enum.GetValues(typeof(ConsoleColor)))
+            {
+                AnsiConsole.Background = value;
+                AnsiConsole.WriteLine("Background: ConsoleColor.{0}", value);
+            }
+            AnsiConsole.Reset();
 
             // We can get the default console via the static API.
             var console = AnsiConsole.Console;
