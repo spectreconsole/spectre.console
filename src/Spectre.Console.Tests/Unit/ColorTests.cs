@@ -78,6 +78,20 @@ namespace Spectre.Console.Tests.Unit
                 // Then
                 result.ShouldBeFalse();
             }
+
+            [Fact]
+            public void Shourd_Not_Consider_Black_And_Default_Colors_Equal()
+            {
+                // Given
+                var color1 = Color.Default;
+                var color2 = Color.Black;
+
+                // When
+                var result = color1.Equals(color2);
+
+                // Then
+                result.ShouldBeFalse();
+            }
         }
 
         public sealed class TheGetHashCodeMethod
