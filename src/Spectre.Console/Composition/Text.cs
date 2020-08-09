@@ -141,6 +141,11 @@ namespace Spectre.Console
                 return Array.Empty<Segment>();
             }
 
+            if (width == 0)
+            {
+                return Array.Empty<Segment>();
+            }
+
             var result = new List<Segment>();
             var segments = SplitLineBreaks(CreateSegments());
 

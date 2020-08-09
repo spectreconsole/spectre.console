@@ -178,6 +178,7 @@ namespace Spectre.Console
 
             var showBorder = Border != BorderKind.None;
             var hideBorder = Border == BorderKind.None;
+            var hasRows = _rows.Count > 0;
 
             var maxWidth = width;
             if (Width != null)
@@ -303,7 +304,7 @@ namespace Spectre.Console
                 }
 
                 // Show header separator?
-                if (firstRow && showBorder && ShowHeaders)
+                if (firstRow && showBorder && ShowHeaders && hasRows)
                 {
                     result.Add(new Segment(border.GetPart(BorderPart.HeaderBottomLeft)));
                     foreach (var (columnIndex, first, lastColumn, columnWidth) in columnWidths.Enumerate())

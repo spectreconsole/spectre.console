@@ -61,7 +61,7 @@ namespace Spectre.Console
                         .Where(x => x.allowWrap)
                         .Max(x => x.width);
 
-                    var secondMaxColumn = widths.Zip(wrappable, (width, allowWrap) => allowWrap && width != maxColumn ? width : 0).Max();
+                    var secondMaxColumn = widths.Zip(wrappable, (width, allowWrap) => allowWrap && width != maxColumn ? width : 1).Max();
                     var columnDifference = maxColumn - secondMaxColumn;
 
                     var ratios = widths.Zip(wrappable, (width, allowWrap) => width == maxColumn && allowWrap ? 1 : 0).ToList();
@@ -96,9 +96,15 @@ namespace Spectre.Console
 
             var minWidths = new List<int>();
             var maxWidths = new List<int>();
+
+            // Include columns in measurement
+            var measure = ((IRenderable)column.Text).Measure(options, maxWidth);
+            minWidths.Add(measure.Min);
+            maxWidths.Add(measure.Max);
+
             foreach (var row in rows)
             {
-                var measure = ((IRenderable)row).Measure(options, maxWidth);
+                measure = ((IRenderable)row).Measure(options, maxWidth);
                 minWidths.Add(measure.Min);
                 maxWidths.Add(measure.Max);
             }
