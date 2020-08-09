@@ -307,5 +307,24 @@ namespace Spectre.Console.Tests.Unit.Composition
             console.Lines[5].ShouldBe("│ Grault │ Garply │   Fred   │");
             console.Lines[6].ShouldBe("└────────┴────────┴──────────┘");
         }
+
+        [Fact]
+        public void Should_Render_Table_Without_Footer_If_No_Rows_Are_Added()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var table = new Table();
+            table.AddColumns("Foo", "Bar");
+            table.AddColumn(new TableColumn("Baz") { Padding = new Padding(3, 2) });
+
+            // When
+            console.Render(table);
+
+            // Then
+            console.Lines.Count.ShouldBe(3);
+            console.Lines[0].ShouldBe("┌─────┬─────┬────────┐");
+            console.Lines[1].ShouldBe("│ Foo │ Bar │   Baz  │");
+            console.Lines[2].ShouldBe("└─────┴─────┴────────┘");
+        }
     }
 }
