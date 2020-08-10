@@ -18,6 +18,7 @@ namespace Spectre.Console.Tests
         public Color Background { get; set; }
 
         public StringWriter Writer { get; }
+        public string RawOutput => Writer.ToString();
         public string Output => Writer.ToString().TrimEnd('\n');
         public IReadOnlyList<string> Lines => Output.Split(new char[] { '\n' });
 
