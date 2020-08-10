@@ -22,6 +22,20 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        public void Should_Write_Line_Breaks()
+        {
+            // Given
+            var fixture = new PlainConsole(width: 5);
+            var text = Text.New("\n\n");
+
+            // When
+            fixture.Render(text);
+
+            // Then
+            fixture.RawOutput.ShouldBe("\n\n");
+        }
+
+        [Fact]
         public void Should_Split_Unstyled_Text_To_New_Lines_If_Width_Exceeds_Console_Width()
         {
             // Given

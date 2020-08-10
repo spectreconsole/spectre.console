@@ -136,7 +136,7 @@ namespace Spectre.Console
         /// <inheritdoc/>
         IEnumerable<Segment> IRenderable.Render(RenderContext context, int width)
         {
-            if (string.IsNullOrWhiteSpace(_text))
+            if (string.IsNullOrEmpty(_text))
             {
                 return Array.Empty<Segment>();
             }
@@ -192,7 +192,7 @@ namespace Spectre.Console
                     }
                 }
 
-                if (!last)
+                if (!last || line.Count == 0)
                 {
                     result.Add(Segment.LineBreak());
                 }
@@ -214,7 +214,10 @@ namespace Spectre.Console
                 var index = segment.Text.IndexOf("\n", StringComparison.OrdinalIgnoreCase);
                 if (index == -1)
                 {
-                    result.Add(segment);
+                    if (!string.IsNullOrEmpty(segment.Text))
+                    {
+                        result.Add(segment);
+                    }
                 }
                 else
                 {
