@@ -21,6 +21,7 @@ namespace Spectre.Console
                 Border = BorderKind.None,
                 ShowHeaders = false,
                 IsGrid = true,
+                PadRightCell = false,
             };
         }
 
@@ -55,11 +56,14 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(column));
             }
 
+            // Only pad the most right cell if we've explicitly set a padding.
+            _table.PadRightCell = column.Padding != null;
+
             _table.AddColumn(new TableColumn(string.Empty)
             {
                 Width = column.Width,
                 NoWrap = column.NoWrap,
-                Padding = column.Padding,
+                Padding = column.Padding ?? new Padding(0, 2),
                 Alignment = column.Alignment,
             });
         }

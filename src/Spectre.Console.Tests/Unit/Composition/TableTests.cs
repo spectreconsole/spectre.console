@@ -254,9 +254,9 @@ namespace Spectre.Console.Tests.Unit.Composition
 
             // Then
             console.Lines.Count.ShouldBe(3);
-            console.Lines[0].ShouldBe("Foo     Bar     Baz  ");
-            console.Lines[1].ShouldBe("Qux     Corgi   Waldo");
-            console.Lines[2].ShouldBe("Grault  Garply  Fred ");
+            console.Lines[0].ShouldBe("Foo    Bar    Baz  ");
+            console.Lines[1].ShouldBe("Qux    Corgi  Waldo");
+            console.Lines[2].ShouldBe("Grault Garply Fred ");
         }
 
         [Fact]
