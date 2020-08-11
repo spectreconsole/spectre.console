@@ -57,16 +57,22 @@ namespace Spectre.Console.Internal
                     var color = ColorTable.GetColor(part);
                     if (color == null)
                     {
-                        if (!foreground)
+                        if (part.StartsWith("#", StringComparison.OrdinalIgnoreCase))
                         {
-                            error = $"Could not find color '{part}'.";
+                            color = ParseHexColor(part, out error);
+                            if (!string.IsNullOrWhiteSpace(error))
+                            {
+                                return null;
+                            }
                         }
                         else
                         {
-                            error = $"Could not find color or style '{part}'.";
-                        }
+                            error = !foreground
+                                ? $"Could not find color '{part}'."
+                                : $"Could not find color or style '{part}'.";
 
-                        return null;
+                            return null;
+                        }
                     }
 
                     if (foreground)
@@ -94,6 +100,43 @@ namespace Spectre.Console.Internal
 
             error = null;
             return new Style(effectiveForeground, effectiveBackground, effectiveDecoration);
+        }
+
+        private static Color? ParseHexColor(string hex, out string error)
+        {
+            error = null;
+
+            hex = hex ?? string.Empty;
+            hex = hex.Replace("#", string.Empty).Trim();
+
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(hex))
+                {
+                    if (hex.Length == 6)
+                    {
+                        return new Color(
+                            (byte)Convert.ToUInt32(hex.Substring(0, 2), 16),
+                            (byte)Convert.ToUInt32(hex.Substring(2, 2), 16),
+                            (byte)Convert.ToUInt32(hex.Substring(4, 2), 16));
+                    }
+                    else if (hex.Length == 3)
+                    {
+                        return new Color(
+                            (byte)Convert.ToUInt32(new string(hex[0], 2), 16),
+                            (byte)Convert.ToUInt32(new string(hex[1], 2), 16),
+                            (byte)Convert.ToUInt32(new string(hex[2], 2), 16));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error = $"Invalid hex color '#{hex}'. {ex.Message}";
+                return null;
+            }
+
+            error = $"Invalid hex color '#{hex}'.";
+            return null;
         }
     }
 }
