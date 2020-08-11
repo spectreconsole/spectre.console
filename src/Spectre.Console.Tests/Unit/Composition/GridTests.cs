@@ -6,6 +6,25 @@ namespace Spectre.Console.Tests.Unit.Composition
 {
     public sealed class GridTests
     {
+        public sealed class TheAddColumnMethod
+        {
+            [Fact]
+            public void Should_Throw_If_Rows_Are_Not_Empty()
+            {
+                // Given
+                var grid = new Grid();
+                grid.AddColumn();
+                grid.AddRow("Hello World!");
+
+                // When
+                var result = Record.Exception(() => grid.AddColumn());
+
+                // Then
+                result.ShouldBeOfType<InvalidOperationException>()
+                    .Message.ShouldBe("Cannot add new columns to grid with existing rows.");
+            }
+        }
+
         public sealed class TheAddRowMethod
         {
             [Fact]
@@ -51,6 +70,30 @@ namespace Spectre.Console.Tests.Unit.Composition
                 // Then
                 result.ShouldBeOfType<InvalidOperationException>();
                 result.Message.ShouldBe("The number of row columns are greater than the number of grid columns.");
+            }
+        }
+
+        public sealed class TheAddEmptyRowMethod
+        {
+            [Fact]
+            public void Should_Add_Empty_Row()
+            {
+                // Given
+                var console = new PlainConsole(width: 80);
+                var grid = new Grid();
+                grid.AddColumns(2);
+                grid.AddRow("Foo", "Bar");
+                grid.AddEmptyRow();
+                grid.AddRow("Qux", "Corgi");
+
+                // When
+                console.Render(grid);
+
+                // Then
+                console.Lines.Count.ShouldBe(3);
+                console.Lines[0].ShouldBe("Foo  Bar  ");
+                console.Lines[1].ShouldBe("          ");
+                console.Lines[2].ShouldBe("Qux  Corgi");
             }
         }
 

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Spectre.Console.Composition;
+using Spectre.Console.Internal;
 
 namespace Spectre.Console
 {
@@ -56,6 +58,11 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(column));
             }
 
+            if (_table.RowCount > 0)
+            {
+                throw new InvalidOperationException("Cannot add new columns to grid with existing rows.");
+            }
+
             // Only pad the most right cell if we've explicitly set a padding.
             _table.PadRightCell = column.Padding != null;
 
@@ -95,6 +102,16 @@ namespace Spectre.Console
             {
                 AddColumn(column);
             }
+        }
+
+        /// <summary>
+        /// Adds an empty row to the grid.
+        /// </summary>
+        public void AddEmptyRow()
+        {
+            var columns = new string[_table.ColumnCount];
+            Enumerable.Range(0, _table.ColumnCount).ForEach(index => columns[index] = string.Empty);
+            AddRow(columns);
         }
 
         /// <summary>

@@ -81,7 +81,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(column));
             }
 
-            _columns.Add(new TableColumn(column));
+            AddColumn(new TableColumn(column));
         }
 
         /// <summary>
@@ -93,6 +93,11 @@ namespace Spectre.Console
             if (column is null)
             {
                 throw new ArgumentNullException(nameof(column));
+            }
+
+            if (_rows.Count > 0)
+            {
+                throw new InvalidOperationException("Cannot add new columns to table with existing rows.");
             }
 
             _columns.Add(column);
@@ -109,7 +114,10 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(columns));
             }
 
-            _columns.AddRange(columns.Select(column => new TableColumn(column)));
+            foreach (var column in columns)
+            {
+                AddColumn(column);
+            }
         }
 
         /// <summary>
@@ -123,7 +131,20 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(columns));
             }
 
-            _columns.AddRange(columns.Select(column => column));
+            foreach (var column in columns)
+            {
+                AddColumn(column);
+            }
+        }
+
+        /// <summary>
+        /// Adds an empty row to the table.
+        /// </summary>
+        public void AddEmptyRow()
+        {
+            var columns = new string[ColumnCount];
+            Enumerable.Range(0, ColumnCount).ForEach(index => columns[index] = string.Empty);
+            AddRow(columns);
         }
 
         /// <summary>

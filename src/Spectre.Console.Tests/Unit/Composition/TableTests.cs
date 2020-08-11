@@ -21,6 +21,22 @@ namespace Spectre.Console.Tests.Unit.Composition
                 result.ShouldBeOfType<ArgumentNullException>()
                     .ParamName.ShouldBe("column");
             }
+
+            [Fact]
+            public void Should_Throw_If_Rows_Are_Not_Empty()
+            {
+                // Given
+                var grid = new Table();
+                grid.AddColumn("Foo");
+                grid.AddRow("Hello World");
+
+                // When
+                var result = Record.Exception(() => grid.AddColumn("Bar"));
+
+                // Then
+                result.ShouldBeOfType<InvalidOperationException>()
+                    .Message.ShouldBe("Cannot add new columns to table with existing rows.");
+            }
         }
 
         public sealed class TheAddColumnsMethod
@@ -85,6 +101,34 @@ namespace Spectre.Console.Tests.Unit.Composition
                 // Then
                 result.ShouldBeOfType<InvalidOperationException>();
                 result.Message.ShouldBe("The number of row columns are greater than the number of table columns.");
+            }
+        }
+
+        public sealed class TheAddEmptyRowMethod
+        {
+            [Fact]
+            public void Should_Render_Table_Correctly()
+            {
+                // Given
+                var console = new PlainConsole(width: 80);
+                var table = new Table();
+                table.AddColumns("Foo", "Bar", "Baz");
+                table.AddRow("Qux", "Corgi", "Waldo");
+                table.AddEmptyRow();
+                table.AddRow("Grault", "Garply", "Fred");
+
+                // When
+                console.Render(table);
+
+                // Then
+                console.Lines.Count.ShouldBe(7);
+                console.Lines[0].ShouldBe("┌────────┬────────┬───────┐");
+                console.Lines[1].ShouldBe("│ Foo    │ Bar    │ Baz   │");
+                console.Lines[2].ShouldBe("├────────┼────────┼───────┤");
+                console.Lines[3].ShouldBe("│ Qux    │ Corgi  │ Waldo │");
+                console.Lines[4].ShouldBe("│        │        │       │");
+                console.Lines[5].ShouldBe("│ Grault │ Garply │ Fred  │");
+                console.Lines[6].ShouldBe("└────────┴────────┴───────┘");
             }
         }
 
