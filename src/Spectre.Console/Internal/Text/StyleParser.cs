@@ -14,16 +14,23 @@ namespace Spectre.Console.Internal
                 throw new InvalidOperationException(error);
             }
 
+            if (style == null)
+            {
+                // This should not happen, but we need to please the compiler
+                // which cannot know that style isn't null here.
+                throw new InvalidOperationException("Could not parse style.");
+            }
+
             return style;
         }
 
-        public static bool TryParse(string text, out Style style)
+        public static bool TryParse(string text, out Style? style)
         {
             style = Parse(text, out var error);
             return error == null;
         }
 
-        private static Style Parse(string text, out string error)
+        private static Style? Parse(string text, out string? error)
         {
             var effectiveDecoration = (Decoration?)null;
             var effectiveForeground = (Color?)null;
@@ -113,11 +120,11 @@ namespace Spectre.Console.Internal
         }
 
         [SuppressMessage("Design", "CA1031:Do not catch general exception types")]
-        private static Color? ParseHexColor(string hex, out string error)
+        private static Color? ParseHexColor(string hex, out string? error)
         {
             error = null;
 
-            hex = hex ?? string.Empty;
+            hex ??= string.Empty;
             hex = hex.Replace("#", string.Empty).Trim();
 
             try
@@ -151,11 +158,12 @@ namespace Spectre.Console.Internal
         }
 
         [SuppressMessage("Design", "CA1031:Do not catch general exception types")]
-        private static Color? ParseRgbColor(string rgb, out string error)
+        private static Color? ParseRgbColor(string rgb, out string? error)
         {
             try
             {
                 error = null;
+
                 var normalized = rgb ?? string.Empty;
                 if (normalized.Length >= 3)
                 {

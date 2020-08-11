@@ -50,7 +50,12 @@ namespace Spectre.Console.Composition
 
         private Segment(string text, Style style, bool lineBreak)
         {
-            Text = text?.NormalizeLineEndings() ?? throw new ArgumentNullException(nameof(text));
+            if (text is null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            Text = text.NormalizeLineEndings();
             Style = style;
             IsLineBreak = lineBreak;
         }
@@ -89,7 +94,7 @@ namespace Spectre.Console.Composition
         /// </summary>
         /// <param name="offset">The offset where to split the segment.</param>
         /// <returns>One or two new segments representing the split.</returns>
-        public (Segment First, Segment Second) Split(int offset)
+        public (Segment First, Segment? Second) Split(int offset)
         {
             if (offset < 0)
             {

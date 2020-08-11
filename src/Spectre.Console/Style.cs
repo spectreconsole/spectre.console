@@ -67,7 +67,7 @@ namespace Spectre.Console
         /// if the conversion succeeded, or <c>null</c> if the conversion failed.
         /// </param>
         /// <returns><c>true</c> if s was converted successfully; otherwise, <c>false</c>.</returns>
-        public static bool TryParse(string text, out Style result)
+        public static bool TryParse(string text, out Style? result)
         {
             return StyleParser.TryParse(text, out result);
         }
@@ -113,13 +113,13 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Equals(obj as Style);
         }
 
         /// <inheritdoc/>
-        public bool Equals(Style other)
+        public bool Equals(Style? other)
         {
             if (other == null)
             {

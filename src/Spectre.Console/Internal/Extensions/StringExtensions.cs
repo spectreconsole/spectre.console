@@ -17,14 +17,9 @@ namespace Spectre.Console.Internal
 
         public static string NormalizeLineEndings(this string text, bool native = false)
         {
-            if (text == null)
-            {
-                return null;
-            }
+            text ??= string.Empty;
 
-            var normalized = text?.Replace("\r\n", "\n")
-                ?.Replace("\r", string.Empty);
-
+            var normalized = text?.Replace("\r\n", "\n")?.Replace("\r", string.Empty) ?? string.Empty;
             if (native && !_alreadyNormalized)
             {
                 normalized = normalized.Replace("\n", Environment.NewLine);
@@ -35,7 +30,8 @@ namespace Spectre.Console.Internal
 
         public static string[] SplitLines(this string text)
         {
-            return text.NormalizeLineEndings().Split(new[] { '\n' }, StringSplitOptions.None);
+            var result = text?.NormalizeLineEndings()?.Split(new[] { '\n' }, StringSplitOptions.None);
+            return result ?? Array.Empty<string>();
         }
     }
 }

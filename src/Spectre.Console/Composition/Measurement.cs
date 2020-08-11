@@ -29,7 +29,7 @@ namespace Spectre.Console.Composition
         }
 
         /// <inheritdoc/>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Measurement measurement && Equals(measurement);
         }

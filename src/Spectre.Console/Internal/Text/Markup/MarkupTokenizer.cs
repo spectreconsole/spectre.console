@@ -7,7 +7,7 @@ namespace Spectre.Console.Internal
     {
         private readonly StringBuffer _reader;
 
-        public MarkupToken Current { get; private set; }
+        public MarkupToken? Current { get; private set; }
 
         public MarkupTokenizer(string text)
         {

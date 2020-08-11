@@ -39,12 +39,12 @@ namespace Spectre.Console
         /// fit the available space. If <c>false</c>, the table width will be
         /// auto calculated. Defaults to <c>false</c>.
         /// </summary>
-        public bool Expand { get; set; } = false;
+        public bool Expand { get; set; }
 
         /// <summary>
         /// Gets or sets the width of the table.
         /// </summary>
-        public int? Width { get; set; } = null;
+        public int? Width { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not to use
@@ -54,7 +54,7 @@ namespace Spectre.Console
         public bool SafeBorder { get; set; } = true;
 
         // Whether this is a grid or not.
-        internal bool IsGrid { get; set; } = false;
+        internal bool IsGrid { get; set; }
 
         // Whether or not the most right cell should be padded.
         // This is almost always the case, unless we're rendering

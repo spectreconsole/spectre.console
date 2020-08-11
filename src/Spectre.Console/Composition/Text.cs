@@ -201,7 +201,7 @@ namespace Spectre.Console
             return result;
         }
 
-        private IEnumerable<Segment> SplitLineBreaks(IEnumerable<Segment> segments)
+        private static IEnumerable<Segment> SplitLineBreaks(IEnumerable<Segment> segments)
         {
             // Creates individual segments of line breaks.
             var result = new List<Segment>();
@@ -228,7 +228,11 @@ namespace Spectre.Console
                     }
 
                     result.Add(Segment.LineBreak());
-                    queue.Push(new Segment(second.Text.Substring(1), second.Style));
+
+                    if (second != null)
+                    {
+                        queue.Push(new Segment(second.Text.Substring(1), second.Style));
+                    }
                 }
             }
 

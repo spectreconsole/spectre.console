@@ -9,6 +9,8 @@ namespace Spectre.Console
     /// </summary>
     public sealed class Panel : IRenderable
     {
+        private const int EdgeWidth = 2;
+
         private readonly IRenderable _child;
 
         /// <summary>
@@ -26,14 +28,14 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the alignment of the panel contents.
         /// </summary>
-        public Justify? Alignment { get; set; } = null;
+        public Justify? Alignment { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the panel should
         /// fit the available space. If <c>false</c>, the panel width will be
         /// auto calculated. Defaults to <c>false</c>.
         /// </summary>
-        public bool Expand { get; set; } = false;
+        public bool Expand { get; set; }
 
         /// <summary>
         /// Gets or sets the padding.
@@ -61,13 +63,12 @@ namespace Spectre.Console
         {
             var border = Composition.Border.GetBorder(Border, (context.LegacyConsole || !context.Unicode) && SafeBorder);
 
-            var edgeWidth = 2;
             var paddingWidth = Padding.GetHorizontalPadding();
-            var childWidth = width - edgeWidth - paddingWidth;
+            var childWidth = width - EdgeWidth - paddingWidth;
 
             if (!Expand)
             {
-                var measurement = _child.Measure(context, width - edgeWidth - paddingWidth);
+                var measurement = _child.Measure(context, width - EdgeWidth - paddingWidth);
                 childWidth = measurement.Max;
             }
 

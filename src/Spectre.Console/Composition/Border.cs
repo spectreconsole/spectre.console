@@ -57,15 +57,20 @@ namespace Spectre.Console.Composition
         private Dictionary<BorderPart, string> Initialize()
         {
             var lookup = new Dictionary<BorderPart, string>();
-            foreach (BorderPart part in Enum.GetValues(typeof(BorderPart)))
+            foreach (BorderPart? part in Enum.GetValues(typeof(BorderPart)))
             {
-                var text = GetBoxPart(part);
+                if (part == null)
+                {
+                    continue;
+                }
+
+                var text = GetBoxPart(part.Value);
                 if (text.Length > 1)
                 {
                     throw new InvalidOperationException("A box part cannot contain more than one character.");
                 }
 
-                lookup.Add(part, GetBoxPart(part));
+                lookup.Add(part.Value, GetBoxPart(part.Value));
             }
 
             return lookup;

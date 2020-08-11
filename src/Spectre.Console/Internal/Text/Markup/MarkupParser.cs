@@ -6,7 +6,7 @@ namespace Spectre.Console.Internal
 {
     internal static class MarkupParser
     {
-        public static Text Parse(string text, Style style = null)
+        public static Text Parse(string text, Style? style = null)
         {
             style ??= Style.Plain;
 
@@ -18,6 +18,10 @@ namespace Spectre.Console.Internal
             while (tokenizer.MoveNext())
             {
                 var token = tokenizer.Current;
+                if (token == null)
+                {
+                    break;
+                }
 
                 if (token.Kind == MarkupTokenKind.Open)
                 {

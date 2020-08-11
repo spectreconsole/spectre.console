@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,26 +11,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="**/ColorPalette.*.cs">
-      <DependentUpon>**/ColorPalette.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Color.*.cs">
-      <DependentUpon>Color.cs</DependentUpon>
-    </Compile>
-    <Compile Update="AnsiConsole.*.cs">
-      <DependentUpon>AnsiConsole.cs</DependentUpon>
-    </Compile>
-    <Compile Update="ConsoleExtensions.*.cs">
-      <DependentUpon>ConsoleExtensions.cs</DependentUpon>
-    </Compile>
-    <Compile Update="**/Table.*.cs">
-      <DependentUpon>**/Table.cs</DependentUpon>
-    </Compile>
-
+    <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="TunnelVisionLabs.ReferenceAssemblyAnnotator" Version="1.0.0-alpha.160" PrivateAssets="all" />
+    <PackageDownload Include="Microsoft.NETCore.App.Ref" Version="[$(AnnotatedReferenceAssemblyVersion)]" />
+    <PackageReference Include="Nullable" Version="1.2.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
+  <PropertyGroup>
+    <AnnotatedReferenceAssemblyVersion>3.0.0</AnnotatedReferenceAssemblyVersion>
+    <GenerateNullableAttributes>False</GenerateNullableAttributes>
+  </PropertyGroup>
 
 </Project>

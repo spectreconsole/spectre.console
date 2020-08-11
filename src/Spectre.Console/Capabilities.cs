@@ -50,7 +50,7 @@ namespace Spectre.Console
                 ColorSystem.Standard => "4 bits",
                 ColorSystem.EightBit => "8 bits",
                 ColorSystem.TrueColor => "24 bits",
-                _ => "?"
+                _ => "?",
             };
 
             return $"ANSI={supportsAnsi}, Colors={ColorSystem}, Kind={legacyConsole} ({bits})";

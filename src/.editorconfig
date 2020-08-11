@@ -78,3 +78,6 @@ dotnet_diagnostic.CA1826.severity = none
 
 # RCS1079: Throwing of new NotImplementedException.
 dotnet_diagnostic.RCS1079.severity = warning
+
+# RCS1057: Add empty line between declarations.
+dotnet_diagnostic.RCS1057.severity = none
