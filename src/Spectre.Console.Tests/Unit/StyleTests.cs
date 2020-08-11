@@ -39,14 +39,18 @@ namespace Spectre.Console.Tests.Unit
 
             [Theory]
             [InlineData("bold", Decoration.Bold)]
+            [InlineData("b", Decoration.Bold)]
             [InlineData("dim", Decoration.Dim)]
+            [InlineData("i", Decoration.Italic)]
             [InlineData("italic", Decoration.Italic)]
             [InlineData("underline", Decoration.Underline)]
+            [InlineData("u", Decoration.Underline)]
             [InlineData("invert", Decoration.Invert)]
             [InlineData("conceal", Decoration.Conceal)]
             [InlineData("slowblink", Decoration.SlowBlink)]
             [InlineData("rapidblink", Decoration.RapidBlink)]
             [InlineData("strikethrough", Decoration.Strikethrough)]
+            [InlineData("s", Decoration.Strikethrough)]
             public void Should_Parse_Decoration(string text, Decoration decoration)
             {
                 // Given, When
