@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace Spectre.Console.Internal
 {
@@ -65,6 +67,14 @@ namespace Spectre.Console.Internal
                                 return null;
                             }
                         }
+                        else if (part.StartsWith("rgb", StringComparison.OrdinalIgnoreCase))
+                        {
+                            color = ParseRgbColor(part, out error);
+                            if (!string.IsNullOrWhiteSpace(error))
+                            {
+                                return null;
+                            }
+                        }
                         else
                         {
                             error = !foreground
@@ -102,6 +112,7 @@ namespace Spectre.Console.Internal
             return new Style(effectiveForeground, effectiveBackground, effectiveDecoration);
         }
 
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types")]
         private static Color? ParseHexColor(string hex, out string error)
         {
             error = null;
@@ -136,6 +147,44 @@ namespace Spectre.Console.Internal
             }
 
             error = $"Invalid hex color '#{hex}'.";
+            return null;
+        }
+
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types")]
+        private static Color? ParseRgbColor(string rgb, out string error)
+        {
+            try
+            {
+                error = null;
+                var normalized = rgb ?? string.Empty;
+                if (normalized.Length >= 3)
+                {
+                    // Trim parenthesises
+                    normalized = normalized.Substring(3).Trim();
+
+                    if (normalized.StartsWith("(", StringComparison.OrdinalIgnoreCase) &&
+                       normalized.EndsWith(")", StringComparison.OrdinalIgnoreCase))
+                    {
+                        normalized = normalized.Trim('(').Trim(')');
+
+                        var parts = normalized.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (parts.Length == 3)
+                        {
+                            return new Color(
+                                (byte)Convert.ToInt32(parts[0], CultureInfo.InvariantCulture),
+                                (byte)Convert.ToInt32(parts[1], CultureInfo.InvariantCulture),
+                                (byte)Convert.ToInt32(parts[2], CultureInfo.InvariantCulture));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error = $"Invalid RGB color '{rgb}'. {ex.Message}";
+                return null;
+            }
+
+            error = $"Invalid RGB color '{rgb}'.";
             return null;
         }
     }
