@@ -153,6 +153,35 @@ namespace Spectre.Console.Tests.Unit
                 result.ShouldNotBeNull();
                 result.Message.ShouldBe(expected);
             }
+
+            [Theory]
+            [InlineData("rgb(255,0,0) on rgb(0,0,255)")]
+            public void Should_Parse_Rgb_Colors_Correctly(string style)
+            {
+                // Given, When
+                var result = Style.Parse(style);
+
+                // Then
+                result.Foreground.ShouldBe(Color.Red);
+                result.Background.ShouldBe(Color.Blue);
+            }
+
+            [Theory]
+            [InlineData("rgb()", "Invalid RGB color 'rgb()'.")]
+            [InlineData("rgb(", "Invalid RGB color 'rgb('.")]
+            [InlineData("rgb(255)", "Invalid RGB color 'rgb(255)'.")]
+            [InlineData("rgb(255,255)", "Invalid RGB color 'rgb(255,255)'.")]
+            [InlineData("rgb(255,255,255", "Invalid RGB color 'rgb(255,255,255'.")]
+            [InlineData("rgb(A,B,C)", "Invalid RGB color 'rgb(A,B,C)'. Input string was not in a correct format.")]
+            public void Should_Return_Error_If_Rgb_Color_Is_Invalid(string style, string expected)
+            {
+                // Given, When
+                var result = Record.Exception(() => Style.Parse(style));
+
+                // Then
+                result.ShouldNotBeNull();
+                result.Message.ShouldBe(expected);
+            }
         }
 
         public sealed class TheTryParseMethod
