@@ -16,7 +16,7 @@ namespace Spectre.Console
         Right = 1,
 
         /// <summary>
-        /// Centered
+        /// Centered.
         /// </summary>
         Center = 2,
     }

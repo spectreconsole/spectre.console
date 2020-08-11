@@ -45,7 +45,7 @@ namespace Spectre.Console.Internal
             return ColorPalette.EightBit[number];
         }
 
-        public static string GetName(int number)
+        public static string? GetName(int number)
         {
             _nameLookup.TryGetValue(number, out var name);
             return name;

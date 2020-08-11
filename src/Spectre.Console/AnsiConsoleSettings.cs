@@ -21,6 +21,6 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the out buffer.
         /// </summary>
-        public TextWriter Out { get; set; }
+        public TextWriter? Out { get; set; }
     }
 }

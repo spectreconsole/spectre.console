@@ -11,6 +11,8 @@ namespace Spectre.Console
     /// </summary>
     public sealed partial class Table
     {
+        private const int EdgeCount = 2;
+
         // Calculate the widths of each column, including padding, not including borders.
         // Ported from Rich by Will McGugan, licensed under MIT.
         // https://github.com/willmcgugan/rich/blob/527475837ebbfc427530b3ee0d4d0741d2d0fc6d/rich/table.py#L394
@@ -115,10 +117,9 @@ namespace Spectre.Console
 
         private int GetExtraWidth(bool includePadding)
         {
-            var edges = 2;
             var separators = _columns.Count - 1;
             var padding = includePadding ? _columns.Select(x => x.Padding.GetHorizontalPadding()).Sum() : 0;
-            return separators + edges + padding;
+            return separators + EdgeCount + padding;
         }
     }
 }
