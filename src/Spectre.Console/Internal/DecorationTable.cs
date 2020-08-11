@@ -15,14 +15,18 @@ namespace Spectre.Console.Internal
             {
                 { "none", Decoration.None },
                 { "bold", Decoration.Bold },
+                { "b", Decoration.Bold },
                 { "dim", Decoration.Dim },
                 { "italic", Decoration.Italic },
+                { "i", Decoration.Italic },
                 { "underline", Decoration.Underline },
+                { "u", Decoration.Underline },
                 { "invert", Decoration.Invert },
                 { "conceal", Decoration.Conceal },
                 { "slowblink", Decoration.SlowBlink },
                 { "rapidblink", Decoration.RapidBlink },
                 { "strikethrough", Decoration.Strikethrough },
+                { "s", Decoration.Strikethrough },
             };
         }
 
