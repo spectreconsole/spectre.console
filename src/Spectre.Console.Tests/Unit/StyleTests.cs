@@ -126,108 +126,54 @@ namespace Spectre.Console.Tests.Unit
                 result.ShouldBeOfType<InvalidOperationException>();
                 result.Message.ShouldBe("Could not find color 'lol'.");
             }
+
+            [Theory]
+            [InlineData("#FF0000 on #0000FF")]
+            [InlineData("#F00 on #00F")]
+            public void Should_Parse_Hex_Colors_Correctly(string style)
+            {
+                // Given, When
+                var result = Style.Parse(style);
+
+                // Then
+                result.Foreground.ShouldBe(Color.Red);
+                result.Background.ShouldBe(Color.Blue);
+            }
+
+            [Theory]
+            [InlineData("#", "Invalid hex color '#'.")]
+            [InlineData("#FF00FF00FF", "Invalid hex color '#FF00FF00FF'.")]
+            [InlineData("#FOO", "Invalid hex color '#FOO'. Could not find any recognizable digits.")]
+            public void Should_Return_Error_If_Hex_Color_Is_Invalid(string style, string expected)
+            {
+                // Given, When
+                var result = Record.Exception(() => Style.Parse(style));
+
+                // Then
+                result.ShouldNotBeNull();
+                result.Message.ShouldBe(expected);
+            }
         }
 
         public sealed class TheTryParseMethod
         {
             [Fact]
-            public void Default_Keyword_Should_Return_Default_Style()
+            public void Should_Return_True_If_Parsing_Succeeded()
             {
                 // Given, When
-                var result = Style.TryParse("default", out var style);
+                var result = Style.TryParse("bold", out var style);
 
                 // Then
                 result.ShouldBeTrue();
                 style.ShouldNotBeNull();
-                style.Foreground.ShouldBe(Color.Default);
-                style.Background.ShouldBe(Color.Default);
-                style.Decoration.ShouldBe(Decoration.None);
-            }
-
-            [Theory]
-            [InlineData("bold", Decoration.Bold)]
-            [InlineData("dim", Decoration.Dim)]
-            [InlineData("italic", Decoration.Italic)]
-            [InlineData("underline", Decoration.Underline)]
-            [InlineData("invert", Decoration.Invert)]
-            [InlineData("conceal", Decoration.Conceal)]
-            [InlineData("slowblink", Decoration.SlowBlink)]
-            [InlineData("rapidblink", Decoration.RapidBlink)]
-            [InlineData("strikethrough", Decoration.Strikethrough)]
-            public void Should_Parse_Decoration(string text, Decoration decoration)
-            {
-                // Given, When
-                var result = Style.TryParse(text, out var style);
-
-                // Then
-                result.ShouldBeTrue();
-                style.ShouldNotBeNull();
-                style.Decoration.ShouldBe(decoration);
+                style.Decoration.ShouldBe(Decoration.Bold);
             }
 
             [Fact]
-            public void Should_Parse_Text_And_Decoration()
+            public void Should_Return_False_If_Parsing_Failed()
             {
                 // Given, When
-                var result = Style.TryParse("bold underline blue on green", out var style);
-
-                // Then
-                result.ShouldBeTrue();
-                style.ShouldNotBeNull();
-                style.Decoration.ShouldBe(Decoration.Bold | Decoration.Underline);
-                style.Foreground.ShouldBe(Color.Blue);
-                style.Background.ShouldBe(Color.Green);
-            }
-
-            [Fact]
-            public void Should_Parse_Background_If_Foreground_Is_Set_To_Default()
-            {
-                // Given, When
-                var result = Style.TryParse("default on green", out var style);
-
-                // Then
-                result.ShouldBeTrue();
-                style.ShouldNotBeNull();
-                style.Decoration.ShouldBe(Decoration.None);
-                style.Foreground.ShouldBe(Color.Default);
-                style.Background.ShouldBe(Color.Green);
-            }
-
-            [Fact]
-            public void Should_Throw_If_Foreground_Is_Set_Twice()
-            {
-                // Given, When
-                var result = Style.TryParse("green yellow", out _);
-
-                // Then
-                result.ShouldBeFalse();
-            }
-
-            [Fact]
-            public void Should_Throw_If_Background_Is_Set_Twice()
-            {
-                // Given, When
-                var result = Style.TryParse("green on blue yellow", out _);
-
-                // Then
-                result.ShouldBeFalse();
-            }
-
-            [Fact]
-            public void Should_Throw_If_Color_Name_Could_Not_Be_Found()
-            {
-                // Given, When
-                var result = Style.TryParse("bold lol", out _);
-
-                // Then
-                result.ShouldBeFalse();
-            }
-
-            [Fact]
-            public void Should_Throw_If_Background_Color_Name_Could_Not_Be_Found()
-            {
-                // Given, When
-                var result = Style.TryParse("blue on lol", out _);
+                var result = Style.TryParse("lol", out _);
 
                 // Then
                 result.ShouldBeFalse();
