@@ -20,7 +20,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the padding of the column.
         /// </summary>
-        public Padding Padding { get; set; } = new Padding(0, 1);
+        public Padding? Padding { get; set; } = null;
 
         /// <summary>
         /// Gets or sets the alignment of the column.

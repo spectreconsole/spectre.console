@@ -53,7 +53,13 @@ namespace Spectre.Console
         /// </summary>
         public bool SafeBorder { get; set; } = true;
 
+        // Whether this is a grid or not.
         internal bool IsGrid { get; set; } = false;
+
+        // Whether or not the most right cell should be padded.
+        // This is almost always the case, unless we're rendering
+        // a grid without explicit padding in the last cell.
+        internal bool PadRightCell { get; set; } = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Table"/> class.
@@ -279,7 +285,7 @@ namespace Spectre.Console
                         }
 
                         // Pad column on the right side
-                        if (showBorder || (hideBorder && !lastCell) || (IsGrid && !lastCell))
+                        if (showBorder || (hideBorder && !lastCell) || (hideBorder && lastCell && IsGrid && PadRightCell))
                         {
                             var rightPadding = _columns[cellIndex].Padding.Right;
                             if (rightPadding > 0)
@@ -293,7 +299,7 @@ namespace Spectre.Console
                             // Add right column edge
                             result.Add(new Segment(border.GetPart(BorderPart.CellRight)));
                         }
-                        else if (showBorder || (hideBorder && !lastCell))
+                        else if (showBorder)
                         {
                             // Add column separator
                             result.Add(new Segment(border.GetPart(BorderPart.CellSeparator)));

@@ -99,13 +99,12 @@ namespace Spectre.Console.Tests.Unit.Composition
         }
 
         [Fact]
-        public void Should_Render_Grid_Column_Padding_Correctly()
+        public void Should_Use_Default_Padding()
         {
             // Given
             var console = new PlainConsole(width: 80);
             var grid = new Grid();
-            grid.AddColumn(new GridColumn { Padding = new Padding(3, 0) });
-            grid.AddColumns(2);
+            grid.AddColumns(3);
             grid.AddRow("Foo", "Bar", "Baz");
             grid.AddRow("Qux", "Corgi", "Waldo");
             grid.AddRow("Grault", "Garply", "Fred");
@@ -115,9 +114,32 @@ namespace Spectre.Console.Tests.Unit.Composition
 
             // Then
             console.Lines.Count.ShouldBe(3);
-            console.Lines[0].ShouldBe("   Foo    Bar     Baz  ");
-            console.Lines[1].ShouldBe("   Qux    Corgi   Waldo");
-            console.Lines[2].ShouldBe("   Grault Garply  Fred ");
+            console.Lines[0].ShouldBe("Foo     Bar     Baz  ");
+            console.Lines[1].ShouldBe("Qux     Corgi   Waldo");
+            console.Lines[2].ShouldBe("Grault  Garply  Fred ");
+        }
+
+        [Fact]
+        public void Should_Render_Explicit_Grid_Column_Padding_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var grid = new Grid();
+            grid.AddColumn(new GridColumn { Padding = new Padding(3, 0) });
+            grid.AddColumn(new GridColumn { Padding = new Padding(0, 0) });
+            grid.AddColumn(new GridColumn { Padding = new Padding(0, 3) });
+            grid.AddRow("Foo", "Bar", "Baz");
+            grid.AddRow("Qux", "Corgi", "Waldo");
+            grid.AddRow("Grault", "Garply", "Fred");
+
+            // When
+            console.Render(grid);
+
+            // Then
+            console.Lines.Count.ShouldBe(3);
+            console.Lines[0].ShouldBe("   Foo   Bar   Baz     ");
+            console.Lines[1].ShouldBe("   Qux   Corgi Waldo   ");
+            console.Lines[2].ShouldBe("   GraultGarplyFred    ");
         }
 
         [Fact]
