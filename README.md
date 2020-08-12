@@ -13,8 +13,9 @@ for Python.
 3. [Usage](#usage)  
    3.1. [Using the static API](#using-the-static-api)  
    3.2. [Creating a console](#creating-a-console)
-4. [Available styles](#available-styles)
-5. [Predefined colors](#predefined-colors)
+4. [Running examples](#running-examples)
+5. [Available styles](#available-styles)
+6. [Predefined colors](#predefined-colors)
 
 ## Features
 
@@ -83,6 +84,42 @@ _NOTE: Even if you can specify a specific color system to use
 when manually creating a console, remember that the user's terminal 
 might not be able to use it, so unless you're creating an IAnsiConsole 
 for testing, always use `ColorSystemSupport.Detect` and `AnsiSupport.Detect`._
+
+## Running examples
+
+To see Spectre.Console in action, install the 
+[dotnet-example](https://github.com/patriksvensson/dotnet-example)
+global tool.
+
+```
+> dotnet tool install -g dotnet-example
+```
+
+Now you can list available examples in this repository:
+
+```
+> dotnet example
+
+Examples
+
+Colors    Demonstrates how to use colors in the console.
+Grid      Demonstrates how to render grids in a console.
+Panel     Demonstrates how to render items in panels.
+Table     Demonstrates how to render tables in a console.
+```
+
+And to run an example:
+
+```
+> dotnet example table
+┌──────────┬──────────┬────────┐
+│ Foo      │ Bar      │ Baz    │
+├──────────┼──────────┼────────┤
+│ Hello    │ World!   │        │
+│ Bounjour │ le       │ monde! │
+│ Hej      │ Världen! │        │
+└──────────┴──────────┴────────┘
+```
 
 ## Available styles
 
