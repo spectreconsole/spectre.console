@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Spectre.Console.Internal
@@ -32,6 +33,50 @@ namespace Spectre.Console.Internal
         {
             var result = text?.NormalizeLineEndings()?.Split(new[] { '\n' }, StringSplitOptions.None);
             return result ?? Array.Empty<string>();
+        }
+
+        public static string[] SplitWords(this string word, StringSplitOptions options = StringSplitOptions.None)
+        {
+            var result = new List<string>();
+
+            static string Read(StringBuffer reader, Func<char, bool> criteria)
+            {
+                var buffer = new StringBuilder();
+                while (!reader.Eof)
+                {
+                    var current = reader.Peek();
+                    if (!criteria(current))
+                    {
+                        break;
+                    }
+
+                    buffer.Append(reader.Read());
+                }
+
+                return buffer.ToString();
+            }
+
+            using (var reader = new StringBuffer(word))
+            {
+                while (!reader.Eof)
+                {
+                    var current = reader.Peek();
+                    if (char.IsWhiteSpace(current))
+                    {
+                        var x = Read(reader, c => char.IsWhiteSpace(c));
+                        if (options != StringSplitOptions.RemoveEmptyEntries)
+                        {
+                            result.Add(x);
+                        }
+                    }
+                    else
+                    {
+                        result.Add(Read(reader, c => !char.IsWhiteSpace(c)));
+                    }
+                }
+            }
+
+            return result.ToArray();
         }
     }
 }

@@ -25,9 +25,26 @@ namespace Spectre.Console.Composition
         public bool IsLineBreak { get; }
 
         /// <summary>
+        /// Gets a value indicating whether or not this is a whitespace
+        /// that should be preserved but not taken into account when
+        /// layouting text.
+        /// </summary>
+        public bool IsWhiteSpace { get; }
+
+        /// <summary>
         /// Gets the segment style.
         /// </summary>
         public Style Style { get; }
+
+        /// <summary>
+        /// Gets a segment representing a line break.
+        /// </summary>
+        public static Segment LineBreak { get; } = new Segment("\n", Style.Plain, true);
+
+        /// <summary>
+        /// Gets an empty segment.
+        /// </summary>
+        public static Segment Empty { get; } = new Segment(string.Empty, Style.Plain);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Segment"/> class.
@@ -58,15 +75,7 @@ namespace Spectre.Console.Composition
             Text = text.NormalizeLineEndings();
             Style = style;
             IsLineBreak = lineBreak;
-        }
-
-        /// <summary>
-        /// Creates a segment that represents an implicit line break.
-        /// </summary>
-        /// <returns>A segment that represents an implicit line break.</returns>
-        public static Segment LineBreak()
-        {
-            return new Segment("\n", Style.Plain, true);
+            IsWhiteSpace = string.IsNullOrWhiteSpace(text);
         }
 
         /// <summary>
@@ -143,9 +152,9 @@ namespace Spectre.Console.Composition
             {
                 var segment = stack.Pop();
 
-                if (line.Length + segment.Text.Length > maxWidth)
+                if (line.Width + segment.Text.Length > maxWidth)
                 {
-                    var diff = -(maxWidth - (line.Length + segment.Text.Length));
+                    var diff = -(maxWidth - (line.Width + segment.Text.Length));
                     var offset = segment.Text.Length - diff;
 
                     var (first, second) = segment.Split(offset);
@@ -166,7 +175,7 @@ namespace Spectre.Console.Composition
                 {
                     if (segment.Text == "\n")
                     {
-                        if (line.Length > 0 || segment.IsLineBreak)
+                        if (line.Width > 0 || segment.IsLineBreak)
                         {
                             lines.Add(line);
                             line = new SegmentLine();
@@ -189,7 +198,7 @@ namespace Spectre.Console.Composition
 
                         if (parts.Length > 1)
                         {
-                            if (line.Length > 0)
+                            if (line.Width > 0)
                             {
                                 lines.Add(line);
                                 line = new SegmentLine();

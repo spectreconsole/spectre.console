@@ -10,7 +10,7 @@ namespace Spectre.Console.Internal
         {
             style ??= Style.Plain;
 
-            var result = new Text(string.Empty);
+            var result = new Text();
             using var tokenizer = new MarkupTokenizer(text);
 
             var stack = new Stack<Style>();

@@ -12,7 +12,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new PlainConsole(width: 80);
 
             // When
-            console.Render(new Panel(Text.New("Hello World")));
+            console.Render(new Panel(new Text("Hello World")));
 
             // Then
             console.Lines.Count.ShouldBe(3);
@@ -28,7 +28,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new PlainConsole(width: 80);
 
             // When
-            console.Render(new Panel(Text.New("Hello World"))
+            console.Render(new Panel(new Text("Hello World"))
             {
                 Padding = new Padding(3, 5),
             });
@@ -47,7 +47,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new PlainConsole(width: 80);
 
             // When
-            console.Render(new Panel(Text.New(" \n💩\n ")));
+            console.Render(new Panel(new Text(" \n💩\n ")));
 
             // Then
             console.Lines.Count.ShouldBe(5);
@@ -65,7 +65,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new PlainConsole(width: 80);
 
             // When
-            console.Render(new Panel(Text.New("Hello World\nFoo Bar")));
+            console.Render(new Panel(new Text("Hello World\nFoo Bar")));
 
             // Then
             console.Lines.Count.ShouldBe(4);
@@ -81,7 +81,7 @@ namespace Spectre.Console.Tests.Unit
             // Given
             var console = new PlainConsole(width: 80);
             var text = new Panel(
-                Text.New("I heard [underline on blue]you[/] like 📦\n\n\n\nSo I put a 📦 in a 📦"));
+                Text.Markup("I heard [underline on blue]you[/] like 📦\n\n\n\nSo I put a 📦 in a 📦"));
 
             // When
             console.Render(text);
@@ -104,7 +104,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new PlainConsole(width: 80);
 
             // When
-            console.Render(new Panel(Text.New("Hello World"))
+            console.Render(new Panel(new Text("Hello World"))
             {
                 Expand = true,
             });
@@ -126,7 +126,7 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Render(
                 new Panel(
-                    Text.New("Hello World").WithAlignment(Justify.Right))
+                    new Text("Hello World").WithAlignment(Justify.Right))
                 {
                     Expand = true,
                 });
@@ -147,7 +147,7 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Render(
                 new Panel(
-                    Text.New("Hello World").WithAlignment(Justify.Center))
+                    new Text("Hello World").WithAlignment(Justify.Center))
                 {
                     Expand = true,
                 });
@@ -166,7 +166,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new PlainConsole(width: 80);
 
             // When
-            console.Render(new Panel(new Panel(Text.New("Hello World"))));
+            console.Render(new Panel(new Panel(new Text("Hello World"))));
 
             // Then
             console.Lines.Count.ShouldBe(5);

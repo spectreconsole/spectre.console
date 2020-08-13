@@ -3,7 +3,7 @@ using Shouldly;
 using Spectre.Console.Composition;
 using Xunit;
 
-namespace Spectre.Console.Tests.Unit.Composition
+namespace Spectre.Console.Tests.Unit
 {
     public sealed class BorderTests
     {

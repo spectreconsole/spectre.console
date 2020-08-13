@@ -40,7 +40,7 @@ namespace Spectre.Console
         /// <param name="text">The table column text.</param>
         public TableColumn(string text)
         {
-            Text = Text.New(text ?? throw new ArgumentNullException(nameof(text)));
+            Text = Text.Markup(text ?? throw new ArgumentNullException(nameof(text)));
             Width = null;
             Padding = new Padding(1, 1);
             NoWrap = false;

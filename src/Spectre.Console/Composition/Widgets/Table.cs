@@ -168,7 +168,7 @@ namespace Spectre.Console
                 throw new InvalidOperationException("The number of row columns are greater than the number of table columns.");
             }
 
-            _rows.Add(columns.Select(column => Text.New(column)).ToList());
+            _rows.Add(columns.Select(column => Text.Markup(column)).ToList());
         }
 
         /// <inheritdoc/>
@@ -268,7 +268,7 @@ namespace Spectre.Console
                     }
 
                     result.Add(new Segment(border.GetPart(BorderPart.HeaderTopRight)));
-                    result.Add(Segment.LineBreak());
+                    result.Add(Segment.LineBreak);
                 }
 
                 // Iterate through each cell row
@@ -327,7 +327,7 @@ namespace Spectre.Console
                         }
                     }
 
-                    result.Add(Segment.LineBreak());
+                    result.Add(Segment.LineBreak);
                 }
 
                 // Show header separator?
@@ -349,7 +349,7 @@ namespace Spectre.Console
                     }
 
                     result.Add(new Segment(border.GetPart(BorderPart.HeaderBottomRight)));
-                    result.Add(Segment.LineBreak());
+                    result.Add(Segment.LineBreak);
                 }
 
                 // Show bottom of footer?
@@ -371,7 +371,7 @@ namespace Spectre.Console
                     }
 
                     result.Add(new Segment(border.GetPart(BorderPart.FooterBottomRight)));
-                    result.Add(Segment.LineBreak());
+                    result.Add(Segment.LineBreak);
                 }
             }
 

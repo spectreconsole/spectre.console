@@ -2,7 +2,7 @@ using System;
 using Shouldly;
 using Xunit;
 
-namespace Spectre.Console.Tests.Unit.Composition
+namespace Spectre.Console.Tests.Unit
 {
     public sealed class TableTests
     {
