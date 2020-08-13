@@ -12,7 +12,7 @@ namespace Spectre.Console.Tests.Unit
         {
             [Theory]
             [InlineData("[yellow]Hello[/]", "[93mHello[0m")]
-            [InlineData("[yellow]Hello [italic]World[/]![/]", "[93mHello [0m[3;93mWorld[0m[93m![0m")]
+            [InlineData("[yellow]Hello [italic]World[/]![/]", "[93mHello[0m[93m [0m[3;93mWorld[0m[93m![0m")]
             public void Should_Output_Expected_Ansi_For_Markup(string markup, string expected)
             {
                 // Given
@@ -26,7 +26,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Theory]
-            [InlineData("[yellow]Hello [[ World[/]", "[93mHello [0m[93m[[0m[93m World[0m")]
+            [InlineData("[yellow]Hello [[ World[/]", "[93mHello[0m[93m [0m[93m[[0m[93m [0m[93mWorld[0m")]
             public void Should_Be_Able_To_Escape_Tags(string markup, string expected)
             {
                 // Given

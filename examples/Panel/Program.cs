@@ -7,10 +7,10 @@ namespace PanelExample
     {
         static void Main(string[] args)
         {
-            var content = Text.New(
+            var content = Text.Markup(
                 "[underline]I[/] heard [underline on blue]you[/] like 📦\n\n\n\n" +
                 "So I put a 📦 in a 📦\n\n" +
-                "😅", foreground: Color.White);
+                "😅");
 
             AnsiConsole.Render(
                 new Panel(
@@ -22,7 +22,7 @@ namespace PanelExample
 
             // Left adjusted panel with text
             AnsiConsole.Render(new Panel(
-                Text.New("Left adjusted\nLeft"))
+                new Text("Left adjusted\nLeft"))
             {
                 Expand = true,
                 Alignment = Justify.Left,
@@ -30,7 +30,7 @@ namespace PanelExample
 
             // Centered ASCII panel with text
             AnsiConsole.Render(new Panel(
-                Text.New("Centered\nCenter"))
+                new Text("Centered\nCenter"))
             {
                 Expand = true,
                 Alignment = Justify.Center,
@@ -39,7 +39,7 @@ namespace PanelExample
 
             // Right adjusted, rounded panel with text
             AnsiConsole.Render(new Panel(
-                Text.New("Right adjusted\nRight"))
+                new Text("Right adjusted\nRight"))
             {
                 Expand = true,
                 Alignment = Justify.Right,

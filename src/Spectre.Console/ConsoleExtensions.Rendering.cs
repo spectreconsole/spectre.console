@@ -28,17 +28,24 @@ namespace Spectre.Console
 
             var options = new RenderContext(console.Encoding, console.Capabilities.LegacyConsole);
 
-            foreach (var segment in renderable.Render(options, console.Width))
+            using (console.PushStyle(Style.Plain))
             {
-                if (!segment.Style.Equals(Style.Plain))
+                var current = Style.Plain;
+                foreach (var segment in renderable.Render(options, console.Width))
                 {
-                    using (var style = console.PushStyle(segment.Style))
+                    if (string.IsNullOrEmpty(segment.Text))
                     {
-                        console.Write(segment.Text);
+                        continue;
                     }
-                }
-                else
-                {
+
+                    if (!segment.Style.Equals(current))
+                    {
+                        console.Foreground = segment.Style.Foreground;
+                        console.Background = segment.Style.Background;
+                        console.Decoration = segment.Style.Decoration;
+                        current = segment.Style;
+                    }
+
                     console.Write(segment.Text);
                 }
             }

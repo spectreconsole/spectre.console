@@ -39,7 +39,7 @@ namespace TableExample
 
             // Add some rows
             table.AddRow("[blue][underline]Hell[/]o[/]", "World 🌍");
-            table.AddRow("[yellow]Patrik [green]\"Hello World[/]\" Svensson[/]", "Was [underline]here[/]!");
+            table.AddRow("[yellow]Patrik [green]\"Hello World\"[/] Svensson[/]", "Was [underline]here[/]!");
             table.AddEmptyRow();
             table.AddRow(
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
