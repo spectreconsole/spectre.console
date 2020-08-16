@@ -95,6 +95,29 @@ namespace Spectre.Console.Tests.Unit
                 console.Lines[1].ShouldBe("          ");
                 console.Lines[2].ShouldBe("Qux  Corgi");
             }
+
+            [Fact]
+            public void Should_Add_Empty_Row_At_The_End()
+            {
+                // Given
+                var console = new PlainConsole(width: 80);
+                var grid = new Grid();
+                grid.AddColumns(2);
+                grid.AddRow("Foo", "Bar");
+                grid.AddEmptyRow();
+                grid.AddRow("Qux", "Corgi");
+                grid.AddEmptyRow();
+
+                // When
+                console.Render(grid);
+
+                // Then
+                console.Lines.Count.ShouldBe(4);
+                console.Lines[0].ShouldBe("Foo  Bar  ");
+                console.Lines[1].ShouldBe("          ");
+                console.Lines[2].ShouldBe("Qux  Corgi");
+                console.Lines[3].ShouldBe("          ");
+            }
         }
 
         [Fact]

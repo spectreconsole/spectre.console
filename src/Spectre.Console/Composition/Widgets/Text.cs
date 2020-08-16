@@ -86,12 +86,13 @@ namespace Spectre.Console
                 return Array.Empty<Segment>();
             }
 
-            var justification = context.Justification ?? Alignment;
-
             var lines = SplitLines(context, maxWidth);
+
+            // Justify lines
+            var justification = context.Justification ?? Alignment;
             foreach (var (_, _, last, line) in lines.Enumerate())
             {
-                var length = line.Sum(l => l.StripLineEndings().CellLength(context.Encoding));
+                var length = line.Sum(l => l.CellLength(context.Encoding));
                 if (length < maxWidth)
                 {
                     // Justify right side
@@ -135,10 +136,6 @@ namespace Spectre.Console
             foreach (var (_, first, last, part) in text.SplitLines().Enumerate())
             {
                 var current = part;
-                if (string.IsNullOrEmpty(current) && last)
-                {
-                    break;
-                }
 
                 if (first)
                 {
