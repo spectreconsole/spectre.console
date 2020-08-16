@@ -70,6 +70,11 @@ namespace Spectre.Console.Internal
 
         public static int GetCellLength(Encoding encoding, char rune)
         {
+            if (rune == '\r' || rune == '\n')
+            {
+                return 0;
+            }
+
             // Is it represented by a single byte?
             // In that case we don't have to calculate the
             // actual cell width.

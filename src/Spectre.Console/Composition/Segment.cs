@@ -39,7 +39,7 @@ namespace Spectre.Console.Composition
         /// <summary>
         /// Gets a segment representing a line break.
         /// </summary>
-        public static Segment LineBreak { get; } = new Segment("\n", Style.Plain, true);
+        public static Segment LineBreak { get; } = new Segment(Environment.NewLine, Style.Plain, true);
 
         /// <summary>
         /// Gets an empty segment.
@@ -95,7 +95,7 @@ namespace Spectre.Console.Composition
         /// <returns>A new segment without any trailing line endings.</returns>
         public Segment StripLineEndings()
         {
-            return new Segment(Text.TrimEnd('\n'), Style);
+            return new Segment(Text.TrimEnd('\n').TrimEnd('\r'), Style);
         }
 
         /// <summary>

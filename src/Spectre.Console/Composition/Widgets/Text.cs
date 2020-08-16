@@ -92,7 +92,7 @@ namespace Spectre.Console
             var justification = context.Justification ?? Alignment;
             foreach (var (_, _, last, line) in lines.Enumerate())
             {
-                var length = line.Sum(l => l.CellLength(context.Encoding));
+                var length = line.Sum(l => l.StripLineEndings().CellLength(context.Encoding));
                 if (length < maxWidth)
                 {
                     // Justify right side

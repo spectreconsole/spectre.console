@@ -80,7 +80,7 @@ namespace Spectre.Console
                 new Segment(border.GetPart(BorderPart.HeaderTopLeft)),
                 new Segment(border.GetPart(BorderPart.HeaderTop, panelWidth)),
                 new Segment(border.GetPart(BorderPart.HeaderTopRight)),
-                new Segment("\n"),
+                Segment.LineBreak,
             };
 
             // Render the child.
@@ -118,14 +118,14 @@ namespace Spectre.Console
                 }
 
                 result.Add(new Segment(border.GetPart(BorderPart.CellRight)));
-                result.Add(new Segment("\n"));
+                result.Add(Segment.LineBreak);
             }
 
             // Panel bottom
             result.Add(new Segment(border.GetPart(BorderPart.FooterBottomLeft)));
             result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, panelWidth)));
             result.Add(new Segment(border.GetPart(BorderPart.FooterBottomRight)));
-            result.Add(new Segment("\n"));
+            result.Add(Segment.LineBreak);
 
             return result;
         }

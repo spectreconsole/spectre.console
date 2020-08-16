@@ -48,26 +48,14 @@ namespace Spectre.Console.Tests.Unit
                     .ShouldBe("Hello World");
             }
 
-            [Fact]
-            public void Should_Write_Line_Breaks()
+            [Theory]
+            [InlineData("Hello\n\nWorld\n\n")]
+            [InlineData("Hello\r\n\r\nWorld\r\n\r\n")]
+            public void Should_Write_Line_Breaks(string input)
             {
                 // Given
                 var fixture = new PlainConsole(width: 5);
-                var text = new Text("Hello\n\nWorld");
-
-                // When
-                fixture.Render(text);
-
-                // Then
-                fixture.RawOutput.ShouldBe("Hello\n\nWorld");
-            }
-
-            [Fact]
-            public void Should_Write_Line_Breaks_At_End()
-            {
-                // Given
-                var fixture = new PlainConsole(width: 5);
-                var text = new Text("Hello\n\nWorld\n\n");
+                var text = new Text(input);
 
                 // When
                 fixture.Render(text);
