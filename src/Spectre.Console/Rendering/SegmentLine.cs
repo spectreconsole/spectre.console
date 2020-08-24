@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
-namespace Spectre.Console.Composition
+namespace Spectre.Console.Rendering
 {
     /// <summary>
     /// Represents a collection of segments.

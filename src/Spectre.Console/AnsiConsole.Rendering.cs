@@ -1,4 +1,4 @@
-using Spectre.Console.Composition;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace Spectre.Console.Composition
+namespace Spectre.Console.Rendering
 {
     /// <summary>
     /// Represents a border used by tables.

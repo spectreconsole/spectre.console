@@ -1,16 +1,17 @@
 using System;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
     /// <summary>
     /// Represents a table column.
     /// </summary>
-    public sealed class TableColumn
+    public sealed class TableColumn : IAlignable
     {
         /// <summary>
         /// Gets the text associated with the column.
         /// </summary>
-        public Text Text { get; }
+        public IRenderable Text { get; }
 
         /// <summary>
         /// Gets or sets the width of the column.
@@ -39,8 +40,17 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="text">The table column text.</param>
         public TableColumn(string text)
+            : this(new Markup(text))
         {
-            Text = Text.Markup(text ?? throw new ArgumentNullException(nameof(text)));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TableColumn"/> class.
+        /// </summary>
+        /// <param name="renderable">The <see cref="IRenderable"/> instance to use as the table column.</param>
+        public TableColumn(IRenderable renderable)
+        {
+            Text = renderable ?? throw new ArgumentNullException(nameof(renderable));
             Width = null;
             Padding = new Padding(1, 1);
             NoWrap = false;

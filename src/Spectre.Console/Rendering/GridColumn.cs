@@ -3,7 +3,7 @@ namespace Spectre.Console
     /// <summary>
     /// Represents a grid column.
     /// </summary>
-    public sealed class GridColumn
+    public sealed class GridColumn : IAlignable
     {
         /// <summary>
         /// Gets or sets the width of the column.

@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Spectre.Console.Composition
+namespace Spectre.Console.Rendering
 {
     /// <summary>
     /// Represents a render context.

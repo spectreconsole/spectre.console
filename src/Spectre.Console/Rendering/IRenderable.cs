@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Spectre.Console.Composition
+namespace Spectre.Console.Rendering
 {
     /// <summary>
     /// Represents something that can be rendered to the console.

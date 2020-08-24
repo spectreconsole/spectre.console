@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Spectre.Console.Internal;
 
-namespace Spectre.Console.Composition
+namespace Spectre.Console.Rendering
 {
     /// <summary>
     /// Represents a renderable segment.

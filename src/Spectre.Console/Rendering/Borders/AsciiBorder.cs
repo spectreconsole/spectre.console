@@ -1,6 +1,6 @@
 using System;
 
-namespace Spectre.Console.Composition
+namespace Spectre.Console.Rendering
 {
     /// <summary>
     /// Represents an old school ASCII border.

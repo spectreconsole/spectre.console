@@ -1,4 +1,4 @@
-namespace Spectre.Console.Composition
+namespace Spectre.Console.Rendering
 {
     /// <summary>
     /// Represents an invisible border.

@@ -1,6 +1,6 @@
 using System;
 using Shouldly;
-using Spectre.Console.Composition;
+using Spectre.Console.Rendering;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit

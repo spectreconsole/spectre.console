@@ -1,6 +1,6 @@
 using System;
-using Spectre.Console.Composition;
 using Spectre.Console.Internal;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
