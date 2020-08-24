@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Spectre.Console.Composition;
 using Spectre.Console.Internal;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
@@ -100,13 +100,13 @@ namespace Spectre.Console
             var maxWidths = new List<int>();
 
             // Include columns in measurement
-            var measure = ((IRenderable)column.Text).Measure(options, maxWidth);
+            var measure = column.Text.Measure(options, maxWidth);
             minWidths.Add(measure.Min);
             maxWidths.Add(measure.Max);
 
             foreach (var row in rows)
             {
-                measure = ((IRenderable)row).Measure(options, maxWidth);
+                measure = row.Measure(options, maxWidth);
                 minWidths.Add(measure.Min);
                 maxWidths.Add(measure.Max);
             }

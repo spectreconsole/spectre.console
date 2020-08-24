@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Spectre.Console.Composition;
 using Spectre.Console.Internal;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
     /// <summary>
-    /// Represents a grid.
+    /// A renderable grid.
     /// </summary>
-    public sealed class Grid : IRenderable
+    public sealed class Grid : Renderable
     {
         private readonly Table _table;
 
@@ -28,13 +28,13 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        public Measurement Measure(RenderContext context, int maxWidth)
+        protected override Measurement Measure(RenderContext context, int maxWidth)
         {
             return ((IRenderable)_table).Measure(context, maxWidth);
         }
 
         /// <inheritdoc/>
-        public IEnumerable<Segment> Render(RenderContext context, int width)
+        protected override IEnumerable<Segment> Render(RenderContext context, int width)
         {
             return ((IRenderable)_table).Render(context, width);
         }
@@ -109,8 +109,8 @@ namespace Spectre.Console
         /// </summary>
         public void AddEmptyRow()
         {
-            var columns = new string[_table.ColumnCount];
-            Enumerable.Range(0, _table.ColumnCount).ForEach(index => columns[index] = string.Empty);
+            var columns = new IRenderable[_table.ColumnCount];
+            Enumerable.Range(0, _table.ColumnCount).ForEach(index => columns[index] = Text.Empty);
             AddRow(columns);
         }
 
@@ -118,7 +118,7 @@ namespace Spectre.Console
         /// Adds a new row to the grid.
         /// </summary>
         /// <param name="columns">The columns to add.</param>
-        public void AddRow(params string[] columns)
+        public void AddRow(params IRenderable[] columns)
         {
             if (columns is null)
             {

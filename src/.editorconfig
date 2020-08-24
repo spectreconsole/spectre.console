@@ -81,3 +81,6 @@ dotnet_diagnostic.RCS1079.severity = warning
 
 # RCS1057: Add empty line between declarations.
 dotnet_diagnostic.RCS1057.severity = none
+
+# IDE0004: Remove Unnecessary Cast
+dotnet_diagnostic.IDE0004.severity = warning

@@ -3,24 +3,29 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Spectre.Console.Composition;
 using Spectre.Console.Internal;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
     /// <summary>
-    /// Represents a piece of text.
+    /// A renderable piece of text.
     /// </summary>
     [DebuggerDisplay("{_text,nq}")]
     [SuppressMessage("Naming", "CA1724:Type names should not match namespaces")]
-    public sealed class Text : IRenderable
+    public sealed class Text : Renderable, IAlignable
     {
         private readonly List<SegmentLine> _lines;
 
         /// <summary>
+        /// Gets an empty <see cref="Text"/> instance.
+        /// </summary>
+        public static Text Empty { get; } = new Text(string.Empty);
+
+        /// <summary>
         /// Gets or sets the text alignment.
         /// </summary>
-        public Justify Alignment { get; set; } = Justify.Left;
+        public Justify? Alignment { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Text"/> class.
@@ -60,7 +65,7 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        public Measurement Measure(RenderContext context, int maxWidth)
+        protected override Measurement Measure(RenderContext context, int maxWidth)
         {
             if (_lines.Count == 0)
             {
@@ -74,7 +79,7 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        public IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+        protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
             if (context is null)
             {
@@ -89,7 +94,7 @@ namespace Spectre.Console
             var lines = SplitLines(context, maxWidth);
 
             // Justify lines
-            var justification = context.Justification ?? Alignment;
+            var justification = context.Justification ?? Alignment ?? Justify.Left;
             foreach (var (_, _, last, line) in lines.Enumerate())
             {
                 var length = line.Sum(l => l.StripLineEndings().CellLength(context.Encoding));

@@ -125,8 +125,7 @@ namespace Spectre.Console.Tests.Unit
 
             // When
             console.Render(
-                new Panel(
-                    new Text("Hello World").WithAlignment(Justify.Right))
+                new Panel(new Text("Hello World").RightAligned())
                 {
                     Expand = true,
                 });
@@ -146,8 +145,7 @@ namespace Spectre.Console.Tests.Unit
 
             // When
             console.Render(
-                new Panel(
-                    new Text("Hello World").WithAlignment(Justify.Center))
+                new Panel(new Text("Hello World").Centered())
                 {
                     Expand = true,
                 });

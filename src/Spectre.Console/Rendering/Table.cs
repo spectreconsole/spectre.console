@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Spectre.Console.Composition;
 using Spectre.Console.Internal;
+using Spectre.Console.Rendering;
+using SpectreBorder = Spectre.Console.Rendering.Border;
 
 namespace Spectre.Console
 {
     /// <summary>
-    /// Represents a table.
+    /// A renderable table.
     /// </summary>
-    public sealed partial class Table : IRenderable
+    public sealed partial class Table : Renderable
     {
         private readonly List<TableColumn> _columns;
-        private readonly List<List<Text>> _rows;
+        private readonly List<List<IRenderable>> _rows;
 
         /// <summary>
         /// Gets the number of columns in the table.
@@ -67,21 +68,7 @@ namespace Spectre.Console
         public Table()
         {
             _columns = new List<TableColumn>();
-            _rows = new List<List<Text>>();
-        }
-
-        /// <summary>
-        /// Adds a column to the table.
-        /// </summary>
-        /// <param name="column">The column to add.</param>
-        public void AddColumn(string column)
-        {
-            if (column is null)
-            {
-                throw new ArgumentNullException(nameof(column));
-            }
-
-            AddColumn(new TableColumn(column));
+            _rows = new List<List<IRenderable>>();
         }
 
         /// <summary>
@@ -107,23 +94,6 @@ namespace Spectre.Console
         /// Adds multiple columns to the table.
         /// </summary>
         /// <param name="columns">The columns to add.</param>
-        public void AddColumns(params string[] columns)
-        {
-            if (columns is null)
-            {
-                throw new ArgumentNullException(nameof(columns));
-            }
-
-            foreach (var column in columns)
-            {
-                AddColumn(column);
-            }
-        }
-
-        /// <summary>
-        /// Adds multiple columns to the table.
-        /// </summary>
-        /// <param name="columns">The columns to add.</param>
         public void AddColumns(params TableColumn[] columns)
         {
             if (columns is null)
@@ -142,8 +112,8 @@ namespace Spectre.Console
         /// </summary>
         public void AddEmptyRow()
         {
-            var columns = new string[ColumnCount];
-            Enumerable.Range(0, ColumnCount).ForEach(index => columns[index] = string.Empty);
+            var columns = new IRenderable[ColumnCount];
+            Enumerable.Range(0, ColumnCount).ForEach(index => columns[index] = Text.Empty);
             AddRow(columns);
         }
 
@@ -151,7 +121,7 @@ namespace Spectre.Console
         /// Adds a row to the table.
         /// </summary>
         /// <param name="columns">The row columns to add.</param>
-        public void AddRow(params string[] columns)
+        public void AddRow(params IRenderable[] columns)
         {
             if (columns is null)
             {
@@ -168,11 +138,11 @@ namespace Spectre.Console
                 throw new InvalidOperationException("The number of row columns are greater than the number of table columns.");
             }
 
-            _rows.Add(columns.Select(column => Text.Markup(column)).ToList());
+            _rows.Add(columns.ToList());
         }
 
         /// <inheritdoc/>
-        Measurement IRenderable.Measure(RenderContext context, int maxWidth)
+        protected override Measurement Measure(RenderContext context, int maxWidth)
         {
             if (context is null)
             {
@@ -194,20 +164,20 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        IEnumerable<Segment> IRenderable.Render(RenderContext context, int width)
+        protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
             if (context is null)
             {
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var border = Composition.Border.GetBorder(Border, (context.LegacyConsole || !context.Unicode) && SafeBorder);
+            var border = SpectreBorder.GetBorder(Border, (context.LegacyConsole || !context.Unicode) && SafeBorder);
+            var tableWidth = maxWidth;
 
             var showBorder = Border != BorderKind.None;
             var hideBorder = Border == BorderKind.None;
             var hasRows = _rows.Count > 0;
 
-            var maxWidth = width;
             if (Width != null)
             {
                 maxWidth = Math.Min(Width.Value, maxWidth);
@@ -219,13 +189,13 @@ namespace Spectre.Console
             var columnWidths = CalculateColumnWidths(context, maxWidth);
 
             // Update the table width.
-            width = columnWidths.Sum() + GetExtraWidth(includePadding: true);
+            tableWidth = columnWidths.Sum() + GetExtraWidth(includePadding: true);
 
-            var rows = new List<List<Text>>();
+            var rows = new List<List<IRenderable>>();
             if (ShowHeaders)
             {
                 // Add columns to top of rows
-                rows.Add(new List<Text>(_columns.Select(c => c.Text)));
+                rows.Add(new List<IRenderable>(_columns.Select(c => c.Text)));
             }
 
             // Add rows.
@@ -244,7 +214,7 @@ namespace Spectre.Console
                     var justification = _columns[columnIndex].Alignment;
                     var childContext = context.WithJustification(justification);
 
-                    var lines = Segment.SplitLines(((IRenderable)cell).Render(childContext, rowWidth));
+                    var lines = Segment.SplitLines(cell.Render(childContext, rowWidth));
                     cellHeight = Math.Max(cellHeight, lines.Count);
                     cells.Add(lines);
                 }

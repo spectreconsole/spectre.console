@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Spectre.Console.Composition
+namespace Spectre.Console.Rendering
 {
     internal sealed class SegmentLineIterator : IEnumerator<Segment>
     {

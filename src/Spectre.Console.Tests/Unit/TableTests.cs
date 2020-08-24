@@ -59,7 +59,21 @@ namespace Spectre.Console.Tests.Unit
         public sealed class TheAddRowMethod
         {
             [Fact]
-            public void Should_Throw_If_Rows_Are_Null()
+            public void Should_Throw_If_String_Rows_Are_Null()
+            {
+                // Given
+                var table = new Table();
+
+                // When
+                var result = Record.Exception(() => table.AddRow((string[])null));
+
+                // Then
+                result.ShouldBeOfType<ArgumentNullException>()
+                    .ParamName.ShouldBe("columns");
+            }
+
+            [Fact]
+            public void Should_Throw_If_Renderable_Rows_Are_Null()
             {
                 // Given
                 var table = new Table();

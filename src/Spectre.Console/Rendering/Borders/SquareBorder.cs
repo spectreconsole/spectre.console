@@ -1,21 +1,21 @@
 using System;
 
-namespace Spectre.Console.Composition
+namespace Spectre.Console.Rendering
 {
     /// <summary>
-    /// Represents a rounded border.
+    /// Represents a square border.
     /// </summary>
-    public sealed class RoundedBorder : Border
+    public sealed class SquareBorder : Border
     {
         /// <inheritdoc/>
         protected override string GetBoxPart(BorderPart part)
         {
             return part switch
             {
-                BorderPart.HeaderTopLeft => "╭",
+                BorderPart.HeaderTopLeft => "┌",
                 BorderPart.HeaderTop => "─",
                 BorderPart.HeaderTopSeparator => "┬",
-                BorderPart.HeaderTopRight => "╮",
+                BorderPart.HeaderTopRight => "┐",
                 BorderPart.HeaderLeft => "│",
                 BorderPart.HeaderSeparator => "│",
                 BorderPart.HeaderRight => "│",
@@ -26,10 +26,10 @@ namespace Spectre.Console.Composition
                 BorderPart.CellLeft => "│",
                 BorderPart.CellSeparator => "│",
                 BorderPart.CellRight => "│",
-                BorderPart.FooterBottomLeft => "╰",
+                BorderPart.FooterBottomLeft => "└",
                 BorderPart.FooterBottom => "─",
                 BorderPart.FooterBottomSeparator => "┴",
-                BorderPart.FooterBottomRight => "╯",
+                BorderPart.FooterBottomRight => "┘",
                 _ => throw new InvalidOperationException("Unknown box part."),
             };
         }

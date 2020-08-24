@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using Spectre.Console.Composition;
+using Spectre.Console.Rendering;
+using SpectreBorder = Spectre.Console.Rendering.Border;
 
 namespace Spectre.Console
 {
     /// <summary>
-    /// Represents a panel which contains another renderable item.
+    /// A renderable panel.
     /// </summary>
-    public sealed class Panel : IRenderable
+    public sealed class Panel : Renderable
     {
         private const int EdgeWidth = 2;
 
@@ -45,6 +46,15 @@ namespace Spectre.Console
         /// <summary>
         /// Initializes a new instance of the <see cref="Panel"/> class.
         /// </summary>
+        /// <param name="text">The panel content.</param>
+        public Panel(string text)
+            : this(new Markup(text))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Panel"/> class.
+        /// </summary>
         /// <param name="content">The panel content.</param>
         public Panel(IRenderable content)
         {
@@ -52,23 +62,25 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        Measurement IRenderable.Measure(RenderContext context, int maxWidth)
+        protected override Measurement Measure(RenderContext context, int maxWidth)
         {
             var childWidth = _child.Measure(context, maxWidth);
-            return new Measurement(childWidth.Min + 2 + Padding.GetHorizontalPadding(), childWidth.Max + 2 + Padding.GetHorizontalPadding());
+            return new Measurement(
+                childWidth.Min + 2 + Padding.GetHorizontalPadding(),
+                childWidth.Max + 2 + Padding.GetHorizontalPadding());
         }
 
         /// <inheritdoc/>
-        IEnumerable<Segment> IRenderable.Render(RenderContext context, int width)
+        protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
-            var border = Composition.Border.GetBorder(Border, (context.LegacyConsole || !context.Unicode) && SafeBorder);
+            var border = SpectreBorder.GetBorder(Border, (context.LegacyConsole || !context.Unicode) && SafeBorder);
 
             var paddingWidth = Padding.GetHorizontalPadding();
-            var childWidth = width - EdgeWidth - paddingWidth;
+            var childWidth = maxWidth - EdgeWidth - paddingWidth;
 
             if (!Expand)
             {
-                var measurement = _child.Measure(context, width - EdgeWidth - paddingWidth);
+                var measurement = _child.Measure(context, maxWidth - EdgeWidth - paddingWidth);
                 childWidth = measurement.Max;
             }
 
