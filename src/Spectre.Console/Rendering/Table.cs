@@ -10,7 +10,7 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable table.
     /// </summary>
-    public sealed partial class Table : Renderable
+    public sealed partial class Table : Renderable, IHasBorder
     {
         private readonly List<TableColumn> _columns;
         private readonly List<List<IRenderable>> _rows;
@@ -25,10 +25,14 @@ namespace Spectre.Console
         /// </summary>
         public int RowCount => _rows.Count;
 
-        /// <summary>
-        /// Gets or sets the kind of border to use.
-        /// </summary>
+        /// <inheritdoc/>
         public BorderKind Border { get; set; } = BorderKind.Square;
+
+        /// <inheritdoc/>
+        public Color? BorderColor { get; set; }
+
+        /// <inheritdoc/>
+        public bool SafeBorder { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not table headers should be shown.
@@ -46,13 +50,6 @@ namespace Spectre.Console
         /// Gets or sets the width of the table.
         /// </summary>
         public int? Width { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not to use
-        /// a "safe" border on legacy consoles that might not be able
-        /// to render non-ASCII characters. Defaults to <c>true</c>.
-        /// </summary>
-        public bool SafeBorder { get; set; } = true;
 
         // Whether this is a grid or not.
         internal bool IsGrid { get; set; }
@@ -172,6 +169,8 @@ namespace Spectre.Console
             }
 
             var border = SpectreBorder.GetBorder(Border, (context.LegacyConsole || !context.Unicode) && SafeBorder);
+            var borderStyle = new Style(BorderColor, null, null);
+
             var tableWidth = maxWidth;
 
             var showBorder = Border != BorderKind.None;
@@ -222,22 +221,22 @@ namespace Spectre.Console
                 // Show top of header?
                 if (firstRow && showBorder)
                 {
-                    result.Add(new Segment(border.GetPart(BorderPart.HeaderTopLeft)));
+                    result.Add(new Segment(border.GetPart(BorderPart.HeaderTopLeft), borderStyle));
                     foreach (var (columnIndex, _, lastColumn, columnWidth) in columnWidths.Enumerate())
                     {
                         var padding = _columns[columnIndex].Padding;
 
-                        result.Add(new Segment(border.GetPart(BorderPart.HeaderTop, padding.Left))); // Left padding
-                        result.Add(new Segment(border.GetPart(BorderPart.HeaderTop, columnWidth)));
-                        result.Add(new Segment(border.GetPart(BorderPart.HeaderTop, padding.Right))); // Right padding
+                        result.Add(new Segment(border.GetPart(BorderPart.HeaderTop, padding.Left), borderStyle)); // Left padding
+                        result.Add(new Segment(border.GetPart(BorderPart.HeaderTop, columnWidth), borderStyle));
+                        result.Add(new Segment(border.GetPart(BorderPart.HeaderTop, padding.Right), borderStyle)); // Right padding
 
                         if (!lastColumn)
                         {
-                            result.Add(new Segment(border.GetPart(BorderPart.HeaderTopSeparator)));
+                            result.Add(new Segment(border.GetPart(BorderPart.HeaderTopSeparator), borderStyle));
                         }
                     }
 
-                    result.Add(new Segment(border.GetPart(BorderPart.HeaderTopRight)));
+                    result.Add(new Segment(border.GetPart(BorderPart.HeaderTopRight), borderStyle));
                     result.Add(Segment.LineBreak);
                 }
 
@@ -252,7 +251,7 @@ namespace Spectre.Console
                         if (firstCell && showBorder)
                         {
                             // Show left column edge
-                            result.Add(new Segment(border.GetPart(BorderPart.CellLeft)));
+                            result.Add(new Segment(border.GetPart(BorderPart.CellLeft), borderStyle));
                         }
 
                         // Pad column on left side.
@@ -288,12 +287,12 @@ namespace Spectre.Console
                         if (lastCell && showBorder)
                         {
                             // Add right column edge
-                            result.Add(new Segment(border.GetPart(BorderPart.CellRight)));
+                            result.Add(new Segment(border.GetPart(BorderPart.CellRight), borderStyle));
                         }
                         else if (showBorder)
                         {
                             // Add column separator
-                            result.Add(new Segment(border.GetPart(BorderPart.CellSeparator)));
+                            result.Add(new Segment(border.GetPart(BorderPart.CellSeparator), borderStyle));
                         }
                     }
 
@@ -303,44 +302,44 @@ namespace Spectre.Console
                 // Show header separator?
                 if (firstRow && showBorder && ShowHeaders && hasRows)
                 {
-                    result.Add(new Segment(border.GetPart(BorderPart.HeaderBottomLeft)));
+                    result.Add(new Segment(border.GetPart(BorderPart.HeaderBottomLeft), borderStyle));
                     foreach (var (columnIndex, first, lastColumn, columnWidth) in columnWidths.Enumerate())
                     {
                         var padding = _columns[columnIndex].Padding;
 
-                        result.Add(new Segment(border.GetPart(BorderPart.HeaderBottom, padding.Left))); // Left padding
-                        result.Add(new Segment(border.GetPart(BorderPart.HeaderBottom, columnWidth)));
-                        result.Add(new Segment(border.GetPart(BorderPart.HeaderBottom, padding.Right))); // Right padding
+                        result.Add(new Segment(border.GetPart(BorderPart.HeaderBottom, padding.Left), borderStyle)); // Left padding
+                        result.Add(new Segment(border.GetPart(BorderPart.HeaderBottom, columnWidth), borderStyle));
+                        result.Add(new Segment(border.GetPart(BorderPart.HeaderBottom, padding.Right), borderStyle)); // Right padding
 
                         if (!lastColumn)
                         {
-                            result.Add(new Segment(border.GetPart(BorderPart.HeaderBottomSeparator)));
+                            result.Add(new Segment(border.GetPart(BorderPart.HeaderBottomSeparator), borderStyle));
                         }
                     }
 
-                    result.Add(new Segment(border.GetPart(BorderPart.HeaderBottomRight)));
+                    result.Add(new Segment(border.GetPart(BorderPart.HeaderBottomRight), borderStyle));
                     result.Add(Segment.LineBreak);
                 }
 
                 // Show bottom of footer?
                 if (lastRow && showBorder)
                 {
-                    result.Add(new Segment(border.GetPart(BorderPart.FooterBottomLeft)));
+                    result.Add(new Segment(border.GetPart(BorderPart.FooterBottomLeft), borderStyle));
                     foreach (var (columnIndex, first, lastColumn, columnWidth) in columnWidths.Enumerate())
                     {
                         var padding = _columns[columnIndex].Padding;
 
-                        result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, padding.Left))); // Left padding
-                        result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, columnWidth)));
-                        result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, padding.Right))); // Right padding
+                        result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, padding.Left), borderStyle)); // Left padding
+                        result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, columnWidth), borderStyle));
+                        result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, padding.Right), borderStyle)); // Right padding
 
                         if (!lastColumn)
                         {
-                            result.Add(new Segment(border.GetPart(BorderPart.FooterBottomSeparator)));
+                            result.Add(new Segment(border.GetPart(BorderPart.FooterBottomSeparator), borderStyle));
                         }
                     }
 
-                    result.Add(new Segment(border.GetPart(BorderPart.FooterBottomRight)));
+                    result.Add(new Segment(border.GetPart(BorderPart.FooterBottomRight), borderStyle));
                     result.Add(Segment.LineBreak);
                 }
             }

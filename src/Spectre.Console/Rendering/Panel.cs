@@ -8,23 +8,20 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable panel.
     /// </summary>
-    public sealed class Panel : Renderable
+    public sealed class Panel : Renderable, IHasBorder
     {
         private const int EdgeWidth = 2;
 
         private readonly IRenderable _child;
 
-        /// <summary>
-        /// Gets or sets a value indicating whether or not to use
-        /// a "safe" border on legacy consoles that might not be able
-        /// to render non-ASCII characters. Defaults to <c>true</c>.
-        /// </summary>
+        /// <inheritdoc/>
+        public BorderKind Border { get; set; } = BorderKind.Square;
+
+        /// <inheritdoc/>
         public bool SafeBorder { get; set; } = true;
 
-        /// <summary>
-        /// Gets or sets the kind of border to use.
-        /// </summary>
-        public BorderKind Border { get; set; } = BorderKind.Square;
+        /// <inheritdoc/>
+        public Color? BorderColor { get; set; }
 
         /// <summary>
         /// Gets or sets the alignment of the panel contents.
@@ -74,6 +71,7 @@ namespace Spectre.Console
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
             var border = SpectreBorder.GetBorder(Border, (context.LegacyConsole || !context.Unicode) && SafeBorder);
+            var borderStyle = new Style(BorderColor, null, null);
 
             var paddingWidth = Padding.GetHorizontalPadding();
             var childWidth = maxWidth - EdgeWidth - paddingWidth;
@@ -89,9 +87,9 @@ namespace Spectre.Console
             // Panel top
             var result = new List<Segment>
             {
-                new Segment(border.GetPart(BorderPart.HeaderTopLeft)),
-                new Segment(border.GetPart(BorderPart.HeaderTop, panelWidth)),
-                new Segment(border.GetPart(BorderPart.HeaderTopRight)),
+                new Segment(border.GetPart(BorderPart.HeaderTopLeft), borderStyle),
+                new Segment(border.GetPart(BorderPart.HeaderTop, panelWidth), borderStyle),
+                new Segment(border.GetPart(BorderPart.HeaderTopRight), borderStyle),
                 Segment.LineBreak,
             };
 
@@ -102,7 +100,7 @@ namespace Spectre.Console
             // Split the child segments into lines.
             foreach (var line in Segment.SplitLines(childSegments, panelWidth))
             {
-                result.Add(new Segment(border.GetPart(BorderPart.CellLeft)));
+                result.Add(new Segment(border.GetPart(BorderPart.CellLeft), borderStyle));
 
                 // Left padding
                 if (Padding.Left > 0)
@@ -129,14 +127,14 @@ namespace Spectre.Console
                     result.Add(new Segment(new string(' ', Padding.Right)));
                 }
 
-                result.Add(new Segment(border.GetPart(BorderPart.CellRight)));
+                result.Add(new Segment(border.GetPart(BorderPart.CellRight), borderStyle));
                 result.Add(Segment.LineBreak);
             }
 
             // Panel bottom
-            result.Add(new Segment(border.GetPart(BorderPart.FooterBottomLeft)));
-            result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, panelWidth)));
-            result.Add(new Segment(border.GetPart(BorderPart.FooterBottomRight)));
+            result.Add(new Segment(border.GetPart(BorderPart.FooterBottomLeft), borderStyle));
+            result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, panelWidth), borderStyle));
+            result.Add(new Segment(border.GetPart(BorderPart.FooterBottomRight), borderStyle));
             result.Add(Segment.LineBreak);
 
             return result;

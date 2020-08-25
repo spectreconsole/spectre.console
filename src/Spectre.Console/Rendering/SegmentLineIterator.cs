@@ -33,7 +33,7 @@ namespace Spectre.Console.Rendering
                 return false;
             }
 
-            _currentIndex += 1;
+            _currentIndex++;
 
             // Did we go past the end of the line?
             if (_currentIndex > _lines[_currentLine].Count - 1)
@@ -57,7 +57,7 @@ namespace Spectre.Console.Rendering
                 }
 
                 // Increase the line and reset the index.
-                _currentLine += 1;
+                _currentLine++;
                 _currentIndex = 0;
 
                 _lineBreakEmitted = false;
@@ -71,7 +71,7 @@ namespace Spectre.Console.Rendering
                 // Nothing on the line?
                 while (_currentIndex > _lines[_currentLine].Count - 1)
                 {
-                    _currentLine += 1;
+                    _currentLine++;
                     _currentIndex = 0;
 
                     if (_currentLine > _lines.Count - 1)
