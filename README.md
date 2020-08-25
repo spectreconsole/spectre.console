@@ -100,12 +100,14 @@ Now you can list available examples in this repository:
 ```
 > dotnet example
 
-Examples
-
-Colors    Demonstrates how to use colors in the console.
-Grid      Demonstrates how to render grids in a console.
-Panel     Demonstrates how to render items in panels.
-Table     Demonstrates how to render tables in a console.
+╭────────┬───────────────────────────────┬─────────────────────────────────────────────────╮
+│ Name   │ Path                          │ Description                                     │
+├────────┼───────────────────────────────┼─────────────────────────────────────────────────┤
+│ Colors │ examples/Colors/Colors.csproj │ Demonstrates how to use colors in the console.  │
+│ Grid   │ examples/Grid/Grid.csproj     │ Demonstrates how to render grids in a console.  │
+│ Panel  │ examples/Panel/Panel.csproj   │ Demonstrates how to render items in panels.     │
+│ Table  │ examples/Table/Table.csproj   │ Demonstrates how to render tables in a console. │
+╰────────┴───────────────────────────────┴─────────────────────────────────────────────────╯
 ```
 
 And to run an example:
@@ -116,7 +118,7 @@ And to run an example:
 │ Foo      │ Bar      │ Baz    │
 ├──────────┼──────────┼────────┤
 │ Hello    │ World!   │        │
-│ Bounjour │ le       │ monde! │
+│ Bonjour  │ le       │ monde! │
 │ Hej      │ Världen! │        │
 └──────────┴──────────┴────────┘
 ```
