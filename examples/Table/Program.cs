@@ -1,10 +1,11 @@
 using Spectre.Console;
+using Spectre.Console.Rendering;
 
 namespace TableExample
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             // A simple table
             RenderSimpleTable();
@@ -35,7 +36,7 @@ namespace TableExample
         private static void RenderBigTable()
         {
             // Create the table.
-            var table = new Table { Border = BorderKind.Rounded };
+            var table = new Table().SetBorder(BorderKind.Rounded);
             table.AddColumn("[red underline]Foo[/]");
             table.AddColumn(new TableColumn("[blue]Bar[/]") { Alignment = Justify.Right, NoWrap = true });
 
@@ -57,7 +58,7 @@ namespace TableExample
         private static void RenderNestedTable()
         {
             // Create simple table.
-            var simple = new Table { Border = BorderKind.Rounded };
+            var simple = new Table().SetBorder(BorderKind.Rounded).SetBorderColor(Color.Red);
             simple.AddColumn(new TableColumn("[u]Foo[/]").Centered());
             simple.AddColumn(new TableColumn("[u]Bar[/]"));
             simple.AddColumn(new TableColumn("[u]Baz[/]"));
@@ -66,7 +67,7 @@ namespace TableExample
             simple.AddRow("[blue]Hej[/]", "[yellow]Världen![/]", "");
 
             // Create other table.
-            var second = new Table { Border = BorderKind.Square };
+            var second = new Table().SetBorder(BorderKind.Square).SetBorderColor(Color.Green);
             second.AddColumn(new TableColumn("[u]Foo[/]"));
             second.AddColumn(new TableColumn("[u]Bar[/]"));
             second.AddColumn(new TableColumn("[u]Baz[/]"));
@@ -74,10 +75,10 @@ namespace TableExample
             second.AddRow(simple, new Text("Whaaat"), new Text("Lolz"));
             second.AddRow("[blue]Hej[/]", "[yellow]Världen![/]", "");
 
-            var table = new Table { Border = BorderKind.Rounded };
-            table.AddColumn(new TableColumn(new Panel("[u]Foo[/]")));
-            table.AddColumn(new TableColumn(new Panel("[u]Bar[/]")));
-            table.AddColumn(new TableColumn(new Panel("[u]Baz[/]")));
+            var table = new Table().SetBorder(BorderKind.Rounded);
+            table.AddColumn(new TableColumn(new Panel("[u]Foo[/]").SetBorderColor(Color.Red)));
+            table.AddColumn(new TableColumn(new Panel("[u]Bar[/]").SetBorderColor(Color.Green)));
+            table.AddColumn(new TableColumn(new Panel("[u]Baz[/]").SetBorderColor(Color.Blue)));
 
             // Add some rows
             table.AddRow(new Text("Hello").Centered(), new Markup("[red]World![/] 🌍"), Text.Empty);
