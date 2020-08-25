@@ -20,6 +20,7 @@ for Python.
 ## Features
 
 * Written with unit testing in mind.
+* Supports tables, grids, panels, and a [rich](https://github.com/willmcgugan/rich) inspired markup language.
 * Supports the most common SRG parameters when it comes to text 
   styling such as bold, dim, italic, underline, strikethrough, 
   and blinking text.
@@ -29,7 +30,7 @@ for Python.
 
 ## Example
 
-![Example](https://spectresystems.se/assets/open-source/spectre-console/example.png)
+![Example](resources/gfx/screenshots/example.png)
 
 ## Usage
 
