@@ -91,6 +91,8 @@ namespace Spectre.Console.Internal
             {
                 var position = _reader.Position;
                 var builder = new StringBuilder();
+
+                var encounteredClosing = false;
                 while (!_reader.Eof)
                 {
                     current = _reader.Peek();
@@ -98,8 +100,32 @@ namespace Spectre.Console.Internal
                     {
                         break;
                     }
+                    else if (current == ']')
+                    {
+                        if (encounteredClosing)
+                        {
+                            _reader.Read();
+                            encounteredClosing = false;
+                            continue;
+                        }
+
+                        encounteredClosing = true;
+                    }
+                    else
+                    {
+                        if (encounteredClosing)
+                        {
+                            throw new InvalidOperationException(
+                                $"Encountered unescaped ']' token at position {_reader.Position}");
+                        }
+                    }
 
                     builder.Append(_reader.Read());
+                }
+
+                if (encounteredClosing)
+                {
+                    throw new InvalidOperationException($"Encountered unescaped ']' token at position {_reader.Position}");
                 }
 
                 Current = new MarkupToken(MarkupTokenKind.Text, builder.ToString(), position);
