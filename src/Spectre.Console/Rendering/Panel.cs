@@ -8,7 +8,7 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable panel.
     /// </summary>
-    public sealed class Panel : Renderable, IHasBorder
+    public sealed class Panel : Renderable, IHasBorder, IExpandable, IPaddable
     {
         private const int EdgeWidth = 2;
 
@@ -22,11 +22,6 @@ namespace Spectre.Console
 
         /// <inheritdoc/>
         public Color? BorderColor { get; set; }
-
-        /// <summary>
-        /// Gets or sets the alignment of the panel contents.
-        /// </summary>
-        public Justify? Alignment { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the panel should
@@ -94,8 +89,7 @@ namespace Spectre.Console
             };
 
             // Render the child.
-            var childContext = context.WithJustification(Alignment);
-            var childSegments = _child.Render(childContext, childWidth);
+            var childSegments = _child.Render(context, childWidth);
 
             // Split the child segments into lines.
             foreach (var line in Segment.SplitLines(childSegments, panelWidth))

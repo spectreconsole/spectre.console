@@ -9,13 +9,13 @@ namespace Spectre.Console
     /// </summary>
     public sealed class Markup : Renderable, IAlignable
     {
-        private readonly Text _text;
+        private readonly Paragraph _paragraph;
 
         /// <inheritdoc/>
         public Justify? Alignment
         {
-            get => _text.Alignment;
-            set => _text.Alignment = value;
+            get => _paragraph.Alignment;
+            set => _paragraph.Alignment = value;
         }
 
         /// <summary>
@@ -25,19 +25,19 @@ namespace Spectre.Console
         /// <param name="style">The style of the text.</param>
         public Markup(string text, Style? style = null)
         {
-            _text = MarkupParser.Parse(text, style);
+            _paragraph = MarkupParser.Parse(text, style);
         }
 
         /// <inheritdoc/>
         protected override Measurement Measure(RenderContext context, int maxWidth)
         {
-            return ((IRenderable)_text).Measure(context, maxWidth);
+            return ((IRenderable)_paragraph).Measure(context, maxWidth);
         }
 
         /// <inheritdoc/>
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
-            return ((IRenderable)_text).Render(context, maxWidth);
+            return ((IRenderable)_paragraph).Render(context, maxWidth);
         }
     }
 }

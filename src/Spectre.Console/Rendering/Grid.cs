@@ -64,13 +64,13 @@ namespace Spectre.Console
             }
 
             // Only pad the most right cell if we've explicitly set a padding.
-            _table.PadRightCell = column.Padding != null;
+            _table.PadRightCell = column.HasExplicitPadding;
 
             _table.AddColumn(new TableColumn(string.Empty)
             {
                 Width = column.Width,
                 NoWrap = column.NoWrap,
-                Padding = column.Padding ?? new Padding(0, 2),
+                Padding = column.Padding,
                 Alignment = column.Alignment,
             });
         }

@@ -10,20 +10,26 @@ namespace Spectre.Console.Tests.Unit
         [Fact]
         public void Should_Consider_The_Longest_Word_As_Minimum_Width()
         {
+            // Given
             var text = new Text("Foo Bar Baz\nQux\nLol mobile");
 
+            // When
             var result = ((IRenderable)text).Measure(new RenderContext(Encoding.Unicode, false), 80);
 
+            // Then
             result.Min.ShouldBe(6);
         }
 
         [Fact]
         public void Should_Consider_The_Longest_Line_As_Maximum_Width()
         {
+            // Given
             var text = new Text("Foo Bar Baz\nQux\nLol mobile");
 
+            // When
             var result = ((IRenderable)text).Measure(new RenderContext(Encoding.Unicode, false), 80);
 
+            // Then
             result.Max.ShouldBe(11);
         }
 

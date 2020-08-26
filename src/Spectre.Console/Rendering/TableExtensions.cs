@@ -74,5 +74,54 @@ namespace Spectre.Console
 
             table.AddRow(columns.Select(column => new Markup(column)).ToArray());
         }
+
+        /// <summary>
+        /// Sets the table width.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <param name="width">The width.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table SetWidth(this Table table, int width)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            table.Width = width;
+            return table;
+        }
+
+        /// <summary>
+        /// Shows table headers.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table ShowHeaders(this Table table)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            table.ShowHeaders = true;
+            return table;
+        }
+
+        /// <summary>
+        /// Hides table headers.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table HideHeaders(this Table table)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            table.ShowHeaders = false;
+            return table;
+        }
     }
 }
