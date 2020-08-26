@@ -6,11 +6,11 @@ namespace Spectre.Console.Internal
 {
     internal static class MarkupParser
     {
-        public static Text Parse(string text, Style? style = null)
+        public static Paragraph Parse(string text, Style? style = null)
         {
             style ??= Style.Plain;
 
-            var result = new Text();
+            var result = new Paragraph();
             using var tokenizer = new MarkupTokenizer(text);
 
             var stack = new Stack<Style>();

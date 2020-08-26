@@ -10,7 +10,7 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable table.
     /// </summary>
-    public sealed partial class Table : Renderable, IHasBorder
+    public sealed partial class Table : Renderable, IHasBorder, IExpandable
     {
         private readonly List<TableColumn> _columns;
         private readonly List<List<IRenderable>> _rows;

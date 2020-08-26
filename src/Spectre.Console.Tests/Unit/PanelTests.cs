@@ -81,7 +81,7 @@ namespace Spectre.Console.Tests.Unit
             // Given
             var console = new PlainConsole(width: 80);
             var text = new Panel(
-                Text.Markup("I heard [underline on blue]you[/] like 📦\n\n\n\nSo I put a 📦 in a 📦"));
+                new Markup("I heard [underline on blue]you[/] like 📦\n\n\n\nSo I put a 📦 in a 📦"));
 
             // When
             console.Render(text);

@@ -13,7 +13,7 @@ namespace Spectre.Console.Rendering
         /// <typeparam name="T">The object that has a border.</typeparam>
         /// <param name="obj">The object to set the border for.</param>
         /// <param name="border">The border to use.</param>
-        /// <returns>The same <see cref="IHasBorder"/> instance.</returns>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static T SetBorder<T>(this T obj, BorderKind border)
             where T : class, IHasBorder
         {
@@ -31,7 +31,7 @@ namespace Spectre.Console.Rendering
         /// </summary>
         /// <typeparam name="T">The object that has a border.</typeparam>
         /// <param name="obj">The object to set the border for.</param>
-        /// <returns>The same <see cref="IHasBorder"/> instance.</returns>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static T NoSafeBorder<T>(this T obj)
             where T : class, IHasBorder
         {
@@ -50,7 +50,7 @@ namespace Spectre.Console.Rendering
         /// <typeparam name="T">The object that has a border.</typeparam>
         /// <param name="obj">The object to set the border color for.</param>
         /// <param name="color">The color to set.</param>
-        /// <returns>The same <see cref="IHasBorder"/> instance.</returns>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static T SetBorderColor<T>(this T obj, Color color)
             where T : class, IHasBorder
         {

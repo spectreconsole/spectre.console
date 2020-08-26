@@ -11,7 +11,7 @@ namespace Spectre.Console
         /// <typeparam name="T">The alignable object type.</typeparam>
         /// <param name="obj">The alignable object.</param>
         /// <param name="alignment">The alignment.</param>
-        /// <returns>The same <see cref="IAlignable"/> instance.</returns>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static T SetAlignment<T>(this T obj, Justify alignment)
             where T : class, IAlignable
         {
@@ -29,7 +29,7 @@ namespace Spectre.Console
         /// </summary>
         /// <typeparam name="T">The alignable type.</typeparam>
         /// <param name="obj">The alignable object.</param>
-        /// <returns>The same <see cref="IAlignable"/> instance.</returns>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static T LeftAligned<T>(this T obj)
             where T : class, IAlignable
         {
@@ -47,7 +47,7 @@ namespace Spectre.Console
         /// </summary>
         /// <typeparam name="T">The alignable type.</typeparam>
         /// <param name="obj">The alignable object.</param>
-        /// <returns>The same <see cref="IAlignable"/> instance.</returns>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static T Centered<T>(this T obj)
             where T : class, IAlignable
         {
@@ -65,7 +65,7 @@ namespace Spectre.Console
         /// </summary>
         /// <typeparam name="T">The alignable type.</typeparam>
         /// <param name="obj">The alignable object.</param>
-        /// <returns>The same <see cref="IAlignable"/> instance.</returns>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static T RightAligned<T>(this T obj)
             where T : class, IAlignable
         {

@@ -6,7 +6,7 @@ namespace Spectre.Console
     /// <summary>
     /// Represents a table column.
     /// </summary>
-    public sealed class TableColumn : IAlignable
+    public sealed class TableColumn : IColumn
     {
         /// <summary>
         /// Gets the text associated with the column.
