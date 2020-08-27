@@ -2,7 +2,8 @@
   <PropertyGroup Label="Settings">
     <Deterministic>true</Deterministic>
     <LangVersion>8.0</LangVersion>
-    <IncludeSymbols>true</IncludeSymbols>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
     <MinVerSkip Condition="'$(Configuration)' == 'Debug'">true</MinVerSkip>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>

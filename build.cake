@@ -39,7 +39,6 @@ Task("Package")
         OutputDirectory = "./.artifacts",
         MSBuildSettings = new DotNetCoreMSBuildSettings()
             .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
-            .WithProperty("SymbolPackageFormat", "snupkg")
     });
 });
 
