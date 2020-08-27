@@ -1,6 +1,9 @@
 name: Deploy Documentation
 on:
-    workflow_dispatch
+    workflow_dispatch:
+    push:
+        paths:
+        - 'docs/**'
 
 jobs:
   build:
