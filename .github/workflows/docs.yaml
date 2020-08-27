@@ -1,0 +1,17 @@
+name: Deploy Site
+on:
+    workflow_dispatch
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.301' # SDK Version to use.
+    - run: |
+        cd docs
+        dotnet run -- deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
