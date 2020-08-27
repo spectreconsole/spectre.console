@@ -1,0 +1,42 @@
+﻿<div>
+    @foreach (IDocument post in Document.GetChildren())
+    {
+        IDocument topicDocument = Outputs[nameof(Archives)][$"blog/topics/{post.GetString("topic")}/index.html"];
+        string excerpt = post.GetString(Statiq.Html.HtmlKeys.Excerpt);
+        <div>
+            <div class="p-3 mb-2 bg-light page-box">
+                <h5><a href="@Context.GetLink(post)">@post.GetString("Title")</a></h5>
+                <div class="small text-black-50">
+                    @post.GetDateTime("Published").ToLongDateString() in
+                    <a href="@(topicDocument.GetLink())"><span class="badge badge-light">@topicDocument.GetTitle()</span></a>
+                </div>
+                @if (!string.IsNullOrEmpty(excerpt))
+                {
+                    @Html.Raw(excerpt)
+                    <p class="small"><a href="@Context.GetLink(post)">Read more...</a></p>
+                }
+            </div>
+        </div>
+    }
+    @{
+        IDocument older = Document.GetDocument(Keys.Next);
+        IDocument newer = Document.GetDocument(Keys.Previous);
+    }
+    @if (older != null || newer != null)
+    {
+        <div class="d-flex flex-row justify-content-between">
+            <div>
+                @if (older != null)
+                {
+                    <a class="btn btn-primary" href="@Context.GetLink(older)" role="button">Older</a>
+                }
+            </div>
+            <div>
+                @if (newer != null)
+                {
+                    <a class="btn btn-primary" href="@Context.GetLink(newer)" role="button">Newer</a>
+                }
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="/assets/bootstrap/bootstrap.css" rel="stylesheet" />
+        <link href="/assets/css/styles.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Roboto+Slab:wght@400;700&family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet" data-no-mirror>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/themes/prism.css">
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/a1cad7ed9a.js" crossorigin="anonymous" data-no-mirror></script>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/components/prism-core.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/plugins/autoloader/prism-autoloader.min.js" data-no-mirror></script>
+
+        @{
+            string title = @Document.ContainsKey(Keys.Title) ? $"Spectre.Console - {Document.GetString(Keys.Title)}" : "Spectre.Console";
+        }
+        <title>@title</title>
+    </head>
+    <body class="d-flex flex-column">
+        <div class="flex-grow-1 d-flex flex-column">
+                        
+            @if (IsSectionDefined(Constants.Sections.Splash))
+            {
+                @RenderSection(Constants.Sections.Splash, false)
+            }
+            @{ 
+                string section = Document.Destination.Segments.Length > 1 ? Document.Destination.Segments[0].ToString() : null;
+            }
+
+            <div class="flex-grow-1 d-flex  bg-body flex-column @(section != null ? "section-" + section : null)">
+                @if(section != null)
+                {
+                    <div id="titlebar" class="py-4">
+                        <div class="container">
+                            <div class="row">
+                                @{ 
+                                    string titleBarClasses = Document.GetBool(Constants.NoSidebar) ? string.Empty : "offset-md-3 offset-lg-2";
+                                }
+                                <div class="@titleBarClasses px-3 px-md-0">
+                                    <div class="section text-uppercase">Spectre.Console</div>
+                                    <div class="text-white m-0 title">@(Document.GetString(Keys.Title) ?? Document.GetTitle())</div>
+                                    @if (IsSectionDefined(Constants.Sections.Subtitle))
+                                    {
+                                        @RenderSection(Constants.Sections.Subtitle, false)
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="undertitle">
+                        <div class="container bg-body">
+                            <div class="row">
+                                @if (Document.GetBool(Constants.NoSidebar))
+                                {
+                                    <div class="col">
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-3 col-lg-2 bg-body">
+                                    </div>
+                                    <div class="col-md-9 col-lg-8 bg-white">
+                                    </div>
+                                }
+                                <div class="col-lg-2 d-none d-lg-block bg-section">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+                <div class="flex-grow-1 d-flex flex-column bg-body">
+                    @if (Document.GetBool(Constants.NoContainer))
+                    {
+                        <div class="bg-white">
+                            @RenderBody()
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="container flex-grow-1 d-flex flex-column bg-white">
+                            <div class="row flex-grow-1 align-items-stretch">
+                                @if (Document.GetBool(Constants.NoSidebar))
+                                {
+                                    IgnoreSection(Constants.Sections.Sidebar);
+
+                                    <div class="col">
+                                        @RenderBody()
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="sidebar col-md-3 col-lg-2 pt-2 bg-body">
+                                        @if (IsSectionDefined(Constants.Sections.Sidebar))
+                                        {
+                                            @RenderSection(Constants.Sections.Sidebar, false)
+                                        }
+                                        else
+                                        {
+                                            IDocument root = Outputs[nameof(Content)].First(x => x.Destination == section + "/index.html");
+                                            <div class="sidebar-nav-item @(Document.IdEquals(root) ? "active" : null)">
+                                                @Html.DocumentLink(root)
+                                            </div>
+
+                                            @foreach (IDocument document in root.GetChildren().OnlyVisible())
+                                            {
+                                                <div class="sidebar-nav-item @(Document.IdEquals(document) ? "active" : null) @(document.HasChildren() ? "has-children" : null)">
+                                                    @Html.DocumentLink(document)
+                                                </div>
+
+                                                @if (document.HasVisibleChildren())
+                                                {
+                                                    <div class="sidebar-nav-children @(Document.IdEquals(document) || document.GetChildren().Any(x => Document.IdEquals(x)) ? "active" : null)">
+                                                        @foreach (IDocument child in document.GetChildren().OnlyVisible())
+                                                        {
+                                                            <div class="sidebar-nav-child @(Document.IdEquals(child) ? "active" : null)">
+                                                                @Html.DocumentLink(child)
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                    <div class="col-md-9 col-lg-8 pt-4 pt-md-0 pb-4 px-4">
+                                        @RenderBody()
+                                    </div>
+                                }
+                                <div class="col-lg-2 d-none d-lg-block bg-body pl-3 pt-3">
+                                    @{
+                                        IReadOnlyList<IDocument> headings = Document.GetDocumentList(Statiq.Html.HtmlKeys.Headings);
+                                        if (headings.Count > 0)
+                                        {
+                                            <div class="border-bottom mb-3">
+                                                <p class="small font-weight-bold">On This Page</p>
+                                                @foreach (IDocument heading in headings)
+                                                {
+                                                    <p class="small"><a href="#@(heading.GetString(Statiq.Html.HtmlKeys.HeadingId))">@(await heading.GetContentStringAsync())</a></p>
+                                                }
+                                            </div>
+                                        }
+                                    }
+                                    @if (Document.ContainsKey("EditLink"))
+                                    {
+                                        <p class="small font-weight-bold"><a href="@Document.GetString("EditLink")"><i class="fad fa-pencil"></i> Edit This Page</a></p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div id="footer" class="p-3 text-white font-size-sm">
+            <div class="container">
+                <div>© @DateTime.Today.Year Spectre Systems AB</div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                mermaid.initialize(
+                {
+                    flowchart:
+                    {
+                        useMaxWidth: false
+                    },
+					startOnLoad: false,
+					cloneCssStyles: false
+                });     
+                mermaid.init(undefined, ".mermaid");
+
+                // Remove the max-width setting that Mermaid sets
+                var mermaidSvg = $('.mermaid svg');
+                mermaidSvg.addClass('img-responsive');
+                mermaidSvg.css('max-width', '');
+
+                // Make it scrollable
+				var target = document.querySelector(".mermaid svg");
+				if(target !== null)
+				{
+					var panZoom = window.panZoom = svgPanZoom(target, {
+						zoomEnabled: true,
+						controlIconsEnabled: true,
+						fit: true,
+						center: true,
+                        maxZoom: 20,
+                        zoomScaleSensitivity: 0.6
+					});			                          
+
+                    // Do the reset once right away to fit the diagram
+                    panZoom.resize();
+                    panZoom.fit();
+                    panZoom.center();
+                    
+                    $(window).resize(function(){
+                        panZoom.resize();
+                        panZoom.fit();
+                        panZoom.center();
+                    });
+				}
+            });
+        </script>
+    </body>
+</html>
