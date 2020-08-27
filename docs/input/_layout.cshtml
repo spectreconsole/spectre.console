@@ -26,7 +26,28 @@
     </head>
     <body class="d-flex flex-column">
         <div class="flex-grow-1 d-flex flex-column">
-                        
+
+            <nav id="topnav" class="navbar navbar-expand-lg navbar-light">
+                <div class="container py-3">
+                    <a class="navbar-brand" href="/spectre.console/docs"><img id="logo" src="/spectre.console/assets/logo.svg" alt="Duck"> Spectre.Console</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarText">
+                        <ul class="navbar-nav mr-auto">
+                        </ul>
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link font-weight-light font-size-lg text-red" href="https://github.com/sponsors/patriksvensson"><i class="far fa-heart"></i> Sponsor</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link font-weight-light font-size-lg" href="https://github.com/spectresystems/spectre.console"><i class="fab fa-github"></i> GitHub</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
             @if (IsSectionDefined(Constants.Sections.Splash))
             {
                 @RenderSection(Constants.Sections.Splash, false)
