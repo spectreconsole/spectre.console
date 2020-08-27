@@ -7,7 +7,7 @@ namespace GridExample
         static void Main(string[] args)
         {
             AnsiConsole.WriteLine();
-            AnsiConsole.MarkupLine("Usage: [grey]dotnet [blue]run[/] [[options] [[[[--] <additional arguments>...]][/]");
+            AnsiConsole.MarkupLine("Usage: [grey]dotnet [blue]run[/] [[options]] [[[[--]] <additional arguments>...]]]][/]");
             AnsiConsole.WriteLine();
 
             var grid = new Grid();
