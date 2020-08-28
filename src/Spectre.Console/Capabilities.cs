@@ -38,6 +38,17 @@ namespace Spectre.Console
             LegacyConsole = legacyConsole;
         }
 
+        /// <summary>
+        /// Checks whether the current capabilities supports
+        /// the specified color system.
+        /// </summary>
+        /// <param name="colorSystem">The color system to check.</param>
+        /// <returns><c>true</c> if the color system is supported, otherwise <c>false</c>.</returns>
+        public bool Supports(ColorSystem colorSystem)
+        {
+            return (int)colorSystem <= (int)ColorSystem;
+        }
+
         /// <inheritdoc/>
         public override string ToString()
         {

@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Spectre.Console.Internal
 {
-    internal static class ConsoleExtensions
+    internal static class AnsiConsoleExtensions
     {
         public static IDisposable PushStyle(this IAnsiConsole console, Style style)
         {
