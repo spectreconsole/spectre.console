@@ -24,7 +24,7 @@ namespace Spectre.Console.Internal
             {
                 if (_out.IsStandardOut())
                 {
-                    return System.Console.BufferWidth;
+                    return ConsoleHelper.GetSafeBufferWidth(Constants.DefaultBufferWidth);
                 }
 
                 return Constants.DefaultBufferWidth;
@@ -37,7 +37,7 @@ namespace Spectre.Console.Internal
             {
                 if (_out.IsStandardOut())
                 {
-                    return System.Console.BufferHeight;
+                    return ConsoleHelper.GetSafeBufferHeight(Constants.DefaultBufferHeight);
                 }
 
                 return Constants.DefaultBufferHeight;

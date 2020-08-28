@@ -13,6 +13,12 @@
       "commands": [
         "gpr"
       ]
+    },
+    "dotnet-example": {
+      "version": "0.8.0",
+      "commands": [
+        "dotnet-example"
+      ]
     }
   }
 }

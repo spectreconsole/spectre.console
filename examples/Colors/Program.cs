@@ -2,75 +2,117 @@ using Spectre.Console;
 
 namespace ColorExample
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            /////////////////////////////////////////////////////////////////
-            // 4-BIT
-            /////////////////////////////////////////////////////////////////
-
-            AnsiConsole.ResetColors();
-            AnsiConsole.WriteLine();
-            AnsiConsole.MarkupLine("[bold underline]4-bit Colors[/]");
-            AnsiConsole.WriteLine();
-
-            for (var i = 0; i < 16; i++)
+            if (AnsiConsole.Capabilities.ColorSystem == ColorSystem.NoColors)
             {
-                AnsiConsole.Background = Color.FromInt32(i);
-                AnsiConsole.Write(string.Format(" {0,-9}", AnsiConsole.Background.ToString()));
-                AnsiConsole.ResetColors();
-                if ((i + 1) % 8 == 0)
-                {
-                    AnsiConsole.WriteLine();
-                }
+                /////////////////////////////////////////////////////////////////
+                // No colors
+                /////////////////////////////////////////////////////////////////
+
+                AnsiConsole.WriteLine("No colors are supported.");
+                return;
             }
 
-            /////////////////////////////////////////////////////////////////
-            // 8-BIT
-            /////////////////////////////////////////////////////////////////
-
-            AnsiConsole.ResetColors();
-            AnsiConsole.WriteLine();
-            AnsiConsole.MarkupLine("[bold underline]8-bit Colors[/]");
-            AnsiConsole.WriteLine();
-
-            for (var i = 0; i < 16; i++)
+            if (AnsiConsole.Capabilities.Supports(ColorSystem.Legacy))
             {
-                for (var j = 0; j < 16; j++)
+                /////////////////////////////////////////////////////////////////
+                // 3-BIT
+                /////////////////////////////////////////////////////////////////
+
+                AnsiConsole.ResetColors();
+                AnsiConsole.WriteLine();
+                AnsiConsole.MarkupLine("[bold underline]3-bit Colors[/]");
+                AnsiConsole.WriteLine();
+
+                for (var i = 0; i < 8; i++)
                 {
-                    var number = i * 16 + j;
-                    AnsiConsole.Background = Color.FromInt32(number);
-                    AnsiConsole.Write(string.Format(" {0,-4}", number));
+                    AnsiConsole.Background = Color.FromInt32(i);
+                    AnsiConsole.Write(string.Format(" {0,-9}", AnsiConsole.Background.ToString()));
                     AnsiConsole.ResetColors();
-                    if ((number + 1) % 16 == 0)
+                    if ((i + 1) % 8 == 0)
                     {
                         AnsiConsole.WriteLine();
                     }
                 }
             }
 
-            /////////////////////////////////////////////////////////////////
-            // 24-BIT
-            /////////////////////////////////////////////////////////////////
-
-            AnsiConsole.ResetColors();
-            AnsiConsole.WriteLine();
-            AnsiConsole.MarkupLine("[bold underline]24-bit Colors[/]");
-            AnsiConsole.WriteLine();
-
-            var index = 0;
-            for (var i = 0.0005; i < 1; i += 0.0025)
+            if (AnsiConsole.Capabilities.Supports(ColorSystem.Standard))
             {
-                index++;
+                /////////////////////////////////////////////////////////////////
+                // 4-BIT
+                /////////////////////////////////////////////////////////////////
 
-                var color = Utilities.HSL2RGB(i, 0.5, 0.5);
-                AnsiConsole.Background = new Color(color.R, color.G, color.B);
-                AnsiConsole.Write(" ");
+                AnsiConsole.ResetColors();
+                AnsiConsole.WriteLine();
+                AnsiConsole.MarkupLine("[bold underline]4-bit Colors[/]");
+                AnsiConsole.WriteLine();
 
-                if (index % 50 == 0)
+                for (var i = 0; i < 16; i++)
                 {
-                    AnsiConsole.WriteLine();
+                    AnsiConsole.Background = Color.FromInt32(i);
+                    AnsiConsole.Write(string.Format(" {0,-9}", AnsiConsole.Background.ToString()));
+                    AnsiConsole.ResetColors();
+                    if ((i + 1) % 8 == 0)
+                    {
+                        AnsiConsole.WriteLine();
+                    }
+                }
+            }
+
+            if (AnsiConsole.Capabilities.Supports(ColorSystem.EightBit))
+            {
+                /////////////////////////////////////////////////////////////////
+                // 8-BIT
+                /////////////////////////////////////////////////////////////////
+
+                AnsiConsole.ResetColors();
+                AnsiConsole.WriteLine();
+                AnsiConsole.MarkupLine("[bold underline]8-bit Colors[/]");
+                AnsiConsole.WriteLine();
+
+                for (var i = 0; i < 16; i++)
+                {
+                    for (var j = 0; j < 16; j++)
+                    {
+                        var number = i * 16 + j;
+                        AnsiConsole.Background = Color.FromInt32(number);
+                        AnsiConsole.Write(string.Format(" {0,-4}", number));
+                        AnsiConsole.ResetColors();
+                        if ((number + 1) % 16 == 0)
+                        {
+                            AnsiConsole.WriteLine();
+                        }
+                    }
+                }
+            }
+
+            if (AnsiConsole.Capabilities.Supports(ColorSystem.TrueColor))
+            {
+                /////////////////////////////////////////////////////////////////
+                // 24-BIT
+                /////////////////////////////////////////////////////////////////
+
+                AnsiConsole.ResetColors();
+                AnsiConsole.WriteLine();
+                AnsiConsole.MarkupLine("[bold underline]24-bit Colors[/]");
+                AnsiConsole.WriteLine();
+
+                var index = 0;
+                for (var i = 0.0005; i < 1; i += 0.0025)
+                {
+                    index++;
+
+                    var color = Utilities.HSL2RGB(i, 0.5, 0.5);
+                    AnsiConsole.Background = new Color(color.R, color.G, color.B);
+                    AnsiConsole.Write(" ");
+
+                    if (index % 50 == 0)
+                    {
+                        AnsiConsole.WriteLine();
+                    }
                 }
             }
         }

@@ -7,9 +7,8 @@ namespace PanelExample
         static void Main(string[] args)
         {
             var content = new Markup(
-                "[underline]I[/] heard [underline on blue]you[/] like 📦\n\n\n\n" +
-                "So I put a 📦 in a 📦\n\n" +
-                "😅").Centered();
+                "[underline]I[/] heard [underline on blue]you[/] like panels\n\n\n\n" +
+                "So I put a panel in a panel").Centered();
 
             AnsiConsole.Render(
                 new Panel(
