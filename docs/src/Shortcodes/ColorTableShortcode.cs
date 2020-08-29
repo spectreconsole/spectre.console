@@ -26,6 +26,7 @@ namespace Docs.Shortcodes
             var table = new XElement("table", new XAttribute("class", "table"));
             var header = new XElement("tr", new XAttribute("class", "color-row"));
             header.Add(new XElement("th", ""));
+            header.Add(new XElement("th", "#"));
             header.Add(new XElement("th", "Name"));
             header.Add(new XElement("th", "RGB"));
             header.Add(new XElement("th", "Hex"));
@@ -38,7 +39,8 @@ namespace Docs.Shortcodes
                     new XElement("span", 
                     new XAttribute("class", "color-representation"),
                     new XAttribute("style", $"background-color:{color.Hex};")));
-                var name = new XElement("td", new XElement("code", color.Name.ToLower()));
+                var name = new XElement("td", new XElement("code", color.Number.ToString()));
+                var number = new XElement("td", new XElement("code", color.Name.ToLower()));
                 var rgb = new XElement("td", new XElement("code", $"{color.R},{color.G},{color.B}"));
                 var hex = new XElement("td", new XElement("code", color.Hex));
                 var clr = new XElement("td", new XElement("code", color.ClrName));
@@ -47,6 +49,7 @@ namespace Docs.Shortcodes
                 var row = new XElement("tr");
                 row.Add(rep);
                 row.Add(name);
+                row.Add(number);
                 row.Add(rgb);
                 row.Add(hex);
                 row.Add(clr);
