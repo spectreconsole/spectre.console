@@ -16,7 +16,7 @@ namespace Spectre.Console.Rendering
         /// <summary>
         /// Gets the segment text.
         /// </summary>
-        public string Text { get; }
+        public string Text { get; internal set; }
 
         /// <summary>
         /// Gets a value indicating whether or not this is an expicit line break
@@ -224,6 +224,41 @@ namespace Spectre.Console.Rendering
             }
 
             return lines;
+        }
+
+        internal static IEnumerable<Segment> Merge(IEnumerable<Segment> segments)
+        {
+            var result = new List<Segment>();
+
+            var previous = (Segment?)null;
+            foreach (var segment in segments)
+            {
+                if (previous == null)
+                {
+                    previous = segment;
+                    continue;
+                }
+
+                // Same style?
+                if (previous.Style.Equals(segment.Style))
+                {
+                    // Modify the content of the previous segment
+                    previous.Text += segment.Text;
+                }
+                else
+                {
+                    // Push the current one to the results.
+                    result.Add(previous);
+                    previous = segment;
+                }
+            }
+
+            if (previous != null)
+            {
+                result.Add(previous);
+            }
+
+            return result;
         }
 
         internal static List<List<SegmentLine>> MakeSameHeight(int cellHeight, List<List<SegmentLine>> cells)
