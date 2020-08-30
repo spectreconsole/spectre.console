@@ -19,7 +19,6 @@ jobs:
 
   build:
     name: Build
-    if: "!contains(github.event.head_commit.message, 'skip-ci')"
     strategy:
       matrix:
         kind: ['linux', 'windows', 'macOS']
