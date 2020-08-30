@@ -30,8 +30,11 @@ namespace Spectre.Console
 
             using (console.PushStyle(Style.Plain))
             {
+                var segments = renderable.Render(options, console.Width);
+                segments = Segment.Merge(segments);
+
                 var current = Style.Plain;
-                foreach (var segment in renderable.Render(options, console.Width))
+                foreach (var segment in segments)
                 {
                     if (string.IsNullOrEmpty(segment.Text))
                     {
