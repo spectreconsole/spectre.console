@@ -11,15 +11,6 @@ namespace Docs
             return document?.GetString(Constants.Description, string.Empty) ?? string.Empty;
         }
 
-        public static bool HasVisibleChildren(this IDocument document)
-        {
-            if (document != null)
-            {
-                return document.HasChildren() && document.GetChildren().Any(x => x.IsVisible());
-            }
-            return false;
-        }
-
         public static bool IsVisible(this IDocument document)
         {
             return !document.GetBool(Constants.Hidden, false);
