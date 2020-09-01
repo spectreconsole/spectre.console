@@ -52,7 +52,7 @@
             {
                 @RenderSection(Constants.Sections.Splash, false)
             }
-            @{ 
+            @{
                 string section = Document.Destination.Segments.Length > 1 ? Document.Destination.Segments[0].ToString() : null;
             }
 
@@ -62,7 +62,7 @@
                     <div id="titlebar" class="py-4">
                         <div class="container">
                             <div class="row">
-                                @{ 
+                                @{
                                     string titleBarClasses = Document.GetBool(Constants.NoSidebar) ? string.Empty : "offset-md-3 offset-lg-2";
                                 }
                                 <div class="@titleBarClasses px-3 px-md-0">
@@ -97,7 +97,7 @@
                         </div>
                     </div>
                 }
-                
+
                 <div class="flex-grow-1 d-flex flex-column bg-body">
                     @if (Document.GetBool(Constants.NoContainer))
                     {
@@ -126,21 +126,22 @@
                                         }
                                         else
                                         {
-                                            IDocument root = Outputs[nameof(Content)].First(x => x.Destination == section + "/index.html");
+                                            IDocument root = OutputPages[section + "/index.html"].First();
                                             <div class="sidebar-nav-item @(Document.IdEquals(root) ? "active" : null)">
                                                 @Html.DocumentLink(root)
                                             </div>
 
-                                            @foreach (IDocument document in root.GetChildren().OnlyVisible())
+                                            @foreach (IDocument document in OutputPages.GetChildrenOf(root).OnlyVisible())
                                             {
-                                                <div class="sidebar-nav-item @(Document.IdEquals(document) ? "active" : null) @(document.HasChildren() ? "has-children" : null)">
+                                                DocumentList<IDocument> documentChildren = OutputPages.GetChildrenOf(document);
+                                                <div class="sidebar-nav-item @(Document.IdEquals(document) ? "active" : null) @(documentChildren.Any() ? "has-children" : null)">
                                                     @Html.DocumentLink(document)
                                                 </div>
 
-                                                @if (document.HasVisibleChildren())
+                                                @if (documentChildren.OnlyVisible().Any())
                                                 {
-                                                    <div class="sidebar-nav-children @(Document.IdEquals(document) || document.GetChildren().Any(x => Document.IdEquals(x)) ? "active" : null)">
-                                                        @foreach (IDocument child in document.GetChildren().OnlyVisible())
+                                                    <div class="sidebar-nav-children @(Document.IdEquals(document) || documentChildren.Any(x => Document.IdEquals(x)) ? "active" : null)">
+                                                        @foreach (IDocument child in documentChildren.OnlyVisible())
                                                         {
                                                             <div class="sidebar-nav-child @(Document.IdEquals(child) ? "active" : null)">
                                                                 @Html.DocumentLink(child)
@@ -195,7 +196,7 @@
                     },
 					startOnLoad: false,
 					cloneCssStyles: false
-                });     
+                });
                 mermaid.init(undefined, ".mermaid");
 
                 // Remove the max-width setting that Mermaid sets
@@ -214,13 +215,13 @@
 						center: true,
                         maxZoom: 20,
                         zoomScaleSensitivity: 0.6
-					});			                          
+					});
 
                     // Do the reset once right away to fit the diagram
                     panZoom.resize();
                     panZoom.fit();
                     panZoom.center();
-                    
+
                     $(window).resize(function(){
                         panZoom.resize();
                         panZoom.fit();
