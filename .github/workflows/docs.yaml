@@ -30,4 +30,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd docs
-        dotnet run --configuration Release -- deploy
+        dotnet build --configuration Release
+        dotnet run --configuration Release --no-build -- deploy
