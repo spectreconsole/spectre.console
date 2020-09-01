@@ -53,7 +53,7 @@
                 @RenderSection(Constants.Sections.Splash, false)
             }
             @{
-                string section = Document.Destination.Segments.Length > 1 ? Document.Destination.Segments[0].ToString() : null;
+                string section = "docs";
             }
 
             <div class="flex-grow-1 d-flex  bg-body flex-column @(section != null ? "section-" + section : null)">
@@ -126,7 +126,7 @@
                                         }
                                         else
                                         {
-                                            IDocument root = OutputPages[section + "/index.html"].First();
+                                            IDocument root = OutputPages["index.html"].First();
                                             <div class="sidebar-nav-item @(Document.IdEquals(root) ? "active" : null)">
                                                 @Html.DocumentLink(root)
                                             </div>
