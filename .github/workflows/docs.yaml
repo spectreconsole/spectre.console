@@ -17,7 +17,9 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@master
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Setup dotnet
       uses: actions/setup-dotnet@v1
@@ -30,5 +32,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd docs
-        dotnet build --configuration Release
-        dotnet run --configuration Release --no-build -- deploy
+        dotnet run --configuration Release -- deploy
