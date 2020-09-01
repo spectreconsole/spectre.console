@@ -24,4 +24,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd docs
-        dotnet run -- deploy
+        dotnet run --configuration Release -- deploy
