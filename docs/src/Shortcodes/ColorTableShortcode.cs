@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NJsonSchema;
 using Statiq.Common;
 using System.Xml.Linq;
 using Docs.Pipelines;

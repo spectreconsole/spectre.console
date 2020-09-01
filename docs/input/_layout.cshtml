@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -183,7 +183,10 @@
         </div>
         <div id="footer" class="p-3 text-white font-size-sm">
             <div class="container">
-                <div>© @DateTime.Today.Year Spectre Systems AB</div>
+                <div>
+                    <span>© @DateTime.Today.Year Spectre Systems AB</span>
+                    <span class="float-right" style="color: #888888;">@VersionUtilities.GetVersion()</span>
+                </div>
             </div>
         </div>
         <script>
