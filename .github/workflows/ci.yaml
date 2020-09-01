@@ -6,6 +6,35 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
+
+  ###################################################
+  # DOCS
+  ###################################################
+
+  docs:
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.301' # SDK Version to use.
+
+    - name: Build
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        cd docs
+        dotnet run --configuration Release
+
+  ###################################################
+  # BUILD
+  ###################################################
+
   build:
     name: Build
     if: "!contains(github.event.head_commit.message, 'skip-ci')"
