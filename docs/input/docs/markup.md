@@ -37,6 +37,15 @@ AnsiConsole.Markup("[underline green]Hello[/] ");
 AnsiConsole.MarkupLine("[bold]World[/]");
 ```
 
+# Escaping format characters
+
+To output a `[` you use `[[`, and to output a `]` you use `]]`.
+
+```csharp
+AnsiConsole.Markup("[[Hello]] "); // [Hello]
+AnsiConsole.Markup("[red][[World]][/]"); // [World]
+```
+
 # Setting background color
 
 You can set the background color in markup by prefixing the color with
