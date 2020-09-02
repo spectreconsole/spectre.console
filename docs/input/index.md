@@ -13,7 +13,7 @@ for Python written by Will McGugan.
 * Supports tables, grids, panels, and a [Rich](https://github.com/willmcgugan/rich) 
   inspired markup language.
 * Supports the most common 
-  [SRG parameters](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_parameters) 
+  [SGR parameters](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_parameters) 
   when it comes to text styling such as bold, dim, italic, underline, strikethrough, 
   and blinking text.
 * Supports `3`/`4`/`8`/`24`-bit colors in the terminal.  
