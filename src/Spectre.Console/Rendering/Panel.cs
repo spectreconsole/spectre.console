@@ -64,8 +64,8 @@ namespace Spectre.Console
         {
             var childWidth = _child.Measure(context, maxWidth);
             return new Measurement(
-                childWidth.Min + 2 + Padding.GetHorizontalPadding(),
-                childWidth.Max + 2 + Padding.GetHorizontalPadding());
+                childWidth.Min + EdgeWidth + Padding.GetHorizontalPadding(),
+                childWidth.Max + EdgeWidth + Padding.GetHorizontalPadding());
         }
 
         /// <inheritdoc/>

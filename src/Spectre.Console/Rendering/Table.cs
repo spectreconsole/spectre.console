@@ -125,17 +125,19 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(columns));
             }
 
-            if (columns.Length < _columns.Count)
-            {
-                throw new InvalidOperationException("The number of row columns are less than the number of table columns.");
-            }
-
             if (columns.Length > _columns.Count)
             {
                 throw new InvalidOperationException("The number of row columns are greater than the number of table columns.");
             }
 
             _rows.Add(columns.ToList());
+
+            // Need to add missing columns?
+            if (columns.Length < _columns.Count)
+            {
+                var diff = _columns.Count - columns.Length;
+                Enumerable.Range(0, diff).ForEach(_ => _rows.Last().Add(Text.Empty));
+            }
         }
 
         /// <inheritdoc/>
