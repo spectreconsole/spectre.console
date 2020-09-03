@@ -4,7 +4,7 @@ namespace ColorExample
 {
     public static class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             if (AnsiConsole.Capabilities.ColorSystem == ColorSystem.NoColors)
             {

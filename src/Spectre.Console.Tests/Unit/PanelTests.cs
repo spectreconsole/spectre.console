@@ -41,6 +41,108 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        public void Should_Render_Panel_With_Header()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+
+            // When
+            console.Render(new Panel("Hello World")
+            {
+                Header = new Header("Greeting"),
+                Expand = true,
+                Padding = new Padding(2, 2),
+            });
+
+            // Then
+            console.Lines.Count.ShouldBe(3);
+            console.Lines[0].ShouldBe("┌─Greeting─────────────────────────────────────────────────────────────────────┐");
+            console.Lines[1].ShouldBe("│  Hello World                                                                 │");
+            console.Lines[2].ShouldBe("└──────────────────────────────────────────────────────────────────────────────┘");
+        }
+
+        [Fact]
+        public void Should_Render_Panel_With_Left_Aligned_Header()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+
+            // When
+            console.Render(new Panel("Hello World")
+            {
+                Header = new Header("Greeting").LeftAligned(),
+                Expand = true,
+            });
+
+            // Then
+            console.Lines.Count.ShouldBe(3);
+            console.Lines[0].ShouldBe("┌─Greeting─────────────────────────────────────────────────────────────────────┐");
+            console.Lines[1].ShouldBe("│ Hello World                                                                  │");
+            console.Lines[2].ShouldBe("└──────────────────────────────────────────────────────────────────────────────┘");
+        }
+
+        [Fact]
+        public void Should_Render_Panel_With_Centered_Header()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+
+            // When
+            console.Render(new Panel("Hello World")
+            {
+                Header = new Header("Greeting").Centered(),
+                Expand = true,
+            });
+
+            // Then
+            console.Lines.Count.ShouldBe(3);
+            console.Lines[0].ShouldBe("┌───────────────────────────────────Greeting───────────────────────────────────┐");
+            console.Lines[1].ShouldBe("│ Hello World                                                                  │");
+            console.Lines[2].ShouldBe("└──────────────────────────────────────────────────────────────────────────────┘");
+        }
+
+        [Fact]
+        public void Should_Render_Panel_With_Right_Aligned_Header()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+
+            // When
+            console.Render(new Panel("Hello World")
+            {
+                Header = new Header("Greeting").RightAligned(),
+                Expand = true,
+            });
+
+            // Then
+            console.Lines.Count.ShouldBe(3);
+            console.Lines[0].ShouldBe("┌─────────────────────────────────────────────────────────────────────Greeting─┐");
+            console.Lines[1].ShouldBe("│ Hello World                                                                  │");
+            console.Lines[2].ShouldBe("└──────────────────────────────────────────────────────────────────────────────┘");
+        }
+
+        [Fact]
+        public void Should_Collapse_Header_If_It_Will_Not_Fit()
+        {
+            // Given
+            var console = new PlainConsole(width: 10);
+
+            // When
+            console.Render(new Panel("Hello World")
+            {
+                Header = new Header("Greeting"),
+                Expand = true,
+            });
+
+            // Then
+            console.Lines.Count.ShouldBe(4);
+            console.Lines[0].ShouldBe("┌─Greet…─┐");
+            console.Lines[1].ShouldBe("│ Hello  │");
+            console.Lines[2].ShouldBe("│ World  │");
+            console.Lines[3].ShouldBe("└────────┘");
+        }
+
+        [Fact]
         public void Should_Render_Panel_With_Unicode_Correctly()
         {
             // Given

@@ -2,9 +2,9 @@ using Spectre.Console;
 
 namespace PanelExample
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
             var content = new Markup(
                 "[underline]I[/] heard [underline on blue]you[/] like panels\n\n\n\n" +
@@ -14,7 +14,7 @@ namespace PanelExample
                 new Panel(
                     new Panel(content)
                     {
-                        Border = BorderKind.Rounded
+                        Border = BorderKind.Rounded,
                     }));
 
             // Left adjusted panel with text
@@ -22,6 +22,7 @@ namespace PanelExample
                 new Text("Left adjusted\nLeft").LeftAligned())
             {
                 Expand = true,
+                Header = new Header("Left", new Style(foreground: Color.Red)).LeftAligned(),
             });
 
             // Centered ASCII panel with text
@@ -30,6 +31,7 @@ namespace PanelExample
             {
                 Expand = true,
                 Border = BorderKind.Ascii,
+                Header = new Header("Center", new Style(foreground: Color.Green)).Centered(),
             });
 
             // Right adjusted, rounded panel with text
@@ -38,6 +40,7 @@ namespace PanelExample
             {
                 Expand = true,
                 Border = BorderKind.Rounded,
+                Header = new Header("Right", new Style(foreground: Color.Blue)).RightAligned(),
             });
         }
     }

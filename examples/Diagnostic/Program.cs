@@ -3,9 +3,9 @@ using Spectre.Console;
 
 namespace Diagnostic
 {
-    public class Program
+    public static class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             AnsiConsole.MarkupLine("Color system: [bold]{0}[/]", AnsiConsole.Capabilities.ColorSystem);
             AnsiConsole.MarkupLine("Supports ansi? [bold]{0}[/]", AnsiConsole.Capabilities.SupportsAnsi);

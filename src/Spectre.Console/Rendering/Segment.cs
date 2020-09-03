@@ -305,11 +305,19 @@ namespace Spectre.Console.Rendering
             }
             else if (overflow == Overflow.Ellipsis)
             {
-                result.Add(new Segment(segment.Text.Substring(0, width - 1), segment.Style));
-                result.Add(new Segment("…", segment.Style));
+                result.Add(new Segment(segment.Text.Substring(0, width - 1) + "…", segment.Style));
             }
 
             return result;
+        }
+
+        internal static Segment TruncateWithEllipsis(string text, Style style, Encoding encoding, int maxWidth)
+        {
+            return SplitOverflow(
+                new Segment(text, style),
+                Overflow.Ellipsis,
+                encoding,
+                maxWidth).First();
         }
 
         internal static List<List<SegmentLine>> MakeSameHeight(int cellHeight, List<List<SegmentLine>> cells)

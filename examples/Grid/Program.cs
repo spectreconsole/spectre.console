@@ -2,9 +2,9 @@ using Spectre.Console;
 
 namespace GridExample
 {
-    public sealed class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
             AnsiConsole.WriteLine();
             AnsiConsole.MarkupLine("Usage: [grey]dotnet [blue]run[/] [[options]] [[[[--]] <additional arguments>...]]]][/]");
