@@ -7,7 +7,7 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable grid.
     /// </summary>
-    public sealed class Grid : Renderable
+    public sealed class Grid : Renderable, IExpandable
     {
         private readonly Table _table;
 
@@ -20,6 +20,13 @@ namespace Spectre.Console
         /// Gets the number of rows in the table.
         /// </summary>
         public int RowCount => _table.RowCount;
+
+        /// <inheritdoc/>
+        public bool Expand
+        {
+            get => _table.Expand;
+            set => _table.Expand = value;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Grid"/> class.
@@ -92,11 +99,6 @@ namespace Spectre.Console
             if (columns is null)
             {
                 throw new ArgumentNullException(nameof(columns));
-            }
-
-            if (columns.Length < _table.ColumnCount)
-            {
-                throw new InvalidOperationException("The number of row columns are less than the number of grid columns.");
             }
 
             if (columns.Length > _table.ColumnCount)

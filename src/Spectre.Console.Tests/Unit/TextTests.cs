@@ -65,6 +65,21 @@ namespace Spectre.Console.Tests.Unit
             fixture.RawOutput.ShouldBe("Hello\n\nWorld\n\n");
         }
 
+        [Fact]
+        public void Should_Render_Panel_2()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+
+            // When
+            console.Render(new Markup("[b]Hello World[/]\n[yellow]Hello World[/]"));
+
+            // Then
+            console.Lines.Count.ShouldBe(2);
+            console.Lines[0].ShouldBe("Hello World");
+            console.Lines[1].ShouldBe("Hello World");
+        }
+
         [Theory]
         [InlineData(5, "Hello World", "Hello\nWorld")]
         [InlineData(10, "Hello Sweet Nice World", "Hello \nSweet Nice\nWorld")]

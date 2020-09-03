@@ -42,7 +42,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Throw_If_Row_Columns_Is_Less_Than_Number_Of_Columns()
+            public void Should_Add_Empty_Items_If_User_Provides_Less_Row_Items_Than_Columns()
             {
                 // Given
                 var grid = new Grid();
@@ -50,11 +50,10 @@ namespace Spectre.Console.Tests.Unit
                 grid.AddColumn();
 
                 // When
-                var result = Record.Exception(() => grid.AddRow("Foo"));
+                grid.AddRow("Foo");
 
                 // Then
-                result.ShouldBeOfType<InvalidOperationException>();
-                result.Message.ShouldBe("The number of row columns are less than the number of grid columns.");
+                grid.RowCount.ShouldBe(1);
             }
 
             [Fact]

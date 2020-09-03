@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
 
@@ -30,8 +31,8 @@ namespace Spectre.Console
 
             using (console.PushStyle(Style.Plain))
             {
-                var segments = renderable.Render(options, console.Width);
-                segments = Segment.Merge(segments);
+                var segments = renderable.Render(options, console.Width).Where(x => !(x.Text.Length == 0 && !x.IsLineBreak)).ToArray();
+                segments = Segment.Merge(segments).ToArray();
 
                 var current = Style.Plain;
                 foreach (var segment in segments)

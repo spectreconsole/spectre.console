@@ -87,7 +87,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Throw_If_Row_Columns_Is_Less_Than_Number_Of_Columns()
+            public void Should_Add_Empty_Items_If_User_Provides_Less_Row_Items_Than_Columns()
             {
                 // Given
                 var table = new Table();
@@ -95,11 +95,10 @@ namespace Spectre.Console.Tests.Unit
                 table.AddColumn("World");
 
                 // When
-                var result = Record.Exception(() => table.AddRow("Foo"));
+                table.AddRow("Foo");
 
                 // Then
-                result.ShouldBeOfType<InvalidOperationException>();
-                result.Message.ShouldBe("The number of row columns are less than the number of table columns.");
+                table.RowCount.ShouldBe(1);
             }
 
             [Fact]

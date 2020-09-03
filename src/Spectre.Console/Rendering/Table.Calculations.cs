@@ -18,7 +18,7 @@ namespace Spectre.Console
         // https://github.com/willmcgugan/rich/blob/527475837ebbfc427530b3ee0d4d0741d2d0fc6d/rich/table.py#L394
         private List<int> CalculateColumnWidths(RenderContext options, int maxWidth)
         {
-            var width_ranges = _columns.Select(column => MeasureColumn(column, options, maxWidth));
+            var width_ranges = _columns.Select(column => MeasureColumn(column, options, maxWidth)).ToArray();
             var widths = width_ranges.Select(range => range.Max).ToList();
 
             var tableWidth = widths.Sum();
@@ -117,9 +117,17 @@ namespace Spectre.Console
 
         private int GetExtraWidth(bool includePadding)
         {
-            var separators = _columns.Count - 1;
+            var hideBorder = BorderKind == BorderKind.None;
+            var separators = hideBorder ? 0 : _columns.Count - 1;
+            var edges = hideBorder ? 0 : EdgeCount;
             var padding = includePadding ? _columns.Select(x => x.Padding.GetHorizontalPadding()).Sum() : 0;
-            return separators + EdgeCount + padding;
+
+            if (!PadRightCell)
+            {
+                padding -= _columns.Last().Padding.Right;
+            }
+
+            return separators + edges + padding;
         }
     }
 }
