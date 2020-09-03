@@ -10,7 +10,7 @@ namespace Spectre.Console
     /// </summary>
     [DebuggerDisplay("{_text,nq}")]
     [SuppressMessage("Naming", "CA1724:Type names should not match namespaces")]
-    public sealed class Text : Renderable, IAlignable
+    public sealed class Text : Renderable, IAlignable, IOverflowable
     {
         private readonly Paragraph _paragraph;
 
@@ -36,6 +36,15 @@ namespace Spectre.Console
         {
             get => _paragraph.Alignment;
             set => _paragraph.Alignment = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the text overflow strategy.
+        /// </summary>
+        public Overflow? Overflow
+        {
+            get => _paragraph.Overflow;
+            set => _paragraph.Overflow = value;
         }
 
         /// <inheritdoc/>

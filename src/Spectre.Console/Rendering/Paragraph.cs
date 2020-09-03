@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,7 +12,7 @@ namespace Spectre.Console
     /// of the paragraph can have individual styling.
     /// </summary>
     [DebuggerDisplay("{_text,nq}")]
-    public sealed class Paragraph : Renderable, IAlignable
+    public sealed class Paragraph : Renderable, IAlignable, IOverflowable
     {
         private readonly List<SegmentLine> _lines;
 
@@ -20,6 +20,11 @@ namespace Spectre.Console
         /// Gets or sets the alignment of the whole paragraph.
         /// </summary>
         public Justify? Alignment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the text overflow strategy.
+        /// </summary>
+        public Overflow? Overflow { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Paragraph"/> class.
@@ -197,34 +202,76 @@ namespace Spectre.Console
             var line = new SegmentLine();
 
             var newLine = true;
-            using (var iterator = new SegmentLineIterator(_lines))
+
+            using var iterator = new SegmentLineIterator(_lines);
+            var queue = new Queue<Segment>();
+            while (true)
             {
-                while (iterator.MoveNext())
+                var current = (Segment?)null;
+                if (queue.Count == 0)
                 {
-                    var current = iterator.Current;
-                    if (current == null)
+                    if (!iterator.MoveNext())
                     {
-                        throw new InvalidOperationException("Iterator returned empty segment.");
+                        break;
                     }
 
-                    if (newLine && current.IsWhiteSpace && !current.IsLineBreak)
-                    {
-                        newLine = false;
-                        continue;
-                    }
+                    current = iterator.Current;
+                }
+                else
+                {
+                    current = queue.Dequeue();
+                }
 
+                if (current == null)
+                {
+                    throw new InvalidOperationException("Iterator returned empty segment.");
+                }
+
+                if (newLine && current.IsWhiteSpace && !current.IsLineBreak)
+                {
                     newLine = false;
+                    continue;
+                }
 
-                    if (current.IsLineBreak)
+                newLine = false;
+
+                if (current.IsLineBreak)
+                {
+                    line.Add(current);
+                    lines.Add(line);
+                    line = new SegmentLine();
+                    newLine = true;
+                    continue;
+                }
+
+                var length = current.CellLength(context.Encoding);
+                if (length > maxWidth)
+                {
+                    // The current segment is longer than the width of the console,
+                    // so we will need to crop it up, into new segments.
+                    var segments = Segment.SplitOverflow(current, Overflow, context.Encoding, maxWidth);
+                    if (segments.Count > 0)
                     {
-                        line.Add(current);
-                        lines.Add(line);
-                        line = new SegmentLine();
-                        newLine = true;
-                        continue;
-                    }
+                        if (line.CellWidth(context.Encoding) + segments[0].CellLength(context.Encoding) > maxWidth)
+                        {
+                            lines.Add(line);
+                            line = new SegmentLine();
+                            newLine = true;
 
-                    var length = current.CellLength(context.Encoding);
+                            segments.ForEach(s => queue.Enqueue(s));
+                            continue;
+                        }
+                        else
+                        {
+                            // Add the segment and push the rest of them to the queue.
+                            line.Add(segments[0]);
+                            segments.Skip(1).ForEach(s => queue.Enqueue(s));
+                            continue;
+                        }
+                    }
+                }
+                else
+                {
                     if (line.CellWidth(context.Encoding) + length > maxWidth)
                     {
                         line.Add(Segment.Empty);
@@ -232,16 +279,16 @@ namespace Spectre.Console
                         line = new SegmentLine();
                         newLine = true;
                     }
-
-                    if (newLine && current.IsWhiteSpace)
-                    {
-                        continue;
-                    }
-
-                    newLine = false;
-
-                    line.Add(current);
                 }
+
+                if (newLine && current.IsWhiteSpace)
+                {
+                    continue;
+                }
+
+                newLine = false;
+
+                line.Add(current);
             }
 
             // Flush remaining.
