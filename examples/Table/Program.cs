@@ -36,7 +36,7 @@ namespace TableExample
         private static void RenderBigTable()
         {
             // Create the table.
-            var table = new Table().SetBorder(BorderKind.Rounded);
+            var table = new Table().SetBorderKind(BorderKind.Rounded);
             table.AddColumn("[red underline]Foo[/]");
             table.AddColumn(new TableColumn("[blue]Bar[/]") { Alignment = Justify.Right, NoWrap = true });
 
@@ -58,7 +58,7 @@ namespace TableExample
         private static void RenderNestedTable()
         {
             // Create simple table.
-            var simple = new Table().SetBorder(BorderKind.Rounded).SetBorderColor(Color.Red);
+            var simple = new Table().SetBorderKind(BorderKind.Rounded).SetBorderColor(Color.Red);
             simple.AddColumn(new TableColumn("[u]Foo[/]").Centered());
             simple.AddColumn(new TableColumn("[u]Bar[/]"));
             simple.AddColumn(new TableColumn("[u]Baz[/]"));
@@ -67,7 +67,7 @@ namespace TableExample
             simple.AddRow("[blue]Hej[/]", "[yellow]Världen![/]", "");
 
             // Create other table.
-            var second = new Table().SetBorder(BorderKind.Square).SetBorderColor(Color.Green);
+            var second = new Table().SetBorderKind(BorderKind.Square).SetBorderColor(Color.Green);
             second.AddColumn(new TableColumn("[u]Foo[/]"));
             second.AddColumn(new TableColumn("[u]Bar[/]"));
             second.AddColumn(new TableColumn("[u]Baz[/]"));
@@ -75,7 +75,7 @@ namespace TableExample
             second.AddRow(simple, new Text("Whaaat"), new Text("Lolz"));
             second.AddRow("[blue]Hej[/]", "[yellow]Världen![/]", "");
 
-            var table = new Table().SetBorder(BorderKind.Rounded);
+            var table = new Table().SetBorderKind(BorderKind.Rounded);
             table.AddColumn(new TableColumn(new Panel("[u]Foo[/]").SetBorderColor(Color.Red)));
             table.AddColumn(new TableColumn(new Panel("[u]Bar[/]").SetBorderColor(Color.Green)));
             table.AddColumn(new TableColumn(new Panel("[u]Baz[/]").SetBorderColor(Color.Blue)));

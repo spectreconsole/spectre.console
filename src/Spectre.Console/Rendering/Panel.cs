@@ -16,13 +16,13 @@ namespace Spectre.Console
         private readonly IRenderable _child;
 
         /// <inheritdoc/>
-        public BorderKind Border { get; set; } = BorderKind.Square;
+        public BorderKind BorderKind { get; set; } = BorderKind.Square;
 
         /// <inheritdoc/>
         public bool SafeBorder { get; set; } = true;
 
         /// <inheritdoc/>
-        public Color? BorderColor { get; set; }
+        public Style? BorderStyle { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the panel should
@@ -71,8 +71,8 @@ namespace Spectre.Console
         /// <inheritdoc/>
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
-            var border = SpectreBorder.GetBorder(Border, (context.LegacyConsole || !context.Unicode) && SafeBorder);
-            var borderStyle = new Style(BorderColor, null, null);
+            var border = SpectreBorder.GetBorder(BorderKind, (context.LegacyConsole || !context.Unicode) && SafeBorder);
+            var borderStyle = BorderStyle ?? Style.Plain;
 
             var paddingWidth = Padding.GetHorizontalPadding();
             var childWidth = maxWidth - EdgeWidth - paddingWidth;

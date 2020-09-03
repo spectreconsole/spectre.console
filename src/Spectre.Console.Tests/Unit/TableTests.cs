@@ -174,7 +174,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // A simple table
             var console = new PlainConsole(width: 80);
-            var table = new Table() { Border = BorderKind.Rounded };
+            var table = new Table() { BorderKind = BorderKind.Rounded };
             table.AddColumn("Foo");
             table.AddColumn("Bar");
             table.AddColumn(new TableColumn("Baz") { Alignment = Justify.Right });
@@ -184,7 +184,7 @@ namespace Spectre.Console.Tests.Unit
             // Render a table in some panels.
             console.Render(new Panel(new Panel(table)
             {
-                Border = BorderKind.Ascii,
+                BorderKind = BorderKind.Ascii,
             }));
 
             // Then
@@ -256,7 +256,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new PlainConsole(width: 80);
-            var table = new Table { Border = BorderKind.Ascii };
+            var table = new Table { BorderKind = BorderKind.Ascii };
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");
@@ -279,7 +279,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new PlainConsole(width: 80);
-            var table = new Table { Border = BorderKind.Rounded };
+            var table = new Table { BorderKind = BorderKind.Rounded };
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");
@@ -302,7 +302,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new PlainConsole(width: 80);
-            var table = new Table { Border = BorderKind.None };
+            var table = new Table { BorderKind = BorderKind.None };
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");

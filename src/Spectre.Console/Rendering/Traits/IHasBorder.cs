@@ -15,11 +15,11 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the kind of border to use.
         /// </summary>
-        public BorderKind Border { get; set; }
+        public BorderKind BorderKind { get; set; }
 
         /// <summary>
-        /// Gets or sets the border color.
+        /// Gets or sets the border style.
         /// </summary>
-        public Color? BorderColor { get; set; }
+        public Style? BorderStyle { get; set; }
     }
 }
