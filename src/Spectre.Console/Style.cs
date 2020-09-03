@@ -6,7 +6,7 @@ namespace Spectre.Console
     /// <summary>
     /// Represents color and text decoration.
     /// </summary>
-    public sealed class Style : IEquatable<Style>
+    public sealed partial class Style : IEquatable<Style>
     {
         /// <summary>
         /// Gets the foreground color.

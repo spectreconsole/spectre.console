@@ -26,10 +26,10 @@ namespace Spectre.Console
         public int RowCount => _rows.Count;
 
         /// <inheritdoc/>
-        public BorderKind Border { get; set; } = BorderKind.Square;
+        public BorderKind BorderKind { get; set; } = BorderKind.Square;
 
         /// <inheritdoc/>
-        public Color? BorderColor { get; set; }
+        public Style? BorderStyle { get; set; }
 
         /// <inheritdoc/>
         public bool SafeBorder { get; set; } = true;
@@ -168,13 +168,13 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var border = SpectreBorder.GetBorder(Border, (context.LegacyConsole || !context.Unicode) && SafeBorder);
-            var borderStyle = new Style(BorderColor, null, null);
+            var border = SpectreBorder.GetBorder(BorderKind, (context.LegacyConsole || !context.Unicode) && SafeBorder);
+            var borderStyle = BorderStyle ?? Style.Plain;
 
             var tableWidth = maxWidth;
 
-            var showBorder = Border != BorderKind.None;
-            var hideBorder = Border == BorderKind.None;
+            var showBorder = BorderKind != BorderKind.None;
+            var hideBorder = BorderKind == BorderKind.None;
             var hasRows = _rows.Count > 0;
 
             if (Width != null)

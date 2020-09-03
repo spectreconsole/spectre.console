@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -14,13 +12,23 @@ namespace Spectre.Console
         private readonly Table _table;
 
         /// <summary>
+        /// Gets the number of columns in the table.
+        /// </summary>
+        public int ColumnCount => _table.ColumnCount;
+
+        /// <summary>
+        /// Gets the number of rows in the table.
+        /// </summary>
+        public int RowCount => _table.RowCount;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Grid"/> class.
         /// </summary>
         public Grid()
         {
             _table = new Table
             {
-                Border = BorderKind.None,
+                BorderKind = BorderKind.None,
                 ShowHeaders = false,
                 IsGrid = true,
                 PadRightCell = false,
@@ -73,45 +81,6 @@ namespace Spectre.Console
                 Padding = column.Padding,
                 Alignment = column.Alignment,
             });
-        }
-
-        /// <summary>
-        /// Adds a column to the grid.
-        /// </summary>
-        /// <param name="count">The number of columns to add.</param>
-        public void AddColumns(int count)
-        {
-            for (var index = 0; index < count; index++)
-            {
-                AddColumn(new GridColumn());
-            }
-        }
-
-        /// <summary>
-        /// Adds a column to the grid.
-        /// </summary>
-        /// <param name="columns">The columns to add.</param>
-        public void AddColumns(params GridColumn[] columns)
-        {
-            if (columns is null)
-            {
-                throw new ArgumentNullException(nameof(columns));
-            }
-
-            foreach (var column in columns)
-            {
-                AddColumn(column);
-            }
-        }
-
-        /// <summary>
-        /// Adds an empty row to the grid.
-        /// </summary>
-        public void AddEmptyRow()
-        {
-            var columns = new IRenderable[_table.ColumnCount];
-            Enumerable.Range(0, _table.ColumnCount).ForEach(index => columns[index] = Text.Empty);
-            AddRow(columns);
         }
 
         /// <summary>
