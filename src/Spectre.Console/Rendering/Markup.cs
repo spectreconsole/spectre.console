@@ -7,7 +7,7 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable piece of markup text.
     /// </summary>
-    public sealed class Markup : Renderable, IAlignable
+    public sealed class Markup : Renderable, IAlignable, IOverflowable
     {
         private readonly Paragraph _paragraph;
 
@@ -16,6 +16,13 @@ namespace Spectre.Console
         {
             get => _paragraph.Alignment;
             set => _paragraph.Alignment = value;
+        }
+
+        /// <inheritdoc/>
+        public Overflow? Overflow
+        {
+            get => _paragraph.Overflow;
+            set => _paragraph.Overflow = value;
         }
 
         /// <summary>

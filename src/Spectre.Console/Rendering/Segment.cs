@@ -261,6 +261,57 @@ namespace Spectre.Console.Rendering
             return result;
         }
 
+        /// <summary>
+        /// Splits an overflowing segment into several new segments.
+        /// </summary>
+        /// <param name="segment">The segment to split.</param>
+        /// <param name="overflow">The overflow strategy to use.</param>
+        /// <param name="encoding">The encodign to use.</param>
+        /// <param name="width">The maxiumum width.</param>
+        /// <returns>A list of segments that has been split.</returns>
+        public static List<Segment> SplitOverflow(Segment segment, Overflow? overflow, Encoding encoding, int width)
+        {
+            if (segment is null)
+            {
+                throw new ArgumentNullException(nameof(segment));
+            }
+
+            if (segment.CellLength(encoding) <= width)
+            {
+                return new List<Segment>(1) { segment };
+            }
+
+            // Default to folding
+            overflow ??= Overflow.Fold;
+
+            var result = new List<Segment>();
+
+            if (overflow == Overflow.Fold)
+            {
+                var totalLength = segment.Text.CellLength(encoding);
+                var lengthLeft = totalLength;
+                while (lengthLeft > 0)
+                {
+                    var index = totalLength - lengthLeft;
+                    var take = Math.Min(width, totalLength - index);
+
+                    result.Add(new Segment(segment.Text.Substring(index, take), segment.Style));
+                    lengthLeft -= take;
+                }
+            }
+            else if (overflow == Overflow.Crop)
+            {
+                result.Add(new Segment(segment.Text.Substring(0, width), segment.Style));
+            }
+            else if (overflow == Overflow.Ellipsis)
+            {
+                result.Add(new Segment(segment.Text.Substring(0, width - 1), segment.Style));
+                result.Add(new Segment("…", segment.Style));
+            }
+
+            return result;
+        }
+
         internal static List<List<SegmentLine>> MakeSameHeight(int cellHeight, List<List<SegmentLine>> cells)
         {
             foreach (var cell in cells)

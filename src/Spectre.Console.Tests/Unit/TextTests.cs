@@ -83,5 +83,25 @@ namespace Spectre.Console.Tests.Unit
                 .NormalizeLineEndings()
                 .ShouldBe(expected);
         }
+
+        [Theory]
+        [InlineData(Overflow.Fold, "foo \npneumonoultram\nicroscopicsili\ncovolcanoconio\nsis bar qux")]
+        [InlineData(Overflow.Crop, "foo \npneumonoultram\nbar qux")]
+        [InlineData(Overflow.Ellipsis, "foo \npneumonoultra…\nbar qux")]
+        public void Should_Overflow_Text_Correctly(Overflow overflow, string expected)
+        {
+            // Given
+            var fixture = new PlainConsole(14);
+            var text = new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar qux")
+                .SetOverflow(overflow);
+
+            // When
+            fixture.Render(text);
+
+            // Then
+            fixture.Output
+                .NormalizeLineEndings()
+                .ShouldBe(expected);
+        }
     }
 }
