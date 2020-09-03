@@ -122,7 +122,7 @@ namespace Spectre.Console
             var min = _lines.Max(line => line.Max(segment => segment.CellLength(context.Encoding)));
             var max = _lines.Max(x => x.CellWidth(context.Encoding));
 
-            return new Measurement(min, max);
+            return new Measurement(min, Math.Min(max, maxWidth));
         }
 
         /// <inheritdoc/>
