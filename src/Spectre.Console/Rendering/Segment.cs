@@ -13,25 +13,10 @@ namespace Spectre.Console.Rendering
     [DebuggerDisplay("{Text,nq}")]
     public class Segment
     {
-        private readonly bool _mutable;
-        private string _text;
-
         /// <summary>
         /// Gets the segment text.
         /// </summary>
-        public string Text
-        {
-            get => _text;
-            private set
-            {
-                if (!_mutable)
-                {
-                    throw new NotSupportedException();
-                }
-
-                _text = value;
-            }
-        }
+        public string Text { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether or not this is an expicit line break
@@ -54,12 +39,12 @@ namespace Spectre.Console.Rendering
         /// <summary>
         /// Gets a segment representing a line break.
         /// </summary>
-        public static Segment LineBreak { get; } = new Segment(Environment.NewLine, Style.Plain, true, false);
+        public static Segment LineBreak => new Segment(Environment.NewLine, Style.Plain, true);
 
         /// <summary>
         /// Gets an empty segment.
         /// </summary>
-        public static Segment Empty { get; } = new Segment(string.Empty, Style.Plain, false, false);
+        public static Segment Empty => new Segment(string.Empty, Style.Plain, false);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Segment"/> class.
@@ -80,16 +65,14 @@ namespace Spectre.Console.Rendering
         {
         }
 
-        private Segment(string text, Style style, bool lineBreak, bool mutable = true)
+        private Segment(string text, Style style, bool lineBreak)
         {
             if (text is null)
             {
                 throw new ArgumentNullException(nameof(text));
             }
 
-            _mutable = mutable;
-            _text = text.NormalizeLineEndings();
-
+            Text = text.NormalizeLineEndings();
             Style = style;
             IsLineBreak = lineBreak;
             IsWhiteSpace = string.IsNullOrWhiteSpace(text);
