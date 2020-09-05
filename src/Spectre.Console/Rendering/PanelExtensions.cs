@@ -1,6 +1,6 @@
 using System;
 
-namespace Spectre.Console.Rendering
+namespace Spectre.Console
 {
     /// <summary>
     /// Contains extension methods for <see cref="Panel"/>.

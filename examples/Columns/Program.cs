@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Spectre.Console;
-using Spectre.Console.Rendering;
 
 namespace ColumnsExample
 {
