@@ -15,7 +15,8 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="grid">The grid to add the column to.</param>
         /// <param name="count">The number of columns to add.</param>
-        public static void AddColumns(this Grid grid, int count)
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Grid AddColumns(this Grid grid, int count)
         {
             if (grid is null)
             {
@@ -26,6 +27,8 @@ namespace Spectre.Console
             {
                 grid.AddColumn(new GridColumn());
             }
+
+            return grid;
         }
 
         /// <summary>
@@ -33,7 +36,8 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="grid">The grid to add the column to.</param>
         /// <param name="columns">The columns to add.</param>
-        public static void AddColumns(this Grid grid, params GridColumn[] columns)
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Grid AddColumns(this Grid grid, params GridColumn[] columns)
         {
             if (grid is null)
             {
@@ -49,13 +53,16 @@ namespace Spectre.Console
             {
                 grid.AddColumn(column);
             }
+
+            return grid;
         }
 
         /// <summary>
         /// Adds an empty row to the grid.
         /// </summary>
         /// <param name="grid">The grid to add the row to.</param>
-        public static void AddEmptyRow(this Grid grid)
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Grid AddEmptyRow(this Grid grid)
         {
             if (grid is null)
             {
@@ -65,6 +72,8 @@ namespace Spectre.Console
             var columns = new IRenderable[grid.ColumnCount];
             Enumerable.Range(0, grid.ColumnCount).ForEach(index => columns[index] = Text.Empty);
             grid.AddRow(columns);
+
+            return grid;
         }
 
         /// <summary>
@@ -72,7 +81,8 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="grid">The grid to add the row to.</param>
         /// <param name="columns">The columns to add.</param>
-        public static void AddRow(this Grid grid, params string[] columns)
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Grid AddRow(this Grid grid, params string[] columns)
         {
             if (grid is null)
             {
@@ -85,6 +95,7 @@ namespace Spectre.Console
             }
 
             grid.AddRow(columns.Select(column => new Markup(column)).ToArray());
+            return grid;
         }
     }
 }

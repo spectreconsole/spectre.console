@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using Spectre.Console.Internal;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
@@ -9,12 +11,57 @@ namespace Spectre.Console
     public static class TableExtensions
     {
         /// <summary>
+        /// Adds multiple columns to the table.
+        /// </summary>
+        /// <param name="table">The table to add the column to.</param>
+        /// <param name="columns">The columns to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table AddColumns(this Table table, params TableColumn[] columns)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            if (columns is null)
+            {
+                throw new ArgumentNullException(nameof(columns));
+            }
+
+            foreach (var column in columns)
+            {
+                table.AddColumn(column);
+            }
+
+            return table;
+        }
+
+        /// <summary>
+        /// Adds an empty row to the table.
+        /// </summary>
+        /// <param name="table">The table to add the row to.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table AddEmptyRow(this Table table)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            var columns = new IRenderable[table.ColumnCount];
+            Enumerable.Range(0, table.ColumnCount).ForEach(index => columns[index] = Text.Empty);
+            table.AddRow(columns);
+            return table;
+        }
+
+        /// <summary>
         /// Adds a column to the table.
         /// </summary>
         /// <param name="table">The table to add the column to.</param>
         /// <param name="column">The column to add.</param>
-        /// <returns>The added <see cref="TableColumn"/> instance.</returns>
-        public static TableColumn AddColumn(this Table table, string column)
+        /// <param name="configure">Delegate that can be used to configure the added column.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table AddColumn(this Table table, string column, Action<TableColumn>? configure = null)
         {
             if (table is null)
             {
@@ -27,9 +74,10 @@ namespace Spectre.Console
             }
 
             var tableColumn = new TableColumn(column);
-            table.AddColumn(tableColumn);
+            configure?.Invoke(tableColumn);
 
-            return tableColumn;
+            table.AddColumn(tableColumn);
+            return table;
         }
 
         /// <summary>
@@ -37,7 +85,8 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="table">The table to add the columns to.</param>
         /// <param name="columns">The columns to add.</param>
-        public static void AddColumns(this Table table, params string[] columns)
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table AddColumns(this Table table, params string[] columns)
         {
             if (table is null)
             {
@@ -53,6 +102,8 @@ namespace Spectre.Console
             {
                 AddColumn(table, column);
             }
+
+            return table;
         }
 
         /// <summary>
@@ -60,7 +111,8 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="table">The table to add the row to.</param>
         /// <param name="columns">The row columns to add.</param>
-        public static void AddRow(this Table table, params string[] columns)
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table AddRow(this Table table, params string[] columns)
         {
             if (table is null)
             {
@@ -73,6 +125,7 @@ namespace Spectre.Console
             }
 
             table.AddRow(columns.Select(column => new Markup(column)).ToArray());
+            return table;
         }
 
         /// <summary>

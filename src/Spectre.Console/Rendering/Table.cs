@@ -72,7 +72,8 @@ namespace Spectre.Console
         /// Adds a column to the table.
         /// </summary>
         /// <param name="column">The column to add.</param>
-        public void AddColumn(TableColumn column)
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public Table AddColumn(TableColumn column)
         {
             if (column is null)
             {
@@ -85,40 +86,15 @@ namespace Spectre.Console
             }
 
             _columns.Add(column);
-        }
-
-        /// <summary>
-        /// Adds multiple columns to the table.
-        /// </summary>
-        /// <param name="columns">The columns to add.</param>
-        public void AddColumns(params TableColumn[] columns)
-        {
-            if (columns is null)
-            {
-                throw new ArgumentNullException(nameof(columns));
-            }
-
-            foreach (var column in columns)
-            {
-                AddColumn(column);
-            }
-        }
-
-        /// <summary>
-        /// Adds an empty row to the table.
-        /// </summary>
-        public void AddEmptyRow()
-        {
-            var columns = new IRenderable[ColumnCount];
-            Enumerable.Range(0, ColumnCount).ForEach(index => columns[index] = Text.Empty);
-            AddRow(columns);
+            return this;
         }
 
         /// <summary>
         /// Adds a row to the table.
         /// </summary>
         /// <param name="columns">The row columns to add.</param>
-        public void AddRow(params IRenderable[] columns)
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public Table AddRow(params IRenderable[] columns)
         {
             if (columns is null)
             {
@@ -138,6 +114,8 @@ namespace Spectre.Console
                 var diff = _columns.Count - columns.Length;
                 Enumerable.Range(0, diff).ForEach(_ => _rows.Last().Add(Text.Empty));
             }
+
+            return this;
         }
 
         /// <inheritdoc/>

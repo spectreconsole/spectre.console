@@ -57,16 +57,19 @@ namespace Spectre.Console
         /// <summary>
         /// Adds a column to the grid.
         /// </summary>
-        public void AddColumn()
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public Grid AddColumn()
         {
             AddColumn(new GridColumn());
+            return this;
         }
 
         /// <summary>
         /// Adds a column to the grid.
         /// </summary>
         /// <param name="column">The column to add.</param>
-        public void AddColumn(GridColumn column)
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public Grid AddColumn(GridColumn column)
         {
             if (column is null)
             {
@@ -88,13 +91,16 @@ namespace Spectre.Console
                 Padding = column.Padding,
                 Alignment = column.Alignment,
             });
+
+            return this;
         }
 
         /// <summary>
         /// Adds a new row to the grid.
         /// </summary>
         /// <param name="columns">The columns to add.</param>
-        public void AddRow(params IRenderable[] columns)
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public Grid AddRow(params IRenderable[] columns)
         {
             if (columns is null)
             {
@@ -107,6 +113,7 @@ namespace Spectre.Console
             }
 
             _table.AddRow(columns);
+            return this;
         }
     }
 }
