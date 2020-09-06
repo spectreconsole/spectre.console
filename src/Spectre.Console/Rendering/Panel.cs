@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Spectre.Console.Rendering;
-using SpectreBorder = Spectre.Console.Rendering.Border;
 
 namespace Spectre.Console
 {
@@ -16,10 +15,10 @@ namespace Spectre.Console
         private readonly IRenderable _child;
 
         /// <inheritdoc/>
-        public BorderKind BorderKind { get; set; } = BorderKind.Square;
+        public Border Border { get; set; } = Border.Square;
 
         /// <inheritdoc/>
-        public bool SafeBorder { get; set; } = true;
+        public bool UseSafeBorder { get; set; } = true;
 
         /// <inheritdoc/>
         public Style? BorderStyle { get; set; }
@@ -71,7 +70,7 @@ namespace Spectre.Console
         /// <inheritdoc/>
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
-            var border = SpectreBorder.GetBorder(BorderKind, (context.LegacyConsole || !context.Unicode) && SafeBorder);
+            var border = Border.GetSafeBorder((context.LegacyConsole || !context.Unicode) && UseSafeBorder);
             var borderStyle = BorderStyle ?? Style.Plain;
 
             var paddingWidth = Padding.GetHorizontalPadding();
@@ -132,7 +131,7 @@ namespace Spectre.Console
             return result;
         }
 
-        private static void AddBottomBorder(List<Segment> result, SpectreBorder border, Style borderStyle, int panelWidth)
+        private static void AddBottomBorder(List<Segment> result, Border border, Style borderStyle, int panelWidth)
         {
             result.Add(new Segment(border.GetPart(BorderPart.FooterBottomLeft), borderStyle));
             result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, panelWidth - EdgeWidth), borderStyle));
@@ -140,7 +139,7 @@ namespace Spectre.Console
             result.Add(Segment.LineBreak);
         }
 
-        private void AddTopBorder(List<Segment> segments, RenderContext context, SpectreBorder border, Style borderStyle, int panelWidth)
+        private void AddTopBorder(List<Segment> segments, RenderContext context, Border border, Style borderStyle, int panelWidth)
         {
             segments.Add(new Segment(border.GetPart(BorderPart.HeaderTopLeft), borderStyle));
 

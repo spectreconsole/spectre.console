@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
-using SpectreBorder = Spectre.Console.Rendering.Border;
 
 namespace Spectre.Console
 {
@@ -26,13 +25,13 @@ namespace Spectre.Console
         public int RowCount => _rows.Count;
 
         /// <inheritdoc/>
-        public BorderKind BorderKind { get; set; } = BorderKind.Square;
+        public Border Border { get; set; } = Border.Square;
 
         /// <inheritdoc/>
         public Style? BorderStyle { get; set; }
 
         /// <inheritdoc/>
-        public bool SafeBorder { get; set; } = true;
+        public bool UseSafeBorder { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not table headers should be shown.
@@ -148,13 +147,13 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var border = SpectreBorder.GetBorder(BorderKind, (context.LegacyConsole || !context.Unicode) && SafeBorder);
+            var border = Border.GetSafeBorder((context.LegacyConsole || !context.Unicode) && UseSafeBorder);
             var borderStyle = BorderStyle ?? Style.Plain;
 
             var tableWidth = maxWidth;
 
-            var showBorder = BorderKind != BorderKind.None;
-            var hideBorder = BorderKind == BorderKind.None;
+            var showBorder = Border.Visible;
+            var hideBorder = !Border.Visible;
             var hasRows = _rows.Count > 0;
 
             if (Width != null)

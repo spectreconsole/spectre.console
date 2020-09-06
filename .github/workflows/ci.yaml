@@ -64,7 +64,7 @@ jobs:
         shell: bash
         run: |
           dotnet tool restore
-          dotnet example diagnostic
+          dotnet example info
           dotnet example table
           dotnet example grid
           dotnet example panel

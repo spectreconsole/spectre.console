@@ -6,6 +6,9 @@ namespace Spectre.Console.Rendering
     public sealed class NoBorder : Border
     {
         /// <inheritdoc/>
+        public override bool Visible => false;
+
+        /// <inheritdoc/>
         protected override string GetBoxPart(BorderPart part)
         {
             return " ";

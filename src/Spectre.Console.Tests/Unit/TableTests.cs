@@ -173,7 +173,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // A simple table
             var console = new PlainConsole(width: 80);
-            var table = new Table() { BorderKind = BorderKind.Rounded };
+            var table = new Table() { Border = Border.Rounded };
             table.AddColumn("Foo");
             table.AddColumn("Bar");
             table.AddColumn(new TableColumn("Baz") { Alignment = Justify.Right });
@@ -183,7 +183,7 @@ namespace Spectre.Console.Tests.Unit
             // Render a table in some panels.
             console.Render(new Panel(new Panel(table)
             {
-                BorderKind = BorderKind.Ascii,
+                Border = Border.Ascii,
             }));
 
             // Then
@@ -255,7 +255,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new PlainConsole(width: 80);
-            var table = new Table { BorderKind = BorderKind.Ascii };
+            var table = new Table { Border = Border.Ascii };
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");
@@ -278,7 +278,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new PlainConsole(width: 80);
-            var table = new Table { BorderKind = BorderKind.Rounded };
+            var table = new Table { Border = Border.Rounded };
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");
@@ -301,7 +301,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new PlainConsole(width: 80);
-            var table = new Table { BorderKind = BorderKind.None };
+            var table = new Table { Border = Border.None };
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");

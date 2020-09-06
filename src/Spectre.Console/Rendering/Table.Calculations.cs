@@ -117,7 +117,7 @@ namespace Spectre.Console
 
         private int GetExtraWidth(bool includePadding)
         {
-            var hideBorder = BorderKind == BorderKind.None;
+            var hideBorder = !Border.Visible;
             var separators = hideBorder ? 0 : _columns.Count - 1;
             var edges = hideBorder ? 0 : EdgeCount;
             var padding = includePadding ? _columns.Select(x => x.Padding.GetHorizontalPadding()).Sum() : 0;
