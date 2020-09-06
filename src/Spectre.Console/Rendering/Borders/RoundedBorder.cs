@@ -8,6 +8,9 @@ namespace Spectre.Console.Rendering
     public sealed class RoundedBorder : Border
     {
         /// <inheritdoc/>
+        public override Border? SafeBorder { get; } = Border.Square;
+
+        /// <inheritdoc/>
         protected override string GetBoxPart(BorderPart part)
         {
             return part switch

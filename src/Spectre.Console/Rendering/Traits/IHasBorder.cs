@@ -10,12 +10,12 @@ namespace Spectre.Console
         /// a "safe" border on legacy consoles that might not be able
         /// to render non-ASCII characters.
         /// </summary>
-        bool SafeBorder { get; set; }
+        bool UseSafeBorder { get; set; }
 
         /// <summary>
-        /// Gets or sets the kind of border to use.
+        /// Gets or sets the border.
         /// </summary>
-        public BorderKind BorderKind { get; set; }
+        public Border Border { get; set; }
 
         /// <summary>
         /// Gets or sets the border style.

@@ -16,7 +16,7 @@ namespace Spectre.Console
         public static T NoBorder<T>(this T obj)
             where T : class, IHasBorder
         {
-            return SetBorderKind(obj, BorderKind.None);
+            return SetBorder(obj, Border.None);
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Spectre.Console
         public static T SquareBorder<T>(this T obj)
             where T : class, IHasBorder
         {
-            return SetBorderKind(obj, BorderKind.Square);
+            return SetBorder(obj, Border.Square);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Spectre.Console
         public static T AsciiBorder<T>(this T obj)
             where T : class, IHasBorder
         {
-            return SetBorderKind(obj, BorderKind.Ascii);
+            return SetBorder(obj, Border.Ascii);
         }
 
         /// <summary>
@@ -52,17 +52,17 @@ namespace Spectre.Console
         public static T RoundedBorder<T>(this T obj)
             where T : class, IHasBorder
         {
-            return SetBorderKind(obj, BorderKind.Rounded);
+            return SetBorder(obj, Border.Rounded);
         }
 
         /// <summary>
-        /// Sets the border kind.
+        /// Sets the border.
         /// </summary>
         /// <typeparam name="T">An object type with a border.</typeparam>
         /// <param name="obj">The object to set the border for.</param>
-        /// <param name="border">The border kind to use.</param>
+        /// <param name="border">The border to use.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static T SetBorderKind<T>(this T obj, BorderKind border)
+        public static T SetBorder<T>(this T obj, Border border)
             where T : class, IHasBorder
         {
             if (obj is null)
@@ -70,7 +70,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            obj.BorderKind = border;
+            obj.Border = border;
             return obj;
         }
 
@@ -88,7 +88,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            obj.SafeBorder = false;
+            obj.UseSafeBorder = false;
             return obj;
         }
 

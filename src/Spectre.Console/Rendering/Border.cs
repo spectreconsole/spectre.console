@@ -2,28 +2,26 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Spectre.Console.Rendering;
 
-namespace Spectre.Console.Rendering
+namespace Spectre.Console
 {
     /// <summary>
-    /// Represents a border used by tables.
+    /// Represents a border.
     /// </summary>
-    public abstract class Border
+    public abstract partial class Border
     {
         private readonly Dictionary<BorderPart, string> _lookup;
 
-        private static readonly Dictionary<BorderKind, Border> _borders = new Dictionary<BorderKind, Border>
-        {
-            { BorderKind.None, new NoBorder() },
-            { BorderKind.Ascii, new AsciiBorder() },
-            { BorderKind.Square, new SquareBorder() },
-            { BorderKind.Rounded, new RoundedBorder() },
-        };
+        /// <summary>
+        /// Gets a value indicating whether or not the border is visible.
+        /// </summary>
+        public virtual bool Visible { get; } = true;
 
-        private static readonly Dictionary<BorderKind, BorderKind> _safeLookup = new Dictionary<BorderKind, BorderKind>
-        {
-            { BorderKind.Rounded, BorderKind.Square },
-        };
+        /// <summary>
+        /// Gets the safe border for this border or <c>null</c> if none exist.
+        /// </summary>
+        public virtual Border? SafeBorder { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Border"/> class.
@@ -31,27 +29,6 @@ namespace Spectre.Console.Rendering
         protected Border()
         {
             _lookup = Initialize();
-        }
-
-        /// <summary>
-        /// Gets a <see cref="Border"/> represented by the specified <see cref="BorderKind"/>.
-        /// </summary>
-        /// <param name="kind">The kind of border to get.</param>
-        /// <param name="safe">Whether or not to get a "safe" border that can be rendered in a legacy console.</param>
-        /// <returns>A <see cref="Border"/> instance representing the specified <see cref="BorderKind"/>.</returns>
-        public static Border GetBorder(BorderKind kind, bool safe)
-        {
-            if (safe && _safeLookup.TryGetValue(kind, out var safeKind))
-            {
-                kind = safeKind;
-            }
-
-            if (!_borders.TryGetValue(kind, out var border))
-            {
-                throw new InvalidOperationException("Unknown border kind");
-            }
-
-            return border;
         }
 
         private Dictionary<BorderPart, string> Initialize()

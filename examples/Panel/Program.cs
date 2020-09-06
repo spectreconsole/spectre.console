@@ -1,5 +1,4 @@
 using Spectre.Console;
-using Spectre.Console.Rendering;
 
 namespace PanelExample
 {
@@ -14,7 +13,7 @@ namespace PanelExample
             AnsiConsole.Render(
                 new Panel(
                     new Panel(content)
-                        .SetBorderKind(BorderKind.Rounded)));
+                        .SetBorder(Border.Rounded)));
 
             // Left adjusted panel with text
             AnsiConsole.Render(
