@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Spectre.Console.Internal;
 
 namespace Spectre.Console
@@ -48,37 +49,12 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Converts the string representation of a style to its <see cref="Style"/> equivalent.
-        /// </summary>
-        /// <param name="text">A string containing a style to parse.</param>
-        /// <returns>A <see cref="Style"/> equivalent of the text contained in <paramref name="text"/>.</returns>
-        public static Style Parse(string text)
-        {
-            return StyleParser.Parse(text);
-        }
-
-        /// <summary>
         /// Creates a copy of the current <see cref="Style"/>.
         /// </summary>
         /// <returns>A copy of the current <see cref="Style"/>.</returns>
         public Style Clone()
         {
             return new Style(Foreground, Background, Decoration);
-        }
-
-        /// <summary>
-        /// Converts the string representation of a style to its <see cref="Style"/> equivalent.
-        /// A return value indicates whether the operation succeeded.
-        /// </summary>
-        /// <param name="text">A string containing a style to parse.</param>
-        /// <param name="result">
-        /// When this method returns, contains the <see cref="Style"/> equivalent of the text contained in <paramref name="text"/>,
-        /// if the conversion succeeded, or <c>null</c> if the conversion failed.
-        /// </param>
-        /// <returns><c>true</c> if s was converted successfully; otherwise, <c>false</c>.</returns>
-        public static bool TryParse(string text, out Style? result)
-        {
-            return StyleParser.TryParse(text, out result);
         }
 
         /// <summary>
@@ -106,6 +82,41 @@ namespace Spectre.Console
             }
 
             return new Style(foreground, background, Decoration | other.Decoration);
+        }
+
+        /// <summary>
+        /// Implicitly converts <see cref="string"/> into a <see cref="Style"/>.
+        /// </summary>
+        /// <param name="style">The style string.</param>
+        [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates")]
+        public static explicit operator Style(string style)
+        {
+            return Parse(style);
+        }
+
+        /// <summary>
+        /// Converts the string representation of a style to its <see cref="Style"/> equivalent.
+        /// </summary>
+        /// <param name="text">A string containing a style to parse.</param>
+        /// <returns>A <see cref="Style"/> equivalent of the text contained in <paramref name="text"/>.</returns>
+        public static Style Parse(string text)
+        {
+            return StyleParser.Parse(text);
+        }
+
+        /// <summary>
+        /// Converts the string representation of a style to its <see cref="Style"/> equivalent.
+        /// A return value indicates whether the operation succeeded.
+        /// </summary>
+        /// <param name="text">A string containing a style to parse.</param>
+        /// <param name="result">
+        /// When this method returns, contains the <see cref="Style"/> equivalent of the text contained in <paramref name="text"/>,
+        /// if the conversion succeeded, or <c>null</c> if the conversion failed.
+        /// </param>
+        /// <returns><c>true</c> if s was converted successfully; otherwise, <c>false</c>.</returns>
+        public static bool TryParse(string text, out Style? result)
+        {
+            return StyleParser.TryParse(text, out result);
         }
 
         /// <inheritdoc/>
