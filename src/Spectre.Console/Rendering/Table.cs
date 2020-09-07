@@ -230,7 +230,8 @@ namespace Spectre.Console
                         if (firstCell && showBorder)
                         {
                             // Show left column edge
-                            result.Add(new Segment(border.GetPart(BorderPart.CellLeft), borderStyle));
+                            var part = firstRow && ShowHeaders ? BorderPart.HeaderLeft : BorderPart.CellLeft;
+                            result.Add(new Segment(border.GetPart(part), borderStyle));
                         }
 
                         // Pad column on left side.
@@ -266,12 +267,14 @@ namespace Spectre.Console
                         if (lastCell && showBorder)
                         {
                             // Add right column edge
-                            result.Add(new Segment(border.GetPart(BorderPart.CellRight), borderStyle));
+                            var part = firstRow && ShowHeaders ? BorderPart.HeaderRight : BorderPart.CellRight;
+                            result.Add(new Segment(border.GetPart(part), borderStyle));
                         }
                         else if (showBorder)
                         {
                             // Add column separator
-                            result.Add(new Segment(border.GetPart(BorderPart.CellSeparator), borderStyle));
+                            var part = firstRow && ShowHeaders ? BorderPart.HeaderSeparator : BorderPart.CellSeparator;
+                            result.Add(new Segment(border.GetPart(part), borderStyle));
                         }
                     }
 
