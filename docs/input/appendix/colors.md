@@ -1,5 +1,5 @@
 Title: Colors
-Order: 4
+Order: 0
 ---
 
 The following is a list of the standard 8-bit colors supported in terminals.
