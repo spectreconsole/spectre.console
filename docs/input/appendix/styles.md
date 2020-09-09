@@ -1,5 +1,5 @@
 Title: Styles
-Order: 0
+Order: 1
 ---
 
 Note that what styles that can be used is defined by the system or your terminal software, and may not appear as they should.

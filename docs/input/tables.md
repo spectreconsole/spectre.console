@@ -46,12 +46,14 @@ This will render the following output:
 
 ## Borders
 
+For a list of borders, see the [Borders](xref:borders) appendix section.
+
 ```csharp
-// Sets the border kind
-table.SetBorderKind(BorderKind.None);
-table.SetBorderKind(BorderKind.Ascii);
-table.SetBorderKind(BorderKind.Square);
-table.SetBorderKind(BorderKind.Rounded);
+// Sets the border
+table.SetBorder(Border.None);
+table.SetBorder(Border.Ascii);
+table.SetBorder(Border.Square);
+table.SetBorder(Border.Rounded);
 ```
 
 ## Expand / Collapse
