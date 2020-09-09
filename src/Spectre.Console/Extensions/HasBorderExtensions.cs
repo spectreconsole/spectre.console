@@ -5,7 +5,7 @@ namespace Spectre.Console
     /// <summary>
     /// Contains extension methods for <see cref="IHasBorder"/>.
     /// </summary>
-    public static class BorderExtensions
+    public static class HasBorderExtensions
     {
         /// <summary>
         /// Do not display a border.

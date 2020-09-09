@@ -3,29 +3,48 @@ using System.Collections.Generic;
 
 namespace Spectre.Console.Rendering
 {
-    internal sealed class SegmentLineIterator : IEnumerator<Segment>
+    /// <summary>
+    /// An iterator for <see cref="SegmentLine"/> collections.
+    /// </summary>
+    public sealed class SegmentLineIterator : IEnumerator<Segment>
     {
         private readonly List<SegmentLine> _lines;
         private int _currentLine;
         private int _currentIndex;
         private bool _lineBreakEmitted;
 
+        /// <summary>
+        /// Gets the current segment.
+        /// </summary>
         public Segment Current { get; private set; }
+
+        /// <inheritdoc/>
         object? IEnumerator.Current => Current;
 
-        public SegmentLineIterator(List<SegmentLine> lines)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SegmentLineIterator"/> class.
+        /// </summary>
+        /// <param name="lines">The lines to iterate.</param>
+        public SegmentLineIterator(IEnumerable<SegmentLine> lines)
         {
+            if (lines is null)
+            {
+                throw new System.ArgumentNullException(nameof(lines));
+            }
+
             _currentLine = 0;
             _currentIndex = -1;
-            _lines = lines;
+            _lines = new List<SegmentLine>(lines);
 
             Current = Segment.Empty;
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
         }
 
+        /// <inheritdoc/>
         public bool MoveNext()
         {
             if (_currentLine > _lines.Count - 1)
@@ -88,6 +107,7 @@ namespace Spectre.Console.Rendering
             return true;
         }
 
+        /// <inheritdoc/>
         public void Reset()
         {
             _currentLine = 0;

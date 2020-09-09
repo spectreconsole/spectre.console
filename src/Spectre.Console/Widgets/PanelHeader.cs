@@ -5,7 +5,7 @@ namespace Spectre.Console
     /// <summary>
     /// Represents a header.
     /// </summary>
-    public sealed class Header : IAlignable
+    public sealed class PanelHeader : IAlignable
     {
         /// <summary>
         /// Gets the header text.
@@ -23,12 +23,12 @@ namespace Spectre.Console
         public Justify? Alignment { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Header"/> class.
+        /// Initializes a new instance of the <see cref="PanelHeader"/> class.
         /// </summary>
         /// <param name="text">The header text.</param>
         /// <param name="style">The header style.</param>
         /// <param name="alignment">The header alignment.</param>
-        public Header(string text, Style? style = null, Justify? alignment = null)
+        public PanelHeader(string text, Style? style = null, Justify? alignment = null)
         {
             Text = text ?? throw new ArgumentNullException(nameof(text));
             Style = style;
@@ -40,7 +40,7 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="style">The header style.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Header SetStyle(Style? style)
+        public PanelHeader SetStyle(Style? style)
         {
             Style = style ?? Style.Plain;
             return this;
@@ -51,7 +51,7 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="alignment">The header alignment.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Header SetAlignment(Justify alignment)
+        public PanelHeader SetAlignment(Justify alignment)
         {
             Alignment = alignment;
             return this;

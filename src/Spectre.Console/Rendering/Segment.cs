@@ -266,8 +266,8 @@ namespace Spectre.Console.Rendering
         /// </summary>
         /// <param name="segment">The segment to split.</param>
         /// <param name="overflow">The overflow strategy to use.</param>
-        /// <param name="encoding">The encodign to use.</param>
-        /// <param name="width">The maxiumum width.</param>
+        /// <param name="encoding">The encoding to use.</param>
+        /// <param name="width">The maximum width.</param>
         /// <returns>A list of segments that has been split.</returns>
         public static List<Segment> SplitOverflow(Segment segment, Overflow? overflow, Encoding encoding, int width)
         {
@@ -317,7 +317,7 @@ namespace Spectre.Console.Rendering
                 new Segment(text, style),
                 Overflow.Ellipsis,
                 encoding,
-                maxWidth).First();
+                maxWidth)[0];
         }
 
         internal static List<List<SegmentLine>> MakeSameHeight(int cellHeight, List<List<SegmentLine>> cells)
