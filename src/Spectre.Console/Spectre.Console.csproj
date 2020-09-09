@@ -20,6 +20,9 @@
     <Compile Update="Border.*.cs">
       <DependentUpon>Border.cs</DependentUpon>
     </Compile>
+    <Compile Update="Extensions/AnsiConsoleExtensions.*.cs">
+      <DependentUpon>Extensions/AnsiConsoleExtensions.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +32,21 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Extensions\AnsiConsoleExtensions.Markup.cs">
+      <DependentUpon>AnsiConsoleExtensions.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Extensions\AnsiConsoleExtensions.Rendering.cs">
+      <DependentUpon>AnsiConsoleExtensions.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Extensions\AnsiConsoleExtensions.Write.cs">
+      <DependentUpon>AnsiConsoleExtensions.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Extensions\AnsiConsoleExtensions.WriteLine.cs">
+      <DependentUpon>AnsiConsoleExtensions.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <PropertyGroup>
     <AnnotatedReferenceAssemblyVersion>3.0.0</AnnotatedReferenceAssemblyVersion>
