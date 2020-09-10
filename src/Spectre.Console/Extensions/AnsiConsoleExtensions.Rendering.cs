@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -28,30 +27,18 @@ namespace Spectre.Console
             }
 
             var options = new RenderContext(console.Encoding, console.Capabilities.LegacyConsole);
+            var segments = renderable.Render(options, console.Width).Where(x => !(x.Text.Length == 0 && !x.IsLineBreak)).ToArray();
+            segments = Segment.Merge(segments).ToArray();
 
-            using (console.PushStyle(Style.Plain))
+            var current = Style.Plain;
+            foreach (var segment in segments)
             {
-                var segments = renderable.Render(options, console.Width).Where(x => !(x.Text.Length == 0 && !x.IsLineBreak)).ToArray();
-                segments = Segment.Merge(segments).ToArray();
-
-                var current = Style.Plain;
-                foreach (var segment in segments)
+                if (string.IsNullOrEmpty(segment.Text))
                 {
-                    if (string.IsNullOrEmpty(segment.Text))
-                    {
-                        continue;
-                    }
-
-                    if (!segment.Style.Equals(current))
-                    {
-                        console.Foreground = segment.Style.Foreground;
-                        console.Background = segment.Style.Background;
-                        console.Decoration = segment.Style.Decoration;
-                        current = segment.Style;
-                    }
-
-                    console.Write(segment.Text);
+                    continue;
                 }
+
+                console.Write(segment.Text, segment.Style);
             }
         }
     }

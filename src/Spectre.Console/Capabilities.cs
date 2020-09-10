@@ -12,6 +12,17 @@ namespace Spectre.Console
         public bool SupportsAnsi { get; }
 
         /// <summary>
+        /// Gets a value indicating whether or not
+        /// the console support links.
+        /// </summary>
+        /// <remarks>
+        /// There is probably a lot of room for improvement here
+        /// once we have more information about the terminal
+        /// we're running inside.
+        /// </remarks>
+        public bool SupportLinks => SupportsAnsi && !LegacyConsole;
+
+        /// <summary>
         /// Gets the color system.
         /// </summary>
         public ColorSystem ColorSystem { get; }

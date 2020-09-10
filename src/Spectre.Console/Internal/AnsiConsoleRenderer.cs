@@ -7,13 +7,9 @@ namespace Spectre.Console.Internal
     internal sealed class AnsiConsoleRenderer : IAnsiConsole
     {
         private readonly TextWriter _out;
-        private readonly ColorSystem _system;
 
         public Capabilities Capabilities { get; }
         public Encoding Encoding { get; }
-        public Decoration Decoration { get; set; }
-        public Color Foreground { get; set; }
-        public Color Background { get; set; }
 
         public int Width
         {
@@ -44,28 +40,26 @@ namespace Spectre.Console.Internal
         public AnsiConsoleRenderer(TextWriter @out, ColorSystem system, bool legacyConsole)
         {
             _out = @out ?? throw new ArgumentNullException(nameof(@out));
-            _system = system;
 
             Capabilities = new Capabilities(true, system, legacyConsole);
             Encoding = @out.IsStandardOut() ? System.Console.OutputEncoding : Encoding.UTF8;
-            Foreground = Color.Default;
-            Background = Color.Default;
-            Decoration = Decoration.None;
         }
 
-        public void Write(string text)
+        public void Write(string text, Style style)
         {
             if (string.IsNullOrEmpty(text))
             {
                 return;
             }
 
+            style ??= Style.Plain;
+
             var parts = text.NormalizeLineEndings().Split(new[] { '\n' });
             foreach (var (_, _, last, part) in parts.Enumerate())
             {
                 if (!string.IsNullOrEmpty(part))
                 {
-                    _out.Write(AnsiBuilder.GetAnsi(_system, part, Decoration, Foreground, Background));
+                    _out.Write(AnsiBuilder.GetAnsi(Capabilities, part, style.Decoration, style.Foreground, style.Background, style.Link));
                 }
 
                 if (!last)

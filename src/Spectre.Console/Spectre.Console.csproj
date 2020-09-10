@@ -41,12 +41,6 @@
     <Compile Update="Extensions\AnsiConsoleExtensions.Rendering.cs">
       <DependentUpon>AnsiConsoleExtensions.cs</DependentUpon>
     </Compile>
-    <Compile Update="Extensions\AnsiConsoleExtensions.Write.cs">
-      <DependentUpon>AnsiConsoleExtensions.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Extensions\AnsiConsoleExtensions.WriteLine.cs">
-      <DependentUpon>AnsiConsoleExtensions.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <PropertyGroup>
     <AnnotatedReferenceAssemblyVersion>3.0.0</AnnotatedReferenceAssemblyVersion>

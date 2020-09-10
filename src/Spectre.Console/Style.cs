@@ -25,13 +25,18 @@ namespace Spectre.Console
         public Decoration Decoration { get; }
 
         /// <summary>
+        /// Gets the link.
+        /// </summary>
+        public string? Link { get; }
+
+        /// <summary>
         /// Gets an <see cref="Style"/> with the
         /// default colors and without text decoration.
         /// </summary>
         public static Style Plain { get; } = new Style();
 
         private Style()
-            : this(null, null, null)
+            : this(null, null, null, null)
         {
         }
 
@@ -41,11 +46,13 @@ namespace Spectre.Console
         /// <param name="foreground">The foreground color.</param>
         /// <param name="background">The background color.</param>
         /// <param name="decoration">The text decoration.</param>
-        public Style(Color? foreground = null, Color? background = null, Decoration? decoration = null)
+        /// <param name="link">The link.</param>
+        public Style(Color? foreground = null, Color? background = null, Decoration? decoration = null, string? link = null)
         {
             Foreground = foreground ?? Color.Default;
             Background = background ?? Color.Default;
             Decoration = decoration ?? Decoration.None;
+            Link = link;
         }
 
         /// <summary>
@@ -79,12 +86,22 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Creates a new style from the specified link.
+        /// </summary>
+        /// <param name="link">The link.</param>
+        /// <returns>A new <see cref="Style"/> with the specified link.</returns>
+        public static Style WithLink(string link)
+        {
+            return new Style(link: link);
+        }
+
+        /// <summary>
         /// Creates a copy of the current <see cref="Style"/>.
         /// </summary>
         /// <returns>A copy of the current <see cref="Style"/>.</returns>
         public Style Clone()
         {
-            return new Style(Foreground, Background, Decoration);
+            return new Style(Foreground, Background, Decoration, Link);
         }
 
         /// <summary>
@@ -111,7 +128,13 @@ namespace Spectre.Console
                 background = other.Background;
             }
 
-            return new Style(foreground, background, Decoration | other.Decoration);
+            var link = Link;
+            if (!string.IsNullOrWhiteSpace(other.Link))
+            {
+                link = other.Link;
+            }
+
+            return new Style(foreground, background, Decoration | other.Decoration, link);
         }
 
         /// <summary>
@@ -158,6 +181,12 @@ namespace Spectre.Console
                 hash = (hash * 16777619) ^ Foreground.GetHashCode();
                 hash = (hash * 16777619) ^ Background.GetHashCode();
                 hash = (hash * 16777619) ^ Decoration.GetHashCode();
+
+                if (Link != null)
+                {
+                    hash = (hash * 16777619) ^ Link?.GetHashCode() ?? 0;
+                }
+
                 return hash;
             }
         }
@@ -178,7 +207,8 @@ namespace Spectre.Console
 
             return Foreground.Equals(other.Foreground) &&
                 Background.Equals(other.Background) &&
-                Decoration == other.Decoration;
+                Decoration == other.Decoration &&
+                string.Equals(Link, other.Link, StringComparison.Ordinal);
         }
     }
 }

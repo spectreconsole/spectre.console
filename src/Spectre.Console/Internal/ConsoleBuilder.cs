@@ -56,10 +56,7 @@ namespace Spectre.Console.Internal
 
             if (supportsAnsi)
             {
-                return new AnsiConsoleRenderer(buffer, colorSystem, legacyConsole)
-                {
-                    Decoration = Decoration.None,
-                };
+                return new AnsiConsoleRenderer(buffer, colorSystem, legacyConsole);
             }
 
             return new FallbackConsoleRenderer(buffer, colorSystem, legacyConsole);

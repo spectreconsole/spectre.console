@@ -22,7 +22,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(string value)
         {
-            Console.WriteLine(value);
+            Console.WriteLine(value, CurrentStyle);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(int value)
         {
-            Console.WriteLine(CultureInfo.CurrentCulture, value);
+            WriteLine(CultureInfo.CurrentCulture, value);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(IFormatProvider provider, int value)
         {
-            Console.WriteLine(value.ToString(provider));
+            Console.WriteLine(value.ToString(provider), CurrentStyle);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(uint value)
         {
-            Console.WriteLine(CultureInfo.CurrentCulture, value);
+            WriteLine(CultureInfo.CurrentCulture, value);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(IFormatProvider provider, uint value)
         {
-            Console.WriteLine(value.ToString(provider));
+            Console.WriteLine(value.ToString(provider), CurrentStyle);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(long value)
         {
-            Console.WriteLine(CultureInfo.CurrentCulture, value);
+            WriteLine(CultureInfo.CurrentCulture, value);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(IFormatProvider provider, long value)
         {
-            Console.WriteLine(value.ToString(provider));
+            Console.WriteLine(value.ToString(provider), CurrentStyle);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(ulong value)
         {
-            Console.WriteLine(CultureInfo.CurrentCulture, value);
+            WriteLine(CultureInfo.CurrentCulture, value);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(IFormatProvider provider, ulong value)
         {
-            Console.WriteLine(value.ToString(provider));
+            Console.WriteLine(value.ToString(provider), CurrentStyle);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(float value)
         {
-            Console.WriteLine(CultureInfo.CurrentCulture, value);
+            WriteLine(CultureInfo.CurrentCulture, value);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(IFormatProvider provider, float value)
         {
-            Console.WriteLine(value.ToString(provider));
+            Console.WriteLine(value.ToString(provider), CurrentStyle);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(double value)
         {
-            Console.WriteLine(CultureInfo.CurrentCulture, value);
+            WriteLine(CultureInfo.CurrentCulture, value);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(IFormatProvider provider, double value)
         {
-            Console.WriteLine(value.ToString(provider));
+            Console.WriteLine(value.ToString(provider), CurrentStyle);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(decimal value)
         {
-            Console.WriteLine(CultureInfo.CurrentCulture, value);
+            WriteLine(CultureInfo.CurrentCulture, value);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(IFormatProvider provider, decimal value)
         {
-            Console.WriteLine(value.ToString(provider));
+            Console.WriteLine(value.ToString(provider), CurrentStyle);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(bool value)
         {
-            Console.WriteLine(CultureInfo.CurrentCulture, value);
+            WriteLine(CultureInfo.CurrentCulture, value);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(IFormatProvider provider, bool value)
         {
-            Console.WriteLine(value.ToString(provider));
+            Console.WriteLine(value.ToString(provider), CurrentStyle);
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(char value)
         {
-            Console.WriteLine(CultureInfo.CurrentCulture, value);
+            WriteLine(CultureInfo.CurrentCulture, value);
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(IFormatProvider provider, char value)
         {
-            Console.WriteLine(value.ToString(provider));
+            Console.WriteLine(value.ToString(provider), CurrentStyle);
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(char[] value)
         {
-            Console.WriteLine(CultureInfo.CurrentCulture, value);
+            WriteLine(CultureInfo.CurrentCulture, value);
         }
 
         /// <summary>
@@ -232,7 +232,17 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void WriteLine(IFormatProvider provider, char[] value)
         {
-            Console.WriteLine(provider, value);
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            for (var index = 0; index < value.Length; index++)
+            {
+                Console.Write(value[index].ToString(provider), CurrentStyle);
+            }
+
+            Console.WriteLine();
         }
 
         /// <summary>
@@ -244,7 +254,7 @@ namespace Spectre.Console
         /// <param name="args">An array of objects to write.</param>
         public static void WriteLine(string format, params object[] args)
         {
-            Console.WriteLine(CultureInfo.CurrentCulture, format, args);
+            WriteLine(CultureInfo.CurrentCulture, format, args);
         }
 
         /// <summary>
@@ -257,7 +267,7 @@ namespace Spectre.Console
         /// <param name="args">An array of objects to write.</param>
         public static void WriteLine(IFormatProvider provider, string format, params object[] args)
         {
-            Console.WriteLine(string.Format(provider, format, args));
+            Console.WriteLine(string.Format(provider, format, args), CurrentStyle);
         }
     }
 }

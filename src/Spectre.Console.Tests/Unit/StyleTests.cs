@@ -11,7 +11,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic);
-            var other = new Style(Color.Green, Color.Silver, Decoration.Underline);
+            var other = new Style(Color.Green, Color.Silver, Decoration.Underline, "https://example.com");
 
             // When
             var result = first.Combine(other);
@@ -20,6 +20,77 @@ namespace Spectre.Console.Tests.Unit
             result.Foreground.ShouldBe(Color.Green);
             result.Background.ShouldBe(Color.Silver);
             result.Decoration.ShouldBe(Decoration.Bold | Decoration.Italic | Decoration.Underline);
+            result.Link.ShouldBe("https://example.com");
+        }
+
+        [Fact]
+        public void Should_Consider_Two_Identical_Styles_Equal()
+        {
+            // Given
+            var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://example.com");
+            var second = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://example.com");
+
+            // When
+            var result = first.Equals(second);
+
+            // Then
+            result.ShouldBeTrue();
+        }
+
+        [Fact]
+        public void Should_Not_Consider_Two_Styles_With_Different_Foreground_Colors_Equal()
+        {
+            // Given
+            var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://example.com");
+            var second = new Style(Color.Blue, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://example.com");
+
+            // When
+            var result = first.Equals(second);
+
+            // Then
+            result.ShouldBeFalse();
+        }
+
+        [Fact]
+        public void Should_Not_Consider_Two_Styles_With_Different_Background_Colors_Equal()
+        {
+            // Given
+            var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://example.com");
+            var second = new Style(Color.White, Color.Blue, Decoration.Bold | Decoration.Italic, "http://example.com");
+
+            // When
+            var result = first.Equals(second);
+
+            // Then
+            result.ShouldBeFalse();
+        }
+
+        [Fact]
+        public void Should_Not_Consider_Two_Styles_With_Different_Decorations_Equal()
+        {
+            // Given
+            var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://example.com");
+            var second = new Style(Color.White, Color.Yellow, Decoration.Bold, "http://example.com");
+
+            // When
+            var result = first.Equals(second);
+
+            // Then
+            result.ShouldBeFalse();
+        }
+
+        [Fact]
+        public void Should_Not_Consider_Two_Styles_With_Different_Links_Equal()
+        {
+            // Given
+            var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://example.com");
+            var second = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://foo.com");
+
+            // When
+            var result = first.Equals(second);
+
+            // Then
+            result.ShouldBeFalse();
         }
 
         public sealed class TheParseMethod
@@ -62,16 +133,36 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Parse_Text_And_Decoration()
+            public void Should_Parse_Link_Without_Address()
             {
                 // Given, When
-                var result = Style.Parse("bold underline blue on green");
+                var result = Style.Parse("link");
 
                 // Then
                 result.ShouldNotBeNull();
-                result.Decoration.ShouldBe(Decoration.Bold | Decoration.Underline);
-                result.Foreground.ShouldBe(Color.Blue);
-                result.Background.ShouldBe(Color.Green);
+                result.Link.ShouldBe("https://emptylink");
+            }
+
+            [Fact]
+            public void Should_Parse_Link()
+            {
+                // Given, When
+                var result = Style.Parse("link=https://example.com");
+
+                // Then
+                result.ShouldNotBeNull();
+                result.Link.ShouldBe("https://example.com");
+            }
+
+            [Fact]
+            public void Should_Throw_If_Link_Is_Set_Twice()
+            {
+                // Given, When
+                var result = Record.Exception(() => Style.Parse("link=https://example.com link=https://example.com"));
+
+                // Then
+                result.ShouldBeOfType<InvalidOperationException>();
+                result.Message.ShouldBe("A link has already been set.");
             }
 
             [Fact]
@@ -129,6 +220,20 @@ namespace Spectre.Console.Tests.Unit
                 // Then
                 result.ShouldBeOfType<InvalidOperationException>();
                 result.Message.ShouldBe("Could not find color 'lol'.");
+            }
+
+            [Fact]
+            public void Should_Parse_Colors_And_Decoration_And_Link()
+            {
+                // Given, When
+                var result = Style.Parse("link=https://example.com bold underline blue on green");
+
+                // Then
+                result.ShouldNotBeNull();
+                result.Decoration.ShouldBe(Decoration.Bold | Decoration.Underline);
+                result.Foreground.ShouldBe(Color.Blue);
+                result.Background.ShouldBe(Color.Green);
+                result.Link.ShouldBe("https://example.com");
             }
 
             [Theory]
