@@ -35,6 +35,7 @@ namespace Spectre.Console.Internal
             var effectiveDecoration = (Decoration?)null;
             var effectiveForeground = (Color?)null;
             var effectiveBackground = (Color?)null;
+            var effectiveLink = (string?)null;
 
             var parts = text.Split(new[] { ' ' });
             var foreground = true;
@@ -48,6 +49,23 @@ namespace Spectre.Console.Internal
                 if (part.Equals("on", StringComparison.OrdinalIgnoreCase))
                 {
                     foreground = false;
+                    continue;
+                }
+
+                if (part.StartsWith("link=", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (effectiveLink != null)
+                    {
+                        error = "A link has already been set.";
+                        return null;
+                    }
+
+                    effectiveLink = part.Substring(5);
+                    continue;
+                }
+                else if (part.StartsWith("link", StringComparison.OrdinalIgnoreCase))
+                {
+                    effectiveLink = Constants.EmptyLink;
                     continue;
                 }
 
@@ -116,7 +134,11 @@ namespace Spectre.Console.Internal
             }
 
             error = null;
-            return new Style(effectiveForeground, effectiveBackground, effectiveDecoration);
+            return new Style(
+                effectiveForeground,
+                effectiveBackground,
+                effectiveDecoration,
+                effectiveLink);
         }
 
         [SuppressMessage("Design", "CA1031:Do not catch general exception types")]

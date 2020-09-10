@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Text;
 
@@ -6,16 +5,11 @@ namespace Spectre.Console.Internal
 {
     internal sealed class FallbackConsoleRenderer : IAnsiConsole
     {
-        private readonly ConsoleColor _defaultForeground;
-        private readonly ConsoleColor _defaultBackground;
-
         private readonly TextWriter _out;
         private readonly ColorSystem _system;
-        private ConsoleColor _foreground;
-        private ConsoleColor _background;
+        private Style? _lastStyle;
 
         public Capabilities Capabilities { get; }
-
         public Encoding Encoding { get; }
 
         public int Width
@@ -44,47 +38,6 @@ namespace Spectre.Console.Internal
             }
         }
 
-        public Decoration Decoration { get; set; }
-
-        public Color Foreground
-        {
-            get => _foreground;
-            set
-            {
-                _foreground = Color.ToConsoleColor(value);
-                if (_system != ColorSystem.NoColors && _out.IsStandardOut())
-                {
-                    if ((int)_foreground == -1)
-                    {
-                        _foreground = _defaultForeground;
-                    }
-
-                    System.Console.ForegroundColor = _foreground;
-                }
-            }
-        }
-
-        public Color Background
-        {
-            get => _background;
-            set
-            {
-                _background = Color.ToConsoleColor(value);
-                if (_system != ColorSystem.NoColors && _out.IsStandardOut())
-                {
-                    if ((int)_background == -1)
-                    {
-                        _background = _defaultBackground;
-                    }
-
-                    if (_system != ColorSystem.NoColors)
-                    {
-                        System.Console.BackgroundColor = _background;
-                    }
-                }
-            }
-        }
-
         public FallbackConsoleRenderer(TextWriter @out, ColorSystem system, bool legacyConsole)
         {
             _out = @out;
@@ -92,25 +45,46 @@ namespace Spectre.Console.Internal
 
             if (_out.IsStandardOut())
             {
-                _defaultForeground = System.Console.ForegroundColor;
-                _defaultBackground = System.Console.BackgroundColor;
-
                 Encoding = System.Console.OutputEncoding;
             }
             else
             {
-                _defaultForeground = ConsoleColor.Gray;
-                _defaultBackground = ConsoleColor.Black;
-
                 Encoding = Encoding.UTF8;
             }
 
             Capabilities = new Capabilities(false, _system, legacyConsole);
         }
 
-        public void Write(string text)
+        public void Write(string text, Style style)
         {
+            if (_lastStyle?.Equals(style) != true)
+            {
+                SetStyle(style);
+            }
+
             _out.Write(text.NormalizeLineEndings(native: true));
+        }
+
+        private void SetStyle(Style style)
+        {
+            _lastStyle = style;
+
+            if (_out.IsStandardOut())
+            {
+                System.Console.ResetColor();
+
+                var background = Color.ToConsoleColor(style.Background);
+                if (_system != ColorSystem.NoColors && _out.IsStandardOut() && (int)background != -1)
+                {
+                    System.Console.BackgroundColor = background;
+                }
+
+                var foreground = Color.ToConsoleColor(style.Foreground);
+                if (_system != ColorSystem.NoColors && _out.IsStandardOut() && (int)foreground != -1)
+                {
+                    System.Console.ForegroundColor = foreground;
+                }
+            }
         }
     }
 }

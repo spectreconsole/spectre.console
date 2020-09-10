@@ -19,10 +19,9 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var fixture = new AnsiConsoleFixture(ColorSystem.TrueColor);
-            fixture.Console.Decoration = decoration;
 
             // When
-            fixture.Console.Write("Hello World");
+            fixture.Console.Write("Hello World", Style.WithDecoration(decoration));
 
             // Then
             fixture.Output.ShouldBe(expected);
@@ -35,10 +34,9 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var fixture = new AnsiConsoleFixture(ColorSystem.TrueColor);
-            fixture.Console.Decoration = decoration;
 
             // When
-            fixture.Console.Write("Hello World");
+            fixture.Console.Write("Hello World", Style.WithDecoration(decoration));
 
             // Then
             fixture.Output.ShouldBe(expected);

@@ -66,5 +66,26 @@ namespace Spectre.Console
                 background: style.Background,
                 decoration: decoration);
         }
+
+        /// <summary>
+        /// Creates a new style from the specified one with
+        /// the specified link.
+        /// </summary>
+        /// <param name="style">The style.</param>
+        /// <param name="link">The link.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Style WithLink(this Style style, string link)
+        {
+            if (style is null)
+            {
+                throw new ArgumentNullException(nameof(style));
+            }
+
+            return new Style(
+                foreground: style.Foreground,
+                background: style.Background,
+                decoration: style.Decoration,
+                link: link);
+        }
     }
 }

@@ -13,6 +13,8 @@ namespace Spectre.Console.Tests.Unit
             [Theory]
             [InlineData("[yellow]Hello[/]", "[93mHello[0m")]
             [InlineData("[yellow]Hello [italic]World[/]![/]", "[93mHello [0m[3;93mWorld[0m[93m![0m")]
+            [InlineData("[link=https://patriksvensson.se]Click to visit my blog[/]", "]8;id=2026695893;https://patriksvensson.se\\Click to visit my blog]8;;\\")]
+            [InlineData("[link]https://patriksvensson.se[/]", "]8;id=2026695893;https://patriksvensson.se\\https://patriksvensson.se]8;;\\")]
             public void Should_Output_Expected_Ansi_For_Markup(string markup, string expected)
             {
                 // Given

@@ -16,6 +16,7 @@ namespace Spectre.Console.Tests
         public Decoration Decoration { get; set; }
         public Color Foreground { get; set; }
         public Color Background { get; set; }
+        public string Link { get; set; }
 
         public StringWriter Writer { get; }
         public string RawOutput => Writer.ToString();
@@ -39,7 +40,7 @@ namespace Spectre.Console.Tests
             Writer.Dispose();
         }
 
-        public void Write(string text)
+        public void Write(string text, Style style)
         {
             Writer.Write(text);
         }

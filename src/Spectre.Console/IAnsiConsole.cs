@@ -28,24 +28,10 @@ namespace Spectre.Console
         Encoding Encoding { get; }
 
         /// <summary>
-        /// Gets or sets the current text decoration.
-        /// </summary>
-        Decoration Decoration { get; set; }
-
-        /// <summary>
-        /// Gets or sets the current foreground.
-        /// </summary>
-        Color Foreground { get; set; }
-
-        /// <summary>
-        /// Gets or sets the current background.
-        /// </summary>
-        Color Background { get; set; }
-
-        /// <summary>
         /// Writes a string followed by a line terminator to the console.
         /// </summary>
         /// <param name="text">The string to write.</param>
-        void Write(string text);
+        /// <param name="style">The style to use.</param>
+        void Write(string text, Style style);
     }
 }
