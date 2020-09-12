@@ -7,6 +7,7 @@ namespace Spectre.Console.Internal
     internal sealed class AnsiConsoleRenderer : IAnsiConsole
     {
         private readonly TextWriter _out;
+        private readonly AnsiBuilder _ansiBuilder;
 
         public Capabilities Capabilities { get; }
         public Encoding Encoding { get; }
@@ -37,12 +38,14 @@ namespace Spectre.Console.Internal
             }
         }
 
-        public AnsiConsoleRenderer(TextWriter @out, ColorSystem system, bool legacyConsole)
+        public AnsiConsoleRenderer(TextWriter @out, Capabilities capabilities, ILinkIdentityGenerator? linkHasher)
         {
             _out = @out ?? throw new ArgumentNullException(nameof(@out));
 
-            Capabilities = new Capabilities(true, system, legacyConsole);
-            Encoding = @out.IsStandardOut() ? System.Console.OutputEncoding : Encoding.UTF8;
+            Capabilities = capabilities ?? throw new ArgumentNullException(nameof(capabilities));
+            Encoding = _out.IsStandardOut() ? System.Console.OutputEncoding : Encoding.UTF8;
+
+            _ansiBuilder = new AnsiBuilder(Capabilities, linkHasher);
         }
 
         public void Write(string text, Style style)
@@ -59,7 +62,7 @@ namespace Spectre.Console.Internal
             {
                 if (!string.IsNullOrEmpty(part))
                 {
-                    _out.Write(AnsiBuilder.GetAnsi(Capabilities, part, style));
+                    _out.Write(_ansiBuilder.GetAnsi(part, style));
                 }
 
                 if (!last)

@@ -13,13 +13,13 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Return_Correct_Code(bool foreground, string expected)
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.TrueColor);
+                var console = new TestableAnsiConsole(ColorSystem.TrueColor);
 
                 // When
-                fixture.Console.Write("Hello", new Style().SetColor(new Color(128, 0, 128), foreground));
+                console.Write("Hello", new Style().SetColor(new Color(128, 0, 128), foreground));
 
                 // Then
-                fixture.Output.ShouldBe(expected);
+                console.Output.ShouldBe(expected);
             }
 
             [Theory]
@@ -28,13 +28,13 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Return_Eight_Bit_Ansi_Code_For_Known_Colors(bool foreground, string expected)
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.TrueColor);
+                var console = new TestableAnsiConsole(ColorSystem.TrueColor);
 
                 // When
-                fixture.Console.Write("Hello", new Style().SetColor(Color.Purple, foreground));
+                console.Write("Hello", new Style().SetColor(Color.Purple, foreground));
 
                 // Then
-                fixture.Output.ShouldBe(expected);
+                console.Output.ShouldBe(expected);
             }
         }
 
@@ -46,13 +46,13 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Return_Correct_Code_For_Known_Color(bool foreground, string expected)
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.EightBit);
+                var console = new TestableAnsiConsole(ColorSystem.EightBit);
 
                 // When
-                fixture.Console.Write("Hello", new Style().SetColor(Color.Olive, foreground));
+                console.Write("Hello", new Style().SetColor(Color.Olive, foreground));
 
                 // Then
-                fixture.Output.ShouldBe(expected);
+                console.Output.ShouldBe(expected);
             }
 
             [Theory]
@@ -61,13 +61,13 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Map_TrueColor_To_Nearest_Eight_Bit_Color_If_Possible(bool foreground, string expected)
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.EightBit);
+                var console = new TestableAnsiConsole(ColorSystem.EightBit);
 
                 // When
-                fixture.Console.Write("Hello", new Style().SetColor(new Color(128, 128, 0), foreground));
+                console.Write("Hello", new Style().SetColor(new Color(128, 128, 0), foreground));
 
                 // Then
-                fixture.Output.ShouldBe(expected);
+                console.Output.ShouldBe(expected);
             }
 
             [Theory]
@@ -76,13 +76,13 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Estimate_TrueColor_To_Nearest_Eight_Bit_Color(bool foreground, string expected)
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.EightBit);
+                var console = new TestableAnsiConsole(ColorSystem.EightBit);
 
                 // When
-                fixture.Console.Write("Hello", new Style().SetColor(new Color(126, 127, 0), foreground));
+                console.Write("Hello", new Style().SetColor(new Color(126, 127, 0), foreground));
 
                 // Then
-                fixture.Output.ShouldBe(expected);
+                console.Output.ShouldBe(expected);
             }
         }
 
@@ -94,13 +94,13 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Return_Correct_Code_For_Known_Color(bool foreground, string expected)
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.Standard);
+                var console = new TestableAnsiConsole(ColorSystem.Standard);
 
                 // When
-                fixture.Console.Write("Hello", new Style().SetColor(Color.Olive, foreground));
+                console.Write("Hello", new Style().SetColor(Color.Olive, foreground));
 
                 // Then
-                fixture.Output.ShouldBe(expected);
+                console.Output.ShouldBe(expected);
             }
 
             [Theory]
@@ -114,13 +114,13 @@ namespace Spectre.Console.Tests.Unit
                 string expected)
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.Standard);
+                var console = new TestableAnsiConsole(ColorSystem.Standard);
 
                 // When
-                fixture.Console.Write("Hello", new Style().SetColor(new Color(r, g, b), foreground));
+                console.Write("Hello", new Style().SetColor(new Color(r, g, b), foreground));
 
                 // Then
-                fixture.Output.ShouldBe(expected);
+                console.Output.ShouldBe(expected);
             }
 
             [Theory]
@@ -134,13 +134,13 @@ namespace Spectre.Console.Tests.Unit
                 string expected)
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.Standard);
+                var console = new TestableAnsiConsole(ColorSystem.Standard);
 
                 // When
-                fixture.Console.Write("Hello", new Style().SetColor(new Color(r, g, b), foreground));
+                console.Write("Hello", new Style().SetColor(new Color(r, g, b), foreground));
 
                 // Then
-                fixture.Output.ShouldBe(expected);
+                console.Output.ShouldBe(expected);
             }
         }
 
@@ -152,13 +152,13 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Return_Correct_Code_For_Known_Color(bool foreground, string expected)
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.Legacy);
+                var console = new TestableAnsiConsole(ColorSystem.Legacy);
 
                 // When
-                fixture.Console.Write("Hello", new Style().SetColor(Color.Olive, foreground));
+                console.Write("Hello", new Style().SetColor(Color.Olive, foreground));
 
                 // Then
-                fixture.Output.ShouldBe(expected);
+                console.Output.ShouldBe(expected);
             }
 
             [Theory]
@@ -172,13 +172,13 @@ namespace Spectre.Console.Tests.Unit
                 string expected)
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.Legacy);
+                var console = new TestableAnsiConsole(ColorSystem.Legacy);
 
                 // When
-                fixture.Console.Write("Hello", new Style().SetColor(new Color(r, g, b), foreground));
+                console.Write("Hello", new Style().SetColor(new Color(r, g, b), foreground));
 
                 // Then
-                fixture.Output.ShouldBe(expected);
+                console.Output.ShouldBe(expected);
             }
 
             [Theory]
@@ -192,13 +192,13 @@ namespace Spectre.Console.Tests.Unit
                 string expected)
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.Legacy);
+                var console = new TestableAnsiConsole(ColorSystem.Legacy);
 
                 // When
-                fixture.Console.Write("Hello", new Style().SetColor(new Color(r, g, b), foreground));
+                console.Write("Hello", new Style().SetColor(new Color(r, g, b), foreground));
 
                 // Then
-                fixture.Output.ShouldBe(expected);
+                console.Output.ShouldBe(expected);
             }
         }
     }

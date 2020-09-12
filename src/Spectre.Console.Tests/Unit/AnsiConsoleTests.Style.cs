@@ -18,13 +18,13 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Write_Decorated_Text_Correctly(Decoration decoration, string expected)
         {
             // Given
-            var fixture = new AnsiConsoleFixture(ColorSystem.TrueColor);
+            var console = new TestableAnsiConsole(ColorSystem.TrueColor);
 
             // When
-            fixture.Console.Write("Hello World", Style.WithDecoration(decoration));
+            console.Write("Hello World", Style.WithDecoration(decoration));
 
             // Then
-            fixture.Output.ShouldBe(expected);
+            console.Output.ShouldBe(expected);
         }
 
         [Theory]
@@ -33,13 +33,13 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Write_Text_With_Multiple_Decorations_Correctly(Decoration decoration, string expected)
         {
             // Given
-            var fixture = new AnsiConsoleFixture(ColorSystem.TrueColor);
+            var console = new TestableAnsiConsole(ColorSystem.TrueColor);
 
             // When
-            fixture.Console.Write("Hello World", Style.WithDecoration(decoration));
+            console.Write("Hello World", Style.WithDecoration(decoration));
 
             // Then
-            fixture.Output.ShouldBe(expected);
+            console.Output.ShouldBe(expected);
         }
     }
 }

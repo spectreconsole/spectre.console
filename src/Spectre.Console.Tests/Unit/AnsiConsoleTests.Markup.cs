@@ -13,18 +13,18 @@ namespace Spectre.Console.Tests.Unit
             [Theory]
             [InlineData("[yellow]Hello[/]", "[93mHello[0m")]
             [InlineData("[yellow]Hello [italic]World[/]![/]", "[93mHello [0m[3;93mWorld[0m[93m![0m")]
-            [InlineData("[link=https://patriksvensson.se]Click to visit my blog[/]", "]8;id=2026695893;https://patriksvensson.se\\Click to visit my blog]8;;\\")]
-            [InlineData("[link]https://patriksvensson.se[/]", "]8;id=2026695893;https://patriksvensson.se\\https://patriksvensson.se]8;;\\")]
+            [InlineData("[link=https://patriksvensson.se]Click to visit my blog[/]", "]8;id=1024;https://patriksvensson.se\\Click to visit my blog]8;;\\")]
+            [InlineData("[link]https://patriksvensson.se[/]", "]8;id=1024;https://patriksvensson.se\\https://patriksvensson.se]8;;\\")]
             public void Should_Output_Expected_Ansi_For_Markup(string markup, string expected)
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new TestableAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
 
                 // When
-                fixture.Console.Markup(markup);
+                console.Markup(markup);
 
                 // Then
-                fixture.Output.ShouldBe(expected);
+                console.Output.ShouldBe(expected);
             }
 
             [Theory]
@@ -32,13 +32,13 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Be_Able_To_Escape_Tags(string markup, string expected)
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new TestableAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
 
                 // When
-                fixture.Console.Markup(markup);
+                console.Markup(markup);
 
                 // Then
-                fixture.Output.ShouldBe(expected);
+                console.Output.ShouldBe(expected);
             }
 
             [Theory]
@@ -49,10 +49,10 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Throw_If_Encounters_Malformed_Tag(string markup, string expected)
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new TestableAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
 
                 // When
-                var result = Record.Exception(() => fixture.Console.Markup(markup));
+                var result = Record.Exception(() => console.Markup(markup));
 
                 // Then
                 result.ShouldBeOfType<InvalidOperationException>()
@@ -63,10 +63,10 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Throw_If_Tags_Are_Unbalanced()
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new TestableAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
 
                 // When
-                var result = Record.Exception(() => fixture.Console.Markup("[yellow][blue]Hello[/]"));
+                var result = Record.Exception(() => console.Markup("[yellow][blue]Hello[/]"));
 
                 // Then
                 result.ShouldBeOfType<InvalidOperationException>()
@@ -77,10 +77,10 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Throw_If_Encounters_Closing_Tag()
             {
                 // Given
-                var fixture = new AnsiConsoleFixture(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new TestableAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
 
                 // When
-                var result = Record.Exception(() => fixture.Console.Markup("Hello[/]World"));
+                var result = Record.Exception(() => console.Markup("Hello[/]World"));
 
                 // Then
                 result.ShouldBeOfType<InvalidOperationException>()

@@ -12,7 +12,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Throw_If_Closing_Tag_Is_Not_Properly_Escaped(string input)
         {
             // Given
-            var fixture = new PlainConsole();
+            var console = new PlainConsole();
 
             // When
             var result = Record.Exception(() => new Markup(input));
@@ -27,14 +27,14 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Escape_Markup_Blocks_As_Expected()
         {
             // Given
-            var fixture = new PlainConsole();
+            var console = new PlainConsole();
             var markup = new Markup("Hello [[ World ]] !");
 
             // When
-            fixture.Render(markup);
+            console.Render(markup);
 
             // Then
-            fixture.Output.ShouldBe("Hello [ World ] !");
+            console.Output.ShouldBe("Hello [ World ] !");
         }
     }
 }

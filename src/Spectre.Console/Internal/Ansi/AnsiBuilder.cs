@@ -3,12 +3,18 @@ using System.Linq;
 
 namespace Spectre.Console.Internal
 {
-    internal static class AnsiBuilder
+    internal sealed class AnsiBuilder
     {
-        public static string GetAnsi(
-            Capabilities capabilities,
-            string text,
-            Style style)
+        private readonly Capabilities _capabilities;
+        private readonly ILinkIdentityGenerator _linkHasher;
+
+        public AnsiBuilder(Capabilities capabilities, ILinkIdentityGenerator? linkHasher)
+        {
+            _capabilities = capabilities ?? throw new ArgumentNullException(nameof(capabilities));
+            _linkHasher = linkHasher ?? new LinkIdentityGenerator();
+        }
+
+        public string GetAnsi(string text, Style style)
         {
             if (style is null)
             {
@@ -22,7 +28,7 @@ namespace Spectre.Console.Internal
             {
                 codes = codes.Concat(
                     AnsiColorBuilder.GetAnsiCodes(
-                        capabilities.ColorSystem,
+                        _capabilities.ColorSystem,
                         style.Foreground,
                         true));
             }
@@ -32,7 +38,7 @@ namespace Spectre.Console.Internal
             {
                 codes = codes.Concat(
                     AnsiColorBuilder.GetAnsiCodes(
-                        capabilities.ColorSystem,
+                        _capabilities.ColorSystem,
                         style.Background,
                         false));
             }
@@ -48,7 +54,7 @@ namespace Spectre.Console.Internal
                 ? $"\u001b[{ansiCodes}m{text}\u001b[0m"
                 : text;
 
-            if (style.Link != null && !capabilities.LegacyConsole)
+            if (style.Link != null && !_capabilities.LegacyConsole)
             {
                 var link = style.Link;
 
@@ -58,7 +64,7 @@ namespace Spectre.Console.Internal
                     link = text;
                 }
 
-                var linkId = Math.Abs(link.GetDeterministicHashCode());
+                var linkId = _linkHasher.GenerateId(link, text);
                 ansi = $"\u001b]8;id={linkId};{link}\u001b\\{ansi}\u001b]8;;\u001b\\";
             }
 

@@ -13,6 +13,11 @@ namespace Spectre.Console
         Capabilities Capabilities { get; }
 
         /// <summary>
+        /// Gets the console output encoding.
+        /// </summary>
+        Encoding Encoding { get; }
+
+        /// <summary>
         /// Gets the buffer width of the console.
         /// </summary>
         int Width { get; }
@@ -21,11 +26,6 @@ namespace Spectre.Console
         /// Gets the buffer height of the console.
         /// </summary>
         int Height { get; }
-
-        /// <summary>
-        /// Gets the console output encoding.
-        /// </summary>
-        Encoding Encoding { get; }
 
         /// <summary>
         /// Writes a string followed by a line terminator to the console.

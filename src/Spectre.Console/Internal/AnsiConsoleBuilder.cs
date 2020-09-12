@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Spectre.Console.Internal
 {
-    internal static class ConsoleBuilder
+    internal static class AnsiConsoleBuilder
     {
         public static IAnsiConsole Build(AnsiConsoleSettings settings)
         {
@@ -54,12 +54,18 @@ namespace Spectre.Console.Internal
                 ? ColorSystemDetector.Detect(supportsAnsi)
                 : (ColorSystem)settings.ColorSystem;
 
+            // Get the capabilities
+            var capabilities = new Capabilities(supportsAnsi, colorSystem, legacyConsole);
+
+            // Create the renderer
             if (supportsAnsi)
             {
-                return new AnsiConsoleRenderer(buffer, colorSystem, legacyConsole);
+                return new AnsiConsoleRenderer(buffer, capabilities, settings.LinkIdentityGenerator);
             }
-
-            return new FallbackConsoleRenderer(buffer, colorSystem, legacyConsole);
+            else
+            {
+                return new FallbackConsoleRenderer(buffer, capabilities);
+            }
         }
     }
 }

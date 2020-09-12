@@ -55,7 +55,7 @@ namespace Spectre.Console
         /// <returns>An <see cref="IAnsiConsole"/> instance.</returns>
         public static IAnsiConsole Create(AnsiConsoleSettings settings)
         {
-            return ConsoleBuilder.Build(settings);
+            return AnsiConsoleBuilder.Build(settings);
         }
     }
 }

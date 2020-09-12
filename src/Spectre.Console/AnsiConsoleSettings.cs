@@ -19,6 +19,11 @@ namespace Spectre.Console
         public ColorSystemSupport ColorSystem { get; set; }
 
         /// <summary>
+        /// Gets or sets the link identity generator.
+        /// </summary>
+        public ILinkIdentityGenerator? LinkIdentityGenerator { get; set; }
+
+        /// <summary>
         /// Gets or sets the out buffer.
         /// </summary>
         public TextWriter? Out { get; set; }

@@ -37,14 +37,14 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Render_Unstyled_Text_As_Expected()
         {
             // Given
-            var fixture = new PlainConsole(width: 80);
+            var console = new PlainConsole(width: 80);
             var text = new Text("Hello World");
 
             // When
-            fixture.Render(text);
+            console.Render(text);
 
             // Then
-            fixture.Output
+            console.Output
                 .NormalizeLineEndings()
                 .ShouldBe("Hello World");
         }
@@ -55,14 +55,14 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Write_Line_Breaks(string input)
         {
             // Given
-            var fixture = new PlainConsole(width: 5);
+            var console = new PlainConsole(width: 5);
             var text = new Text(input);
 
             // When
-            fixture.Render(text);
+            console.Render(text);
 
             // Then
-            fixture.RawOutput.ShouldBe("Hello\n\nWorld\n\n");
+            console.RawOutput.ShouldBe("Hello\n\nWorld\n\n");
         }
 
         [Fact]
@@ -87,14 +87,14 @@ namespace Spectre.Console.Tests.Unit
             int width, string input, string expected)
         {
             // Given
-            var fixture = new PlainConsole(width);
+            var console = new PlainConsole(width);
             var text = new Text(input);
 
             // When
-            fixture.Render(text);
+            console.Render(text);
 
             // Then
-            fixture.Output
+            console.Output
                 .NormalizeLineEndings()
                 .ShouldBe(expected);
         }
@@ -106,15 +106,15 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Overflow_Text_Correctly(Overflow overflow, string expected)
         {
             // Given
-            var fixture = new PlainConsole(14);
+            var console = new PlainConsole(14);
             var text = new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar qux")
                 .SetOverflow(overflow);
 
             // When
-            fixture.Render(text);
+            console.Render(text);
 
             // Then
-            fixture.Output
+            console.Output
                 .NormalizeLineEndings()
                 .ShouldBe(expected);
         }

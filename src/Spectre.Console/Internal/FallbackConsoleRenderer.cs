@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 
@@ -38,10 +39,15 @@ namespace Spectre.Console.Internal
             }
         }
 
-        public FallbackConsoleRenderer(TextWriter @out, ColorSystem system, bool legacyConsole)
+        public FallbackConsoleRenderer(TextWriter @out, Capabilities capabilities)
         {
-            _out = @out;
-            _system = system;
+            if (capabilities == null)
+            {
+                throw new ArgumentNullException(nameof(capabilities));
+            }
+
+            _out = @out ?? throw new ArgumentNullException(nameof(@out));
+            _system = capabilities.ColorSystem;
 
             if (_out.IsStandardOut())
             {
@@ -52,7 +58,7 @@ namespace Spectre.Console.Internal
                 Encoding = Encoding.UTF8;
             }
 
-            Capabilities = new Capabilities(false, _system, legacyConsole);
+            Capabilities = capabilities;
         }
 
         public void Write(string text, Style style)
