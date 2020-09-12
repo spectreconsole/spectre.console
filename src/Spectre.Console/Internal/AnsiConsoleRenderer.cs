@@ -59,7 +59,7 @@ namespace Spectre.Console.Internal
             {
                 if (!string.IsNullOrEmpty(part))
                 {
-                    _out.Write(AnsiBuilder.GetAnsi(Capabilities, part, style.Decoration, style.Foreground, style.Background, style.Link));
+                    _out.Write(AnsiBuilder.GetAnsi(Capabilities, part, style));
                 }
 
                 if (!last)

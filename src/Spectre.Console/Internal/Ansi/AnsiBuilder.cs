@@ -8,35 +8,37 @@ namespace Spectre.Console.Internal
         public static string GetAnsi(
             Capabilities capabilities,
             string text,
-            Decoration decoration,
-            Color foreground,
-            Color background,
-            string? link)
+            Style style)
         {
-            var codes = AnsiDecorationBuilder.GetAnsiCodes(decoration);
+            if (style is null)
+            {
+                throw new ArgumentNullException(nameof(style));
+            }
+
+            var codes = AnsiDecorationBuilder.GetAnsiCodes(style.Decoration);
 
             // Got foreground?
-            if (foreground != Color.Default)
+            if (style.Foreground != Color.Default)
             {
                 codes = codes.Concat(
                     AnsiColorBuilder.GetAnsiCodes(
                         capabilities.ColorSystem,
-                        foreground,
+                        style.Foreground,
                         true));
             }
 
             // Got background?
-            if (background != Color.Default)
+            if (style.Background != Color.Default)
             {
                 codes = codes.Concat(
                     AnsiColorBuilder.GetAnsiCodes(
                         capabilities.ColorSystem,
-                        background,
+                        style.Background,
                         false));
             }
 
             var result = codes.ToArray();
-            if (result.Length == 0 && link == null)
+            if (result.Length == 0 && style.Link == null)
             {
                 return text;
             }
@@ -46,8 +48,10 @@ namespace Spectre.Console.Internal
                 ? $"\u001b[{ansiCodes}m{text}\u001b[0m"
                 : text;
 
-            if (link != null && !capabilities.LegacyConsole)
+            if (style.Link != null && !capabilities.LegacyConsole)
             {
+                var link = style.Link;
+
                 // Empty links means we should take the URL from the text.
                 if (link.Equals(Constants.EmptyLink, StringComparison.Ordinal))
                 {
