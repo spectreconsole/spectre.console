@@ -21,6 +21,7 @@ namespace Spectre.Console
 
         /// <summary>
         /// Gets or sets the padding of the column.
+        /// Vertical padding (top and bottom) is ignored.
         /// </summary>
         public Padding Padding
         {
@@ -48,7 +49,7 @@ namespace Spectre.Console
         /// </summary>
         public GridColumn()
         {
-            _padding = new Padding(0, 2);
+            _padding = new Padding(0, 0, 2, 0);
         }
     }
 }

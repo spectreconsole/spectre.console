@@ -221,12 +221,12 @@ namespace Spectre.Console
                     result.Add(Segment.LineBreak);
                 }
 
+                // Make cells the same shape
+                cells = Segment.MakeSameHeight(cellHeight, cells);
+
                 // Iterate through each cell row
                 foreach (var cellRowIndex in Enumerable.Range(0, cellHeight))
                 {
-                    // Make cells the same shape
-                    cells = Segment.MakeSameHeight(cellHeight, cells);
-
                     foreach (var (cellIndex, firstCell, lastCell, cell) in cells.Enumerate())
                     {
                         if (firstCell && showBorder)
@@ -403,7 +403,7 @@ namespace Spectre.Console
 
         private (int Min, int Max) MeasureColumn(TableColumn column, RenderContext options, int maxWidth)
         {
-            var padding = column.Padding.GetHorizontalPadding();
+            var padding = column.Padding.GetWidth();
 
             // Predetermined width?
             if (column.Width != null)
@@ -438,7 +438,7 @@ namespace Spectre.Console
             var hideBorder = !Border.Visible;
             var separators = hideBorder ? 0 : _columns.Count - 1;
             var edges = hideBorder ? 0 : EdgeCount;
-            var padding = includePadding ? _columns.Select(x => x.Padding.GetHorizontalPadding()).Sum() : 0;
+            var padding = includePadding ? _columns.Select(x => x.Padding.GetWidth()).Sum() : 0;
 
             if (!PadRightCell)
             {

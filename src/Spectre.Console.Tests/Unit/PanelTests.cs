@@ -22,6 +22,25 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        public void Should_Render_Panel_With_Padding_Set_To_Zero()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+
+            // When
+            console.Render(new Panel(new Text("Hello World"))
+            {
+                Padding = new Padding(0, 0, 0, 0),
+            });
+
+            // Then
+            console.Lines.Count.ShouldBe(3);
+            console.Lines[0].ShouldBe("┌───────────┐");
+            console.Lines[1].ShouldBe("│Hello World│");
+            console.Lines[2].ShouldBe("└───────────┘");
+        }
+
+        [Fact]
         public void Should_Render_Panel_With_Padding()
         {
             // Given
@@ -30,14 +49,17 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Render(new Panel(new Text("Hello World"))
             {
-                Padding = new Padding(3, 5),
+                Padding = new Padding(3, 1, 5, 2),
             });
 
             // Then
-            console.Lines.Count.ShouldBe(3);
+            console.Lines.Count.ShouldBe(6);
             console.Lines[0].ShouldBe("┌───────────────────┐");
-            console.Lines[1].ShouldBe("│   Hello World     │");
-            console.Lines[2].ShouldBe("└───────────────────┘");
+            console.Lines[1].ShouldBe("│                   │");
+            console.Lines[2].ShouldBe("│   Hello World     │");
+            console.Lines[3].ShouldBe("│                   │");
+            console.Lines[4].ShouldBe("│                   │");
+            console.Lines[5].ShouldBe("└───────────────────┘");
         }
 
         [Fact]
@@ -51,7 +73,7 @@ namespace Spectre.Console.Tests.Unit
             {
                 Header = new PanelHeader("Greeting"),
                 Expand = true,
-                Padding = new Padding(2, 2),
+                Padding = new Padding(2, 0, 2, 0),
             });
 
             // Then

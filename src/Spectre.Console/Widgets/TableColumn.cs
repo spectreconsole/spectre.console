@@ -21,6 +21,7 @@ namespace Spectre.Console
 
         /// <summary>
         /// Gets or sets the padding of the column.
+        /// Vertical padding (top and bottom) is ignored.
         /// </summary>
         public Padding Padding { get; set; }
 
@@ -52,7 +53,7 @@ namespace Spectre.Console
         {
             Text = renderable ?? throw new ArgumentNullException(nameof(renderable));
             Width = null;
-            Padding = new Padding(1, 1);
+            Padding = new Padding(1, 0, 1, 0);
             NoWrap = false;
             Alignment = null;
         }

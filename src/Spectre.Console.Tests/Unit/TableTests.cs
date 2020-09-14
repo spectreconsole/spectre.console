@@ -347,7 +347,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new PlainConsole(width: 80);
             var table = new Table();
             table.AddColumns("Foo", "Bar");
-            table.AddColumn(new TableColumn("Baz") { Padding = new Padding(3, 2) });
+            table.AddColumn(new TableColumn("Baz") { Padding = new Padding(3, 0, 2, 0) });
             table.AddRow("Qux\nQuuux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");
 
@@ -372,7 +372,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new PlainConsole(width: 80);
             var table = new Table();
             table.AddColumns("Foo", "Bar");
-            table.AddColumn(new TableColumn("Baz") { Padding = new Padding(3, 2) });
+            table.AddColumn(new TableColumn("Baz") { Padding = new Padding(3, 0, 2, 0) });
 
             // When
             console.Render(table);
