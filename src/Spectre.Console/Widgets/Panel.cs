@@ -33,7 +33,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the padding.
         /// </summary>
-        public Padding Padding { get; set; } = new Padding(1, 1);
+        public Padding Padding { get; set; } = new Padding(1, 0, 1, 0);
 
         /// <summary>
         /// Gets or sets the header.
@@ -61,10 +61,11 @@ namespace Spectre.Console
         /// <inheritdoc/>
         protected override Measurement Measure(RenderContext context, int maxWidth)
         {
-            var childWidth = _child.Measure(context, maxWidth);
+            var child = new Padder(_child, Padding);
+            var childWidth = ((IRenderable)child).Measure(context, maxWidth);
             return new Measurement(
-                childWidth.Min + EdgeWidth + Padding.GetHorizontalPadding(),
-                childWidth.Max + EdgeWidth + Padding.GetHorizontalPadding());
+                childWidth.Min + EdgeWidth,
+                childWidth.Max + EdgeWidth);
         }
 
         /// <inheritdoc/>
@@ -73,16 +74,16 @@ namespace Spectre.Console
             var border = Border.GetSafeBorder((context.LegacyConsole || !context.Unicode) && UseSafeBorder);
             var borderStyle = BorderStyle ?? Style.Plain;
 
-            var paddingWidth = Padding.GetHorizontalPadding();
-            var childWidth = maxWidth - EdgeWidth - paddingWidth;
+            var child = new Padder(_child, Padding);
+            var childWidth = maxWidth - EdgeWidth;
 
             if (!Expand)
             {
-                var measurement = _child.Measure(context, maxWidth - EdgeWidth - paddingWidth);
+                var measurement = ((IRenderable)child).Measure(context, maxWidth - EdgeWidth);
                 childWidth = measurement.Max;
             }
 
-            var panelWidth = childWidth + EdgeWidth + paddingWidth;
+            var panelWidth = childWidth + EdgeWidth;
             panelWidth = Math.Min(panelWidth, maxWidth);
 
             var result = new List<Segment>();
@@ -91,16 +92,10 @@ namespace Spectre.Console
             AddTopBorder(result, context, border, borderStyle, panelWidth);
 
             // Split the child segments into lines.
-            var childSegments = _child.Render(context, childWidth);
+            var childSegments = ((IRenderable)child).Render(context, childWidth);
             foreach (var line in Segment.SplitLines(childSegments, panelWidth))
             {
                 result.Add(new Segment(border.GetPart(BorderPart.CellLeft), borderStyle));
-
-                // Left padding
-                if (Padding.Left > 0)
-                {
-                    result.Add(new Segment(new string(' ', Padding.Left)));
-                }
 
                 var content = new List<Segment>();
                 content.AddRange(line);
@@ -114,12 +109,6 @@ namespace Spectre.Console
                 }
 
                 result.AddRange(content);
-
-                // Right padding
-                if (Padding.Right > 0)
-                {
-                    result.Add(new Segment(new string(' ', Padding.Right)));
-                }
 
                 result.Add(new Segment(border.GetPart(BorderPart.CellRight), borderStyle));
                 result.Add(Segment.LineBreak);

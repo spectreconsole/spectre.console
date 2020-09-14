@@ -13,7 +13,7 @@ namespace Spectre.Console
         private readonly List<IRenderable> _items;
 
         /// <inheritdoc/>
-        public Padding Padding { get; set; } = new Padding(0, 1);
+        public Padding Padding { get; set; } = new Padding(0, 0, 1, 0);
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the columns should

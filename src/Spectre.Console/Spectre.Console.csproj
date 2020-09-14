@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+    <AdditionalFiles Include="..\stylecop.json" Link="Properties/stylecop.json" />
     <None Include="../../resources/gfx/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
   </ItemGroup>
 

@@ -190,9 +190,9 @@ namespace Spectre.Console.Tests.Unit
             // Given
             var console = new PlainConsole(width: 80);
             var grid = new Grid();
-            grid.AddColumn(new GridColumn { Padding = new Padding(3, 0) });
-            grid.AddColumn(new GridColumn { Padding = new Padding(0, 0) });
-            grid.AddColumn(new GridColumn { Padding = new Padding(0, 3) });
+            grid.AddColumn(new GridColumn { Padding = new Padding(3, 0, 0, 0) });
+            grid.AddColumn(new GridColumn { Padding = new Padding(0, 0, 0, 0) });
+            grid.AddColumn(new GridColumn { Padding = new Padding(0, 0, 3, 0) });
             grid.AddRow("Foo", "Bar", "Baz");
             grid.AddRow("Qux", "Corgi", "Waldo");
             grid.AddRow("Grault", "Garply", "Fred");
@@ -213,7 +213,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new PlainConsole(width: 80);
             var grid = new Grid();
             grid.AddColumn(new GridColumn { NoWrap = true });
-            grid.AddColumn(new GridColumn { Padding = new Padding(2, 0) });
+            grid.AddColumn(new GridColumn { Padding = new Padding(2, 0, 0, 0) });
             grid.AddRow("[bold]Options[/]", string.Empty);
             grid.AddRow("  [blue]-h[/], [blue]--help[/]", "Show command line help.");
             grid.AddRow("  [blue]-c[/], [blue]--configuration[/]", "The configuration to run for.\nThe default for most projects is [green]Debug[/].");
