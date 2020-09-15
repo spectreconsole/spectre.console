@@ -72,7 +72,7 @@ namespace Spectre.Console.Rendering
                 throw new ArgumentNullException(nameof(text));
             }
 
-            Text = text.NormalizeLineEndings();
+            Text = Emoji.Replace(text).NormalizeLineEndings();
             Style = style;
             IsLineBreak = lineBreak;
             IsWhiteSpace = string.IsNullOrWhiteSpace(text);
