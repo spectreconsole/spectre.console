@@ -20,6 +20,9 @@
     <Compile Update="Border.*.cs">
       <DependentUpon>Border.cs</DependentUpon>
     </Compile>
+    <Compile Update="Emoji.*.cs">
+      <DependentUpon>Emoji.cs</DependentUpon>
+    </Compile>
     <Compile Update="Extensions/AnsiConsoleExtensions.*.cs">
       <DependentUpon>Extensions/AnsiConsoleExtensions.cs</DependentUpon>
     </Compile>
