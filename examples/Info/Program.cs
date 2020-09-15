@@ -9,15 +9,17 @@ namespace Info
             var grid = new Grid()
                 .AddColumn(new GridColumn().NoWrap().PadRight(4))
                 .AddColumn()
-                .AddRow("[b]Color system[/]", $"{AnsiConsole.Capabilities.ColorSystem}")
-                .AddRow("[b]Supports ansi?[/]", $"{AnsiConsole.Capabilities.SupportsAnsi}")
-                .AddRow("[b]Legacy console?[/]", $"{AnsiConsole.Capabilities.LegacyConsole}")
-                .AddRow("[b]Buffer width[/]", $"{AnsiConsole.Console.Width}")
-                .AddRow("[b]Buffer height[/]", $"{AnsiConsole.Console.Height}");
+                .AddRow("[b]:artist_palette: Color system[/]", $"{AnsiConsole.Capabilities.ColorSystem}")
+                .AddRow("[b]:nail_polish: Supports ansi?[/]", $"{GetEmoji(AnsiConsole.Capabilities.SupportsAnsi)}")
+                .AddRow("[b]:top_hat: Legacy console?[/]", $"{GetEmoji(AnsiConsole.Capabilities.LegacyConsole)}")
+                .AddRow("[b]:left-right_arrow: Buffer width[/]", $"{AnsiConsole.Console.Width}")
+                .AddRow("[b]:up-down_arrow: Buffer height[/]", $"{AnsiConsole.Console.Height}");
 
             AnsiConsole.Render(
                 new Panel(grid)
                     .SetHeader("Information"));
         }
+
+        private static string GetEmoji(bool value) => value ? ":check_mark_button:" : ":cross_mark:";
     }
 }
