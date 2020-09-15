@@ -5,6 +5,7 @@
 [Pp]ackages/
 /.artifacts/
 /[Tt]ools/
+.DS_Store
 
 # Cakeup
 cakeup-x86_64-latest.exe
