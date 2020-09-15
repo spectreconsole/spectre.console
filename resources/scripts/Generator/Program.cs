@@ -11,6 +11,7 @@ namespace Generator
             app.Configure(config =>
             {
                 config.AddCommand<ColorGeneratorCommand>("colors");
+                config.AddCommand<EmojiGeneratorCommand>("emoji");
             });
 
             return app.Run(args);
