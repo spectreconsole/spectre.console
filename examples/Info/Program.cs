@@ -20,6 +20,8 @@ namespace Info
                     .SetHeader("Information"));
         }
 
-        private static string GetEmoji(bool value) => value ? ":check_mark_button:" : ":cross_mark:";
+        private static string GetEmoji(bool value) => value
+            ? ":thumbs_up:"
+            : ":thumbs_down:";
     }
 }
