@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Spectre.Console.Internal;
 
 namespace Spectre.Console.Rendering
@@ -82,11 +81,11 @@ namespace Spectre.Console.Rendering
         /// Gets the number of cells that this segment
         /// occupies in the console.
         /// </summary>
-        /// <param name="encoding">The encoding to use.</param>
+        /// <param name="context">The render context.</param>
         /// <returns>The number of cells that this segment occupies in the console.</returns>
-        public int CellLength(Encoding encoding)
+        public int CellLength(RenderContext context)
         {
-            return Text.CellLength(encoding);
+            return Text.CellLength(context);
         }
 
         /// <summary>
@@ -266,17 +265,17 @@ namespace Spectre.Console.Rendering
         /// </summary>
         /// <param name="segment">The segment to split.</param>
         /// <param name="overflow">The overflow strategy to use.</param>
-        /// <param name="encoding">The encoding to use.</param>
+        /// <param name="context">The render context.</param>
         /// <param name="width">The maximum width.</param>
         /// <returns>A list of segments that has been split.</returns>
-        public static List<Segment> SplitOverflow(Segment segment, Overflow? overflow, Encoding encoding, int width)
+        public static List<Segment> SplitOverflow(Segment segment, Overflow? overflow, RenderContext context, int width)
         {
             if (segment is null)
             {
                 throw new ArgumentNullException(nameof(segment));
             }
 
-            if (segment.CellLength(encoding) <= width)
+            if (segment.CellLength(context) <= width)
             {
                 return new List<Segment>(1) { segment };
             }
@@ -288,7 +287,7 @@ namespace Spectre.Console.Rendering
 
             if (overflow == Overflow.Fold)
             {
-                var totalLength = segment.Text.CellLength(encoding);
+                var totalLength = segment.Text.CellLength(context);
                 var lengthLeft = totalLength;
                 while (lengthLeft > 0)
                 {
@@ -311,12 +310,12 @@ namespace Spectre.Console.Rendering
             return result;
         }
 
-        internal static Segment TruncateWithEllipsis(string text, Style style, Encoding encoding, int maxWidth)
+        internal static Segment TruncateWithEllipsis(string text, Style style, RenderContext context, int maxWidth)
         {
             return SplitOverflow(
                 new Segment(text, style),
                 Overflow.Ellipsis,
-                encoding,
+                context,
                 maxWidth)[0];
         }
 

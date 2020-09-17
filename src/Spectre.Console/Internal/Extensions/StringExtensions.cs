@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console.Internal
 {
@@ -11,9 +12,9 @@ namespace Spectre.Console.Internal
         private static readonly bool _alreadyNormalized
             = Environment.NewLine.Equals("\n", StringComparison.OrdinalIgnoreCase);
 
-        public static int CellLength(this string text, Encoding encoding)
+        public static int CellLength(this string text, RenderContext context)
         {
-            return Cell.GetCellLength(encoding, text);
+            return Cell.GetCellLength(context, text);
         }
 
         public static string NormalizeLineEndings(this string text, bool native = false)

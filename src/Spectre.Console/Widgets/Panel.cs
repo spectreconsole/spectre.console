@@ -101,7 +101,7 @@ namespace Spectre.Console
                 content.AddRange(line);
 
                 // Do we need to pad the panel?
-                var length = line.Sum(segment => segment.CellLength(context.Encoding));
+                var length = line.Sum(segment => segment.CellLength(context));
                 if (length < childWidth)
                 {
                     var diff = childWidth - length;
@@ -138,9 +138,9 @@ namespace Spectre.Console
                 var rightSpacing = 0;
 
                 var headerWidth = panelWidth - (EdgeWidth * 2);
-                var header = Segment.TruncateWithEllipsis(Header.Text, Header.Style ?? borderStyle, context.Encoding, headerWidth);
+                var header = Segment.TruncateWithEllipsis(Header.Text, Header.Style ?? borderStyle, context, headerWidth);
 
-                var excessWidth = headerWidth - header.CellLength(context.Encoding);
+                var excessWidth = headerWidth - header.CellLength(context);
                 if (excessWidth > 0)
                 {
                     switch (Header.Alignment ?? Justify.Left)

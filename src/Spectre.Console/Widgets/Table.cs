@@ -250,7 +250,7 @@ namespace Spectre.Console
                         result.AddRange(cell[cellRowIndex]);
 
                         // Pad cell content right
-                        var length = cell[cellRowIndex].Sum(segment => segment.CellLength(context.Encoding));
+                        var length = cell[cellRowIndex].Sum(segment => segment.CellLength(context));
                         if (length < columnWidths[cellIndex])
                         {
                             result.Add(new Segment(new string(' ', columnWidths[cellIndex] - length)));
