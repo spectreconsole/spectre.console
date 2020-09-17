@@ -69,6 +69,7 @@ jobs:
           dotnet example grid
           dotnet example panel
           dotnet example colors
+          dotnet example emojis
 
       - name: Build
         shell: bash

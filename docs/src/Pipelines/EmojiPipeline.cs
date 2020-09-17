@@ -1,23 +1,22 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Docs.Models;
+using Docs.Modules;
 using Statiq.Common;
 using Statiq.Core;
 
 namespace Docs.Pipelines
 {
-    public class ColorsPipeline : Pipeline
+    public class EmojiPipeline : Pipeline
     {
-        public const string Url = "https://raw.githubusercontent.com/spectresystems/spectre.console/main/resources/scripts/Generator/Data/colors.json";
-
-        public ColorsPipeline()
+        public EmojiPipeline()
         {
             InputModules = new ModuleList
             {
                 new ExecuteConfig(
                     Config.FromContext(ctx => {
-                        return new ReadWeb(Url);
+                        return new ReadEmbedded(
+                            typeof(EmojiPipeline).Assembly,
+                            "Docs/src/Data/emojis.json");
                     }))
             };
 
@@ -26,8 +25,8 @@ namespace Docs.Pipelines
                 new ExecuteConfig(
                     Config.FromDocument(async (doc, ctx) =>
                     {
-                        var data = Color.Parse(await doc.GetContentStringAsync()).ToList(); 
-                        return data.ToDocument(Constants.Colors.Root);
+                        var data = Emoji.Parse(await doc.GetContentStringAsync());
+                        return data.ToDocument(Constants.Emojis.Root);
                     }))
             };
         }

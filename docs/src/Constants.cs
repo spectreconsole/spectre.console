@@ -1,13 +1,19 @@
-﻿namespace Docs
+namespace Docs
 {
     public static class Constants
     {
         public const string NoContainer = nameof(NoContainer);
         public const string NoSidebar = nameof(NoSidebar);
+        public const string NoLink = nameof(NoLink);
         public const string Topic = nameof(Topic);
         public const string EditLink = nameof(EditLink);
         public const string Description = nameof(Description);
         public const string Hidden = nameof(Hidden);
+
+        public static class Emojis
+        {
+            public const string Root = "EMOJIS_ROOT";
+        }
 
         public static class Colors
         {

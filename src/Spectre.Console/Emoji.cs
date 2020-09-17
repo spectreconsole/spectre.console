@@ -3,9 +3,9 @@ using System.Text.RegularExpressions;
 namespace Spectre.Console
 {
     /// <summary>
-    /// Utility class for working with emojis.
+    /// Utility for working with emojis.
     /// </summary>
-    internal static partial class Emoji
+    public static partial class Emoji
     {
         private static readonly Regex _emojiCode = new Regex(@"(:(\S*?):)", RegexOptions.Compiled);
 

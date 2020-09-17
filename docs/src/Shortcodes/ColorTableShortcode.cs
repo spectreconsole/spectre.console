@@ -17,11 +17,10 @@ namespace Docs.Shortcodes
             // Get the definition.
             var colors = context.Outputs
                 .FromPipeline(nameof(ColorsPipeline))
-                .First()
-                .GetChildren(Constants.Colors.Root)
                 .OfType<ObjectDocument<List<Color>>>()
                 .First().Object;
 
+            // Headers
             var table = new XElement("table", new XAttribute("class", "table"));
             var header = new XElement("tr", new XAttribute("class", "color-row"));
             header.Add(new XElement("th", ""));

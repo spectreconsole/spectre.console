@@ -2,8 +2,7 @@ Title: Markup
 Order: 2
 ---
 
-In `Spectre.Console` there's a class called `Markup` that
-allows you to output rich text to the console.
+The class `Markup` allows you to output rich text to the console.
 
 # Syntax
 
@@ -53,6 +52,16 @@ You can set the background color in markup by prefixing the color with
 [bold yellow on blue]Hello[/]
 [default on blue]World[/]
 ```
+
+# Rendering emojis
+
+To output an emoji as part of markup, you can use emoji shortcodes.
+
+```csharp
+AnsiConsole.MarkupLine("Hello :globe_showing_europe_africa:!");
+```
+
+For a list of emoji, see the [Emojis](xref:styles) appendix section.
 
 # Colors
 
