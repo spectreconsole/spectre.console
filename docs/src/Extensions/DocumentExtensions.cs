@@ -1,4 +1,4 @@
-﻿using Statiq.Common;
+using Statiq.Common;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,6 +14,11 @@ namespace Docs
         public static bool IsVisible(this IDocument document)
         {
             return !document.GetBool(Constants.Hidden, false);
+        }
+
+        public static bool ShowLink(this IDocument document)
+        {
+            return !document.GetBool(Constants.NoLink, false);
         }
 
         public static IEnumerable<IDocument> OnlyVisible(this IEnumerable<IDocument> source)

@@ -128,14 +128,28 @@
                                         {
                                             IDocument root = OutputPages["index.html"].First();
                                             <div class="sidebar-nav-item @(Document.IdEquals(root) ? "active" : null)">
-                                                @Html.DocumentLink(root)
+                                                    @if(root.ShowLink())
+                                                    {
+                                                        @Html.DocumentLink(root)
+                                                    }
+                                                    else
+                                                    {
+                                                        @root.GetTitle()
+                                                    } 
                                             </div>
 
                                             @foreach (IDocument document in OutputPages.GetChildrenOf(root).OnlyVisible())
                                             {
                                                 DocumentList<IDocument> documentChildren = OutputPages.GetChildrenOf(document);
                                                 <div class="sidebar-nav-item @(Document.IdEquals(document) ? "active" : null) @(documentChildren.Any() ? "has-children" : null)">
-                                                    @Html.DocumentLink(document)
+                                                    @if(document.ShowLink())
+                                                    {
+                                                        @Html.DocumentLink(document)
+                                                    }
+                                                    else
+                                                    {
+                                                        @document.GetTitle()
+                                                    }                                                   
                                                 </div>
 
                                                 @if (documentChildren.OnlyVisible().Any())

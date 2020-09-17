@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
+using Humanizer;
 
 namespace Generator.Models
 {
@@ -10,15 +11,22 @@ namespace Generator.Models
     {
         private static readonly string[] _headers = { "count", "code", "sample", "name" };
 
-        private Emoji(string code, string name)
+        private Emoji(string identifier, string name, string code, string description)
         {
-            Code = code;
+            Identifier = identifier;
             Name = name;
+            Code = code;
+            Description = description;
+            NormalizedCode = Code.Replace("\\U", "U+");
+            HasCombinators = Code.Split(new[] { "\\U" }, System.StringSplitOptions.RemoveEmptyEntries).Length > 1;
         }
 
+        public string Identifier { get; set; }
         public string Code { get; }
-
+        public string NormalizedCode { get; }
         public string Name { get; }
+        public string Description { get; set; }
+        public bool HasCombinators { get; set; }
 
         public static IEnumerable<Emoji> Parse(IHtmlDocument document)
         {
@@ -30,13 +38,24 @@ namespace Generator.Models
             foreach (var row in rows)
             {
                 var dictionary = _headers
-                    .Zip(row.Cells, (header, cell) => (header, cell.TextContent.Trim()))
+                    .Zip(row.Cells, (header, cell) => (Header: header, cell.TextContent.Trim()))
                     .ToDictionary(x => x.Item1, x => x.Item2);
 
                 var code = TransformCode(dictionary["code"]);
-                var name = TransformName(dictionary["name"]);
+                var identifier = TransformName(dictionary["name"])
+                    .Replace("-", "_")
+                    .Replace("(", string.Empty)
+                    .Replace(")", string.Empty);
 
-                yield return new Emoji(code, name);
+                var description = dictionary["name"].Humanize();
+
+                var name = identifier
+                    .Replace("1st", "first")
+                    .Replace("2nd", "second")
+                    .Replace("3rd", "third")
+                    .Pascalize();
+
+                yield return new Emoji(identifier, name, code, description);
             }
         }
 
@@ -48,8 +67,14 @@ namespace Generator.Models
                 .Replace("\u201c", string.Empty)
                 .Replace("\u201d", string.Empty)
                 .Replace("\u229b", string.Empty)
-                .Trim()
                 .Replace(' ', '_')
+                .Replace("’s", "s")
+                .Replace("’", "_")
+                .Replace("&", "and")
+                .Replace("#", "hash")
+                .Replace("*", "star")
+                .Replace("!", string.Empty)
+                .Trim()
                 .ToLowerInvariant();
         }
 

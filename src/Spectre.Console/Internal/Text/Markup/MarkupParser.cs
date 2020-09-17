@@ -8,6 +8,12 @@ namespace Spectre.Console.Internal
     {
         public static Paragraph Parse(string text, Style? style = null)
         {
+            if (text is null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            text = Emoji.Replace(text);
             style ??= Style.Plain;
 
             var result = new Paragraph();

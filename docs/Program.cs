@@ -19,6 +19,7 @@ namespace Docs
                 .ConfigureDeployment(deployBranch: "docs")
                 .AddShortcode("Children", typeof(ChildrenShortcode))
                 .AddShortcode("ColorTable", typeof(ColorTableShortcode))
+                .AddShortcode("EmojiTable", typeof(EmojiTableShortcode))
                 .AddPipelines()
                 .RunAsync();
 

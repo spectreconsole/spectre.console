@@ -23,8 +23,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="src\Data\emojis.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="src\Data\emojis.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Statiq.Web" Version="1.0.0-beta.5" />
     <PackageReference Include="MinVer" PrivateAssets="All" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="input\assets\images\emojis\" />
   </ItemGroup>
 
   <Target Name="Versioning" BeforeTargets="MinVer">

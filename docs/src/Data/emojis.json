@@ -1,0 +1,7946 @@
+[
+    {
+        "id": "abacus",
+        "name": "Abacus",
+        "description": "Abacus",
+        "code": "U+0001F9EE"
+    },
+    {
+        "id": "ab_button_blood_type",
+        "name": "AbButtonBloodType",
+        "description": "AB button blood type",
+        "code": "U+0001F18E"
+    },
+    {
+        "id": "a_button_blood_type",
+        "name": "AButtonBloodType",
+        "description": "A button blood type",
+        "code": "U+0001F170"
+    },
+    {
+        "id": "accordion",
+        "name": "Accordion",
+        "description": "Accordion",
+        "code": "U+0001FA97"
+    },
+    {
+        "id": "adhesive_bandage",
+        "name": "AdhesiveBandage",
+        "description": "Adhesive bandage",
+        "code": "U+0001FA79"
+    },
+    {
+        "id": "admission_tickets",
+        "name": "AdmissionTickets",
+        "description": "Admission tickets",
+        "code": "U+0001F39F"
+    },
+    {
+        "id": "aerial_tramway",
+        "name": "AerialTramway",
+        "description": "Aerial tramway",
+        "code": "U+0001F6A1"
+    },
+    {
+        "id": "airplane",
+        "name": "Airplane",
+        "description": "Airplane",
+        "code": "U+00002708"
+    },
+    {
+        "id": "airplane_arrival",
+        "name": "AirplaneArrival",
+        "description": "Airplane arrival",
+        "code": "U+0001F6EC"
+    },
+    {
+        "id": "airplane_departure",
+        "name": "AirplaneDeparture",
+        "description": "Airplane departure",
+        "code": "U+0001F6EB"
+    },
+    {
+        "id": "alarm_clock",
+        "name": "AlarmClock",
+        "description": "Alarm clock",
+        "code": "U+000023F0"
+    },
+    {
+        "id": "alembic",
+        "name": "Alembic",
+        "description": "Alembic",
+        "code": "U+00002697"
+    },
+    {
+        "id": "alien",
+        "name": "Alien",
+        "description": "Alien",
+        "code": "U+0001F47D"
+    },
+    {
+        "id": "alien_monster",
+        "name": "AlienMonster",
+        "description": "Alien monster",
+        "code": "U+0001F47E"
+    },
+    {
+        "id": "ambulance",
+        "name": "Ambulance",
+        "description": "Ambulance",
+        "code": "U+0001F691"
+    },
+    {
+        "id": "american_football",
+        "name": "AmericanFootball",
+        "description": "American football",
+        "code": "U+0001F3C8"
+    },
+    {
+        "id": "amphora",
+        "name": "Amphora",
+        "description": "Amphora",
+        "code": "U+0001F3FA"
+    },
+    {
+        "id": "anatomical_heart",
+        "name": "AnatomicalHeart",
+        "description": "Anatomical heart",
+        "code": "U+0001FAC0"
+    },
+    {
+        "id": "anchor",
+        "name": "Anchor",
+        "description": "Anchor",
+        "code": "U+00002693"
+    },
+    {
+        "id": "anger_symbol",
+        "name": "AngerSymbol",
+        "description": "Anger symbol",
+        "code": "U+0001F4A2"
+    },
+    {
+        "id": "angry_face",
+        "name": "AngryFace",
+        "description": "Angry face",
+        "code": "U+0001F620"
+    },
+    {
+        "id": "angry_face_with_horns",
+        "name": "AngryFaceWithHorns",
+        "description": "Angry face with horns",
+        "code": "U+0001F47F"
+    },
+    {
+        "id": "anguished_face",
+        "name": "AnguishedFace",
+        "description": "Anguished face",
+        "code": "U+0001F627"
+    },
+    {
+        "id": "ant",
+        "name": "Ant",
+        "description": "Ant",
+        "code": "U+0001F41C"
+    },
+    {
+        "id": "antenna_bars",
+        "name": "AntennaBars",
+        "description": "Antenna bars",
+        "code": "U+0001F4F6"
+    },
+    {
+        "id": "anxious_face_with_sweat",
+        "name": "AnxiousFaceWithSweat",
+        "description": "Anxious face with sweat",
+        "code": "U+0001F630"
+    },
+    {
+        "id": "aquarius",
+        "name": "Aquarius",
+        "description": "Aquarius",
+        "code": "U+00002652"
+    },
+    {
+        "id": "aries",
+        "name": "Aries",
+        "description": "Aries",
+        "code": "U+00002648"
+    },
+    {
+        "id": "articulated_lorry",
+        "name": "ArticulatedLorry",
+        "description": "Articulated lorry",
+        "code": "U+0001F69B"
+    },
+    {
+        "id": "artist_palette",
+        "name": "ArtistPalette",
+        "description": "Artist palette",
+        "code": "U+0001F3A8"
+    },
+    {
+        "id": "astonished_face",
+        "name": "AstonishedFace",
+        "description": "Astonished face",
+        "code": "U+0001F632"
+    },
+    {
+        "id": "atm_sign",
+        "name": "AtmSign",
+        "description": "ATM sign",
+        "code": "U+0001F3E7"
+    },
+    {
+        "id": "atom_symbol",
+        "name": "AtomSymbol",
+        "description": "Atom symbol",
+        "code": "U+0000269B"
+    },
+    {
+        "id": "automobile",
+        "name": "Automobile",
+        "description": "Automobile",
+        "code": "U+0001F697"
+    },
+    {
+        "id": "auto_rickshaw",
+        "name": "AutoRickshaw",
+        "description": "Auto rickshaw",
+        "code": "U+0001F6FA"
+    },
+    {
+        "id": "avocado",
+        "name": "Avocado",
+        "description": "Avocado",
+        "code": "U+0001F951"
+    },
+    {
+        "id": "axe",
+        "name": "Axe",
+        "description": "Axe",
+        "code": "U+0001FA93"
+    },
+    {
+        "id": "baby",
+        "name": "Baby",
+        "description": "Baby",
+        "code": "U+0001F476"
+    },
+    {
+        "id": "baby_angel",
+        "name": "BabyAngel",
+        "description": "Baby angel",
+        "code": "U+0001F47C"
+    },
+    {
+        "id": "baby_bottle",
+        "name": "BabyBottle",
+        "description": "Baby bottle",
+        "code": "U+0001F37C"
+    },
+    {
+        "id": "baby_chick",
+        "name": "BabyChick",
+        "description": "Baby chick",
+        "code": "U+0001F424"
+    },
+    {
+        "id": "baby_symbol",
+        "name": "BabySymbol",
+        "description": "Baby symbol",
+        "code": "U+0001F6BC"
+    },
+    {
+        "id": "back_arrow",
+        "name": "BackArrow",
+        "description": "BACK arrow",
+        "code": "U+0001F519"
+    },
+    {
+        "id": "backhand_index_pointing_down",
+        "name": "BackhandIndexPointingDown",
+        "description": "Backhand index pointing down",
+        "code": "U+0001F447"
+    },
+    {
+        "id": "backhand_index_pointing_left",
+        "name": "BackhandIndexPointingLeft",
+        "description": "Backhand index pointing left",
+        "code": "U+0001F448"
+    },
+    {
+        "id": "backhand_index_pointing_right",
+        "name": "BackhandIndexPointingRight",
+        "description": "Backhand index pointing right",
+        "code": "U+0001F449"
+    },
+    {
+        "id": "backhand_index_pointing_up",
+        "name": "BackhandIndexPointingUp",
+        "description": "Backhand index pointing up",
+        "code": "U+0001F446"
+    },
+    {
+        "id": "backpack",
+        "name": "Backpack",
+        "description": "Backpack",
+        "code": "U+0001F392"
+    },
+    {
+        "id": "bacon",
+        "name": "Bacon",
+        "description": "Bacon",
+        "code": "U+0001F953"
+    },
+    {
+        "id": "badger",
+        "name": "Badger",
+        "description": "Badger",
+        "code": "U+0001F9A1"
+    },
+    {
+        "id": "badminton",
+        "name": "Badminton",
+        "description": "Badminton",
+        "code": "U+0001F3F8"
+    },
+    {
+        "id": "bagel",
+        "name": "Bagel",
+        "description": "Bagel",
+        "code": "U+0001F96F"
+    },
+    {
+        "id": "baggage_claim",
+        "name": "BaggageClaim",
+        "description": "Baggage claim",
+        "code": "U+0001F6C4"
+    },
+    {
+        "id": "baguette_bread",
+        "name": "BaguetteBread",
+        "description": "Baguette bread",
+        "code": "U+0001F956"
+    },
+    {
+        "id": "balance_scale",
+        "name": "BalanceScale",
+        "description": "Balance scale",
+        "code": "U+00002696"
+    },
+    {
+        "id": "bald",
+        "name": "Bald",
+        "description": "Bald",
+        "code": "U+0001F9B2"
+    },
+    {
+        "id": "ballet_shoes",
+        "name": "BalletShoes",
+        "description": "Ballet shoes",
+        "code": "U+0001FA70"
+    },
+    {
+        "id": "balloon",
+        "name": "Balloon",
+        "description": "Balloon",
+        "code": "U+0001F388"
+    },
+    {
+        "id": "ballot_box_with_ballot",
+        "name": "BallotBoxWithBallot",
+        "description": "Ballot box with ballot",
+        "code": "U+0001F5F3"
+    },
+    {
+        "id": "banana",
+        "name": "Banana",
+        "description": "Banana",
+        "code": "U+0001F34C"
+    },
+    {
+        "id": "banjo",
+        "name": "Banjo",
+        "description": "Banjo",
+        "code": "U+0001FA95"
+    },
+    {
+        "id": "bank",
+        "name": "Bank",
+        "description": "Bank",
+        "code": "U+0001F3E6"
+    },
+    {
+        "id": "barber_pole",
+        "name": "BarberPole",
+        "description": "Barber pole",
+        "code": "U+0001F488"
+    },
+    {
+        "id": "bar_chart",
+        "name": "BarChart",
+        "description": "Bar chart",
+        "code": "U+0001F4CA"
+    },
+    {
+        "id": "baseball",
+        "name": "Baseball",
+        "description": "Baseball",
+        "code": "U+000026BE"
+    },
+    {
+        "id": "basket",
+        "name": "Basket",
+        "description": "Basket",
+        "code": "U+0001F9FA"
+    },
+    {
+        "id": "basketball",
+        "name": "Basketball",
+        "description": "Basketball",
+        "code": "U+0001F3C0"
+    },
+    {
+        "id": "bat",
+        "name": "Bat",
+        "description": "Bat",
+        "code": "U+0001F987"
+    },
+    {
+        "id": "bathtub",
+        "name": "Bathtub",
+        "description": "Bathtub",
+        "code": "U+0001F6C1"
+    },
+    {
+        "id": "battery",
+        "name": "Battery",
+        "description": "Battery",
+        "code": "U+0001F50B"
+    },
+    {
+        "id": "b_button_blood_type",
+        "name": "BButtonBloodType",
+        "description": "B button blood type",
+        "code": "U+0001F171"
+    },
+    {
+        "id": "beach_with_umbrella",
+        "name": "BeachWithUmbrella",
+        "description": "Beach with umbrella",
+        "code": "U+0001F3D6"
+    },
+    {
+        "id": "beaming_face_with_smiling_eyes",
+        "name": "BeamingFaceWithSmilingEyes",
+        "description": "Beaming face with smiling eyes",
+        "code": "U+0001F601"
+    },
+    {
+        "id": "bear",
+        "name": "Bear",
+        "description": "Bear",
+        "code": "U+0001F43B"
+    },
+    {
+        "id": "beating_heart",
+        "name": "BeatingHeart",
+        "description": "Beating heart",
+        "code": "U+0001F493"
+    },
+    {
+        "id": "beaver",
+        "name": "Beaver",
+        "description": "Beaver",
+        "code": "U+0001F9AB"
+    },
+    {
+        "id": "bed",
+        "name": "Bed",
+        "description": "Bed",
+        "code": "U+0001F6CF"
+    },
+    {
+        "id": "beer_mug",
+        "name": "BeerMug",
+        "description": "Beer mug",
+        "code": "U+0001F37A"
+    },
+    {
+        "id": "beetle",
+        "name": "Beetle",
+        "description": "Beetle",
+        "code": "U+0001FAB2"
+    },
+    {
+        "id": "bell",
+        "name": "Bell",
+        "description": "Bell",
+        "code": "U+0001F514"
+    },
+    {
+        "id": "bellhop_bell",
+        "name": "BellhopBell",
+        "description": "Bellhop bell",
+        "code": "U+0001F6CE"
+    },
+    {
+        "id": "bell_pepper",
+        "name": "BellPepper",
+        "description": "Bell pepper",
+        "code": "U+0001FAD1"
+    },
+    {
+        "id": "bell_with_slash",
+        "name": "BellWithSlash",
+        "description": "Bell with slash",
+        "code": "U+0001F515"
+    },
+    {
+        "id": "bento_box",
+        "name": "BentoBox",
+        "description": "Bento box",
+        "code": "U+0001F371"
+    },
+    {
+        "id": "beverage_box",
+        "name": "BeverageBox",
+        "description": "Beverage box",
+        "code": "U+0001F9C3"
+    },
+    {
+        "id": "bicycle",
+        "name": "Bicycle",
+        "description": "Bicycle",
+        "code": "U+0001F6B2"
+    },
+    {
+        "id": "bikini",
+        "name": "Bikini",
+        "description": "Bikini",
+        "code": "U+0001F459"
+    },
+    {
+        "id": "billed_cap",
+        "name": "BilledCap",
+        "description": "Billed cap",
+        "code": "U+0001F9E2"
+    },
+    {
+        "id": "biohazard",
+        "name": "Biohazard",
+        "description": "Biohazard",
+        "code": "U+00002623"
+    },
+    {
+        "id": "bird",
+        "name": "Bird",
+        "description": "Bird",
+        "code": "U+0001F426"
+    },
+    {
+        "id": "birthday_cake",
+        "name": "BirthdayCake",
+        "description": "Birthday cake",
+        "code": "U+0001F382"
+    },
+    {
+        "id": "bison",
+        "name": "Bison",
+        "description": "Bison",
+        "code": "U+0001F9AC"
+    },
+    {
+        "id": "black_circle",
+        "name": "BlackCircle",
+        "description": "Black circle",
+        "code": "U+000026AB"
+    },
+    {
+        "id": "black_flag",
+        "name": "BlackFlag",
+        "description": "Black flag",
+        "code": "U+0001F3F4"
+    },
+    {
+        "id": "black_heart",
+        "name": "BlackHeart",
+        "description": "Black heart",
+        "code": "U+0001F5A4"
+    },
+    {
+        "id": "black_large_square",
+        "name": "BlackLargeSquare",
+        "description": "Black large square",
+        "code": "U+00002B1B"
+    },
+    {
+        "id": "black_medium_small_square",
+        "name": "BlackMediumSmallSquare",
+        "description": "black medium small square",
+        "code": "U+000025FE"
+    },
+    {
+        "id": "black_medium_square",
+        "name": "BlackMediumSquare",
+        "description": "Black medium square",
+        "code": "U+000025FC"
+    },
+    {
+        "id": "black_nib",
+        "name": "BlackNib",
+        "description": "Black nib",
+        "code": "U+00002712"
+    },
+    {
+        "id": "black_small_square",
+        "name": "BlackSmallSquare",
+        "description": "Black small square",
+        "code": "U+000025AA"
+    },
+    {
+        "id": "black_square_button",
+        "name": "BlackSquareButton",
+        "description": "Black square button",
+        "code": "U+0001F532"
+    },
+    {
+        "id": "blossom",
+        "name": "Blossom",
+        "description": "Blossom",
+        "code": "U+0001F33C"
+    },
+    {
+        "id": "blowfish",
+        "name": "Blowfish",
+        "description": "Blowfish",
+        "code": "U+0001F421"
+    },
+    {
+        "id": "blueberries",
+        "name": "Blueberries",
+        "description": "Blueberries",
+        "code": "U+0001FAD0"
+    },
+    {
+        "id": "blue_book",
+        "name": "BlueBook",
+        "description": "Blue book",
+        "code": "U+0001F4D8"
+    },
+    {
+        "id": "blue_circle",
+        "name": "BlueCircle",
+        "description": "Blue circle",
+        "code": "U+0001F535"
+    },
+    {
+        "id": "blue_heart",
+        "name": "BlueHeart",
+        "description": "Blue heart",
+        "code": "U+0001F499"
+    },
+    {
+        "id": "blue_square",
+        "name": "BlueSquare",
+        "description": "Blue square",
+        "code": "U+0001F7E6"
+    },
+    {
+        "id": "boar",
+        "name": "Boar",
+        "description": "Boar",
+        "code": "U+0001F417"
+    },
+    {
+        "id": "bomb",
+        "name": "Bomb",
+        "description": "Bomb",
+        "code": "U+0001F4A3"
+    },
+    {
+        "id": "bone",
+        "name": "Bone",
+        "description": "Bone",
+        "code": "U+0001F9B4"
+    },
+    {
+        "id": "bookmark",
+        "name": "Bookmark",
+        "description": "Bookmark",
+        "code": "U+0001F516"
+    },
+    {
+        "id": "bookmark_tabs",
+        "name": "BookmarkTabs",
+        "description": "Bookmark tabs",
+        "code": "U+0001F4D1"
+    },
+    {
+        "id": "books",
+        "name": "Books",
+        "description": "Books",
+        "code": "U+0001F4DA"
+    },
+    {
+        "id": "boomerang",
+        "name": "Boomerang",
+        "description": "Boomerang",
+        "code": "U+0001FA83"
+    },
+    {
+        "id": "bottle_with_popping_cork",
+        "name": "BottleWithPoppingCork",
+        "description": "Bottle with popping cork",
+        "code": "U+0001F37E"
+    },
+    {
+        "id": "bouquet",
+        "name": "Bouquet",
+        "description": "Bouquet",
+        "code": "U+0001F490"
+    },
+    {
+        "id": "bow_and_arrow",
+        "name": "BowAndArrow",
+        "description": "Bow and arrow",
+        "code": "U+0001F3F9"
+    },
+    {
+        "id": "bowling",
+        "name": "Bowling",
+        "description": "Bowling",
+        "code": "U+0001F3B3"
+    },
+    {
+        "id": "bowl_with_spoon",
+        "name": "BowlWithSpoon",
+        "description": "Bowl with spoon",
+        "code": "U+0001F963"
+    },
+    {
+        "id": "boxing_glove",
+        "name": "BoxingGlove",
+        "description": "Boxing glove",
+        "code": "U+0001F94A"
+    },
+    {
+        "id": "boy",
+        "name": "Boy",
+        "description": "Boy",
+        "code": "U+0001F466"
+    },
+    {
+        "id": "brain",
+        "name": "Brain",
+        "description": "Brain",
+        "code": "U+0001F9E0"
+    },
+    {
+        "id": "bread",
+        "name": "Bread",
+        "description": "Bread",
+        "code": "U+0001F35E"
+    },
+    {
+        "id": "breast_feeding",
+        "name": "BreastFeeding",
+        "description": "breast feeding",
+        "code": "U+0001F931"
+    },
+    {
+        "id": "brick",
+        "name": "Brick",
+        "description": "Brick",
+        "code": "U+0001F9F1"
+    },
+    {
+        "id": "bridge_at_night",
+        "name": "BridgeAtNight",
+        "description": "Bridge at night",
+        "code": "U+0001F309"
+    },
+    {
+        "id": "briefcase",
+        "name": "Briefcase",
+        "description": "Briefcase",
+        "code": "U+0001F4BC"
+    },
+    {
+        "id": "briefs",
+        "name": "Briefs",
+        "description": "Briefs",
+        "code": "U+0001FA72"
+    },
+    {
+        "id": "bright_button",
+        "name": "BrightButton",
+        "description": "Bright button",
+        "code": "U+0001F506"
+    },
+    {
+        "id": "broccoli",
+        "name": "Broccoli",
+        "description": "Broccoli",
+        "code": "U+0001F966"
+    },
+    {
+        "id": "broken_heart",
+        "name": "BrokenHeart",
+        "description": "Broken heart",
+        "code": "U+0001F494"
+    },
+    {
+        "id": "broom",
+        "name": "Broom",
+        "description": "Broom",
+        "code": "U+0001F9F9"
+    },
+    {
+        "id": "brown_circle",
+        "name": "BrownCircle",
+        "description": "Brown circle",
+        "code": "U+0001F7E4"
+    },
+    {
+        "id": "brown_heart",
+        "name": "BrownHeart",
+        "description": "Brown heart",
+        "code": "U+0001F90E"
+    },
+    {
+        "id": "brown_square",
+        "name": "BrownSquare",
+        "description": "Brown square",
+        "code": "U+0001F7EB"
+    },
+    {
+        "id": "bubble_tea",
+        "name": "BubbleTea",
+        "description": "Bubble tea",
+        "code": "U+0001F9CB"
+    },
+    {
+        "id": "bucket",
+        "name": "Bucket",
+        "description": "Bucket",
+        "code": "U+0001FAA3"
+    },
+    {
+        "id": "bug",
+        "name": "Bug",
+        "description": "Bug",
+        "code": "U+0001F41B"
+    },
+    {
+        "id": "building_construction",
+        "name": "BuildingConstruction",
+        "description": "Building construction",
+        "code": "U+0001F3D7"
+    },
+    {
+        "id": "bullet_train",
+        "name": "BulletTrain",
+        "description": "Bullet train",
+        "code": "U+0001F685"
+    },
+    {
+        "id": "bullseye",
+        "name": "Bullseye",
+        "description": "Bullseye",
+        "code": "U+0001F3AF"
+    },
+    {
+        "id": "burrito",
+        "name": "Burrito",
+        "description": "Burrito",
+        "code": "U+0001F32F"
+    },
+    {
+        "id": "bus",
+        "name": "Bus",
+        "description": "Bus",
+        "code": "U+0001F68C"
+    },
+    {
+        "id": "bus_stop",
+        "name": "BusStop",
+        "description": "Bus stop",
+        "code": "U+0001F68F"
+    },
+    {
+        "id": "bust_in_silhouette",
+        "name": "BustInSilhouette",
+        "description": "Bust in silhouette",
+        "code": "U+0001F464"
+    },
+    {
+        "id": "busts_in_silhouette",
+        "name": "BustsInSilhouette",
+        "description": "Busts in silhouette",
+        "code": "U+0001F465"
+    },
+    {
+        "id": "butter",
+        "name": "Butter",
+        "description": "Butter",
+        "code": "U+0001F9C8"
+    },
+    {
+        "id": "butterfly",
+        "name": "Butterfly",
+        "description": "Butterfly",
+        "code": "U+0001F98B"
+    },
+    {
+        "id": "cactus",
+        "name": "Cactus",
+        "description": "Cactus",
+        "code": "U+0001F335"
+    },
+    {
+        "id": "calendar",
+        "name": "Calendar",
+        "description": "Calendar",
+        "code": "U+0001F4C5"
+    },
+    {
+        "id": "call_me_hand",
+        "name": "CallMeHand",
+        "description": "Call me hand",
+        "code": "U+0001F919"
+    },
+    {
+        "id": "camel",
+        "name": "Camel",
+        "description": "Camel",
+        "code": "U+0001F42A"
+    },
+    {
+        "id": "camera",
+        "name": "Camera",
+        "description": "Camera",
+        "code": "U+0001F4F7"
+    },
+    {
+        "id": "camera_with_flash",
+        "name": "CameraWithFlash",
+        "description": "Camera with flash",
+        "code": "U+0001F4F8"
+    },
+    {
+        "id": "camping",
+        "name": "Camping",
+        "description": "Camping",
+        "code": "U+0001F3D5"
+    },
+    {
+        "id": "cancer",
+        "name": "Cancer",
+        "description": "Cancer",
+        "code": "U+0000264B"
+    },
+    {
+        "id": "candle",
+        "name": "Candle",
+        "description": "Candle",
+        "code": "U+0001F56F"
+    },
+    {
+        "id": "candy",
+        "name": "Candy",
+        "description": "Candy",
+        "code": "U+0001F36C"
+    },
+    {
+        "id": "canned_food",
+        "name": "CannedFood",
+        "description": "Canned food",
+        "code": "U+0001F96B"
+    },
+    {
+        "id": "canoe",
+        "name": "Canoe",
+        "description": "Canoe",
+        "code": "U+0001F6F6"
+    },
+    {
+        "id": "capricorn",
+        "name": "Capricorn",
+        "description": "Capricorn",
+        "code": "U+00002651"
+    },
+    {
+        "id": "card_file_box",
+        "name": "CardFileBox",
+        "description": "Card file box",
+        "code": "U+0001F5C3"
+    },
+    {
+        "id": "card_index",
+        "name": "CardIndex",
+        "description": "Card index",
+        "code": "U+0001F4C7"
+    },
+    {
+        "id": "card_index_dividers",
+        "name": "CardIndexDividers",
+        "description": "Card index dividers",
+        "code": "U+0001F5C2"
+    },
+    {
+        "id": "carousel_horse",
+        "name": "CarouselHorse",
+        "description": "Carousel horse",
+        "code": "U+0001F3A0"
+    },
+    {
+        "id": "carpentry_saw",
+        "name": "CarpentrySaw",
+        "description": "Carpentry saw",
+        "code": "U+0001FA9A"
+    },
+    {
+        "id": "carp_streamer",
+        "name": "CarpStreamer",
+        "description": "Carp streamer",
+        "code": "U+0001F38F"
+    },
+    {
+        "id": "carrot",
+        "name": "Carrot",
+        "description": "Carrot",
+        "code": "U+0001F955"
+    },
+    {
+        "id": "castle",
+        "name": "Castle",
+        "description": "Castle",
+        "code": "U+0001F3F0"
+    },
+    {
+        "id": "cat",
+        "name": "Cat",
+        "description": "Cat",
+        "code": "U+0001F408"
+    },
+    {
+        "id": "cat_face",
+        "name": "CatFace",
+        "description": "Cat face",
+        "code": "U+0001F431"
+    },
+    {
+        "id": "cat_with_tears_of_joy",
+        "name": "CatWithTearsOfJoy",
+        "description": "Cat with tears of joy",
+        "code": "U+0001F639"
+    },
+    {
+        "id": "cat_with_wry_smile",
+        "name": "CatWithWrySmile",
+        "description": "Cat with wry smile",
+        "code": "U+0001F63C"
+    },
+    {
+        "id": "chains",
+        "name": "Chains",
+        "description": "Chains",
+        "code": "U+000026D3"
+    },
+    {
+        "id": "chair",
+        "name": "Chair",
+        "description": "Chair",
+        "code": "U+0001FA91"
+    },
+    {
+        "id": "chart_decreasing",
+        "name": "ChartDecreasing",
+        "description": "Chart decreasing",
+        "code": "U+0001F4C9"
+    },
+    {
+        "id": "chart_increasing",
+        "name": "ChartIncreasing",
+        "description": "Chart increasing",
+        "code": "U+0001F4C8"
+    },
+    {
+        "id": "chart_increasing_with_yen",
+        "name": "ChartIncreasingWithYen",
+        "description": "Chart increasing with yen",
+        "code": "U+0001F4B9"
+    },
+    {
+        "id": "check_box_with_check",
+        "name": "CheckBoxWithCheck",
+        "description": "Check box with check",
+        "code": "U+00002611"
+    },
+    {
+        "id": "check_mark",
+        "name": "CheckMark",
+        "description": "Check mark",
+        "code": "U+00002714"
+    },
+    {
+        "id": "check_mark_button",
+        "name": "CheckMarkButton",
+        "description": "Check mark button",
+        "code": "U+00002705"
+    },
+    {
+        "id": "cheese_wedge",
+        "name": "CheeseWedge",
+        "description": "Cheese wedge",
+        "code": "U+0001F9C0"
+    },
+    {
+        "id": "chequered_flag",
+        "name": "ChequeredFlag",
+        "description": "Chequered flag",
+        "code": "U+0001F3C1"
+    },
+    {
+        "id": "cherries",
+        "name": "Cherries",
+        "description": "Cherries",
+        "code": "U+0001F352"
+    },
+    {
+        "id": "cherry_blossom",
+        "name": "CherryBlossom",
+        "description": "Cherry blossom",
+        "code": "U+0001F338"
+    },
+    {
+        "id": "chess_pawn",
+        "name": "ChessPawn",
+        "description": "Chess pawn",
+        "code": "U+0000265F"
+    },
+    {
+        "id": "chestnut",
+        "name": "Chestnut",
+        "description": "Chestnut",
+        "code": "U+0001F330"
+    },
+    {
+        "id": "chicken",
+        "name": "Chicken",
+        "description": "Chicken",
+        "code": "U+0001F414"
+    },
+    {
+        "id": "child",
+        "name": "Child",
+        "description": "Child",
+        "code": "U+0001F9D2"
+    },
+    {
+        "id": "children_crossing",
+        "name": "ChildrenCrossing",
+        "description": "Children crossing",
+        "code": "U+0001F6B8"
+    },
+    {
+        "id": "chipmunk",
+        "name": "Chipmunk",
+        "description": "Chipmunk",
+        "code": "U+0001F43F"
+    },
+    {
+        "id": "chocolate_bar",
+        "name": "ChocolateBar",
+        "description": "Chocolate bar",
+        "code": "U+0001F36B"
+    },
+    {
+        "id": "chopsticks",
+        "name": "Chopsticks",
+        "description": "Chopsticks",
+        "code": "U+0001F962"
+    },
+    {
+        "id": "christmas_tree",
+        "name": "ChristmasTree",
+        "description": "Christmas tree",
+        "code": "U+0001F384"
+    },
+    {
+        "id": "church",
+        "name": "Church",
+        "description": "Church",
+        "code": "U+000026EA"
+    },
+    {
+        "id": "cigarette",
+        "name": "Cigarette",
+        "description": "Cigarette",
+        "code": "U+0001F6AC"
+    },
+    {
+        "id": "cinema",
+        "name": "Cinema",
+        "description": "Cinema",
+        "code": "U+0001F3A6"
+    },
+    {
+        "id": "circled_m",
+        "name": "CircledM",
+        "description": "Circled M",
+        "code": "U+000024C2"
+    },
+    {
+        "id": "circus_tent",
+        "name": "CircusTent",
+        "description": "Circus tent",
+        "code": "U+0001F3AA"
+    },
+    {
+        "id": "cityscape",
+        "name": "Cityscape",
+        "description": "Cityscape",
+        "code": "U+0001F3D9"
+    },
+    {
+        "id": "cityscape_at_dusk",
+        "name": "CityscapeAtDusk",
+        "description": "Cityscape at dusk",
+        "code": "U+0001F306"
+    },
+    {
+        "id": "clamp",
+        "name": "Clamp",
+        "description": "Clamp",
+        "code": "U+0001F5DC"
+    },
+    {
+        "id": "clapper_board",
+        "name": "ClapperBoard",
+        "description": "Clapper board",
+        "code": "U+0001F3AC"
+    },
+    {
+        "id": "clapping_hands",
+        "name": "ClappingHands",
+        "description": "Clapping hands",
+        "code": "U+0001F44F"
+    },
+    {
+        "id": "classical_building",
+        "name": "ClassicalBuilding",
+        "description": "Classical building",
+        "code": "U+0001F3DB"
+    },
+    {
+        "id": "cl_button",
+        "name": "ClButton",
+        "description": "CL button",
+        "code": "U+0001F191"
+    },
+    {
+        "id": "clinking_beer_mugs",
+        "name": "ClinkingBeerMugs",
+        "description": "Clinking beer mugs",
+        "code": "U+0001F37B"
+    },
+    {
+        "id": "clinking_glasses",
+        "name": "ClinkingGlasses",
+        "description": "Clinking glasses",
+        "code": "U+0001F942"
+    },
+    {
+        "id": "clipboard",
+        "name": "Clipboard",
+        "description": "Clipboard",
+        "code": "U+0001F4CB"
+    },
+    {
+        "id": "clockwise_vertical_arrows",
+        "name": "ClockwiseVerticalArrows",
+        "description": "Clockwise vertical arrows",
+        "code": "U+0001F503"
+    },
+    {
+        "id": "closed_book",
+        "name": "ClosedBook",
+        "description": "Closed book",
+        "code": "U+0001F4D5"
+    },
+    {
+        "id": "closed_mailbox_with_lowered_flag",
+        "name": "ClosedMailboxWithLoweredFlag",
+        "description": "Closed mailbox with lowered flag",
+        "code": "U+0001F4EA"
+    },
+    {
+        "id": "closed_mailbox_with_raised_flag",
+        "name": "ClosedMailboxWithRaisedFlag",
+        "description": "Closed mailbox with raised flag",
+        "code": "U+0001F4EB"
+    },
+    {
+        "id": "closed_umbrella",
+        "name": "ClosedUmbrella",
+        "description": "Closed umbrella",
+        "code": "U+0001F302"
+    },
+    {
+        "id": "cloud",
+        "name": "Cloud",
+        "description": "Cloud",
+        "code": "U+00002601"
+    },
+    {
+        "id": "cloud_with_lightning",
+        "name": "CloudWithLightning",
+        "description": "Cloud with lightning",
+        "code": "U+0001F329"
+    },
+    {
+        "id": "cloud_with_lightning_and_rain",
+        "name": "CloudWithLightningAndRain",
+        "description": "Cloud with lightning and rain",
+        "code": "U+000026C8"
+    },
+    {
+        "id": "cloud_with_rain",
+        "name": "CloudWithRain",
+        "description": "Cloud with rain",
+        "code": "U+0001F327"
+    },
+    {
+        "id": "cloud_with_snow",
+        "name": "CloudWithSnow",
+        "description": "Cloud with snow",
+        "code": "U+0001F328"
+    },
+    {
+        "id": "clown_face",
+        "name": "ClownFace",
+        "description": "Clown face",
+        "code": "U+0001F921"
+    },
+    {
+        "id": "club_suit",
+        "name": "ClubSuit",
+        "description": "Club suit",
+        "code": "U+00002663"
+    },
+    {
+        "id": "clutch_bag",
+        "name": "ClutchBag",
+        "description": "Clutch bag",
+        "code": "U+0001F45D"
+    },
+    {
+        "id": "coat",
+        "name": "Coat",
+        "description": "Coat",
+        "code": "U+0001F9E5"
+    },
+    {
+        "id": "cockroach",
+        "name": "Cockroach",
+        "description": "Cockroach",
+        "code": "U+0001FAB3"
+    },
+    {
+        "id": "cocktail_glass",
+        "name": "CocktailGlass",
+        "description": "Cocktail glass",
+        "code": "U+0001F378"
+    },
+    {
+        "id": "coconut",
+        "name": "Coconut",
+        "description": "Coconut",
+        "code": "U+0001F965"
+    },
+    {
+        "id": "coffin",
+        "name": "Coffin",
+        "description": "Coffin",
+        "code": "U+000026B0"
+    },
+    {
+        "id": "coin",
+        "name": "Coin",
+        "description": "Coin",
+        "code": "U+0001FA99"
+    },
+    {
+        "id": "cold_face",
+        "name": "ColdFace",
+        "description": "Cold face",
+        "code": "U+0001F976"
+    },
+    {
+        "id": "collision",
+        "name": "Collision",
+        "description": "Collision",
+        "code": "U+0001F4A5"
+    },
+    {
+        "id": "comet",
+        "name": "Comet",
+        "description": "Comet",
+        "code": "U+00002604"
+    },
+    {
+        "id": "compass",
+        "name": "Compass",
+        "description": "Compass",
+        "code": "U+0001F9ED"
+    },
+    {
+        "id": "computer_disk",
+        "name": "ComputerDisk",
+        "description": "Computer disk",
+        "code": "U+0001F4BD"
+    },
+    {
+        "id": "computer_mouse",
+        "name": "ComputerMouse",
+        "description": "Computer mouse",
+        "code": "U+0001F5B1"
+    },
+    {
+        "id": "confetti_ball",
+        "name": "ConfettiBall",
+        "description": "Confetti ball",
+        "code": "U+0001F38A"
+    },
+    {
+        "id": "confounded_face",
+        "name": "ConfoundedFace",
+        "description": "Confounded face",
+        "code": "U+0001F616"
+    },
+    {
+        "id": "confused_face",
+        "name": "ConfusedFace",
+        "description": "Confused face",
+        "code": "U+0001F615"
+    },
+    {
+        "id": "construction",
+        "name": "Construction",
+        "description": "Construction",
+        "code": "U+0001F6A7"
+    },
+    {
+        "id": "construction_worker",
+        "name": "ConstructionWorker",
+        "description": "Construction worker",
+        "code": "U+0001F477"
+    },
+    {
+        "id": "control_knobs",
+        "name": "ControlKnobs",
+        "description": "Control knobs",
+        "code": "U+0001F39B"
+    },
+    {
+        "id": "convenience_store",
+        "name": "ConvenienceStore",
+        "description": "Convenience store",
+        "code": "U+0001F3EA"
+    },
+    {
+        "id": "cooked_rice",
+        "name": "CookedRice",
+        "description": "Cooked rice",
+        "code": "U+0001F35A"
+    },
+    {
+        "id": "cookie",
+        "name": "Cookie",
+        "description": "Cookie",
+        "code": "U+0001F36A"
+    },
+    {
+        "id": "cooking",
+        "name": "Cooking",
+        "description": "Cooking",
+        "code": "U+0001F373"
+    },
+    {
+        "id": "cool_button",
+        "name": "CoolButton",
+        "description": "COOL button",
+        "code": "U+0001F192"
+    },
+    {
+        "id": "copyright",
+        "name": "Copyright",
+        "description": "Copyright",
+        "code": "U+000000A9"
+    },
+    {
+        "id": "couch_and_lamp",
+        "name": "CouchAndLamp",
+        "description": "Couch and lamp",
+        "code": "U+0001F6CB"
+    },
+    {
+        "id": "counterclockwise_arrows_button",
+        "name": "CounterclockwiseArrowsButton",
+        "description": "Counterclockwise arrows button",
+        "code": "U+0001F504"
+    },
+    {
+        "id": "couple_with_heart",
+        "name": "CoupleWithHeart",
+        "description": "Couple with heart",
+        "code": "U+0001F491"
+    },
+    {
+        "id": "cow",
+        "name": "Cow",
+        "description": "Cow",
+        "code": "U+0001F404"
+    },
+    {
+        "id": "cowboy_hat_face",
+        "name": "CowboyHatFace",
+        "description": "Cowboy hat face",
+        "code": "U+0001F920"
+    },
+    {
+        "id": "cow_face",
+        "name": "CowFace",
+        "description": "Cow face",
+        "code": "U+0001F42E"
+    },
+    {
+        "id": "crab",
+        "name": "Crab",
+        "description": "Crab",
+        "code": "U+0001F980"
+    },
+    {
+        "id": "crayon",
+        "name": "Crayon",
+        "description": "Crayon",
+        "code": "U+0001F58D"
+    },
+    {
+        "id": "credit_card",
+        "name": "CreditCard",
+        "description": "Credit card",
+        "code": "U+0001F4B3"
+    },
+    {
+        "id": "crescent_moon",
+        "name": "CrescentMoon",
+        "description": "Crescent moon",
+        "code": "U+0001F319"
+    },
+    {
+        "id": "cricket",
+        "name": "Cricket",
+        "description": "Cricket",
+        "code": "U+0001F997"
+    },
+    {
+        "id": "cricket_game",
+        "name": "CricketGame",
+        "description": "Cricket game",
+        "code": "U+0001F3CF"
+    },
+    {
+        "id": "crocodile",
+        "name": "Crocodile",
+        "description": "Crocodile",
+        "code": "U+0001F40A"
+    },
+    {
+        "id": "croissant",
+        "name": "Croissant",
+        "description": "Croissant",
+        "code": "U+0001F950"
+    },
+    {
+        "id": "crossed_fingers",
+        "name": "CrossedFingers",
+        "description": "Crossed fingers",
+        "code": "U+0001F91E"
+    },
+    {
+        "id": "crossed_flags",
+        "name": "CrossedFlags",
+        "description": "Crossed flags",
+        "code": "U+0001F38C"
+    },
+    {
+        "id": "crossed_swords",
+        "name": "CrossedSwords",
+        "description": "Crossed swords",
+        "code": "U+00002694"
+    },
+    {
+        "id": "cross_mark",
+        "name": "CrossMark",
+        "description": "Cross mark",
+        "code": "U+0000274C"
+    },
+    {
+        "id": "cross_mark_button",
+        "name": "CrossMarkButton",
+        "description": "Cross mark button",
+        "code": "U+0000274E"
+    },
+    {
+        "id": "crown",
+        "name": "Crown",
+        "description": "Crown",
+        "code": "U+0001F451"
+    },
+    {
+        "id": "crying_cat",
+        "name": "CryingCat",
+        "description": "Crying cat",
+        "code": "U+0001F63F"
+    },
+    {
+        "id": "crying_face",
+        "name": "CryingFace",
+        "description": "Crying face",
+        "code": "U+0001F622"
+    },
+    {
+        "id": "crystal_ball",
+        "name": "CrystalBall",
+        "description": "Crystal ball",
+        "code": "U+0001F52E"
+    },
+    {
+        "id": "cucumber",
+        "name": "Cucumber",
+        "description": "Cucumber",
+        "code": "U+0001F952"
+    },
+    {
+        "id": "cupcake",
+        "name": "Cupcake",
+        "description": "Cupcake",
+        "code": "U+0001F9C1"
+    },
+    {
+        "id": "cup_with_straw",
+        "name": "CupWithStraw",
+        "description": "Cup with straw",
+        "code": "U+0001F964"
+    },
+    {
+        "id": "curling_stone",
+        "name": "CurlingStone",
+        "description": "Curling stone",
+        "code": "U+0001F94C"
+    },
+    {
+        "id": "curly_hair",
+        "name": "CurlyHair",
+        "description": "Curly hair",
+        "code": "U+0001F9B1"
+    },
+    {
+        "id": "curly_loop",
+        "name": "CurlyLoop",
+        "description": "Curly loop",
+        "code": "U+000027B0"
+    },
+    {
+        "id": "currency_exchange",
+        "name": "CurrencyExchange",
+        "description": "Currency exchange",
+        "code": "U+0001F4B1"
+    },
+    {
+        "id": "curry_rice",
+        "name": "CurryRice",
+        "description": "Curry rice",
+        "code": "U+0001F35B"
+    },
+    {
+        "id": "custard",
+        "name": "Custard",
+        "description": "Custard",
+        "code": "U+0001F36E"
+    },
+    {
+        "id": "customs",
+        "name": "Customs",
+        "description": "Customs",
+        "code": "U+0001F6C3"
+    },
+    {
+        "id": "cut_of_meat",
+        "name": "CutOfMeat",
+        "description": "Cut of meat",
+        "code": "U+0001F969"
+    },
+    {
+        "id": "cyclone",
+        "name": "Cyclone",
+        "description": "Cyclone",
+        "code": "U+0001F300"
+    },
+    {
+        "id": "dagger",
+        "name": "Dagger",
+        "description": "Dagger",
+        "code": "U+0001F5E1"
+    },
+    {
+        "id": "dango",
+        "name": "Dango",
+        "description": "Dango",
+        "code": "U+0001F361"
+    },
+    {
+        "id": "dashing_away",
+        "name": "DashingAway",
+        "description": "Dashing away",
+        "code": "U+0001F4A8"
+    },
+    {
+        "id": "deaf_person",
+        "name": "DeafPerson",
+        "description": "Deaf person",
+        "code": "U+0001F9CF"
+    },
+    {
+        "id": "deciduous_tree",
+        "name": "DeciduousTree",
+        "description": "Deciduous tree",
+        "code": "U+0001F333"
+    },
+    {
+        "id": "deer",
+        "name": "Deer",
+        "description": "Deer",
+        "code": "U+0001F98C"
+    },
+    {
+        "id": "delivery_truck",
+        "name": "DeliveryTruck",
+        "description": "Delivery truck",
+        "code": "U+0001F69A"
+    },
+    {
+        "id": "department_store",
+        "name": "DepartmentStore",
+        "description": "Department store",
+        "code": "U+0001F3EC"
+    },
+    {
+        "id": "derelict_house",
+        "name": "DerelictHouse",
+        "description": "Derelict house",
+        "code": "U+0001F3DA"
+    },
+    {
+        "id": "desert",
+        "name": "Desert",
+        "description": "Desert",
+        "code": "U+0001F3DC"
+    },
+    {
+        "id": "desert_island",
+        "name": "DesertIsland",
+        "description": "Desert island",
+        "code": "U+0001F3DD"
+    },
+    {
+        "id": "desktop_computer",
+        "name": "DesktopComputer",
+        "description": "Desktop computer",
+        "code": "U+0001F5A5"
+    },
+    {
+        "id": "detective",
+        "name": "Detective",
+        "description": "Detective",
+        "code": "U+0001F575"
+    },
+    {
+        "id": "diamond_suit",
+        "name": "DiamondSuit",
+        "description": "Diamond suit",
+        "code": "U+00002666"
+    },
+    {
+        "id": "diamond_with_a_dot",
+        "name": "DiamondWithADot",
+        "description": "Diamond with a dot",
+        "code": "U+0001F4A0"
+    },
+    {
+        "id": "dim_button",
+        "name": "DimButton",
+        "description": "Dim button",
+        "code": "U+0001F505"
+    },
+    {
+        "id": "disappointed_face",
+        "name": "DisappointedFace",
+        "description": "Disappointed face",
+        "code": "U+0001F61E"
+    },
+    {
+        "id": "disguised_face",
+        "name": "DisguisedFace",
+        "description": "Disguised face",
+        "code": "U+0001F978"
+    },
+    {
+        "id": "divide",
+        "name": "Divide",
+        "description": "Divide",
+        "code": "U+00002797"
+    },
+    {
+        "id": "diving_mask",
+        "name": "DivingMask",
+        "description": "Diving mask",
+        "code": "U+0001F93F"
+    },
+    {
+        "id": "diya_lamp",
+        "name": "DiyaLamp",
+        "description": "Diya lamp",
+        "code": "U+0001FA94"
+    },
+    {
+        "id": "dizzy",
+        "name": "Dizzy",
+        "description": "Dizzy",
+        "code": "U+0001F4AB"
+    },
+    {
+        "id": "dna",
+        "name": "Dna",
+        "description": "Dna",
+        "code": "U+0001F9EC"
+    },
+    {
+        "id": "dodo",
+        "name": "Dodo",
+        "description": "Dodo",
+        "code": "U+0001F9A4"
+    },
+    {
+        "id": "dog",
+        "name": "Dog",
+        "description": "Dog",
+        "code": "U+0001F415"
+    },
+    {
+        "id": "dog_face",
+        "name": "DogFace",
+        "description": "Dog face",
+        "code": "U+0001F436"
+    },
+    {
+        "id": "dollar_banknote",
+        "name": "DollarBanknote",
+        "description": "Dollar banknote",
+        "code": "U+0001F4B5"
+    },
+    {
+        "id": "dolphin",
+        "name": "Dolphin",
+        "description": "Dolphin",
+        "code": "U+0001F42C"
+    },
+    {
+        "id": "door",
+        "name": "Door",
+        "description": "Door",
+        "code": "U+0001F6AA"
+    },
+    {
+        "id": "dotted_six_pointed_star",
+        "name": "DottedSixPointedStar",
+        "description": "dotted six pointed star",
+        "code": "U+0001F52F"
+    },
+    {
+        "id": "double_curly_loop",
+        "name": "DoubleCurlyLoop",
+        "description": "Double curly loop",
+        "code": "U+000027BF"
+    },
+    {
+        "id": "double_exclamation_mark",
+        "name": "DoubleExclamationMark",
+        "description": "Double exclamation mark",
+        "code": "U+0000203C"
+    },
+    {
+        "id": "doughnut",
+        "name": "Doughnut",
+        "description": "Doughnut",
+        "code": "U+0001F369"
+    },
+    {
+        "id": "dove",
+        "name": "Dove",
+        "description": "Dove",
+        "code": "U+0001F54A"
+    },
+    {
+        "id": "down_arrow",
+        "name": "DownArrow",
+        "description": "Down arrow",
+        "code": "U+00002B07"
+    },
+    {
+        "id": "downcast_face_with_sweat",
+        "name": "DowncastFaceWithSweat",
+        "description": "Downcast face with sweat",
+        "code": "U+0001F613"
+    },
+    {
+        "id": "down_left_arrow",
+        "name": "DownLeftArrow",
+        "description": "down left arrow",
+        "code": "U+00002199"
+    },
+    {
+        "id": "down_right_arrow",
+        "name": "DownRightArrow",
+        "description": "down right arrow",
+        "code": "U+00002198"
+    },
+    {
+        "id": "downwards_button",
+        "name": "DownwardsButton",
+        "description": "Downwards button",
+        "code": "U+0001F53D"
+    },
+    {
+        "id": "dragon",
+        "name": "Dragon",
+        "description": "Dragon",
+        "code": "U+0001F409"
+    },
+    {
+        "id": "dragon_face",
+        "name": "DragonFace",
+        "description": "Dragon face",
+        "code": "U+0001F432"
+    },
+    {
+        "id": "dress",
+        "name": "Dress",
+        "description": "Dress",
+        "code": "U+0001F457"
+    },
+    {
+        "id": "drooling_face",
+        "name": "DroolingFace",
+        "description": "Drooling face",
+        "code": "U+0001F924"
+    },
+    {
+        "id": "droplet",
+        "name": "Droplet",
+        "description": "Droplet",
+        "code": "U+0001F4A7"
+    },
+    {
+        "id": "drop_of_blood",
+        "name": "DropOfBlood",
+        "description": "Drop of blood",
+        "code": "U+0001FA78"
+    },
+    {
+        "id": "drum",
+        "name": "Drum",
+        "description": "Drum",
+        "code": "U+0001F941"
+    },
+    {
+        "id": "duck",
+        "name": "Duck",
+        "description": "Duck",
+        "code": "U+0001F986"
+    },
+    {
+        "id": "dumpling",
+        "name": "Dumpling",
+        "description": "Dumpling",
+        "code": "U+0001F95F"
+    },
+    {
+        "id": "dvd",
+        "name": "Dvd",
+        "description": "Dvd",
+        "code": "U+0001F4C0"
+    },
+    {
+        "id": "eagle",
+        "name": "Eagle",
+        "description": "Eagle",
+        "code": "U+0001F985"
+    },
+    {
+        "id": "ear",
+        "name": "Ear",
+        "description": "Ear",
+        "code": "U+0001F442"
+    },
+    {
+        "id": "ear_of_corn",
+        "name": "EarOfCorn",
+        "description": "Ear of corn",
+        "code": "U+0001F33D"
+    },
+    {
+        "id": "ear_with_hearing_aid",
+        "name": "EarWithHearingAid",
+        "description": "Ear with hearing aid",
+        "code": "U+0001F9BB"
+    },
+    {
+        "id": "egg",
+        "name": "Egg",
+        "description": "Egg",
+        "code": "U+0001F95A"
+    },
+    {
+        "id": "eggplant",
+        "name": "Eggplant",
+        "description": "Eggplant",
+        "code": "U+0001F346"
+    },
+    {
+        "id": "eight_o_clock",
+        "name": "EightOClock",
+        "description": "Eight o clock",
+        "code": "U+0001F557"
+    },
+    {
+        "id": "eight_pointed_star",
+        "name": "EightPointedStar",
+        "description": "eight pointed star",
+        "code": "U+00002734"
+    },
+    {
+        "id": "eight_spoked_asterisk",
+        "name": "EightSpokedAsterisk",
+        "description": "eight spoked asterisk",
+        "code": "U+00002733"
+    },
+    {
+        "id": "eight_thirty",
+        "name": "EightThirty",
+        "description": "eight thirty",
+        "code": "U+0001F563"
+    },
+    {
+        "id": "eject_button",
+        "name": "EjectButton",
+        "description": "Eject button",
+        "code": "U+000023CF"
+    },
+    {
+        "id": "electric_plug",
+        "name": "ElectricPlug",
+        "description": "Electric plug",
+        "code": "U+0001F50C"
+    },
+    {
+        "id": "elephant",
+        "name": "Elephant",
+        "description": "Elephant",
+        "code": "U+0001F418"
+    },
+    {
+        "id": "elevator",
+        "name": "Elevator",
+        "description": "Elevator",
+        "code": "U+0001F6D7"
+    },
+    {
+        "id": "eleven_o_clock",
+        "name": "ElevenOClock",
+        "description": "Eleven o clock",
+        "code": "U+0001F55A"
+    },
+    {
+        "id": "eleven_thirty",
+        "name": "ElevenThirty",
+        "description": "eleven thirty",
+        "code": "U+0001F566"
+    },
+    {
+        "id": "elf",
+        "name": "Elf",
+        "description": "Elf",
+        "code": "U+0001F9DD"
+    },
+    {
+        "id": "e_mail",
+        "name": "EMail",
+        "description": "e mail",
+        "code": "U+0001F4E7"
+    },
+    {
+        "id": "end_arrow",
+        "name": "EndArrow",
+        "description": "END arrow",
+        "code": "U+0001F51A"
+    },
+    {
+        "id": "envelope",
+        "name": "Envelope",
+        "description": "Envelope",
+        "code": "U+00002709"
+    },
+    {
+        "id": "envelope_with_arrow",
+        "name": "EnvelopeWithArrow",
+        "description": "Envelope with arrow",
+        "code": "U+0001F4E9"
+    },
+    {
+        "id": "euro_banknote",
+        "name": "EuroBanknote",
+        "description": "Euro banknote",
+        "code": "U+0001F4B6"
+    },
+    {
+        "id": "evergreen_tree",
+        "name": "EvergreenTree",
+        "description": "Evergreen tree",
+        "code": "U+0001F332"
+    },
+    {
+        "id": "ewe",
+        "name": "Ewe",
+        "description": "Ewe",
+        "code": "U+0001F411"
+    },
+    {
+        "id": "exclamation_question_mark",
+        "name": "ExclamationQuestionMark",
+        "description": "Exclamation question mark",
+        "code": "U+00002049"
+    },
+    {
+        "id": "exploding_head",
+        "name": "ExplodingHead",
+        "description": "Exploding head",
+        "code": "U+0001F92F"
+    },
+    {
+        "id": "expressionless_face",
+        "name": "ExpressionlessFace",
+        "description": "Expressionless face",
+        "code": "U+0001F611"
+    },
+    {
+        "id": "eye",
+        "name": "Eye",
+        "description": "Eye",
+        "code": "U+0001F441"
+    },
+    {
+        "id": "eyes",
+        "name": "Eyes",
+        "description": "Eyes",
+        "code": "U+0001F440"
+    },
+    {
+        "id": "face_blowing_a_kiss",
+        "name": "FaceBlowingAKiss",
+        "description": "Face blowing a kiss",
+        "code": "U+0001F618"
+    },
+    {
+        "id": "face_savoring_food",
+        "name": "FaceSavoringFood",
+        "description": "Face savoring food",
+        "code": "U+0001F60B"
+    },
+    {
+        "id": "face_screaming_in_fear",
+        "name": "FaceScreamingInFear",
+        "description": "Face screaming in fear",
+        "code": "U+0001F631"
+    },
+    {
+        "id": "face_vomiting",
+        "name": "FaceVomiting",
+        "description": "Face vomiting",
+        "code": "U+0001F92E"
+    },
+    {
+        "id": "face_with_hand_over_mouth",
+        "name": "FaceWithHandOverMouth",
+        "description": "Face with hand over mouth",
+        "code": "U+0001F92D"
+    },
+    {
+        "id": "face_with_head_bandage",
+        "name": "FaceWithHeadBandage",
+        "description": "face with head bandage",
+        "code": "U+0001F915"
+    },
+    {
+        "id": "face_with_medical_mask",
+        "name": "FaceWithMedicalMask",
+        "description": "Face with medical mask",
+        "code": "U+0001F637"
+    },
+    {
+        "id": "face_with_monocle",
+        "name": "FaceWithMonocle",
+        "description": "Face with monocle",
+        "code": "U+0001F9D0"
+    },
+    {
+        "id": "face_with_open_mouth",
+        "name": "FaceWithOpenMouth",
+        "description": "Face with open mouth",
+        "code": "U+0001F62E"
+    },
+    {
+        "id": "face_without_mouth",
+        "name": "FaceWithoutMouth",
+        "description": "Face without mouth",
+        "code": "U+0001F636"
+    },
+    {
+        "id": "face_with_raised_eyebrow",
+        "name": "FaceWithRaisedEyebrow",
+        "description": "Face with raised eyebrow",
+        "code": "U+0001F928"
+    },
+    {
+        "id": "face_with_rolling_eyes",
+        "name": "FaceWithRollingEyes",
+        "description": "Face with rolling eyes",
+        "code": "U+0001F644"
+    },
+    {
+        "id": "face_with_steam_from_nose",
+        "name": "FaceWithSteamFromNose",
+        "description": "Face with steam from nose",
+        "code": "U+0001F624"
+    },
+    {
+        "id": "face_with_symbols_on_mouth",
+        "name": "FaceWithSymbolsOnMouth",
+        "description": "Face with symbols on mouth",
+        "code": "U+0001F92C"
+    },
+    {
+        "id": "face_with_tears_of_joy",
+        "name": "FaceWithTearsOfJoy",
+        "description": "Face with tears of joy",
+        "code": "U+0001F602"
+    },
+    {
+        "id": "face_with_thermometer",
+        "name": "FaceWithThermometer",
+        "description": "Face with thermometer",
+        "code": "U+0001F912"
+    },
+    {
+        "id": "face_with_tongue",
+        "name": "FaceWithTongue",
+        "description": "Face with tongue",
+        "code": "U+0001F61B"
+    },
+    {
+        "id": "factory",
+        "name": "Factory",
+        "description": "Factory",
+        "code": "U+0001F3ED"
+    },
+    {
+        "id": "fairy",
+        "name": "Fairy",
+        "description": "Fairy",
+        "code": "U+0001F9DA"
+    },
+    {
+        "id": "falafel",
+        "name": "Falafel",
+        "description": "Falafel",
+        "code": "U+0001F9C6"
+    },
+    {
+        "id": "fallen_leaf",
+        "name": "FallenLeaf",
+        "description": "Fallen leaf",
+        "code": "U+0001F342"
+    },
+    {
+        "id": "family",
+        "name": "Family",
+        "description": "Family",
+        "code": "U+0001F46A"
+    },
+    {
+        "id": "fast_down_button",
+        "name": "FastDownButton",
+        "description": "Fast down button",
+        "code": "U+000023EC"
+    },
+    {
+        "id": "fast_forward_button",
+        "name": "FastForwardButton",
+        "description": "fast forward button",
+        "code": "U+000023E9"
+    },
+    {
+        "id": "fast_reverse_button",
+        "name": "FastReverseButton",
+        "description": "Fast reverse button",
+        "code": "U+000023EA"
+    },
+    {
+        "id": "fast_up_button",
+        "name": "FastUpButton",
+        "description": "Fast up button",
+        "code": "U+000023EB"
+    },
+    {
+        "id": "fax_machine",
+        "name": "FaxMachine",
+        "description": "Fax machine",
+        "code": "U+0001F4E0"
+    },
+    {
+        "id": "fearful_face",
+        "name": "FearfulFace",
+        "description": "Fearful face",
+        "code": "U+0001F628"
+    },
+    {
+        "id": "feather",
+        "name": "Feather",
+        "description": "Feather",
+        "code": "U+0001FAB6"
+    },
+    {
+        "id": "female_sign",
+        "name": "FemaleSign",
+        "description": "Female sign",
+        "code": "U+00002640"
+    },
+    {
+        "id": "ferris_wheel",
+        "name": "FerrisWheel",
+        "description": "Ferris wheel",
+        "code": "U+0001F3A1"
+    },
+    {
+        "id": "ferry",
+        "name": "Ferry",
+        "description": "Ferry",
+        "code": "U+000026F4"
+    },
+    {
+        "id": "field_hockey",
+        "name": "FieldHockey",
+        "description": "Field hockey",
+        "code": "U+0001F3D1"
+    },
+    {
+        "id": "file_cabinet",
+        "name": "FileCabinet",
+        "description": "File cabinet",
+        "code": "U+0001F5C4"
+    },
+    {
+        "id": "file_folder",
+        "name": "FileFolder",
+        "description": "File folder",
+        "code": "U+0001F4C1"
+    },
+    {
+        "id": "film_frames",
+        "name": "FilmFrames",
+        "description": "Film frames",
+        "code": "U+0001F39E"
+    },
+    {
+        "id": "film_projector",
+        "name": "FilmProjector",
+        "description": "Film projector",
+        "code": "U+0001F4FD"
+    },
+    {
+        "id": "fire",
+        "name": "Fire",
+        "description": "Fire",
+        "code": "U+0001F525"
+    },
+    {
+        "id": "firecracker",
+        "name": "Firecracker",
+        "description": "Firecracker",
+        "code": "U+0001F9E8"
+    },
+    {
+        "id": "fire_engine",
+        "name": "FireEngine",
+        "description": "Fire engine",
+        "code": "U+0001F692"
+    },
+    {
+        "id": "fire_extinguisher",
+        "name": "FireExtinguisher",
+        "description": "Fire extinguisher",
+        "code": "U+0001F9EF"
+    },
+    {
+        "id": "fireworks",
+        "name": "Fireworks",
+        "description": "Fireworks",
+        "code": "U+0001F386"
+    },
+    {
+        "id": "1st_place_medal",
+        "name": "FirstPlaceMedal",
+        "description": "1st place medal",
+        "code": "U+0001F947"
+    },
+    {
+        "id": "first_quarter_moon",
+        "name": "FirstQuarterMoon",
+        "description": "First quarter moon",
+        "code": "U+0001F313"
+    },
+    {
+        "id": "first_quarter_moon_face",
+        "name": "FirstQuarterMoonFace",
+        "description": "First quarter moon face",
+        "code": "U+0001F31B"
+    },
+    {
+        "id": "fish",
+        "name": "Fish",
+        "description": "Fish",
+        "code": "U+0001F41F"
+    },
+    {
+        "id": "fish_cake_with_swirl",
+        "name": "FishCakeWithSwirl",
+        "description": "Fish cake with swirl",
+        "code": "U+0001F365"
+    },
+    {
+        "id": "fishing_pole",
+        "name": "FishingPole",
+        "description": "Fishing pole",
+        "code": "U+0001F3A3"
+    },
+    {
+        "id": "five_o_clock",
+        "name": "FiveOClock",
+        "description": "Five o clock",
+        "code": "U+0001F554"
+    },
+    {
+        "id": "five_thirty",
+        "name": "FiveThirty",
+        "description": "five thirty",
+        "code": "U+0001F560"
+    },
+    {
+        "id": "flag_in_hole",
+        "name": "FlagInHole",
+        "description": "Flag in hole",
+        "code": "U+000026F3"
+    },
+    {
+        "id": "flamingo",
+        "name": "Flamingo",
+        "description": "Flamingo",
+        "code": "U+0001F9A9"
+    },
+    {
+        "id": "flashlight",
+        "name": "Flashlight",
+        "description": "Flashlight",
+        "code": "U+0001F526"
+    },
+    {
+        "id": "flatbread",
+        "name": "Flatbread",
+        "description": "Flatbread",
+        "code": "U+0001FAD3"
+    },
+    {
+        "id": "flat_shoe",
+        "name": "FlatShoe",
+        "description": "Flat shoe",
+        "code": "U+0001F97F"
+    },
+    {
+        "id": "fleur_de_lis",
+        "name": "FleurDeLis",
+        "description": "fleur de lis",
+        "code": "U+0000269C"
+    },
+    {
+        "id": "flexed_biceps",
+        "name": "FlexedBiceps",
+        "description": "Flexed biceps",
+        "code": "U+0001F4AA"
+    },
+    {
+        "id": "floppy_disk",
+        "name": "FloppyDisk",
+        "description": "Floppy disk",
+        "code": "U+0001F4BE"
+    },
+    {
+        "id": "flower_playing_cards",
+        "name": "FlowerPlayingCards",
+        "description": "Flower playing cards",
+        "code": "U+0001F3B4"
+    },
+    {
+        "id": "flushed_face",
+        "name": "FlushedFace",
+        "description": "Flushed face",
+        "code": "U+0001F633"
+    },
+    {
+        "id": "fly",
+        "name": "Fly",
+        "description": "Fly",
+        "code": "U+0001FAB0"
+    },
+    {
+        "id": "flying_disc",
+        "name": "FlyingDisc",
+        "description": "Flying disc",
+        "code": "U+0001F94F"
+    },
+    {
+        "id": "flying_saucer",
+        "name": "FlyingSaucer",
+        "description": "Flying saucer",
+        "code": "U+0001F6F8"
+    },
+    {
+        "id": "fog",
+        "name": "Fog",
+        "description": "Fog",
+        "code": "U+0001F32B"
+    },
+    {
+        "id": "foggy",
+        "name": "Foggy",
+        "description": "Foggy",
+        "code": "U+0001F301"
+    },
+    {
+        "id": "folded_hands",
+        "name": "FoldedHands",
+        "description": "Folded hands",
+        "code": "U+0001F64F"
+    },
+    {
+        "id": "fondue",
+        "name": "Fondue",
+        "description": "Fondue",
+        "code": "U+0001FAD5"
+    },
+    {
+        "id": "foot",
+        "name": "Foot",
+        "description": "Foot",
+        "code": "U+0001F9B6"
+    },
+    {
+        "id": "footprints",
+        "name": "Footprints",
+        "description": "Footprints",
+        "code": "U+0001F463"
+    },
+    {
+        "id": "fork_and_knife",
+        "name": "ForkAndKnife",
+        "description": "Fork and knife",
+        "code": "U+0001F374"
+    },
+    {
+        "id": "fork_and_knife_with_plate",
+        "name": "ForkAndKnifeWithPlate",
+        "description": "Fork and knife with plate",
+        "code": "U+0001F37D"
+    },
+    {
+        "id": "fortune_cookie",
+        "name": "FortuneCookie",
+        "description": "Fortune cookie",
+        "code": "U+0001F960"
+    },
+    {
+        "id": "fountain",
+        "name": "Fountain",
+        "description": "Fountain",
+        "code": "U+000026F2"
+    },
+    {
+        "id": "fountain_pen",
+        "name": "FountainPen",
+        "description": "Fountain pen",
+        "code": "U+0001F58B"
+    },
+    {
+        "id": "four_leaf_clover",
+        "name": "FourLeafClover",
+        "description": "Four leaf clover",
+        "code": "U+0001F340"
+    },
+    {
+        "id": "four_o_clock",
+        "name": "FourOClock",
+        "description": "Four o clock",
+        "code": "U+0001F553"
+    },
+    {
+        "id": "four_thirty",
+        "name": "FourThirty",
+        "description": "four thirty",
+        "code": "U+0001F55F"
+    },
+    {
+        "id": "fox",
+        "name": "Fox",
+        "description": "Fox",
+        "code": "U+0001F98A"
+    },
+    {
+        "id": "framed_picture",
+        "name": "FramedPicture",
+        "description": "Framed picture",
+        "code": "U+0001F5BC"
+    },
+    {
+        "id": "free_button",
+        "name": "FreeButton",
+        "description": "FREE button",
+        "code": "U+0001F193"
+    },
+    {
+        "id": "french_fries",
+        "name": "FrenchFries",
+        "description": "French fries",
+        "code": "U+0001F35F"
+    },
+    {
+        "id": "fried_shrimp",
+        "name": "FriedShrimp",
+        "description": "Fried shrimp",
+        "code": "U+0001F364"
+    },
+    {
+        "id": "frog",
+        "name": "Frog",
+        "description": "Frog",
+        "code": "U+0001F438"
+    },
+    {
+        "id": "front_facing_baby_chick",
+        "name": "FrontFacingBabyChick",
+        "description": "front facing baby chick",
+        "code": "U+0001F425"
+    },
+    {
+        "id": "frowning_face",
+        "name": "FrowningFace",
+        "description": "Frowning face",
+        "code": "U+00002639"
+    },
+    {
+        "id": "frowning_face_with_open_mouth",
+        "name": "FrowningFaceWithOpenMouth",
+        "description": "Frowning face with open mouth",
+        "code": "U+0001F626"
+    },
+    {
+        "id": "fuel_pump",
+        "name": "FuelPump",
+        "description": "Fuel pump",
+        "code": "U+000026FD"
+    },
+    {
+        "id": "full_moon",
+        "name": "FullMoon",
+        "description": "Full moon",
+        "code": "U+0001F315"
+    },
+    {
+        "id": "full_moon_face",
+        "name": "FullMoonFace",
+        "description": "Full moon face",
+        "code": "U+0001F31D"
+    },
+    {
+        "id": "funeral_urn",
+        "name": "FuneralUrn",
+        "description": "Funeral urn",
+        "code": "U+000026B1"
+    },
+    {
+        "id": "game_die",
+        "name": "GameDie",
+        "description": "Game die",
+        "code": "U+0001F3B2"
+    },
+    {
+        "id": "garlic",
+        "name": "Garlic",
+        "description": "Garlic",
+        "code": "U+0001F9C4"
+    },
+    {
+        "id": "gear",
+        "name": "Gear",
+        "description": "Gear",
+        "code": "U+00002699"
+    },
+    {
+        "id": "gemini",
+        "name": "Gemini",
+        "description": "Gemini",
+        "code": "U+0000264A"
+    },
+    {
+        "id": "gem_stone",
+        "name": "GemStone",
+        "description": "Gem stone",
+        "code": "U+0001F48E"
+    },
+    {
+        "id": "genie",
+        "name": "Genie",
+        "description": "Genie",
+        "code": "U+0001F9DE"
+    },
+    {
+        "id": "ghost",
+        "name": "Ghost",
+        "description": "Ghost",
+        "code": "U+0001F47B"
+    },
+    {
+        "id": "giraffe",
+        "name": "Giraffe",
+        "description": "Giraffe",
+        "code": "U+0001F992"
+    },
+    {
+        "id": "girl",
+        "name": "Girl",
+        "description": "Girl",
+        "code": "U+0001F467"
+    },
+    {
+        "id": "glasses",
+        "name": "Glasses",
+        "description": "Glasses",
+        "code": "U+0001F453"
+    },
+    {
+        "id": "glass_of_milk",
+        "name": "GlassOfMilk",
+        "description": "Glass of milk",
+        "code": "U+0001F95B"
+    },
+    {
+        "id": "globe_showing_americas",
+        "name": "GlobeShowingAmericas",
+        "description": "Globe showing americas",
+        "code": "U+0001F30E"
+    },
+    {
+        "id": "globe_showing_asia_australia",
+        "name": "GlobeShowingAsiaAustralia",
+        "description": "globe showing Asia Australia",
+        "code": "U+0001F30F"
+    },
+    {
+        "id": "globe_showing_europe_africa",
+        "name": "GlobeShowingEuropeAfrica",
+        "description": "globe showing Europe Africa",
+        "code": "U+0001F30D"
+    },
+    {
+        "id": "globe_with_meridians",
+        "name": "GlobeWithMeridians",
+        "description": "Globe with meridians",
+        "code": "U+0001F310"
+    },
+    {
+        "id": "gloves",
+        "name": "Gloves",
+        "description": "Gloves",
+        "code": "U+0001F9E4"
+    },
+    {
+        "id": "glowing_star",
+        "name": "GlowingStar",
+        "description": "Glowing star",
+        "code": "U+0001F31F"
+    },
+    {
+        "id": "goal_net",
+        "name": "GoalNet",
+        "description": "Goal net",
+        "code": "U+0001F945"
+    },
+    {
+        "id": "goat",
+        "name": "Goat",
+        "description": "Goat",
+        "code": "U+0001F410"
+    },
+    {
+        "id": "goblin",
+        "name": "Goblin",
+        "description": "Goblin",
+        "code": "U+0001F47A"
+    },
+    {
+        "id": "goggles",
+        "name": "Goggles",
+        "description": "Goggles",
+        "code": "U+0001F97D"
+    },
+    {
+        "id": "gorilla",
+        "name": "Gorilla",
+        "description": "Gorilla",
+        "code": "U+0001F98D"
+    },
+    {
+        "id": "graduation_cap",
+        "name": "GraduationCap",
+        "description": "Graduation cap",
+        "code": "U+0001F393"
+    },
+    {
+        "id": "grapes",
+        "name": "Grapes",
+        "description": "Grapes",
+        "code": "U+0001F347"
+    },
+    {
+        "id": "green_apple",
+        "name": "GreenApple",
+        "description": "Green apple",
+        "code": "U+0001F34F"
+    },
+    {
+        "id": "green_book",
+        "name": "GreenBook",
+        "description": "Green book",
+        "code": "U+0001F4D7"
+    },
+    {
+        "id": "green_circle",
+        "name": "GreenCircle",
+        "description": "Green circle",
+        "code": "U+0001F7E2"
+    },
+    {
+        "id": "green_heart",
+        "name": "GreenHeart",
+        "description": "Green heart",
+        "code": "U+0001F49A"
+    },
+    {
+        "id": "green_salad",
+        "name": "GreenSalad",
+        "description": "Green salad",
+        "code": "U+0001F957"
+    },
+    {
+        "id": "green_square",
+        "name": "GreenSquare",
+        "description": "Green square",
+        "code": "U+0001F7E9"
+    },
+    {
+        "id": "grimacing_face",
+        "name": "GrimacingFace",
+        "description": "Grimacing face",
+        "code": "U+0001F62C"
+    },
+    {
+        "id": "grinning_cat",
+        "name": "GrinningCat",
+        "description": "Grinning cat",
+        "code": "U+0001F63A"
+    },
+    {
+        "id": "grinning_cat_with_smiling_eyes",
+        "name": "GrinningCatWithSmilingEyes",
+        "description": "Grinning cat with smiling eyes",
+        "code": "U+0001F638"
+    },
+    {
+        "id": "grinning_face",
+        "name": "GrinningFace",
+        "description": "Grinning face",
+        "code": "U+0001F600"
+    },
+    {
+        "id": "grinning_face_with_big_eyes",
+        "name": "GrinningFaceWithBigEyes",
+        "description": "Grinning face with big eyes",
+        "code": "U+0001F603"
+    },
+    {
+        "id": "grinning_face_with_smiling_eyes",
+        "name": "GrinningFaceWithSmilingEyes",
+        "description": "Grinning face with smiling eyes",
+        "code": "U+0001F604"
+    },
+    {
+        "id": "grinning_face_with_sweat",
+        "name": "GrinningFaceWithSweat",
+        "description": "Grinning face with sweat",
+        "code": "U+0001F605"
+    },
+    {
+        "id": "grinning_squinting_face",
+        "name": "GrinningSquintingFace",
+        "description": "Grinning squinting face",
+        "code": "U+0001F606"
+    },
+    {
+        "id": "growing_heart",
+        "name": "GrowingHeart",
+        "description": "Growing heart",
+        "code": "U+0001F497"
+    },
+    {
+        "id": "guard",
+        "name": "Guard",
+        "description": "Guard",
+        "code": "U+0001F482"
+    },
+    {
+        "id": "guide_dog",
+        "name": "GuideDog",
+        "description": "Guide dog",
+        "code": "U+0001F9AE"
+    },
+    {
+        "id": "guitar",
+        "name": "Guitar",
+        "description": "Guitar",
+        "code": "U+0001F3B8"
+    },
+    {
+        "id": "hamburger",
+        "name": "Hamburger",
+        "description": "Hamburger",
+        "code": "U+0001F354"
+    },
+    {
+        "id": "hammer",
+        "name": "Hammer",
+        "description": "Hammer",
+        "code": "U+0001F528"
+    },
+    {
+        "id": "hammer_and_pick",
+        "name": "HammerAndPick",
+        "description": "Hammer and pick",
+        "code": "U+00002692"
+    },
+    {
+        "id": "hammer_and_wrench",
+        "name": "HammerAndWrench",
+        "description": "Hammer and wrench",
+        "code": "U+0001F6E0"
+    },
+    {
+        "id": "hamster",
+        "name": "Hamster",
+        "description": "Hamster",
+        "code": "U+0001F439"
+    },
+    {
+        "id": "handbag",
+        "name": "Handbag",
+        "description": "Handbag",
+        "code": "U+0001F45C"
+    },
+    {
+        "id": "handshake",
+        "name": "Handshake",
+        "description": "Handshake",
+        "code": "U+0001F91D"
+    },
+    {
+        "id": "hand_with_fingers_splayed",
+        "name": "HandWithFingersSplayed",
+        "description": "Hand with fingers splayed",
+        "code": "U+0001F590"
+    },
+    {
+        "id": "hatching_chick",
+        "name": "HatchingChick",
+        "description": "Hatching chick",
+        "code": "U+0001F423"
+    },
+    {
+        "id": "headphone",
+        "name": "Headphone",
+        "description": "Headphone",
+        "code": "U+0001F3A7"
+    },
+    {
+        "id": "headstone",
+        "name": "Headstone",
+        "description": "Headstone",
+        "code": "U+0001FAA6"
+    },
+    {
+        "id": "hear_no_evil_monkey",
+        "name": "HearNoEvilMonkey",
+        "description": "hear no evil monkey",
+        "code": "U+0001F649"
+    },
+    {
+        "id": "heart_decoration",
+        "name": "HeartDecoration",
+        "description": "Heart decoration",
+        "code": "U+0001F49F"
+    },
+    {
+        "id": "heart_exclamation",
+        "name": "HeartExclamation",
+        "description": "Heart exclamation",
+        "code": "U+00002763"
+    },
+    {
+        "id": "heart_suit",
+        "name": "HeartSuit",
+        "description": "Heart suit",
+        "code": "U+00002665"
+    },
+    {
+        "id": "heart_with_arrow",
+        "name": "HeartWithArrow",
+        "description": "Heart with arrow",
+        "code": "U+0001F498"
+    },
+    {
+        "id": "heart_with_ribbon",
+        "name": "HeartWithRibbon",
+        "description": "Heart with ribbon",
+        "code": "U+0001F49D"
+    },
+    {
+        "id": "heavy_dollar_sign",
+        "name": "HeavyDollarSign",
+        "description": "Heavy dollar sign",
+        "code": "U+0001F4B2"
+    },
+    {
+        "id": "hedgehog",
+        "name": "Hedgehog",
+        "description": "Hedgehog",
+        "code": "U+0001F994"
+    },
+    {
+        "id": "helicopter",
+        "name": "Helicopter",
+        "description": "Helicopter",
+        "code": "U+0001F681"
+    },
+    {
+        "id": "herb",
+        "name": "Herb",
+        "description": "Herb",
+        "code": "U+0001F33F"
+    },
+    {
+        "id": "hibiscus",
+        "name": "Hibiscus",
+        "description": "Hibiscus",
+        "code": "U+0001F33A"
+    },
+    {
+        "id": "high_heeled_shoe",
+        "name": "HighHeeledShoe",
+        "description": "high heeled shoe",
+        "code": "U+0001F460"
+    },
+    {
+        "id": "high_speed_train",
+        "name": "HighSpeedTrain",
+        "description": "high speed train",
+        "code": "U+0001F684"
+    },
+    {
+        "id": "high_voltage",
+        "name": "HighVoltage",
+        "description": "High voltage",
+        "code": "U+000026A1"
+    },
+    {
+        "id": "hiking_boot",
+        "name": "HikingBoot",
+        "description": "Hiking boot",
+        "code": "U+0001F97E"
+    },
+    {
+        "id": "hindu_temple",
+        "name": "HinduTemple",
+        "description": "Hindu temple",
+        "code": "U+0001F6D5"
+    },
+    {
+        "id": "hippopotamus",
+        "name": "Hippopotamus",
+        "description": "Hippopotamus",
+        "code": "U+0001F99B"
+    },
+    {
+        "id": "hole",
+        "name": "Hole",
+        "description": "Hole",
+        "code": "U+0001F573"
+    },
+    {
+        "id": "hollow_red_circle",
+        "name": "HollowRedCircle",
+        "description": "Hollow red circle",
+        "code": "U+00002B55"
+    },
+    {
+        "id": "honeybee",
+        "name": "Honeybee",
+        "description": "Honeybee",
+        "code": "U+0001F41D"
+    },
+    {
+        "id": "honey_pot",
+        "name": "HoneyPot",
+        "description": "Honey pot",
+        "code": "U+0001F36F"
+    },
+    {
+        "id": "hook",
+        "name": "Hook",
+        "description": "Hook",
+        "code": "U+0001FA9D"
+    },
+    {
+        "id": "horizontal_traffic_light",
+        "name": "HorizontalTrafficLight",
+        "description": "Horizontal traffic light",
+        "code": "U+0001F6A5"
+    },
+    {
+        "id": "horse",
+        "name": "Horse",
+        "description": "Horse",
+        "code": "U+0001F40E"
+    },
+    {
+        "id": "horse_face",
+        "name": "HorseFace",
+        "description": "Horse face",
+        "code": "U+0001F434"
+    },
+    {
+        "id": "horse_racing",
+        "name": "HorseRacing",
+        "description": "Horse racing",
+        "code": "U+0001F3C7"
+    },
+    {
+        "id": "hospital",
+        "name": "Hospital",
+        "description": "Hospital",
+        "code": "U+0001F3E5"
+    },
+    {
+        "id": "hot_beverage",
+        "name": "HotBeverage",
+        "description": "Hot beverage",
+        "code": "U+00002615"
+    },
+    {
+        "id": "hot_dog",
+        "name": "HotDog",
+        "description": "Hot dog",
+        "code": "U+0001F32D"
+    },
+    {
+        "id": "hotel",
+        "name": "Hotel",
+        "description": "Hotel",
+        "code": "U+0001F3E8"
+    },
+    {
+        "id": "hot_face",
+        "name": "HotFace",
+        "description": "Hot face",
+        "code": "U+0001F975"
+    },
+    {
+        "id": "hot_pepper",
+        "name": "HotPepper",
+        "description": "Hot pepper",
+        "code": "U+0001F336"
+    },
+    {
+        "id": "hot_springs",
+        "name": "HotSprings",
+        "description": "Hot springs",
+        "code": "U+00002668"
+    },
+    {
+        "id": "hourglass_done",
+        "name": "HourglassDone",
+        "description": "Hourglass done",
+        "code": "U+0000231B"
+    },
+    {
+        "id": "hourglass_not_done",
+        "name": "HourglassNotDone",
+        "description": "Hourglass not done",
+        "code": "U+000023F3"
+    },
+    {
+        "id": "house",
+        "name": "House",
+        "description": "House",
+        "code": "U+0001F3E0"
+    },
+    {
+        "id": "houses",
+        "name": "Houses",
+        "description": "Houses",
+        "code": "U+0001F3D8"
+    },
+    {
+        "id": "house_with_garden",
+        "name": "HouseWithGarden",
+        "description": "House with garden",
+        "code": "U+0001F3E1"
+    },
+    {
+        "id": "hugging_face",
+        "name": "HuggingFace",
+        "description": "Hugging face",
+        "code": "U+0001F917"
+    },
+    {
+        "id": "hundred_points",
+        "name": "HundredPoints",
+        "description": "Hundred points",
+        "code": "U+0001F4AF"
+    },
+    {
+        "id": "hushed_face",
+        "name": "HushedFace",
+        "description": "Hushed face",
+        "code": "U+0001F62F"
+    },
+    {
+        "id": "hut",
+        "name": "Hut",
+        "description": "Hut",
+        "code": "U+0001F6D6"
+    },
+    {
+        "id": "ice",
+        "name": "Ice",
+        "description": "Ice",
+        "code": "U+0001F9CA"
+    },
+    {
+        "id": "ice_cream",
+        "name": "IceCream",
+        "description": "Ice cream",
+        "code": "U+0001F368"
+    },
+    {
+        "id": "ice_hockey",
+        "name": "IceHockey",
+        "description": "Ice hockey",
+        "code": "U+0001F3D2"
+    },
+    {
+        "id": "ice_skate",
+        "name": "IceSkate",
+        "description": "Ice skate",
+        "code": "U+000026F8"
+    },
+    {
+        "id": "id_button",
+        "name": "IdButton",
+        "description": "ID button",
+        "code": "U+0001F194"
+    },
+    {
+        "id": "inbox_tray",
+        "name": "InboxTray",
+        "description": "Inbox tray",
+        "code": "U+0001F4E5"
+    },
+    {
+        "id": "incoming_envelope",
+        "name": "IncomingEnvelope",
+        "description": "Incoming envelope",
+        "code": "U+0001F4E8"
+    },
+    {
+        "id": "index_pointing_up",
+        "name": "IndexPointingUp",
+        "description": "Index pointing up",
+        "code": "U+0000261D"
+    },
+    {
+        "id": "infinity",
+        "name": "Infinity",
+        "description": "Infinity",
+        "code": "U+0000267E"
+    },
+    {
+        "id": "information",
+        "name": "Information",
+        "description": "Information",
+        "code": "U+00002139"
+    },
+    {
+        "id": "input_latin_letters",
+        "name": "InputLatinLetters",
+        "description": "Input latin letters",
+        "code": "U+0001F524"
+    },
+    {
+        "id": "input_latin_lowercase",
+        "name": "InputLatinLowercase",
+        "description": "Input latin lowercase",
+        "code": "U+0001F521"
+    },
+    {
+        "id": "input_latin_uppercase",
+        "name": "InputLatinUppercase",
+        "description": "Input latin uppercase",
+        "code": "U+0001F520"
+    },
+    {
+        "id": "input_numbers",
+        "name": "InputNumbers",
+        "description": "Input numbers",
+        "code": "U+0001F522"
+    },
+    {
+        "id": "input_symbols",
+        "name": "InputSymbols",
+        "description": "Input symbols",
+        "code": "U+0001F523"
+    },
+    {
+        "id": "jack_o_lantern",
+        "name": "JackOLantern",
+        "description": "jack o lantern",
+        "code": "U+0001F383"
+    },
+    {
+        "id": "japanese_acceptable_button",
+        "name": "JapaneseAcceptableButton",
+        "description": "Japanese acceptable button",
+        "code": "U+0001F251"
+    },
+    {
+        "id": "japanese_application_button",
+        "name": "JapaneseApplicationButton",
+        "description": "Japanese application button",
+        "code": "U+0001F238"
+    },
+    {
+        "id": "japanese_bargain_button",
+        "name": "JapaneseBargainButton",
+        "description": "Japanese bargain button",
+        "code": "U+0001F250"
+    },
+    {
+        "id": "japanese_castle",
+        "name": "JapaneseCastle",
+        "description": "Japanese castle",
+        "code": "U+0001F3EF"
+    },
+    {
+        "id": "japanese_congratulations_button",
+        "name": "JapaneseCongratulationsButton",
+        "description": "Japanese congratulations button",
+        "code": "U+00003297"
+    },
+    {
+        "id": "japanese_discount_button",
+        "name": "JapaneseDiscountButton",
+        "description": "Japanese discount button",
+        "code": "U+0001F239"
+    },
+    {
+        "id": "japanese_dolls",
+        "name": "JapaneseDolls",
+        "description": "Japanese dolls",
+        "code": "U+0001F38E"
+    },
+    {
+        "id": "japanese_free_of_charge_button",
+        "name": "JapaneseFreeOfChargeButton",
+        "description": "Japanese free of charge button",
+        "code": "U+0001F21A"
+    },
+    {
+        "id": "japanese_here_button",
+        "name": "JapaneseHereButton",
+        "description": "Japanese here button",
+        "code": "U+0001F201"
+    },
+    {
+        "id": "japanese_monthly_amount_button",
+        "name": "JapaneseMonthlyAmountButton",
+        "description": "Japanese monthly amount button",
+        "code": "U+0001F237"
+    },
+    {
+        "id": "japanese_not_free_of_charge_button",
+        "name": "JapaneseNotFreeOfChargeButton",
+        "description": "Japanese not free of charge button",
+        "code": "U+0001F236"
+    },
+    {
+        "id": "japanese_no_vacancy_button",
+        "name": "JapaneseNoVacancyButton",
+        "description": "Japanese no vacancy button",
+        "code": "U+0001F235"
+    },
+    {
+        "id": "japanese_open_for_business_button",
+        "name": "JapaneseOpenForBusinessButton",
+        "description": "Japanese open for business button",
+        "code": "U+0001F23A"
+    },
+    {
+        "id": "japanese_passing_grade_button",
+        "name": "JapanesePassingGradeButton",
+        "description": "Japanese passing grade button",
+        "code": "U+0001F234"
+    },
+    {
+        "id": "japanese_post_office",
+        "name": "JapanesePostOffice",
+        "description": "Japanese post office",
+        "code": "U+0001F3E3"
+    },
+    {
+        "id": "japanese_prohibited_button",
+        "name": "JapaneseProhibitedButton",
+        "description": "Japanese prohibited button",
+        "code": "U+0001F232"
+    },
+    {
+        "id": "japanese_reserved_button",
+        "name": "JapaneseReservedButton",
+        "description": "Japanese reserved button",
+        "code": "U+0001F22F"
+    },
+    {
+        "id": "japanese_secret_button",
+        "name": "JapaneseSecretButton",
+        "description": "Japanese secret button",
+        "code": "U+00003299"
+    },
+    {
+        "id": "japanese_service_charge_button",
+        "name": "JapaneseServiceChargeButton",
+        "description": "Japanese service charge button",
+        "code": "U+0001F202"
+    },
+    {
+        "id": "japanese_symbol_for_beginner",
+        "name": "JapaneseSymbolForBeginner",
+        "description": "Japanese symbol for beginner",
+        "code": "U+0001F530"
+    },
+    {
+        "id": "japanese_vacancy_button",
+        "name": "JapaneseVacancyButton",
+        "description": "Japanese vacancy button",
+        "code": "U+0001F233"
+    },
+    {
+        "id": "jeans",
+        "name": "Jeans",
+        "description": "Jeans",
+        "code": "U+0001F456"
+    },
+    {
+        "id": "joker",
+        "name": "Joker",
+        "description": "Joker",
+        "code": "U+0001F0CF"
+    },
+    {
+        "id": "joystick",
+        "name": "Joystick",
+        "description": "Joystick",
+        "code": "U+0001F579"
+    },
+    {
+        "id": "kaaba",
+        "name": "Kaaba",
+        "description": "Kaaba",
+        "code": "U+0001F54B"
+    },
+    {
+        "id": "kangaroo",
+        "name": "Kangaroo",
+        "description": "Kangaroo",
+        "code": "U+0001F998"
+    },
+    {
+        "id": "key",
+        "name": "Key",
+        "description": "Key",
+        "code": "U+0001F511"
+    },
+    {
+        "id": "keyboard",
+        "name": "Keyboard",
+        "description": "Keyboard",
+        "code": "U+00002328"
+    },
+    {
+        "id": "keycap_10",
+        "name": "Keycap10",
+        "description": "Keycap 10",
+        "code": "U+0001F51F"
+    },
+    {
+        "id": "kick_scooter",
+        "name": "KickScooter",
+        "description": "Kick scooter",
+        "code": "U+0001F6F4"
+    },
+    {
+        "id": "kimono",
+        "name": "Kimono",
+        "description": "Kimono",
+        "code": "U+0001F458"
+    },
+    {
+        "id": "kiss",
+        "name": "Kiss",
+        "description": "Kiss",
+        "code": "U+0001F48F"
+    },
+    {
+        "id": "kissing_cat",
+        "name": "KissingCat",
+        "description": "Kissing cat",
+        "code": "U+0001F63D"
+    },
+    {
+        "id": "kissing_face",
+        "name": "KissingFace",
+        "description": "Kissing face",
+        "code": "U+0001F617"
+    },
+    {
+        "id": "kissing_face_with_closed_eyes",
+        "name": "KissingFaceWithClosedEyes",
+        "description": "Kissing face with closed eyes",
+        "code": "U+0001F61A"
+    },
+    {
+        "id": "kissing_face_with_smiling_eyes",
+        "name": "KissingFaceWithSmilingEyes",
+        "description": "Kissing face with smiling eyes",
+        "code": "U+0001F619"
+    },
+    {
+        "id": "kiss_mark",
+        "name": "KissMark",
+        "description": "Kiss mark",
+        "code": "U+0001F48B"
+    },
+    {
+        "id": "kitchen_knife",
+        "name": "KitchenKnife",
+        "description": "Kitchen knife",
+        "code": "U+0001F52A"
+    },
+    {
+        "id": "kite",
+        "name": "Kite",
+        "description": "Kite",
+        "code": "U+0001FA81"
+    },
+    {
+        "id": "kiwi_fruit",
+        "name": "KiwiFruit",
+        "description": "Kiwi fruit",
+        "code": "U+0001F95D"
+    },
+    {
+        "id": "knocked_out_face",
+        "name": "KnockedOutFace",
+        "description": "knocked out face",
+        "code": "U+0001F635"
+    },
+    {
+        "id": "knot",
+        "name": "Knot",
+        "description": "Knot",
+        "code": "U+0001FAA2"
+    },
+    {
+        "id": "koala",
+        "name": "Koala",
+        "description": "Koala",
+        "code": "U+0001F428"
+    },
+    {
+        "id": "lab_coat",
+        "name": "LabCoat",
+        "description": "Lab coat",
+        "code": "U+0001F97C"
+    },
+    {
+        "id": "label",
+        "name": "Label",
+        "description": "Label",
+        "code": "U+0001F3F7"
+    },
+    {
+        "id": "lacrosse",
+        "name": "Lacrosse",
+        "description": "Lacrosse",
+        "code": "U+0001F94D"
+    },
+    {
+        "id": "ladder",
+        "name": "Ladder",
+        "description": "Ladder",
+        "code": "U+0001FA9C"
+    },
+    {
+        "id": "lady_beetle",
+        "name": "LadyBeetle",
+        "description": "Lady beetle",
+        "code": "U+0001F41E"
+    },
+    {
+        "id": "laptop",
+        "name": "Laptop",
+        "description": "Laptop",
+        "code": "U+0001F4BB"
+    },
+    {
+        "id": "large_blue_diamond",
+        "name": "LargeBlueDiamond",
+        "description": "Large blue diamond",
+        "code": "U+0001F537"
+    },
+    {
+        "id": "large_orange_diamond",
+        "name": "LargeOrangeDiamond",
+        "description": "Large orange diamond",
+        "code": "U+0001F536"
+    },
+    {
+        "id": "last_quarter_moon",
+        "name": "LastQuarterMoon",
+        "description": "Last quarter moon",
+        "code": "U+0001F317"
+    },
+    {
+        "id": "last_quarter_moon_face",
+        "name": "LastQuarterMoonFace",
+        "description": "Last quarter moon face",
+        "code": "U+0001F31C"
+    },
+    {
+        "id": "last_track_button",
+        "name": "LastTrackButton",
+        "description": "Last track button",
+        "code": "U+000023EE"
+    },
+    {
+        "id": "latin_cross",
+        "name": "LatinCross",
+        "description": "Latin cross",
+        "code": "U+0000271D"
+    },
+    {
+        "id": "leaf_fluttering_in_wind",
+        "name": "LeafFlutteringInWind",
+        "description": "Leaf fluttering in wind",
+        "code": "U+0001F343"
+    },
+    {
+        "id": "leafy_green",
+        "name": "LeafyGreen",
+        "description": "Leafy green",
+        "code": "U+0001F96C"
+    },
+    {
+        "id": "ledger",
+        "name": "Ledger",
+        "description": "Ledger",
+        "code": "U+0001F4D2"
+    },
+    {
+        "id": "left_arrow",
+        "name": "LeftArrow",
+        "description": "Left arrow",
+        "code": "U+00002B05"
+    },
+    {
+        "id": "left_arrow_curving_right",
+        "name": "LeftArrowCurvingRight",
+        "description": "Left arrow curving right",
+        "code": "U+000021AA"
+    },
+    {
+        "id": "left_facing_fist",
+        "name": "LeftFacingFist",
+        "description": "left facing fist",
+        "code": "U+0001F91B"
+    },
+    {
+        "id": "left_luggage",
+        "name": "LeftLuggage",
+        "description": "Left luggage",
+        "code": "U+0001F6C5"
+    },
+    {
+        "id": "left_right_arrow",
+        "name": "LeftRightArrow",
+        "description": "left right arrow",
+        "code": "U+00002194"
+    },
+    {
+        "id": "left_speech_bubble",
+        "name": "LeftSpeechBubble",
+        "description": "Left speech bubble",
+        "code": "U+0001F5E8"
+    },
+    {
+        "id": "leg",
+        "name": "Leg",
+        "description": "Leg",
+        "code": "U+0001F9B5"
+    },
+    {
+        "id": "lemon",
+        "name": "Lemon",
+        "description": "Lemon",
+        "code": "U+0001F34B"
+    },
+    {
+        "id": "leo",
+        "name": "Leo",
+        "description": "Leo",
+        "code": "U+0000264C"
+    },
+    {
+        "id": "leopard",
+        "name": "Leopard",
+        "description": "Leopard",
+        "code": "U+0001F406"
+    },
+    {
+        "id": "level_slider",
+        "name": "LevelSlider",
+        "description": "Level slider",
+        "code": "U+0001F39A"
+    },
+    {
+        "id": "libra",
+        "name": "Libra",
+        "description": "Libra",
+        "code": "U+0000264E"
+    },
+    {
+        "id": "light_bulb",
+        "name": "LightBulb",
+        "description": "Light bulb",
+        "code": "U+0001F4A1"
+    },
+    {
+        "id": "light_rail",
+        "name": "LightRail",
+        "description": "Light rail",
+        "code": "U+0001F688"
+    },
+    {
+        "id": "link",
+        "name": "Link",
+        "description": "Link",
+        "code": "U+0001F517"
+    },
+    {
+        "id": "linked_paperclips",
+        "name": "LinkedPaperclips",
+        "description": "Linked paperclips",
+        "code": "U+0001F587"
+    },
+    {
+        "id": "lion",
+        "name": "Lion",
+        "description": "Lion",
+        "code": "U+0001F981"
+    },
+    {
+        "id": "lipstick",
+        "name": "Lipstick",
+        "description": "Lipstick",
+        "code": "U+0001F484"
+    },
+    {
+        "id": "litter_in_bin_sign",
+        "name": "LitterInBinSign",
+        "description": "Litter in bin sign",
+        "code": "U+0001F6AE"
+    },
+    {
+        "id": "lizard",
+        "name": "Lizard",
+        "description": "Lizard",
+        "code": "U+0001F98E"
+    },
+    {
+        "id": "llama",
+        "name": "Llama",
+        "description": "Llama",
+        "code": "U+0001F999"
+    },
+    {
+        "id": "lobster",
+        "name": "Lobster",
+        "description": "Lobster",
+        "code": "U+0001F99E"
+    },
+    {
+        "id": "locked",
+        "name": "Locked",
+        "description": "Locked",
+        "code": "U+0001F512"
+    },
+    {
+        "id": "locked_with_key",
+        "name": "LockedWithKey",
+        "description": "Locked with key",
+        "code": "U+0001F510"
+    },
+    {
+        "id": "locked_with_pen",
+        "name": "LockedWithPen",
+        "description": "Locked with pen",
+        "code": "U+0001F50F"
+    },
+    {
+        "id": "locomotive",
+        "name": "Locomotive",
+        "description": "Locomotive",
+        "code": "U+0001F682"
+    },
+    {
+        "id": "lollipop",
+        "name": "Lollipop",
+        "description": "Lollipop",
+        "code": "U+0001F36D"
+    },
+    {
+        "id": "long_drum",
+        "name": "LongDrum",
+        "description": "Long drum",
+        "code": "U+0001FA98"
+    },
+    {
+        "id": "lotion_bottle",
+        "name": "LotionBottle",
+        "description": "Lotion bottle",
+        "code": "U+0001F9F4"
+    },
+    {
+        "id": "loudly_crying_face",
+        "name": "LoudlyCryingFace",
+        "description": "Loudly crying face",
+        "code": "U+0001F62D"
+    },
+    {
+        "id": "loudspeaker",
+        "name": "Loudspeaker",
+        "description": "Loudspeaker",
+        "code": "U+0001F4E2"
+    },
+    {
+        "id": "love_hotel",
+        "name": "LoveHotel",
+        "description": "Love hotel",
+        "code": "U+0001F3E9"
+    },
+    {
+        "id": "love_letter",
+        "name": "LoveLetter",
+        "description": "Love letter",
+        "code": "U+0001F48C"
+    },
+    {
+        "id": "love_you_gesture",
+        "name": "LoveYouGesture",
+        "description": "love you gesture",
+        "code": "U+0001F91F"
+    },
+    {
+        "id": "luggage",
+        "name": "Luggage",
+        "description": "Luggage",
+        "code": "U+0001F9F3"
+    },
+    {
+        "id": "lungs",
+        "name": "Lungs",
+        "description": "Lungs",
+        "code": "U+0001FAC1"
+    },
+    {
+        "id": "lying_face",
+        "name": "LyingFace",
+        "description": "Lying face",
+        "code": "U+0001F925"
+    },
+    {
+        "id": "mage",
+        "name": "Mage",
+        "description": "Mage",
+        "code": "U+0001F9D9"
+    },
+    {
+        "id": "magic_wand",
+        "name": "MagicWand",
+        "description": "Magic wand",
+        "code": "U+0001FA84"
+    },
+    {
+        "id": "magnet",
+        "name": "Magnet",
+        "description": "Magnet",
+        "code": "U+0001F9F2"
+    },
+    {
+        "id": "magnifying_glass_tilted_left",
+        "name": "MagnifyingGlassTiltedLeft",
+        "description": "Magnifying glass tilted left",
+        "code": "U+0001F50D"
+    },
+    {
+        "id": "magnifying_glass_tilted_right",
+        "name": "MagnifyingGlassTiltedRight",
+        "description": "Magnifying glass tilted right",
+        "code": "U+0001F50E"
+    },
+    {
+        "id": "mahjong_red_dragon",
+        "name": "MahjongRedDragon",
+        "description": "Mahjong red dragon",
+        "code": "U+0001F004"
+    },
+    {
+        "id": "male_sign",
+        "name": "MaleSign",
+        "description": "Male sign",
+        "code": "U+00002642"
+    },
+    {
+        "id": "mammoth",
+        "name": "Mammoth",
+        "description": "Mammoth",
+        "code": "U+0001F9A3"
+    },
+    {
+        "id": "man",
+        "name": "Man",
+        "description": "Man",
+        "code": "U+0001F468"
+    },
+    {
+        "id": "man_dancing",
+        "name": "ManDancing",
+        "description": "Man dancing",
+        "code": "U+0001F57A"
+    },
+    {
+        "id": "mango",
+        "name": "Mango",
+        "description": "Mango",
+        "code": "U+0001F96D"
+    },
+    {
+        "id": "mans_shoe",
+        "name": "MansShoe",
+        "description": "Man s shoe",
+        "code": "U+0001F45E"
+    },
+    {
+        "id": "mantelpiece_clock",
+        "name": "MantelpieceClock",
+        "description": "Mantelpiece clock",
+        "code": "U+0001F570"
+    },
+    {
+        "id": "manual_wheelchair",
+        "name": "ManualWheelchair",
+        "description": "Manual wheelchair",
+        "code": "U+0001F9BD"
+    },
+    {
+        "id": "maple_leaf",
+        "name": "MapleLeaf",
+        "description": "Maple leaf",
+        "code": "U+0001F341"
+    },
+    {
+        "id": "map_of_japan",
+        "name": "MapOfJapan",
+        "description": "Map of japan",
+        "code": "U+0001F5FE"
+    },
+    {
+        "id": "martial_arts_uniform",
+        "name": "MartialArtsUniform",
+        "description": "Martial arts uniform",
+        "code": "U+0001F94B"
+    },
+    {
+        "id": "mate",
+        "name": "Mate",
+        "description": "Mate",
+        "code": "U+0001F9C9"
+    },
+    {
+        "id": "meat_on_bone",
+        "name": "MeatOnBone",
+        "description": "Meat on bone",
+        "code": "U+0001F356"
+    },
+    {
+        "id": "mechanical_arm",
+        "name": "MechanicalArm",
+        "description": "Mechanical arm",
+        "code": "U+0001F9BE"
+    },
+    {
+        "id": "mechanical_leg",
+        "name": "MechanicalLeg",
+        "description": "Mechanical leg",
+        "code": "U+0001F9BF"
+    },
+    {
+        "id": "medical_symbol",
+        "name": "MedicalSymbol",
+        "description": "Medical symbol",
+        "code": "U+00002695"
+    },
+    {
+        "id": "megaphone",
+        "name": "Megaphone",
+        "description": "Megaphone",
+        "code": "U+0001F4E3"
+    },
+    {
+        "id": "melon",
+        "name": "Melon",
+        "description": "Melon",
+        "code": "U+0001F348"
+    },
+    {
+        "id": "memo",
+        "name": "Memo",
+        "description": "Memo",
+        "code": "U+0001F4DD"
+    },
+    {
+        "id": "men_holding_hands",
+        "name": "MenHoldingHands",
+        "description": "Men holding hands",
+        "code": "U+0001F46C"
+    },
+    {
+        "id": "menorah",
+        "name": "Menorah",
+        "description": "Menorah",
+        "code": "U+0001F54E"
+    },
+    {
+        "id": "mens_room",
+        "name": "MensRoom",
+        "description": "Men s room",
+        "code": "U+0001F6B9"
+    },
+    {
+        "id": "merperson",
+        "name": "Merperson",
+        "description": "Merperson",
+        "code": "U+0001F9DC"
+    },
+    {
+        "id": "metro",
+        "name": "Metro",
+        "description": "Metro",
+        "code": "U+0001F687"
+    },
+    {
+        "id": "microbe",
+        "name": "Microbe",
+        "description": "Microbe",
+        "code": "U+0001F9A0"
+    },
+    {
+        "id": "microphone",
+        "name": "Microphone",
+        "description": "Microphone",
+        "code": "U+0001F3A4"
+    },
+    {
+        "id": "microscope",
+        "name": "Microscope",
+        "description": "Microscope",
+        "code": "U+0001F52C"
+    },
+    {
+        "id": "middle_finger",
+        "name": "MiddleFinger",
+        "description": "Middle finger",
+        "code": "U+0001F595"
+    },
+    {
+        "id": "military_helmet",
+        "name": "MilitaryHelmet",
+        "description": "Military helmet",
+        "code": "U+0001FA96"
+    },
+    {
+        "id": "military_medal",
+        "name": "MilitaryMedal",
+        "description": "Military medal",
+        "code": "U+0001F396"
+    },
+    {
+        "id": "milky_way",
+        "name": "MilkyWay",
+        "description": "Milky way",
+        "code": "U+0001F30C"
+    },
+    {
+        "id": "minibus",
+        "name": "Minibus",
+        "description": "Minibus",
+        "code": "U+0001F690"
+    },
+    {
+        "id": "minus",
+        "name": "Minus",
+        "description": "Minus",
+        "code": "U+00002796"
+    },
+    {
+        "id": "mirror",
+        "name": "Mirror",
+        "description": "Mirror",
+        "code": "U+0001FA9E"
+    },
+    {
+        "id": "moai",
+        "name": "Moai",
+        "description": "Moai",
+        "code": "U+0001F5FF"
+    },
+    {
+        "id": "mobile_phone",
+        "name": "MobilePhone",
+        "description": "Mobile phone",
+        "code": "U+0001F4F1"
+    },
+    {
+        "id": "mobile_phone_off",
+        "name": "MobilePhoneOff",
+        "description": "Mobile phone off",
+        "code": "U+0001F4F4"
+    },
+    {
+        "id": "mobile_phone_with_arrow",
+        "name": "MobilePhoneWithArrow",
+        "description": "Mobile phone with arrow",
+        "code": "U+0001F4F2"
+    },
+    {
+        "id": "money_bag",
+        "name": "MoneyBag",
+        "description": "Money bag",
+        "code": "U+0001F4B0"
+    },
+    {
+        "id": "money_mouth_face",
+        "name": "MoneyMouthFace",
+        "description": "money mouth face",
+        "code": "U+0001F911"
+    },
+    {
+        "id": "money_with_wings",
+        "name": "MoneyWithWings",
+        "description": "Money with wings",
+        "code": "U+0001F4B8"
+    },
+    {
+        "id": "monkey",
+        "name": "Monkey",
+        "description": "Monkey",
+        "code": "U+0001F412"
+    },
+    {
+        "id": "monkey_face",
+        "name": "MonkeyFace",
+        "description": "Monkey face",
+        "code": "U+0001F435"
+    },
+    {
+        "id": "monorail",
+        "name": "Monorail",
+        "description": "Monorail",
+        "code": "U+0001F69D"
+    },
+    {
+        "id": "moon_cake",
+        "name": "MoonCake",
+        "description": "Moon cake",
+        "code": "U+0001F96E"
+    },
+    {
+        "id": "moon_viewing_ceremony",
+        "name": "MoonViewingCeremony",
+        "description": "Moon viewing ceremony",
+        "code": "U+0001F391"
+    },
+    {
+        "id": "mosque",
+        "name": "Mosque",
+        "description": "Mosque",
+        "code": "U+0001F54C"
+    },
+    {
+        "id": "mosquito",
+        "name": "Mosquito",
+        "description": "Mosquito",
+        "code": "U+0001F99F"
+    },
+    {
+        "id": "motor_boat",
+        "name": "MotorBoat",
+        "description": "Motor boat",
+        "code": "U+0001F6E5"
+    },
+    {
+        "id": "motorcycle",
+        "name": "Motorcycle",
+        "description": "Motorcycle",
+        "code": "U+0001F3CD"
+    },
+    {
+        "id": "motorized_wheelchair",
+        "name": "MotorizedWheelchair",
+        "description": "Motorized wheelchair",
+        "code": "U+0001F9BC"
+    },
+    {
+        "id": "motor_scooter",
+        "name": "MotorScooter",
+        "description": "Motor scooter",
+        "code": "U+0001F6F5"
+    },
+    {
+        "id": "motorway",
+        "name": "Motorway",
+        "description": "Motorway",
+        "code": "U+0001F6E3"
+    },
+    {
+        "id": "mountain",
+        "name": "Mountain",
+        "description": "Mountain",
+        "code": "U+000026F0"
+    },
+    {
+        "id": "mountain_cableway",
+        "name": "MountainCableway",
+        "description": "Mountain cableway",
+        "code": "U+0001F6A0"
+    },
+    {
+        "id": "mountain_railway",
+        "name": "MountainRailway",
+        "description": "Mountain railway",
+        "code": "U+0001F69E"
+    },
+    {
+        "id": "mount_fuji",
+        "name": "MountFuji",
+        "description": "Mount fuji",
+        "code": "U+0001F5FB"
+    },
+    {
+        "id": "mouse",
+        "name": "Mouse",
+        "description": "Mouse",
+        "code": "U+0001F401"
+    },
+    {
+        "id": "mouse_face",
+        "name": "MouseFace",
+        "description": "Mouse face",
+        "code": "U+0001F42D"
+    },
+    {
+        "id": "mouse_trap",
+        "name": "MouseTrap",
+        "description": "Mouse trap",
+        "code": "U+0001FAA4"
+    },
+    {
+        "id": "mouth",
+        "name": "Mouth",
+        "description": "Mouth",
+        "code": "U+0001F444"
+    },
+    {
+        "id": "movie_camera",
+        "name": "MovieCamera",
+        "description": "Movie camera",
+        "code": "U+0001F3A5"
+    },
+    {
+        "id": "mrs_claus",
+        "name": "MrsClaus",
+        "description": "Mrs claus",
+        "code": "U+0001F936"
+    },
+    {
+        "id": "multiply",
+        "name": "Multiply",
+        "description": "Multiply",
+        "code": "U+00002716"
+    },
+    {
+        "id": "mushroom",
+        "name": "Mushroom",
+        "description": "Mushroom",
+        "code": "U+0001F344"
+    },
+    {
+        "id": "musical_keyboard",
+        "name": "MusicalKeyboard",
+        "description": "Musical keyboard",
+        "code": "U+0001F3B9"
+    },
+    {
+        "id": "musical_note",
+        "name": "MusicalNote",
+        "description": "Musical note",
+        "code": "U+0001F3B5"
+    },
+    {
+        "id": "musical_notes",
+        "name": "MusicalNotes",
+        "description": "Musical notes",
+        "code": "U+0001F3B6"
+    },
+    {
+        "id": "musical_score",
+        "name": "MusicalScore",
+        "description": "Musical score",
+        "code": "U+0001F3BC"
+    },
+    {
+        "id": "muted_speaker",
+        "name": "MutedSpeaker",
+        "description": "Muted speaker",
+        "code": "U+0001F507"
+    },
+    {
+        "id": "nail_polish",
+        "name": "NailPolish",
+        "description": "Nail polish",
+        "code": "U+0001F485"
+    },
+    {
+        "id": "name_badge",
+        "name": "NameBadge",
+        "description": "Name badge",
+        "code": "U+0001F4DB"
+    },
+    {
+        "id": "national_park",
+        "name": "NationalPark",
+        "description": "National park",
+        "code": "U+0001F3DE"
+    },
+    {
+        "id": "nauseated_face",
+        "name": "NauseatedFace",
+        "description": "Nauseated face",
+        "code": "U+0001F922"
+    },
+    {
+        "id": "nazar_amulet",
+        "name": "NazarAmulet",
+        "description": "Nazar amulet",
+        "code": "U+0001F9FF"
+    },
+    {
+        "id": "necktie",
+        "name": "Necktie",
+        "description": "Necktie",
+        "code": "U+0001F454"
+    },
+    {
+        "id": "nerd_face",
+        "name": "NerdFace",
+        "description": "Nerd face",
+        "code": "U+0001F913"
+    },
+    {
+        "id": "nesting_dolls",
+        "name": "NestingDolls",
+        "description": "Nesting dolls",
+        "code": "U+0001FA86"
+    },
+    {
+        "id": "neutral_face",
+        "name": "NeutralFace",
+        "description": "Neutral face",
+        "code": "U+0001F610"
+    },
+    {
+        "id": "new_button",
+        "name": "NewButton",
+        "description": "NEW button",
+        "code": "U+0001F195"
+    },
+    {
+        "id": "new_moon",
+        "name": "NewMoon",
+        "description": "New moon",
+        "code": "U+0001F311"
+    },
+    {
+        "id": "new_moon_face",
+        "name": "NewMoonFace",
+        "description": "New moon face",
+        "code": "U+0001F31A"
+    },
+    {
+        "id": "newspaper",
+        "name": "Newspaper",
+        "description": "Newspaper",
+        "code": "U+0001F4F0"
+    },
+    {
+        "id": "next_track_button",
+        "name": "NextTrackButton",
+        "description": "Next track button",
+        "code": "U+000023ED"
+    },
+    {
+        "id": "ng_button",
+        "name": "NgButton",
+        "description": "NG button",
+        "code": "U+0001F196"
+    },
+    {
+        "id": "night_with_stars",
+        "name": "NightWithStars",
+        "description": "Night with stars",
+        "code": "U+0001F303"
+    },
+    {
+        "id": "nine_o_clock",
+        "name": "NineOClock",
+        "description": "Nine o clock",
+        "code": "U+0001F558"
+    },
+    {
+        "id": "nine_thirty",
+        "name": "NineThirty",
+        "description": "nine thirty",
+        "code": "U+0001F564"
+    },
+    {
+        "id": "ninja",
+        "name": "Ninja",
+        "description": "Ninja",
+        "code": "U+0001F977"
+    },
+    {
+        "id": "no_bicycles",
+        "name": "NoBicycles",
+        "description": "No bicycles",
+        "code": "U+0001F6B3"
+    },
+    {
+        "id": "no_entry",
+        "name": "NoEntry",
+        "description": "No entry",
+        "code": "U+000026D4"
+    },
+    {
+        "id": "no_littering",
+        "name": "NoLittering",
+        "description": "No littering",
+        "code": "U+0001F6AF"
+    },
+    {
+        "id": "no_mobile_phones",
+        "name": "NoMobilePhones",
+        "description": "No mobile phones",
+        "code": "U+0001F4F5"
+    },
+    {
+        "id": "non_potable_water",
+        "name": "NonPotableWater",
+        "description": "non potable water",
+        "code": "U+0001F6B1"
+    },
+    {
+        "id": "no_one_under_eighteen",
+        "name": "NoOneUnderEighteen",
+        "description": "No one under eighteen",
+        "code": "U+0001F51E"
+    },
+    {
+        "id": "no_pedestrians",
+        "name": "NoPedestrians",
+        "description": "No pedestrians",
+        "code": "U+0001F6B7"
+    },
+    {
+        "id": "nose",
+        "name": "Nose",
+        "description": "Nose",
+        "code": "U+0001F443"
+    },
+    {
+        "id": "no_smoking",
+        "name": "NoSmoking",
+        "description": "No smoking",
+        "code": "U+0001F6AD"
+    },
+    {
+        "id": "notebook",
+        "name": "Notebook",
+        "description": "Notebook",
+        "code": "U+0001F4D3"
+    },
+    {
+        "id": "notebook_with_decorative_cover",
+        "name": "NotebookWithDecorativeCover",
+        "description": "Notebook with decorative cover",
+        "code": "U+0001F4D4"
+    },
+    {
+        "id": "nut_and_bolt",
+        "name": "NutAndBolt",
+        "description": "Nut and bolt",
+        "code": "U+0001F529"
+    },
+    {
+        "id": "o_button_blood_type",
+        "name": "OButtonBloodType",
+        "description": "O button blood type",
+        "code": "U+0001F17E"
+    },
+    {
+        "id": "octopus",
+        "name": "Octopus",
+        "description": "Octopus",
+        "code": "U+0001F419"
+    },
+    {
+        "id": "oden",
+        "name": "Oden",
+        "description": "Oden",
+        "code": "U+0001F362"
+    },
+    {
+        "id": "office_building",
+        "name": "OfficeBuilding",
+        "description": "Office building",
+        "code": "U+0001F3E2"
+    },
+    {
+        "id": "ogre",
+        "name": "Ogre",
+        "description": "Ogre",
+        "code": "U+0001F479"
+    },
+    {
+        "id": "oil_drum",
+        "name": "OilDrum",
+        "description": "Oil drum",
+        "code": "U+0001F6E2"
+    },
+    {
+        "id": "ok_button",
+        "name": "OkButton",
+        "description": "OK button",
+        "code": "U+0001F197"
+    },
+    {
+        "id": "ok_hand",
+        "name": "OkHand",
+        "description": "OK hand",
+        "code": "U+0001F44C"
+    },
+    {
+        "id": "older_person",
+        "name": "OlderPerson",
+        "description": "Older person",
+        "code": "U+0001F9D3"
+    },
+    {
+        "id": "old_key",
+        "name": "OldKey",
+        "description": "Old key",
+        "code": "U+0001F5DD"
+    },
+    {
+        "id": "old_man",
+        "name": "OldMan",
+        "description": "Old man",
+        "code": "U+0001F474"
+    },
+    {
+        "id": "old_woman",
+        "name": "OldWoman",
+        "description": "Old woman",
+        "code": "U+0001F475"
+    },
+    {
+        "id": "olive",
+        "name": "Olive",
+        "description": "Olive",
+        "code": "U+0001FAD2"
+    },
+    {
+        "id": "om",
+        "name": "Om",
+        "description": "Om",
+        "code": "U+0001F549"
+    },
+    {
+        "id": "on_arrow",
+        "name": "OnArrow",
+        "description": "ON arrow",
+        "code": "U+0001F51B"
+    },
+    {
+        "id": "oncoming_automobile",
+        "name": "OncomingAutomobile",
+        "description": "Oncoming automobile",
+        "code": "U+0001F698"
+    },
+    {
+        "id": "oncoming_bus",
+        "name": "OncomingBus",
+        "description": "Oncoming bus",
+        "code": "U+0001F68D"
+    },
+    {
+        "id": "oncoming_fist",
+        "name": "OncomingFist",
+        "description": "Oncoming fist",
+        "code": "U+0001F44A"
+    },
+    {
+        "id": "oncoming_police_car",
+        "name": "OncomingPoliceCar",
+        "description": "Oncoming police car",
+        "code": "U+0001F694"
+    },
+    {
+        "id": "oncoming_taxi",
+        "name": "OncomingTaxi",
+        "description": "Oncoming taxi",
+        "code": "U+0001F696"
+    },
+    {
+        "id": "one_o_clock",
+        "name": "OneOClock",
+        "description": "One o clock",
+        "code": "U+0001F550"
+    },
+    {
+        "id": "one_piece_swimsuit",
+        "name": "OnePieceSwimsuit",
+        "description": "one piece swimsuit",
+        "code": "U+0001FA71"
+    },
+    {
+        "id": "one_thirty",
+        "name": "OneThirty",
+        "description": "one thirty",
+        "code": "U+0001F55C"
+    },
+    {
+        "id": "onion",
+        "name": "Onion",
+        "description": "Onion",
+        "code": "U+0001F9C5"
+    },
+    {
+        "id": "open_book",
+        "name": "OpenBook",
+        "description": "Open book",
+        "code": "U+0001F4D6"
+    },
+    {
+        "id": "open_file_folder",
+        "name": "OpenFileFolder",
+        "description": "Open file folder",
+        "code": "U+0001F4C2"
+    },
+    {
+        "id": "open_hands",
+        "name": "OpenHands",
+        "description": "Open hands",
+        "code": "U+0001F450"
+    },
+    {
+        "id": "open_mailbox_with_lowered_flag",
+        "name": "OpenMailboxWithLoweredFlag",
+        "description": "Open mailbox with lowered flag",
+        "code": "U+0001F4ED"
+    },
+    {
+        "id": "open_mailbox_with_raised_flag",
+        "name": "OpenMailboxWithRaisedFlag",
+        "description": "Open mailbox with raised flag",
+        "code": "U+0001F4EC"
+    },
+    {
+        "id": "ophiuchus",
+        "name": "Ophiuchus",
+        "description": "Ophiuchus",
+        "code": "U+000026CE"
+    },
+    {
+        "id": "optical_disk",
+        "name": "OpticalDisk",
+        "description": "Optical disk",
+        "code": "U+0001F4BF"
+    },
+    {
+        "id": "orange_book",
+        "name": "OrangeBook",
+        "description": "Orange book",
+        "code": "U+0001F4D9"
+    },
+    {
+        "id": "orange_circle",
+        "name": "OrangeCircle",
+        "description": "Orange circle",
+        "code": "U+0001F7E0"
+    },
+    {
+        "id": "orange_heart",
+        "name": "OrangeHeart",
+        "description": "Orange heart",
+        "code": "U+0001F9E1"
+    },
+    {
+        "id": "orange_square",
+        "name": "OrangeSquare",
+        "description": "Orange square",
+        "code": "U+0001F7E7"
+    },
+    {
+        "id": "orangutan",
+        "name": "Orangutan",
+        "description": "Orangutan",
+        "code": "U+0001F9A7"
+    },
+    {
+        "id": "orthodox_cross",
+        "name": "OrthodoxCross",
+        "description": "Orthodox cross",
+        "code": "U+00002626"
+    },
+    {
+        "id": "otter",
+        "name": "Otter",
+        "description": "Otter",
+        "code": "U+0001F9A6"
+    },
+    {
+        "id": "outbox_tray",
+        "name": "OutboxTray",
+        "description": "Outbox tray",
+        "code": "U+0001F4E4"
+    },
+    {
+        "id": "owl",
+        "name": "Owl",
+        "description": "Owl",
+        "code": "U+0001F989"
+    },
+    {
+        "id": "ox",
+        "name": "Ox",
+        "description": "Ox",
+        "code": "U+0001F402"
+    },
+    {
+        "id": "oyster",
+        "name": "Oyster",
+        "description": "Oyster",
+        "code": "U+0001F9AA"
+    },
+    {
+        "id": "package",
+        "name": "Package",
+        "description": "Package",
+        "code": "U+0001F4E6"
+    },
+    {
+        "id": "page_facing_up",
+        "name": "PageFacingUp",
+        "description": "Page facing up",
+        "code": "U+0001F4C4"
+    },
+    {
+        "id": "pager",
+        "name": "Pager",
+        "description": "Pager",
+        "code": "U+0001F4DF"
+    },
+    {
+        "id": "page_with_curl",
+        "name": "PageWithCurl",
+        "description": "Page with curl",
+        "code": "U+0001F4C3"
+    },
+    {
+        "id": "paintbrush",
+        "name": "Paintbrush",
+        "description": "Paintbrush",
+        "code": "U+0001F58C"
+    },
+    {
+        "id": "palms_up_together",
+        "name": "PalmsUpTogether",
+        "description": "Palms up together",
+        "code": "U+0001F932"
+    },
+    {
+        "id": "palm_tree",
+        "name": "PalmTree",
+        "description": "Palm tree",
+        "code": "U+0001F334"
+    },
+    {
+        "id": "pancakes",
+        "name": "Pancakes",
+        "description": "Pancakes",
+        "code": "U+0001F95E"
+    },
+    {
+        "id": "panda",
+        "name": "Panda",
+        "description": "Panda",
+        "code": "U+0001F43C"
+    },
+    {
+        "id": "paperclip",
+        "name": "Paperclip",
+        "description": "Paperclip",
+        "code": "U+0001F4CE"
+    },
+    {
+        "id": "parachute",
+        "name": "Parachute",
+        "description": "Parachute",
+        "code": "U+0001FA82"
+    },
+    {
+        "id": "parrot",
+        "name": "Parrot",
+        "description": "Parrot",
+        "code": "U+0001F99C"
+    },
+    {
+        "id": "part_alternation_mark",
+        "name": "PartAlternationMark",
+        "description": "Part alternation mark",
+        "code": "U+0000303D"
+    },
+    {
+        "id": "partying_face",
+        "name": "PartyingFace",
+        "description": "Partying face",
+        "code": "U+0001F973"
+    },
+    {
+        "id": "party_popper",
+        "name": "PartyPopper",
+        "description": "Party popper",
+        "code": "U+0001F389"
+    },
+    {
+        "id": "passenger_ship",
+        "name": "PassengerShip",
+        "description": "Passenger ship",
+        "code": "U+0001F6F3"
+    },
+    {
+        "id": "passport_control",
+        "name": "PassportControl",
+        "description": "Passport control",
+        "code": "U+0001F6C2"
+    },
+    {
+        "id": "pause_button",
+        "name": "PauseButton",
+        "description": "Pause button",
+        "code": "U+000023F8"
+    },
+    {
+        "id": "paw_prints",
+        "name": "PawPrints",
+        "description": "Paw prints",
+        "code": "U+0001F43E"
+    },
+    {
+        "id": "p_button",
+        "name": "PButton",
+        "description": "P button",
+        "code": "U+0001F17F"
+    },
+    {
+        "id": "peace_symbol",
+        "name": "PeaceSymbol",
+        "description": "Peace symbol",
+        "code": "U+0000262E"
+    },
+    {
+        "id": "peach",
+        "name": "Peach",
+        "description": "Peach",
+        "code": "U+0001F351"
+    },
+    {
+        "id": "peacock",
+        "name": "Peacock",
+        "description": "Peacock",
+        "code": "U+0001F99A"
+    },
+    {
+        "id": "peanuts",
+        "name": "Peanuts",
+        "description": "Peanuts",
+        "code": "U+0001F95C"
+    },
+    {
+        "id": "pear",
+        "name": "Pear",
+        "description": "Pear",
+        "code": "U+0001F350"
+    },
+    {
+        "id": "pen",
+        "name": "Pen",
+        "description": "Pen",
+        "code": "U+0001F58A"
+    },
+    {
+        "id": "pencil",
+        "name": "Pencil",
+        "description": "Pencil",
+        "code": "U+0000270F"
+    },
+    {
+        "id": "penguin",
+        "name": "Penguin",
+        "description": "Penguin",
+        "code": "U+0001F427"
+    },
+    {
+        "id": "pensive_face",
+        "name": "PensiveFace",
+        "description": "Pensive face",
+        "code": "U+0001F614"
+    },
+    {
+        "id": "people_hugging",
+        "name": "PeopleHugging",
+        "description": "People hugging",
+        "code": "U+0001FAC2"
+    },
+    {
+        "id": "people_with_bunny_ears",
+        "name": "PeopleWithBunnyEars",
+        "description": "People with bunny ears",
+        "code": "U+0001F46F"
+    },
+    {
+        "id": "people_wrestling",
+        "name": "PeopleWrestling",
+        "description": "People wrestling",
+        "code": "U+0001F93C"
+    },
+    {
+        "id": "performing_arts",
+        "name": "PerformingArts",
+        "description": "Performing arts",
+        "code": "U+0001F3AD"
+    },
+    {
+        "id": "persevering_face",
+        "name": "PerseveringFace",
+        "description": "Persevering face",
+        "code": "U+0001F623"
+    },
+    {
+        "id": "person",
+        "name": "Person",
+        "description": "Person",
+        "code": "U+0001F9D1"
+    },
+    {
+        "id": "person_beard",
+        "name": "PersonBeard",
+        "description": "Person beard",
+        "code": "U+0001F9D4"
+    },
+    {
+        "id": "person_biking",
+        "name": "PersonBiking",
+        "description": "Person biking",
+        "code": "U+0001F6B4"
+    },
+    {
+        "id": "person_blond_hair",
+        "name": "PersonBlondHair",
+        "description": "Person blond hair",
+        "code": "U+0001F471"
+    },
+    {
+        "id": "person_bouncing_ball",
+        "name": "PersonBouncingBall",
+        "description": "Person bouncing ball",
+        "code": "U+000026F9"
+    },
+    {
+        "id": "person_bowing",
+        "name": "PersonBowing",
+        "description": "Person bowing",
+        "code": "U+0001F647"
+    },
+    {
+        "id": "person_cartwheeling",
+        "name": "PersonCartwheeling",
+        "description": "Person cartwheeling",
+        "code": "U+0001F938"
+    },
+    {
+        "id": "person_climbing",
+        "name": "PersonClimbing",
+        "description": "Person climbing",
+        "code": "U+0001F9D7"
+    },
+    {
+        "id": "person_facepalming",
+        "name": "PersonFacepalming",
+        "description": "Person facepalming",
+        "code": "U+0001F926"
+    },
+    {
+        "id": "person_fencing",
+        "name": "PersonFencing",
+        "description": "Person fencing",
+        "code": "U+0001F93A"
+    },
+    {
+        "id": "person_frowning",
+        "name": "PersonFrowning",
+        "description": "Person frowning",
+        "code": "U+0001F64D"
+    },
+    {
+        "id": "person_gesturing_no",
+        "name": "PersonGesturingNo",
+        "description": "Person gesturing NO",
+        "code": "U+0001F645"
+    },
+    {
+        "id": "person_gesturing_ok",
+        "name": "PersonGesturingOk",
+        "description": "Person gesturing OK",
+        "code": "U+0001F646"
+    },
+    {
+        "id": "person_getting_haircut",
+        "name": "PersonGettingHaircut",
+        "description": "Person getting haircut",
+        "code": "U+0001F487"
+    },
+    {
+        "id": "person_getting_massage",
+        "name": "PersonGettingMassage",
+        "description": "Person getting massage",
+        "code": "U+0001F486"
+    },
+    {
+        "id": "person_golfing",
+        "name": "PersonGolfing",
+        "description": "Person golfing",
+        "code": "U+0001F3CC"
+    },
+    {
+        "id": "person_in_bed",
+        "name": "PersonInBed",
+        "description": "Person in bed",
+        "code": "U+0001F6CC"
+    },
+    {
+        "id": "person_in_lotus_position",
+        "name": "PersonInLotusPosition",
+        "description": "Person in lotus position",
+        "code": "U+0001F9D8"
+    },
+    {
+        "id": "person_in_steamy_room",
+        "name": "PersonInSteamyRoom",
+        "description": "Person in steamy room",
+        "code": "U+0001F9D6"
+    },
+    {
+        "id": "person_in_suit_levitating",
+        "name": "PersonInSuitLevitating",
+        "description": "Person in suit levitating",
+        "code": "U+0001F574"
+    },
+    {
+        "id": "person_in_tuxedo",
+        "name": "PersonInTuxedo",
+        "description": "Person in tuxedo",
+        "code": "U+0001F935"
+    },
+    {
+        "id": "person_juggling",
+        "name": "PersonJuggling",
+        "description": "Person juggling",
+        "code": "U+0001F939"
+    },
+    {
+        "id": "person_kneeling",
+        "name": "PersonKneeling",
+        "description": "Person kneeling",
+        "code": "U+0001F9CE"
+    },
+    {
+        "id": "person_lifting_weights",
+        "name": "PersonLiftingWeights",
+        "description": "Person lifting weights",
+        "code": "U+0001F3CB"
+    },
+    {
+        "id": "person_mountain_biking",
+        "name": "PersonMountainBiking",
+        "description": "Person mountain biking",
+        "code": "U+0001F6B5"
+    },
+    {
+        "id": "person_playing_handball",
+        "name": "PersonPlayingHandball",
+        "description": "Person playing handball",
+        "code": "U+0001F93E"
+    },
+    {
+        "id": "person_playing_water_polo",
+        "name": "PersonPlayingWaterPolo",
+        "description": "Person playing water polo",
+        "code": "U+0001F93D"
+    },
+    {
+        "id": "person_pouting",
+        "name": "PersonPouting",
+        "description": "Person pouting",
+        "code": "U+0001F64E"
+    },
+    {
+        "id": "person_raising_hand",
+        "name": "PersonRaisingHand",
+        "description": "Person raising hand",
+        "code": "U+0001F64B"
+    },
+    {
+        "id": "person_rowing_boat",
+        "name": "PersonRowingBoat",
+        "description": "Person rowing boat",
+        "code": "U+0001F6A3"
+    },
+    {
+        "id": "person_running",
+        "name": "PersonRunning",
+        "description": "Person running",
+        "code": "U+0001F3C3"
+    },
+    {
+        "id": "person_shrugging",
+        "name": "PersonShrugging",
+        "description": "Person shrugging",
+        "code": "U+0001F937"
+    },
+    {
+        "id": "person_standing",
+        "name": "PersonStanding",
+        "description": "Person standing",
+        "code": "U+0001F9CD"
+    },
+    {
+        "id": "person_surfing",
+        "name": "PersonSurfing",
+        "description": "Person surfing",
+        "code": "U+0001F3C4"
+    },
+    {
+        "id": "person_swimming",
+        "name": "PersonSwimming",
+        "description": "Person swimming",
+        "code": "U+0001F3CA"
+    },
+    {
+        "id": "person_taking_bath",
+        "name": "PersonTakingBath",
+        "description": "Person taking bath",
+        "code": "U+0001F6C0"
+    },
+    {
+        "id": "person_tipping_hand",
+        "name": "PersonTippingHand",
+        "description": "Person tipping hand",
+        "code": "U+0001F481"
+    },
+    {
+        "id": "person_walking",
+        "name": "PersonWalking",
+        "description": "Person walking",
+        "code": "U+0001F6B6"
+    },
+    {
+        "id": "person_wearing_turban",
+        "name": "PersonWearingTurban",
+        "description": "Person wearing turban",
+        "code": "U+0001F473"
+    },
+    {
+        "id": "person_with_skullcap",
+        "name": "PersonWithSkullcap",
+        "description": "Person with skullcap",
+        "code": "U+0001F472"
+    },
+    {
+        "id": "person_with_veil",
+        "name": "PersonWithVeil",
+        "description": "Person with veil",
+        "code": "U+0001F470"
+    },
+    {
+        "id": "petri_dish",
+        "name": "PetriDish",
+        "description": "Petri dish",
+        "code": "U+0001F9EB"
+    },
+    {
+        "id": "pick",
+        "name": "Pick",
+        "description": "Pick",
+        "code": "U+000026CF"
+    },
+    {
+        "id": "pickup_truck",
+        "name": "PickupTruck",
+        "description": "Pickup truck",
+        "code": "U+0001F6FB"
+    },
+    {
+        "id": "pie",
+        "name": "Pie",
+        "description": "Pie",
+        "code": "U+0001F967"
+    },
+    {
+        "id": "pig",
+        "name": "Pig",
+        "description": "Pig",
+        "code": "U+0001F416"
+    },
+    {
+        "id": "pig_face",
+        "name": "PigFace",
+        "description": "Pig face",
+        "code": "U+0001F437"
+    },
+    {
+        "id": "pig_nose",
+        "name": "PigNose",
+        "description": "Pig nose",
+        "code": "U+0001F43D"
+    },
+    {
+        "id": "pile_of_poo",
+        "name": "PileOfPoo",
+        "description": "Pile of poo",
+        "code": "U+0001F4A9"
+    },
+    {
+        "id": "pill",
+        "name": "Pill",
+        "description": "Pill",
+        "code": "U+0001F48A"
+    },
+    {
+        "id": "piñata",
+        "name": "Piñata",
+        "description": "Piñata",
+        "code": "U+0001FA85"
+    },
+    {
+        "id": "pinched_fingers",
+        "name": "PinchedFingers",
+        "description": "Pinched fingers",
+        "code": "U+0001F90C"
+    },
+    {
+        "id": "pinching_hand",
+        "name": "PinchingHand",
+        "description": "Pinching hand",
+        "code": "U+0001F90F"
+    },
+    {
+        "id": "pineapple",
+        "name": "Pineapple",
+        "description": "Pineapple",
+        "code": "U+0001F34D"
+    },
+    {
+        "id": "pine_decoration",
+        "name": "PineDecoration",
+        "description": "Pine decoration",
+        "code": "U+0001F38D"
+    },
+    {
+        "id": "ping_pong",
+        "name": "PingPong",
+        "description": "Ping pong",
+        "code": "U+0001F3D3"
+    },
+    {
+        "id": "pisces",
+        "name": "Pisces",
+        "description": "Pisces",
+        "code": "U+00002653"
+    },
+    {
+        "id": "pizza",
+        "name": "Pizza",
+        "description": "Pizza",
+        "code": "U+0001F355"
+    },
+    {
+        "id": "placard",
+        "name": "Placard",
+        "description": "Placard",
+        "code": "U+0001FAA7"
+    },
+    {
+        "id": "place_of_worship",
+        "name": "PlaceOfWorship",
+        "description": "Place of worship",
+        "code": "U+0001F6D0"
+    },
+    {
+        "id": "play_button",
+        "name": "PlayButton",
+        "description": "Play button",
+        "code": "U+000025B6"
+    },
+    {
+        "id": "play_or_pause_button",
+        "name": "PlayOrPauseButton",
+        "description": "Play or pause button",
+        "code": "U+000023EF"
+    },
+    {
+        "id": "pleading_face",
+        "name": "PleadingFace",
+        "description": "Pleading face",
+        "code": "U+0001F97A"
+    },
+    {
+        "id": "plunger",
+        "name": "Plunger",
+        "description": "Plunger",
+        "code": "U+0001FAA0"
+    },
+    {
+        "id": "plus",
+        "name": "Plus",
+        "description": "Plus",
+        "code": "U+00002795"
+    },
+    {
+        "id": "police_car",
+        "name": "PoliceCar",
+        "description": "Police car",
+        "code": "U+0001F693"
+    },
+    {
+        "id": "police_car_light",
+        "name": "PoliceCarLight",
+        "description": "Police car light",
+        "code": "U+0001F6A8"
+    },
+    {
+        "id": "police_officer",
+        "name": "PoliceOfficer",
+        "description": "Police officer",
+        "code": "U+0001F46E"
+    },
+    {
+        "id": "poodle",
+        "name": "Poodle",
+        "description": "Poodle",
+        "code": "U+0001F429"
+    },
+    {
+        "id": "pool_8_ball",
+        "name": "Pool8Ball",
+        "description": "Pool 8 ball",
+        "code": "U+0001F3B1"
+    },
+    {
+        "id": "popcorn",
+        "name": "Popcorn",
+        "description": "Popcorn",
+        "code": "U+0001F37F"
+    },
+    {
+        "id": "postal_horn",
+        "name": "PostalHorn",
+        "description": "Postal horn",
+        "code": "U+0001F4EF"
+    },
+    {
+        "id": "postbox",
+        "name": "Postbox",
+        "description": "Postbox",
+        "code": "U+0001F4EE"
+    },
+    {
+        "id": "post_office",
+        "name": "PostOffice",
+        "description": "Post office",
+        "code": "U+0001F3E4"
+    },
+    {
+        "id": "potable_water",
+        "name": "PotableWater",
+        "description": "Potable water",
+        "code": "U+0001F6B0"
+    },
+    {
+        "id": "potato",
+        "name": "Potato",
+        "description": "Potato",
+        "code": "U+0001F954"
+    },
+    {
+        "id": "pot_of_food",
+        "name": "PotOfFood",
+        "description": "Pot of food",
+        "code": "U+0001F372"
+    },
+    {
+        "id": "potted_plant",
+        "name": "PottedPlant",
+        "description": "Potted plant",
+        "code": "U+0001FAB4"
+    },
+    {
+        "id": "poultry_leg",
+        "name": "PoultryLeg",
+        "description": "Poultry leg",
+        "code": "U+0001F357"
+    },
+    {
+        "id": "pound_banknote",
+        "name": "PoundBanknote",
+        "description": "Pound banknote",
+        "code": "U+0001F4B7"
+    },
+    {
+        "id": "pouting_cat",
+        "name": "PoutingCat",
+        "description": "Pouting cat",
+        "code": "U+0001F63E"
+    },
+    {
+        "id": "pouting_face",
+        "name": "PoutingFace",
+        "description": "Pouting face",
+        "code": "U+0001F621"
+    },
+    {
+        "id": "prayer_beads",
+        "name": "PrayerBeads",
+        "description": "Prayer beads",
+        "code": "U+0001F4FF"
+    },
+    {
+        "id": "pregnant_woman",
+        "name": "PregnantWoman",
+        "description": "Pregnant woman",
+        "code": "U+0001F930"
+    },
+    {
+        "id": "pretzel",
+        "name": "Pretzel",
+        "description": "Pretzel",
+        "code": "U+0001F968"
+    },
+    {
+        "id": "prince",
+        "name": "Prince",
+        "description": "Prince",
+        "code": "U+0001F934"
+    },
+    {
+        "id": "princess",
+        "name": "Princess",
+        "description": "Princess",
+        "code": "U+0001F478"
+    },
+    {
+        "id": "printer",
+        "name": "Printer",
+        "description": "Printer",
+        "code": "U+0001F5A8"
+    },
+    {
+        "id": "prohibited",
+        "name": "Prohibited",
+        "description": "Prohibited",
+        "code": "U+0001F6AB"
+    },
+    {
+        "id": "purple_circle",
+        "name": "PurpleCircle",
+        "description": "Purple circle",
+        "code": "U+0001F7E3"
+    },
+    {
+        "id": "purple_heart",
+        "name": "PurpleHeart",
+        "description": "Purple heart",
+        "code": "U+0001F49C"
+    },
+    {
+        "id": "purple_square",
+        "name": "PurpleSquare",
+        "description": "Purple square",
+        "code": "U+0001F7EA"
+    },
+    {
+        "id": "purse",
+        "name": "Purse",
+        "description": "Purse",
+        "code": "U+0001F45B"
+    },
+    {
+        "id": "pushpin",
+        "name": "Pushpin",
+        "description": "Pushpin",
+        "code": "U+0001F4CC"
+    },
+    {
+        "id": "puzzle_piece",
+        "name": "PuzzlePiece",
+        "description": "Puzzle piece",
+        "code": "U+0001F9E9"
+    },
+    {
+        "id": "rabbit",
+        "name": "Rabbit",
+        "description": "Rabbit",
+        "code": "U+0001F407"
+    },
+    {
+        "id": "rabbit_face",
+        "name": "RabbitFace",
+        "description": "Rabbit face",
+        "code": "U+0001F430"
+    },
+    {
+        "id": "raccoon",
+        "name": "Raccoon",
+        "description": "Raccoon",
+        "code": "U+0001F99D"
+    },
+    {
+        "id": "racing_car",
+        "name": "RacingCar",
+        "description": "Racing car",
+        "code": "U+0001F3CE"
+    },
+    {
+        "id": "radio",
+        "name": "Radio",
+        "description": "Radio",
+        "code": "U+0001F4FB"
+    },
+    {
+        "id": "radioactive",
+        "name": "Radioactive",
+        "description": "Radioactive",
+        "code": "U+00002622"
+    },
+    {
+        "id": "radio_button",
+        "name": "RadioButton",
+        "description": "Radio button",
+        "code": "U+0001F518"
+    },
+    {
+        "id": "railway_car",
+        "name": "RailwayCar",
+        "description": "Railway car",
+        "code": "U+0001F683"
+    },
+    {
+        "id": "railway_track",
+        "name": "RailwayTrack",
+        "description": "Railway track",
+        "code": "U+0001F6E4"
+    },
+    {
+        "id": "rainbow",
+        "name": "Rainbow",
+        "description": "Rainbow",
+        "code": "U+0001F308"
+    },
+    {
+        "id": "raised_back_of_hand",
+        "name": "RaisedBackOfHand",
+        "description": "Raised back of hand",
+        "code": "U+0001F91A"
+    },
+    {
+        "id": "raised_fist",
+        "name": "RaisedFist",
+        "description": "Raised fist",
+        "code": "U+0000270A"
+    },
+    {
+        "id": "raised_hand",
+        "name": "RaisedHand",
+        "description": "Raised hand",
+        "code": "U+0000270B"
+    },
+    {
+        "id": "raising_hands",
+        "name": "RaisingHands",
+        "description": "Raising hands",
+        "code": "U+0001F64C"
+    },
+    {
+        "id": "ram",
+        "name": "Ram",
+        "description": "Ram",
+        "code": "U+0001F40F"
+    },
+    {
+        "id": "rat",
+        "name": "Rat",
+        "description": "Rat",
+        "code": "U+0001F400"
+    },
+    {
+        "id": "razor",
+        "name": "Razor",
+        "description": "Razor",
+        "code": "U+0001FA92"
+    },
+    {
+        "id": "receipt",
+        "name": "Receipt",
+        "description": "Receipt",
+        "code": "U+0001F9FE"
+    },
+    {
+        "id": "record_button",
+        "name": "RecordButton",
+        "description": "Record button",
+        "code": "U+000023FA"
+    },
+    {
+        "id": "recycling_symbol",
+        "name": "RecyclingSymbol",
+        "description": "Recycling symbol",
+        "code": "U+0000267B"
+    },
+    {
+        "id": "red_apple",
+        "name": "RedApple",
+        "description": "Red apple",
+        "code": "U+0001F34E"
+    },
+    {
+        "id": "red_circle",
+        "name": "RedCircle",
+        "description": "Red circle",
+        "code": "U+0001F534"
+    },
+    {
+        "id": "red_envelope",
+        "name": "RedEnvelope",
+        "description": "Red envelope",
+        "code": "U+0001F9E7"
+    },
+    {
+        "id": "red_exclamation_mark",
+        "name": "RedExclamationMark",
+        "description": "Red exclamation mark",
+        "code": "U+00002757"
+    },
+    {
+        "id": "red_hair",
+        "name": "RedHair",
+        "description": "Red hair",
+        "code": "U+0001F9B0"
+    },
+    {
+        "id": "red_heart",
+        "name": "RedHeart",
+        "description": "Red heart",
+        "code": "U+00002764"
+    },
+    {
+        "id": "red_paper_lantern",
+        "name": "RedPaperLantern",
+        "description": "Red paper lantern",
+        "code": "U+0001F3EE"
+    },
+    {
+        "id": "red_question_mark",
+        "name": "RedQuestionMark",
+        "description": "Red question mark",
+        "code": "U+00002753"
+    },
+    {
+        "id": "red_square",
+        "name": "RedSquare",
+        "description": "Red square",
+        "code": "U+0001F7E5"
+    },
+    {
+        "id": "red_triangle_pointed_down",
+        "name": "RedTrianglePointedDown",
+        "description": "Red triangle pointed down",
+        "code": "U+0001F53B"
+    },
+    {
+        "id": "red_triangle_pointed_up",
+        "name": "RedTrianglePointedUp",
+        "description": "Red triangle pointed up",
+        "code": "U+0001F53A"
+    },
+    {
+        "id": "registered",
+        "name": "Registered",
+        "description": "Registered",
+        "code": "U+000000AE"
+    },
+    {
+        "id": "relieved_face",
+        "name": "RelievedFace",
+        "description": "Relieved face",
+        "code": "U+0001F60C"
+    },
+    {
+        "id": "reminder_ribbon",
+        "name": "ReminderRibbon",
+        "description": "Reminder ribbon",
+        "code": "U+0001F397"
+    },
+    {
+        "id": "repeat_button",
+        "name": "RepeatButton",
+        "description": "Repeat button",
+        "code": "U+0001F501"
+    },
+    {
+        "id": "repeat_single_button",
+        "name": "RepeatSingleButton",
+        "description": "Repeat single button",
+        "code": "U+0001F502"
+    },
+    {
+        "id": "rescue_workers_helmet",
+        "name": "RescueWorkersHelmet",
+        "description": "Rescue worker s helmet",
+        "code": "U+000026D1"
+    },
+    {
+        "id": "restroom",
+        "name": "Restroom",
+        "description": "Restroom",
+        "code": "U+0001F6BB"
+    },
+    {
+        "id": "reverse_button",
+        "name": "ReverseButton",
+        "description": "Reverse button",
+        "code": "U+000025C0"
+    },
+    {
+        "id": "revolving_hearts",
+        "name": "RevolvingHearts",
+        "description": "Revolving hearts",
+        "code": "U+0001F49E"
+    },
+    {
+        "id": "rhinoceros",
+        "name": "Rhinoceros",
+        "description": "Rhinoceros",
+        "code": "U+0001F98F"
+    },
+    {
+        "id": "ribbon",
+        "name": "Ribbon",
+        "description": "Ribbon",
+        "code": "U+0001F380"
+    },
+    {
+        "id": "rice_ball",
+        "name": "RiceBall",
+        "description": "Rice ball",
+        "code": "U+0001F359"
+    },
+    {
+        "id": "rice_cracker",
+        "name": "RiceCracker",
+        "description": "Rice cracker",
+        "code": "U+0001F358"
+    },
+    {
+        "id": "right_anger_bubble",
+        "name": "RightAngerBubble",
+        "description": "Right anger bubble",
+        "code": "U+0001F5EF"
+    },
+    {
+        "id": "right_arrow",
+        "name": "RightArrow",
+        "description": "Right arrow",
+        "code": "U+000027A1"
+    },
+    {
+        "id": "right_arrow_curving_down",
+        "name": "RightArrowCurvingDown",
+        "description": "Right arrow curving down",
+        "code": "U+00002935"
+    },
+    {
+        "id": "right_arrow_curving_left",
+        "name": "RightArrowCurvingLeft",
+        "description": "Right arrow curving left",
+        "code": "U+000021A9"
+    },
+    {
+        "id": "right_arrow_curving_up",
+        "name": "RightArrowCurvingUp",
+        "description": "Right arrow curving up",
+        "code": "U+00002934"
+    },
+    {
+        "id": "right_facing_fist",
+        "name": "RightFacingFist",
+        "description": "right facing fist",
+        "code": "U+0001F91C"
+    },
+    {
+        "id": "ring",
+        "name": "Ring",
+        "description": "Ring",
+        "code": "U+0001F48D"
+    },
+    {
+        "id": "ringed_planet",
+        "name": "RingedPlanet",
+        "description": "Ringed planet",
+        "code": "U+0001FA90"
+    },
+    {
+        "id": "roasted_sweet_potato",
+        "name": "RoastedSweetPotato",
+        "description": "Roasted sweet potato",
+        "code": "U+0001F360"
+    },
+    {
+        "id": "robot",
+        "name": "Robot",
+        "description": "Robot",
+        "code": "U+0001F916"
+    },
+    {
+        "id": "rock",
+        "name": "Rock",
+        "description": "Rock",
+        "code": "U+0001FAA8"
+    },
+    {
+        "id": "rocket",
+        "name": "Rocket",
+        "description": "Rocket",
+        "code": "U+0001F680"
+    },
+    {
+        "id": "rolled_up_newspaper",
+        "name": "RolledUpNewspaper",
+        "description": "rolled up newspaper",
+        "code": "U+0001F5DE"
+    },
+    {
+        "id": "roller_coaster",
+        "name": "RollerCoaster",
+        "description": "Roller coaster",
+        "code": "U+0001F3A2"
+    },
+    {
+        "id": "roller_skate",
+        "name": "RollerSkate",
+        "description": "Roller skate",
+        "code": "U+0001F6FC"
+    },
+    {
+        "id": "rolling_on_the_floor_laughing",
+        "name": "RollingOnTheFloorLaughing",
+        "description": "Rolling on the floor laughing",
+        "code": "U+0001F923"
+    },
+    {
+        "id": "roll_of_paper",
+        "name": "RollOfPaper",
+        "description": "Roll of paper",
+        "code": "U+0001F9FB"
+    },
+    {
+        "id": "rooster",
+        "name": "Rooster",
+        "description": "Rooster",
+        "code": "U+0001F413"
+    },
+    {
+        "id": "rose",
+        "name": "Rose",
+        "description": "Rose",
+        "code": "U+0001F339"
+    },
+    {
+        "id": "rosette",
+        "name": "Rosette",
+        "description": "Rosette",
+        "code": "U+0001F3F5"
+    },
+    {
+        "id": "round_pushpin",
+        "name": "RoundPushpin",
+        "description": "Round pushpin",
+        "code": "U+0001F4CD"
+    },
+    {
+        "id": "rugby_football",
+        "name": "RugbyFootball",
+        "description": "Rugby football",
+        "code": "U+0001F3C9"
+    },
+    {
+        "id": "running_shirt",
+        "name": "RunningShirt",
+        "description": "Running shirt",
+        "code": "U+0001F3BD"
+    },
+    {
+        "id": "running_shoe",
+        "name": "RunningShoe",
+        "description": "Running shoe",
+        "code": "U+0001F45F"
+    },
+    {
+        "id": "sad_but_relieved_face",
+        "name": "SadButRelievedFace",
+        "description": "Sad but relieved face",
+        "code": "U+0001F625"
+    },
+    {
+        "id": "safety_pin",
+        "name": "SafetyPin",
+        "description": "Safety pin",
+        "code": "U+0001F9F7"
+    },
+    {
+        "id": "safety_vest",
+        "name": "SafetyVest",
+        "description": "Safety vest",
+        "code": "U+0001F9BA"
+    },
+    {
+        "id": "sagittarius",
+        "name": "Sagittarius",
+        "description": "Sagittarius",
+        "code": "U+00002650"
+    },
+    {
+        "id": "sailboat",
+        "name": "Sailboat",
+        "description": "Sailboat",
+        "code": "U+000026F5"
+    },
+    {
+        "id": "sake",
+        "name": "Sake",
+        "description": "Sake",
+        "code": "U+0001F376"
+    },
+    {
+        "id": "salt",
+        "name": "Salt",
+        "description": "Salt",
+        "code": "U+0001F9C2"
+    },
+    {
+        "id": "sandwich",
+        "name": "Sandwich",
+        "description": "Sandwich",
+        "code": "U+0001F96A"
+    },
+    {
+        "id": "santa_claus",
+        "name": "SantaClaus",
+        "description": "Santa claus",
+        "code": "U+0001F385"
+    },
+    {
+        "id": "sari",
+        "name": "Sari",
+        "description": "Sari",
+        "code": "U+0001F97B"
+    },
+    {
+        "id": "satellite",
+        "name": "Satellite",
+        "description": "Satellite",
+        "code": "U+0001F6F0"
+    },
+    {
+        "id": "satellite_antenna",
+        "name": "SatelliteAntenna",
+        "description": "Satellite antenna",
+        "code": "U+0001F4E1"
+    },
+    {
+        "id": "sauropod",
+        "name": "Sauropod",
+        "description": "Sauropod",
+        "code": "U+0001F995"
+    },
+    {
+        "id": "saxophone",
+        "name": "Saxophone",
+        "description": "Saxophone",
+        "code": "U+0001F3B7"
+    },
+    {
+        "id": "scarf",
+        "name": "Scarf",
+        "description": "Scarf",
+        "code": "U+0001F9E3"
+    },
+    {
+        "id": "school",
+        "name": "School",
+        "description": "School",
+        "code": "U+0001F3EB"
+    },
+    {
+        "id": "scissors",
+        "name": "Scissors",
+        "description": "Scissors",
+        "code": "U+00002702"
+    },
+    {
+        "id": "scorpio",
+        "name": "Scorpio",
+        "description": "Scorpio",
+        "code": "U+0000264F"
+    },
+    {
+        "id": "scorpion",
+        "name": "Scorpion",
+        "description": "Scorpion",
+        "code": "U+0001F982"
+    },
+    {
+        "id": "screwdriver",
+        "name": "Screwdriver",
+        "description": "Screwdriver",
+        "code": "U+0001FA9B"
+    },
+    {
+        "id": "scroll",
+        "name": "Scroll",
+        "description": "Scroll",
+        "code": "U+0001F4DC"
+    },
+    {
+        "id": "seal",
+        "name": "Seal",
+        "description": "Seal",
+        "code": "U+0001F9AD"
+    },
+    {
+        "id": "seat",
+        "name": "Seat",
+        "description": "Seat",
+        "code": "U+0001F4BA"
+    },
+    {
+        "id": "2nd_place_medal",
+        "name": "SecondPlaceMedal",
+        "description": "2nd place medal",
+        "code": "U+0001F948"
+    },
+    {
+        "id": "seedling",
+        "name": "Seedling",
+        "description": "Seedling",
+        "code": "U+0001F331"
+    },
+    {
+        "id": "see_no_evil_monkey",
+        "name": "SeeNoEvilMonkey",
+        "description": "see no evil monkey",
+        "code": "U+0001F648"
+    },
+    {
+        "id": "selfie",
+        "name": "Selfie",
+        "description": "Selfie",
+        "code": "U+0001F933"
+    },
+    {
+        "id": "seven_o_clock",
+        "name": "SevenOClock",
+        "description": "Seven o clock",
+        "code": "U+0001F556"
+    },
+    {
+        "id": "seven_thirty",
+        "name": "SevenThirty",
+        "description": "seven thirty",
+        "code": "U+0001F562"
+    },
+    {
+        "id": "sewing_needle",
+        "name": "SewingNeedle",
+        "description": "Sewing needle",
+        "code": "U+0001FAA1"
+    },
+    {
+        "id": "shallow_pan_of_food",
+        "name": "ShallowPanOfFood",
+        "description": "Shallow pan of food",
+        "code": "U+0001F958"
+    },
+    {
+        "id": "shamrock",
+        "name": "Shamrock",
+        "description": "Shamrock",
+        "code": "U+00002618"
+    },
+    {
+        "id": "shark",
+        "name": "Shark",
+        "description": "Shark",
+        "code": "U+0001F988"
+    },
+    {
+        "id": "shaved_ice",
+        "name": "ShavedIce",
+        "description": "Shaved ice",
+        "code": "U+0001F367"
+    },
+    {
+        "id": "sheaf_of_rice",
+        "name": "SheafOfRice",
+        "description": "Sheaf of rice",
+        "code": "U+0001F33E"
+    },
+    {
+        "id": "shield",
+        "name": "Shield",
+        "description": "Shield",
+        "code": "U+0001F6E1"
+    },
+    {
+        "id": "shinto_shrine",
+        "name": "ShintoShrine",
+        "description": "Shinto shrine",
+        "code": "U+000026E9"
+    },
+    {
+        "id": "ship",
+        "name": "Ship",
+        "description": "Ship",
+        "code": "U+0001F6A2"
+    },
+    {
+        "id": "shooting_star",
+        "name": "ShootingStar",
+        "description": "Shooting star",
+        "code": "U+0001F320"
+    },
+    {
+        "id": "shopping_bags",
+        "name": "ShoppingBags",
+        "description": "Shopping bags",
+        "code": "U+0001F6CD"
+    },
+    {
+        "id": "shopping_cart",
+        "name": "ShoppingCart",
+        "description": "Shopping cart",
+        "code": "U+0001F6D2"
+    },
+    {
+        "id": "shortcake",
+        "name": "Shortcake",
+        "description": "Shortcake",
+        "code": "U+0001F370"
+    },
+    {
+        "id": "shorts",
+        "name": "Shorts",
+        "description": "Shorts",
+        "code": "U+0001FA73"
+    },
+    {
+        "id": "shower",
+        "name": "Shower",
+        "description": "Shower",
+        "code": "U+0001F6BF"
+    },
+    {
+        "id": "shrimp",
+        "name": "Shrimp",
+        "description": "Shrimp",
+        "code": "U+0001F990"
+    },
+    {
+        "id": "shuffle_tracks_button",
+        "name": "ShuffleTracksButton",
+        "description": "Shuffle tracks button",
+        "code": "U+0001F500"
+    },
+    {
+        "id": "shushing_face",
+        "name": "ShushingFace",
+        "description": "Shushing face",
+        "code": "U+0001F92B"
+    },
+    {
+        "id": "sign_of_the_horns",
+        "name": "SignOfTheHorns",
+        "description": "Sign of the horns",
+        "code": "U+0001F918"
+    },
+    {
+        "id": "six_o_clock",
+        "name": "SixOClock",
+        "description": "Six o clock",
+        "code": "U+0001F555"
+    },
+    {
+        "id": "six_thirty",
+        "name": "SixThirty",
+        "description": "six thirty",
+        "code": "U+0001F561"
+    },
+    {
+        "id": "skateboard",
+        "name": "Skateboard",
+        "description": "Skateboard",
+        "code": "U+0001F6F9"
+    },
+    {
+        "id": "skier",
+        "name": "Skier",
+        "description": "Skier",
+        "code": "U+000026F7"
+    },
+    {
+        "id": "skis",
+        "name": "Skis",
+        "description": "Skis",
+        "code": "U+0001F3BF"
+    },
+    {
+        "id": "skull",
+        "name": "Skull",
+        "description": "Skull",
+        "code": "U+0001F480"
+    },
+    {
+        "id": "skull_and_crossbones",
+        "name": "SkullAndCrossbones",
+        "description": "Skull and crossbones",
+        "code": "U+00002620"
+    },
+    {
+        "id": "skunk",
+        "name": "Skunk",
+        "description": "Skunk",
+        "code": "U+0001F9A8"
+    },
+    {
+        "id": "sled",
+        "name": "Sled",
+        "description": "Sled",
+        "code": "U+0001F6F7"
+    },
+    {
+        "id": "sleeping_face",
+        "name": "SleepingFace",
+        "description": "Sleeping face",
+        "code": "U+0001F634"
+    },
+    {
+        "id": "sleepy_face",
+        "name": "SleepyFace",
+        "description": "Sleepy face",
+        "code": "U+0001F62A"
+    },
+    {
+        "id": "slightly_frowning_face",
+        "name": "SlightlyFrowningFace",
+        "description": "Slightly frowning face",
+        "code": "U+0001F641"
+    },
+    {
+        "id": "slightly_smiling_face",
+        "name": "SlightlySmilingFace",
+        "description": "Slightly smiling face",
+        "code": "U+0001F642"
+    },
+    {
+        "id": "sloth",
+        "name": "Sloth",
+        "description": "Sloth",
+        "code": "U+0001F9A5"
+    },
+    {
+        "id": "slot_machine",
+        "name": "SlotMachine",
+        "description": "Slot machine",
+        "code": "U+0001F3B0"
+    },
+    {
+        "id": "small_airplane",
+        "name": "SmallAirplane",
+        "description": "Small airplane",
+        "code": "U+0001F6E9"
+    },
+    {
+        "id": "small_blue_diamond",
+        "name": "SmallBlueDiamond",
+        "description": "Small blue diamond",
+        "code": "U+0001F539"
+    },
+    {
+        "id": "small_orange_diamond",
+        "name": "SmallOrangeDiamond",
+        "description": "Small orange diamond",
+        "code": "U+0001F538"
+    },
+    {
+        "id": "smiling_cat_with_heart_eyes",
+        "name": "SmilingCatWithHeartEyes",
+        "description": "smiling cat with heart eyes",
+        "code": "U+0001F63B"
+    },
+    {
+        "id": "smiling_face",
+        "name": "SmilingFace",
+        "description": "Smiling face",
+        "code": "U+0000263A"
+    },
+    {
+        "id": "smiling_face_with_halo",
+        "name": "SmilingFaceWithHalo",
+        "description": "Smiling face with halo",
+        "code": "U+0001F607"
+    },
+    {
+        "id": "smiling_face_with_heart_eyes",
+        "name": "SmilingFaceWithHeartEyes",
+        "description": "smiling face with heart eyes",
+        "code": "U+0001F60D"
+    },
+    {
+        "id": "smiling_face_with_hearts",
+        "name": "SmilingFaceWithHearts",
+        "description": "Smiling face with hearts",
+        "code": "U+0001F970"
+    },
+    {
+        "id": "smiling_face_with_horns",
+        "name": "SmilingFaceWithHorns",
+        "description": "Smiling face with horns",
+        "code": "U+0001F608"
+    },
+    {
+        "id": "smiling_face_with_smiling_eyes",
+        "name": "SmilingFaceWithSmilingEyes",
+        "description": "Smiling face with smiling eyes",
+        "code": "U+0001F60A"
+    },
+    {
+        "id": "smiling_face_with_sunglasses",
+        "name": "SmilingFaceWithSunglasses",
+        "description": "Smiling face with sunglasses",
+        "code": "U+0001F60E"
+    },
+    {
+        "id": "smiling_face_with_tear",
+        "name": "SmilingFaceWithTear",
+        "description": "Smiling face with tear",
+        "code": "U+0001F972"
+    },
+    {
+        "id": "smirking_face",
+        "name": "SmirkingFace",
+        "description": "Smirking face",
+        "code": "U+0001F60F"
+    },
+    {
+        "id": "snail",
+        "name": "Snail",
+        "description": "Snail",
+        "code": "U+0001F40C"
+    },
+    {
+        "id": "snake",
+        "name": "Snake",
+        "description": "Snake",
+        "code": "U+0001F40D"
+    },
+    {
+        "id": "sneezing_face",
+        "name": "SneezingFace",
+        "description": "Sneezing face",
+        "code": "U+0001F927"
+    },
+    {
+        "id": "snowboarder",
+        "name": "Snowboarder",
+        "description": "Snowboarder",
+        "code": "U+0001F3C2"
+    },
+    {
+        "id": "snow_capped_mountain",
+        "name": "SnowCappedMountain",
+        "description": "snow capped mountain",
+        "code": "U+0001F3D4"
+    },
+    {
+        "id": "snowflake",
+        "name": "Snowflake",
+        "description": "Snowflake",
+        "code": "U+00002744"
+    },
+    {
+        "id": "snowman",
+        "name": "Snowman",
+        "description": "Snowman",
+        "code": "U+00002603"
+    },
+    {
+        "id": "snowman_without_snow",
+        "name": "SnowmanWithoutSnow",
+        "description": "Snowman without snow",
+        "code": "U+000026C4"
+    },
+    {
+        "id": "soap",
+        "name": "Soap",
+        "description": "Soap",
+        "code": "U+0001F9FC"
+    },
+    {
+        "id": "soccer_ball",
+        "name": "SoccerBall",
+        "description": "Soccer ball",
+        "code": "U+000026BD"
+    },
+    {
+        "id": "socks",
+        "name": "Socks",
+        "description": "Socks",
+        "code": "U+0001F9E6"
+    },
+    {
+        "id": "softball",
+        "name": "Softball",
+        "description": "Softball",
+        "code": "U+0001F94E"
+    },
+    {
+        "id": "soft_ice_cream",
+        "name": "SoftIceCream",
+        "description": "Soft ice cream",
+        "code": "U+0001F366"
+    },
+    {
+        "id": "soon_arrow",
+        "name": "SoonArrow",
+        "description": "SOON arrow",
+        "code": "U+0001F51C"
+    },
+    {
+        "id": "sos_button",
+        "name": "SosButton",
+        "description": "SOS button",
+        "code": "U+0001F198"
+    },
+    {
+        "id": "spade_suit",
+        "name": "SpadeSuit",
+        "description": "Spade suit",
+        "code": "U+00002660"
+    },
+    {
+        "id": "spaghetti",
+        "name": "Spaghetti",
+        "description": "Spaghetti",
+        "code": "U+0001F35D"
+    },
+    {
+        "id": "sparkle",
+        "name": "Sparkle",
+        "description": "Sparkle",
+        "code": "U+00002747"
+    },
+    {
+        "id": "sparkler",
+        "name": "Sparkler",
+        "description": "Sparkler",
+        "code": "U+0001F387"
+    },
+    {
+        "id": "sparkles",
+        "name": "Sparkles",
+        "description": "Sparkles",
+        "code": "U+00002728"
+    },
+    {
+        "id": "sparkling_heart",
+        "name": "SparklingHeart",
+        "description": "Sparkling heart",
+        "code": "U+0001F496"
+    },
+    {
+        "id": "speaker_high_volume",
+        "name": "SpeakerHighVolume",
+        "description": "Speaker high volume",
+        "code": "U+0001F50A"
+    },
+    {
+        "id": "speaker_low_volume",
+        "name": "SpeakerLowVolume",
+        "description": "Speaker low volume",
+        "code": "U+0001F508"
+    },
+    {
+        "id": "speaker_medium_volume",
+        "name": "SpeakerMediumVolume",
+        "description": "Speaker medium volume",
+        "code": "U+0001F509"
+    },
+    {
+        "id": "speaking_head",
+        "name": "SpeakingHead",
+        "description": "Speaking head",
+        "code": "U+0001F5E3"
+    },
+    {
+        "id": "speak_no_evil_monkey",
+        "name": "SpeakNoEvilMonkey",
+        "description": "speak no evil monkey",
+        "code": "U+0001F64A"
+    },
+    {
+        "id": "speech_balloon",
+        "name": "SpeechBalloon",
+        "description": "Speech balloon",
+        "code": "U+0001F4AC"
+    },
+    {
+        "id": "speedboat",
+        "name": "Speedboat",
+        "description": "Speedboat",
+        "code": "U+0001F6A4"
+    },
+    {
+        "id": "spider",
+        "name": "Spider",
+        "description": "Spider",
+        "code": "U+0001F577"
+    },
+    {
+        "id": "spider_web",
+        "name": "SpiderWeb",
+        "description": "Spider web",
+        "code": "U+0001F578"
+    },
+    {
+        "id": "spiral_calendar",
+        "name": "SpiralCalendar",
+        "description": "Spiral calendar",
+        "code": "U+0001F5D3"
+    },
+    {
+        "id": "spiral_notepad",
+        "name": "SpiralNotepad",
+        "description": "Spiral notepad",
+        "code": "U+0001F5D2"
+    },
+    {
+        "id": "spiral_shell",
+        "name": "SpiralShell",
+        "description": "Spiral shell",
+        "code": "U+0001F41A"
+    },
+    {
+        "id": "sponge",
+        "name": "Sponge",
+        "description": "Sponge",
+        "code": "U+0001F9FD"
+    },
+    {
+        "id": "spoon",
+        "name": "Spoon",
+        "description": "Spoon",
+        "code": "U+0001F944"
+    },
+    {
+        "id": "sports_medal",
+        "name": "SportsMedal",
+        "description": "Sports medal",
+        "code": "U+0001F3C5"
+    },
+    {
+        "id": "sport_utility_vehicle",
+        "name": "SportUtilityVehicle",
+        "description": "Sport utility vehicle",
+        "code": "U+0001F699"
+    },
+    {
+        "id": "spouting_whale",
+        "name": "SpoutingWhale",
+        "description": "Spouting whale",
+        "code": "U+0001F433"
+    },
+    {
+        "id": "squid",
+        "name": "Squid",
+        "description": "Squid",
+        "code": "U+0001F991"
+    },
+    {
+        "id": "squinting_face_with_tongue",
+        "name": "SquintingFaceWithTongue",
+        "description": "Squinting face with tongue",
+        "code": "U+0001F61D"
+    },
+    {
+        "id": "stadium",
+        "name": "Stadium",
+        "description": "Stadium",
+        "code": "U+0001F3DF"
+    },
+    {
+        "id": "star",
+        "name": "Star",
+        "description": "Star",
+        "code": "U+00002B50"
+    },
+    {
+        "id": "star_and_crescent",
+        "name": "StarAndCrescent",
+        "description": "Star and crescent",
+        "code": "U+0000262A"
+    },
+    {
+        "id": "star_of_david",
+        "name": "StarOfDavid",
+        "description": "Star of david",
+        "code": "U+00002721"
+    },
+    {
+        "id": "star_struck",
+        "name": "StarStruck",
+        "description": "star struck",
+        "code": "U+0001F929"
+    },
+    {
+        "id": "station",
+        "name": "Station",
+        "description": "Station",
+        "code": "U+0001F689"
+    },
+    {
+        "id": "statue_of_liberty",
+        "name": "StatueOfLiberty",
+        "description": "Statue of liberty",
+        "code": "U+0001F5FD"
+    },
+    {
+        "id": "steaming_bowl",
+        "name": "SteamingBowl",
+        "description": "Steaming bowl",
+        "code": "U+0001F35C"
+    },
+    {
+        "id": "stethoscope",
+        "name": "Stethoscope",
+        "description": "Stethoscope",
+        "code": "U+0001FA7A"
+    },
+    {
+        "id": "stop_button",
+        "name": "StopButton",
+        "description": "Stop button",
+        "code": "U+000023F9"
+    },
+    {
+        "id": "stop_sign",
+        "name": "StopSign",
+        "description": "Stop sign",
+        "code": "U+0001F6D1"
+    },
+    {
+        "id": "stopwatch",
+        "name": "Stopwatch",
+        "description": "Stopwatch",
+        "code": "U+000023F1"
+    },
+    {
+        "id": "straight_ruler",
+        "name": "StraightRuler",
+        "description": "Straight ruler",
+        "code": "U+0001F4CF"
+    },
+    {
+        "id": "strawberry",
+        "name": "Strawberry",
+        "description": "Strawberry",
+        "code": "U+0001F353"
+    },
+    {
+        "id": "studio_microphone",
+        "name": "StudioMicrophone",
+        "description": "Studio microphone",
+        "code": "U+0001F399"
+    },
+    {
+        "id": "stuffed_flatbread",
+        "name": "StuffedFlatbread",
+        "description": "Stuffed flatbread",
+        "code": "U+0001F959"
+    },
+    {
+        "id": "sun",
+        "name": "Sun",
+        "description": "Sun",
+        "code": "U+00002600"
+    },
+    {
+        "id": "sun_behind_cloud",
+        "name": "SunBehindCloud",
+        "description": "Sun behind cloud",
+        "code": "U+000026C5"
+    },
+    {
+        "id": "sun_behind_large_cloud",
+        "name": "SunBehindLargeCloud",
+        "description": "Sun behind large cloud",
+        "code": "U+0001F325"
+    },
+    {
+        "id": "sun_behind_rain_cloud",
+        "name": "SunBehindRainCloud",
+        "description": "Sun behind rain cloud",
+        "code": "U+0001F326"
+    },
+    {
+        "id": "sun_behind_small_cloud",
+        "name": "SunBehindSmallCloud",
+        "description": "Sun behind small cloud",
+        "code": "U+0001F324"
+    },
+    {
+        "id": "sunflower",
+        "name": "Sunflower",
+        "description": "Sunflower",
+        "code": "U+0001F33B"
+    },
+    {
+        "id": "sunglasses",
+        "name": "Sunglasses",
+        "description": "Sunglasses",
+        "code": "U+0001F576"
+    },
+    {
+        "id": "sunrise",
+        "name": "Sunrise",
+        "description": "Sunrise",
+        "code": "U+0001F305"
+    },
+    {
+        "id": "sunrise_over_mountains",
+        "name": "SunriseOverMountains",
+        "description": "Sunrise over mountains",
+        "code": "U+0001F304"
+    },
+    {
+        "id": "sunset",
+        "name": "Sunset",
+        "description": "Sunset",
+        "code": "U+0001F307"
+    },
+    {
+        "id": "sun_with_face",
+        "name": "SunWithFace",
+        "description": "Sun with face",
+        "code": "U+0001F31E"
+    },
+    {
+        "id": "superhero",
+        "name": "Superhero",
+        "description": "Superhero",
+        "code": "U+0001F9B8"
+    },
+    {
+        "id": "supervillain",
+        "name": "Supervillain",
+        "description": "Supervillain",
+        "code": "U+0001F9B9"
+    },
+    {
+        "id": "sushi",
+        "name": "Sushi",
+        "description": "Sushi",
+        "code": "U+0001F363"
+    },
+    {
+        "id": "suspension_railway",
+        "name": "SuspensionRailway",
+        "description": "Suspension railway",
+        "code": "U+0001F69F"
+    },
+    {
+        "id": "swan",
+        "name": "Swan",
+        "description": "Swan",
+        "code": "U+0001F9A2"
+    },
+    {
+        "id": "sweat_droplets",
+        "name": "SweatDroplets",
+        "description": "Sweat droplets",
+        "code": "U+0001F4A6"
+    },
+    {
+        "id": "synagogue",
+        "name": "Synagogue",
+        "description": "Synagogue",
+        "code": "U+0001F54D"
+    },
+    {
+        "id": "syringe",
+        "name": "Syringe",
+        "description": "Syringe",
+        "code": "U+0001F489"
+    },
+    {
+        "id": "taco",
+        "name": "Taco",
+        "description": "Taco",
+        "code": "U+0001F32E"
+    },
+    {
+        "id": "takeout_box",
+        "name": "TakeoutBox",
+        "description": "Takeout box",
+        "code": "U+0001F961"
+    },
+    {
+        "id": "tamale",
+        "name": "Tamale",
+        "description": "Tamale",
+        "code": "U+0001FAD4"
+    },
+    {
+        "id": "tanabata_tree",
+        "name": "TanabataTree",
+        "description": "Tanabata tree",
+        "code": "U+0001F38B"
+    },
+    {
+        "id": "tangerine",
+        "name": "Tangerine",
+        "description": "Tangerine",
+        "code": "U+0001F34A"
+    },
+    {
+        "id": "taurus",
+        "name": "Taurus",
+        "description": "Taurus",
+        "code": "U+00002649"
+    },
+    {
+        "id": "taxi",
+        "name": "Taxi",
+        "description": "Taxi",
+        "code": "U+0001F695"
+    },
+    {
+        "id": "teacup_without_handle",
+        "name": "TeacupWithoutHandle",
+        "description": "Teacup without handle",
+        "code": "U+0001F375"
+    },
+    {
+        "id": "teapot",
+        "name": "Teapot",
+        "description": "Teapot",
+        "code": "U+0001FAD6"
+    },
+    {
+        "id": "tear_off_calendar",
+        "name": "TearOffCalendar",
+        "description": "tear off calendar",
+        "code": "U+0001F4C6"
+    },
+    {
+        "id": "teddy_bear",
+        "name": "TeddyBear",
+        "description": "Teddy bear",
+        "code": "U+0001F9F8"
+    },
+    {
+        "id": "telephone",
+        "name": "Telephone",
+        "description": "Telephone",
+        "code": "U+0000260E"
+    },
+    {
+        "id": "telephone_receiver",
+        "name": "TelephoneReceiver",
+        "description": "Telephone receiver",
+        "code": "U+0001F4DE"
+    },
+    {
+        "id": "telescope",
+        "name": "Telescope",
+        "description": "Telescope",
+        "code": "U+0001F52D"
+    },
+    {
+        "id": "television",
+        "name": "Television",
+        "description": "Television",
+        "code": "U+0001F4FA"
+    },
+    {
+        "id": "tennis",
+        "name": "Tennis",
+        "description": "Tennis",
+        "code": "U+0001F3BE"
+    },
+    {
+        "id": "ten_o_clock",
+        "name": "TenOClock",
+        "description": "Ten o clock",
+        "code": "U+0001F559"
+    },
+    {
+        "id": "tent",
+        "name": "Tent",
+        "description": "Tent",
+        "code": "U+000026FA"
+    },
+    {
+        "id": "ten_thirty",
+        "name": "TenThirty",
+        "description": "ten thirty",
+        "code": "U+0001F565"
+    },
+    {
+        "id": "test_tube",
+        "name": "TestTube",
+        "description": "Test tube",
+        "code": "U+0001F9EA"
+    },
+    {
+        "id": "thermometer",
+        "name": "Thermometer",
+        "description": "Thermometer",
+        "code": "U+0001F321"
+    },
+    {
+        "id": "thinking_face",
+        "name": "ThinkingFace",
+        "description": "Thinking face",
+        "code": "U+0001F914"
+    },
+    {
+        "id": "3rd_place_medal",
+        "name": "ThirdPlaceMedal",
+        "description": "3rd place medal",
+        "code": "U+0001F949"
+    },
+    {
+        "id": "thong_sandal",
+        "name": "ThongSandal",
+        "description": "Thong sandal",
+        "code": "U+0001FA74"
+    },
+    {
+        "id": "thought_balloon",
+        "name": "ThoughtBalloon",
+        "description": "Thought balloon",
+        "code": "U+0001F4AD"
+    },
+    {
+        "id": "thread",
+        "name": "Thread",
+        "description": "Thread",
+        "code": "U+0001F9F5"
+    },
+    {
+        "id": "three_o_clock",
+        "name": "ThreeOClock",
+        "description": "Three o clock",
+        "code": "U+0001F552"
+    },
+    {
+        "id": "three_thirty",
+        "name": "ThreeThirty",
+        "description": "three thirty",
+        "code": "U+0001F55E"
+    },
+    {
+        "id": "thumbs_down",
+        "name": "ThumbsDown",
+        "description": "Thumbs down",
+        "code": "U+0001F44E"
+    },
+    {
+        "id": "thumbs_up",
+        "name": "ThumbsUp",
+        "description": "Thumbs up",
+        "code": "U+0001F44D"
+    },
+    {
+        "id": "ticket",
+        "name": "Ticket",
+        "description": "Ticket",
+        "code": "U+0001F3AB"
+    },
+    {
+        "id": "tiger",
+        "name": "Tiger",
+        "description": "Tiger",
+        "code": "U+0001F405"
+    },
+    {
+        "id": "tiger_face",
+        "name": "TigerFace",
+        "description": "Tiger face",
+        "code": "U+0001F42F"
+    },
+    {
+        "id": "timer_clock",
+        "name": "TimerClock",
+        "description": "Timer clock",
+        "code": "U+000023F2"
+    },
+    {
+        "id": "tired_face",
+        "name": "TiredFace",
+        "description": "Tired face",
+        "code": "U+0001F62B"
+    },
+    {
+        "id": "toilet",
+        "name": "Toilet",
+        "description": "Toilet",
+        "code": "U+0001F6BD"
+    },
+    {
+        "id": "tokyo_tower",
+        "name": "TokyoTower",
+        "description": "Tokyo tower",
+        "code": "U+0001F5FC"
+    },
+    {
+        "id": "tomato",
+        "name": "Tomato",
+        "description": "Tomato",
+        "code": "U+0001F345"
+    },
+    {
+        "id": "tongue",
+        "name": "Tongue",
+        "description": "Tongue",
+        "code": "U+0001F445"
+    },
+    {
+        "id": "toolbox",
+        "name": "Toolbox",
+        "description": "Toolbox",
+        "code": "U+0001F9F0"
+    },
+    {
+        "id": "tooth",
+        "name": "Tooth",
+        "description": "Tooth",
+        "code": "U+0001F9B7"
+    },
+    {
+        "id": "toothbrush",
+        "name": "Toothbrush",
+        "description": "Toothbrush",
+        "code": "U+0001FAA5"
+    },
+    {
+        "id": "top_arrow",
+        "name": "TopArrow",
+        "description": "TOP arrow",
+        "code": "U+0001F51D"
+    },
+    {
+        "id": "top_hat",
+        "name": "TopHat",
+        "description": "Top hat",
+        "code": "U+0001F3A9"
+    },
+    {
+        "id": "tornado",
+        "name": "Tornado",
+        "description": "Tornado",
+        "code": "U+0001F32A"
+    },
+    {
+        "id": "trackball",
+        "name": "Trackball",
+        "description": "Trackball",
+        "code": "U+0001F5B2"
+    },
+    {
+        "id": "tractor",
+        "name": "Tractor",
+        "description": "Tractor",
+        "code": "U+0001F69C"
+    },
+    {
+        "id": "trade_mark",
+        "name": "TradeMark",
+        "description": "Trade mark",
+        "code": "U+00002122"
+    },
+    {
+        "id": "train",
+        "name": "Train",
+        "description": "Train",
+        "code": "U+0001F686"
+    },
+    {
+        "id": "tram",
+        "name": "Tram",
+        "description": "Tram",
+        "code": "U+0001F68A"
+    },
+    {
+        "id": "tram_car",
+        "name": "TramCar",
+        "description": "Tram car",
+        "code": "U+0001F68B"
+    },
+    {
+        "id": "transgender_symbol",
+        "name": "TransgenderSymbol",
+        "description": "Transgender symbol",
+        "code": "U+000026A7"
+    },
+    {
+        "id": "t_rex",
+        "name": "TRex",
+        "description": "T Rex",
+        "code": "U+0001F996"
+    },
+    {
+        "id": "triangular_flag",
+        "name": "TriangularFlag",
+        "description": "Triangular flag",
+        "code": "U+0001F6A9"
+    },
+    {
+        "id": "triangular_ruler",
+        "name": "TriangularRuler",
+        "description": "Triangular ruler",
+        "code": "U+0001F4D0"
+    },
+    {
+        "id": "trident_emblem",
+        "name": "TridentEmblem",
+        "description": "Trident emblem",
+        "code": "U+0001F531"
+    },
+    {
+        "id": "trolleybus",
+        "name": "Trolleybus",
+        "description": "Trolleybus",
+        "code": "U+0001F68E"
+    },
+    {
+        "id": "trophy",
+        "name": "Trophy",
+        "description": "Trophy",
+        "code": "U+0001F3C6"
+    },
+    {
+        "id": "tropical_drink",
+        "name": "TropicalDrink",
+        "description": "Tropical drink",
+        "code": "U+0001F379"
+    },
+    {
+        "id": "tropical_fish",
+        "name": "TropicalFish",
+        "description": "Tropical fish",
+        "code": "U+0001F420"
+    },
+    {
+        "id": "trumpet",
+        "name": "Trumpet",
+        "description": "Trumpet",
+        "code": "U+0001F3BA"
+    },
+    {
+        "id": "t_shirt",
+        "name": "TShirt",
+        "description": "t shirt",
+        "code": "U+0001F455"
+    },
+    {
+        "id": "tulip",
+        "name": "Tulip",
+        "description": "Tulip",
+        "code": "U+0001F337"
+    },
+    {
+        "id": "tumbler_glass",
+        "name": "TumblerGlass",
+        "description": "Tumbler glass",
+        "code": "U+0001F943"
+    },
+    {
+        "id": "turkey",
+        "name": "Turkey",
+        "description": "Turkey",
+        "code": "U+0001F983"
+    },
+    {
+        "id": "turtle",
+        "name": "Turtle",
+        "description": "Turtle",
+        "code": "U+0001F422"
+    },
+    {
+        "id": "twelve_o_clock",
+        "name": "TwelveOClock",
+        "description": "Twelve o clock",
+        "code": "U+0001F55B"
+    },
+    {
+        "id": "twelve_thirty",
+        "name": "TwelveThirty",
+        "description": "twelve thirty",
+        "code": "U+0001F567"
+    },
+    {
+        "id": "two_hearts",
+        "name": "TwoHearts",
+        "description": "Two hearts",
+        "code": "U+0001F495"
+    },
+    {
+        "id": "two_hump_camel",
+        "name": "TwoHumpCamel",
+        "description": "two hump camel",
+        "code": "U+0001F42B"
+    },
+    {
+        "id": "two_o_clock",
+        "name": "TwoOClock",
+        "description": "Two o clock",
+        "code": "U+0001F551"
+    },
+    {
+        "id": "two_thirty",
+        "name": "TwoThirty",
+        "description": "two thirty",
+        "code": "U+0001F55D"
+    },
+    {
+        "id": "umbrella",
+        "name": "Umbrella",
+        "description": "Umbrella",
+        "code": "U+00002602"
+    },
+    {
+        "id": "umbrella_on_ground",
+        "name": "UmbrellaOnGround",
+        "description": "Umbrella on ground",
+        "code": "U+000026F1"
+    },
+    {
+        "id": "umbrella_with_rain_drops",
+        "name": "UmbrellaWithRainDrops",
+        "description": "Umbrella with rain drops",
+        "code": "U+00002614"
+    },
+    {
+        "id": "unamused_face",
+        "name": "UnamusedFace",
+        "description": "Unamused face",
+        "code": "U+0001F612"
+    },
+    {
+        "id": "unicorn",
+        "name": "Unicorn",
+        "description": "Unicorn",
+        "code": "U+0001F984"
+    },
+    {
+        "id": "unlocked",
+        "name": "Unlocked",
+        "description": "Unlocked",
+        "code": "U+0001F513"
+    },
+    {
+        "id": "up_arrow",
+        "name": "UpArrow",
+        "description": "Up arrow",
+        "code": "U+00002B06"
+    },
+    {
+        "id": "up_button",
+        "name": "UpButton",
+        "description": "UP button",
+        "code": "U+0001F199"
+    },
+    {
+        "id": "up_down_arrow",
+        "name": "UpDownArrow",
+        "description": "up down arrow",
+        "code": "U+00002195"
+    },
+    {
+        "id": "up_left_arrow",
+        "name": "UpLeftArrow",
+        "description": "up left arrow",
+        "code": "U+00002196"
+    },
+    {
+        "id": "up_right_arrow",
+        "name": "UpRightArrow",
+        "description": "up right arrow",
+        "code": "U+00002197"
+    },
+    {
+        "id": "upside_down_face",
+        "name": "UpsideDownFace",
+        "description": "upside down face",
+        "code": "U+0001F643"
+    },
+    {
+        "id": "upwards_button",
+        "name": "UpwardsButton",
+        "description": "Upwards button",
+        "code": "U+0001F53C"
+    },
+    {
+        "id": "vampire",
+        "name": "Vampire",
+        "description": "Vampire",
+        "code": "U+0001F9DB"
+    },
+    {
+        "id": "vertical_traffic_light",
+        "name": "VerticalTrafficLight",
+        "description": "Vertical traffic light",
+        "code": "U+0001F6A6"
+    },
+    {
+        "id": "vibration_mode",
+        "name": "VibrationMode",
+        "description": "Vibration mode",
+        "code": "U+0001F4F3"
+    },
+    {
+        "id": "victory_hand",
+        "name": "VictoryHand",
+        "description": "Victory hand",
+        "code": "U+0000270C"
+    },
+    {
+        "id": "video_camera",
+        "name": "VideoCamera",
+        "description": "Video camera",
+        "code": "U+0001F4F9"
+    },
+    {
+        "id": "videocassette",
+        "name": "Videocassette",
+        "description": "Videocassette",
+        "code": "U+0001F4FC"
+    },
+    {
+        "id": "video_game",
+        "name": "VideoGame",
+        "description": "Video game",
+        "code": "U+0001F3AE"
+    },
+    {
+        "id": "violin",
+        "name": "Violin",
+        "description": "Violin",
+        "code": "U+0001F3BB"
+    },
+    {
+        "id": "virgo",
+        "name": "Virgo",
+        "description": "Virgo",
+        "code": "U+0000264D"
+    },
+    {
+        "id": "volcano",
+        "name": "Volcano",
+        "description": "Volcano",
+        "code": "U+0001F30B"
+    },
+    {
+        "id": "volleyball",
+        "name": "Volleyball",
+        "description": "Volleyball",
+        "code": "U+0001F3D0"
+    },
+    {
+        "id": "vs_button",
+        "name": "VsButton",
+        "description": "VS button",
+        "code": "U+0001F19A"
+    },
+    {
+        "id": "vulcan_salute",
+        "name": "VulcanSalute",
+        "description": "Vulcan salute",
+        "code": "U+0001F596"
+    },
+    {
+        "id": "waffle",
+        "name": "Waffle",
+        "description": "Waffle",
+        "code": "U+0001F9C7"
+    },
+    {
+        "id": "waning_crescent_moon",
+        "name": "WaningCrescentMoon",
+        "description": "Waning crescent moon",
+        "code": "U+0001F318"
+    },
+    {
+        "id": "waning_gibbous_moon",
+        "name": "WaningGibbousMoon",
+        "description": "Waning gibbous moon",
+        "code": "U+0001F316"
+    },
+    {
+        "id": "warning",
+        "name": "Warning",
+        "description": "Warning",
+        "code": "U+000026A0"
+    },
+    {
+        "id": "wastebasket",
+        "name": "Wastebasket",
+        "description": "Wastebasket",
+        "code": "U+0001F5D1"
+    },
+    {
+        "id": "watch",
+        "name": "Watch",
+        "description": "Watch",
+        "code": "U+0000231A"
+    },
+    {
+        "id": "water_buffalo",
+        "name": "WaterBuffalo",
+        "description": "Water buffalo",
+        "code": "U+0001F403"
+    },
+    {
+        "id": "water_closet",
+        "name": "WaterCloset",
+        "description": "Water closet",
+        "code": "U+0001F6BE"
+    },
+    {
+        "id": "watermelon",
+        "name": "Watermelon",
+        "description": "Watermelon",
+        "code": "U+0001F349"
+    },
+    {
+        "id": "water_pistol",
+        "name": "WaterPistol",
+        "description": "Water pistol",
+        "code": "U+0001F52B"
+    },
+    {
+        "id": "water_wave",
+        "name": "WaterWave",
+        "description": "Water wave",
+        "code": "U+0001F30A"
+    },
+    {
+        "id": "waving_hand",
+        "name": "WavingHand",
+        "description": "Waving hand",
+        "code": "U+0001F44B"
+    },
+    {
+        "id": "wavy_dash",
+        "name": "WavyDash",
+        "description": "Wavy dash",
+        "code": "U+00003030"
+    },
+    {
+        "id": "waxing_crescent_moon",
+        "name": "WaxingCrescentMoon",
+        "description": "Waxing crescent moon",
+        "code": "U+0001F312"
+    },
+    {
+        "id": "waxing_gibbous_moon",
+        "name": "WaxingGibbousMoon",
+        "description": "Waxing gibbous moon",
+        "code": "U+0001F314"
+    },
+    {
+        "id": "weary_cat",
+        "name": "WearyCat",
+        "description": "Weary cat",
+        "code": "U+0001F640"
+    },
+    {
+        "id": "weary_face",
+        "name": "WearyFace",
+        "description": "Weary face",
+        "code": "U+0001F629"
+    },
+    {
+        "id": "wedding",
+        "name": "Wedding",
+        "description": "Wedding",
+        "code": "U+0001F492"
+    },
+    {
+        "id": "whale",
+        "name": "Whale",
+        "description": "Whale",
+        "code": "U+0001F40B"
+    },
+    {
+        "id": "wheelchair_symbol",
+        "name": "WheelchairSymbol",
+        "description": "Wheelchair symbol",
+        "code": "U+0000267F"
+    },
+    {
+        "id": "wheel_of_dharma",
+        "name": "WheelOfDharma",
+        "description": "Wheel of dharma",
+        "code": "U+00002638"
+    },
+    {
+        "id": "white_cane",
+        "name": "WhiteCane",
+        "description": "White cane",
+        "code": "U+0001F9AF"
+    },
+    {
+        "id": "white_circle",
+        "name": "WhiteCircle",
+        "description": "White circle",
+        "code": "U+000026AA"
+    },
+    {
+        "id": "white_exclamation_mark",
+        "name": "WhiteExclamationMark",
+        "description": "White exclamation mark",
+        "code": "U+00002755"
+    },
+    {
+        "id": "white_flag",
+        "name": "WhiteFlag",
+        "description": "White flag",
+        "code": "U+0001F3F3"
+    },
+    {
+        "id": "white_flower",
+        "name": "WhiteFlower",
+        "description": "White flower",
+        "code": "U+0001F4AE"
+    },
+    {
+        "id": "white_hair",
+        "name": "WhiteHair",
+        "description": "White hair",
+        "code": "U+0001F9B3"
+    },
+    {
+        "id": "white_heart",
+        "name": "WhiteHeart",
+        "description": "White heart",
+        "code": "U+0001F90D"
+    },
+    {
+        "id": "white_large_square",
+        "name": "WhiteLargeSquare",
+        "description": "White large square",
+        "code": "U+00002B1C"
+    },
+    {
+        "id": "white_medium_small_square",
+        "name": "WhiteMediumSmallSquare",
+        "description": "white medium small square",
+        "code": "U+000025FD"
+    },
+    {
+        "id": "white_medium_square",
+        "name": "WhiteMediumSquare",
+        "description": "White medium square",
+        "code": "U+000025FB"
+    },
+    {
+        "id": "white_question_mark",
+        "name": "WhiteQuestionMark",
+        "description": "White question mark",
+        "code": "U+00002754"
+    },
+    {
+        "id": "white_small_square",
+        "name": "WhiteSmallSquare",
+        "description": "White small square",
+        "code": "U+000025AB"
+    },
+    {
+        "id": "white_square_button",
+        "name": "WhiteSquareButton",
+        "description": "White square button",
+        "code": "U+0001F533"
+    },
+    {
+        "id": "wilted_flower",
+        "name": "WiltedFlower",
+        "description": "Wilted flower",
+        "code": "U+0001F940"
+    },
+    {
+        "id": "wind_chime",
+        "name": "WindChime",
+        "description": "Wind chime",
+        "code": "U+0001F390"
+    },
+    {
+        "id": "wind_face",
+        "name": "WindFace",
+        "description": "Wind face",
+        "code": "U+0001F32C"
+    },
+    {
+        "id": "window",
+        "name": "Window",
+        "description": "Window",
+        "code": "U+0001FA9F"
+    },
+    {
+        "id": "wine_glass",
+        "name": "WineGlass",
+        "description": "Wine glass",
+        "code": "U+0001F377"
+    },
+    {
+        "id": "winking_face",
+        "name": "WinkingFace",
+        "description": "Winking face",
+        "code": "U+0001F609"
+    },
+    {
+        "id": "winking_face_with_tongue",
+        "name": "WinkingFaceWithTongue",
+        "description": "Winking face with tongue",
+        "code": "U+0001F61C"
+    },
+    {
+        "id": "wolf",
+        "name": "Wolf",
+        "description": "Wolf",
+        "code": "U+0001F43A"
+    },
+    {
+        "id": "woman",
+        "name": "Woman",
+        "description": "Woman",
+        "code": "U+0001F469"
+    },
+    {
+        "id": "woman_and_man_holding_hands",
+        "name": "WomanAndManHoldingHands",
+        "description": "Woman and man holding hands",
+        "code": "U+0001F46B"
+    },
+    {
+        "id": "woman_dancing",
+        "name": "WomanDancing",
+        "description": "Woman dancing",
+        "code": "U+0001F483"
+    },
+    {
+        "id": "womans_boot",
+        "name": "WomansBoot",
+        "description": "Woman s boot",
+        "code": "U+0001F462"
+    },
+    {
+        "id": "womans_clothes",
+        "name": "WomansClothes",
+        "description": "Woman s clothes",
+        "code": "U+0001F45A"
+    },
+    {
+        "id": "womans_hat",
+        "name": "WomansHat",
+        "description": "Woman s hat",
+        "code": "U+0001F452"
+    },
+    {
+        "id": "womans_sandal",
+        "name": "WomansSandal",
+        "description": "Woman s sandal",
+        "code": "U+0001F461"
+    },
+    {
+        "id": "woman_with_headscarf",
+        "name": "WomanWithHeadscarf",
+        "description": "Woman with headscarf",
+        "code": "U+0001F9D5"
+    },
+    {
+        "id": "women_holding_hands",
+        "name": "WomenHoldingHands",
+        "description": "Women holding hands",
+        "code": "U+0001F46D"
+    },
+    {
+        "id": "womens_room",
+        "name": "WomensRoom",
+        "description": "Women s room",
+        "code": "U+0001F6BA"
+    },
+    {
+        "id": "wood",
+        "name": "Wood",
+        "description": "Wood",
+        "code": "U+0001FAB5"
+    },
+    {
+        "id": "woozy_face",
+        "name": "WoozyFace",
+        "description": "Woozy face",
+        "code": "U+0001F974"
+    },
+    {
+        "id": "world_map",
+        "name": "WorldMap",
+        "description": "World map",
+        "code": "U+0001F5FA"
+    },
+    {
+        "id": "worm",
+        "name": "Worm",
+        "description": "Worm",
+        "code": "U+0001FAB1"
+    },
+    {
+        "id": "worried_face",
+        "name": "WorriedFace",
+        "description": "Worried face",
+        "code": "U+0001F61F"
+    },
+    {
+        "id": "wrapped_gift",
+        "name": "WrappedGift",
+        "description": "Wrapped gift",
+        "code": "U+0001F381"
+    },
+    {
+        "id": "wrench",
+        "name": "Wrench",
+        "description": "Wrench",
+        "code": "U+0001F527"
+    },
+    {
+        "id": "writing_hand",
+        "name": "WritingHand",
+        "description": "Writing hand",
+        "code": "U+0000270D"
+    },
+    {
+        "id": "yarn",
+        "name": "Yarn",
+        "description": "Yarn",
+        "code": "U+0001F9F6"
+    },
+    {
+        "id": "yawning_face",
+        "name": "YawningFace",
+        "description": "Yawning face",
+        "code": "U+0001F971"
+    },
+    {
+        "id": "yellow_circle",
+        "name": "YellowCircle",
+        "description": "Yellow circle",
+        "code": "U+0001F7E1"
+    },
+    {
+        "id": "yellow_heart",
+        "name": "YellowHeart",
+        "description": "Yellow heart",
+        "code": "U+0001F49B"
+    },
+    {
+        "id": "yellow_square",
+        "name": "YellowSquare",
+        "description": "Yellow square",
+        "code": "U+0001F7E8"
+    },
+    {
+        "id": "yen_banknote",
+        "name": "YenBanknote",
+        "description": "Yen banknote",
+        "code": "U+0001F4B4"
+    },
+    {
+        "id": "yin_yang",
+        "name": "YinYang",
+        "description": "Yin yang",
+        "code": "U+0000262F"
+    },
+    {
+        "id": "yo_yo",
+        "name": "YoYo",
+        "description": "yo yo",
+        "code": "U+0001FA80"
+    },
+    {
+        "id": "zany_face",
+        "name": "ZanyFace",
+        "description": "Zany face",
+        "code": "U+0001F92A"
+    },
+    {
+        "id": "zebra",
+        "name": "Zebra",
+        "description": "Zebra",
+        "code": "U+0001F993"
+    },
+    {
+        "id": "zipper_mouth_face",
+        "name": "ZipperMouthFace",
+        "description": "zipper mouth face",
+        "code": "U+0001F910"
+    },
+    {
+        "id": "zombie",
+        "name": "Zombie",
+        "description": "Zombie",
+        "code": "U+0001F9DF"
+    },
+    {
+        "id": "zzz",
+        "name": "Zzz",
+        "description": "Zzz",
+        "code": "U+0001F4A4"
+    }
+]

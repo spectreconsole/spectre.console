@@ -12,8 +12,8 @@ namespace Info
                 .AddRow("[b]:artist_palette: Color system[/]", $"{AnsiConsole.Capabilities.ColorSystem}")
                 .AddRow("[b]:nail_polish: Supports ansi?[/]", $"{GetEmoji(AnsiConsole.Capabilities.SupportsAnsi)}")
                 .AddRow("[b]:top_hat: Legacy console?[/]", $"{GetEmoji(AnsiConsole.Capabilities.LegacyConsole)}")
-                .AddRow("[b]:left-right_arrow: Buffer width[/]", $"{AnsiConsole.Console.Width}")
-                .AddRow("[b]:up-down_arrow: Buffer height[/]", $"{AnsiConsole.Console.Height}");
+                .AddRow("[b]:left_right_arrow: Buffer width[/]", $"{AnsiConsole.Console.Width}")
+                .AddRow("[b]:up_down_arrow: Buffer height[/]", $"{AnsiConsole.Console.Height}");
 
             AnsiConsole.Render(
                 new Panel(grid)

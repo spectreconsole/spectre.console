@@ -55,5 +55,8 @@ namespace Generator.Commands
     {
         [CommandArgument(0, "<OUTPUT>")]
         public string Output { get; set; }
+
+        [CommandOption("-i|--input <PATH>")]
+        public string Input { get; set; }
     }
 }
