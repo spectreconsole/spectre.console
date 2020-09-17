@@ -83,7 +83,7 @@ namespace Spectre.Console
                 }
 
                 // Missing space on right side?
-                var lineWidth = line.CellWidth(context.Encoding);
+                var lineWidth = line.CellWidth(context);
                 var diff = width - lineWidth - Padding.Left - Padding.Right;
                 if (diff > 0)
                 {

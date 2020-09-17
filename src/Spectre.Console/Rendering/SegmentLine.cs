@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
 
 namespace Spectre.Console.Rendering
 {
@@ -19,11 +18,11 @@ namespace Spectre.Console.Rendering
         /// <summary>
         /// Gets the cell width of the segment line.
         /// </summary>
-        /// <param name="encoding">The encoding to use.</param>
+        /// <param name="context">The render context.</param>
         /// <returns>The cell width of the segment line.</returns>
-        public int CellWidth(Encoding encoding)
+        public int CellWidth(RenderContext context)
         {
-            return this.Sum(line => line.CellLength(encoding));
+            return this.Sum(line => line.CellLength(context));
         }
 
         /// <summary>

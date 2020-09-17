@@ -119,8 +119,8 @@ namespace Spectre.Console
                 return new Measurement(0, 0);
             }
 
-            var min = _lines.Max(line => line.Max(segment => segment.CellLength(context.Encoding)));
-            var max = _lines.Max(x => x.CellWidth(context.Encoding));
+            var min = _lines.Max(line => line.Max(segment => segment.CellLength(context)));
+            var max = _lines.Max(x => x.CellWidth(context));
 
             return new Measurement(min, Math.Min(max, maxWidth));
         }
@@ -144,7 +144,7 @@ namespace Spectre.Console
             var justification = context.Justification ?? Alignment ?? Justify.Left;
             foreach (var (_, _, last, line) in lines.Enumerate())
             {
-                var length = line.Sum(l => l.StripLineEndings().CellLength(context.Encoding));
+                var length = line.Sum(l => l.StripLineEndings().CellLength(context));
                 if (length < maxWidth)
                 {
                     // Justify right side
@@ -193,7 +193,7 @@ namespace Spectre.Console
 
         private List<SegmentLine> SplitLines(RenderContext context, int maxWidth)
         {
-            if (_lines.Max(x => x.CellWidth(context.Encoding)) <= maxWidth)
+            if (_lines.Max(x => x.CellWidth(context)) <= maxWidth)
             {
                 return Clone();
             }
@@ -244,15 +244,15 @@ namespace Spectre.Console
                     continue;
                 }
 
-                var length = current.CellLength(context.Encoding);
+                var length = current.CellLength(context);
                 if (length > maxWidth)
                 {
                     // The current segment is longer than the width of the console,
                     // so we will need to crop it up, into new segments.
-                    var segments = Segment.SplitOverflow(current, Overflow, context.Encoding, maxWidth);
+                    var segments = Segment.SplitOverflow(current, Overflow, context, maxWidth);
                     if (segments.Count > 0)
                     {
-                        if (line.CellWidth(context.Encoding) + segments[0].CellLength(context.Encoding) > maxWidth)
+                        if (line.CellWidth(context) + segments[0].CellLength(context) > maxWidth)
                         {
                             lines.Add(line);
                             line = new SegmentLine();
@@ -272,7 +272,7 @@ namespace Spectre.Console
                 }
                 else
                 {
-                    if (line.CellWidth(context.Encoding) + length > maxWidth)
+                    if (line.CellWidth(context) + length > maxWidth)
                     {
                         line.Add(Segment.Empty);
                         lines.Add(line);
