@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console.Internal
 {
@@ -61,14 +62,14 @@ namespace Spectre.Console.Internal
             Capabilities = capabilities;
         }
 
-        public void Write(string text, Style style)
+        public void Write(Segment segment)
         {
-            if (_lastStyle?.Equals(style) != true)
+            if (_lastStyle?.Equals(segment.Style) != true)
             {
-                SetStyle(style);
+                SetStyle(segment.Style);
             }
 
-            _out.Write(text.NormalizeLineEndings(native: true));
+            _out.Write(segment.Text.NormalizeLineEndings(native: true));
         }
 
         private void SetStyle(Style style)

@@ -21,10 +21,12 @@ namespace Spectre.Console
             return console;
         });
 
+        private static Recorder? _recorder;
+
         /// <summary>
         /// Gets the underlying <see cref="IAnsiConsole"/>.
         /// </summary>
-        public static IAnsiConsole Console => _console.Value;
+        public static IAnsiConsole Console => _recorder ?? _console.Value;
 
         /// <summary>
         /// Gets the console's capabilities.

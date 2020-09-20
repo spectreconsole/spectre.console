@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Security.Cryptography;
 using Spectre.Console.Internal;
 
 namespace Spectre.Console
@@ -58,6 +59,35 @@ namespace Spectre.Console
             B = blue;
             IsDefault = false;
             Number = null;
+        }
+
+        /// <summary>
+        /// Blends two colors.
+        /// </summary>
+        /// <param name="other">The other color.</param>
+        /// <param name="factor">The blend factor.</param>
+        /// <returns>The resulting color.</returns>
+        public Color Blend(Color other, float factor)
+        {
+            // https://github.com/willmcgugan/rich/blob/f092b1d04252e6f6812021c0f415dd1d7be6a16a/rich/color.py#L494
+            return new Color(
+                (byte)(R + ((other.R - R) * factor)),
+                (byte)(G + ((other.G - G) * factor)),
+                (byte)(B + ((other.B - B) * factor)));
+        }
+
+        /// <summary>
+        /// Gets the hexadecimal representation of the color.
+        /// </summary>
+        /// <returns>The hexadecimal representation of the color.</returns>
+        public string ToHex()
+        {
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                "{0}{1}{2}",
+                R.ToString("X2", CultureInfo.InvariantCulture),
+                G.ToString("X2", CultureInfo.InvariantCulture),
+                B.ToString("X2", CultureInfo.InvariantCulture));
         }
 
         /// <inheritdoc/>
