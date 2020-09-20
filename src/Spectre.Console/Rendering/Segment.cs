@@ -72,7 +72,7 @@ namespace Spectre.Console.Rendering
             }
 
             Text = text.NormalizeLineEndings();
-            Style = style;
+            Style = style ?? throw new ArgumentNullException(nameof(style));
             IsLineBreak = lineBreak;
             IsWhiteSpace = string.IsNullOrWhiteSpace(text);
         }

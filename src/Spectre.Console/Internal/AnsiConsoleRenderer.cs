@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console.Internal
 {
@@ -48,21 +49,14 @@ namespace Spectre.Console.Internal
             _ansiBuilder = new AnsiBuilder(Capabilities, linkHasher);
         }
 
-        public void Write(string text, Style style)
+        public void Write(Segment segment)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                return;
-            }
-
-            style ??= Style.Plain;
-
-            var parts = text.NormalizeLineEndings().Split(new[] { '\n' });
+            var parts = segment.Text.NormalizeLineEndings().Split(new[] { '\n' });
             foreach (var (_, _, last, part) in parts.Enumerate())
             {
                 if (!string.IsNullOrEmpty(part))
                 {
-                    _out.Write(_ansiBuilder.GetAnsi(part, style));
+                    _out.Write(_ansiBuilder.GetAnsi(part, segment.Style));
                 }
 
                 if (!last)

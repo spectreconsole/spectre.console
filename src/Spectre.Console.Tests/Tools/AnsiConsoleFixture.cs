@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using Spectre.Console.Rendering;
 using Spectre.Console.Tests.Tools;
 
 namespace Spectre.Console.Tests
@@ -36,9 +37,9 @@ namespace Spectre.Console.Tests
             _writer?.Dispose();
         }
 
-        public void Write(string text, Style style)
+        public void Write(Segment segment)
         {
-            _console.Write(text, style);
+            _console.Write(segment);
         }
     }
 }

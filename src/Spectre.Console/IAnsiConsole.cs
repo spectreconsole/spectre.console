@@ -1,4 +1,5 @@
 using System.Text;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
@@ -30,8 +31,7 @@ namespace Spectre.Console
         /// <summary>
         /// Writes a string followed by a line terminator to the console.
         /// </summary>
-        /// <param name="text">The string to write.</param>
-        /// <param name="style">The style to use.</param>
-        void Write(string text, Style style);
+        /// <param name="segment">The segment to write.</param>
+        void Write(Segment segment);
     }
 }
