@@ -13,7 +13,6 @@ namespace Spectre.Console.Internal
                 throw new ArgumentNullException(nameof(text));
             }
 
-            text = Emoji.Replace(text);
             style ??= Style.Plain;
 
             var result = new Paragraph();
@@ -47,7 +46,7 @@ namespace Spectre.Console.Internal
                 {
                     // Get the effecive style.
                     var effectiveStyle = style.Combine(stack.Reverse());
-                    result.Append(token.Value, effectiveStyle);
+                    result.Append(Emoji.Replace(token.Value), effectiveStyle);
                 }
                 else
                 {

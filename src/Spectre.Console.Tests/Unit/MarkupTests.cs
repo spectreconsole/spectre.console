@@ -36,5 +36,21 @@ namespace Spectre.Console.Tests.Unit
             // Then
             console.Output.ShouldBe("Hello [ World ] !");
         }
+
+        [Theory]
+        [InlineData("Hello [link=http://example.com]example.com[/]", "Hello example.com")]
+        [InlineData("Hello [link=http://example.com]http://example.com[/]", "Hello http://example.com")]
+        public void Should_Render_Links_As_Expected(string input, string output)
+        {
+            // Given
+            var console = new PlainConsole();
+            var markup = new Markup(input);
+
+            // When
+            console.Render(markup);
+
+            // Then
+            console.Output.ShouldBe(output);
+        }
     }
 }
