@@ -15,7 +15,7 @@ namespace Spectre.Console.Rendering
         /// <summary>
         /// Gets the segment text.
         /// </summary>
-        public string Text { get; private set; }
+        public string Text { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not this is an expicit line break
@@ -38,12 +38,12 @@ namespace Spectre.Console.Rendering
         /// <summary>
         /// Gets a segment representing a line break.
         /// </summary>
-        public static Segment LineBreak => new Segment(Environment.NewLine, Style.Plain, true);
+        public static Segment LineBreak { get; } = new Segment(Environment.NewLine, Style.Plain, true);
 
         /// <summary>
         /// Gets an empty segment.
         /// </summary>
-        public static Segment Empty => new Segment(string.Empty, Style.Plain, false);
+        public static Segment Empty { get; } = new Segment(string.Empty, Style.Plain, false);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Segment"/> class.
@@ -241,12 +241,10 @@ namespace Spectre.Console.Rendering
                 // Same style?
                 if (previous.Style.Equals(segment.Style))
                 {
-                    // Modify the content of the previous segment
-                    previous.Text += segment.Text;
+                    previous = new Segment(previous.Text + segment.Text, previous.Style);
                 }
                 else
                 {
-                    // Push the current one to the results.
                     result.Add(previous);
                     previous = segment;
                 }
@@ -258,6 +256,15 @@ namespace Spectre.Console.Rendering
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Clones the segment.
+        /// </summary>
+        /// <returns>A new segment that's identical to this one.</returns>
+        public Segment Clone()
+        {
+            return new Segment(Text, Style);
         }
 
         /// <summary>
