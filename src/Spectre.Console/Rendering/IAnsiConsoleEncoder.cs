@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Spectre.Console.Rendering;
 
-namespace Spectre.Console
+namespace Spectre.Console.Rendering
 {
     /// <summary>
     /// Represents a console encoder that can encode
