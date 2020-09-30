@@ -8,14 +8,14 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable panel.
     /// </summary>
-    public sealed class Panel : Renderable, IHasBorder, IExpandable, IPaddable
+    public sealed class Panel : Renderable, IHasBoxBorder, IExpandable, IPaddable
     {
         private const int EdgeWidth = 2;
 
         private readonly IRenderable _child;
 
         /// <inheritdoc/>
-        public Border Border { get; set; } = Border.Square;
+        public BoxBorder Border { get; set; } = BoxBorder.Square;
 
         /// <inheritdoc/>
         public bool UseSafeBorder { get; set; } = true;
@@ -95,7 +95,7 @@ namespace Spectre.Console
             var childSegments = ((IRenderable)child).Render(context, childWidth);
             foreach (var line in Segment.SplitLines(childSegments, panelWidth))
             {
-                result.Add(new Segment(border.GetPart(BorderPart.CellLeft), borderStyle));
+                result.Add(new Segment(border.GetPart(BoxBorderPart.Left), borderStyle));
 
                 var content = new List<Segment>();
                 content.AddRange(line);
@@ -110,7 +110,7 @@ namespace Spectre.Console
 
                 result.AddRange(content);
 
-                result.Add(new Segment(border.GetPart(BorderPart.CellRight), borderStyle));
+                result.Add(new Segment(border.GetPart(BoxBorderPart.Right), borderStyle));
                 result.Add(Segment.LineBreak);
             }
 
@@ -120,17 +120,17 @@ namespace Spectre.Console
             return result;
         }
 
-        private static void AddBottomBorder(List<Segment> result, Border border, Style borderStyle, int panelWidth)
+        private static void AddBottomBorder(List<Segment> result, BoxBorder border, Style borderStyle, int panelWidth)
         {
-            result.Add(new Segment(border.GetPart(BorderPart.FooterBottomLeft), borderStyle));
-            result.Add(new Segment(border.GetPart(BorderPart.FooterBottom, panelWidth - EdgeWidth), borderStyle));
-            result.Add(new Segment(border.GetPart(BorderPart.FooterBottomRight), borderStyle));
+            result.Add(new Segment(border.GetPart(BoxBorderPart.BottomLeft), borderStyle));
+            result.Add(new Segment(border.GetPart(BoxBorderPart.Bottom, panelWidth - EdgeWidth), borderStyle));
+            result.Add(new Segment(border.GetPart(BoxBorderPart.BottomRight), borderStyle));
             result.Add(Segment.LineBreak);
         }
 
-        private void AddTopBorder(List<Segment> segments, RenderContext context, Border border, Style borderStyle, int panelWidth)
+        private void AddTopBorder(List<Segment> segments, RenderContext context, BoxBorder border, Style borderStyle, int panelWidth)
         {
-            segments.Add(new Segment(border.GetPart(BorderPart.HeaderTopLeft), borderStyle));
+            segments.Add(new Segment(border.GetPart(BoxBorderPart.TopLeft), borderStyle));
 
             if (Header != null)
             {
@@ -160,16 +160,16 @@ namespace Spectre.Console
                     }
                 }
 
-                segments.Add(new Segment(border.GetPart(BorderPart.HeaderTop, leftSpacing + 1), borderStyle));
+                segments.Add(new Segment(border.GetPart(BoxBorderPart.Top, leftSpacing + 1), borderStyle));
                 segments.Add(header);
-                segments.Add(new Segment(border.GetPart(BorderPart.HeaderTop, rightSpacing + 1), borderStyle));
+                segments.Add(new Segment(border.GetPart(BoxBorderPart.Top, rightSpacing + 1), borderStyle));
             }
             else
             {
-                segments.Add(new Segment(border.GetPart(BorderPart.HeaderTop, panelWidth - EdgeWidth), borderStyle));
+                segments.Add(new Segment(border.GetPart(BoxBorderPart.Top, panelWidth - EdgeWidth), borderStyle));
             }
 
-            segments.Add(new Segment(border.GetPart(BorderPart.HeaderTopRight), borderStyle));
+            segments.Add(new Segment(border.GetPart(BoxBorderPart.TopRight), borderStyle));
             segments.Add(Segment.LineBreak);
         }
     }

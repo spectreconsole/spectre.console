@@ -2,6 +2,6 @@
   "projects": [ "src" ],
   "sdk": {
     "version": "3.1.301",
-    "rollForward": "latestMajor"
+    "rollForward": "latestPatch"
   }
 }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -14,11 +14,14 @@
     <Compile Update="AnsiConsole.*.cs">
       <DependentUpon>AnsiConsole.cs</DependentUpon>
     </Compile>
-    <Compile Update="Color.*.cs">
-      <DependentUpon>Color.cs</DependentUpon>
-    </Compile>
     <Compile Update="Border.*.cs">
       <DependentUpon>Border.cs</DependentUpon>
+    </Compile>
+    <Compile Update="BoxBorder.*.cs">
+      <DependentUpon>BoxBorder.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Color.*.cs">
+      <DependentUpon>Color.cs</DependentUpon>
     </Compile>
     <Compile Update="Emoji.*.cs">
       <DependentUpon>Emoji.cs</DependentUpon>
@@ -39,6 +42,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="BoxBorder.Known.cs">
+      <DependentUpon>BoxBorder.cs</DependentUpon>
+    </Compile>
+    <Compile Update="TableBorder.Known.cs">
+      <DependentUpon>TableBorder.cs</DependentUpon>
+    </Compile>
     <Compile Update="Extensions\AnsiConsoleExtensions.Markup.cs">
       <DependentUpon>AnsiConsoleExtensions.cs</DependentUpon>
     </Compile>

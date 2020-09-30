@@ -35,7 +35,7 @@ namespace Spectre.Console
         {
             _table = new Table
             {
-                Border = Border.None,
+                Border = TableBorder.None,
                 ShowHeaders = false,
                 IsGrid = true,
                 PadRightCell = false,
