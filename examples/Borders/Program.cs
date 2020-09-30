@@ -7,41 +7,83 @@ namespace Borders
     {
         public static void Main()
         {
-            var items = new[]
-            {
-                Create("Ascii", Border.Ascii),
-                Create("Ascii2", Border.Ascii2),
-                Create("AsciiDoubleHead", Border.AsciiDoubleHead),
-                Create("Horizontal", Border.Horizontal),
-                Create("Simple", Border.Simple),
-                Create("SimpleHeavy", Border.SimpleHeavy),
-                Create("Minimal", Border.Minimal),
-                Create("MinimalHeavyHead", Border.MinimalHeavyHead),
-                Create("MinimalDoubleHead", Border.MinimalDoubleHead),
-                Create("Square", Border.Square),
-                Create("Rounded", Border.Rounded),
-                Create("Heavy", Border.Heavy),
-                Create("HeavyEdge", Border.HeavyEdge),
-                Create("HeavyHead", Border.HeavyHead),
-                Create("Double", Border.Double),
-                Create("DoubleEdge", Border.DoubleEdge),
-            };
-
+            // Render panel borders
             AnsiConsole.WriteLine();
-            AnsiConsole.Render(new Columns(items).Collapse());
+            AnsiConsole.MarkupLine("[white bold underline]PANEL BORDERS[/]");
+            AnsiConsole.WriteLine();
+            RenderPanelBorders();
+
+            // Render table borders
+            AnsiConsole.WriteLine();
+            AnsiConsole.MarkupLine("[white bold underline]TABLE BORDERS[/]");
+            AnsiConsole.WriteLine();
+            RenderTableBorders();
         }
 
-        private static IRenderable Create(string name, Border border)
+        private static void RenderPanelBorders()
         {
-            var table = new Table().SetBorder(border);
-            table.AddColumns("[yellow]Header 1[/]", "[yellow]Header 2[/]");
-            table.AddRow("Cell", "Cell");
-            table.AddRow("Cell", "Cell");
+            static IRenderable CreatePanel(string name, BoxBorder border)
+            {
+                return new Panel($"This is a panel with\nthe [yellow]{name}[/] border.")
+                    .SetHeader($" {name} ", Style.Parse("blue"), Justify.Center)
+                    .SetBorderStyle(Style.Parse("grey"))
+                    .SetBorder(border);
+            }
 
-            return new Panel(table)
-                .SetHeader($" {name} ", Style.Parse("blue"), Justify.Center)
-                .SetBorderStyle(Style.Parse("grey"))
-                .NoBorder();
+            var items = new[]
+            {
+                CreatePanel("Ascii", BoxBorder.Ascii),
+                CreatePanel("Square", BoxBorder.Square),
+                CreatePanel("Rounded", BoxBorder.Rounded),
+                CreatePanel("Heavy", BoxBorder.Heavy),
+                CreatePanel("Double", BoxBorder.Double),
+                CreatePanel("None", BoxBorder.None),
+            };
+
+            AnsiConsole.Render(
+                new Padder(
+                    new Columns(items).PadRight(2),
+                    new Padding(2,0,0,0)));
+        }
+
+        private static void RenderTableBorders()
+        {
+            static IRenderable CreateTable(string name, TableBorder border)
+            {
+                var table = new Table().SetBorder(border);
+                table.AddColumn("[yellow]Header 1[/]");
+                table.AddColumn("[yellow]Header 2[/]", col => col.RightAligned());
+                table.AddRow("Cell", "Cell");
+                table.AddRow("Cell", "Cell");
+
+                return new Panel(table)
+                    .SetHeader($" {name} ", Style.Parse("blue"), Justify.Center)
+                    .SetBorderStyle(Style.Parse("grey"))
+                    .NoBorder();
+            }
+
+            var items = new[]
+            {
+                CreateTable("Ascii", TableBorder.Ascii),
+                CreateTable("Ascii2", TableBorder.Ascii2),
+                CreateTable("AsciiDoubleHead", TableBorder.AsciiDoubleHead),
+                CreateTable("Horizontal", TableBorder.Horizontal),
+                CreateTable("Simple", TableBorder.Simple),
+                CreateTable("SimpleHeavy", TableBorder.SimpleHeavy),
+                CreateTable("Minimal", TableBorder.Minimal),
+                CreateTable("MinimalHeavyHead", TableBorder.MinimalHeavyHead),
+                CreateTable("MinimalDoubleHead", TableBorder.MinimalDoubleHead),
+                CreateTable("Square", TableBorder.Square),
+                CreateTable("Rounded", TableBorder.Rounded),
+                CreateTable("Heavy", TableBorder.Heavy),
+                CreateTable("HeavyEdge", TableBorder.HeavyEdge),
+                CreateTable("HeavyHead", TableBorder.HeavyHead),
+                CreateTable("Double", TableBorder.Double),
+                CreateTable("DoubleEdge", TableBorder.DoubleEdge),
+                CreateTable("Markdown", TableBorder.Markdown),
+            };
+
+            AnsiConsole.Render(new Columns(items).Collapse());
         }
     }
 }

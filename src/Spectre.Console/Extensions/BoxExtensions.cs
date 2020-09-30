@@ -3,9 +3,9 @@ using System;
 namespace Spectre.Console.Rendering
 {
     /// <summary>
-    /// Contains extension methods for <see cref="TableBorder"/>.
+    /// Contains extension methods for <see cref="BoxBorder"/>.
     /// </summary>
-    public static class BorderExtensions
+    public static class BoxExtensions
     {
         /// <summary>
         /// Gets the safe border for a border.
@@ -13,7 +13,7 @@ namespace Spectre.Console.Rendering
         /// <param name="border">The border to get the safe border for.</param>
         /// <param name="safe">Whether or not to return the safe border.</param>
         /// <returns>The safe border if one exist, otherwise the original border.</returns>
-        public static TableBorder GetSafeBorder(this TableBorder border, bool safe)
+        public static BoxBorder GetSafeBorder(this BoxBorder border, bool safe)
         {
             if (border is null)
             {

@@ -13,7 +13,7 @@ namespace PanelExample
             AnsiConsole.Render(
                 new Panel(
                     new Panel(content)
-                        .SetBorder(Border.Rounded)));
+                        .SetBorder(BoxBorder.Rounded)));
 
             // Left adjusted panel with text
             AnsiConsole.Render(

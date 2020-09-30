@@ -13,12 +13,7 @@ namespace Spectre.Console
         bool UseSafeBorder { get; set; }
 
         /// <summary>
-        /// Gets or sets the border.
-        /// </summary>
-        public Border Border { get; set; }
-
-        /// <summary>
-        /// Gets or sets the border style.
+        /// Gets or sets the box style.
         /// </summary>
         public Style? BorderStyle { get; set; }
     }
