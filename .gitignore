@@ -5,6 +5,7 @@
 [Pp]ackages/
 /.artifacts/
 /[Tt]ools/
+.idea
 .DS_Store
 
 # Cakeup
