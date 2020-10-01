@@ -11,7 +11,7 @@ namespace Spectre.Console.Rendering
         public override BoxBorder? SafeBorder => BoxBorder.Square;
 
         /// <inheritdoc/>
-        protected override string GetBorderPart(BoxBorderPart part)
+        public override string GetPart(BoxBorderPart part)
         {
             return part switch
             {

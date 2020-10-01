@@ -13,8 +13,6 @@ namespace Spectre.Console
     /// </summary>
     public abstract partial class TableBorder
     {
-        private readonly Dictionary<TableBorderPart, string> _lookup;
-
         /// <summary>
         /// Gets a value indicating whether or not the border is visible.
         /// </summary>
@@ -26,46 +24,11 @@ namespace Spectre.Console
         public virtual TableBorder? SafeBorder { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TableBorder"/> class.
+        /// Gets the string representation of a specified table border part.
         /// </summary>
-        protected TableBorder()
-        {
-            _lookup = Initialize();
-        }
-
-        private Dictionary<TableBorderPart, string> Initialize()
-        {
-            var lookup = new Dictionary<TableBorderPart, string>();
-            foreach (TableBorderPart? part in Enum.GetValues(typeof(TableBorderPart)))
-            {
-                if (part == null)
-                {
-                    continue;
-                }
-
-                var text = GetBorderPart(part.Value);
-                if (text.Length > 1)
-                {
-                    throw new InvalidOperationException("A box part cannot contain more than one character.");
-                }
-
-                lookup.Add(part.Value, GetBorderPart(part.Value));
-            }
-
-            return lookup;
-        }
-
-        /// <summary>
-        /// Gets the string representation of a specific border part.
-        /// </summary>
-        /// <param name="part">The part to get a string representation for.</param>
-        /// <param name="count">The number of repetitions.</param>
-        /// <returns>A string representation of the specified border part.</returns>
-        public string GetPart(TableBorderPart part, int count)
-        {
-            // TODO: This need some optimization...
-            return string.Join(string.Empty, Enumerable.Repeat(GetBorderPart(part)[0], count));
-        }
+        /// <param name="part">The part to get the character representation for.</param>
+        /// <returns>A character representation of the specified border part.</returns>
+        public abstract string GetPart(TableBorderPart part);
 
         /// <summary>
         /// Gets a whole column row for the specific column row part.
@@ -95,7 +58,7 @@ namespace Spectre.Console
             {
                 var padding = columns[columnIndex].Padding;
                 var centerWidth = padding.Left + columnWidth + padding.Right;
-                builder.Append(center.Multiply(centerWidth));
+                builder.Append(center.Repeat(centerWidth));
 
                 if (!lastColumn)
                 {
@@ -108,29 +71,11 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Gets the string representation of a specific border part.
-        /// </summary>
-        /// <param name="part">The part to get a string representation for.</param>
-        /// <returns>A string representation of the specified border part.</returns>
-        public string GetPart(TableBorderPart part)
-        {
-            return _lookup[part].ToString(CultureInfo.InvariantCulture);
-        }
-
-        /// <summary>
-        /// Gets the character representing the specified border part.
-        /// </summary>
-        /// <param name="part">The part to get the character representation for.</param>
-        /// <returns>A character representation of the specified border part.</returns>
-        protected abstract string GetBorderPart(TableBorderPart part);
-
-        /// <summary>
         /// Gets the table parts used to render a specific table row.
         /// </summary>
         /// <param name="part">The table part.</param>
         /// <returns>The table parts used to render the specific table row.</returns>
-        protected (string Left, string Center, string Separator, string Right)
-            GetTableParts(TablePart part)
+        protected (string Left, string Center, string Separator, string Right) GetTableParts(TablePart part)
         {
             return part switch
             {

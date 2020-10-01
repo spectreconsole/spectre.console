@@ -6,7 +6,7 @@ namespace Spectre.Console.Rendering
     public sealed class NoBoxBorder : BoxBorder
     {
         /// <inheritdoc/>
-        protected override string GetBorderPart(BoxBorderPart part)
+        public override string GetPart(BoxBorderPart part)
         {
             return " ";
         }

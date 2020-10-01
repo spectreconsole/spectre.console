@@ -11,7 +11,7 @@ namespace Spectre.Console.Rendering
     public sealed class MarkdownTableBorder : TableBorder
     {
         /// <inheritdoc/>
-        protected override string GetBorderPart(TableBorderPart part)
+        public override string GetPart(TableBorderPart part)
         {
             return part switch
             {
@@ -57,39 +57,39 @@ namespace Spectre.Console.Rendering
                 if (padding.Left > 0)
                 {
                     // Left padding
-                    builder.Append(" ".Multiply(padding.Left));
+                    builder.Append(" ".Repeat(padding.Left));
                 }
 
                 var justification = columns[columnIndex].Alignment;
                 if (justification == null)
                 {
                     // No alignment
-                    builder.Append(center.Multiply(columnWidth));
+                    builder.Append(center.Repeat(columnWidth));
                 }
                 else if (justification.Value == Justify.Left)
                 {
                     // Left
                     builder.Append(':');
-                    builder.Append(center.Multiply(columnWidth - 1));
+                    builder.Append(center.Repeat(columnWidth - 1));
                 }
                 else if (justification.Value == Justify.Center)
                 {
                     // Centered
                     builder.Append(':');
-                    builder.Append(center.Multiply(columnWidth - 2));
+                    builder.Append(center.Repeat(columnWidth - 2));
                     builder.Append(':');
                 }
                 else if (justification.Value == Justify.Right)
                 {
                     // Right
-                    builder.Append(center.Multiply(columnWidth - 1));
+                    builder.Append(center.Repeat(columnWidth - 1));
                     builder.Append(':');
                 }
 
                 // Right padding
                 if (padding.Right > 0)
                 {
-                    builder.Append(" ".Multiply(padding.Right));
+                    builder.Append(" ".Repeat(padding.Right));
                 }
 
                 if (!lastColumn)

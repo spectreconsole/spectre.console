@@ -8,7 +8,7 @@ namespace Spectre.Console.Rendering
     public sealed class Ascii2TableBorder : TableBorder
     {
         /// <inheritdoc/>
-        protected override string GetBorderPart(TableBorderPart part)
+        public override string GetPart(TableBorderPart part)
         {
             return part switch
             {

@@ -81,7 +81,7 @@ namespace Spectre.Console.Internal
             return result.ToArray();
         }
 
-        public static string Multiply(this string text, int count)
+        public static string Repeat(this string text, int count)
         {
             if (text is null)
             {
