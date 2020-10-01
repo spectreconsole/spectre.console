@@ -18,8 +18,8 @@ namespace Docs.Shortcodes
                 .First().Object;
 
             // Headers
-            var table = new XElement("table", new XAttribute("class", "table"));
-            var header = new XElement("tr", new XAttribute("class", "emoji-row"));
+            var table = new XElement("table", new XAttribute("class", "table"), new XAttribute("id", "emoji-results"));
+            var header = new XElement("tr", new XAttribute("class", "emoji-row-header"));
             header.Add(new XElement("th", ""));
             header.Add(new XElement("th", "Markup"));
             header.Add(new XElement("th", "Constant"));
@@ -28,9 +28,9 @@ namespace Docs.Shortcodes
             foreach (var emoji in emojis)
             {
                 var code = emoji.Code.Replace("U+0000", "U+").Replace("U+000", "U+");
-                var icon = string.Format("&#x{0};", emoji.Code.Replace("U+", string.Empty));
+                var icon = $"&#x{emoji.Code.Replace("U+", string.Empty)};";
 
-                var row = new XElement("tr");
+                var row = new XElement("tr", new XAttribute("class", "emoji-row"));
                 row.Add(new XElement("td", icon));
                 row.Add(new XElement("td", new XElement("code", $":{emoji.Id}:")));
                 row.Add(new XElement("td", new XElement("code", emoji.Name)));

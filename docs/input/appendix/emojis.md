@@ -35,4 +35,16 @@ var rendered = Emoji.Replace(phrase);
 _The images in the table below might not render correctly in your 
 browser for the same reasons mentioned in the `Compatibility` section._
 
+<div class="mb-3">
+    <div class="form-inline d-flex">
+      <i class="fas fa-search" aria-hidden="true"></i>
+      <input id="emoji-search" 
+        class="form-control form-control-sm ml-3 w-75" 
+        type="text" placeholder="Search Emojis..." autocomplete="off" 
+        aria-label="Search Emojis">
+    </div> 
+</div>
+
 <?# EmojiTable /?>
+
+<script type="text/javascript" src="../assets/js/emoji-search.js"></script>
