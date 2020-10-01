@@ -1,6 +1,6 @@
 using Spectre.Console;
 
-namespace Links
+namespace LinkExample
 {
     public static class Program
     {

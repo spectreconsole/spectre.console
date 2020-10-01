@@ -65,9 +65,9 @@ jobs:
         run: |
           dotnet tool restore
           dotnet example info
-          dotnet example table
-          dotnet example grid
-          dotnet example panel
+          dotnet example tables
+          dotnet example grids
+          dotnet example panels
           dotnet example colors
           dotnet example emojis
 

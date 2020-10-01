@@ -1,6 +1,6 @@
 using Spectre.Console;
 
-namespace Emojis
+namespace EmojiExample
 {
     public static class Program
     {

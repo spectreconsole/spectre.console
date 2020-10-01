@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
+    <Title>Colors</Title>
     <Description>Demonstrates how to use [yellow]c[/][red]o[/][green]l[/][blue]o[/][aqua]r[/][lime]s[/] in the console.</Description>
   </PropertyGroup>
 

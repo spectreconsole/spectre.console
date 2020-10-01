@@ -17,11 +17,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{F0575243-121F-4DEE-9F6B-246E26DC0844}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Table", "..\examples\Table\Table.csproj", "{94ECCBA8-7EBF-4B53-8379-52EB2327417E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tables", "..\examples\Tables\Tables.csproj", "{94ECCBA8-7EBF-4B53-8379-52EB2327417E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Panel", "..\examples\Panel\Panel.csproj", "{BFF37228-B376-4ADD-9657-4E501F929713}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Panels", "..\examples\Panels\Panels.csproj", "{BFF37228-B376-4ADD-9657-4E501F929713}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grid", "..\examples\Grid\Grid.csproj", "{C7FF6FDB-FB59-4517-8669-521C96AB7323}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grids", "..\examples\Grids\Grids.csproj", "{C7FF6FDB-FB59-4517-8669-521C96AB7323}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Colors", "..\examples\Colors\Colors.csproj", "{1F51C55C-BA4C-4856-9001-0F7924FFB179}"
 EndProject
@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Borders", "..\examples\Bord
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Links", "..\examples\Links\Links.csproj", "{6AF8C93B-AA41-4F44-8B1B-B8D166576174}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emojis", "..\examples\Emojis\Emojis.csproj", "{1EABB956-957F-4C1A-8AC0-FD19C8F3C2F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emojis", "..\examples\Emojis\Emojis.csproj", "{1EABB956-957F-4C1A-8AC0-FD19C8F3C2F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

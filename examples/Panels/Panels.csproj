@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
+    <Title>Panels</Title>
     <Description>Demonstrates how to render items in panels.</Description>
   </PropertyGroup>
 
