@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
+    <Title>Emojis</Title>
     <Description>Demonstrates how to render emojis.</Description>
   </PropertyGroup>
 

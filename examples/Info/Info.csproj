@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
+    <Title>Info</Title>
     <Description>Displays the capabilities of the current console.</Description>
   </PropertyGroup>
 

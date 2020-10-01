@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
+    <Title>Borders</Title>
     <Description>Demonstrates the different kind of borders.</Description>
   </PropertyGroup>
 
