@@ -9,15 +9,13 @@ namespace Docs.Pipelines
 {
     public class ColorsPipeline : Pipeline
     {
-        public const string Url = "https://raw.githubusercontent.com/spectresystems/spectre.console/main/resources/scripts/Generator/Data/colors.json";
-
         public ColorsPipeline()
         {
             InputModules = new ModuleList
             {
                 new ExecuteConfig(
                     Config.FromContext(ctx => {
-                        return new ReadWeb(Url);
+                        return new ReadWeb(Constants.Colors.Url);
                     }))
             };
 

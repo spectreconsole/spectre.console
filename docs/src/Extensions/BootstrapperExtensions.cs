@@ -20,10 +20,7 @@ namespace Docs
 
         public static Bootstrapper ConfigureDeployment(this Bootstrapper bootstrapper, string deployBranch)
         {
-            if (bootstrapper != null)
-            {
-                bootstrapper.AddSetting(Constants.Deployment.TargetBranch, deployBranch);
-            }
+            bootstrapper?.AddSetting(Constants.Deployment.TargetBranch, deployBranch);
             return bootstrapper;
         }
     }
