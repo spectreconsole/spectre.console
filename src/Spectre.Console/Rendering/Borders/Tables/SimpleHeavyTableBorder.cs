@@ -11,7 +11,7 @@ namespace Spectre.Console.Rendering
         public override TableBorder? SafeBorder => TableBorder.Simple;
 
         /// <inheritdoc/>
-        protected override string GetBorderPart(TableBorderPart part)
+        public override string GetPart(TableBorderPart part)
         {
             return part switch
             {

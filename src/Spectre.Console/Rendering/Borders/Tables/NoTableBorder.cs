@@ -9,7 +9,7 @@ namespace Spectre.Console.Rendering
         public override bool Visible => false;
 
         /// <inheritdoc/>
-        protected override string GetBorderPart(TableBorderPart part)
+        public override string GetPart(TableBorderPart part)
         {
             return " ";
         }

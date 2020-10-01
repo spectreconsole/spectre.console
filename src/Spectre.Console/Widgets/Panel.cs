@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -123,7 +124,7 @@ namespace Spectre.Console
         private static void AddBottomBorder(List<Segment> result, BoxBorder border, Style borderStyle, int panelWidth)
         {
             result.Add(new Segment(border.GetPart(BoxBorderPart.BottomLeft), borderStyle));
-            result.Add(new Segment(border.GetPart(BoxBorderPart.Bottom, panelWidth - EdgeWidth), borderStyle));
+            result.Add(new Segment(border.GetPart(BoxBorderPart.Bottom).Repeat(panelWidth - EdgeWidth), borderStyle));
             result.Add(new Segment(border.GetPart(BoxBorderPart.BottomRight), borderStyle));
             result.Add(Segment.LineBreak);
         }
@@ -160,13 +161,13 @@ namespace Spectre.Console
                     }
                 }
 
-                segments.Add(new Segment(border.GetPart(BoxBorderPart.Top, leftSpacing + 1), borderStyle));
+                segments.Add(new Segment(border.GetPart(BoxBorderPart.Top).Repeat(leftSpacing + 1), borderStyle));
                 segments.Add(header);
-                segments.Add(new Segment(border.GetPart(BoxBorderPart.Top, rightSpacing + 1), borderStyle));
+                segments.Add(new Segment(border.GetPart(BoxBorderPart.Top).Repeat(rightSpacing + 1), borderStyle));
             }
             else
             {
-                segments.Add(new Segment(border.GetPart(BoxBorderPart.Top, panelWidth - EdgeWidth), borderStyle));
+                segments.Add(new Segment(border.GetPart(BoxBorderPart.Top).Repeat(panelWidth - EdgeWidth), borderStyle));
             }
 
             segments.Add(new Segment(border.GetPart(BoxBorderPart.TopRight), borderStyle));

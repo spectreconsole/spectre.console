@@ -8,7 +8,7 @@ namespace Spectre.Console.Rendering
     public sealed class SquareBoxBorder : BoxBorder
     {
         /// <inheritdoc/>
-        protected override string GetBorderPart(BoxBorderPart part)
+        public override string GetPart(BoxBorderPart part)
         {
             return part switch
             {
