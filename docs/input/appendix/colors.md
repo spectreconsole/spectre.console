@@ -13,4 +13,19 @@ in markup text such as `AnsiConsole.Markup("[maroon on blue]Hello[/]")`.
 
 # Standard colors
 
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1">
+        <i class="fas fa-search" aria-hidden="true"></i>
+    </span>
+  </div>
+  <input
+    class="form-control w-100 filter"
+    data-table="color-results"
+    type="text" placeholder="Search Colors..." autocomplete="off" 
+    aria-label="Search Colors">
+</div>
+
 <?# ColorTable /?>
+
+<script type="text/javascript" src="../assets/js/table-search.js"></script>

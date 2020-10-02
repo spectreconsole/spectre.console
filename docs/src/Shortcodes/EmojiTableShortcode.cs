@@ -30,7 +30,7 @@ namespace Docs.Shortcodes
                 var code = emoji.Code.Replace("U+0000", "U+").Replace("U+000", "U+");
                 var icon = $"&#x{emoji.Code.Replace("U+", string.Empty)};";
 
-                var row = new XElement("tr", new XAttribute("class", "emoji-row"));
+                var row = new XElement("tr", new XAttribute("class", "search-row"));
                 row.Add(new XElement("td", icon));
                 row.Add(new XElement("td", new XElement("code", $":{emoji.Id}:")));
                 row.Add(new XElement("td", new XElement("code", emoji.Name)));
