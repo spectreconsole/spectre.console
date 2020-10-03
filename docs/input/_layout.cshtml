@@ -5,8 +5,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link href="/spectre.console/assets/bootstrap/bootstrap.css" rel="stylesheet" />
-        <link href="/spectre.console/assets/css/styles.css" rel="stylesheet" />
+        <link href="@Context.GetLink("/assets/bootstrap/bootstrap.css")" rel="stylesheet" />
+        <link href="@Context.GetLink("/assets/css/styles.css")" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Roboto+Slab:wght@400;700&family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet" data-no-mirror>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/themes/prism.css">
 
@@ -29,7 +29,7 @@
 
             <nav id="topnav" class="navbar navbar-expand-lg navbar-light">
                 <div class="container py-3">
-                    <a class="navbar-brand" href="/spectre.console"><img id="logo" src="/spectre.console/assets/logo.svg" alt="Spectre.Console"> Spectre.Console</a>
+                    <a class="navbar-brand" href="@Context.GetLink("/")"><img id="logo" src="@Context.GetLink("/assets/logo.svg")" alt="Spectre.Console"> Spectre.Console</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -135,7 +135,7 @@
                                                     else
                                                     {
                                                         @root.GetTitle()
-                                                    } 
+                                                    }
                                             </div>
 
                                             @foreach (IDocument document in OutputPages.GetChildrenOf(root).OnlyVisible())
@@ -149,7 +149,7 @@
                                                     else
                                                     {
                                                         @document.GetTitle()
-                                                    }                                                   
+                                                    }
                                                 </div>
 
                                                 @if (documentChildren.OnlyVisible().Any())
