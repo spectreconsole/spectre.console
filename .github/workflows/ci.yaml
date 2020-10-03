@@ -70,6 +70,7 @@ jobs:
           dotnet example panels
           dotnet example colors
           dotnet example emojis
+          dotnet example exceptions
 
       - name: Build
         shell: bash

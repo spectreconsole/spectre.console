@@ -16,7 +16,6 @@ namespace Spectre.Console
                 ColorSystem = ColorSystemSupport.Detect,
                 Out = System.Console.Out,
             });
-            Initialize(System.Console.Out);
             Created = true;
             return console;
         });

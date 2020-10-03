@@ -1,7 +1,3 @@
-using System;
-using System.IO;
-using Spectre.Console.Internal;
-
 namespace Spectre.Console
 {
     /// <summary>
@@ -9,9 +5,6 @@ namespace Spectre.Console
     /// </summary>
     public static partial class AnsiConsole
     {
-        private static ConsoleColor _defaultForeground;
-        private static ConsoleColor _defaultBackground;
-
         internal static Style CurrentStyle { get; private set; } = Style.Plain;
         internal static bool Created { get; private set; }
 
@@ -42,20 +35,6 @@ namespace Spectre.Console
             set => CurrentStyle = CurrentStyle.WithDecoration(value);
         }
 
-        internal static void Initialize(TextWriter? @out)
-        {
-            if (@out?.IsStandardOut() ?? false)
-            {
-                Foreground = _defaultForeground = System.Console.ForegroundColor;
-                Background = _defaultBackground = System.Console.BackgroundColor;
-            }
-            else
-            {
-                Foreground = _defaultForeground = Color.Silver;
-                Background = _defaultBackground = Color.Black;
-            }
-        }
-
         /// <summary>
         /// Resets colors and text decorations.
         /// </summary>
@@ -78,8 +57,7 @@ namespace Spectre.Console
         /// </summary>
         public static void ResetColors()
         {
-            Foreground = _defaultForeground;
-            Background = _defaultBackground;
+            CurrentStyle = Style.Plain;
         }
     }
 }

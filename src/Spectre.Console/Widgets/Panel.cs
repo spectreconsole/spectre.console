@@ -94,8 +94,15 @@ namespace Spectre.Console
 
             // Split the child segments into lines.
             var childSegments = ((IRenderable)child).Render(context, childWidth);
-            foreach (var line in Segment.SplitLines(childSegments, panelWidth))
+            foreach (var line in Segment.SplitLines(childSegments, childWidth))
             {
+                if (line.Count == 1 && line[0].IsWhiteSpace)
+                {
+                    // NOTE: This check might impact other things.
+                    // Hopefully not, but there is a chance.
+                    continue;
+                }
+
                 result.Add(new Segment(border.GetPart(BoxBorderPart.Left), borderStyle));
 
                 var content = new List<Segment>();

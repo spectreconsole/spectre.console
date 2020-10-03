@@ -298,7 +298,6 @@ namespace Spectre.Console
             var widths = width_ranges.Select(range => range.Max).ToList();
 
             var tableWidth = widths.Sum();
-
             if (tableWidth > maxWidth)
             {
                 var wrappable = _columns.Select(c => !c.NoWrap).ToList();

@@ -245,9 +245,32 @@ namespace Spectre.Console
             };
         }
 
+        /// <summary>
+        /// Converts the color to a markup string.
+        /// </summary>
+        /// <returns>A <see cref="string"/> representing the color as markup.</returns>
+        public string ToMarkupString()
+        {
+            if (Number != null)
+            {
+                var name = ColorTable.GetName(Number.Value);
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    return name;
+                }
+            }
+
+            return string.Format(CultureInfo.InvariantCulture, "#{0:X2}{1:X2}{2:X2}", R, G, B);
+        }
+
         /// <inheritdoc/>
         public override string ToString()
         {
+            if (IsDefault)
+            {
+                return "default";
+            }
+
             if (Number != null)
             {
                 var name = ColorTable.GetName(Number.Value);

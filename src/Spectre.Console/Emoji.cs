@@ -16,7 +16,17 @@ namespace Spectre.Console
         /// <returns>A string with emoji codes replaced with actual emoji.</returns>
         public static string Replace(string value)
         {
-            static string ReplaceEmoji(Match match) => _emojis[match.Groups[2].Value];
+            static string ReplaceEmoji(Match match)
+            {
+                var key = match.Groups[2].Value;
+                if (_emojis.TryGetValue(key, out var emoji))
+                {
+                    return emoji;
+                }
+
+                return match.Value;
+            }
+
             return _emojiCode.Replace(value, ReplaceEmoji);
         }
     }

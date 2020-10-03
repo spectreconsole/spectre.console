@@ -44,22 +44,26 @@ namespace Spectre.Console
         /// <inheritdoc/>
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
+            var result = new List<Segment>();
+
             foreach (var child in _children)
             {
                 var segments = child.Render(context, maxWidth);
                 foreach (var (_, _, last, segment) in segments.Enumerate())
                 {
-                    yield return segment;
+                    result.Add(segment);
 
                     if (last)
                     {
                         if (!segment.IsLineBreak)
                         {
-                            yield return Segment.LineBreak;
+                            result.Add(Segment.LineBreak);
                         }
                     }
                 }
             }
+
+            return result;
         }
     }
 }

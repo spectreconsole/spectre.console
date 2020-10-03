@@ -227,17 +227,10 @@ namespace Spectre.Console
                     throw new InvalidOperationException("Iterator returned empty segment.");
                 }
 
-                if (newLine && current.IsWhiteSpace && !current.IsLineBreak)
-                {
-                    newLine = false;
-                    continue;
-                }
-
                 newLine = false;
 
                 if (current.IsLineBreak)
                 {
-                    line.Add(current);
                     lines.Add(line);
                     line = new SegmentLine();
                     newLine = true;
