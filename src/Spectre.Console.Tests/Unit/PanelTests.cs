@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Shouldly;
+using Spectre.Console.Rendering;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
@@ -297,6 +299,34 @@ namespace Spectre.Console.Tests.Unit
             console.Lines[2].ShouldBe("│ │ Hello World │ │");
             console.Lines[3].ShouldBe("│ └─────────────┘ │");
             console.Lines[4].ShouldBe("└─────────────────┘");
+        }
+
+        [Fact]
+        public void Should_Wrap_Content_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 84);
+            var rows = new List<IRenderable>();
+            var grid = new Grid();
+            grid.AddColumn(new GridColumn().PadLeft(2).PadRight(0));
+            grid.AddColumn(new GridColumn().PadLeft(1).PadRight(0));
+            grid.AddRow("at", "[grey]System.Runtime.CompilerServices.TaskAwaiter.[/][yellow]HandleNonSuccessAndDebuggerNotification[/]([blue]Task[/] task)");
+            rows.Add(grid);
+
+            var panel = new Panel(grid)
+                .Expand().RoundedBorder()
+                .SetBorderStyle(Style.WithForeground(Color.Grey))
+                .SetHeader("Short paths ", Style.WithForeground(Color.Grey));
+
+            // When
+            console.Render(panel);
+
+            // Then
+            console.Lines.Count.ShouldBe(4);
+            console.Lines[0].ShouldBe("╭─Short paths ─────────────────────────────────────────────────────────────────────╮");
+            console.Lines[1].ShouldBe("│   at System.Runtime.CompilerServices.TaskAwaiter.                                │");
+            console.Lines[2].ShouldBe("│      HandleNonSuccessAndDebuggerNotification(Task task)                          │");
+            console.Lines[3].ShouldBe("╰──────────────────────────────────────────────────────────────────────────────────╯");
         }
     }
 }

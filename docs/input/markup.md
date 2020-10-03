@@ -65,6 +65,15 @@ For a list of emoji, see the [Emojis](xref:styles) appendix section.
 
 # Colors
 
+In the examples above, all colors was referenced by their name,
+but you can also use the hex or rgb representation for colors in markdown.
+
+```csharp
+AnsiConsole.Markup("[red]Foo[/] ");
+AnsiConsole.Markup("[#ff0000]Bar[/] ");
+AnsiConsole.Markup("[rgb(255,0,0)]Baz[/] ");
+```
+
 For a list of colors, see the [Colors](xref:colors) appendix section.
 
 # Styles

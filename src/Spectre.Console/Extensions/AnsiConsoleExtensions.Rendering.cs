@@ -27,10 +27,9 @@ namespace Spectre.Console
             }
 
             var options = new RenderContext(console.Encoding, console.Capabilities.LegacyConsole);
-            var segments = renderable.Render(options, console.Width).Where(x => !(x.Text.Length == 0 && !x.IsLineBreak)).ToArray();
+            var segments = renderable.Render(options, console.Width).ToArray();
             segments = Segment.Merge(segments).ToArray();
 
-            var current = Style.Plain;
             foreach (var segment in segments)
             {
                 if (string.IsNullOrEmpty(segment.Text))

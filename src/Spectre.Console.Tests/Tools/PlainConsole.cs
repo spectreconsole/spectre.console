@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Spectre.Console.Rendering;
 
@@ -49,6 +50,17 @@ namespace Spectre.Console.Tests
             }
 
             Writer.Write(segment.Text);
+        }
+
+        public string[] WriteExceptionAndGetLines(Exception ex, ExceptionFormats formats = ExceptionFormats.None)
+        {
+            this.WriteException(ex, formats);
+
+            return Output.NormalizeStackTrace()
+                .NormalizeLineEndings()
+                .Split(new char[] { '\n' })
+                .Select(line => line.TrimEnd())
+                .ToArray();
         }
     }
 }

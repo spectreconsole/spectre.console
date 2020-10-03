@@ -239,7 +239,7 @@ namespace Spectre.Console.Rendering
                 }
 
                 // Same style?
-                if (previous.Style.Equals(segment.Style))
+                if (previous.Style.Equals(segment.Style) && !previous.IsLineBreak)
                 {
                     previous = new Segment(previous.Text + segment.Text, previous.Style);
                 }
@@ -299,7 +299,15 @@ namespace Spectre.Console.Rendering
                 while (lengthLeft > 0)
                 {
                     var index = totalLength - lengthLeft;
+
+                    // How many characters should we take?
                     var take = Math.Min(width, totalLength - index);
+                    if (take == 0)
+                    {
+                        // This shouldn't really occur, but I don't like
+                        // never ending loops if it does...
+                        throw new InvalidOperationException("Text folding failed since 'take' was zero.");
+                    }
 
                     result.Add(new Segment(segment.Text.Substring(index, take), segment.Style));
                     lengthLeft -= take;
