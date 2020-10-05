@@ -52,7 +52,7 @@ namespace Spectre.Console.Tests
             Writer.Write(segment.Text);
         }
 
-        public string[] WriteExceptionAndGetLines(Exception ex, ExceptionFormats formats = ExceptionFormats.None)
+        public string[] WriteExceptionAndGetLines(Exception ex, ExceptionFormats formats = ExceptionFormats.Default)
         {
             this.WriteException(ex, formats);
 

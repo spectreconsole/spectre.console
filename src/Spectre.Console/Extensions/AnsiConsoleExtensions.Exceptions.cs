@@ -13,7 +13,7 @@ namespace Spectre.Console
         /// <param name="console">The console.</param>
         /// <param name="exception">The exception to write to the console.</param>
         /// <param name="format">The exception format options.</param>
-        public static void WriteException(this IAnsiConsole console, Exception exception, ExceptionFormats format = ExceptionFormats.None)
+        public static void WriteException(this IAnsiConsole console, Exception exception, ExceptionFormats format = ExceptionFormats.Default)
         {
             Render(console, exception.GetRenderable(format));
         }
