@@ -14,7 +14,7 @@ namespace Spectre.Console
         /// <param name="exception">The exception to format.</param>
         /// <param name="format">The exception format options.</param>
         /// <returns>A <see cref="IRenderable"/> representing the exception.</returns>
-        public static IRenderable GetRenderable(this Exception exception, ExceptionFormats format = ExceptionFormats.None)
+        public static IRenderable GetRenderable(this Exception exception, ExceptionFormats format = ExceptionFormats.Default)
         {
             return ExceptionFormatter.Format(exception, format);
         }

@@ -11,7 +11,7 @@ namespace Spectre.Console
         /// <summary>
         /// The default formatting.
         /// </summary>
-        None = 0,
+        Default = 0,
 
         /// <summary>
         /// Whether or not paths should be shortened.
