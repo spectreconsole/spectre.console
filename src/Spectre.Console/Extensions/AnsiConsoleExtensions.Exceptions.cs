@@ -17,5 +17,16 @@ namespace Spectre.Console
         {
             Render(console, exception.GetRenderable(format));
         }
+
+        /// <summary>
+        /// Writes an exception to the console.
+        /// </summary>
+        /// <param name="console">The console.</param>
+        /// <param name="exception">The exception to write to the console.</param>
+        /// <param name="settings">The exception settings.</param>
+        public static void WriteException(this IAnsiConsole console, Exception exception, ExceptionSettings settings)
+        {
+            Render(console, exception.GetRenderable(settings));
+        }
     }
 }

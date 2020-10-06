@@ -228,6 +228,39 @@ namespace Spectre.Console.Tests.Unit
             }
         }
 
+        public sealed class TheToMarkupMethod
+        {
+            [Fact]
+            public void Should_Return_Expected_Markup_For_Default_Color()
+            {
+                // Given, When
+                var result = Color.Default.ToMarkup();
+
+                // Then
+                result.ShouldBe("default");
+            }
+
+            [Fact]
+            public void Should_Return_Expected_Markup_For_Known_Color()
+            {
+                // Given, When
+                var result = Color.Red.ToMarkup();
+
+                // Then
+                result.ShouldBe("red");
+            }
+
+            [Fact]
+            public void Should_Return_Expected_Markup_For_Custom_Color()
+            {
+                // Given, When
+                var result = new Color(255, 1, 12).ToMarkup();
+
+                // Then
+                result.ShouldBe("#FF010C");
+            }
+        }
+
         public sealed class TheToStringMethod
         {
             [Fact]

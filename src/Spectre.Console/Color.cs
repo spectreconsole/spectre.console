@@ -249,8 +249,13 @@ namespace Spectre.Console
         /// Converts the color to a markup string.
         /// </summary>
         /// <returns>A <see cref="string"/> representing the color as markup.</returns>
-        public string ToMarkupString()
+        public string ToMarkup()
         {
+            if (IsDefault)
+            {
+                return "default";
+            }
+
             if (Number != null)
             {
                 var name = ColorTable.GetName(Number.Value);

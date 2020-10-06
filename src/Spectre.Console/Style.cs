@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Spectre.Console.Internal;
 
 namespace Spectre.Console
@@ -25,7 +27,7 @@ namespace Spectre.Console
         public Decoration Decoration { get; }
 
         /// <summary>
-        /// Gets the link.
+        /// Gets the link associated with the style.
         /// </summary>
         public string? Link { get; }
 
@@ -189,6 +191,41 @@ namespace Spectre.Console
 
                 return hash;
             }
+        }
+
+        /// <summary>
+        /// Returns the markup representation of this style.
+        /// </summary>
+        /// <returns>The markup representation of this style.</returns>
+        public string ToMarkup()
+        {
+            var builder = new List<string>();
+
+            if (Decoration != Decoration.None)
+            {
+                var result = DecorationTable.GetMarkupNames(Decoration);
+                if (result.Count != 0)
+                {
+                    builder.AddRange(result);
+                }
+            }
+
+            if (Foreground != Color.Default)
+            {
+                builder.Add(Foreground.ToMarkup());
+            }
+
+            if (Background != Color.Default)
+            {
+                if (builder.Count == 0)
+                {
+                    builder.Add("default");
+                }
+
+                builder.Add("on " + Background.ToMarkup());
+            }
+
+            return string.Join(" ", builder);
         }
 
         /// <inheritdoc/>
