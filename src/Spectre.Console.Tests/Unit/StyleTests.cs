@@ -317,5 +317,60 @@ namespace Spectre.Console.Tests.Unit
                 result.ShouldBeFalse();
             }
         }
+
+        public sealed class TheToMarkupMethod
+        {
+            [Fact]
+            public void Should_Return_Expected_Markup_For_Style_With_Foreground_Color()
+            {
+                // Given
+                var style = new Style(Color.Red);
+
+                // When
+                var result = style.ToMarkup();
+
+                // Then
+                result.ShouldBe("red");
+            }
+
+            [Fact]
+            public void Should_Return_Expected_Markup_For_Style_With_Foreground_And_Background_Color()
+            {
+                // Given
+                var style = new Style(Color.Red, Color.Green);
+
+                // When
+                var result = style.ToMarkup();
+
+                // Then
+                result.ShouldBe("red on green");
+            }
+
+            [Fact]
+            public void Should_Return_Expected_Markup_For_Style_With_Foreground_And_Background_Color_And_Decoration()
+            {
+                // Given
+                var style = new Style(Color.Red, Color.Green, Decoration.Bold | Decoration.Underline);
+
+                // When
+                var result = style.ToMarkup();
+
+                // Then
+                result.ShouldBe("bold underline red on green");
+            }
+
+            [Fact]
+            public void Should_Return_Expected_Markup_For_Style_With_Only_Background_Color()
+            {
+                // Given
+                var style = new Style(background: Color.Green);
+
+                // When
+                var result = style.ToMarkup();
+
+                // Then
+                result.ShouldBe("default on green");
+            }
+        }
     }
 }

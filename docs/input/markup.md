@@ -43,6 +43,12 @@ AnsiConsole.Markup("[[Hello]] "); // [Hello]
 AnsiConsole.Markup("[red][[World]][/]"); // [World]
 ```
 
+You can also use the `SafeMarkup` extension method.
+
+```csharp
+AnsiConsole.Markup("[red]{0}[/]", "Hello [World]".SafeMarkup());
+```
+
 # Setting background color
 
 You can set the background color in markup by prefixing the color with
