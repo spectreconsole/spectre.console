@@ -30,6 +30,25 @@ var phrase = "Mmmm :birthday_cake:";
 var rendered = Emoji.Replace(phrase);
 ```
 
+# Remapping or adding an emoji
+
+Sometimes you want to remap an existing emoji, or 
+add a completely new one. For this you can use the 
+`Emoji.Remap` method. This approach works both with 
+markup strings and `Emoji.Replace`.
+
+```csharp
+// Remap the emoji
+Emoji.Remap("globe_showing_europe_africa", "😄");
+
+// Render markup
+AnsiConsole.MarkupLine("Hello :globe_showing_europe_africa:!");
+
+// Replace emojis in string
+var phrase = "Hello :globe_showing_europe_africa:!";
+var rendered = Emoji.Replace(phrase);
+```
+
 # Emojis
 
 _The images in the table below might not render correctly in your 
