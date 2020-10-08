@@ -306,7 +306,7 @@ namespace Spectre.Console.Rendering
                     {
                         // This shouldn't really occur, but I don't like
                         // never ending loops if it does...
-                        throw new InvalidOperationException("Text folding failed since 'take' was zero.");
+                        return new List<Segment>();
                     }
 
                     result.Add(new Segment(segment.Text.Substring(index, take), segment.Style));
