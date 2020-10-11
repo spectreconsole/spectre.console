@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Spectre.Console.Internal;
@@ -7,37 +7,51 @@ namespace Spectre.Console.Internal
 {
     internal static class TableUtilities
     {
+        public static int GetMaxWidth(TableTransformerContext context, int maxWidth)
+        {
+            if (context.Width != null)
+            {
+                maxWidth = Math.Min(context.Width.Value, maxWidth);
+            }
+
+            maxWidth -= context.GetExtraWidth();
+            return maxWidth;
+        }
+
         // Calculate the widths of each column, including padding, not including borders.
         // Ported from Rich by Will McGugan, licensed under MIT.
         // https://github.com/willmcgugan/rich/blob/527475837ebbfc427530b3ee0d4d0741d2d0fc6d/rich/table.py#L394
-        public static List<int> CalculateColumnWidths(TableSplitterContext context)
+        public static (List<int> Widths, int ExtraWidth) CalculateColumnWidths(TableTransformerContext context)
         {
+            var maxWidth = GetMaxWidth(context, context.MaxWidth);
+            var extraWidth = context.GetExtraWidth();
+
             var width_ranges = context.Columns.Select(column => MeasureColumn(context, column)).ToArray();
             var widths = width_ranges.Select(range => range.Max).ToList();
 
             var tableWidth = widths.Sum();
-            if (tableWidth > context.MaxWidth)
+            if (tableWidth > maxWidth)
             {
                 var wrappable = context.Columns.Select(c => !c.NoWrap).ToList();
-                widths = CollapseWidths(widths, wrappable, context.MaxWidth);
+                widths = CollapseWidths(widths, wrappable, maxWidth);
                 tableWidth = widths.Sum();
 
                 // last resort, reduce columns evenly
-                if (tableWidth > context.MaxWidth)
+                if (tableWidth > maxWidth)
                 {
-                    var excessWidth = tableWidth - context.MaxWidth;
+                    var excessWidth = tableWidth - maxWidth;
                     widths = Ratio.Reduce(excessWidth, widths.Select(_ => 1).ToList(), widths, widths);
                     tableWidth = widths.Sum();
                 }
             }
 
-            if (tableWidth < context.MaxWidth && context.Expand)
+            if (tableWidth < maxWidth && context.Expand)
             {
-                var padWidths = Ratio.Distribute(context.MaxWidth - tableWidth, widths);
+                var padWidths = Ratio.Distribute(maxWidth - tableWidth, widths);
                 widths = widths.Zip(padWidths, (a, b) => (a, b)).Select(f => f.a + f.b).ToList();
             }
 
-            return widths;
+            return (widths, extraWidth);
         }
 
         // Reduce widths so that the total is less or equal to the max width.
@@ -76,7 +90,7 @@ namespace Spectre.Console.Internal
             return widths;
         }
 
-        public static (int Min, int Max) MeasureColumn(TableSplitterContext context, TableColumn column)
+        public static (int Min, int Max) MeasureColumn(TableTransformerContext context, TableColumn column)
         {
             var padding = column.Padding.GetWidth();
 

@@ -11,8 +11,6 @@ namespace Spectre.Console
     /// </summary>
     public sealed class Table : Renderable, IHasTableBorder, IExpandable
     {
-        private const int EdgeCount = 2;
-
         private readonly List<TableColumn> _columns;
         private readonly List<List<IRenderable>> _rows;
 
@@ -46,6 +44,11 @@ namespace Spectre.Console
         /// auto calculated. Defaults to <c>false</c>.
         /// </summary>
         public bool Expand { get; set; }
+
+        /// <summary>
+        /// Gets or sets the table overflow strategy.
+        /// </summary>
+        public TableOverflow Overflow { get; set; } = TableOverflow.Default;
 
         /// <summary>
         /// Gets or sets the width of the table.
@@ -127,18 +130,11 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (Width != null)
-            {
-                maxWidth = Math.Min(Width.Value, maxWidth);
-            }
+            var tables = TransformTable(context, maxWidth);
+            var measurements = tables.Select(x => x.Widths.Sum() + x.ExtraWidth);
 
-            maxWidth -= GetExtraWidth(includePadding: true);
-
-            var calculations = GetTableDefinitions(context, maxWidth);
-            var measurements = calculations.Select(x => x.Widths.Sum());
-
-            var min = measurements.Min() + GetExtraWidth(includePadding: true);
-            var max = measurements.Max() + GetExtraWidth(includePadding: true);
+            var min = measurements.Min();
+            var max = measurements.Max();
 
             return new Measurement(min, max);
         }
@@ -160,16 +156,8 @@ namespace Spectre.Console
             var hideBorder = !Border.Visible;
             var hasRows = _rows.Count > 0;
 
-            if (Width != null)
-            {
-                maxWidth = Math.Min(Width.Value, maxWidth);
-            }
-
-            maxWidth -= GetExtraWidth(includePadding: true);
-
-            // Split the table in as many definitions needed depending
-            // on the overflow settings.
-            foreach (var definition in GetTableDefinitions(context, maxWidth))
+            // Transform the table into as many definitions needed depending on the overflow settings.
+            foreach (var definition in TransformTable(context, maxWidth))
             {
                 // Iterate all rows
                 foreach (var (index, firstRow, lastRow, row) in definition.Rows.Enumerate())
@@ -279,28 +267,14 @@ namespace Spectre.Console
             return result;
         }
 
-        private List<TableDefinition> GetTableDefinitions(RenderContext context, int maxWidth)
+        private List<TransformedTable> TransformTable(RenderContext context, int maxWidth)
         {
-            return TableSplitter.Split(
-                TableOverflow.Default,
-                new TableSplitterContext(
+            return TableTransformer.Transform(
+                Overflow,
+                new TableTransformerContext(
                     context, _columns, _rows, maxWidth,
-                    ShowHeaders, Expand || Width != null));
-        }
-
-        private int GetExtraWidth(bool includePadding)
-        {
-            var hideBorder = !Border.Visible;
-            var separators = hideBorder ? 0 : _columns.Count - 1;
-            var edges = hideBorder ? 0 : EdgeCount;
-            var padding = includePadding ? _columns.Select(x => x.Padding.GetWidth()).Sum() : 0;
-
-            if (!PadRightCell)
-            {
-                padding -= _columns.Last().Padding.Right;
-            }
-
-            return separators + edges + padding;
+                    ShowHeaders, Expand || Width != null,
+                    PadRightCell, Border, Width));
         }
     }
 }

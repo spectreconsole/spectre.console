@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Shouldly;
 using Xunit;
 
@@ -382,6 +383,29 @@ namespace Spectre.Console.Tests.Unit
             console.Lines[0].ShouldBe("┌─────┬─────┬────────┐");
             console.Lines[1].ShouldBe("│ Foo │ Bar │   Baz  │");
             console.Lines[2].ShouldBe("└─────┴─────┴────────┘");
+        }
+
+        [Theory]
+        [InlineData(05, "5\n┌───┐\n│ F │\n│ o │\n│ o │\n└───┘")]
+        [InlineData(09, "9\n┌───┬───┐\n│ F │ B │\n│ o │ a │\n│ o │ r │\n└───┴───┘")]
+        [InlineData(11, "11\n┌────┬────┐\n│ Fo │ Ba │\n│ o  │ r  │\n└────┴────┘")]
+        [InlineData(12, "12\n┌─────┬────┐\n│ Foo │ Ba │\n│     │ r  │\n└─────┴────┘")]
+        [InlineData(13, "13\n┌───┬───┬───┐\n│ F │ B │ B │\n│ o │ a │ a │\n│ o │ r │ z │\n└───┴───┴───┘")]
+        [InlineData(20, "20\n┌─────┬─────┬─────┐\n│ Foo │ Bar │ Baz │\n└─────┴─────┴─────┘")]
+        public void Should_Drop_Columns_If_Specified_And_Table_Do_Not_Fit(int width, string expected)
+        {
+            // Given
+            var console = new PlainConsole(width);
+            var table = new Table();
+            table.Overflow = TableOverflow.Drop;
+            table.AddColumns("Foo", "Bar", "Baz");
+
+            // When
+            console.WriteLine(width.ToString(CultureInfo.InvariantCulture), Style.Plain);
+            console.Render(table);
+
+            // Then
+            console.Output.ShouldBe(expected);
         }
     }
 }

@@ -14,9 +14,28 @@ namespace Spectre.Console.Internal
             }
         }
 
+        public static bool None<T>(this IEnumerable<T> source, Func<T, bool> func)
+        {
+            return !source.Any(func);
+        }
+
         public static bool AnyTrue(this IEnumerable<bool> source)
         {
             return source.Any(b => b);
+        }
+
+        public static List<int> GetIndices<T>(this IEnumerable<T> source, Func<T, bool> func)
+        {
+            var result = new List<int>();
+            foreach (var (index, _, _, item) in source.Enumerate())
+            {
+                if (func(item))
+                {
+                    result.Add(index);
+                }
+            }
+
+            return result;
         }
 
         public static IEnumerable<(int Index, bool First, bool Last, T Item)> Enumerate<T>(this IEnumerable<T> source)
