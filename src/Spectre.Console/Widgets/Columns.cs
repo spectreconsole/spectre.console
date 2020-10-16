@@ -51,6 +51,29 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
+        protected override Measurement Measure(RenderContext context, int maxWidth)
+        {
+            var maxPadding = Math.Max(Padding.Left, Padding.Right);
+
+            var itemWidths = _items.Select(item => item.Measure(context, maxWidth).Max).ToArray();
+            var columnCount = CalculateColumnCount(maxWidth, itemWidths, _items.Count, maxPadding);
+
+            var rows = _items.Count / columnCount;
+            var greatestWidth = 0;
+            for (var row = 0; row < rows; row += columnCount)
+            {
+                var widths = itemWidths.Skip(row * columnCount).Take(columnCount).ToList();
+                var totalWidth = widths.Sum() + (maxPadding * (widths.Count - 1));
+                if (totalWidth > greatestWidth)
+                {
+                    greatestWidth = totalWidth;
+                }
+            }
+
+            return new Measurement(greatestWidth, greatestWidth);
+        }
+
+        /// <inheritdoc/>
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
             var maxPadding = Math.Max(Padding.Left, Padding.Right);

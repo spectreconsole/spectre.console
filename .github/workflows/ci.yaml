@@ -71,6 +71,7 @@ jobs:
           dotnet example colors
           dotnet example emojis
           dotnet example exceptions
+          dotnet example calendars
 
       - name: Build
         shell: bash
