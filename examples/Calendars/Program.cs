@@ -46,7 +46,7 @@ namespace Calendars
                     .AddCalendarEvent("A third event", 2020, 10, 13));
 
             yield return EmbedInPanel(
-                "Italian calendar (de-DE)",
+                "Italian calendar (it-IT)",
                 new Calendar(2020, 10)
                     .DoubleBorder()
                     .SetHighlightStyle(Style.Parse("green"))
