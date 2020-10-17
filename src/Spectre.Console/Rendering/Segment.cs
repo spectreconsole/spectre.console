@@ -302,7 +302,7 @@ namespace Spectre.Console.Rendering
 
                     // How many characters should we take?
                     var take = Math.Min(width, totalLength - index);
-                    if (take == 0)
+                    if (take <= 0)
                     {
                         // This shouldn't really occur, but I don't like
                         // never ending loops if it does...
