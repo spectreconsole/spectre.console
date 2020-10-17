@@ -67,7 +67,7 @@ To output an emoji as part of markup, you can use emoji shortcodes.
 AnsiConsole.MarkupLine("Hello :globe_showing_europe_africa:!");
 ```
 
-For a list of emoji, see the [Emojis](xref:styles) appendix section.
+For a list of emoji, see the [Emojis](xref:emojis) appendix section.
 
 # Colors
 
