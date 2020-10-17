@@ -106,7 +106,7 @@ $thebackground: $gray-200;
     height: auto !important;
 }
 
-$font-family-serif: 'Roboto Slab', serif !default;
+$font-family-serif: ヒラギノ角ゴ Pro,Hiragino Kaku Gothic Pro,メイリオ,Meiryo,Osaka,'Roboto Slab', serif !default;
 
 .font-size-lg {
     font-size: $font-size-lg;
@@ -174,7 +174,7 @@ h2, h3 {
 }
 
 #hero {
-    background: $orange linear-gradient(180deg, darken($cyan, 5%),darken(#06c0af, 5%)) 
+    background: $orange linear-gradient(180deg, darken($cyan, 5%),darken(#06c0af, 5%))
     repeat-x !important;
 }
 
@@ -215,7 +215,7 @@ $sections: map-merge(
 
     .section-#{$section} {
         #titlebar {
-            background: lighten($color, 20%) linear-gradient(180deg, $color, lighten($color, 10%)) 
+            background: lighten($color, 20%) linear-gradient(180deg, $color, lighten($color, 10%))
             repeat-x !important;
 
             .section {
@@ -329,7 +329,7 @@ $sections: map-merge(
       visibility: visible !important;
     }
     min-height: 200px;
-  
+
     svg {
       min-height: 200px;
     }
