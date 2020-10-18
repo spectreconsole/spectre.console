@@ -10,10 +10,11 @@ for Python.
 
 1. [Features](#features)
 2. [Example](#example)
-3. [Usage](#usage)  
-   3.1. [Using the static API](#using-the-static-api)  
-   3.2. [Creating a console](#creating-a-console)
-4. [Running examples](#running-examples)
+3. [Installing](#installing)
+4. [Usage](#usage)  
+   4.1. [Using the static API](#using-the-static-api)  
+   4.2. [Creating a console](#creating-a-console)
+5. [Running examples](#running-examples)
 
 ## Features
 
