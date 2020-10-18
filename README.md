@@ -112,7 +112,7 @@ Now you can list available examples in this repository:
 And to run an example:
 
 ```
-> dotnet example table
+> dotnet example tables
 ┌──────────┬──────────┬────────┐
 │ Foo      │ Bar      │ Baz    │
 ├──────────┼──────────┼────────┤
