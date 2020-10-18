@@ -30,6 +30,15 @@ for Python.
 
 ![Example](resources/gfx/screenshots/example.png)
 
+## Installing
+
+The fastest way of getting started using Spectre.Console is to install the NuGet package.
+
+```csharp
+dotnet add package Spectre.Console
+
+```
+
 ## Usage
 
 The `Spectre.Console` API is stateful and is not thread-safe.
