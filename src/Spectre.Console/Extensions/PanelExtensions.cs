@@ -27,7 +27,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(text));
             }
 
-            return SetHeader(panel, new PanelHeader(text, style, alignment));
+            return SetHeader(panel, new Title(text, style, alignment));
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Spectre.Console
         /// <param name="panel">The panel.</param>
         /// <param name="header">The header to use.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Panel SetHeader(this Panel panel, PanelHeader header)
+        public static Panel SetHeader(this Panel panel, Title header)
         {
             if (panel is null)
             {

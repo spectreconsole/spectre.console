@@ -12,12 +12,11 @@ namespace GridExample
 
             var grid = new Grid();
             grid.AddColumn(new GridColumn { NoWrap = true });
-            grid.AddColumn(new GridColumn { NoWrap = true, Width = 2 });
-            grid.AddColumn();
-            grid.AddRow("Options:", "", "");
-            grid.AddRow("  [blue]-h[/], [blue]--help[/]", "", "Show command line help.");
-            grid.AddRow("  [blue]-c[/], [blue]--configuration[/] <CONFIGURATION>", "", "The configuration to run for.");
-            grid.AddRow("  [blue]-v[/], [blue]--verbosity[/] <LEVEL>", "", "Set the [grey]MSBuild[/] verbosity level.");
+            grid.AddColumn(new GridColumn().PadLeft(2));
+            grid.AddRow("Options:");
+            grid.AddRow("  [blue]-h[/], [blue]--help[/]", "Show command line help.");
+            grid.AddRow("  [blue]-c[/], [blue]--configuration[/] <CONFIGURATION>", "The configuration to run for.");
+            grid.AddRow("  [blue]-v[/], [blue]--verbosity[/] <LEVEL>", "Set the [grey]MSBuild[/] verbosity level.");
 
             AnsiConsole.Render(grid);
         }

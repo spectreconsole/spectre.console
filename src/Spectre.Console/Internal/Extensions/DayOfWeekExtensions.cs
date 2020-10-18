@@ -8,14 +8,9 @@ namespace Spectre.Console.Internal
         public static string GetAbbreviatedDayName(this DayOfWeek day, CultureInfo culture)
         {
             culture ??= CultureInfo.InvariantCulture;
-            var name = culture.DateTimeFormat.GetAbbreviatedDayName(day);
-
-            if (name.Length > 0 && char.IsLower(name[0]))
-            {
-                name = string.Format(culture, "{0}{1}", char.ToUpper(name[0], culture), name.Substring(1));
-            }
-
-            return name;
+            return culture.DateTimeFormat
+                .GetAbbreviatedDayName(day)
+                .Capitalize(culture);
         }
 
         public static DayOfWeek GetNextWeekDay(this DayOfWeek day)

@@ -251,52 +251,6 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Should_Render_Table_With_Ascii_Border_Correctly()
-        {
-            // Given
-            var console = new PlainConsole(width: 80);
-            var table = new Table { Border = TableBorder.Ascii };
-            table.AddColumns("Foo", "Bar", "Baz");
-            table.AddRow("Qux", "Corgi", "Waldo");
-            table.AddRow("Grault", "Garply", "Fred");
-
-            // When
-            console.Render(table);
-
-            // Then
-            console.Lines.Count.ShouldBe(6);
-            console.Lines[0].ShouldBe("+-------------------------+");
-            console.Lines[1].ShouldBe("| Foo    | Bar    | Baz   |");
-            console.Lines[2].ShouldBe("|--------+--------+-------|");
-            console.Lines[3].ShouldBe("| Qux    | Corgi  | Waldo |");
-            console.Lines[4].ShouldBe("| Grault | Garply | Fred  |");
-            console.Lines[5].ShouldBe("+-------------------------+");
-        }
-
-        [Fact]
-        public void Should_Render_Table_With_Rounded_Border_Correctly()
-        {
-            // Given
-            var console = new PlainConsole(width: 80);
-            var table = new Table { Border = TableBorder.Rounded };
-            table.AddColumns("Foo", "Bar", "Baz");
-            table.AddRow("Qux", "Corgi", "Waldo");
-            table.AddRow("Grault", "Garply", "Fred");
-
-            // When
-            console.Render(table);
-
-            // Then
-            console.Lines.Count.ShouldBe(6);
-            console.Lines[0].ShouldBe("╭────────┬────────┬───────╮");
-            console.Lines[1].ShouldBe("│ Foo    │ Bar    │ Baz   │");
-            console.Lines[2].ShouldBe("├────────┼────────┼───────┤");
-            console.Lines[3].ShouldBe("│ Qux    │ Corgi  │ Waldo │");
-            console.Lines[4].ShouldBe("│ Grault │ Garply │ Fred  │");
-            console.Lines[5].ShouldBe("╰────────┴────────┴───────╯");
-        }
-
-        [Fact]
         public void Should_Render_Table_With_No_Border_Correctly()
         {
             // Given
@@ -431,6 +385,33 @@ namespace Spectre.Console.Tests.Unit
             console.Lines[09].ShouldBe("│ Hej   │ Värld │       │");
             console.Lines[10].ShouldBe("│       │ en    │       │");
             console.Lines[11].ShouldBe("╰───────┴───────┴───────╯");
+        }
+
+        [Fact]
+        public void Should_Render_Table_With_Title_And_Footnote_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var table = new Table { Border = TableBorder.Rounded };
+            table.Heading = new Title("Hello World");
+            table.Footnote = new Title("Goodbye World");
+            table.AddColumns("Foo", "Bar", "Baz");
+            table.AddRow("Qux", "Corgi", "Waldo");
+            table.AddRow("Grault", "Garply", "Fred");
+
+            // When
+            console.Render(table);
+
+            // Then
+            console.Lines.Count.ShouldBe(8);
+            console.Lines[0].ShouldBe("        Hello World        ");
+            console.Lines[1].ShouldBe("╭────────┬────────┬───────╮");
+            console.Lines[2].ShouldBe("│ Foo    │ Bar    │ Baz   │");
+            console.Lines[3].ShouldBe("├────────┼────────┼───────┤");
+            console.Lines[4].ShouldBe("│ Qux    │ Corgi  │ Waldo │");
+            console.Lines[5].ShouldBe("│ Grault │ Garply │ Fred  │");
+            console.Lines[6].ShouldBe("╰────────┴────────┴───────╯");
+            console.Lines[7].ShouldBe("       Goodbye World       ");
         }
     }
 }

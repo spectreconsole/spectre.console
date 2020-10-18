@@ -28,6 +28,8 @@ namespace Spectre.Console
         private bool _dirty;
         private CultureInfo _culture;
         private Style _highlightStyle;
+        private bool _showHeader;
+        private Style? _headerStyle;
 
         /// <summary>
         /// Gets or sets the calendar year.
@@ -96,6 +98,24 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether or not the calendar header should be shown.
+        /// </summary>
+        public bool ShowHeader
+        {
+            get => _showHeader;
+            set => MarkAsDirty(() => _showHeader = value);
+        }
+
+        /// <summary>
+        /// Gets or sets the header style.
+        /// </summary>
+        public Style? HeaderStyle
+        {
+            get => _headerStyle;
+            set => MarkAsDirty(() => _headerStyle = value);
+        }
+
+        /// <summary>
         /// Gets a list containing all calendar events.
         /// </summary>
         public IList<CalendarEvent> CalendarEvents => _calendarEvents;
@@ -137,6 +157,7 @@ namespace Spectre.Console
             _dirty = true;
             _culture = CultureInfo.InvariantCulture;
             _highlightStyle = new Style(foreground: Color.Blue);
+            _showHeader = true;
             _calendarEvents = new ListWithCallback<CalendarEvent>(() => _dirty = true);
         }
 
@@ -175,6 +196,12 @@ namespace Spectre.Console
                 UseSafeBorder = _useSafeBorder,
                 BorderStyle = _borderStyle,
             };
+
+            if (ShowHeader)
+            {
+                var heading = new DateTime(Year, Month, Day).ToString("Y", culture).SafeMarkup();
+                table.Heading = new Title(heading, HeaderStyle);
+            }
 
             // Add columns
             foreach (var order in GetWeekdays())

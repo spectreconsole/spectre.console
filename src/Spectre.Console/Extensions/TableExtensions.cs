@@ -176,5 +176,85 @@ namespace Spectre.Console
             table.ShowHeaders = false;
             return table;
         }
+
+        /// <summary>
+        /// Sets the table heading.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <param name="text">The heading.</param>
+        /// <param name="style">The style.</param>
+        /// <param name="alignment">The alignment.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table SetHeading(this Table table, string text, Style? style = null, Justify? alignment = null)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            if (text is null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            return SetHeading(table, new Title(text, style, alignment));
+        }
+
+        /// <summary>
+        /// Sets the table heading.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <param name="heading">The heading.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table SetHeading(this Table table, Title heading)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            table.Heading = heading;
+            return table;
+        }
+
+        /// <summary>
+        /// Sets the table footnote.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <param name="text">The footnote.</param>
+        /// <param name="style">The style.</param>
+        /// <param name="alignment">The alignment.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table SetFootnote(this Table table, string text, Style? style = null, Justify? alignment = null)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            if (text is null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            return SetFootnote(table, new Title(text, style, alignment));
+        }
+
+        /// <summary>
+        /// Sets the table footnote.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <param name="footnote">The footnote.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table SetFootnote(this Table table, Title footnote)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            table.Footnote = footnote;
+            return table;
+        }
     }
 }
