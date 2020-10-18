@@ -19,7 +19,7 @@ namespace TableExample
 
         private static void RenderSimpleTable()
         {
-            // Create the table.
+            // Create the table
             var table = new Table();
             table.AddColumn(new TableColumn("[u]Foo[/]"));
             table.AddColumn(new TableColumn("[u]Bar[/]"));
@@ -35,7 +35,7 @@ namespace TableExample
 
         private static void RenderBigTable()
         {
-            // Create the table.
+            // Create the table
             var table = new Table().SetBorder(TableBorder.Rounded);
             table.AddColumn("[red underline]Foo[/]");
             table.AddColumn(new TableColumn("[blue]Bar[/]") { Alignment = Justify.Right, NoWrap = true });
@@ -57,16 +57,16 @@ namespace TableExample
 
         private static void RenderNestedTable()
         {
-            // Create simple table.
+            // Create simple table
             var simple = new Table().SetBorder(TableBorder.Rounded).SetBorderColor(Color.Red);
-            simple.AddColumn(new TableColumn("[u]Foo[/]").Centered());
-            simple.AddColumn(new TableColumn("[u]Bar[/]"));
-            simple.AddColumn(new TableColumn("[u]Baz[/]"));
+            simple.AddColumn(new TableColumn("[u]CDE[/]").Centered());
+            simple.AddColumn(new TableColumn("[u]FED[/]"));
+            simple.AddColumn(new TableColumn("[u]IHG[/]"));
             simple.AddRow("Hello", "[red]World![/]", "");
             simple.AddRow("[blue]Bonjour[/]", "[white]le[/]", "[red]monde![/]");
             simple.AddRow("[blue]Hej[/]", "[yellow]Världen![/]", "");
 
-            // Create other table.
+            // Create other table
             var second = new Table().SetBorder(TableBorder.Square).SetBorderColor(Color.Green);
             second.AddColumn(new TableColumn("[u]Foo[/]"));
             second.AddColumn(new TableColumn("[u]Bar[/]"));
@@ -75,12 +75,11 @@ namespace TableExample
             second.AddRow(simple, new Text("Whaaat"), new Text("Lolz"));
             second.AddRow("[blue]Hej[/]", "[yellow]Världen![/]", "");
 
+            // Create the outer most table
             var table = new Table().SetBorder(TableBorder.Rounded);
-            table.AddColumn(new TableColumn(new Panel("[u]Foo[/]").SetBorderColor(Color.Red)));
-            table.AddColumn(new TableColumn(new Panel("[u]Bar[/]").SetBorderColor(Color.Green)));
-            table.AddColumn(new TableColumn(new Panel("[u]Baz[/]").SetBorderColor(Color.Blue)));
-
-            // Add some rows
+            table.AddColumn(new TableColumn(new Panel("[u]ABC[/]").SetBorderColor(Color.Red)));
+            table.AddColumn(new TableColumn(new Panel("[u]DEF[/]").SetBorderColor(Color.Green)));
+            table.AddColumn(new TableColumn(new Panel("[u]GHI[/]").SetBorderColor(Color.Blue)));
             table.AddRow(new Text("Hello").Centered(), new Markup("[red]World![/]"), Text.Empty);
             table.AddRow(second, new Text("Whaaat"), new Text("Lol"));
             table.AddRow(new Markup("[blue]Hej[/]").Centered(), new Markup("[yellow]Världen![/]"), Text.Empty);

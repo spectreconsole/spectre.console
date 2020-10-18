@@ -383,5 +383,54 @@ namespace Spectre.Console.Tests.Unit
             console.Lines[1].ShouldBe("│ Foo │ Bar │   Baz  │");
             console.Lines[2].ShouldBe("└─────┴─────┴────────┘");
         }
+
+        [Fact]
+        public void Should_Not_Draw_Tables_That_Are_Impossible_To_Draw()
+        {
+            // Given
+            var console = new PlainConsole(width: 25);
+
+            var first = new Table().SetBorder(TableBorder.Rounded).SetBorderColor(Color.Red);
+            first.AddColumn(new TableColumn("[u]PS1[/]").Centered());
+            first.AddColumn(new TableColumn("[u]PS2[/]"));
+            first.AddColumn(new TableColumn("[u]PS3[/]"));
+            first.AddRow("Hello", "[red]World[/]", string.Empty);
+            first.AddRow("[blue]Bonjour[/]", "[white]le[/]", "[red]monde![/]");
+            first.AddRow("[blue]Hej[/]", "[yellow]Världen[/]", string.Empty);
+
+            var second = new Table().SetBorder(TableBorder.Square).SetBorderColor(Color.Green);
+            second.AddColumn(new TableColumn("[u]Foo[/]"));
+            second.AddColumn(new TableColumn("[u]Bar[/]"));
+            second.AddColumn(new TableColumn("[u]Baz[/]"));
+            second.AddRow("Hello", "[red]World[/]", string.Empty);
+            second.AddRow(first, new Text("Whaaat"), new Text("Lolz"));
+            second.AddRow("[blue]Hej[/]", "[yellow]Världen[/]", string.Empty);
+
+            var table = new Table().SetBorder(TableBorder.Rounded);
+            table.AddColumn(new TableColumn(new Panel("[u]ABC[/]").SetBorderColor(Color.Red)));
+            table.AddColumn(new TableColumn(new Panel("[u]DEF[/]").SetBorderColor(Color.Green)));
+            table.AddColumn(new TableColumn(new Panel("[u]GHI[/]").SetBorderColor(Color.Blue)));
+            table.AddRow(new Text("Hello").Centered(), new Markup("[red]World[/]"), Text.Empty);
+            table.AddRow(second, new Text("Whaat"), new Text("Lol").RightAligned());
+            table.AddRow(new Markup("[blue]Hej[/]"), new Markup("[yellow]Världen[/]"), Text.Empty);
+
+            // When
+            console.Render(table);
+
+            // Then
+            console.Lines.Count.ShouldBe(12);
+            console.Lines[00].ShouldBe("╭───────┬───────┬───────╮");
+            console.Lines[01].ShouldBe("│ ┌───┐ │ ┌───┐ │ ┌───┐ │");
+            console.Lines[02].ShouldBe("│ │ A │ │ │ D │ │ │ G │ │");
+            console.Lines[03].ShouldBe("│ │ B │ │ │ E │ │ │ H │ │");
+            console.Lines[04].ShouldBe("│ │ C │ │ │ F │ │ │ I │ │");
+            console.Lines[05].ShouldBe("│ └───┘ │ └───┘ │ └───┘ │");
+            console.Lines[06].ShouldBe("├───────┼───────┼───────┤");
+            console.Lines[07].ShouldBe("│ Hello │ World │       │");
+            console.Lines[08].ShouldBe("│ …     │ Whaat │   Lol │");
+            console.Lines[09].ShouldBe("│ Hej   │ Värld │       │");
+            console.Lines[10].ShouldBe("│       │ en    │       │");
+            console.Lines[11].ShouldBe("╰───────┴───────┴───────╯");
+        }
     }
 }
