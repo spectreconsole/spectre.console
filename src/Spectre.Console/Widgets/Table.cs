@@ -153,6 +153,7 @@ namespace Spectre.Console
             var borderStyle = BorderStyle ?? Style.Plain;
 
             var tableWidth = maxWidth;
+            var actualMaxWidth = maxWidth;
 
             var showBorder = Border.Visible;
             var hideBorder = !Border.Visible;
@@ -170,6 +171,10 @@ namespace Spectre.Console
 
             // Update the table width.
             tableWidth = columnWidths.Sum() + GetExtraWidth(includePadding: true);
+            if (tableWidth <= 0 || tableWidth > actualMaxWidth || columnWidths.Any(c => c <= 0))
+            {
+                return new List<Segment>(new[] { new Segment("…", BorderStyle ?? Style.Plain) });
+            }
 
             var rows = new List<List<IRenderable>>();
             if (ShowHeaders)
@@ -213,13 +218,15 @@ namespace Spectre.Console
                 // Iterate through each cell row
                 foreach (var cellRowIndex in Enumerable.Range(0, cellHeight))
                 {
+                    var rowResult = new List<Segment>();
+
                     foreach (var (cellIndex, firstCell, lastCell, cell) in cells.Enumerate())
                     {
                         if (firstCell && showBorder)
                         {
                             // Show left column edge
                             var part = firstRow && ShowHeaders ? TableBorderPart.HeaderLeft : TableBorderPart.CellLeft;
-                            result.Add(new Segment(border.GetPart(part), borderStyle));
+                            rowResult.Add(new Segment(border.GetPart(part), borderStyle));
                         }
 
                         // Pad column on left side.
@@ -228,18 +235,18 @@ namespace Spectre.Console
                             var leftPadding = _columns[cellIndex].Padding.Left;
                             if (leftPadding > 0)
                             {
-                                result.Add(new Segment(new string(' ', leftPadding)));
+                                rowResult.Add(new Segment(new string(' ', leftPadding)));
                             }
                         }
 
                         // Add content
-                        result.AddRange(cell[cellRowIndex]);
+                        rowResult.AddRange(cell[cellRowIndex]);
 
                         // Pad cell content right
                         var length = cell[cellRowIndex].Sum(segment => segment.CellLength(context));
                         if (length < columnWidths[cellIndex])
                         {
-                            result.Add(new Segment(new string(' ', columnWidths[cellIndex] - length)));
+                            rowResult.Add(new Segment(new string(' ', columnWidths[cellIndex] - length)));
                         }
 
                         // Pad column on the right side
@@ -248,7 +255,7 @@ namespace Spectre.Console
                             var rightPadding = _columns[cellIndex].Padding.Right;
                             if (rightPadding > 0)
                             {
-                                result.Add(new Segment(new string(' ', rightPadding)));
+                                rowResult.Add(new Segment(new string(' ', rightPadding)));
                             }
                         }
 
@@ -256,14 +263,24 @@ namespace Spectre.Console
                         {
                             // Add right column edge
                             var part = firstRow && ShowHeaders ? TableBorderPart.HeaderRight : TableBorderPart.CellRight;
-                            result.Add(new Segment(border.GetPart(part), borderStyle));
+                            rowResult.Add(new Segment(border.GetPart(part), borderStyle));
                         }
                         else if (showBorder)
                         {
                             // Add column separator
                             var part = firstRow && ShowHeaders ? TableBorderPart.HeaderSeparator : TableBorderPart.CellSeparator;
-                            result.Add(new Segment(border.GetPart(part), borderStyle));
+                            rowResult.Add(new Segment(border.GetPart(part), borderStyle));
                         }
+                    }
+
+                    // Is the row larger than the allowed max width?
+                    if (Segment.CellLength(context, rowResult) > actualMaxWidth)
+                    {
+                        result.AddRange(Segment.Truncate(context, rowResult, actualMaxWidth));
+                    }
+                    else
+                    {
+                        result.AddRange(rowResult);
                     }
 
                     result.Add(Segment.LineBreak);

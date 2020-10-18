@@ -120,6 +120,54 @@ namespace Spectre.Console.Rendering
         }
 
         /// <summary>
+        /// Gets the number of cells that the segments occupies in the console.
+        /// </summary>
+        /// <param name="context">The render context.</param>
+        /// <param name="segments">The segments to measure.</param>
+        /// <returns>The number of cells that the segments occupies in the console.</returns>
+        public static int CellLength(RenderContext context, List<Segment> segments)
+        {
+            return segments.Sum(segment => segment.CellLength(context));
+        }
+
+        /// <summary>
+        /// Truncates the segments to the specified width.
+        /// </summary>
+        /// <param name="context">The render context.</param>
+        /// <param name="segments">The segments to truncate.</param>
+        /// <param name="maxWidth">The maximum width that the segments may occupy.</param>
+        /// <returns>A list of segments that has been truncated.</returns>
+        public static List<Segment> Truncate(RenderContext context, IEnumerable<Segment> segments, int maxWidth)
+        {
+            if (context is null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            if (segments is null)
+            {
+                throw new ArgumentNullException(nameof(segments));
+            }
+
+            var result = new List<Segment>();
+
+            var totalWidth = 0;
+            foreach (var segment in segments)
+            {
+                var segmentWidth = segment.CellLength(context);
+                if (totalWidth + segmentWidth > maxWidth)
+                {
+                    break;
+                }
+
+                result.Add(segment);
+                totalWidth += segmentWidth;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Splits the provided segments into lines.
         /// </summary>
         /// <param name="segments">The segments to split.</param>
@@ -315,11 +363,25 @@ namespace Spectre.Console.Rendering
             }
             else if (overflow == Overflow.Crop)
             {
-                result.Add(new Segment(segment.Text.Substring(0, width), segment.Style));
+                if (Math.Max(0, width - 1) == 0)
+                {
+                    result.Add(new Segment(string.Empty, segment.Style));
+                }
+                else
+                {
+                    result.Add(new Segment(segment.Text.Substring(0, width), segment.Style));
+                }
             }
             else if (overflow == Overflow.Ellipsis)
             {
-                result.Add(new Segment(segment.Text.Substring(0, width - 1) + "…", segment.Style));
+                if (Math.Max(0, width - 1) == 0)
+                {
+                    result.Add(new Segment("…", segment.Style));
+                }
+                else
+                {
+                    result.Add(new Segment(segment.Text.Substring(0, width - 1) + "…", segment.Style));
+                }
             }
 
             return result;

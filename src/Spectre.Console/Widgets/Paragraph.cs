@@ -193,6 +193,12 @@ namespace Spectre.Console
 
         private List<SegmentLine> SplitLines(RenderContext context, int maxWidth)
         {
+            if (maxWidth <= 0)
+            {
+                // Nothing fits, so return an empty line.
+                return new List<SegmentLine>();
+            }
+
             if (_lines.Max(x => x.CellWidth(context)) <= maxWidth)
             {
                 return Clone();
