@@ -39,7 +39,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the header.
         /// </summary>
-        public PanelHeader? Header { get; set; }
+        public Title? Header { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Panel"/> class.

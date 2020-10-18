@@ -16,6 +16,9 @@ namespace Spectre.Console
         private readonly List<TableColumn> _columns;
         private readonly List<List<IRenderable>> _rows;
 
+        private static Style _defaultHeadingStyle = new Style(Color.Silver);
+        private static Style _defaultFootnoteStyle = new Style(Color.Grey);
+
         /// <summary>
         /// Gets the number of columns in the table.
         /// </summary>
@@ -51,6 +54,16 @@ namespace Spectre.Console
         /// Gets or sets the width of the table.
         /// </summary>
         public int? Width { get; set; }
+
+        /// <summary>
+        /// Gets or sets the table title.
+        /// </summary>
+        public Title? Heading { get; set; }
+
+        /// <summary>
+        /// Gets or sets the table footnote.
+        /// </summary>
+        public Title? Footnote { get; set; }
 
         // Whether this is a grid or not.
         internal bool IsGrid { get; set; }
@@ -186,8 +199,10 @@ namespace Spectre.Console
             // Add rows.
             rows.AddRange(_rows);
 
-            // Iterate all rows
             var result = new List<Segment>();
+            result.AddRange(RenderAnnotation(context, Heading, tableWidth, _defaultHeadingStyle));
+
+            // Iterate all rows
             foreach (var (index, firstRow, lastRow, row) in rows.Enumerate())
             {
                 var cellHeight = 1;
@@ -303,6 +318,8 @@ namespace Spectre.Console
                 }
             }
 
+            result.AddRange(RenderAnnotation(context, Footnote, tableWidth, _defaultFootnoteStyle));
+
             return result;
         }
 
@@ -373,6 +390,27 @@ namespace Spectre.Console
             }
 
             return widths;
+        }
+
+        private static IEnumerable<Segment> RenderAnnotation(
+            RenderContext context, Title? header,
+            int maxWidth, Style defaultStyle)
+        {
+            if (header == null)
+            {
+                yield break;
+            }
+
+            var paragraph = new Markup(header.Text.Capitalize(), header.Style ?? defaultStyle)
+                .SetAlignment(header.Alignment ?? Justify.Center)
+                .SetOverflow(Overflow.Ellipsis);
+
+            foreach (var segment in ((IRenderable)paragraph).Render(context, maxWidth))
+            {
+                yield return segment;
+            }
+
+            yield return Segment.LineBreak;
         }
 
         private (int Min, int Max) MeasureColumn(TableColumn column, RenderContext options, int maxWidth)

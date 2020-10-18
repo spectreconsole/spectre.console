@@ -73,7 +73,7 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Render(new Panel("Hello World")
             {
-                Header = new PanelHeader("Greeting"),
+                Header = new Title("Greeting"),
                 Expand = true,
                 Padding = new Padding(2, 0, 2, 0),
             });
@@ -94,7 +94,7 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Render(new Panel("Hello World")
             {
-                Header = new PanelHeader("Greeting").LeftAligned(),
+                Header = new Title("Greeting").LeftAligned(),
                 Expand = true,
             });
 
@@ -114,7 +114,7 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Render(new Panel("Hello World")
             {
-                Header = new PanelHeader("Greeting").Centered(),
+                Header = new Title("Greeting").Centered(),
                 Expand = true,
             });
 
@@ -134,7 +134,7 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Render(new Panel("Hello World")
             {
-                Header = new PanelHeader("Greeting").RightAligned(),
+                Header = new Title("Greeting").RightAligned(),
                 Expand = true,
             });
 
@@ -154,7 +154,7 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Render(new Panel("Hello World")
             {
-                Header = new PanelHeader("Greeting"),
+                Header = new Title("Greeting"),
                 Expand = true,
             });
 

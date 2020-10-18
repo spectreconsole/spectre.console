@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Spectre.Console.Rendering;
@@ -16,6 +17,23 @@ namespace Spectre.Console.Internal
         public static int CellLength(this string text, RenderContext context)
         {
             return Cell.GetCellLength(context, text);
+        }
+
+        public static string Capitalize(this string text, CultureInfo? culture = null)
+        {
+            if (text == null)
+            {
+                return string.Empty;
+            }
+
+            culture ??= CultureInfo.InvariantCulture;
+
+            if (text.Length > 0 && char.IsLower(text[0]))
+            {
+                text = string.Format(culture, "{0}{1}", char.ToUpper(text[0], culture), text.Substring(1));
+            }
+
+            return text;
         }
 
         public static string NormalizeLineEndings(this string text, bool native = false)

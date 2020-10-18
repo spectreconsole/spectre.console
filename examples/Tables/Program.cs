@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Spectre.Console;
 
 namespace TableExample
@@ -7,84 +6,45 @@ namespace TableExample
     {
         public static void Main()
         {
-            // A simple table
-            RenderSimpleTable();
+            // Create the table.
+            var table = CreateTable();
 
-            // A big table
-            RenderBigTable();
-
-            // A nested table
-            RenderNestedTable();
-        }
-
-        private static void RenderSimpleTable()
-        {
-            // Create the table
-            var table = new Table();
-            table.AddColumn(new TableColumn("[u]Foo[/]"));
-            table.AddColumn(new TableColumn("[u]Bar[/]"));
-            table.AddColumn(new TableColumn("[u]Baz[/]"));
-
-            // Add some rows
-            table.AddRow("Hello", "[red]World![/]", "");
-            table.AddRow("[blue]Bonjour[/]", "[white]le[/]", "[red]monde![/]");
-            table.AddRow("[blue]Hej[/]", "[yellow]Världen![/]", "");
-
+            // Render the table.
             AnsiConsole.Render(table);
         }
 
-        private static void RenderBigTable()
+        private static Table CreateTable()
         {
-            // Create the table
-            var table = new Table().SetBorder(TableBorder.Rounded);
-            table.AddColumn("[red underline]Foo[/]");
-            table.AddColumn(new TableColumn("[blue]Bar[/]") { Alignment = Justify.Right, NoWrap = true });
+            var simple = new Table()
+                .SetBorder(TableBorder.Square)
+                .SetBorderColor(Color.Red)
+                .AddColumn(new TableColumn("[u]CDE[/]").Centered())
+                .AddColumn(new TableColumn("[u]FED[/]"))
+                .AddColumn(new TableColumn("[u]IHG[/]"))
+                .AddRow("Hello", "[red]World![/]", "")
+                .AddRow("[blue]Bonjour[/]", "[white]le[/]", "[red]monde![/]")
+                .AddRow("[blue]Hej[/]", "[yellow]Världen![/]", "");
 
-            // Add some rows
-            table.AddRow("[blue][underline]Hell[/]o[/]", "World");
-            table.AddRow("[yellow]Patrik [green]\"Hello World\"[/] Svensson[/]", "Was [underline]here[/]!");
-            table.AddEmptyRow();
-            table.AddRow(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
-                "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure " +
-                "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat " +
-                "non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", "<- Strange language");
-            table.AddEmptyRow();
-            table.AddRow("Hej", "[green]Världen[/]");
+            var second = new Table()
+                .SetBorder(TableBorder.Rounded)
+                .SetBorderColor(Color.Green)
+                .AddColumn(new TableColumn("[u]Foo[/]"))
+                .AddColumn(new TableColumn("[u]Bar[/]"))
+                .AddColumn(new TableColumn("[u]Baz[/]"))
+                .AddRow("Hello", "[red]World![/]", "")
+                .AddRow(simple, new Text("Whaaat"), new Text("Lolz"))
+                .AddRow("[blue]Hej[/]", "[yellow]Världen![/]", "");
 
-            AnsiConsole.Render(table);
-        }
-
-        private static void RenderNestedTable()
-        {
-            // Create simple table
-            var simple = new Table().SetBorder(TableBorder.Rounded).SetBorderColor(Color.Red);
-            simple.AddColumn(new TableColumn("[u]CDE[/]").Centered());
-            simple.AddColumn(new TableColumn("[u]FED[/]"));
-            simple.AddColumn(new TableColumn("[u]IHG[/]"));
-            simple.AddRow("Hello", "[red]World![/]", "");
-            simple.AddRow("[blue]Bonjour[/]", "[white]le[/]", "[red]monde![/]");
-            simple.AddRow("[blue]Hej[/]", "[yellow]Världen![/]", "");
-
-            // Create other table
-            var second = new Table().SetBorder(TableBorder.Square).SetBorderColor(Color.Green);
-            second.AddColumn(new TableColumn("[u]Foo[/]"));
-            second.AddColumn(new TableColumn("[u]Bar[/]"));
-            second.AddColumn(new TableColumn("[u]Baz[/]"));
-            second.AddRow("Hello", "[red]World![/]", "");
-            second.AddRow(simple, new Text("Whaaat"), new Text("Lolz"));
-            second.AddRow("[blue]Hej[/]", "[yellow]Världen![/]", "");
-
-            // Create the outer most table
-            var table = new Table().SetBorder(TableBorder.Rounded);
-            table.AddColumn(new TableColumn(new Panel("[u]ABC[/]").SetBorderColor(Color.Red)));
-            table.AddColumn(new TableColumn(new Panel("[u]DEF[/]").SetBorderColor(Color.Green)));
-            table.AddColumn(new TableColumn(new Panel("[u]GHI[/]").SetBorderColor(Color.Blue)));
-            table.AddRow(new Text("Hello").Centered(), new Markup("[red]World![/]"), Text.Empty);
-            table.AddRow(second, new Text("Whaaat"), new Text("Lol"));
-            table.AddRow(new Markup("[blue]Hej[/]").Centered(), new Markup("[yellow]Världen![/]"), Text.Empty);
-
-            AnsiConsole.Render(table);
+            return new Table()
+                .SetBorder(TableBorder.DoubleEdge)
+                .SetHeading("TABLE [yellow]HEADING[/]")
+                .SetFootnote("TABLE [yellow]FOOTNOTE[/]")
+                .AddColumn(new TableColumn(new Panel("[u]ABC[/]").SetBorderColor(Color.Red)))
+                .AddColumn(new TableColumn(new Panel("[u]DEF[/]").SetBorderColor(Color.Green)))
+                .AddColumn(new TableColumn(new Panel("[u]GHI[/]").SetBorderColor(Color.Blue)))
+                .AddRow(new Text("Hello").Centered(), new Markup("[red]World![/]"), Text.Empty)
+                .AddRow(second, new Text("Whaaat"), new Text("Lol"))
+                .AddRow(new Markup("[blue]Hej[/]").Centered(), new Markup("[yellow]Världen![/]"), Text.Empty);
         }
     }
 }
