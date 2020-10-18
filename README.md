@@ -99,14 +99,21 @@ Now you can list available examples in this repository:
 ```
 > dotnet example
 
-╭────────┬───────────────────────────────┬─────────────────────────────────────────────────╮
-│ Name   │ Path                          │ Description                                     │
-├────────┼───────────────────────────────┼─────────────────────────────────────────────────┤
-│ Colors │ examples/Colors/Colors.csproj │ Demonstrates how to use colors in the console.  │
-│ Grid   │ examples/Grid/Grid.csproj     │ Demonstrates how to render grids in a console.  │
-│ Panel  │ examples/Panel/Panel.csproj   │ Demonstrates how to render items in panels.     │
-│ Table  │ examples/Table/Table.csproj   │ Demonstrates how to render tables in a console. │
-╰────────┴───────────────────────────────┴─────────────────────────────────────────────────╯
+┌────────────┬───────────────────────────────────────┬───────────────────────────────────────────────────┐
+│ Name       │ Path                                  │ Description                                       │
+├────────────┼───────────────────────────────────────┼───────────────────────────────────────────────────┤
+│ Borders    │ examples/Borders/Borders.csproj       │ Demonstrates the different kind of borders.       │
+│ Calendars  │ examples/Calendars/Calendars.csproj   │ Demonstrates how to render calendars.             │
+│ Colors     │ examples/Colors/Colors.csproj         │ Demonstrates how to use colors in the console.    │
+│ Columns    │ examples/Columns/Columns.csproj       │ Demonstrates how to render data into columns.     │
+│ Emojis     │ examples/Emojis/Emojis.csproj         │ Demonstrates how to render emojis.                │
+│ Exceptions │ examples/Exceptions/Exceptions.csproj │ Demonstrates how to render formatted exceptions.  │
+│ Grids      │ examples/Grids/Grids.csproj           │ Demonstrates how to render grids in a console.    │
+│ Info       │ examples/Info/Info.csproj             │ Displays the capabilities of the current console. │
+│ Links      │ examples/Links/Links.csproj           │ Demonstrates how to render links in a console.    │
+│ Panels     │ examples/Panels/Panels.csproj         │ Demonstrates how to render items in panels.       │
+│ Tables     │ examples/Tables/Tables.csproj         │ Demonstrates how to render tables in a console.   │
+└────────────┴───────────────────────────────────────┴───────────────────────────────────────────────────┘
 ```
 
 And to run an example:
