@@ -76,7 +76,7 @@ You can set the highlight style for event via `SetHighlightStyle`.
 ```csharp
 var calendar = new Calendar(2020,10);
 calendar.AddCalendarEvent(2020, 10, 11);
-calendar.SetHighlightStyle(Style.WithDecoration(Decoration.Bold));
+calendar.SetHighlightStyle(Style.Parse("yellow bold"));
 AnsiConsole.Render(calendar);
 
 ```
