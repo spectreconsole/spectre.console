@@ -42,7 +42,7 @@ namespace Spectre.Console
         {
             var shortenTypes = (settings.Format & ExceptionFormats.ShortenTypes) != 0;
             var type = Emphasize(ex.Type, new[] { '.' }, settings.Style.Exception, shortenTypes, settings);
-            var message = $"[{settings.Style.Message.ToMarkup()}]{ex.Message.SafeMarkup()}[/]";
+            var message = $"[{settings.Style.Message.ToMarkup()}]{ex.Message.EscapeMarkup()}[/]";
             return new Markup(string.Concat(type, ": ", message));
         }
 
@@ -99,7 +99,7 @@ namespace Spectre.Console
         {
             var typeColor = settings.Style.ParameterType.ToMarkup();
             var nameColor = settings.Style.ParameterName.ToMarkup();
-            var parameters = frame.Parameters.Select(x => $"[{typeColor}]{x.Type.SafeMarkup()}[/] [{nameColor}]{x.Name}[/]");
+            var parameters = frame.Parameters.Select(x => $"[{typeColor}]{x.Type.EscapeMarkup()}[/] [{nameColor}]{x.Name}[/]");
             builder.Append(string.Join(", ", parameters));
         }
 

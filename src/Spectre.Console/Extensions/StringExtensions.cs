@@ -1,3 +1,5 @@
+using System;
+
 namespace Spectre.Console
 {
     /// <summary>
@@ -6,12 +8,11 @@ namespace Spectre.Console
     public static class StringExtensions
     {
         /// <summary>
-        /// Converts the string to something that is safe to
-        /// use in a markup string.
+        /// Escapes text so that it won’t be interpreted as markup.
         /// </summary>
-        /// <param name="text">The text to convert.</param>
-        /// <returns>A string that is safe to use in a markup string.</returns>
-        public static string SafeMarkup(this string text)
+        /// <param name="text">The text to escape.</param>
+        /// <returns>A string that is safe to use in markup.</returns>
+        public static string EscapeMarkup(this string text)
         {
             if (text == null)
             {
@@ -21,6 +22,17 @@ namespace Spectre.Console
             return text
                 .Replace("[", "[[")
                 .Replace("]", "]]");
+        }
+
+        /// <summary>
+        /// Escapes text so that it won’t be interpreted as markup.
+        /// </summary>
+        /// <param name="text">The text to escape.</param>
+        /// <returns>A string that is safe to use in markup.</returns>
+        [Obsolete("Use EscapeMarkup extension instead.", false)]
+        public static string SafeMarkup(this string text)
+        {
+            return EscapeMarkup(text);
         }
     }
 }

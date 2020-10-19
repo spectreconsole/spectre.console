@@ -199,7 +199,7 @@ namespace Spectre.Console
 
             if (ShowHeader)
             {
-                var heading = new DateTime(Year, Month, Day).ToString("Y", culture).SafeMarkup();
+                var heading = new DateTime(Year, Month, Day).ToString("Y", culture).EscapeMarkup();
                 table.Heading = new Title(heading, HeaderStyle);
             }
 

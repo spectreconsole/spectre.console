@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
@@ -45,6 +46,21 @@ namespace Spectre.Console
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
             return ((IRenderable)_paragraph).Render(context, maxWidth);
+        }
+
+        /// <summary>
+        /// Escapes text so that it won’t be interpreted as markup.
+        /// </summary>
+        /// <param name="text">The text to escape.</param>
+        /// <returns>A string that is safe to use in markup.</returns>
+        public static string Escape(string text)
+        {
+            if (text is null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            return text.EscapeMarkup();
         }
     }
 }
