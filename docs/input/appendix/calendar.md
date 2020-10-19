@@ -6,7 +6,7 @@ The `Calendar` is used to render a calendar to the terminal.
 
 # Usage
 
-To render a calender, create a `Calendar` instance which specify target date.
+To render a calendar, create a `Calendar` instance with a target date.
 
 ```csharp
 var calendar = new Calendar(2020,10);
