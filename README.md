@@ -37,7 +37,6 @@ The fastest way of getting started using Spectre.Console is to install the NuGet
 
 ```csharp
 dotnet add package Spectre.Console
-
 ```
 
 ## Usage
