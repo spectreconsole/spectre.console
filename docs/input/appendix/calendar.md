@@ -49,7 +49,8 @@ AnsiConsole.Render(calendar);
 
 ## Calendar Event
 
-You can add the event to the calender. If the date has the event, the date is highlighted.
+You can add an event to the calendar.
+If a date has an event associated with it, the date gets highlighted in the calendar.
 
 ```csharp
 var calendar = new Calendar(2020,10);
