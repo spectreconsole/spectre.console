@@ -10,7 +10,7 @@ Python用の素晴らしい[Rich ライブラリ](https://github.com/willmcgugan
 1. [特徴](#features)
 2. [例](#example)
 3. [使用方法](#usage)  
-   3.1. [static APIの利用](#using-the-static-api)  
+   3.1. [Static APIの利用](#using-the-static-api)  
    3.2. [Consoleの作成](#creating-a-console)
 4. [例の実行](#running-examples)
 
