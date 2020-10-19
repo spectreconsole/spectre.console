@@ -71,7 +71,7 @@ AnsiConsole.Render(calendar);
 
 ### Highlight style
 
-You can set the highlight style for event via `SetHighlightStyle`.
+You can set the highlight style for a calendar event via `SetHighlightStyle`.
 
 ```csharp
 var calendar = new Calendar(2020,10);
