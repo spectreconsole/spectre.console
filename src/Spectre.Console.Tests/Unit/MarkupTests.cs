@@ -6,6 +6,24 @@ namespace Spectre.Console.Tests.Unit
 {
     public sealed class MarkupTests
     {
+        public sealed class TheEscapeMethod
+        {
+            [Theory]
+            [InlineData("Hello World", "Hello World")]
+            [InlineData("Hello World [", "Hello World [[")]
+            [InlineData("Hello World ]", "Hello World ]]")]
+            [InlineData("Hello [World]", "Hello [[World]]")]
+            [InlineData("Hello [[World]]", "Hello [[[[World]]]]")]
+            public void Should_Escape_Markup_As_Expected(string input, string expected)
+            {
+                // Given, When
+                var result = Markup.Escape(input);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+        }
+
         [Theory]
         [InlineData("Hello [[ World ]")]
         [InlineData("Hello [[ World ] !")]
