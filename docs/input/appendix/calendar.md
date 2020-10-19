@@ -27,7 +27,7 @@ AnsiConsole.Render(calendar);
 
 ## Culture
 
-You can set the culture for day of week.
+You can set the calendar's culture to show localized weekdays.
 
 ```csharp
 var calendar = new Calendar(2020,10);
