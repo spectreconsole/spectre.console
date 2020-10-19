@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using Spectre.Console.Internal;
 
 namespace Spectre.Console.Rendering
@@ -125,46 +127,9 @@ namespace Spectre.Console.Rendering
         /// <param name="context">The render context.</param>
         /// <param name="segments">The segments to measure.</param>
         /// <returns>The number of cells that the segments occupies in the console.</returns>
-        public static int CellLength(RenderContext context, List<Segment> segments)
+        public static int CellLength(RenderContext context, IEnumerable<Segment> segments)
         {
             return segments.Sum(segment => segment.CellLength(context));
-        }
-
-        /// <summary>
-        /// Truncates the segments to the specified width.
-        /// </summary>
-        /// <param name="context">The render context.</param>
-        /// <param name="segments">The segments to truncate.</param>
-        /// <param name="maxWidth">The maximum width that the segments may occupy.</param>
-        /// <returns>A list of segments that has been truncated.</returns>
-        public static List<Segment> Truncate(RenderContext context, IEnumerable<Segment> segments, int maxWidth)
-        {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (segments is null)
-            {
-                throw new ArgumentNullException(nameof(segments));
-            }
-
-            var result = new List<Segment>();
-
-            var totalWidth = 0;
-            foreach (var segment in segments)
-            {
-                var segmentWidth = segment.CellLength(context);
-                if (totalWidth + segmentWidth > maxWidth)
-                {
-                    break;
-                }
-
-                result.Add(segment);
-                totalWidth += segmentWidth;
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -387,6 +352,90 @@ namespace Spectre.Console.Rendering
             return result;
         }
 
+        /// <summary>
+        /// Truncates the segments to the specified width.
+        /// </summary>
+        /// <param name="context">The render context.</param>
+        /// <param name="segments">The segments to truncate.</param>
+        /// <param name="maxWidth">The maximum width that the segments may occupy.</param>
+        /// <returns>A list of segments that has been truncated.</returns>
+        public static List<Segment> Truncate(RenderContext context, IEnumerable<Segment> segments, int maxWidth)
+        {
+            if (context is null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            if (segments is null)
+            {
+                throw new ArgumentNullException(nameof(segments));
+            }
+
+            var result = new List<Segment>();
+
+            var totalWidth = 0;
+            foreach (var segment in segments)
+            {
+                var segmentWidth = segment.CellLength(context);
+                if (totalWidth + segmentWidth > maxWidth)
+                {
+                    break;
+                }
+
+                result.Add(segment);
+                totalWidth += segmentWidth;
+            }
+
+            if (result.Count == 0 && segments.Any())
+            {
+                var segment = Truncate(context, segments.First(), maxWidth);
+                if (segment != null)
+                {
+                    result.Add(segment);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Truncates the segment to the specified width.
+        /// </summary>
+        /// <param name="context">The render context.</param>
+        /// <param name="segment">The segment to truncate.</param>
+        /// <param name="maxWidth">The maximum width that the segment may occupy.</param>
+        /// <returns>A new truncated segment, or <c>null</c>.</returns>
+        public static Segment? Truncate(RenderContext context, Segment segment, int maxWidth)
+        {
+            if (segment is null)
+            {
+                return null;
+            }
+
+            if (segment.CellLength(context) <= maxWidth)
+            {
+                return segment;
+            }
+
+            var builder = new StringBuilder();
+            foreach (var character in segment.Text)
+            {
+                if (Cell.GetCellLength(context, builder.ToString()) >= maxWidth)
+                {
+                    break;
+                }
+
+                builder.Append(character);
+            }
+
+            if (builder.Length == 0)
+            {
+                return null;
+            }
+
+            return new Segment(builder.ToString(), segment.Style);
+        }
+
         internal static Segment TruncateWithEllipsis(string text, Style style, RenderContext context, int maxWidth)
         {
             return SplitOverflow(
@@ -394,6 +443,46 @@ namespace Spectre.Console.Rendering
                 Overflow.Ellipsis,
                 context,
                 maxWidth)[0];
+        }
+
+        internal static List<Segment> TruncateWithEllipsis(IEnumerable<Segment> segments, RenderContext context, int maxWidth)
+        {
+            if (CellLength(context, segments) <= maxWidth)
+            {
+                return new List<Segment>(segments);
+            }
+
+            segments = TrimEnd(Truncate(context, segments, maxWidth - 1));
+            if (!segments.Any())
+            {
+                return new List<Segment>(1);
+            }
+
+            var result = new List<Segment>(segments);
+            result.Add(new Segment("…", result.Last().Style));
+            return result;
+        }
+
+        internal static List<Segment> TrimEnd(IEnumerable<Segment> segments)
+        {
+            var stack = new Stack<Segment>();
+            var checkForWhitespace = true;
+            foreach (var segment in segments.Reverse())
+            {
+                if (checkForWhitespace)
+                {
+                    if (segment.IsWhiteSpace)
+                    {
+                        continue;
+                    }
+
+                    checkForWhitespace = false;
+                }
+
+                stack.Push(segment);
+            }
+
+            return stack.ToList();
         }
 
         internal static List<List<SegmentLine>> MakeSameHeight(int cellHeight, List<List<SegmentLine>> cells)

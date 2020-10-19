@@ -138,7 +138,9 @@ namespace Spectre.Console
                 return Array.Empty<Segment>();
             }
 
-            var lines = SplitLines(context, maxWidth);
+            var lines = context.SingleLine
+                ? new List<SegmentLine>(_lines)
+                : SplitLines(context, maxWidth);
 
             // Justify lines
             var justification = context.Justification ?? Alignment ?? Justify.Left;
@@ -168,6 +170,11 @@ namespace Spectre.Console
                         }
                     }
                 }
+            }
+
+            if (context.SingleLine)
+            {
+                return lines.First().Where(segment => !segment.IsLineBreak);
             }
 
             return new SegmentLineEnumerator(lines);

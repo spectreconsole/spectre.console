@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Spectre.Console;
 using Spectre.Console.Rendering;
 
@@ -7,6 +8,8 @@ namespace BordersExample
     {
         public static void Main()
         {
+            Debugger.Launch();
+
             // Render panel borders
             AnsiConsole.WriteLine();
             AnsiConsole.MarkupLine("[white bold underline]PANEL BORDERS[/]");

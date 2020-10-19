@@ -15,17 +15,17 @@ namespace Exceptions
             catch (Exception ex)
             {
                 AnsiConsole.WriteLine();
-                AnsiConsole.Render(new Panel("[u]Default[/]").Expand());
+                AnsiConsole.Render(new Rule("Default").LeftAligned());
                 AnsiConsole.WriteLine();
                 AnsiConsole.WriteException(ex);
 
                 AnsiConsole.WriteLine();
-                AnsiConsole.Render(new Panel("[u]Compact[/]").Expand());
+                AnsiConsole.Render(new Rule("Compact").LeftAligned());
                 AnsiConsole.WriteLine();
                 AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything | ExceptionFormats.ShowLinks);
 
                 AnsiConsole.WriteLine();
-                AnsiConsole.Render(new Panel("[u]Custom colors[/]").Expand());
+                AnsiConsole.Render(new Rule("Compact + Custom colors").LeftAligned());
                 AnsiConsole.WriteLine();
                 AnsiConsole.WriteException(ex, new ExceptionSettings
                 {
