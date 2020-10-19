@@ -2,7 +2,7 @@
 Order: 4
 ---
 
-The `Calendar` API is easy to render the calendar on your terminal.
+The `Calendar` is used to render a calendar to the terminal.
 
 # Usage
 
