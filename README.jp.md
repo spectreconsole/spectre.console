@@ -37,7 +37,7 @@ Python用の素晴らしい[Rich ライブラリ](https://github.com/willmcgugan
 _メモ: このライブラリは現在開発中で、APIは1.0のリリースまでの間に変更されたり、
 削除されたりする可能性があります。_
 
-### static APIの利用
+### Static APIの利用
 
 
 `System.Console` APIでするように、テキストを出力したいだけの時にはstatic APIが最適ですが、綺麗です。
