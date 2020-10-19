@@ -7,12 +7,17 @@ Python用の素晴らしい[Rich ライブラリ](https://github.com/willmcgugan
 
 ## 目次
 
-1. [特徴](#features)
-2. [例](#example)
-3. [使用方法](#usage)  
-   3.1. [Static APIの利用](#using-the-static-api)  
-   3.2. [Consoleの作成](#creating-a-console)
-4. [例の実行](#running-examples)
+1. [特徴](#特徴)
+2. [例](#例)
+3. [使用方法](#使用方法)  
+   3.1. [Static APIの利用](#static-apiの利用)
+   3.2. [コンソールの作成](#コンソールの作成)
+4. [例の実行](#例の実行)
+5. [クイックスタート](#クイックスタート)
+6. [マークアップ](#マークアップ)
+7. [絵文字](#絵文字)
+8. [テーブル](#テーブル)
+9. [例外](#例外)
 
 ## 特徴
 
