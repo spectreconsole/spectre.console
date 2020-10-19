@@ -44,7 +44,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub", "GitHub", "{C3E2CB
 		..\.github\workflows\publish.yaml = ..\.github\workflows\publish.yaml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calendars", "..\examples\Calendars\Calendars.csproj", "{57691C7D-683D-46E6-AA4F-57A8C5F65D25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendars", "..\examples\Calendars\Calendars.csproj", "{57691C7D-683D-46E6-AA4F-57A8C5F65D25}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rules", "..\examples\Rules\Rules.csproj", "{8622A261-02C6-40CA-9797-E3F01ED87D6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -212,6 +214,18 @@ Global
 		{57691C7D-683D-46E6-AA4F-57A8C5F65D25}.Release|x64.Build.0 = Release|Any CPU
 		{57691C7D-683D-46E6-AA4F-57A8C5F65D25}.Release|x86.ActiveCfg = Release|Any CPU
 		{57691C7D-683D-46E6-AA4F-57A8C5F65D25}.Release|x86.Build.0 = Release|Any CPU
+		{8622A261-02C6-40CA-9797-E3F01ED87D6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8622A261-02C6-40CA-9797-E3F01ED87D6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8622A261-02C6-40CA-9797-E3F01ED87D6B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8622A261-02C6-40CA-9797-E3F01ED87D6B}.Debug|x64.Build.0 = Debug|Any CPU
+		{8622A261-02C6-40CA-9797-E3F01ED87D6B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8622A261-02C6-40CA-9797-E3F01ED87D6B}.Debug|x86.Build.0 = Debug|Any CPU
+		{8622A261-02C6-40CA-9797-E3F01ED87D6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8622A261-02C6-40CA-9797-E3F01ED87D6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8622A261-02C6-40CA-9797-E3F01ED87D6B}.Release|x64.ActiveCfg = Release|Any CPU
+		{8622A261-02C6-40CA-9797-E3F01ED87D6B}.Release|x64.Build.0 = Release|Any CPU
+		{8622A261-02C6-40CA-9797-E3F01ED87D6B}.Release|x86.ActiveCfg = Release|Any CPU
+		{8622A261-02C6-40CA-9797-E3F01ED87D6B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -229,6 +243,7 @@ Global
 		{90C081A7-7C1D-4A4A-82B6-8FF473C3EA32} = {F0575243-121F-4DEE-9F6B-246E26DC0844}
 		{C3E2CB5C-1517-4C75-B59A-93D4E22BEC8D} = {20595AD4-8D75-4AF8-B6BC-9C38C160423F}
 		{57691C7D-683D-46E6-AA4F-57A8C5F65D25} = {F0575243-121F-4DEE-9F6B-246E26DC0844}
+		{8622A261-02C6-40CA-9797-E3F01ED87D6B} = {F0575243-121F-4DEE-9F6B-246E26DC0844}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5729B071-67A0-48FB-8B1B-275E6822086C}

@@ -66,10 +66,15 @@ namespace Spectre.Console
 
             var itemWidths = _items.Select(item => item.Measure(context, maxWidth).Max).ToArray();
             var columnCount = CalculateColumnCount(maxWidth, itemWidths, _items.Count, maxPadding);
+            if (columnCount == 0)
+            {
+                // Temporary work around for extremely small consoles
+                return new Measurement(maxWidth, maxWidth);
+            }
 
-            var rows = _items.Count / columnCount;
+            var rows = _items.Count / Math.Max(columnCount, 1);
             var greatestWidth = 0;
-            for (var row = 0; row < rows; row += columnCount)
+            for (var row = 0; row < rows; row += Math.Max(1, columnCount))
             {
                 var widths = itemWidths.Skip(row * columnCount).Take(columnCount).ToList();
                 var totalWidth = widths.Sum() + (maxPadding * (widths.Count - 1));
@@ -89,6 +94,11 @@ namespace Spectre.Console
 
             var itemWidths = _items.Select(item => item.Measure(context, maxWidth).Max).ToArray();
             var columnCount = CalculateColumnCount(maxWidth, itemWidths, _items.Count, maxPadding);
+            if (columnCount == 0)
+            {
+                // Temporary work around for extremely small consoles
+                columnCount = 1;
+            }
 
             var table = new Table();
             table.NoBorder();
