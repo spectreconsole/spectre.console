@@ -25,7 +25,16 @@ namespace Spectre.Console
         /// <summary>
         /// Initializes a new instance of the <see cref="Columns"/> class.
         /// </summary>
-        /// <param name="items">The items to render.</param>
+        /// <param name="items">The items to render as columns.</param>
+        public Columns(params IRenderable[] items)
+            : this((IEnumerable<IRenderable>)items)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Columns"/> class.
+        /// </summary>
+        /// <param name="items">The items to render as columns.</param>
         public Columns(IEnumerable<IRenderable> items)
         {
             if (items is null)

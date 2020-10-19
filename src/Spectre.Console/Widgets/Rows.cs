@@ -19,7 +19,16 @@ namespace Spectre.Console
         /// <summary>
         /// Initializes a new instance of the <see cref="Rows"/> class.
         /// </summary>
-        /// <param name="children">The children to render.</param>
+        /// <param name="items">The items to render as rows.</param>
+        public Rows(params IRenderable[] items)
+            : this((IEnumerable<IRenderable>)items)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Rows"/> class.
+        /// </summary>
+        /// <param name="children">The items to render as rows.</param>
         public Rows(IEnumerable<IRenderable> children)
         {
             _children = new List<IRenderable>(children ?? throw new ArgumentNullException(nameof(children)));
