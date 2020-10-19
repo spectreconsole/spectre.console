@@ -1,5 +1,6 @@
-Title: Tables
+Title: Table
 Order: 3
+RedirectFrom: tables
 ---
 
 Tables are a perfect way of displaying tabular data in a terminal.
@@ -36,7 +37,7 @@ AnsiConsole.Render(table);
 
 This will render the following output:
 
-![Table](assets/images/table.png)
+![Table](../assets/images/table.png)
 
 # Table appearance
 

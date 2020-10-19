@@ -1,5 +1,6 @@
 ﻿Title: Calendar
 Order: 4
+RedirectFrom: calendar
 ---
 
 The `Calendar` is used to render a calendar to the terminal.

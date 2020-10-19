@@ -20,7 +20,7 @@ for Python written by Will McGugan.
   The library will detect the capabilities of the current terminal 
   and downgrade colors as needed.
 
-## Example
+## Examples
 
-<img width="100%" 
-    src="https://github.com/spectresystems/spectre.console/raw/main/resources/gfx/screenshots/example.png" />
+<img src="assets/images/table.gif" style="max-width: 100%; margin-top: 15px; margin-bottom: 25px;" />
+<img src="https://github.com/spectresystems/spectre.console/raw/main/resources/gfx/screenshots/example.png" style="max-width: 100%;" />
