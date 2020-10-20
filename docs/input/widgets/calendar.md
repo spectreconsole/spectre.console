@@ -13,6 +13,7 @@ To render a calendar, create a `Calendar` instance with a target date.
 var calendar = new Calendar(2020,10);
 AnsiConsole.Render(calendar);
 
+               2020 October
 ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┐
 │ Sun │ Mon │ Tue │ Wed │ Thu │ Fri │ Sat │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┤
@@ -23,7 +24,6 @@ AnsiConsole.Render(calendar);
 │ 25  │ 26  │ 27  │ 28  │ 29  │ 30  │ 31  │
 │     │     │     │     │     │     │     │
 └─────┴─────┴─────┴─────┴─────┴─────┴─────┘
-
 ```
 
 ## Culture
@@ -35,6 +35,7 @@ var calendar = new Calendar(2020,10);
 calendar.SetCulture("ja-JP");
 AnsiConsole.Render(calendar);
 
+             2020年10月
 ┌────┬────┬────┬────┬────┬────┬────┐
 │ 日 │ 月 │ 火 │ 水 │ 木 │ 金 │ 土 │
 ├────┼────┼────┼────┼────┼────┼────┤
@@ -45,8 +46,37 @@ AnsiConsole.Render(calendar);
 │ 25 │ 26 │ 27 │ 28 │ 29 │ 30 │ 31 │
 │    │    │    │    │    │    │    │
 └────┴────┴────┴────┴────┴────┴────┘
-
 ```
+
+## Header
+
+You can hide the calendar header.
+
+```csharp
+var calendar = new Calendar(2020,10);
+calendar.ShowHeader = false;
+AnsiConsole.Render(calendar);
+
+┌─────┬─────┬─────┬─────┬─────┬─────┬─────┐
+│ Sun │ Mon │ Tue │ Wed │ Thu │ Fri │ Sat │
+├─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+│     │     │     │     │ 1   │ 2   │ 3   │
+│ 4   │ 5   │ 6   │ 7   │ 8   │ 9   │ 10  │
+│ 11  │ 12  │ 13  │ 14  │ 15  │ 16  │ 17  │
+│ 18  │ 19  │ 20  │ 21  │ 22  │ 23  │ 24  │
+│ 25  │ 26  │ 27  │ 28  │ 29  │ 30  │ 31  │
+│     │     │     │     │     │     │     │
+└─────┴─────┴─────┴─────┴─────┴─────┴─────┘
+```
+
+You can set the header style of the calendar.
+
+```csharp
+var calendar = new Calendar(2020,10);
+calendar.SetHeaderStyle(Style.Parse("blue bold"));
+AnsiConsole.Render(calendar);
+```
+
 
 ## Calendar Event
 
@@ -58,6 +88,7 @@ var calendar = new Calendar(2020,10);
 calendar.AddCalendarEvent(2020, 10, 11);
 AnsiConsole.Render(calendar);
 
+               2020 October
 ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┐
 │ Sun │ Mon │ Tue │ Wed │ Thu │ Fri │ Sat │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┤
@@ -68,7 +99,6 @@ AnsiConsole.Render(calendar);
 │ 25  │ 26  │ 27  │ 28  │ 29  │ 30  │ 31  │
 │     │     │     │     │     │     │     │
 └─────┴─────┴─────┴─────┴─────┴─────┴─────┘
-
 ```
 
 ### Highlight style
