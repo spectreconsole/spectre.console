@@ -127,7 +127,7 @@ namespace Spectre.Console.Tests.Unit
             // Given
             var console = new PlainConsole(width: 80);
             var calendar = new Calendar(2020, 10, 15)
-                .SetCulture("de-DE")
+                .Culture("de-DE")
                 .AddCalendarEvent(new DateTime(2020, 9, 1))
                 .AddCalendarEvent(new DateTime(2020, 10, 3))
                 .AddCalendarEvent(new DateTime(2020, 10, 12));

@@ -72,7 +72,7 @@ namespace Spectre.Console
         /// <inheritdoc/>
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
-            var border = Border.GetSafeBorder((context.LegacyConsole || !context.Unicode) && UseSafeBorder);
+            var border = BoxExtensions.GetSafeBorder(Border, (context.LegacyConsole || !context.Unicode) && UseSafeBorder);
             var borderStyle = BorderStyle ?? Style.Plain;
 
             var child = new Padder(_child, Padding);

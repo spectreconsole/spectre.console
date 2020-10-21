@@ -408,8 +408,8 @@ namespace Spectre.Console
             }
 
             var paragraph = new Markup(header.Text.Capitalize(), header.Style ?? defaultStyle)
-                .SetAlignment(Justify.Center)
-                .SetOverflow(Overflow.Ellipsis);
+                .Alignment(Justify.Center)
+                .Overflow(Overflow.Ellipsis);
 
             var items = new List<Segment>();
             items.AddRange(((IRenderable)paragraph).Render(context, tableWidth));

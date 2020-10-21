@@ -41,7 +41,7 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="text">The table column text.</param>
         public TableColumn(string text)
-            : this(new Markup(text).SetOverflow(Overflow.Ellipsis))
+            : this(new Markup(text).Overflow(Overflow.Ellipsis))
         {
         }
 

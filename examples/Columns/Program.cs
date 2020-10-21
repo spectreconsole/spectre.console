@@ -19,8 +19,8 @@ namespace ColumnsExample
             var cards = new List<Panel>();
             foreach(var user in users.results)
             {
-                cards.Add(new Panel(GetCard(user))
-                    .SetHeader($"{user.location.country}")
+                cards.Add(new Panel(GetCardContent(user))
+                    .Header($"{user.location.country}")
                     .RoundedBorder().Expand());
             }
 
@@ -28,7 +28,7 @@ namespace ColumnsExample
             AnsiConsole.Render(new Columns(cards));
         }
 
-        private static string GetCard(dynamic user)
+        private static string GetCardContent(dynamic user)
         {
             var name = $"{user.name.first} {user.name.last}";
             var country = $"{user.location.city}";

@@ -22,7 +22,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            return SetPadding(obj, new Padding(left, obj.Padding.Top, obj.Padding.Right, obj.Padding.Bottom));
+            return Padding(obj, new Padding(left, obj.Padding.Top, obj.Padding.Right, obj.Padding.Bottom));
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            return SetPadding(obj, new Padding(obj.Padding.Left, top, obj.Padding.Right, obj.Padding.Bottom));
+            return Padding(obj, new Padding(obj.Padding.Left, top, obj.Padding.Right, obj.Padding.Bottom));
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            return SetPadding(obj, new Padding(obj.Padding.Left, obj.Padding.Top, right, obj.Padding.Bottom));
+            return Padding(obj, new Padding(obj.Padding.Left, obj.Padding.Top, right, obj.Padding.Bottom));
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            return SetPadding(obj, new Padding(obj.Padding.Left, obj.Padding.Top, obj.Padding.Right, bottom));
+            return Padding(obj, new Padding(obj.Padding.Left, obj.Padding.Top, obj.Padding.Right, bottom));
         }
 
         /// <summary>
@@ -89,10 +89,10 @@ namespace Spectre.Console
         /// <param name="right">The right padding to apply.</param>
         /// <param name="bottom">The bottom padding to apply.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static T SetPadding<T>(this T obj, int left, int top, int right, int bottom)
+        public static T Padding<T>(this T obj, int left, int top, int right, int bottom)
             where T : class, IPaddable
         {
-            return SetPadding(obj, new Padding(left, top, right, bottom));
+            return Padding(obj, new Padding(left, top, right, bottom));
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Spectre.Console
         /// <param name="obj">The paddable object instance.</param>
         /// <param name="padding">The padding to apply.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static T SetPadding<T>(this T obj, Padding padding)
+        public static T Padding<T>(this T obj, Padding padding)
             where T : class, IPaddable
         {
             if (obj is null)

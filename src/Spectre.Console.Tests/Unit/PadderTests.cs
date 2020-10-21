@@ -17,7 +17,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Corgi", "Waldo");
 
             // When
-            console.Render(new Padder(table).SetPadding(1, 2, 3, 4));
+            console.Render(new Padder(table).Padding(1, 2, 3, 4));
 
             // Then
             console.Lines.Count.ShouldBe(12);
@@ -48,7 +48,7 @@ namespace Spectre.Console.Tests.Unit
 
             // When
             console.Render(new Padder(table)
-                .SetPadding(1, 2, 3, 4)
+                .Padding(1, 2, 3, 4)
                 .Expand());
 
             // Then
@@ -77,11 +77,11 @@ namespace Spectre.Console.Tests.Unit
             table.AddColumn("Bar", c => c.PadLeft(0).PadRight(0));
             table.AddRow("Baz", "Qux");
             table.AddRow(new Text("Corgi"), new Padder(new Panel("Waldo"))
-                .SetPadding(2, 1, 2, 1));
+                .Padding(2, 1, 2, 1));
 
             // When
             console.Render(new Padder(table)
-                .SetPadding(1, 2, 3, 4)
+                .Padding(1, 2, 3, 4)
                 .Expand());
 
             // Then

@@ -8,29 +8,23 @@ namespace BordersExample
     {
         public static void Main()
         {
-            Debugger.Launch();
-
             // Render panel borders
-            AnsiConsole.WriteLine();
-            AnsiConsole.MarkupLine("[white bold underline]PANEL BORDERS[/]");
-            AnsiConsole.WriteLine();
-            RenderPanelBorders();
+            HorizontalRule("PANEL BORDERS");
+            PanelBorders();
 
             // Render table borders
-            AnsiConsole.WriteLine();
-            AnsiConsole.MarkupLine("[white bold underline]TABLE BORDERS[/]");
-            AnsiConsole.WriteLine();
-            RenderTableBorders();
+            HorizontalRule("TABLE BORDERS");
+            TableBorders();
         }
 
-        private static void RenderPanelBorders()
+        private static void PanelBorders()
         {
             static IRenderable CreatePanel(string name, BoxBorder border)
             {
                 return new Panel($"This is a panel with\nthe [yellow]{name}[/] border.")
-                    .SetHeader($" {name} ", Style.Parse("blue"), Justify.Center)
-                    .SetBorderStyle(Style.Parse("grey"))
-                    .SetBorder(border);
+                    .Header($" {name} ", Style.Parse("blue"), Justify.Center)
+                    .Border(border)
+                    .BorderStyle(Style.Parse("grey"));
             }
 
             var items = new[]
@@ -49,19 +43,18 @@ namespace BordersExample
                     new Padding(2,0,0,0)));
         }
 
-        private static void RenderTableBorders()
+        private static void TableBorders()
         {
             static IRenderable CreateTable(string name, TableBorder border)
             {
-                var table = new Table().SetBorder(border);
+                var table = new Table().Border(border);
                 table.AddColumn("[yellow]Header 1[/]");
                 table.AddColumn("[yellow]Header 2[/]", col => col.RightAligned());
                 table.AddRow("Cell", "Cell");
                 table.AddRow("Cell", "Cell");
 
                 return new Panel(table)
-                    .SetHeader($" {name} ", Style.Parse("blue"), Justify.Center)
-                    .SetBorderStyle(Style.Parse("grey"))
+                    .Header($" {name} ", Style.Parse("blue"), Justify.Center)
                     .NoBorder();
             }
 
@@ -87,6 +80,13 @@ namespace BordersExample
             };
 
             AnsiConsole.Render(new Columns(items).Collapse());
+        }
+
+        private static void HorizontalRule(string title)
+        {
+            AnsiConsole.WriteLine();
+            AnsiConsole.Render(new Rule($"[white bold]{title}[/]").RuleStyle("grey").LeftAligned());
+            AnsiConsole.WriteLine();
         }
     }
 }

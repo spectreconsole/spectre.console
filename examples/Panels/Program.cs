@@ -13,28 +13,33 @@ namespace PanelExample
             AnsiConsole.Render(
                 new Panel(
                     new Panel(content)
-                        .SetBorder(BoxBorder.Rounded)));
+                        .Border(BoxBorder.Rounded)));
 
             // Left adjusted panel with text
             AnsiConsole.Render(
                 new Panel(new Text("Left adjusted\nLeft").LeftAligned())
                     .Expand()
                     .SquareBorder()
-                    .SetHeader("Left", Style.WithForeground(Color.Red)));
+                    .Header("Left")
+                    .HeaderStyle("red"));
 
             // Centered ASCII panel with text
             AnsiConsole.Render(
                 new Panel(new Text("Centered\nCenter").Centered())
                     .Expand()
                     .AsciiBorder()
-                    .SetHeader("Center", Style.WithForeground(Color.Green), Justify.Center));
+                    .Header("Center")
+                    .HeaderStyle("green")
+                    .HeaderAlignment(Justify.Center));
 
             // Right adjusted, rounded panel with text
             AnsiConsole.Render(
                 new Panel(new Text("Right adjusted\nRight").RightAligned())
                     .Expand()
                     .RoundedBorder()
-                    .SetHeader("Right", Style.WithForeground(Color.Blue), Justify.Right));
+                    .Header("Right")
+                    .HeaderStyle("blue")
+                    .HeaderAlignment(Justify.Right));
         }
     }
 }

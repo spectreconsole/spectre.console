@@ -1,11 +1,12 @@
-using System;
+﻿using System;
+using System.ComponentModel;
 
 namespace Spectre.Console
 {
     /// <summary>
     /// Contains extension methods for <see cref="Style"/>.
     /// </summary>
-    public static class StyleExtensions
+    public static class ObsoleteStyleExtensions
     {
         /// <summary>
         /// Creates a new style from the specified one with
@@ -14,7 +15,9 @@ namespace Spectre.Console
         /// <param name="style">The style.</param>
         /// <param name="color">The foreground color.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Style Foreground(this Style style, Color color)
+        [Obsolete("Use Foreground(..) instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Style WithForeground(this Style style, Color color)
         {
             if (style is null)
             {
@@ -34,7 +37,9 @@ namespace Spectre.Console
         /// <param name="style">The style.</param>
         /// <param name="color">The background color.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Style Background(this Style style, Color color)
+        [Obsolete("Use Background(..) instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Style WithBackground(this Style style, Color color)
         {
             if (style is null)
             {
@@ -54,7 +59,9 @@ namespace Spectre.Console
         /// <param name="style">The style.</param>
         /// <param name="decoration">The text decoration.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Style Decoration(this Style style, Decoration decoration)
+        [Obsolete("Use Decoration(..) instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Style WithDecoration(this Style style, Decoration decoration)
         {
             if (style is null)
             {
@@ -74,7 +81,9 @@ namespace Spectre.Console
         /// <param name="style">The style.</param>
         /// <param name="link">The link.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Style Link(this Style style, string link)
+        [Obsolete("Use Link(..) instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Style WithLink(this Style style, string link)
         {
             if (style is null)
             {

@@ -24,7 +24,7 @@ namespace ColorExample
 
                 AnsiConsole.ResetColors();
                 AnsiConsole.WriteLine();
-                AnsiConsole.Render(new Rule("[yellow bold underline]3-bit Colors[/]").SetStyle("grey").LeftAligned());
+                AnsiConsole.Render(new Rule("[yellow bold underline]3-bit Colors[/]").RuleStyle("grey").LeftAligned());
                 AnsiConsole.WriteLine();
 
                 for (var i = 0; i < 8; i++)
@@ -47,7 +47,7 @@ namespace ColorExample
 
                 AnsiConsole.ResetColors();
                 AnsiConsole.WriteLine();
-                AnsiConsole.Render(new Rule("[yellow bold underline]4-bit Colors[/]").SetStyle("grey").LeftAligned());
+                AnsiConsole.Render(new Rule("[yellow bold underline]4-bit Colors[/]").RuleStyle("grey").LeftAligned());
                 AnsiConsole.WriteLine();
 
                 for (var i = 0; i < 16; i++)
@@ -70,7 +70,7 @@ namespace ColorExample
 
                 AnsiConsole.ResetColors();
                 AnsiConsole.WriteLine();
-                AnsiConsole.Render(new Rule("[yellow bold underline]8-bit Colors[/]").SetStyle("grey").LeftAligned());
+                AnsiConsole.Render(new Rule("[yellow bold underline]8-bit Colors[/]").RuleStyle("grey").LeftAligned());
                 AnsiConsole.WriteLine();
 
                 for (var i = 0; i < 16; i++)
@@ -97,7 +97,7 @@ namespace ColorExample
 
                 AnsiConsole.ResetColors();
                 AnsiConsole.WriteLine();
-                AnsiConsole.Render(new Rule("[yellow bold underline]24-bit Colors[/]").SetStyle("grey").LeftAligned());
+                AnsiConsole.Render(new Rule("[yellow bold underline]24-bit Colors[/]").RuleStyle("grey").LeftAligned());
                 AnsiConsole.WriteLine();
 
                 var index = 0;

@@ -16,7 +16,7 @@ namespace Spectre.Console
         public static T NoBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.None);
+            return Border(obj, TableBorder.None);
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Spectre.Console
         public static T SquareBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.Square);
+            return Border(obj, TableBorder.Square);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Spectre.Console
         public static T AsciiBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.Ascii);
+            return Border(obj, TableBorder.Ascii);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Spectre.Console
         public static T Ascii2Border<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.Ascii2);
+            return Border(obj, TableBorder.Ascii2);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Spectre.Console
         public static T AsciiDoubleHeadBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.AsciiDoubleHead);
+            return Border(obj, TableBorder.AsciiDoubleHead);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Spectre.Console
         public static T RoundedBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.Rounded);
+            return Border(obj, TableBorder.Rounded);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Spectre.Console
         public static T MinimalBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.Minimal);
+            return Border(obj, TableBorder.Minimal);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Spectre.Console
         public static T MinimalHeavyHeadBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.MinimalHeavyHead);
+            return Border(obj, TableBorder.MinimalHeavyHead);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace Spectre.Console
         public static T MinimalDoubleHeadBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.MinimalDoubleHead);
+            return Border(obj, TableBorder.MinimalDoubleHead);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Spectre.Console
         public static T SimpleBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.Simple);
+            return Border(obj, TableBorder.Simple);
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace Spectre.Console
         public static T SimpleHeavyBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.SimpleHeavy);
+            return Border(obj, TableBorder.SimpleHeavy);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace Spectre.Console
         public static T HorizontalBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.Horizontal);
+            return Border(obj, TableBorder.Horizontal);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace Spectre.Console
         public static T HeavyBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.Heavy);
+            return Border(obj, TableBorder.Heavy);
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace Spectre.Console
         public static T HeavyEdgeBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.HeavyEdge);
+            return Border(obj, TableBorder.HeavyEdge);
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace Spectre.Console
         public static T HeavyHeadBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.HeavyHead);
+            return Border(obj, TableBorder.HeavyHead);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace Spectre.Console
         public static T DoubleBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.Double);
+            return Border(obj, TableBorder.Double);
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace Spectre.Console
         public static T DoubleEdgeBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.DoubleEdge);
+            return Border(obj, TableBorder.DoubleEdge);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace Spectre.Console
         public static T MarkdownBorder<T>(this T obj)
             where T : class, IHasTableBorder
         {
-            return SetBorder(obj, TableBorder.Markdown);
+            return Border(obj, TableBorder.Markdown);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace Spectre.Console
         /// <param name="obj">The object to set the border for.</param>
         /// <param name="border">The border to use.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static T SetBorder<T>(this T obj, TableBorder border)
+        public static T Border<T>(this T obj, TableBorder border)
             where T : class, IHasTableBorder
         {
             if (obj is null)

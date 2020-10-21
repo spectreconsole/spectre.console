@@ -21,7 +21,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new TestableAnsiConsole(ColorSystem.TrueColor);
 
             // When
-            console.Write("Hello World", Style.WithDecoration(decoration));
+            console.Write("Hello World", new Style().Decoration(decoration));
 
             // Then
             console.Output.ShouldBe(expected);
@@ -36,7 +36,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new TestableAnsiConsole(ColorSystem.TrueColor);
 
             // When
-            console.Write("Hello World", Style.WithDecoration(decoration));
+            console.Write("Hello World", new Style().Decoration(decoration));
 
             // Then
             console.Output.ShouldBe(expected);

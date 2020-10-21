@@ -5,7 +5,7 @@ namespace Spectre.Console.Rendering
     /// <summary>
     /// Contains extension methods for <see cref="TableBorder"/>.
     /// </summary>
-    public static class BorderExtensions
+    public static class TableBorderExtensions
     {
         /// <summary>
         /// Gets the safe border for a border.

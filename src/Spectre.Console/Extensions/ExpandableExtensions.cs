@@ -17,7 +17,12 @@ namespace Spectre.Console
         public static T Collapse<T>(this T obj)
             where T : class, IExpandable
         {
-            SetExpand<T>(obj, false);
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            obj.Expand = false;
             return obj;
         }
 
@@ -30,19 +35,13 @@ namespace Spectre.Console
         public static T Expand<T>(this T obj)
             where T : class, IExpandable
         {
-            SetExpand<T>(obj, true);
-            return obj;
-        }
-
-        private static void SetExpand<T>(T obj, bool value)
-            where T : class, IExpandable
-        {
             if (obj is null)
             {
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            obj.Expand = value;
+            obj.Expand = true;
+            return obj;
         }
     }
 }

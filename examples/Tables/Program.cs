@@ -16,8 +16,8 @@ namespace TableExample
         private static Table CreateTable()
         {
             var simple = new Table()
-                .SetBorder(TableBorder.Square)
-                .SetBorderColor(Color.Red)
+                .Border(TableBorder.Square)
+                .BorderColor(Color.Red)
                 .AddColumn(new TableColumn("[u]CDE[/]").Centered())
                 .AddColumn(new TableColumn("[u]FED[/]"))
                 .AddColumn(new TableColumn("[u]IHG[/]"))
@@ -26,8 +26,8 @@ namespace TableExample
                 .AddRow("[blue]Hej[/]", "[yellow]Världen![/]", "");
 
             var second = new Table()
-                .SetBorder(TableBorder.Rounded)
-                .SetBorderColor(Color.Green)
+                .Border(TableBorder.Rounded)
+                .BorderColor(Color.Green)
                 .AddColumn(new TableColumn("[u]Foo[/]"))
                 .AddColumn(new TableColumn("[u]Bar[/]"))
                 .AddColumn(new TableColumn("[u]Baz[/]"))
@@ -37,12 +37,12 @@ namespace TableExample
 
             return new Table()
                 .Centered()
-                .SetBorder(TableBorder.DoubleEdge)
-                .SetHeading("TABLE [yellow]HEADING[/]")
-                .SetFootnote("TABLE [yellow]FOOTNOTE[/]")
-                .AddColumn(new TableColumn(new Panel("[u]ABC[/]").SetBorderColor(Color.Red)))
-                .AddColumn(new TableColumn(new Panel("[u]DEF[/]").SetBorderColor(Color.Green)))
-                .AddColumn(new TableColumn(new Panel("[u]GHI[/]").SetBorderColor(Color.Blue)))
+                .Border(TableBorder.DoubleEdge)
+                .Heading("TABLE [yellow]HEADING[/]")
+                .Footnote("TABLE [yellow]FOOTNOTE[/]")
+                .AddColumn(new TableColumn(new Panel("[u]ABC[/]").BorderColor(Color.Red)))
+                .AddColumn(new TableColumn(new Panel("[u]DEF[/]").BorderColor(Color.Green)))
+                .AddColumn(new TableColumn(new Panel("[u]GHI[/]").BorderColor(Color.Blue)))
                 .AddRow(new Text("Hello").Centered(), new Markup("[red]World![/]"), Text.Empty)
                 .AddRow(second, new Text("Whaaat"), new Text("Lol"))
                 .AddRow(new Markup("[blue]Hej[/]").Centered(), new Markup("[yellow]Världen![/]"), Text.Empty);

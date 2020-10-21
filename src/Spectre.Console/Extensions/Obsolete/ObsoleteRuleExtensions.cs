@@ -1,11 +1,12 @@
-using System;
+﻿using System;
+using System.ComponentModel;
 
 namespace Spectre.Console
 {
     /// <summary>
     /// Contains extension methods for <see cref="RuleExtensions"/>.
     /// </summary>
-    public static class RuleExtensions
+    public static class ObsoleteRuleExtensions
     {
         /// <summary>
         /// Sets the rule title.
@@ -13,7 +14,9 @@ namespace Spectre.Console
         /// <param name="rule">The rule.</param>
         /// <param name="title">The title.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Rule RuleTitle(this Rule rule, string title)
+        [Obsolete("Use Title(..) instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Rule SetTitle(this Rule rule, string title)
         {
             if (rule is null)
             {
@@ -35,7 +38,9 @@ namespace Spectre.Console
         /// <param name="rule">The rule.</param>
         /// <param name="style">The rule style.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Rule RuleStyle(this Rule rule, Style style)
+        [Obsolete("Use Style(..) instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Rule SetStyle(this Rule rule, Style style)
         {
             if (rule is null)
             {
