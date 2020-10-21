@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 using Spectre.Console.Internal;
@@ -68,12 +67,7 @@ namespace Spectre.Console.Rendering
 
         private Segment(string text, Style style, bool lineBreak)
         {
-            if (text is null)
-            {
-                throw new ArgumentNullException(nameof(text));
-            }
-
-            Text = text.NormalizeLineEndings();
+            Text = text?.NormalizeLineEndings() ?? throw new ArgumentNullException(nameof(text));
             Style = style ?? throw new ArgumentNullException(nameof(style));
             IsLineBreak = lineBreak;
             IsWhiteSpace = string.IsNullOrWhiteSpace(text);
@@ -119,6 +113,15 @@ namespace Spectre.Console.Rendering
             return (
                 new Segment(Text.Substring(0, offset), Style),
                 new Segment(Text.Substring(offset, Text.Length - offset), Style));
+        }
+
+        /// <summary>
+        /// Clones the segment.
+        /// </summary>
+        /// <returns>A new segment that's identical to this one.</returns>
+        public Segment Clone()
+        {
+            return new Segment(Text, Style);
         }
 
         /// <summary>
@@ -236,48 +239,6 @@ namespace Spectre.Console.Rendering
             }
 
             return lines;
-        }
-
-        internal static IEnumerable<Segment> Merge(IEnumerable<Segment> segments)
-        {
-            var result = new List<Segment>();
-
-            var previous = (Segment?)null;
-            foreach (var segment in segments)
-            {
-                if (previous == null)
-                {
-                    previous = segment;
-                    continue;
-                }
-
-                // Same style?
-                if (previous.Style.Equals(segment.Style) && !previous.IsLineBreak)
-                {
-                    previous = new Segment(previous.Text + segment.Text, previous.Style);
-                }
-                else
-                {
-                    result.Add(previous);
-                    previous = segment;
-                }
-            }
-
-            if (previous != null)
-            {
-                result.Add(previous);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Clones the segment.
-        /// </summary>
-        /// <returns>A new segment that's identical to this one.</returns>
-        public Segment Clone()
-        {
-            return new Segment(Text, Style);
         }
 
         /// <summary>
@@ -434,6 +395,39 @@ namespace Spectre.Console.Rendering
             }
 
             return new Segment(builder.ToString(), segment.Style);
+        }
+
+        internal static IEnumerable<Segment> Merge(IEnumerable<Segment> segments)
+        {
+            var result = new List<Segment>();
+
+            var previous = (Segment?)null;
+            foreach (var segment in segments)
+            {
+                if (previous == null)
+                {
+                    previous = segment;
+                    continue;
+                }
+
+                // Same style?
+                if (previous.Style.Equals(segment.Style) && !previous.IsLineBreak)
+                {
+                    previous = new Segment(previous.Text + segment.Text, previous.Style);
+                }
+                else
+                {
+                    result.Add(previous);
+                    previous = segment;
+                }
+            }
+
+            if (previous != null)
+            {
+                result.Add(previous);
+            }
+
+            return result;
         }
 
         internal static Segment TruncateWithEllipsis(string text, Style style, RenderContext context, int maxWidth)

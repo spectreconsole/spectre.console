@@ -183,9 +183,8 @@ namespace Spectre.Console
         /// <param name="table">The table.</param>
         /// <param name="text">The heading.</param>
         /// <param name="style">The style.</param>
-        /// <param name="alignment">The alignment.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Table SetHeading(this Table table, string text, Style? style = null, Justify? alignment = null)
+        public static Table SetHeading(this Table table, string text, Style? style = null)
         {
             if (table is null)
             {
@@ -197,7 +196,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(text));
             }
 
-            return SetHeading(table, new Title(text, style, alignment));
+            return SetHeading(table, new TableTitle(text, style));
         }
 
         /// <summary>
@@ -206,7 +205,7 @@ namespace Spectre.Console
         /// <param name="table">The table.</param>
         /// <param name="heading">The heading.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Table SetHeading(this Table table, Title heading)
+        public static Table SetHeading(this Table table, TableTitle heading)
         {
             if (table is null)
             {
@@ -223,9 +222,8 @@ namespace Spectre.Console
         /// <param name="table">The table.</param>
         /// <param name="text">The footnote.</param>
         /// <param name="style">The style.</param>
-        /// <param name="alignment">The alignment.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Table SetFootnote(this Table table, string text, Style? style = null, Justify? alignment = null)
+        public static Table SetFootnote(this Table table, string text, Style? style = null)
         {
             if (table is null)
             {
@@ -237,7 +235,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(text));
             }
 
-            return SetFootnote(table, new Title(text, style, alignment));
+            return SetFootnote(table, new TableTitle(text, style));
         }
 
         /// <summary>
@@ -246,7 +244,7 @@ namespace Spectre.Console
         /// <param name="table">The table.</param>
         /// <param name="footnote">The footnote.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Table SetFootnote(this Table table, Title footnote)
+        public static Table SetFootnote(this Table table, TableTitle footnote)
         {
             if (table is null)
             {

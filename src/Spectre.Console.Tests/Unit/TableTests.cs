@@ -169,6 +169,78 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        public void Should_Left_Align_Table_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var table = new Table();
+            table.Alignment = Justify.Left;
+            table.AddColumns("Foo", "Bar", "Baz");
+            table.AddRow("Qux", "Corgi", "Waldo");
+            table.AddRow("Grault", "Garply", "Fred");
+
+            // When
+            console.Render(table);
+
+            // Then
+            console.Lines.Count.ShouldBe(6);
+            console.Lines[0].ShouldBe("┌────────┬────────┬───────┐");
+            console.Lines[1].ShouldBe("│ Foo    │ Bar    │ Baz   │");
+            console.Lines[2].ShouldBe("├────────┼────────┼───────┤");
+            console.Lines[3].ShouldBe("│ Qux    │ Corgi  │ Waldo │");
+            console.Lines[4].ShouldBe("│ Grault │ Garply │ Fred  │");
+            console.Lines[5].ShouldBe("└────────┴────────┴───────┘");
+        }
+
+        [Fact]
+        public void Should_Center_Table_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var table = new Table();
+            table.Alignment = Justify.Center;
+            table.AddColumns("Foo", "Bar", "Baz");
+            table.AddRow("Qux", "Corgi", "Waldo");
+            table.AddRow("Grault", "Garply", "Fred");
+
+            // When
+            console.Render(table);
+
+            // Then
+            console.Lines.Count.ShouldBe(6);
+            console.Lines[0].ShouldBe("                          ┌────────┬────────┬───────┐                           ");
+            console.Lines[1].ShouldBe("                          │ Foo    │ Bar    │ Baz   │                           ");
+            console.Lines[2].ShouldBe("                          ├────────┼────────┼───────┤                           ");
+            console.Lines[3].ShouldBe("                          │ Qux    │ Corgi  │ Waldo │                           ");
+            console.Lines[4].ShouldBe("                          │ Grault │ Garply │ Fred  │                           ");
+            console.Lines[5].ShouldBe("                          └────────┴────────┴───────┘                           ");
+        }
+
+        [Fact]
+        public void Should_Right_Align_Table_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var table = new Table();
+            table.Alignment = Justify.Right;
+            table.AddColumns("Foo", "Bar", "Baz");
+            table.AddRow("Qux", "Corgi", "Waldo");
+            table.AddRow("Grault", "Garply", "Fred");
+
+            // When
+            console.Render(table);
+
+            // Then
+            console.Lines.Count.ShouldBe(6);
+            console.Lines[0].ShouldBe("                                                     ┌────────┬────────┬───────┐");
+            console.Lines[1].ShouldBe("                                                     │ Foo    │ Bar    │ Baz   │");
+            console.Lines[2].ShouldBe("                                                     ├────────┼────────┼───────┤");
+            console.Lines[3].ShouldBe("                                                     │ Qux    │ Corgi  │ Waldo │");
+            console.Lines[4].ShouldBe("                                                     │ Grault │ Garply │ Fred  │");
+            console.Lines[5].ShouldBe("                                                     └────────┴────────┴───────┘");
+        }
+
+        [Fact]
         public void Should_Render_Table_Nested_In_Panels_Correctly()
         {
             // A simple table
@@ -393,8 +465,8 @@ namespace Spectre.Console.Tests.Unit
             // Given
             var console = new PlainConsole(width: 80);
             var table = new Table { Border = TableBorder.Rounded };
-            table.Heading = new Title("Hello World");
-            table.Footnote = new Title("Goodbye World");
+            table.Heading = new TableTitle("Hello World");
+            table.Footnote = new TableTitle("Goodbye World");
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");
@@ -412,6 +484,90 @@ namespace Spectre.Console.Tests.Unit
             console.Lines[5].ShouldBe("│ Grault │ Garply │ Fred  │");
             console.Lines[6].ShouldBe("╰────────┴────────┴───────╯");
             console.Lines[7].ShouldBe("       Goodbye World       ");
+        }
+
+        [Fact]
+        public void Should_Left_Align_Table_With_Title_And_Footnote_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var table = new Table { Border = TableBorder.Rounded };
+            table.LeftAligned();
+            table.Heading = new TableTitle("Hello World");
+            table.Footnote = new TableTitle("Goodbye World");
+            table.AddColumns("Foo", "Bar", "Baz");
+            table.AddRow("Qux", "Corgi", "Waldo");
+            table.AddRow("Grault", "Garply", "Fred");
+
+            // When
+            console.Render(table);
+
+            // Then
+            console.Lines.Count.ShouldBe(8);
+            console.Lines[0].ShouldBe("        Hello World        ");
+            console.Lines[1].ShouldBe("╭────────┬────────┬───────╮");
+            console.Lines[2].ShouldBe("│ Foo    │ Bar    │ Baz   │");
+            console.Lines[3].ShouldBe("├────────┼────────┼───────┤");
+            console.Lines[4].ShouldBe("│ Qux    │ Corgi  │ Waldo │");
+            console.Lines[5].ShouldBe("│ Grault │ Garply │ Fred  │");
+            console.Lines[6].ShouldBe("╰────────┴────────┴───────╯");
+            console.Lines[7].ShouldBe("       Goodbye World       ");
+        }
+
+        [Fact]
+        public void Should_Center_Table_With_Title_And_Footnote_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var table = new Table { Border = TableBorder.Rounded };
+            table.Centered();
+            table.Heading = new TableTitle("Hello World");
+            table.Footnote = new TableTitle("Goodbye World");
+            table.AddColumns("Foo", "Bar", "Baz");
+            table.AddRow("Qux", "Corgi", "Waldo");
+            table.AddRow("Grault", "Garply", "Fred");
+
+            // When
+            console.Render(table);
+
+            // Then
+            console.Lines.Count.ShouldBe(8);
+            console.Lines[0].ShouldBe("                                  Hello World                                   ");
+            console.Lines[1].ShouldBe("                          ╭────────┬────────┬───────╮                           ");
+            console.Lines[2].ShouldBe("                          │ Foo    │ Bar    │ Baz   │                           ");
+            console.Lines[3].ShouldBe("                          ├────────┼────────┼───────┤                           ");
+            console.Lines[4].ShouldBe("                          │ Qux    │ Corgi  │ Waldo │                           ");
+            console.Lines[5].ShouldBe("                          │ Grault │ Garply │ Fred  │                           ");
+            console.Lines[6].ShouldBe("                          ╰────────┴────────┴───────╯                           ");
+            console.Lines[7].ShouldBe("                                 Goodbye World                                  ");
+        }
+
+        [Fact]
+        public void Should_Right_Align_Table_With_Title_And_Footnote_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var table = new Table { Border = TableBorder.Rounded };
+            table.RightAligned();
+            table.Heading = new TableTitle("Hello World");
+            table.Footnote = new TableTitle("Goodbye World");
+            table.AddColumns("Foo", "Bar", "Baz");
+            table.AddRow("Qux", "Corgi", "Waldo");
+            table.AddRow("Grault", "Garply", "Fred");
+
+            // When
+            console.Render(table);
+
+            // Then
+            console.Lines.Count.ShouldBe(8);
+            console.Lines[0].ShouldBe("                                                             Hello World        ");
+            console.Lines[1].ShouldBe("                                                     ╭────────┬────────┬───────╮");
+            console.Lines[2].ShouldBe("                                                     │ Foo    │ Bar    │ Baz   │");
+            console.Lines[3].ShouldBe("                                                     ├────────┼────────┼───────┤");
+            console.Lines[4].ShouldBe("                                                     │ Qux    │ Corgi  │ Waldo │");
+            console.Lines[5].ShouldBe("                                                     │ Grault │ Garply │ Fred  │");
+            console.Lines[6].ShouldBe("                                                     ╰────────┴────────┴───────╯");
+            console.Lines[7].ShouldBe("                                                            Goodbye World       ");
         }
     }
 }

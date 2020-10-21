@@ -7,7 +7,7 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable grid.
     /// </summary>
-    public sealed class Grid : Renderable, IExpandable
+    public sealed class Grid : Renderable, IExpandable, IAlignable
     {
         private readonly Table _table;
 
@@ -26,6 +26,13 @@ namespace Spectre.Console
         {
             get => _table.Expand;
             set => _table.Expand = value;
+        }
+
+        /// <inheritdoc/>
+        public Justify? Alignment
+        {
+            get => _table.Alignment;
+            set => _table.Alignment = value;
         }
 
         /// <summary>

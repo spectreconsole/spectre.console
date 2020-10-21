@@ -144,37 +144,18 @@ namespace Spectre.Console
 
             // Justify lines
             var justification = context.Justification ?? Alignment ?? Justify.Left;
-            foreach (var (_, _, last, line) in lines.Enumerate())
+            if (justification != Justify.Left)
             {
-                var length = line.Sum(l => l.StripLineEndings().CellLength(context));
-                if (length < maxWidth)
+                foreach (var line in lines)
                 {
-                    // Justify right side
-                    if (justification == Justify.Right)
-                    {
-                        var diff = maxWidth - length;
-                        line.Prepend(new Segment(new string(' ', diff)));
-                    }
-                    else if (justification == Justify.Center)
-                    {
-                        // Left side.
-                        var diff = (maxWidth - length) / 2;
-                        line.Prepend(new Segment(new string(' ', diff)));
-
-                        // Right side
-                        line.Add(new Segment(new string(' ', diff)));
-                        var remainder = (maxWidth - length) % 2;
-                        if (remainder != 0)
-                        {
-                            line.Add(new Segment(new string(' ', remainder)));
-                        }
-                    }
+                    Aligner.Align(context, line, justification, maxWidth);
                 }
             }
 
             if (context.SingleLine)
             {
-                return lines.First().Where(segment => !segment.IsLineBreak);
+                // Return the first line
+                return lines[0].Where(segment => !segment.IsLineBreak);
             }
 
             return new SegmentLineEnumerator(lines);

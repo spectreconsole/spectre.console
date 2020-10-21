@@ -9,7 +9,7 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable table.
     /// </summary>
-    public sealed class Table : Renderable, IHasTableBorder, IExpandable
+    public sealed class Table : Renderable, IHasTableBorder, IExpandable, IAlignable
     {
         private const int EdgeCount = 2;
 
@@ -58,12 +58,15 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the table title.
         /// </summary>
-        public Title? Heading { get; set; }
+        public TableTitle? Heading { get; set; }
 
         /// <summary>
         /// Gets or sets the table footnote.
         /// </summary>
-        public Title? Footnote { get; set; }
+        public TableTitle? Footnote { get; set; }
+
+        /// <inheritdoc/>
+        public Justify? Alignment { get; set; }
 
         // Whether this is a grid or not.
         internal bool IsGrid { get; set; }
@@ -200,7 +203,7 @@ namespace Spectre.Console
             rows.AddRange(_rows);
 
             var result = new List<Segment>();
-            result.AddRange(RenderAnnotation(context, Heading, tableWidth, _defaultHeadingStyle));
+            result.AddRange(RenderAnnotation(context, Heading, actualMaxWidth, tableWidth, _defaultHeadingStyle));
 
             // Iterate all rows
             foreach (var (index, firstRow, lastRow, row) in rows.Enumerate())
@@ -222,7 +225,7 @@ namespace Spectre.Console
                 // Show top of header?
                 if (firstRow && showBorder)
                 {
-                    var separator = border.GetColumnRow(TablePart.Top, columnWidths, _columns);
+                    var separator = Aligner.Align(context, border.GetColumnRow(TablePart.Top, columnWidths, _columns), Alignment, actualMaxWidth);
                     result.Add(new Segment(separator, borderStyle));
                     result.Add(Segment.LineBreak);
                 }
@@ -288,6 +291,9 @@ namespace Spectre.Console
                         }
                     }
 
+                    // Align the row result.
+                    Aligner.Align(context, rowResult, Alignment, actualMaxWidth);
+
                     // Is the row larger than the allowed max width?
                     if (Segment.CellLength(context, rowResult) > actualMaxWidth)
                     {
@@ -304,7 +310,7 @@ namespace Spectre.Console
                 // Show header separator?
                 if (firstRow && showBorder && ShowHeaders && hasRows)
                 {
-                    var separator = border.GetColumnRow(TablePart.Separator, columnWidths, _columns);
+                    var separator = Aligner.Align(context, border.GetColumnRow(TablePart.Separator, columnWidths, _columns), Alignment, actualMaxWidth);
                     result.Add(new Segment(separator, borderStyle));
                     result.Add(Segment.LineBreak);
                 }
@@ -312,13 +318,13 @@ namespace Spectre.Console
                 // Show bottom of footer?
                 if (lastRow && showBorder)
                 {
-                    var separator = border.GetColumnRow(TablePart.Bottom, columnWidths, _columns);
+                    var separator = Aligner.Align(context, border.GetColumnRow(TablePart.Bottom, columnWidths, _columns), Alignment, actualMaxWidth);
                     result.Add(new Segment(separator, borderStyle));
                     result.Add(Segment.LineBreak);
                 }
             }
 
-            result.AddRange(RenderAnnotation(context, Footnote, tableWidth, _defaultFootnoteStyle));
+            result.AddRange(RenderAnnotation(context, Footnote, actualMaxWidth, tableWidth, _defaultFootnoteStyle));
 
             return result;
         }
@@ -392,25 +398,27 @@ namespace Spectre.Console
             return widths;
         }
 
-        private static IEnumerable<Segment> RenderAnnotation(
-            RenderContext context, Title? header,
-            int maxWidth, Style defaultStyle)
+        private IEnumerable<Segment> RenderAnnotation(
+            RenderContext context, TableTitle? header,
+            int maxWidth, int tableWidth, Style defaultStyle)
         {
             if (header == null)
             {
-                yield break;
+                return Array.Empty<Segment>();
             }
 
             var paragraph = new Markup(header.Text.Capitalize(), header.Style ?? defaultStyle)
-                .SetAlignment(header.Alignment ?? Justify.Center)
+                .SetAlignment(Justify.Center)
                 .SetOverflow(Overflow.Ellipsis);
 
-            foreach (var segment in ((IRenderable)paragraph).Render(context, maxWidth))
-            {
-                yield return segment;
-            }
+            var items = new List<Segment>();
+            items.AddRange(((IRenderable)paragraph).Render(context, tableWidth));
 
-            yield return Segment.LineBreak;
+            // Align over the whole buffer area
+            Aligner.Align(context, items, Alignment, maxWidth);
+
+            items.Add(Segment.LineBreak);
+            return items;
         }
 
         private (int Min, int Max) MeasureColumn(TableColumn column, RenderContext options, int maxWidth)

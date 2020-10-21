@@ -36,6 +36,7 @@ namespace TableExample
                 .AddRow("[blue]Hej[/]", "[yellow]Världen![/]", "");
 
             return new Table()
+                .Centered()
                 .SetBorder(TableBorder.DoubleEdge)
                 .SetHeading("TABLE [yellow]HEADING[/]")
                 .SetFootnote("TABLE [yellow]FOOTNOTE[/]")
