@@ -3,9 +3,9 @@ using System;
 namespace Spectre.Console
 {
     /// <summary>
-    /// Represents a title.
+    /// Represents a table title such as a heading or footnote.
     /// </summary>
-    public sealed class Title : IAlignable
+    public sealed class TableTitle
     {
         /// <summary>
         /// Gets the title text.
@@ -18,21 +18,14 @@ namespace Spectre.Console
         public Style? Style { get; set; }
 
         /// <summary>
-        /// Gets or sets the title alignment.
-        /// </summary>
-        public Justify? Alignment { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Title"/> class.
+        /// Initializes a new instance of the <see cref="TableTitle"/> class.
         /// </summary>
         /// <param name="text">The title text.</param>
         /// <param name="style">The title style.</param>
-        /// <param name="alignment">The title alignment.</param>
-        public Title(string text, Style? style = null, Justify? alignment = null)
+        public TableTitle(string text, Style? style = null)
         {
             Text = text ?? throw new ArgumentNullException(nameof(text));
             Style = style;
-            Alignment = alignment;
         }
 
         /// <summary>
@@ -40,20 +33,25 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="style">The title style.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Title SetStyle(Style? style)
+        public TableTitle SetStyle(Style? style)
         {
             Style = style ?? Style.Plain;
             return this;
         }
 
         /// <summary>
-        /// Sets the title alignment.
+        /// Sets the title style.
         /// </summary>
-        /// <param name="alignment">The title alignment.</param>
+        /// <param name="style">The title style.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Title SetAlignment(Justify alignment)
+        public TableTitle SetStyle(string style)
         {
-            Alignment = alignment;
+            if (style is null)
+            {
+                throw new ArgumentNullException(nameof(style));
+            }
+
+            Style = Style.Parse(style);
             return this;
         }
     }

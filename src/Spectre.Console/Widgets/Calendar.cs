@@ -11,7 +11,7 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable calendar.
     /// </summary>
-    public sealed class Calendar : Renderable, IHasCulture, IHasTableBorder
+    public sealed class Calendar : Renderable, IHasCulture, IHasTableBorder, IAlignable
     {
         private const int NumberOfWeekDays = 7;
         private const int ExpectedRowCount = 6;
@@ -30,6 +30,7 @@ namespace Spectre.Console
         private Style _highlightStyle;
         private bool _showHeader;
         private Style? _headerStyle;
+        private Justify? _alignment;
 
         /// <summary>
         /// Gets or sets the calendar year.
@@ -115,6 +116,13 @@ namespace Spectre.Console
             set => MarkAsDirty(() => _headerStyle = value);
         }
 
+        /// <inheritdoc/>
+        public Justify? Alignment
+        {
+            get => _alignment;
+            set => MarkAsDirty(() => _alignment = value);
+        }
+
         /// <summary>
         /// Gets a list containing all calendar events.
         /// </summary>
@@ -195,12 +203,13 @@ namespace Spectre.Console
                 Border = _border,
                 UseSafeBorder = _useSafeBorder,
                 BorderStyle = _borderStyle,
+                Alignment = _alignment,
             };
 
             if (ShowHeader)
             {
                 var heading = new DateTime(Year, Month, Day).ToString("Y", culture).EscapeMarkup();
-                table.Heading = new Title(heading, HeaderStyle);
+                table.Heading = new TableTitle(heading, HeaderStyle);
             }
 
             // Add columns

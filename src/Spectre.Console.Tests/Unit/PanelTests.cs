@@ -73,7 +73,7 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Render(new Panel("Hello World")
             {
-                Header = new Title("Greeting"),
+                Header = new PanelHeader("Greeting"),
                 Expand = true,
                 Padding = new Padding(2, 0, 2, 0),
             });
@@ -94,7 +94,7 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Render(new Panel("Hello World")
             {
-                Header = new Title("Greeting").LeftAligned(),
+                Header = new PanelHeader("Greeting").LeftAligned(),
                 Expand = true,
             });
 
@@ -114,7 +114,7 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Render(new Panel("Hello World")
             {
-                Header = new Title("Greeting").Centered(),
+                Header = new PanelHeader("Greeting").Centered(),
                 Expand = true,
             });
 
@@ -134,7 +134,7 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Render(new Panel("Hello World")
             {
-                Header = new Title("Greeting").RightAligned(),
+                Header = new PanelHeader("Greeting").RightAligned(),
                 Expand = true,
             });
 
@@ -154,7 +154,7 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Render(new Panel("Hello World")
             {
-                Header = new Title("Greeting"),
+                Header = new PanelHeader("Greeting"),
                 Expand = true,
             });
 
@@ -244,7 +244,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Should_Justify_Child_To_Right()
+        public void Should_Justify_Child_To_Right_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 25);
@@ -264,7 +264,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Should_Justify_Child_To_Center()
+        public void Should_Center_Child_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 25);
