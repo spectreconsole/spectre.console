@@ -1,6 +1,6 @@
-﻿Title: Calendar
+﻿Title: Rule
 Order: 5
-RedirectFrom: calendar
+RedirectFrom: rule
 ---
 
 The `Rule` is used to render a rule to the terminal.
