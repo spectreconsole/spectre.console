@@ -108,7 +108,7 @@ namespace Spectre.Console.Tests.Unit
             // Given
             var console = new PlainConsole(14);
             var text = new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar qux")
-                .SetOverflow(overflow);
+                .Overflow(overflow);
 
             // When
             console.Render(text);

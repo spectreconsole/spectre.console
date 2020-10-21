@@ -15,9 +15,10 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Write(
                 "Hello",
-                Style.WithForeground(Color.RoyalBlue1)
-                     .WithBackground(Color.NavajoWhite1)
-                     .WithDecoration(Decoration.Italic));
+                new Style()
+                    .Foreground(Color.RoyalBlue1)
+                    .Background(Color.NavajoWhite1)
+                    .Decoration(Decoration.Italic));
 
             // Then
             console.Output.ShouldBe("\u001b[3;90;47mHello\u001b[0m");
@@ -32,9 +33,10 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Write(
                 "Hello",
-                Style.WithForeground(Color.Default)
-                     .WithBackground(Color.NavajoWhite1)
-                     .WithDecoration(Decoration.Italic));
+                new Style()
+                    .Foreground(Color.Default)
+                    .Background(Color.NavajoWhite1)
+                    .Decoration(Decoration.Italic));
 
             // Then
             console.Output.ShouldBe("\u001b[3;47mHello\u001b[0m");
@@ -49,9 +51,10 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Write(
                 "Hello",
-                Style.WithForeground(Color.RoyalBlue1)
-                     .WithBackground(Color.Default)
-                     .WithDecoration(Decoration.Italic));
+                new Style()
+                    .Foreground(Color.RoyalBlue1)
+                    .Background(Color.Default)
+                    .Decoration(Decoration.Italic));
 
             // Then
             console.Output.ShouldBe("\u001b[3;90mHello\u001b[0m");
@@ -66,9 +69,10 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Write(
                 "Hello",
-                Style.WithForeground(Color.RoyalBlue1)
-                     .WithBackground(Color.NavajoWhite1)
-                     .WithDecoration(Decoration.None));
+                new Style()
+                    .Foreground(Color.RoyalBlue1)
+                    .Background(Color.NavajoWhite1)
+                    .Decoration(Decoration.None));
 
             // Then
             console.Output.ShouldBe("\u001b[90;47mHello\u001b[0m");
@@ -83,8 +87,8 @@ namespace Spectre.Console.Tests.Unit
                 var console = new TestableAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
 
                 // When
-                console.WriteLine("Hello", Style.WithBackground(ConsoleColor.Red));
-                console.WriteLine("World", Style.WithBackground(ConsoleColor.Green));
+                console.WriteLine("Hello", new Style().Background(ConsoleColor.Red));
+                console.WriteLine("World", new Style().Background(ConsoleColor.Green));
 
                 // Then
                 console.Output.NormalizeLineEndings()
@@ -98,7 +102,7 @@ namespace Spectre.Console.Tests.Unit
                 var console = new TestableAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
 
                 // When
-                console.WriteLine("Hello\nWorld", Style.WithBackground(ConsoleColor.Red));
+                console.WriteLine("Hello\nWorld", new Style().Background(ConsoleColor.Red));
 
                 // Then
                 console.Output.NormalizeLineEndings()

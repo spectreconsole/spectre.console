@@ -32,15 +32,15 @@ namespace Exceptions
                     Format = ExceptionFormats.ShortenEverything | ExceptionFormats.ShowLinks,
                     Style = new ExceptionStyle
                     {
-                        Exception = Style.WithForeground(Color.Grey),
-                        Message = Style.WithForeground(Color.White),
-                        NonEmphasized = Style.WithForeground(Color.Cornsilk1),
-                        Parenthesis = Style.WithForeground(Color.Cornsilk1),
-                        Method = Style.WithForeground(Color.Red),
-                        ParameterName = Style.WithForeground(Color.Cornsilk1),
-                        ParameterType = Style.WithForeground(Color.Red),
-                        Path = Style.WithForeground(Color.Red),
-                        LineNumber = Style.WithForeground(Color.Cornsilk1),
+                        Exception = new Style().Foreground(Color.Grey),
+                        Message = new Style().Foreground(Color.White),
+                        NonEmphasized = new Style().Foreground(Color.Cornsilk1),
+                        Parenthesis = new Style().Foreground(Color.Cornsilk1),
+                        Method = new Style().Foreground(Color.Red),
+                        ParameterName = new Style().Foreground(Color.Cornsilk1),
+                        ParameterType = new Style().Foreground(Color.Red),
+                        Path = new Style().Foreground(Color.Red),
+                        LineNumber = new Style().Foreground(Color.Cornsilk1),
                     }
                 });
             }

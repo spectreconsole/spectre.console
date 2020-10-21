@@ -315,8 +315,8 @@ namespace Spectre.Console.Tests.Unit
 
             var panel = new Panel(grid)
                 .Expand().RoundedBorder()
-                .SetBorderStyle(Style.WithForeground(Color.Grey))
-                .SetHeader("Short paths ", Style.WithForeground(Color.Grey));
+                .BorderStyle(new Style().Foreground(Color.Grey))
+                .Header("Short paths ", new Style().Foreground(Color.Grey));
 
             // When
             console.Render(panel);

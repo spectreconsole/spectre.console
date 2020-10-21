@@ -6,10 +6,10 @@ namespace Spectre.Console.Tests
         {
             if (foreground)
             {
-                return style.WithForeground(color);
+                return style.Foreground(color);
             }
 
-            return style.WithBackground(color);
+            return style.Background(color);
         }
     }
 }

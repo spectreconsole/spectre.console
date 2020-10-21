@@ -11,7 +11,7 @@ namespace GridExample
             AnsiConsole.WriteLine();
 
             var grid = new Grid();
-            grid.AddColumn(new GridColumn { NoWrap = true });
+            grid.AddColumn(new GridColumn().NoWrap());
             grid.AddColumn(new GridColumn().PadLeft(2));
             grid.AddRow("Options:");
             grid.AddRow("  [blue]-h[/], [blue]--help[/]", "Show command line help.");

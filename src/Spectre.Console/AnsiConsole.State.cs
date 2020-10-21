@@ -14,7 +14,7 @@ namespace Spectre.Console
         public static Color Foreground
         {
             get => CurrentStyle.Foreground;
-            set => CurrentStyle = CurrentStyle.WithForeground(value);
+            set => CurrentStyle = CurrentStyle.Foreground(value);
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Spectre.Console
         public static Color Background
         {
             get => CurrentStyle.Background;
-            set => CurrentStyle = CurrentStyle.WithBackground(value);
+            set => CurrentStyle = CurrentStyle.Background(value);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Spectre.Console
         public static Decoration Decoration
         {
             get => CurrentStyle.Decoration;
-            set => CurrentStyle = CurrentStyle.WithDecoration(value);
+            set => CurrentStyle = CurrentStyle.Decoration(value);
         }
 
         /// <summary>

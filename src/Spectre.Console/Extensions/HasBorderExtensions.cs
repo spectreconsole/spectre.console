@@ -8,10 +8,28 @@ namespace Spectre.Console
     public static class HasBorderExtensions
     {
         /// <summary>
+        /// Enables the safe border.
+        /// </summary>
+        /// <typeparam name="T">An object type with a border.</typeparam>
+        /// <param name="obj">The object to enable the safe border for.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static T SafeBorder<T>(this T obj)
+            where T : class, IHasBorder
+        {
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            obj.UseSafeBorder = true;
+            return obj;
+        }
+
+        /// <summary>
         /// Disables the safe border.
         /// </summary>
         /// <typeparam name="T">An object type with a border.</typeparam>
-        /// <param name="obj">The object to set the border for.</param>
+        /// <param name="obj">The object to disable the safe border for.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static T NoSafeBorder<T>(this T obj)
             where T : class, IHasBorder
@@ -29,10 +47,10 @@ namespace Spectre.Console
         /// Sets the border style.
         /// </summary>
         /// <typeparam name="T">An object type with a border.</typeparam>
-        /// <param name="obj">The object to set the border color for.</param>
+        /// <param name="obj">The object to set the border style for.</param>
         /// <param name="style">The border style to set.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static T SetBorderStyle<T>(this T obj, Style style)
+        public static T BorderStyle<T>(this T obj, Style style)
             where T : class, IHasBorder
         {
             if (obj is null)
@@ -51,7 +69,7 @@ namespace Spectre.Console
         /// <param name="obj">The object to set the border color for.</param>
         /// <param name="color">The border color to set.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static T SetBorderColor<T>(this T obj, Color color)
+        public static T BorderColor<T>(this T obj, Color color)
             where T : class, IHasBorder
         {
             if (obj is null)
@@ -59,7 +77,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            obj.BorderStyle = (obj.BorderStyle ?? Style.Plain).WithForeground(color);
+            obj.BorderStyle = (obj.BorderStyle ?? Style.Plain).Foreground(color);
             return obj;
         }
     }

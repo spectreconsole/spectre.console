@@ -69,7 +69,7 @@ namespace Spectre.Console
         /// <param name="calendar">The calendar.</param>
         /// <param name="style">The highlight style.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Calendar SetHighlightStyle(this Calendar calendar, Style? style)
+        public static Calendar HighlightStyle(this Calendar calendar, Style? style)
         {
             if (calendar is null)
             {
@@ -86,7 +86,7 @@ namespace Spectre.Console
         /// <param name="calendar">The calendar.</param>
         /// <param name="style">The header style.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Calendar SetHeaderStyle(this Calendar calendar, Style? style)
+        public static Calendar HeaderStyle(this Calendar calendar, Style? style)
         {
             if (calendar is null)
             {

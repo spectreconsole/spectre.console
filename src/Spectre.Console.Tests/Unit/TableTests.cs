@@ -416,7 +416,7 @@ namespace Spectre.Console.Tests.Unit
             // Given
             var console = new PlainConsole(width: 25);
 
-            var first = new Table().SetBorder(TableBorder.Rounded).SetBorderColor(Color.Red);
+            var first = new Table().Border(TableBorder.Rounded).BorderColor(Color.Red);
             first.AddColumn(new TableColumn("[u]PS1[/]").Centered());
             first.AddColumn(new TableColumn("[u]PS2[/]"));
             first.AddColumn(new TableColumn("[u]PS3[/]"));
@@ -424,7 +424,7 @@ namespace Spectre.Console.Tests.Unit
             first.AddRow("[blue]Bonjour[/]", "[white]le[/]", "[red]monde![/]");
             first.AddRow("[blue]Hej[/]", "[yellow]Världen[/]", string.Empty);
 
-            var second = new Table().SetBorder(TableBorder.Square).SetBorderColor(Color.Green);
+            var second = new Table().Border(TableBorder.Square).BorderColor(Color.Green);
             second.AddColumn(new TableColumn("[u]Foo[/]"));
             second.AddColumn(new TableColumn("[u]Bar[/]"));
             second.AddColumn(new TableColumn("[u]Baz[/]"));
@@ -432,10 +432,10 @@ namespace Spectre.Console.Tests.Unit
             second.AddRow(first, new Text("Whaaat"), new Text("Lolz"));
             second.AddRow("[blue]Hej[/]", "[yellow]Världen[/]", string.Empty);
 
-            var table = new Table().SetBorder(TableBorder.Rounded);
-            table.AddColumn(new TableColumn(new Panel("[u]ABC[/]").SetBorderColor(Color.Red)));
-            table.AddColumn(new TableColumn(new Panel("[u]DEF[/]").SetBorderColor(Color.Green)));
-            table.AddColumn(new TableColumn(new Panel("[u]GHI[/]").SetBorderColor(Color.Blue)));
+            var table = new Table().Border(TableBorder.Rounded);
+            table.AddColumn(new TableColumn(new Panel("[u]ABC[/]").BorderColor(Color.Red)));
+            table.AddColumn(new TableColumn(new Panel("[u]DEF[/]").BorderColor(Color.Green)));
+            table.AddColumn(new TableColumn(new Panel("[u]GHI[/]").BorderColor(Color.Blue)));
             table.AddRow(new Text("Hello").Centered(), new Markup("[red]World[/]"), Text.Empty);
             table.AddRow(second, new Text("Whaat"), new Text("Lol").RightAligned());
             table.AddRow(new Markup("[blue]Hej[/]"), new Markup("[yellow]Världen[/]"), Text.Empty);

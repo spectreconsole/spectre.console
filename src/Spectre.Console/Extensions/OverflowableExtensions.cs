@@ -21,7 +21,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            return SetOverflow(obj, Overflow.Fold);
+            return Overflow(obj, Console.Overflow.Fold);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            return SetOverflow(obj, Overflow.Crop);
+            return Overflow(obj, Console.Overflow.Crop);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            return SetOverflow(obj, Overflow.Ellipsis);
+            return Overflow(obj, Console.Overflow.Ellipsis);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Spectre.Console
         /// <param name="obj">The overflowable object instance.</param>
         /// <param name="overflow">The overflow strategy to use.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static T SetOverflow<T>(this T obj, Overflow overflow)
+        public static T Overflow<T>(this T obj, Overflow overflow)
             where T : class, IOverflowable
         {
             if (obj is null)

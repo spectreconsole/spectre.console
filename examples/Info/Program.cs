@@ -17,7 +17,7 @@ namespace InfoExample
 
             AnsiConsole.Render(
                 new Panel(grid)
-                    .SetHeader("Information"));
+                    .Header("Information"));
         }
 
         private static string YesNo(bool value)

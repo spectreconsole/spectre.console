@@ -43,7 +43,7 @@ namespace Spectre.Console.Tests.Unit
                 .AddColumns("[red on black]Foo[/]", "[green bold]Bar[/]", "[blue italic]Qux[/]")
                 .AddRow("[invert underline]Corgi[/]", "[bold strikethrough]Waldo[/]", "[dim]Zap[/]")
                 .AddRow(new Panel("[blue]Hello World[/]")
-                    .SetBorderColor(Color.Red).RoundedBorder()));
+                    .BorderColor(Color.Red).RoundedBorder()));
 
             // When
             var html = recorder.ExportHtml();

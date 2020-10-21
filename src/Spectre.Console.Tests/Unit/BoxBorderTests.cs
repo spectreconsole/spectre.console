@@ -14,7 +14,7 @@ namespace Spectre.Console.Tests.Unit
                 public void Should_Return_Safe_Border()
                 {
                     // Given, When
-                    var border = BoxBorder.None.GetSafeBorder(safe: true);
+                    var border = BoxExtensions.GetSafeBorder(BoxBorder.None, safe: true);
 
                     // Then
                     border.ShouldBeSameAs(BoxBorder.None);
@@ -47,7 +47,7 @@ namespace Spectre.Console.Tests.Unit
                 public void Should_Return_Safe_Border()
                 {
                     // Given, When
-                    var border = BoxBorder.Ascii.GetSafeBorder(safe: true);
+                    var border = BoxExtensions.GetSafeBorder(BoxBorder.Ascii, safe: true);
 
                     // Then
                     border.ShouldBeSameAs(BoxBorder.Ascii);
@@ -80,7 +80,7 @@ namespace Spectre.Console.Tests.Unit
                 public void Should_Return_Safe_Border()
                 {
                     // Given, When
-                    var border = BoxBorder.Double.GetSafeBorder(safe: true);
+                    var border = BoxExtensions.GetSafeBorder(BoxBorder.Double, safe: true);
 
                     // Then
                     border.ShouldBeSameAs(BoxBorder.Double);
@@ -113,7 +113,7 @@ namespace Spectre.Console.Tests.Unit
                 public void Should_Return_Safe_Border()
                 {
                     // Given, When
-                    var border = BoxBorder.Heavy.GetSafeBorder(safe: true);
+                    var border = BoxExtensions.GetSafeBorder(BoxBorder.Heavy, safe: true);
 
                     // Then
                     border.ShouldBeSameAs(BoxBorder.Square);
@@ -144,7 +144,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Return_Safe_Border()
             {
                 // Given, When
-                var border = BoxBorder.Rounded.GetSafeBorder(safe: true);
+                var border = BoxExtensions.GetSafeBorder(BoxBorder.Rounded, safe: true);
 
                 // Then
                 border.ShouldBeSameAs(BoxBorder.Square);
@@ -174,7 +174,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Return_Safe_Border()
             {
                 // Given, When
-                var border = BoxBorder.Square.GetSafeBorder(safe: true);
+                var border = BoxExtensions.GetSafeBorder(BoxBorder.Square, safe: true);
 
                 // Then
                 border.ShouldBeSameAs(BoxBorder.Square);
@@ -203,7 +203,7 @@ namespace Spectre.Console.Tests.Unit
             public static Panel GetPanel()
             {
                 return new Panel("Hello World")
-                    .SetHeader("Greeting");
+                    .Header("Greeting");
             }
         }
     }

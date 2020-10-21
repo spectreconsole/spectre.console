@@ -61,6 +61,7 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="color">The foreground color.</param>
         /// <returns>A new <see cref="Style"/> with the specified foreground color.</returns>
+        [Obsolete("Use ctor(..) instead")]
         public static Style WithForeground(Color color)
         {
             return new Style(foreground: color);
@@ -71,6 +72,7 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="color">The background color.</param>
         /// <returns>A new <see cref="Style"/> with the specified background color.</returns>
+        [Obsolete("Use ctor(..) instead")]
         public static Style WithBackground(Color color)
         {
             return new Style(background: color);
@@ -81,6 +83,7 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="decoration">The text decoration.</param>
         /// <returns>A new <see cref="Style"/> with the specified text decoration.</returns>
+        [Obsolete("Use ctor(..) instead")]
         public static Style WithDecoration(Decoration decoration)
         {
             return new Style(decoration: decoration);
@@ -91,6 +94,7 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="link">The link.</param>
         /// <returns>A new <see cref="Style"/> with the specified link.</returns>
+        [Obsolete("Use ctor(..) instead")]
         public static Style WithLink(string link)
         {
             return new Style(link: link);
@@ -143,7 +147,7 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="style">The style string.</param>
         [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates")]
-        public static explicit operator Style(string style)
+        public static implicit operator Style(string style)
         {
             return Parse(style);
         }
