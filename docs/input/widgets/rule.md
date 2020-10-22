@@ -9,7 +9,7 @@ The `Rule` class is used to render a horizontal rule (line) to the terminal.
 
 # Usage
 
-To render a rule, create a `Rule` instance.
+To render a rule without a title:
 
 ```csharp
 var rule = new Rule();
