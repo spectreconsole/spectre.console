@@ -3,7 +3,7 @@ Order: 5
 RedirectFrom: rule
 ---
 
-The `Rule` is used to render a rule to the terminal.
+The `Rule` class is used to render a horizontal rule (line) to the terminal.
 
 ![Rule](../assets/images/rule.png)
 
