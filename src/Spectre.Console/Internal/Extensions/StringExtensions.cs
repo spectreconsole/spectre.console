@@ -16,6 +16,11 @@ namespace Spectre.Console.Internal
 
         public static int CellLength(this string text, RenderContext context)
         {
+            if (context is null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             return Cell.GetCellLength(context, text);
         }
 

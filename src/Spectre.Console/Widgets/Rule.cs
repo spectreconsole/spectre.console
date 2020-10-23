@@ -52,7 +52,7 @@ namespace Spectre.Console
 
             // Get the title and make sure it fits.
             var title = GetTitleSegments(context, Title, maxWidth - 6);
-            if (Segment.CellLength(context, title) > maxWidth - 6)
+            if (Segment.CellCount(context, title) > maxWidth - 6)
             {
                 // Truncate the title
                 title = Segment.TruncateWithEllipsis(title, context, maxWidth - 6);
@@ -88,13 +88,13 @@ namespace Spectre.Console
         {
             var alignment = Alignment ?? Justify.Center;
 
-            var titleLength = Segment.CellLength(context, title);
+            var titleLength = Segment.CellCount(context, title);
 
             if (alignment == Justify.Left)
             {
                 var left = new Segment(new string('─', 2) + " ", Style ?? Style.Plain);
 
-                var rightLength = maxWidth - titleLength - left.CellLength(context) - 1;
+                var rightLength = maxWidth - titleLength - left.CellCount(context) - 1;
                 var right = new Segment(" " + new string('─', rightLength), Style ?? Style.Plain);
 
                 return (left, right);
@@ -104,7 +104,7 @@ namespace Spectre.Console
                 var leftLength = ((maxWidth - titleLength) / 2) - 1;
                 var left = new Segment(new string('─', leftLength) + " ", Style ?? Style.Plain);
 
-                var rightLength = maxWidth - titleLength - left.CellLength(context) - 1;
+                var rightLength = maxWidth - titleLength - left.CellCount(context) - 1;
                 var right = new Segment(" " + new string('─', rightLength), Style ?? Style.Plain);
 
                 return (left, right);
@@ -113,7 +113,7 @@ namespace Spectre.Console
             {
                 var right = new Segment(" " + new string('─', 2), Style ?? Style.Plain);
 
-                var leftLength = maxWidth - titleLength - right.CellLength(context) - 1;
+                var leftLength = maxWidth - titleLength - right.CellCount(context) - 1;
                 var left = new Segment(new string('─', leftLength) + " ", Style ?? Style.Plain);
 
                 return (left, right);

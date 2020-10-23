@@ -94,7 +94,7 @@ namespace Spectre.Console
 
             // Split the child segments into lines.
             var childSegments = ((IRenderable)child).Render(context, childWidth);
-            foreach (var line in Segment.SplitLines(childSegments, childWidth))
+            foreach (var line in Segment.SplitLines(context, childSegments, childWidth))
             {
                 if (line.Count == 1 && line[0].IsWhiteSpace)
                 {
@@ -109,7 +109,7 @@ namespace Spectre.Console
                 content.AddRange(line);
 
                 // Do we need to pad the panel?
-                var length = line.Sum(segment => segment.CellLength(context));
+                var length = line.Sum(segment => segment.CellCount(context));
                 if (length < childWidth)
                 {
                     var diff = childWidth - length;
@@ -148,7 +148,7 @@ namespace Spectre.Console
                 var headerWidth = panelWidth - (EdgeWidth * 2);
                 var header = Segment.TruncateWithEllipsis(Header.Text, Header.Style ?? borderStyle, context, headerWidth);
 
-                var excessWidth = headerWidth - header.CellLength(context);
+                var excessWidth = headerWidth - header.CellCount(context);
                 if (excessWidth > 0)
                 {
                     switch (Header.Alignment ?? Justify.Left)

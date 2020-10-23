@@ -119,8 +119,8 @@ namespace Spectre.Console
                 return new Measurement(0, 0);
             }
 
-            var min = _lines.Max(line => line.Max(segment => segment.CellLength(context)));
-            var max = _lines.Max(x => x.CellWidth(context));
+            var min = _lines.Max(line => line.Max(segment => segment.CellCount(context)));
+            var max = _lines.Max(x => x.CellCount(context));
 
             return new Measurement(min, Math.Min(max, maxWidth));
         }
@@ -187,7 +187,7 @@ namespace Spectre.Console
                 return new List<SegmentLine>();
             }
 
-            if (_lines.Max(x => x.CellWidth(context)) <= maxWidth)
+            if (_lines.Max(x => x.CellCount(context)) <= maxWidth)
             {
                 return Clone();
             }
@@ -231,7 +231,7 @@ namespace Spectre.Console
                     continue;
                 }
 
-                var length = current.CellLength(context);
+                var length = current.CellCount(context);
                 if (length > maxWidth)
                 {
                     // The current segment is longer than the width of the console,
@@ -239,7 +239,7 @@ namespace Spectre.Console
                     var segments = Segment.SplitOverflow(current, Overflow, context, maxWidth);
                     if (segments.Count > 0)
                     {
-                        if (line.CellWidth(context) + segments[0].CellLength(context) > maxWidth)
+                        if (line.CellCount(context) + segments[0].CellCount(context) > maxWidth)
                         {
                             lines.Add(line);
                             line = new SegmentLine();
@@ -259,7 +259,7 @@ namespace Spectre.Console
                 }
                 else
                 {
-                    if (line.CellWidth(context) + length > maxWidth)
+                    if (line.CellCount(context) + length > maxWidth)
                     {
                         line.Add(Segment.Empty);
                         lines.Add(line);

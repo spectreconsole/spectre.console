@@ -217,7 +217,7 @@ namespace Spectre.Console
                     var justification = _columns[columnIndex].Alignment;
                     var childContext = context.WithJustification(justification);
 
-                    var lines = Segment.SplitLines(cell.Render(childContext, rowWidth));
+                    var lines = Segment.SplitLines(context, cell.Render(childContext, rowWidth));
                     cellHeight = Math.Max(cellHeight, lines.Count);
                     cells.Add(lines);
                 }
@@ -261,7 +261,7 @@ namespace Spectre.Console
                         rowResult.AddRange(cell[cellRowIndex]);
 
                         // Pad cell content right
-                        var length = cell[cellRowIndex].Sum(segment => segment.CellLength(context));
+                        var length = cell[cellRowIndex].Sum(segment => segment.CellCount(context));
                         if (length < columnWidths[cellIndex])
                         {
                             rowResult.Add(new Segment(new string(' ', columnWidths[cellIndex] - length)));
@@ -295,7 +295,7 @@ namespace Spectre.Console
                     Aligner.Align(context, rowResult, Alignment, actualMaxWidth);
 
                     // Is the row larger than the allowed max width?
-                    if (Segment.CellLength(context, rowResult) > actualMaxWidth)
+                    if (Segment.CellCount(context, rowResult) > actualMaxWidth)
                     {
                         result.AddRange(Segment.Truncate(context, rowResult, actualMaxWidth));
                     }

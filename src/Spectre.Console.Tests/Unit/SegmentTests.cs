@@ -1,3 +1,4 @@
+using System.Text;
 using Shouldly;
 using Spectre.Console.Rendering;
 using Xunit;
@@ -6,6 +7,16 @@ namespace Spectre.Console.Tests.Unit
 {
     public sealed class SegmentTests
     {
+        [Fact]
+        public void Lol()
+        {
+            var context = new RenderContext(Encoding.UTF8, false);
+
+            var result = new Segment("    ").CellCount(context);
+
+            result.ShouldBe(4);
+        }
+
         public sealed class TheSplitMethod
         {
             [Fact]
@@ -31,7 +42,10 @@ namespace Spectre.Console.Tests.Unit
             [Fact]
             public void Should_Split_Segment()
             {
+                var context = new RenderContext(Encoding.UTF8, false);
+
                 var lines = Segment.SplitLines(
+                    context,
                     new[]
                     {
                         new Segment("Foo"),
@@ -61,7 +75,9 @@ namespace Spectre.Console.Tests.Unit
             [Fact]
             public void Should_Split_Segments_With_Linebreak_In_Text()
             {
+                var context = new RenderContext(Encoding.UTF8, false);
                 var lines = Segment.SplitLines(
+                    context,
                     new[]
                     {
                         new Segment("Foo\n"),

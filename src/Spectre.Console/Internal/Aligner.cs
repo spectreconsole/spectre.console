@@ -57,7 +57,7 @@ namespace Spectre.Console.Internal
                 return;
             }
 
-            var width = Segment.CellLength(context, segments);
+            var width = Segment.CellCount(context, segments);
             if (width >= maxWidth)
             {
                 return;
