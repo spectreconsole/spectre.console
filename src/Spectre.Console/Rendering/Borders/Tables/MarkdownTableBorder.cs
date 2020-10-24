@@ -29,6 +29,10 @@ namespace Spectre.Console.Rendering
                 TableBorderPart.CellLeft => "|",
                 TableBorderPart.CellSeparator => "|",
                 TableBorderPart.CellRight => "|",
+                TableBorderPart.FooterTopLeft => " ",
+                TableBorderPart.FooterTop => " ",
+                TableBorderPart.FooterTopSeparator => " ",
+                TableBorderPart.FooterTopRight => " ",
                 TableBorderPart.FooterBottomLeft => " ",
                 TableBorderPart.FooterBottom => " ",
                 TableBorderPart.FooterBottomSeparator => " ",
@@ -40,7 +44,12 @@ namespace Spectre.Console.Rendering
         /// <inheritdoc/>
         public override string GetColumnRow(TablePart part, IReadOnlyList<int> widths, IReadOnlyList<IColumn> columns)
         {
-            if (part != TablePart.Separator)
+            if (part == TablePart.FooterSeparator)
+            {
+                return string.Empty;
+            }
+
+            if (part != TablePart.HeaderSeparator)
             {
                 return base.GetColumnRow(part, widths, columns);
             }

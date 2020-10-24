@@ -12,7 +12,7 @@ namespace Spectre.Console
         /// <param name="obj">The alignable object.</param>
         /// <param name="alignment">The alignment.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static T Alignment<T>(this T obj, Justify alignment)
+        public static T Alignment<T>(this T obj, Justify? alignment)
             where T : class, IAlignable
         {
             if (obj is null)

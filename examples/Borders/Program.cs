@@ -48,8 +48,8 @@ namespace BordersExample
             static IRenderable CreateTable(string name, TableBorder border)
             {
                 var table = new Table().Border(border);
-                table.AddColumn("[yellow]Header 1[/]");
-                table.AddColumn("[yellow]Header 2[/]", col => col.RightAligned());
+                table.AddColumn("[yellow]Header 1[/]", c => c.Footer("[grey]Footer 1[/]"));
+                table.AddColumn("[yellow]Header 2[/]", col => col.Footer("[grey]Footer 2[/]").RightAligned());
                 table.AddRow("Cell", "Cell");
                 table.AddRow("Cell", "Cell");
 

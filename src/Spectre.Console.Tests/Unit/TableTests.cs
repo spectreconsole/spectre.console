@@ -169,6 +169,33 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        public void Should_Render_Table_With_Footers_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+            var table = new Table();
+            table.AddColumn(new TableColumn("Foo").Footer("Oof").RightAligned());
+            table.AddColumn("Bar");
+            table.AddColumns(new TableColumn("Baz").Footer("Zab"));
+            table.AddRow("Qux", "Corgi", "Waldo");
+            table.AddRow("Grault", "Garply", "Fred");
+
+            // When
+            console.Render(table);
+
+            // Then
+            console.Lines.Count.ShouldBe(8);
+            console.Lines[0].ShouldBe("┌────────┬────────┬───────┐");
+            console.Lines[1].ShouldBe("│    Foo │ Bar    │ Baz   │");
+            console.Lines[2].ShouldBe("├────────┼────────┼───────┤");
+            console.Lines[3].ShouldBe("│    Qux │ Corgi  │ Waldo │");
+            console.Lines[4].ShouldBe("│ Grault │ Garply │ Fred  │");
+            console.Lines[5].ShouldBe("├────────┼────────┼───────┤");
+            console.Lines[6].ShouldBe("│    Oof │        │ Zab   │");
+            console.Lines[7].ShouldBe("└────────┴────────┴───────┘");
+        }
+
+        [Fact]
         public void Should_Left_Align_Table_Correctly()
         {
             // Given
@@ -460,13 +487,13 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Should_Render_Table_With_Title_And_Footnote_Correctly()
+        public void Should_Render_Table_With_Title_And_Caption_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
             var table = new Table { Border = TableBorder.Rounded };
-            table.Heading = new TableTitle("Hello World");
-            table.Footnote = new TableTitle("Goodbye World");
+            table.Title = new TableTitle("Hello World");
+            table.Caption = new TableTitle("Goodbye World");
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");
@@ -487,14 +514,14 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Should_Left_Align_Table_With_Title_And_Footnote_Correctly()
+        public void Should_Left_Align_Table_With_Title_And_Caption_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
             var table = new Table { Border = TableBorder.Rounded };
             table.LeftAligned();
-            table.Heading = new TableTitle("Hello World");
-            table.Footnote = new TableTitle("Goodbye World");
+            table.Title = new TableTitle("Hello World");
+            table.Caption = new TableTitle("Goodbye World");
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");
@@ -515,14 +542,14 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Should_Center_Table_With_Title_And_Footnote_Correctly()
+        public void Should_Center_Table_With_Title_And_Caption_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
             var table = new Table { Border = TableBorder.Rounded };
             table.Centered();
-            table.Heading = new TableTitle("Hello World");
-            table.Footnote = new TableTitle("Goodbye World");
+            table.Title = new TableTitle("Hello World");
+            table.Caption = new TableTitle("Goodbye World");
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");
@@ -543,14 +570,14 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Should_Right_Align_Table_With_Title_And_Footnote_Correctly()
+        public void Should_Right_Align_Table_With_Title_And_Caption_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
             var table = new Table { Border = TableBorder.Rounded };
             table.RightAligned();
-            table.Heading = new TableTitle("Hello World");
-            table.Footnote = new TableTitle("Goodbye World");
+            table.Title = new TableTitle("Hello World");
+            table.Caption = new TableTitle("Goodbye World");
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
             table.AddRow("Grault", "Garply", "Fred");

@@ -83,9 +83,14 @@ namespace Spectre.Console
                     GetPart(TableBorderPart.HeaderTopSeparator), GetPart(TableBorderPart.HeaderTopRight)),
 
                 // Separator between header and cells
-                TablePart.Separator =>
+                TablePart.HeaderSeparator =>
                     (GetPart(TableBorderPart.HeaderBottomLeft), GetPart(TableBorderPart.HeaderBottom),
                     GetPart(TableBorderPart.HeaderBottomSeparator), GetPart(TableBorderPart.HeaderBottomRight)),
+
+                // Separator between footer and cells
+                TablePart.FooterSeparator =>
+                    (GetPart(TableBorderPart.FooterTopLeft), GetPart(TableBorderPart.FooterTop),
+                    GetPart(TableBorderPart.FooterTopSeparator), GetPart(TableBorderPart.FooterTopRight)),
 
                 // Bottom part
                 TablePart.Bottom =>

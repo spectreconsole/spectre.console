@@ -9,9 +9,14 @@ namespace Spectre.Console
     public sealed class TableColumn : IColumn
     {
         /// <summary>
-        /// Gets the text associated with the column.
+        /// Gets the column header.
         /// </summary>
-        public IRenderable Text { get; }
+        public IRenderable Header { get; }
+
+        /// <summary>
+        /// Gets or sets the column footer.
+        /// </summary>
+        public IRenderable? Footer { get; set; }
 
         /// <summary>
         /// Gets or sets the width of the column.
@@ -39,19 +44,19 @@ namespace Spectre.Console
         /// <summary>
         /// Initializes a new instance of the <see cref="TableColumn"/> class.
         /// </summary>
-        /// <param name="text">The table column text.</param>
-        public TableColumn(string text)
-            : this(new Markup(text).Overflow(Overflow.Ellipsis))
+        /// <param name="header">The table column header.</param>
+        public TableColumn(string header)
+            : this(new Markup(header).Overflow(Overflow.Ellipsis))
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TableColumn"/> class.
         /// </summary>
-        /// <param name="renderable">The <see cref="IRenderable"/> instance to use as the table column.</param>
-        public TableColumn(IRenderable renderable)
+        /// <param name="header">The <see cref="IRenderable"/> instance to use as the table column header.</param>
+        public TableColumn(IRenderable header)
         {
-            Text = renderable ?? throw new ArgumentNullException(nameof(renderable));
+            Header = header ?? throw new ArgumentNullException(nameof(header));
             Width = null;
             Padding = new Padding(1, 0, 1, 0);
             NoWrap = false;
