@@ -61,6 +61,26 @@ namespace Spectre.Console.Rendering
         HeaderBottomRight,
 
         /// <summary>
+        /// The top left part of a footer.
+        /// </summary>
+        FooterTopLeft,
+
+        /// <summary>
+        /// The top part of a footer.
+        /// </summary>
+        FooterTop,
+
+        /// <summary>
+        /// The top separator part of a footer.
+        /// </summary>
+        FooterTopSeparator,
+
+        /// <summary>
+        /// The top right part of a footer.
+        /// </summary>
+        FooterTopRight,
+
+        /// <summary>
         /// The left part of a cell.
         /// </summary>
         CellLeft,

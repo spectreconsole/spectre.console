@@ -42,10 +42,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(3);
+                console.Lines.Count.ShouldBe(4);
                 console.Lines[0].ShouldBe("Header 1 Header 2");
                 console.Lines[1].ShouldBe("Cell     Cell    ");
                 console.Lines[2].ShouldBe("Cell     Cell    ");
+                console.Lines[3].ShouldBe("Footer 1 Footer 2");
             }
         }
 
@@ -85,13 +86,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("+---------------------+");
                 console.Lines[1].ShouldBe("| Header 1 | Header 2 |");
                 console.Lines[2].ShouldBe("|----------+----------|");
                 console.Lines[3].ShouldBe("| Cell     | Cell     |");
                 console.Lines[4].ShouldBe("| Cell     | Cell     |");
-                console.Lines[5].ShouldBe("+---------------------+");
+                console.Lines[5].ShouldBe("|----------+----------|");
+                console.Lines[6].ShouldBe("| Footer 1 | Footer 2 |");
+                console.Lines[7].ShouldBe("+---------------------+");
             }
         }
 
@@ -131,13 +134,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("+----------+----------+");
                 console.Lines[1].ShouldBe("| Header 1 | Header 2 |");
                 console.Lines[2].ShouldBe("|----------+----------|");
                 console.Lines[3].ShouldBe("| Cell     | Cell     |");
                 console.Lines[4].ShouldBe("| Cell     | Cell     |");
-                console.Lines[5].ShouldBe("+----------+----------+");
+                console.Lines[5].ShouldBe("|----------+----------|");
+                console.Lines[6].ShouldBe("| Footer 1 | Footer 2 |");
+                console.Lines[7].ShouldBe("+----------+----------+");
             }
         }
 
@@ -177,13 +182,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("+----------+----------+");
                 console.Lines[1].ShouldBe("| Header 1 | Header 2 |");
                 console.Lines[2].ShouldBe("|==========+==========|");
                 console.Lines[3].ShouldBe("| Cell     | Cell     |");
                 console.Lines[4].ShouldBe("| Cell     | Cell     |");
                 console.Lines[5].ShouldBe("+----------+----------+");
+                console.Lines[6].ShouldBe("| Footer 1 | Footer 2 |");
+                console.Lines[7].ShouldBe("+----------+----------+");
             }
         }
 
@@ -223,13 +230,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("┌──────────┬──────────┐");
                 console.Lines[1].ShouldBe("│ Header 1 │ Header 2 │");
                 console.Lines[2].ShouldBe("├──────────┼──────────┤");
                 console.Lines[3].ShouldBe("│ Cell     │ Cell     │");
                 console.Lines[4].ShouldBe("│ Cell     │ Cell     │");
-                console.Lines[5].ShouldBe("└──────────┴──────────┘");
+                console.Lines[5].ShouldBe("├──────────┼──────────┤");
+                console.Lines[6].ShouldBe("│ Footer 1 │ Footer 2 │");
+                console.Lines[7].ShouldBe("└──────────┴──────────┘");
             }
         }
 
@@ -269,13 +278,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("╭──────────┬──────────╮");
                 console.Lines[1].ShouldBe("│ Header 1 │ Header 2 │");
                 console.Lines[2].ShouldBe("├──────────┼──────────┤");
                 console.Lines[3].ShouldBe("│ Cell     │ Cell     │");
                 console.Lines[4].ShouldBe("│ Cell     │ Cell     │");
-                console.Lines[5].ShouldBe("╰──────────┴──────────╯");
+                console.Lines[5].ShouldBe("├──────────┼──────────┤");
+                console.Lines[6].ShouldBe("│ Footer 1 │ Footer 2 │");
+                console.Lines[7].ShouldBe("╰──────────┴──────────╯");
             }
         }
 
@@ -315,13 +326,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("                       ");
                 console.Lines[1].ShouldBe("  Header 1 │ Header 2  ");
                 console.Lines[2].ShouldBe(" ──────────┼────────── ");
                 console.Lines[3].ShouldBe("  Cell     │ Cell      ");
                 console.Lines[4].ShouldBe("  Cell     │ Cell      ");
-                console.Lines[5].ShouldBe("                       ");
+                console.Lines[5].ShouldBe(" ──────────┼────────── ");
+                console.Lines[6].ShouldBe("  Footer 1 │ Footer 2  ");
+                console.Lines[7].ShouldBe("                       ");
             }
         }
 
@@ -361,13 +374,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("                       ");
                 console.Lines[1].ShouldBe("  Header 1 │ Header 2  ");
                 console.Lines[2].ShouldBe(" ━━━━━━━━━━┿━━━━━━━━━━ ");
                 console.Lines[3].ShouldBe("  Cell     │ Cell      ");
                 console.Lines[4].ShouldBe("  Cell     │ Cell      ");
-                console.Lines[5].ShouldBe("                       ");
+                console.Lines[5].ShouldBe(" ━━━━━━━━━━┿━━━━━━━━━━ ");
+                console.Lines[6].ShouldBe("  Footer 1 │ Footer 2  ");
+                console.Lines[7].ShouldBe("                       ");
             }
         }
 
@@ -407,13 +422,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("                       ");
                 console.Lines[1].ShouldBe("  Header 1 │ Header 2  ");
                 console.Lines[2].ShouldBe(" ══════════╪══════════ ");
                 console.Lines[3].ShouldBe("  Cell     │ Cell      ");
                 console.Lines[4].ShouldBe("  Cell     │ Cell      ");
-                console.Lines[5].ShouldBe("                       ");
+                console.Lines[5].ShouldBe(" ══════════╪══════════ ");
+                console.Lines[6].ShouldBe("  Footer 1 │ Footer 2  ");
+                console.Lines[7].ShouldBe("                       ");
             }
         }
 
@@ -453,13 +470,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("                       ");
                 console.Lines[1].ShouldBe("  Header 1   Header 2  ");
                 console.Lines[2].ShouldBe("───────────────────────");
                 console.Lines[3].ShouldBe("  Cell       Cell      ");
                 console.Lines[4].ShouldBe("  Cell       Cell      ");
-                console.Lines[5].ShouldBe("                       ");
+                console.Lines[5].ShouldBe("───────────────────────");
+                console.Lines[6].ShouldBe("  Footer 1   Footer 2  ");
+                console.Lines[7].ShouldBe("                       ");
             }
         }
 
@@ -499,13 +518,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("───────────────────────");
                 console.Lines[1].ShouldBe("  Header 1   Header 2  ");
                 console.Lines[2].ShouldBe("───────────────────────");
                 console.Lines[3].ShouldBe("  Cell       Cell      ");
                 console.Lines[4].ShouldBe("  Cell       Cell      ");
                 console.Lines[5].ShouldBe("───────────────────────");
+                console.Lines[6].ShouldBe("  Footer 1   Footer 2  ");
+                console.Lines[7].ShouldBe("───────────────────────");
             }
         }
 
@@ -545,13 +566,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("                       ");
                 console.Lines[1].ShouldBe("  Header 1   Header 2  ");
                 console.Lines[2].ShouldBe("━━━━━━━━━━━━━━━━━━━━━━━");
                 console.Lines[3].ShouldBe("  Cell       Cell      ");
                 console.Lines[4].ShouldBe("  Cell       Cell      ");
-                console.Lines[5].ShouldBe("                       ");
+                console.Lines[5].ShouldBe("━━━━━━━━━━━━━━━━━━━━━━━");
+                console.Lines[6].ShouldBe("  Footer 1   Footer 2  ");
+                console.Lines[7].ShouldBe("                       ");
             }
         }
 
@@ -591,13 +614,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("┏━━━━━━━━━━┳━━━━━━━━━━┓");
                 console.Lines[1].ShouldBe("┃ Header 1 ┃ Header 2 ┃");
                 console.Lines[2].ShouldBe("┣━━━━━━━━━━╋━━━━━━━━━━┫");
                 console.Lines[3].ShouldBe("┃ Cell     ┃ Cell     ┃");
                 console.Lines[4].ShouldBe("┃ Cell     ┃ Cell     ┃");
-                console.Lines[5].ShouldBe("┗━━━━━━━━━━┻━━━━━━━━━━┛");
+                console.Lines[5].ShouldBe("┣━━━━━━━━━━╋━━━━━━━━━━┫");
+                console.Lines[6].ShouldBe("┃ Footer 1 ┃ Footer 2 ┃");
+                console.Lines[7].ShouldBe("┗━━━━━━━━━━┻━━━━━━━━━━┛");
             }
         }
 
@@ -637,13 +662,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("┏━━━━━━━━━━┯━━━━━━━━━━┓");
                 console.Lines[1].ShouldBe("┃ Header 1 │ Header 2 ┃");
                 console.Lines[2].ShouldBe("┠──────────┼──────────┨");
                 console.Lines[3].ShouldBe("┃ Cell     │ Cell     ┃");
                 console.Lines[4].ShouldBe("┃ Cell     │ Cell     ┃");
-                console.Lines[5].ShouldBe("┗━━━━━━━━━━┷━━━━━━━━━━┛");
+                console.Lines[5].ShouldBe("┠──────────┼──────────┨");
+                console.Lines[6].ShouldBe("┃ Footer 1 │ Footer 2 ┃");
+                console.Lines[7].ShouldBe("┗━━━━━━━━━━┷━━━━━━━━━━┛");
             }
         }
 
@@ -683,13 +710,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("┏━━━━━━━━━━┳━━━━━━━━━━┓");
                 console.Lines[1].ShouldBe("┃ Header 1 ┃ Header 2 ┃");
                 console.Lines[2].ShouldBe("┡━━━━━━━━━━╇━━━━━━━━━━┩");
                 console.Lines[3].ShouldBe("│ Cell     │ Cell     │");
                 console.Lines[4].ShouldBe("│ Cell     │ Cell     │");
-                console.Lines[5].ShouldBe("└──────────┴──────────┘");
+                console.Lines[5].ShouldBe("├──────────┼──────────┤");
+                console.Lines[6].ShouldBe("│ Footer 1 │ Footer 2 │");
+                console.Lines[7].ShouldBe("└──────────┴──────────┘");
             }
         }
 
@@ -729,13 +758,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("╔══════════╦══════════╗");
                 console.Lines[1].ShouldBe("║ Header 1 ║ Header 2 ║");
                 console.Lines[2].ShouldBe("╠══════════╬══════════╣");
                 console.Lines[3].ShouldBe("║ Cell     ║ Cell     ║");
                 console.Lines[4].ShouldBe("║ Cell     ║ Cell     ║");
-                console.Lines[5].ShouldBe("╚══════════╩══════════╝");
+                console.Lines[5].ShouldBe("╠══════════╬══════════╣");
+                console.Lines[6].ShouldBe("║ Footer 1 ║ Footer 2 ║");
+                console.Lines[7].ShouldBe("╚══════════╩══════════╝");
             }
         }
 
@@ -775,13 +806,15 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(8);
                 console.Lines[0].ShouldBe("╔══════════╤══════════╗");
                 console.Lines[1].ShouldBe("║ Header 1 │ Header 2 ║");
                 console.Lines[2].ShouldBe("╟──────────┼──────────╢");
                 console.Lines[3].ShouldBe("║ Cell     │ Cell     ║");
                 console.Lines[4].ShouldBe("║ Cell     │ Cell     ║");
-                console.Lines[5].ShouldBe("╚══════════╧══════════╝");
+                console.Lines[5].ShouldBe("╟──────────┼──────────╢");
+                console.Lines[6].ShouldBe("║ Footer 1 │ Footer 2 ║");
+                console.Lines[7].ShouldBe("╚══════════╧══════════╝");
             }
         }
 
@@ -821,13 +854,14 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(7);
                 console.Lines[0].ShouldBe("                       ");
                 console.Lines[1].ShouldBe("| Header 1 | Header 2 |");
                 console.Lines[2].ShouldBe("| -------- | -------- |");
                 console.Lines[3].ShouldBe("| Cell     | Cell     |");
                 console.Lines[4].ShouldBe("| Cell     | Cell     |");
-                console.Lines[5].ShouldBe("                       ");
+                console.Lines[5].ShouldBe("| Footer 1 | Footer 2 |");
+                console.Lines[6].ShouldBe("                       ");
             }
 
             [Fact]
@@ -841,13 +875,14 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(7);
                 console.Lines[0].ShouldBe("                       ");
                 console.Lines[1].ShouldBe("| Header 1 | Header 2 |");
                 console.Lines[2].ShouldBe("| -------- | :------- |");
                 console.Lines[3].ShouldBe("| Cell     | Cell     |");
                 console.Lines[4].ShouldBe("| Cell     | Cell     |");
-                console.Lines[5].ShouldBe("                       ");
+                console.Lines[5].ShouldBe("| Footer 1 | Footer 2 |");
+                console.Lines[6].ShouldBe("                       ");
             }
 
             [Fact]
@@ -861,13 +896,14 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(7);
                 console.Lines[0].ShouldBe("                       ");
                 console.Lines[1].ShouldBe("| Header 1 | Header 2 |");
                 console.Lines[2].ShouldBe("| -------- | :------: |");
                 console.Lines[3].ShouldBe("| Cell     |   Cell   |");
                 console.Lines[4].ShouldBe("| Cell     |   Cell   |");
-                console.Lines[5].ShouldBe("                       ");
+                console.Lines[5].ShouldBe("| Footer 1 | Footer 2 |");
+                console.Lines[6].ShouldBe("                       ");
             }
 
             [Fact]
@@ -881,13 +917,14 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(6);
+                console.Lines.Count.ShouldBe(7);
                 console.Lines[0].ShouldBe("                       ");
                 console.Lines[1].ShouldBe("| Header 1 | Header 2 |");
                 console.Lines[2].ShouldBe("| -------- | -------: |");
                 console.Lines[3].ShouldBe("| Cell     |     Cell |");
                 console.Lines[4].ShouldBe("| Cell     |     Cell |");
-                console.Lines[5].ShouldBe("                       ");
+                console.Lines[5].ShouldBe("| Footer 1 | Footer 2 |");
+                console.Lines[6].ShouldBe("                       ");
             }
         }
 
@@ -896,8 +933,8 @@ namespace Spectre.Console.Tests.Unit
             public static Table GetTable(Justify? header1 = null, Justify? header2 = null)
             {
                 var table = new Table();
-                table.AddColumn("Header 1", c => c.Alignment = header1);
-                table.AddColumn("Header 2", c => c.Alignment = header2);
+                table.AddColumn("Header 1", c => c.Alignment(header1).Footer("Footer 1"));
+                table.AddColumn("Header 2", c => c.Alignment(header2).Footer("Footer 2"));
                 table.AddRow("Cell", "Cell");
                 table.AddRow("Cell", "Cell");
                 return table;

@@ -17,7 +17,7 @@ namespace Spectre.Console
         private readonly List<List<IRenderable>> _rows;
 
         private static Style _defaultHeadingStyle = new Style(Color.Silver);
-        private static Style _defaultFootnoteStyle = new Style(Color.Grey);
+        private static Style _defaultCaptionStyle = new Style(Color.Grey);
 
         /// <summary>
         /// Gets the number of columns in the table.
@@ -44,6 +44,11 @@ namespace Spectre.Console
         public bool ShowHeaders { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether or not table footers should be shown.
+        /// </summary>
+        public bool ShowFooters { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not the table should
         /// fit the available space. If <c>false</c>, the table width will be
         /// auto calculated. Defaults to <c>false</c>.
@@ -58,12 +63,12 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the table title.
         /// </summary>
-        public TableTitle? Heading { get; set; }
+        public TableTitle? Title { get; set; }
 
         /// <summary>
         /// Gets or sets the table footnote.
         /// </summary>
-        public TableTitle? Footnote { get; set; }
+        public TableTitle? Caption { get; set; }
 
         /// <inheritdoc/>
         public Justify? Alignment { get; set; }
@@ -174,6 +179,7 @@ namespace Spectre.Console
             var showBorder = Border.Visible;
             var hideBorder = !Border.Visible;
             var hasRows = _rows.Count > 0;
+            var hasFooters = _columns.Any(c => c.Footer != null);
 
             if (Width != null)
             {
@@ -196,14 +202,19 @@ namespace Spectre.Console
             if (ShowHeaders)
             {
                 // Add columns to top of rows
-                rows.Add(new List<IRenderable>(_columns.Select(c => c.Text)));
+                rows.Add(new List<IRenderable>(_columns.Select(c => c.Header)));
             }
 
             // Add rows.
             rows.AddRange(_rows);
 
+            if (hasFooters)
+            {
+                rows.Add(new List<IRenderable>(_columns.Select(c => c.Footer ?? Text.Empty)));
+            }
+
             var result = new List<Segment>();
-            result.AddRange(RenderAnnotation(context, Heading, actualMaxWidth, tableWidth, _defaultHeadingStyle));
+            result.AddRange(RenderAnnotation(context, Title, actualMaxWidth, tableWidth, _defaultHeadingStyle));
 
             // Iterate all rows
             foreach (var (index, firstRow, lastRow, row) in rows.Enumerate())
@@ -228,6 +239,18 @@ namespace Spectre.Console
                     var separator = Aligner.Align(context, border.GetColumnRow(TablePart.Top, columnWidths, _columns), Alignment, actualMaxWidth);
                     result.Add(new Segment(separator, borderStyle));
                     result.Add(Segment.LineBreak);
+                }
+
+                // Show footer separator?
+                if (ShowFooters && lastRow && showBorder && hasFooters)
+                {
+                    var textBorder = border.GetColumnRow(TablePart.FooterSeparator, columnWidths, _columns);
+                    if (!string.IsNullOrEmpty(textBorder))
+                    {
+                        var separator = Aligner.Align(context, textBorder, Alignment, actualMaxWidth);
+                        result.Add(new Segment(separator, borderStyle));
+                        result.Add(Segment.LineBreak);
+                    }
                 }
 
                 // Make cells the same shape
@@ -310,7 +333,7 @@ namespace Spectre.Console
                 // Show header separator?
                 if (firstRow && showBorder && ShowHeaders && hasRows)
                 {
-                    var separator = Aligner.Align(context, border.GetColumnRow(TablePart.Separator, columnWidths, _columns), Alignment, actualMaxWidth);
+                    var separator = Aligner.Align(context, border.GetColumnRow(TablePart.HeaderSeparator, columnWidths, _columns), Alignment, actualMaxWidth);
                     result.Add(new Segment(separator, borderStyle));
                     result.Add(Segment.LineBreak);
                 }
@@ -324,7 +347,7 @@ namespace Spectre.Console
                 }
             }
 
-            result.AddRange(RenderAnnotation(context, Footnote, actualMaxWidth, tableWidth, _defaultFootnoteStyle));
+            result.AddRange(RenderAnnotation(context, Caption, actualMaxWidth, tableWidth, _defaultCaptionStyle));
 
             return result;
         }
@@ -437,16 +460,17 @@ namespace Spectre.Console
             var minWidths = new List<int>();
             var maxWidths = new List<int>();
 
-            // Include columns in measurement
-            var measure = column.Text.Measure(options, maxWidth);
-            minWidths.Add(measure.Min);
-            maxWidths.Add(measure.Max);
+            // Include columns (both header and footer) in measurement
+            var headerMeasure = column.Header.Measure(options, maxWidth);
+            var footerMeasure = column.Footer?.Measure(options, maxWidth) ?? headerMeasure;
+            minWidths.Add(Math.Min(headerMeasure.Min, footerMeasure.Min));
+            maxWidths.Add(Math.Max(headerMeasure.Max, footerMeasure.Max));
 
             foreach (var row in rows)
             {
-                measure = row.Measure(options, maxWidth);
-                minWidths.Add(measure.Min);
-                maxWidths.Add(measure.Max);
+                var rowMeasure = row.Measure(options, maxWidth);
+                minWidths.Add(rowMeasure.Min);
+                maxWidths.Add(rowMeasure.Max);
             }
 
             return (minWidths.Count > 0 ? minWidths.Max() : padding,

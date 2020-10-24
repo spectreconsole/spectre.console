@@ -13,7 +13,12 @@ namespace Spectre.Console.Rendering
         /// <summary>
         /// The separator between the header and the cells.
         /// </summary>
-        Separator,
+        HeaderSeparator,
+
+        /// <summary>
+        /// The separator between the footer and the cells.
+        /// </summary>
+        FooterSeparator,
 
         /// <summary>
         /// The bottom of a table.

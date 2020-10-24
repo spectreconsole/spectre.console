@@ -178,52 +178,45 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Sets the table heading.
+        /// Shows table footers.
         /// </summary>
         /// <param name="table">The table.</param>
-        /// <param name="text">The heading.</param>
-        /// <param name="style">The style.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Table Heading(this Table table, string text, Style? style = null)
+        public static Table ShowFooters(this Table table)
         {
             if (table is null)
             {
                 throw new ArgumentNullException(nameof(table));
             }
 
-            if (text is null)
-            {
-                throw new ArgumentNullException(nameof(text));
-            }
-
-            return Heading(table, new TableTitle(text, style));
-        }
-
-        /// <summary>
-        /// Sets the table heading.
-        /// </summary>
-        /// <param name="table">The table.</param>
-        /// <param name="heading">The heading.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Table Heading(this Table table, TableTitle heading)
-        {
-            if (table is null)
-            {
-                throw new ArgumentNullException(nameof(table));
-            }
-
-            table.Heading = heading;
+            table.ShowFooters = true;
             return table;
         }
 
         /// <summary>
-        /// Sets the table footnote.
+        /// Hides table footers.
         /// </summary>
         /// <param name="table">The table.</param>
-        /// <param name="text">The footnote.</param>
-        /// <param name="style">The style.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Table Footnote(this Table table, string text, Style? style = null)
+        public static Table HideFooters(this Table table)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            table.ShowFooters = false;
+            return table;
+        }
+
+        /// <summary>
+        /// Sets the table title.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <param name="text">The table title markup text.</param>
+        /// <param name="style">The table title style.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table Title(this Table table, string text, Style? style = null)
         {
             if (table is null)
             {
@@ -235,23 +228,62 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(text));
             }
 
-            return Footnote(table, new TableTitle(text, style));
+            return Title(table, new TableTitle(text, style));
         }
 
         /// <summary>
-        /// Sets the table footnote.
+        /// Sets the table title.
         /// </summary>
         /// <param name="table">The table.</param>
-        /// <param name="footnote">The footnote.</param>
+        /// <param name="title">The table title.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Table Footnote(this Table table, TableTitle footnote)
+        public static Table Title(this Table table, TableTitle title)
         {
             if (table is null)
             {
                 throw new ArgumentNullException(nameof(table));
             }
 
-            table.Footnote = footnote;
+            table.Title = title;
+            return table;
+        }
+
+        /// <summary>
+        /// Sets the table caption.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <param name="text">The caption markup text.</param>
+        /// <param name="style">The style.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table Caption(this Table table, string text, Style? style = null)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            if (text is null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            return Caption(table, new TableTitle(text, style));
+        }
+
+        /// <summary>
+        /// Sets the table caption.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <param name="caption">The caption.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table Caption(this Table table, TableTitle caption)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            table.Caption = caption;
             return table;
         }
     }
