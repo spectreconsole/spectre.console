@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Spectre.Console.Internal.Collections
 {
-    internal sealed class ListWithCallback<T> : IList<T>
+    internal sealed class ListWithCallback<T> : IList<T>, IReadOnlyList<T>
     {
         private readonly List<T> _list;
         private readonly Action _callback;

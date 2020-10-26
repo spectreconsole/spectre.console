@@ -63,10 +63,10 @@ namespace Spectre.Console.Rendering
             {
                 var padding = columns[columnIndex].Padding;
 
-                if (padding.Left > 0)
+                if (padding != null && padding.Value.Left > 0)
                 {
                     // Left padding
-                    builder.Append(" ".Repeat(padding.Left));
+                    builder.Append(" ".Repeat(padding.Value.Left));
                 }
 
                 var justification = columns[columnIndex].Alignment;
@@ -96,9 +96,9 @@ namespace Spectre.Console.Rendering
                 }
 
                 // Right padding
-                if (padding.Right > 0)
+                if (padding != null && padding.Value.Right > 0)
                 {
-                    builder.Append(" ".Repeat(padding.Right));
+                    builder.Append(" ".Repeat(padding.Value.Right));
                 }
 
                 if (!lastColumn)

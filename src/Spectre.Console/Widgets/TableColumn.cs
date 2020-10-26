@@ -28,7 +28,7 @@ namespace Spectre.Console
         /// Gets or sets the padding of the column.
         /// Vertical padding (top and bottom) is ignored.
         /// </summary>
-        public Padding Padding { get; set; }
+        public Padding? Padding { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether wrapping of

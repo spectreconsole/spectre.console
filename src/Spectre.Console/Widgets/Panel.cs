@@ -34,7 +34,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the padding.
         /// </summary>
-        public Padding Padding { get; set; } = new Padding(1, 0, 1, 0);
+        public Padding? Padding { get; set; } = new Padding(1, 0, 1, 0);
 
         /// <summary>
         /// Gets or sets the header.

@@ -53,7 +53,7 @@ namespace Spectre.Console.Tests.Unit
                 grid.AddRow("Foo");
 
                 // Then
-                grid.RowCount.ShouldBe(1);
+                grid.Rows.Count.ShouldBe(1);
             }
 
             [Fact]

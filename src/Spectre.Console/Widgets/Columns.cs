@@ -13,7 +13,7 @@ namespace Spectre.Console
         private readonly List<IRenderable> _items;
 
         /// <inheritdoc/>
-        public Padding Padding { get; set; } = new Padding(0, 0, 1, 0);
+        public Padding? Padding { get; set; } = new Padding(0, 0, 1, 0);
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the columns should
@@ -62,7 +62,7 @@ namespace Spectre.Console
         /// <inheritdoc/>
         protected override Measurement Measure(RenderContext context, int maxWidth)
         {
-            var maxPadding = Math.Max(Padding.Left, Padding.Right);
+            var maxPadding = Math.Max(Padding.GetLeftSafe(), Padding.GetRightSafe());
 
             var itemWidths = _items.Select(item => item.Measure(context, maxWidth).Max).ToArray();
             var columnCount = CalculateColumnCount(maxWidth, itemWidths, _items.Count, maxPadding);
@@ -90,7 +90,7 @@ namespace Spectre.Console
         /// <inheritdoc/>
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
-            var maxPadding = Math.Max(Padding.Left, Padding.Right);
+            var maxPadding = Math.Max(Padding.GetLeftSafe(), Padding.GetRightSafe());
 
             var itemWidths = _items.Select(item => item.Measure(context, maxWidth).Max).ToArray();
             var columnCount = CalculateColumnCount(maxWidth, itemWidths, _items.Count, maxPadding);

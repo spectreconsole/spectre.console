@@ -6,6 +6,21 @@ namespace Spectre.Console.Internal
 {
     internal static class EnumerableExtensions
     {
+        public static int GetCount<T>(this IEnumerable<T> source)
+        {
+            if (source is IList<T> list)
+            {
+                return list.Count;
+            }
+
+            if (source is T[] array)
+            {
+                return array.Length;
+            }
+
+            return source.Count();
+        }
+
         public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
         {
             foreach (var item in source)

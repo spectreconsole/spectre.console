@@ -69,8 +69,8 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(grid));
             }
 
-            var columns = new IRenderable[grid.ColumnCount];
-            Enumerable.Range(0, grid.ColumnCount).ForEach(index => columns[index] = Text.Empty);
+            var columns = new IRenderable[grid.Columns.Count];
+            Enumerable.Range(0, grid.Columns.Count).ForEach(index => columns[index] = Text.Empty);
             grid.AddRow(columns);
 
             return grid;

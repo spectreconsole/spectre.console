@@ -12,7 +12,7 @@ namespace Spectre.Console
         private readonly IRenderable _child;
 
         /// <inheritdoc/>
-        public Padding Padding { get; set; } = new Padding(1, 1, 1, 1);
+        public Padding? Padding { get; set; } = new Padding(1, 1, 1, 1);
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the padding should
@@ -35,7 +35,7 @@ namespace Spectre.Console
         /// <inheritdoc/>
         protected override Measurement Measure(RenderContext context, int maxWidth)
         {
-            var paddingWidth = Padding.GetWidth();
+            var paddingWidth = Padding?.GetWidth() ?? 0;
             var measurement = _child.Measure(context, maxWidth - paddingWidth);
 
             return new Measurement(
@@ -46,7 +46,7 @@ namespace Spectre.Console
         /// <inheritdoc/>
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
-            var paddingWidth = Padding.GetWidth();
+            var paddingWidth = Padding?.GetWidth() ?? 0;
             var childWidth = maxWidth - paddingWidth;
 
             if (!Expand)
@@ -59,7 +59,7 @@ namespace Spectre.Console
             var result = new List<Segment>();
 
             // Top padding
-            for (var i = 0; i < Padding.Top; i++)
+            for (var i = 0; i < Padding.GetTopSafe(); i++)
             {
                 result.Add(new Segment(new string(' ', width)));
                 result.Add(Segment.LineBreak);
@@ -69,22 +69,22 @@ namespace Spectre.Console
             foreach (var (_, _, _, line) in Segment.SplitLines(context, child).Enumerate())
             {
                 // Left padding
-                if (Padding.Left != 0)
+                if (Padding.GetLeftSafe() != 0)
                 {
-                    result.Add(new Segment(new string(' ', Padding.Left)));
+                    result.Add(new Segment(new string(' ', Padding.GetLeftSafe())));
                 }
 
                 result.AddRange(line);
 
                 // Right padding
-                if (Padding.Right != 0)
+                if (Padding.GetRightSafe() != 0)
                 {
-                    result.Add(new Segment(new string(' ', Padding.Right)));
+                    result.Add(new Segment(new string(' ', Padding.GetRightSafe())));
                 }
 
                 // Missing space on right side?
                 var lineWidth = line.CellCount(context);
-                var diff = width - lineWidth - Padding.Left - Padding.Right;
+                var diff = width - lineWidth - Padding.GetLeftSafe() - Padding.GetRightSafe();
                 if (diff > 0)
                 {
                     result.Add(new Segment(new string(' ', diff)));
@@ -94,7 +94,7 @@ namespace Spectre.Console
             }
 
             // Bottom padding
-            for (var i = 0; i < Padding.Bottom; i++)
+            for (var i = 0; i < Padding.GetBottomSafe(); i++)
             {
                 result.Add(new Segment(new string(' ', width)));
                 result.Add(Segment.LineBreak);

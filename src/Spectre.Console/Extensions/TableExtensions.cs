@@ -37,6 +37,22 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Adds a row to the table.
+        /// </summary>
+        /// <param name="table">The table to add the row to.</param>
+        /// <param name="columns">The row columns to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table AddRow(this Table table, params IRenderable[] columns)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            return table.AddRow(columns);
+        }
+
+        /// <summary>
         /// Adds an empty row to the table.
         /// </summary>
         /// <param name="table">The table to add the row to.</param>
@@ -48,8 +64,8 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(table));
             }
 
-            var columns = new IRenderable[table.ColumnCount];
-            Enumerable.Range(0, table.ColumnCount).ForEach(index => columns[index] = Text.Empty);
+            var columns = new IRenderable[table.Columns.Count];
+            Enumerable.Range(0, table.Columns.Count).ForEach(index => columns[index] = Text.Empty);
             table.AddRow(columns);
             return table;
         }

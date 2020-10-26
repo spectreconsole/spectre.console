@@ -8,6 +8,6 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the padding.
         /// </summary>
-        public Padding Padding { get; set; }
+        public Padding? Padding { get; set; }
     }
 }

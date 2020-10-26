@@ -1,4 +1,4 @@
-Title: Calendar
+﻿Title: Calendar
 Order: 4
 RedirectFrom: calendar
 ---
@@ -58,7 +58,7 @@ You can hide the calendar header.
 
 ```csharp
 var calendar = new Calendar(2020,10);
-calendar.ShowHeader = false;
+calendar.ShowHeader();
 AnsiConsole.Render(calendar);
 ```
 

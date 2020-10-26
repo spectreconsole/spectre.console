@@ -22,7 +22,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            return Padding(obj, new Padding(left, obj.Padding.Top, obj.Padding.Right, obj.Padding.Bottom));
+            return Padding(obj, new Padding(left, obj.Padding.GetTopSafe(), obj.Padding.GetRightSafe(), obj.Padding.GetBottomSafe()));
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            return Padding(obj, new Padding(obj.Padding.Left, top, obj.Padding.Right, obj.Padding.Bottom));
+            return Padding(obj, new Padding(obj.Padding.GetLeftSafe(), top, obj.Padding.GetRightSafe(), obj.Padding.GetBottomSafe()));
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            return Padding(obj, new Padding(obj.Padding.Left, obj.Padding.Top, right, obj.Padding.Bottom));
+            return Padding(obj, new Padding(obj.Padding.GetLeftSafe(), obj.Padding.GetTopSafe(), right, obj.Padding.GetBottomSafe()));
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            return Padding(obj, new Padding(obj.Padding.Left, obj.Padding.Top, obj.Padding.Right, bottom));
+            return Padding(obj, new Padding(obj.Padding.GetLeftSafe(), obj.Padding.GetTopSafe(), obj.Padding.GetRightSafe(), bottom));
         }
 
         /// <summary>
