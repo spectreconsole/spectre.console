@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Spectre.Console.Internal.Collections;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -7,32 +9,37 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable grid.
     /// </summary>
-    public sealed class Grid : Renderable, IExpandable, IAlignable
+    public sealed class Grid : JustInTimeRenderable, IExpandable, IAlignable
     {
-        private readonly Table _table;
+        private readonly ListWithCallback<GridColumn> _columns;
+        private readonly ListWithCallback<GridRow> _rows;
+
+        private bool _expand;
+        private Justify? _alignment;
+        private bool _padRightCell;
 
         /// <summary>
-        /// Gets the number of columns in the table.
+        /// Gets the grid columns.
         /// </summary>
-        public int ColumnCount => _table.ColumnCount;
+        public IReadOnlyList<GridColumn> Columns => _columns;
 
         /// <summary>
-        /// Gets the number of rows in the table.
+        /// Gets the grid rows.
         /// </summary>
-        public int RowCount => _table.RowCount;
+        public IReadOnlyList<GridRow> Rows => _rows;
 
         /// <inheritdoc/>
         public bool Expand
         {
-            get => _table.Expand;
-            set => _table.Expand = value;
+            get => _expand;
+            set => MarkAsDirty(() => _expand = value);
         }
 
         /// <inheritdoc/>
         public Justify? Alignment
         {
-            get => _table.Alignment;
-            set => _table.Alignment = value;
+            get => _alignment;
+            set => MarkAsDirty(() => _alignment = value);
         }
 
         /// <summary>
@@ -40,25 +47,10 @@ namespace Spectre.Console
         /// </summary>
         public Grid()
         {
-            _table = new Table
-            {
-                Border = TableBorder.None,
-                ShowHeaders = false,
-                IsGrid = true,
-                PadRightCell = false,
-            };
-        }
-
-        /// <inheritdoc/>
-        protected override Measurement Measure(RenderContext context, int maxWidth)
-        {
-            return ((IRenderable)_table).Measure(context, maxWidth);
-        }
-
-        /// <inheritdoc/>
-        protected override IEnumerable<Segment> Render(RenderContext context, int width)
-        {
-            return ((IRenderable)_table).Render(context, width);
+            _expand = false;
+            _alignment = null;
+            _columns = new ListWithCallback<GridColumn>(() => MarkAsDirty());
+            _rows = new ListWithCallback<GridRow>(() => MarkAsDirty());
         }
 
         /// <summary>
@@ -83,21 +75,15 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(column));
             }
 
-            if (_table.RowCount > 0)
+            if (_rows.Count > 0)
             {
                 throw new InvalidOperationException("Cannot add new columns to grid with existing rows.");
             }
 
             // Only pad the most right cell if we've explicitly set a padding.
-            _table.PadRightCell = column.HasExplicitPadding;
+            _padRightCell = column.HasExplicitPadding;
 
-            _table.AddColumn(new TableColumn(string.Empty)
-            {
-                Width = column.Width,
-                NoWrap = column.NoWrap,
-                Padding = column.Padding,
-                Alignment = column.Alignment,
-            });
+            _columns.Add(column);
 
             return this;
         }
@@ -114,13 +100,49 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(columns));
             }
 
-            if (columns.Length > _table.ColumnCount)
+            if (columns.Length > _columns.Count)
             {
                 throw new InvalidOperationException("The number of row columns are greater than the number of grid columns.");
             }
 
-            _table.AddRow(columns);
+            _rows.Add(new GridRow(columns));
             return this;
+        }
+
+        /// <inheritdoc/>
+        protected override bool HasDirtyChildren()
+        {
+            return _columns.Any(c => ((IHasDirtyState)c).IsDirty);
+        }
+
+        /// <inheritdoc/>
+        protected override IRenderable Build()
+        {
+            var table = new Table
+            {
+                Border = TableBorder.None,
+                ShowHeaders = false,
+                IsGrid = true,
+                PadRightCell = _padRightCell,
+            };
+
+            foreach (var column in _columns)
+            {
+                table.AddColumn(new TableColumn(string.Empty)
+                {
+                    Width = column.Width,
+                    NoWrap = column.NoWrap,
+                    Padding = column.Padding ?? new Padding(0, 0, 2, 0),
+                    Alignment = column.Alignment,
+                });
+            }
+
+            foreach (var row in _rows)
+            {
+                table.AddRow(row);
+            }
+
+            return table;
         }
     }
 }

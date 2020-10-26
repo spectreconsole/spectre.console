@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Spectre.Console;
 using Spectre.Console.Rendering;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
+using Spectre.Console.Widgets;
 
 namespace Spectre.Console
 {
@@ -14,20 +15,20 @@ namespace Spectre.Console
         private const int EdgeCount = 2;
 
         private readonly List<TableColumn> _columns;
-        private readonly List<List<IRenderable>> _rows;
+        private readonly List<TableRow> _rows;
 
         private static Style _defaultHeadingStyle = new Style(Color.Silver);
         private static Style _defaultCaptionStyle = new Style(Color.Grey);
 
         /// <summary>
-        /// Gets the number of columns in the table.
+        /// Gets the table columns.
         /// </summary>
-        public int ColumnCount => _columns.Count;
+        public IReadOnlyList<TableColumn> Columns => _columns;
 
         /// <summary>
-        /// Gets the number of rows in the table.
+        /// Gets the table rows.
         /// </summary>
-        public int RowCount => _rows.Count;
+        public IReadOnlyList<TableRow> Rows => _rows;
 
         /// <inheritdoc/>
         public TableBorder Border { get; set; } = TableBorder.Square;
@@ -87,7 +88,7 @@ namespace Spectre.Console
         public Table()
         {
             _columns = new List<TableColumn>();
-            _rows = new List<List<IRenderable>>();
+            _rows = new List<TableRow>();
         }
 
         /// <summary>
@@ -116,24 +117,25 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="columns">The row columns to add.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Table AddRow(params IRenderable[] columns)
+        public Table AddRow(IEnumerable<IRenderable> columns)
         {
             if (columns is null)
             {
                 throw new ArgumentNullException(nameof(columns));
             }
 
-            if (columns.Length > _columns.Count)
+            var rowColumnCount = columns.GetCount();
+            if (rowColumnCount > _columns.Count)
             {
                 throw new InvalidOperationException("The number of row columns are greater than the number of table columns.");
             }
 
-            _rows.Add(columns.ToList());
+            _rows.Add(new TableRow(columns));
 
             // Need to add missing columns?
-            if (columns.Length < _columns.Count)
+            if (rowColumnCount < _columns.Count)
             {
-                var diff = _columns.Count - columns.Length;
+                var diff = _columns.Count - rowColumnCount;
                 Enumerable.Range(0, diff).ForEach(_ => _rows.Last().Add(Text.Empty));
             }
 
@@ -198,11 +200,11 @@ namespace Spectre.Console
                 return new List<Segment>(new[] { new Segment("…", BorderStyle ?? Style.Plain) });
             }
 
-            var rows = new List<List<IRenderable>>();
+            var rows = new List<TableRow>();
             if (ShowHeaders)
             {
                 // Add columns to top of rows
-                rows.Add(new List<IRenderable>(_columns.Select(c => c.Header)));
+                rows.Add(new TableRow(new List<IRenderable>(_columns.Select(c => c.Header))));
             }
 
             // Add rows.
@@ -210,7 +212,7 @@ namespace Spectre.Console
 
             if (hasFooters)
             {
-                rows.Add(new List<IRenderable>(_columns.Select(c => c.Footer ?? Text.Empty)));
+                rows.Add(new TableRow(new List<IRenderable>(_columns.Select(c => c.Footer ?? Text.Empty))));
             }
 
             var result = new List<Segment>();
@@ -273,7 +275,7 @@ namespace Spectre.Console
                         // Pad column on left side.
                         if (showBorder || IsGrid)
                         {
-                            var leftPadding = _columns[cellIndex].Padding.Left;
+                            var leftPadding = _columns[cellIndex].Padding.GetLeftSafe();
                             if (leftPadding > 0)
                             {
                                 rowResult.Add(new Segment(new string(' ', leftPadding)));
@@ -293,7 +295,7 @@ namespace Spectre.Console
                         // Pad column on the right side
                         if (showBorder || (hideBorder && !lastCell) || (hideBorder && lastCell && IsGrid && PadRightCell))
                         {
-                            var rightPadding = _columns[cellIndex].Padding.Right;
+                            var rightPadding = _columns[cellIndex].Padding.GetRightSafe();
                             if (rightPadding > 0)
                             {
                                 rowResult.Add(new Segment(new string(' ', rightPadding)));
@@ -446,7 +448,7 @@ namespace Spectre.Console
 
         private (int Min, int Max) MeasureColumn(TableColumn column, RenderContext options, int maxWidth)
         {
-            var padding = column.Padding.GetWidth();
+            var padding = column.Padding?.GetWidth() ?? 0;
 
             // Predetermined width?
             if (column.Width != null)
@@ -482,11 +484,11 @@ namespace Spectre.Console
             var hideBorder = !Border.Visible;
             var separators = hideBorder ? 0 : _columns.Count - 1;
             var edges = hideBorder ? 0 : EdgeCount;
-            var padding = includePadding ? _columns.Select(x => x.Padding.GetWidth()).Sum() : 0;
+            var padding = includePadding ? _columns.Select(x => x.Padding?.GetWidth() ?? 0).Sum() : 0;
 
             if (!PadRightCell)
             {
-                padding -= _columns.Last().Padding.Right;
+                padding -= _columns.Last().Padding.GetRightSafe();
             }
 
             return separators + edges + padding;

@@ -96,5 +96,37 @@ namespace Spectre.Console
             calendar.HeaderStyle = style ?? Style.Plain;
             return calendar;
         }
+
+        /// <summary>
+        /// Shows the calendar header.
+        /// </summary>
+        /// <param name="calendar">The calendar.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Calendar ShowHeader(this Calendar calendar)
+        {
+            if (calendar is null)
+            {
+                throw new ArgumentNullException(nameof(calendar));
+            }
+
+            calendar.ShowHeader = true;
+            return calendar;
+        }
+
+        /// <summary>
+        /// Hides the calendar header.
+        /// </summary>
+        /// <param name="calendar">The calendar.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Calendar HideHeader(this Calendar calendar)
+        {
+            if (calendar is null)
+            {
+                throw new ArgumentNullException(nameof(calendar));
+            }
+
+            calendar.ShowHeader = false;
+            return calendar;
+        }
     }
 }

@@ -91,33 +91,33 @@ table.Width(50);
 ## Alignment
 
 ```csharp
-column.Alignment(Justify.Right);
-column.LeftAligned();
-column.Centered();
-column.RightAligned();
+table.Columns[0].Alignment(Justify.Right);
+table.Columns[0].LeftAligned();
+table.Columns[0].Centered();
+table.Columns[0].RightAligned();
 ```
 
 ## Padding
 
 ```csharp
 // Set left and right padding
-column.Padding(left: 3, right: 5);
+table.Columns[0].Padding(left: 3, right: 5);
 
-// Set padding individually.
-column.PadLeft(3);
-column.PadRight(5);
+// Set padding individually
+table.Columns[0].PadLeft(3);
+table.Columns[0].PadRight(5);
 ```
 
 ## Disable column wrapping
 
 ```csharp
 // Disable column wrapping
-column.NoWrap();
+table.Columns[0].NoWrap();
 ```
 
 ## Set column width
 
 ```csharp
-// Set the column width (no fluent extension method for this yet)
-column.Width = 15;
+// Set the column width
+table.Columns[0].Width(15);
 ```

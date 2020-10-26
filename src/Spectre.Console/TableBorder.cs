@@ -55,7 +55,7 @@ namespace Spectre.Console
             foreach (var (columnIndex, _, lastColumn, columnWidth) in widths.Enumerate())
             {
                 var padding = columns[columnIndex].Padding;
-                var centerWidth = padding.Left + columnWidth + padding.Right;
+                var centerWidth = padding.GetLeftSafe() + columnWidth + padding.GetRightSafe();
                 builder.Append(center.Repeat(centerWidth));
 
                 if (!lastColumn)

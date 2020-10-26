@@ -10,5 +10,10 @@ namespace Spectre.Console
         /// or not wrapping should be prevented.
         /// </summary>
         bool NoWrap { get; set; }
+
+        /// <summary>
+        /// Gets or sets the width of the column.
+        /// </summary>
+        int? Width { get; set; }
     }
 }

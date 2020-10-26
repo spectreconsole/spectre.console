@@ -98,7 +98,7 @@ namespace Spectre.Console.Tests.Unit
                 table.AddRow("Foo");
 
                 // Then
-                table.RowCount.ShouldBe(1);
+                table.Rows.Count.ShouldBe(1);
             }
 
             [Fact]

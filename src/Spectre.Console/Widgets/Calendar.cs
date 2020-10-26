@@ -11,7 +11,7 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable calendar.
     /// </summary>
-    public sealed class Calendar : Renderable, IHasCulture, IHasTableBorder, IAlignable
+    public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorder, IAlignable
     {
         private const int NumberOfWeekDays = 7;
         private const int ExpectedRowCount = 6;
@@ -21,11 +21,9 @@ namespace Spectre.Console
         private int _year;
         private int _month;
         private int _day;
-        private IRenderable? _table;
         private TableBorder _border;
         private bool _useSafeBorder;
         private Style? _borderStyle;
-        private bool _dirty;
         private CultureInfo _culture;
         private Style _highlightStyle;
         private bool _showHeader;
@@ -158,43 +156,17 @@ namespace Spectre.Console
             _year = year;
             _month = month;
             _day = day;
-            _table = null;
             _border = TableBorder.Square;
             _useSafeBorder = true;
             _borderStyle = null;
-            _dirty = true;
             _culture = CultureInfo.InvariantCulture;
             _highlightStyle = new Style(foreground: Color.Blue);
             _showHeader = true;
-            _calendarEvents = new ListWithCallback<CalendarEvent>(() => _dirty = true);
+            _calendarEvents = new ListWithCallback<CalendarEvent>(() => MarkAsDirty());
         }
 
         /// <inheritdoc/>
-        protected override Measurement Measure(RenderContext context, int maxWidth)
-        {
-            var table = GetTable();
-            return table.Measure(context, maxWidth);
-        }
-
-        /// <inheritdoc/>
-        protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
-        {
-            return GetTable().Render(context, maxWidth);
-        }
-
-        private IRenderable GetTable()
-        {
-            // Table needs to be built?
-            if (_dirty || _table == null)
-            {
-                _table = BuildTable();
-                _dirty = false;
-            }
-
-            return _table;
-        }
-
-        private IRenderable BuildTable()
+        protected override IRenderable Build()
         {
             var culture = Culture ?? CultureInfo.InvariantCulture;
 
@@ -264,9 +236,9 @@ namespace Spectre.Console
             }
 
             // We want all calendars to have the same height.
-            if (table.RowCount < ExpectedRowCount)
+            if (table.Rows.Count < ExpectedRowCount)
             {
-                var diff = Math.Max(0, ExpectedRowCount - table.RowCount);
+                var diff = Math.Max(0, ExpectedRowCount - table.Rows.Count);
                 for (var i = 0; i < diff; i++)
                 {
                     table.AddEmptyRow();
@@ -274,12 +246,6 @@ namespace Spectre.Console
             }
 
             return table;
-        }
-
-        private void MarkAsDirty(Action action)
-        {
-            action();
-            _dirty = true;
         }
 
         private DayOfWeek[] GetWeekdays()

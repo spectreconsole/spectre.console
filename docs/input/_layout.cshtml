@@ -130,7 +130,7 @@
                                             <div class="sidebar-nav-item @(Document.IdEquals(root) ? "active" : null)">
                                                     @if(root.ShowLink())
                                                     {
-                                                        @Html.DocumentLink(root)
+                                                       @Html.DocumentLink(root)
                                                     }
                                                     else
                                                     {
@@ -140,6 +140,11 @@
 
                                             @foreach (IDocument document in OutputPages.GetChildrenOf(root).OnlyVisible())
                                             {
+                                                if(string.IsNullOrWhiteSpace(document.GetTitle()))
+                                                {
+                                                    continue;
+                                                }
+
                                                 DocumentList<IDocument> documentChildren = OutputPages.GetChildrenOf(document);
                                                 <div class="sidebar-nav-item @(Document.IdEquals(document) ? "active" : null) @(documentChildren.Any() ? "has-children" : null)">
                                                     @if(document.ShowLink())
