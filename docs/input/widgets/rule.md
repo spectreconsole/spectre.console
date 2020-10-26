@@ -1,4 +1,4 @@
-﻿Title: Rule
+Title: Rule
 Order: 5
 RedirectFrom: rule
 ---
@@ -23,8 +23,9 @@ You can set the rule title markup text.
 ```csharp
 var rule = new Rule("[red]Hello[/]");
 AnsiConsole.Render(rule);
+```
 
-// output
+```text
 ───────────────────────────────── Hello ─────────────────────────────────
 ```
 
@@ -36,36 +37,36 @@ You can set the rule's title alignment.
 var rule = new Rule("[red]Hello[/]");
 rule.Alignment = Justify.Left;
 AnsiConsole.Render(rule);
+```
 
-//output
+```text
 ── Hello ────────────────────────────────────────────────────────────────
 ```
 
-You can also specify it with a method
+You can also specify it via an extension method:
 
 ```csharp
 var rule = new Rule("[red]Hello[/]");
 rule.LeftAligned();
 AnsiConsole.Render(rule);
+```
 
-//output
+```text
 ── Hello ────────────────────────────────────────────────────────────────
 ```
 
 
-## Style
-
-You can set the rule style.
+## Styling
 
 ```csharp
 var rule = new Rule("[red]Hello[/]");
 rule.Style = Style.Parse("red dim");
 AnsiConsole.Render(rule);
 ```
-You can also specify it with a method
+You can also specify it via an extension method
 
 ```csharp
 var rule = new Rule("[red]Hello[/]");
-rule.SetStyle("red dim");
+rule.RuleStyle("red dim");
 AnsiConsole.Render(rule);
 ```

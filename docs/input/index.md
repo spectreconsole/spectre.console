@@ -1,4 +1,4 @@
-﻿Title: Welcome
+Title: Welcome
 Order: 0
 ---
 
