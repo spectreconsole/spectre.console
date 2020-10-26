@@ -100,12 +100,16 @@ table.Columns[0].RightAligned();
 ## Padding
 
 ```csharp
-// Set left and right padding
-table.Columns[0].Padding(left: 3, right: 5);
-
 // Set padding individually
 table.Columns[0].PadLeft(3);
 table.Columns[0].PadRight(5);
+
+// Or chained together
+table.Columns[0].PadLeft(3).PadRight(5);
+
+// Or with the shorthand method if the left and right 
+// padding are identical. Vertical padding is ignored.
+table.Columns[0].Padding(4, 0);
 ```
 
 ## Disable column wrapping

@@ -80,7 +80,7 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Sets the left and right padding.
+        /// Sets the left, top, right and bottom padding.
         /// </summary>
         /// <typeparam name="T">An object implementing <see cref="IPaddable"/>.</typeparam>
         /// <param name="obj">The paddable object instance.</param>
@@ -93,6 +93,20 @@ namespace Spectre.Console
             where T : class, IPaddable
         {
             return Padding(obj, new Padding(left, top, right, bottom));
+        }
+
+        /// <summary>
+        /// Sets the horizontal and vertical padding.
+        /// </summary>
+        /// <typeparam name="T">An object implementing <see cref="IPaddable"/>.</typeparam>
+        /// <param name="obj">The paddable object instance.</param>
+        /// <param name="horizontal">The left and right padding.</param>
+        /// <param name="vertical">The top and bottom padding.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static T Padding<T>(this T obj, int horizontal, int vertical)
+            where T : class, IPaddable
+        {
+            return Padding(obj, new Padding(horizontal, vertical));
         }
 
         /// <summary>
