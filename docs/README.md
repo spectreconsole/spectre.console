@@ -10,7 +10,7 @@ The documentation site uses [Statiq](https://statiq.dev), a static site generato
 > dotnet run preview --virtual-dir "spectre.console"
 ```
 
-After the build is complete, you can navigate to [http://localhost:5080/spectre.consle](http://localhost:5080/spectre.console).
+After the build is complete, you can navigate to [http://localhost:5080/spectre.console](http://localhost:5080/spectre.console).
 
 **Note that the site runs under a virtual directory.**
 

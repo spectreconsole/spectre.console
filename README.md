@@ -49,7 +49,7 @@ regular `System.Console` API.
 If the current terminal does not support ANSI escape sequences, 
 `Spectre.Console` will fallback to using the `System.Console` API.
 
-_NOTE: This library is currently under development and API's 
+_NOTE: This library is currently under development and APIs 
 might change or get removed at any point up until a 1.0 release._
 
 ### Using the static API

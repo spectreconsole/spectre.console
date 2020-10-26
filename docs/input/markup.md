@@ -6,7 +6,7 @@ The class `Markup` allows you to output rich text to the console.
 
 # Syntax
 
-Console markup uses a syntax inspired by bbcode. If you write the style (see Styles) 
+Console markup uses a syntax inspired by bbcode. If you write the style (see [Styles](xref:styles)) 
 in square brackets, e.g. `[bold red]`, that style will apply until it is closed with a `[/]`.
 
 ```csharp
@@ -21,6 +21,7 @@ rendering of `IRenderable` also have overloads for rendering rich text.
 var table = new Table();
 table.AddColumn(new TableColumn(new Markup("[yellow]Foo[/]")));
 table.AddColumn(new TableColumn("[blue]Bar[/]"));
+AnsiConsole.Render(table);
 ```
 
 # Convenience methods
@@ -54,9 +55,9 @@ AnsiConsole.Markup("[red]{0}[/]", "Hello [World]".EscapeMarkup());
 You can set the background color in markup by prefixing the color with
 `on`.
 
-```
-[bold yellow on blue]Hello[/]
-[default on blue]World[/]
+```csharp
+AnsiConsole.Markup("[bold yellow on blue]Hello[/]");
+AnsiConsole.Markup("[default on blue]World[/]");
 ```
 
 # Rendering emojis

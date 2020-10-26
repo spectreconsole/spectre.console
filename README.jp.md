@@ -381,8 +381,8 @@ AnsiConsole.WriteException(ex);
 
 ```csharp
 AnsiConsole.WriteException(ex, 
-    ExceptionFormat.ShortenPaths | ExceptionFormat.ShortenTypes |
-    ExceptionFormat.ShortenMethods | ExceptionFormat.ShowLinks);
+    ExceptionFormats.ShortenPaths | ExceptionFormats.ShortenTypes |
+    ExceptionFormats.ShortenMethods | ExceptionFormats.ShowLinks);
 ```
 
 ![exception](docs/input/assets/images/compact_exception.png)

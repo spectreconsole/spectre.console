@@ -19,8 +19,8 @@ the hyperlinks are clickable is up to the terminal.
 
 ```csharp
 AnsiConsole.WriteException(ex, 
-    ExceptionFormat.ShortenPaths | ExceptionFormat.ShortenTypes |
-    ExceptionFormat.ShortenMethods | ExceptionFormat.ShowLinks);
+    ExceptionFormats.ShortenPaths | ExceptionFormats.ShortenTypes |
+    ExceptionFormats.ShortenMethods | ExceptionFormats.ShowLinks);
 ```
 
 <img src="assets/images/compact_exception.png" style="max-width: 100%;">
