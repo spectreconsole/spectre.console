@@ -77,7 +77,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddColumn("Bar", c => c.PadLeft(0).PadRight(0));
             table.AddRow("Baz", "Qux");
             table.AddRow(new Text("Corgi"), new Padder(new Panel("Waldo"))
-                .Padding(2, 1, 2, 1));
+                .Padding(2, 1));
 
             // When
             console.Render(new Padder(table)
