@@ -1,4 +1,4 @@
-﻿Title: Calendar
+Title: Calendar
 Order: 4
 RedirectFrom: calendar
 ---
@@ -12,7 +12,9 @@ To render a calendar, create a `Calendar` instance with a target date.
 ```csharp
 var calendar = new Calendar(2020,10);
 AnsiConsole.Render(calendar);
+```
 
+```text
                2020 October
 ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┐
 │ Sun │ Mon │ Tue │ Wed │ Thu │ Fri │ Sat │
@@ -32,20 +34,22 @@ You can set the calendar's culture to show localized weekdays.
 
 ```csharp
 var calendar = new Calendar(2020,10);
-calendar.SetCulture("ja-JP");
+calendar.Culture("ja-JP");
 AnsiConsole.Render(calendar);
+```
 
-             2020年10月
-┌────┬────┬────┬────┬────┬────┬────┐
-│ 日 │ 月 │ 火 │ 水 │ 木 │ 金 │ 土 │
-├────┼────┼────┼────┼────┼────┼────┤
-│    │    │    │    │ 1  │ 2  │ 3  │
-│ 4  │ 5  │ 6  │ 7  │ 8  │ 9  │ 10 │
-│ 11 │ 12 │ 13 │ 14 │ 15 │ 16 │ 17 │
-│ 18 │ 19 │ 20 │ 21 │ 22 │ 23 │ 24 │
-│ 25 │ 26 │ 27 │ 28 │ 29 │ 30 │ 31 │
-│    │    │    │    │    │    │    │
-└────┴────┴────┴────┴────┴────┴────┘
+```text
+               Oktober 2020
+┌─────┬─────┬─────┬─────┬─────┬─────┬─────┐
+│ Mån │ Tis │ Ons │ Tor │ Fre │ Lör │ Sön │
+├─────┼─────┼─────┼─────┼─────┼─────┼─────┤
+│     │     │     │ 1   │ 2   │ 3   │ 4   │
+│ 5   │ 6   │ 7   │ 8   │ 9   │ 10  │ 11* │
+│ 12  │ 13  │ 14  │ 15  │ 16  │ 17  │ 18  │
+│ 19  │ 20  │ 21  │ 22  │ 23  │ 24  │ 25  │
+│ 26  │ 27  │ 28  │ 29  │ 30  │ 31  │     │
+│     │     │     │     │     │     │     │
+└─────┴─────┴─────┴─────┴─────┴─────┴─────┘
 ```
 
 ## Header
@@ -56,7 +60,9 @@ You can hide the calendar header.
 var calendar = new Calendar(2020,10);
 calendar.ShowHeader = false;
 AnsiConsole.Render(calendar);
+```
 
+```text
 ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┐
 │ Sun │ Mon │ Tue │ Wed │ Thu │ Fri │ Sat │
 ├─────┼─────┼─────┼─────┼─────┼─────┼─────┤
@@ -72,13 +78,13 @@ AnsiConsole.Render(calendar);
 You can set the header style of the calendar.
 
 ```csharp
-var calendar = new Calendar(2020,10);
-calendar.SetHeaderStyle(Style.Parse("blue bold"));
+var calendar = new Calendar(2020, 10);
+calendar.HeaderStyle(Style.Parse("blue bold"));
 AnsiConsole.Render(calendar);
 ```
 
 
-## Calendar Event
+## Calendar Events
 
 You can add an event to the calendar.
 If a date has an event associated with it, the date gets highlighted in the calendar.
@@ -87,7 +93,9 @@ If a date has an event associated with it, the date gets highlighted in the cale
 var calendar = new Calendar(2020,10);
 calendar.AddCalendarEvent(2020, 10, 11);
 AnsiConsole.Render(calendar);
+```
 
+```text
                2020 October
 ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┐
 │ Sun │ Mon │ Tue │ Wed │ Thu │ Fri │ Sat │
@@ -106,9 +114,8 @@ AnsiConsole.Render(calendar);
 You can set the highlight style for a calendar event via `SetHighlightStyle`.
 
 ```csharp
-var calendar = new Calendar(2020,10);
+var calendar = new Calendar(2020, 10);
 calendar.AddCalendarEvent(2020, 10, 11);
-calendar.SetHighlightStyle(Style.Parse("yellow bold"));
+calendar.HighlightStyle(Style.Parse("yellow bold"));
 AnsiConsole.Render(calendar);
-
 ```

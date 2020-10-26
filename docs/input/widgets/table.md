@@ -51,10 +51,10 @@ For a list of borders, see the [Borders](xref:borders) appendix section.
 
 ```csharp
 // Sets the border
-table.SetBorder(Border.None);
-table.SetBorder(Border.Ascii);
-table.SetBorder(Border.Square);
-table.SetBorder(Border.Rounded);
+table.Border(TableBorder.None);
+table.Border(TableBorder.Ascii);
+table.Border(TableBorder.Square);
+table.Border(TableBorder.Rounded);
 ```
 
 ## Expand / Collapse
@@ -79,7 +79,7 @@ table.HideHeaders();
 
 ```csharp
 // Sets the table width to 50 cells
-table.SetWidth(50);
+table.Width(50);
 ```
 
 # Column appearance
@@ -91,15 +91,17 @@ table.SetWidth(50);
 ## Alignment
 
 ```csharp
-// Set the alignment explicitly
-column.SetAlignment(Justify.Right);
+column.Alignment(Justify.Right);
+column.LeftAligned();
+column.Centered();
+column.RightAligned();
 ```
 
 ## Padding
 
 ```csharp
 // Set left and right padding
-column.SetPadding(left: 3, right: 5);
+column.Padding(left: 3, right: 5);
 
 // Set padding individually.
 column.PadLeft(3);

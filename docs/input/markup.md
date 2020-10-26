@@ -43,10 +43,10 @@ AnsiConsole.Markup("[[Hello]] "); // [Hello]
 AnsiConsole.Markup("[red][[World]][/]"); // [World]
 ```
 
-You can also use the `SafeMarkup` extension method.
+You can also use the `EscapeMarkup` extension method.
 
 ```csharp
-AnsiConsole.Markup("[red]{0}[/]", "Hello [World]".SafeMarkup());
+AnsiConsole.Markup("[red]{0}[/]", "Hello [World]".EscapeMarkup());
 ```
 
 # Setting background color
@@ -64,7 +64,7 @@ You can set the background color in markup by prefixing the color with
 To output an emoji as part of markup, you can use emoji shortcodes.
 
 ```csharp
-AnsiConsole.MarkupLine("Hello :globe_showing_europe_africa:!");
+AnsiConsole.Markup("Hello :globe_showing_europe_africa:!");
 ```
 
 For a list of emoji, see the [Emojis](xref:emojis) appendix section.
