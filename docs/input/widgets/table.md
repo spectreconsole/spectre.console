@@ -82,6 +82,15 @@ table.HideHeaders();
 table.Width(50);
 ```
 
+## Alignment
+
+```csharp
+table.Alignment(Justify.Right);
+table.RightAligned();
+table.Centered();
+table.LeftAligned();
+```
+
 # Column appearance
 
 <!------------------------->
