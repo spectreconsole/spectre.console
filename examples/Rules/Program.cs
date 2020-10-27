@@ -14,26 +14,26 @@ namespace EmojiExample
 
             // Left aligned title
             WrapInPanel(
-                new Rule("[white]Left aligned[/]")
+                new Rule("[blue]Left aligned[/]")
                     .RuleStyle(Style.Parse("red"))
                     .LeftAligned());
 
             // Centered title
             WrapInPanel(
-                new Rule("[silver]Centered[/]")
+                new Rule("[green]Centered[/]")
                     .RuleStyle(Style.Parse("green"))
                     .Centered());
 
             // Right aligned title
             WrapInPanel(
-                new Rule("[grey]Right aligned[/]")
+                new Rule("[red]Right aligned[/]")
                     .RuleStyle(Style.Parse("blue"))
                     .RightAligned());
         }
 
         private static void WrapInPanel(Rule rule)
         {
-            AnsiConsole.Render(new Panel(rule).Expand().BorderStyle(Style.Parse("grey")));
+            AnsiConsole.Render(rule);
             AnsiConsole.WriteLine();
         }
     }
