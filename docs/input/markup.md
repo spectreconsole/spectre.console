@@ -49,7 +49,11 @@ You can also use the `EscapeMarkup` extension method.
 ```csharp
 AnsiConsole.Markup("[red]{0}[/]", "Hello [World]".EscapeMarkup());
 ```
+You can also use the `Markup.Escape` method.
 
+```csharp
+AnsiConsole.Markup("[red]{0}[/]", Markup.Escape("Hello [World]"));
+```
 # Setting background color
 
 You can set the background color in markup by prefixing the color with
