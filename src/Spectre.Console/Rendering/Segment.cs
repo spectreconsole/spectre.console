@@ -32,6 +32,12 @@ namespace Spectre.Console.Rendering
         public bool IsWhiteSpace { get; }
 
         /// <summary>
+        /// Gets a value indicating whether or not his is a
+        /// control code such as cursor movement.
+        /// </summary>
+        public bool IsControlCode { get; }
+
+        /// <summary>
         /// Gets the segment style.
         /// </summary>
         public Style Style { get; }
@@ -39,12 +45,12 @@ namespace Spectre.Console.Rendering
         /// <summary>
         /// Gets a segment representing a line break.
         /// </summary>
-        public static Segment LineBreak { get; } = new Segment(Environment.NewLine, Style.Plain, true);
+        public static Segment LineBreak { get; } = new Segment(Environment.NewLine, Style.Plain, true, false);
 
         /// <summary>
         /// Gets an empty segment.
         /// </summary>
-        public static Segment Empty { get; } = new Segment(string.Empty, Style.Plain, false);
+        public static Segment Empty { get; } = new Segment(string.Empty, Style.Plain, false, false);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Segment"/> class.
@@ -61,16 +67,27 @@ namespace Spectre.Console.Rendering
         /// <param name="text">The segment text.</param>
         /// <param name="style">The segment style.</param>
         public Segment(string text, Style style)
-            : this(text, style, false)
+            : this(text, style, false, false)
         {
         }
 
-        private Segment(string text, Style style, bool lineBreak)
+        private Segment(string text, Style style, bool lineBreak, bool control)
         {
             Text = text?.NormalizeLineEndings() ?? throw new ArgumentNullException(nameof(text));
             Style = style ?? throw new ArgumentNullException(nameof(style));
             IsLineBreak = lineBreak;
             IsWhiteSpace = string.IsNullOrWhiteSpace(text);
+            IsControlCode = control;
+        }
+
+        /// <summary>
+        /// Creates a control segment.
+        /// </summary>
+        /// <param name="control">The control code.</param>
+        /// <returns>A segment representing a control code.</returns>
+        public static Segment Control(string control)
+        {
+            return new Segment(control, Style.Plain, false, true);
         }
 
         /// <summary>

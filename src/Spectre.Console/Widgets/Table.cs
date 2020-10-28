@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
-using Spectre.Console.Widgets;
 
 namespace Spectre.Console
 {

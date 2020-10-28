@@ -19,6 +19,11 @@ namespace Spectre.Console
         Encoding Encoding { get; }
 
         /// <summary>
+        /// Gets the console cursor.
+        /// </summary>
+        IAnsiConsoleCursor Cursor { get; }
+
+        /// <summary>
         /// Gets the buffer width of the console.
         /// </summary>
         int Width { get; }
@@ -27,6 +32,12 @@ namespace Spectre.Console
         /// Gets the buffer height of the console.
         /// </summary>
         int Height { get; }
+
+        /// <summary>
+        /// Clears the console.
+        /// </summary>
+        /// <param name="home">If the cursor should be moved to the home position.</param>
+        void Clear(bool home);
 
         /// <summary>
         /// Writes a string followed by a line terminator to the console.

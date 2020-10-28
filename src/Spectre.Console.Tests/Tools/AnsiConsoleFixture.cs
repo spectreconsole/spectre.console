@@ -17,6 +17,7 @@ namespace Spectre.Console.Tests
         public Encoding Encoding => _console.Encoding;
         public int Width { get; }
         public int Height => _console.Height;
+        public IAnsiConsoleCursor Cursor => _console.Cursor;
 
         public TestableAnsiConsole(ColorSystem system, AnsiSupport ansi = AnsiSupport.Yes, int width = 80)
         {
@@ -35,6 +36,11 @@ namespace Spectre.Console.Tests
         public void Dispose()
         {
             _writer?.Dispose();
+        }
+
+        public void Clear(bool home)
+        {
+            _console.Clear(home);
         }
 
         public void Write(Segment segment)

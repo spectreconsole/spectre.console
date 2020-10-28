@@ -20,6 +20,9 @@ namespace Spectre.Console
         public Encoding Encoding => _console.Encoding;
 
         /// <inheritdoc/>
+        public IAnsiConsoleCursor Cursor => _console.Cursor;
+
+        /// <inheritdoc/>
         public int Width => _console.Width;
 
         /// <inheritdoc/>
@@ -42,9 +45,25 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
+        public void Clear(bool home)
+        {
+            _console.Clear(home);
+        }
+
+        /// <inheritdoc/>
         public void Write(Segment segment)
         {
-            _recorded.Add(segment);
+            if (segment is null)
+            {
+                throw new ArgumentNullException(nameof(segment));
+            }
+
+            // Don't record control codes.
+            if (!segment.IsControlCode)
+            {
+                _recorded.Add(segment);
+            }
+
             _console.Write(segment);
         }
 

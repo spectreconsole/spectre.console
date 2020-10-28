@@ -11,6 +11,7 @@ namespace Spectre.Console.Tests
     {
         public Capabilities Capabilities { get; }
         public Encoding Encoding { get; }
+        public IAnsiConsoleCursor Cursor => throw new NotSupportedException();
 
         public int Width { get; }
         public int Height { get; }
@@ -40,6 +41,10 @@ namespace Spectre.Console.Tests
         public void Dispose()
         {
             Writer.Dispose();
+        }
+
+        public void Clear(bool home)
+        {
         }
 
         public void Write(Segment segment)
