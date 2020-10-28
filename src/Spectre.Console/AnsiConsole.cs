@@ -28,6 +28,11 @@ namespace Spectre.Console
         public static IAnsiConsole Console => _recorder ?? _console.Value;
 
         /// <summary>
+        /// Gets the <see cref="IAnsiConsoleCursor"/>.
+        /// </summary>
+        public static IAnsiConsoleCursor Cursor => _recorder?.Cursor ?? _console.Value.Cursor;
+
+        /// <summary>
         /// Gets the console's capabilities.
         /// </summary>
         public static Capabilities Capabilities => Console.Capabilities;
@@ -56,7 +61,7 @@ namespace Spectre.Console
         /// <returns>An <see cref="IAnsiConsole"/> instance.</returns>
         public static IAnsiConsole Create(AnsiConsoleSettings settings)
         {
-            return AnsiConsoleBuilder.Build(settings);
+            return BackendBuilder.Build(settings);
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Spectre.Console.Rendering;
 
-namespace Spectre.Console.Widgets
+namespace Spectre.Console
 {
     /// <summary>
     /// Represents a table row.

@@ -14,6 +14,7 @@ namespace Spectre.Console.Tests.Tools
 
         public Capabilities Capabilities => _console.Capabilities;
         public Encoding Encoding => _console.Encoding;
+        public IAnsiConsoleCursor Cursor => _console.Cursor;
         public int Width { get; }
         public int Height => _console.Height;
 
@@ -34,6 +35,11 @@ namespace Spectre.Console.Tests.Tools
         public void Dispose()
         {
             _writer?.Dispose();
+        }
+
+        public void Clear(bool home)
+        {
+            _console.Clear(home);
         }
 
         public void Write(Segment segment)

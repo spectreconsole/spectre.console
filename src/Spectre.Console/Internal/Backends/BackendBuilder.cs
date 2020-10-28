@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Spectre.Console.Internal
 {
-    internal static class AnsiConsoleBuilder
+    internal static class BackendBuilder
     {
         public static IAnsiConsole Build(AnsiConsoleSettings settings)
         {
@@ -60,11 +60,11 @@ namespace Spectre.Console.Internal
             // Create the renderer
             if (supportsAnsi)
             {
-                return new AnsiConsoleRenderer(buffer, capabilities, settings.LinkIdentityGenerator);
+                return new AnsiBackend(buffer, capabilities, settings.LinkIdentityGenerator);
             }
             else
             {
-                return new FallbackConsoleRenderer(buffer, capabilities);
+                return new FallbackBackend(buffer, capabilities);
             }
         }
     }

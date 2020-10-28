@@ -5,13 +5,15 @@ using Spectre.Console.Rendering;
 
 namespace Spectre.Console.Internal
 {
-    internal sealed class AnsiConsoleRenderer : IAnsiConsole
+    internal sealed class AnsiBackend : IAnsiConsole
     {
         private readonly TextWriter _out;
         private readonly AnsiBuilder _ansiBuilder;
+        private readonly AnsiCursor _cursor;
 
         public Capabilities Capabilities { get; }
         public Encoding Encoding { get; }
+        public IAnsiConsoleCursor Cursor => _cursor;
 
         public int Width
         {
@@ -39,7 +41,7 @@ namespace Spectre.Console.Internal
             }
         }
 
-        public AnsiConsoleRenderer(TextWriter @out, Capabilities capabilities, ILinkIdentityGenerator? linkHasher)
+        public AnsiBackend(TextWriter @out, Capabilities capabilities, ILinkIdentityGenerator? linkHasher)
         {
             _out = @out ?? throw new ArgumentNullException(nameof(@out));
 
@@ -47,6 +49,17 @@ namespace Spectre.Console.Internal
             Encoding = _out.IsStandardOut() ? System.Console.OutputEncoding : Encoding.UTF8;
 
             _ansiBuilder = new AnsiBuilder(Capabilities, linkHasher);
+            _cursor = new AnsiCursor(this);
+        }
+
+        public void Clear(bool home)
+        {
+            Write(Segment.Control("\u001b[2J"));
+
+            if (home)
+            {
+                Cursor.SetPosition(0, 0);
+            }
         }
 
         public void Write(Segment segment)

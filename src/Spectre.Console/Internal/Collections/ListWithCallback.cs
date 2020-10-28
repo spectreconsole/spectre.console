@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Spectre.Console.Internal.Collections
+namespace Spectre.Console.Internal
 {
     internal sealed class ListWithCallback<T> : IList<T>, IReadOnlyList<T>
     {

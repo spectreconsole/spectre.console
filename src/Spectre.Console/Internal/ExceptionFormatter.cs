@@ -1,10 +1,9 @@
 using System;
 using System.Linq;
 using System.Text;
-using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
 
-namespace Spectre.Console
+namespace Spectre.Console.Internal
 {
     internal static class ExceptionFormatter
     {
