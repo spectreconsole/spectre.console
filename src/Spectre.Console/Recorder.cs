@@ -23,6 +23,9 @@ namespace Spectre.Console
         public IAnsiConsoleCursor Cursor => _console.Cursor;
 
         /// <inheritdoc/>
+        public IAnsiConsoleInput Input => _console.Input;
+
+        /// <inheritdoc/>
         public int Width => _console.Width;
 
         /// <inheritdoc/>

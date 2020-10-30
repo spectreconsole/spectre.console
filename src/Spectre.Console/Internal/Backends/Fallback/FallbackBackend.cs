@@ -9,11 +9,13 @@ namespace Spectre.Console.Internal
     {
         private readonly ColorSystem _system;
         private readonly FallbackCursor _cursor;
+        private readonly ConsoleInput _input;
         private Style? _lastStyle;
 
         public Capabilities Capabilities { get; }
         public Encoding Encoding { get; }
         public IAnsiConsoleCursor Cursor => _cursor;
+        public IAnsiConsoleInput Input => _input;
 
         public int Width
         {
@@ -34,6 +36,7 @@ namespace Spectre.Console.Internal
 
             _system = capabilities.ColorSystem;
             _cursor = new FallbackCursor();
+            _input = new ConsoleInput();
 
             if (@out != System.Console.Out)
             {
