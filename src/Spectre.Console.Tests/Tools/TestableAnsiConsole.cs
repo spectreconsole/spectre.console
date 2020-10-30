@@ -2,23 +2,27 @@ using System;
 using System.IO;
 using System.Text;
 using Spectre.Console.Rendering;
+using Spectre.Console.Tests.Tools;
 
-namespace Spectre.Console.Tests.Tools
+namespace Spectre.Console.Tests
 {
-    public sealed class MarkupConsoleFixture : IDisposable, IAnsiConsole
+    public sealed class TestableAnsiConsole : IDisposable, IAnsiConsole
     {
         private readonly StringWriter _writer;
         private readonly IAnsiConsole _console;
 
-        public string Output => _writer.ToString().TrimEnd('\n');
+        public string Output => _writer.ToString();
 
         public Capabilities Capabilities => _console.Capabilities;
         public Encoding Encoding => _console.Encoding;
-        public IAnsiConsoleCursor Cursor => _console.Cursor;
         public int Width { get; }
         public int Height => _console.Height;
+        public IAnsiConsoleCursor Cursor => _console.Cursor;
+        public TestableConsoleInput Input { get; }
 
-        public MarkupConsoleFixture(ColorSystem system, AnsiSupport ansi = AnsiSupport.Yes, int width = 80)
+        IAnsiConsoleInput IAnsiConsole.Input => Input;
+
+        public TestableAnsiConsole(ColorSystem system, AnsiSupport ansi = AnsiSupport.Yes, int width = 80)
         {
             _writer = new StringWriter();
             _console = AnsiConsole.Create(new AnsiConsoleSettings
@@ -30,6 +34,7 @@ namespace Spectre.Console.Tests.Tools
             });
 
             Width = width;
+            Input = new TestableConsoleInput();
         }
 
         public void Dispose()

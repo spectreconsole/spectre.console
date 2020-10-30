@@ -11,27 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="AnsiConsole.*.cs">
-      <DependentUpon>AnsiConsole.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Border.*.cs">
-      <DependentUpon>Border.cs</DependentUpon>
-    </Compile>
-    <Compile Update="BoxBorder.*.cs">
-      <DependentUpon>BoxBorder.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Color.*.cs">
-      <DependentUpon>Color.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Emoji.*.cs">
-      <DependentUpon>Emoji.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Extensions/AnsiConsoleExtensions.*.cs">
-      <DependentUpon>Extensions/AnsiConsoleExtensions.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="TunnelVisionLabs.ReferenceAssemblyAnnotator" Version="1.0.0-alpha.160" PrivateAssets="all" />
     <PackageDownload Include="Microsoft.NETCore.App.Ref" Version="[$(AnnotatedReferenceAssemblyVersion)]" />
     <PackageReference Include="Nullable" Version="1.2.1">

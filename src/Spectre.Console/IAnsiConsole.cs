@@ -24,6 +24,11 @@ namespace Spectre.Console
         IAnsiConsoleCursor Cursor { get; }
 
         /// <summary>
+        /// Gets the console input.
+        /// </summary>
+        IAnsiConsoleInput Input { get; }
+
+        /// <summary>
         /// Gets the buffer width of the console.
         /// </summary>
         int Width { get; }

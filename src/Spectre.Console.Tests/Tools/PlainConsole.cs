@@ -12,9 +12,12 @@ namespace Spectre.Console.Tests
         public Capabilities Capabilities { get; }
         public Encoding Encoding { get; }
         public IAnsiConsoleCursor Cursor => throw new NotSupportedException();
+        public TestableConsoleInput Input { get; }
 
         public int Width { get; }
         public int Height { get; }
+
+        IAnsiConsoleInput IAnsiConsole.Input => Input;
 
         public Decoration Decoration { get; set; }
         public Color Foreground { get; set; }
@@ -36,6 +39,7 @@ namespace Spectre.Console.Tests
             Width = width;
             Height = height;
             Writer = new StringWriter();
+            Input = new TestableConsoleInput();
         }
 
         public void Dispose()

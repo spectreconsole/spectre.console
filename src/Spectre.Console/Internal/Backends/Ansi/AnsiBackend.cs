@@ -10,10 +10,12 @@ namespace Spectre.Console.Internal
         private readonly TextWriter _out;
         private readonly AnsiBuilder _ansiBuilder;
         private readonly AnsiCursor _cursor;
+        private readonly ConsoleInput _input;
 
         public Capabilities Capabilities { get; }
         public Encoding Encoding { get; }
         public IAnsiConsoleCursor Cursor => _cursor;
+        public IAnsiConsoleInput Input => _input;
 
         public int Width
         {
@@ -50,6 +52,7 @@ namespace Spectre.Console.Internal
 
             _ansiBuilder = new AnsiBuilder(Capabilities, linkHasher);
             _cursor = new AnsiCursor(this);
+            _input = new ConsoleInput();
         }
 
         public void Clear(bool home)
