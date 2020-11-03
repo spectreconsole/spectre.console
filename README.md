@@ -100,7 +100,7 @@ To see Spectre.Console in action, install the
 global tool.
 
 ```
-> dotnet tool install -g dotnet-example
+> dotnet tool restore
 ```
 
 Now you can list available examples in this repository:

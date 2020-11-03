@@ -88,7 +88,7 @@ Spectre.Consoleでできることを見るために、
 
 
 ```
-> dotnet tool install -g dotnet-example
+> dotnet tool restore
 ```
 
 このリポジトリで提供している例が一覧表示されます
