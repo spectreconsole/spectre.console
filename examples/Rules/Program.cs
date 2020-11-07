@@ -10,18 +10,21 @@ namespace EmojiExample
             WrapInPanel(
                 new Rule()
                     .RuleStyle(Style.Parse("yellow"))
+                    .AsciiBorder()
                     .LeftAligned());
 
             // Left aligned title
             WrapInPanel(
                 new Rule("[blue]Left aligned[/]")
                     .RuleStyle(Style.Parse("red"))
+                    .DoubleBorder()
                     .LeftAligned());
 
             // Centered title
             WrapInPanel(
                 new Rule("[green]Centered[/]")
                     .RuleStyle(Style.Parse("green"))
+                    .HeavyBorder()
                     .Centered());
 
             // Right aligned title

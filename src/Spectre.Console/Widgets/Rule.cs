@@ -9,7 +9,7 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable horizontal rule.
     /// </summary>
-    public sealed class Rule : Renderable, IAlignable
+    public sealed class Rule : Renderable, IAlignable, IHasBoxBorder
     {
         /// <summary>
         /// Gets or sets the rule title markup text.
@@ -25,6 +25,12 @@ namespace Spectre.Console
         /// Gets or sets the rule's title alignment.
         /// </summary>
         public Justify? Alignment { get; set; }
+
+        /// <inheritdoc/>
+        public BoxBorder Border { get; set; } = BoxBorder.Square;
+
+        internal int TitlePadding { get; set; } = 2;
+        internal int TitleSpacing { get; set; } = 1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Rule"/> class.
@@ -45,21 +51,23 @@ namespace Spectre.Console
         /// <inheritdoc/>
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
-            if (Title == null || maxWidth <= 6)
+            var extraLength = (2 * TitlePadding) + (2 * TitleSpacing);
+
+            if (Title == null || maxWidth <= extraLength)
             {
-                return GetLineWithoutTitle(maxWidth);
+                return GetLineWithoutTitle(context, maxWidth);
             }
 
             // Get the title and make sure it fits.
-            var title = GetTitleSegments(context, Title, maxWidth - 6);
-            if (Segment.CellCount(context, title) > maxWidth - 6)
+            var title = GetTitleSegments(context, Title, maxWidth - extraLength);
+            if (Segment.CellCount(context, title) > maxWidth - extraLength)
             {
                 // Truncate the title
-                title = Segment.TruncateWithEllipsis(title, context, maxWidth - 6);
+                title = Segment.TruncateWithEllipsis(title, context, maxWidth - extraLength);
                 if (!title.Any())
                 {
                     // We couldn't fit the title at all.
-                    return GetLineWithoutTitle(maxWidth);
+                    return GetLineWithoutTitle(context, maxWidth);
                 }
             }
 
@@ -74,9 +82,11 @@ namespace Spectre.Console
             return segments;
         }
 
-        private IEnumerable<Segment> GetLineWithoutTitle(int maxWidth)
+        private IEnumerable<Segment> GetLineWithoutTitle(RenderContext context, int maxWidth)
         {
-            var text = new string('─', maxWidth);
+            var border = Border.GetSafeBorder(context.LegacyConsole || !context.Unicode);
+            var text = border.GetPart(BoxBorderPart.Top).Repeat(maxWidth);
+
             return new[]
             {
                 new Segment(text, Style ?? Style.Plain),
@@ -84,49 +94,51 @@ namespace Spectre.Console
             };
         }
 
-        private (Segment Left, Segment Right) GetLineSegments(RenderContext context, int maxWidth, IEnumerable<Segment> title)
+        private IEnumerable<Segment> GetTitleSegments(RenderContext context, string title, int width)
         {
-            var alignment = Alignment ?? Justify.Center;
+            title = title.NormalizeLineEndings().Replace("\n", " ").Trim();
+            var markup = new Markup(title, Style);
+            return ((IRenderable)markup).Render(context.WithSingleLine(), width);
+        }
 
+        private (Segment Left, Segment Right) GetLineSegments(RenderContext context, int width, IEnumerable<Segment> title)
+        {
             var titleLength = Segment.CellCount(context, title);
 
+            var border = Border.GetSafeBorder(context.LegacyConsole || !context.Unicode);
+            var borderPart = border.GetPart(BoxBorderPart.Top);
+
+            var alignment = Alignment ?? Justify.Center;
             if (alignment == Justify.Left)
             {
-                var left = new Segment(new string('─', 2) + " ", Style ?? Style.Plain);
+                var left = new Segment(borderPart.Repeat(TitlePadding) + new string(' ', TitleSpacing), Style ?? Style.Plain);
 
-                var rightLength = maxWidth - titleLength - left.CellCount(context) - 1;
-                var right = new Segment(" " + new string('─', rightLength), Style ?? Style.Plain);
+                var rightLength = width - titleLength - left.CellCount(context) - TitleSpacing;
+                var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(rightLength), Style ?? Style.Plain);
 
                 return (left, right);
             }
             else if (alignment == Justify.Center)
             {
-                var leftLength = ((maxWidth - titleLength) / 2) - 1;
-                var left = new Segment(new string('─', leftLength) + " ", Style ?? Style.Plain);
+                var leftLength = ((width - titleLength) / 2) - TitleSpacing;
+                var left = new Segment(borderPart.Repeat(leftLength) + new string(' ', TitleSpacing), Style ?? Style.Plain);
 
-                var rightLength = maxWidth - titleLength - left.CellCount(context) - 1;
-                var right = new Segment(" " + new string('─', rightLength), Style ?? Style.Plain);
+                var rightLength = width - titleLength - left.CellCount(context) - TitleSpacing;
+                var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(rightLength), Style ?? Style.Plain);
 
                 return (left, right);
             }
             else if (alignment == Justify.Right)
             {
-                var right = new Segment(" " + new string('─', 2), Style ?? Style.Plain);
+                var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(TitlePadding), Style ?? Style.Plain);
 
-                var leftLength = maxWidth - titleLength - right.CellCount(context) - 1;
-                var left = new Segment(new string('─', leftLength) + " ", Style ?? Style.Plain);
+                var leftLength = width - titleLength - right.CellCount(context) - TitleSpacing;
+                var left = new Segment(borderPart.Repeat(leftLength) + new string(' ', TitleSpacing), Style ?? Style.Plain);
 
                 return (left, right);
             }
 
             throw new NotSupportedException("Unsupported alignment.");
-        }
-
-        private IEnumerable<Segment> GetTitleSegments(RenderContext context, string title, int width)
-        {
-            title = title.NormalizeLineEndings().Replace("\n", " ").Trim();
-            var markup = new Markup(title, Style);
-            return ((IRenderable)markup).Render(context.WithSingleLine(), width - 6);
         }
     }
 }

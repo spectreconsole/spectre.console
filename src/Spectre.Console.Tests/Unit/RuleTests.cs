@@ -20,6 +20,34 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        public void Should_Render_Default_Rule_With_Specified_Box()
+        {
+            // Given
+            var console = new PlainConsole(width: 40);
+
+            // When
+            console.Render(new Rule().DoubleBorder());
+
+            // Then
+            console.Lines.Count.ShouldBe(1);
+            console.Lines[0].ShouldBe("════════════════════════════════════════");
+        }
+
+        [Fact]
+        public void Should_Render_With_Specified_Box()
+        {
+            // Given
+            var console = new PlainConsole(width: 40);
+
+            // When
+            console.Render(new Rule("Hello World").DoubleBorder());
+
+            // Then
+            console.Lines.Count.ShouldBe(1);
+            console.Lines[0].ShouldBe("═════════════ Hello World ══════════════");
+        }
+
+        [Fact]
         public void Should_Render_Default_Rule_With_Title_Centered_By_Default()
         {
             // Given

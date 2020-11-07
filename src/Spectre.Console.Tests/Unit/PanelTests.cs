@@ -316,14 +316,14 @@ namespace Spectre.Console.Tests.Unit
             var panel = new Panel(grid)
                 .Expand().RoundedBorder()
                 .BorderStyle(new Style().Foreground(Color.Grey))
-                .Header("Short paths ", new Style().Foreground(Color.Grey));
+                .Header("[grey]Short paths[/]");
 
             // When
             console.Render(panel);
 
             // Then
             console.Lines.Count.ShouldBe(4);
-            console.Lines[0].ShouldBe("╭─Short paths ─────────────────────────────────────────────────────────────────────╮");
+            console.Lines[0].ShouldBe("╭─Short paths──────────────────────────────────────────────────────────────────────╮");
             console.Lines[1].ShouldBe("│   at System.Runtime.CompilerServices.TaskAwaiter.                                │");
             console.Lines[2].ShouldBe("│      HandleNonSuccessAndDebuggerNotification(Task task)                          │");
             console.Lines[3].ShouldBe("╰──────────────────────────────────────────────────────────────────────────────────╯");

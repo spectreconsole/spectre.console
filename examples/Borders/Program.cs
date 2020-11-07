@@ -21,7 +21,7 @@ namespace BordersExample
             static IRenderable CreatePanel(string name, BoxBorder border)
             {
                 return new Panel($"This is a panel with\nthe [yellow]{name}[/] border.")
-                    .Header($" {name} ", Style.Parse("blue"), Justify.Center)
+                    .Header($" [blue]{name}[/] ", Justify.Center)
                     .Border(border)
                     .BorderStyle(Style.Parse("grey"));
             }
@@ -53,7 +53,7 @@ namespace BordersExample
                 table.AddRow("Cell", "Cell");
 
                 return new Panel(table)
-                    .Header($" {name} ", Style.Parse("blue"), Justify.Center)
+                    .Header($" [blue]{name}[/] ", Justify.Center)
                     .NoBorder();
             }
 
