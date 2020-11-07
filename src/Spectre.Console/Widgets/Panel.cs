@@ -9,7 +9,7 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable panel.
     /// </summary>
-    public sealed class Panel : Renderable, IHasBoxBorder, IExpandable, IPaddable
+    public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, IPaddable
     {
         private const int EdgeWidth = 2;
 
@@ -123,62 +123,35 @@ namespace Spectre.Console
             }
 
             // Panel bottom
-            AddBottomBorder(result, border, borderStyle, panelWidth);
-
-            return result;
-        }
-
-        private static void AddBottomBorder(List<Segment> result, BoxBorder border, Style borderStyle, int panelWidth)
-        {
             result.Add(new Segment(border.GetPart(BoxBorderPart.BottomLeft), borderStyle));
             result.Add(new Segment(border.GetPart(BoxBorderPart.Bottom).Repeat(panelWidth - EdgeWidth), borderStyle));
             result.Add(new Segment(border.GetPart(BoxBorderPart.BottomRight), borderStyle));
             result.Add(Segment.LineBreak);
+
+            return result;
         }
 
-        private void AddTopBorder(List<Segment> segments, RenderContext context, BoxBorder border, Style borderStyle, int panelWidth)
+        private void AddTopBorder(List<Segment> result, RenderContext context, BoxBorder border, Style borderStyle, int panelWidth)
         {
-            segments.Add(new Segment(border.GetPart(BoxBorderPart.TopLeft), borderStyle));
-
-            if (Header != null)
+            var rule = new Rule
             {
-                var leftSpacing = 0;
-                var rightSpacing = 0;
+                Style = borderStyle,
+                Border = border,
+                TitlePadding = 1,
+                TitleSpacing = 0,
+                Title = Header?.Text,
+                Alignment = Header?.Alignment ?? Justify.Left,
+            };
 
-                var headerWidth = panelWidth - (EdgeWidth * 2);
-                var header = Segment.TruncateWithEllipsis(Header.Text, Header.Style ?? borderStyle, context, headerWidth);
+            // Top left border
+            result.Add(new Segment(border.GetPart(BoxBorderPart.TopLeft), borderStyle));
 
-                var excessWidth = headerWidth - header.CellCount(context);
-                if (excessWidth > 0)
-                {
-                    switch (Header.Alignment ?? Justify.Left)
-                    {
-                        case Justify.Left:
-                            leftSpacing = 0;
-                            rightSpacing = excessWidth;
-                            break;
-                        case Justify.Right:
-                            leftSpacing = excessWidth;
-                            rightSpacing = 0;
-                            break;
-                        case Justify.Center:
-                            leftSpacing = excessWidth / 2;
-                            rightSpacing = (excessWidth / 2) + (excessWidth % 2);
-                            break;
-                    }
-                }
+            // Top border (and header text if specified)
+            result.AddRange(((IRenderable)rule).Render(context, panelWidth - 2).Where(x => !x.IsLineBreak));
 
-                segments.Add(new Segment(border.GetPart(BoxBorderPart.Top).Repeat(leftSpacing + 1), borderStyle));
-                segments.Add(header);
-                segments.Add(new Segment(border.GetPart(BoxBorderPart.Top).Repeat(rightSpacing + 1), borderStyle));
-            }
-            else
-            {
-                segments.Add(new Segment(border.GetPart(BoxBorderPart.Top).Repeat(panelWidth - EdgeWidth), borderStyle));
-            }
-
-            segments.Add(new Segment(border.GetPart(BoxBorderPart.TopRight), borderStyle));
-            segments.Add(Segment.LineBreak);
+            // Top right border
+            result.Add(new Segment(border.GetPart(BoxBorderPart.TopRight), borderStyle));
+            result.Add(Segment.LineBreak);
         }
     }
 }

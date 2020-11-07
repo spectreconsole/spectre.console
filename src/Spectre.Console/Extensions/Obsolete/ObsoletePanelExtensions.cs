@@ -30,10 +30,8 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(text));
             }
 
-            style ??= panel.Header?.Style;
             alignment ??= panel.Header?.Alignment;
-
-            return SetHeader(panel, new PanelHeader(text, style, alignment));
+            return SetHeader(panel, new PanelHeader(text, alignment));
         }
 
         /// <summary>
@@ -52,6 +50,19 @@ namespace Spectre.Console
             }
 
             panel.Header = header;
+            return panel;
+        }
+
+        /// <summary>
+        /// Sets the panel header style.
+        /// </summary>
+        /// <param name="panel">The panel.</param>
+        /// <param name="style">The header style.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        [Obsolete("Use markup in header instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static Panel HeaderStyle(this Panel panel, Style style)
+        {
             return panel;
         }
     }

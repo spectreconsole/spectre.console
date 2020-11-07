@@ -20,16 +20,14 @@ namespace PanelExample
                 new Panel(new Text("Left adjusted\nLeft").LeftAligned())
                     .Expand()
                     .SquareBorder()
-                    .Header("Left")
-                    .HeaderStyle("red"));
+                    .Header("[red]Left[/]"));
 
             // Centered ASCII panel with text
             AnsiConsole.Render(
                 new Panel(new Text("Centered\nCenter").Centered())
                     .Expand()
                     .AsciiBorder()
-                    .Header("Center")
-                    .HeaderStyle("green")
+                    .Header("[green]Center[/]")
                     .HeaderAlignment(Justify.Center));
 
             // Right adjusted, rounded panel with text
@@ -37,8 +35,7 @@ namespace PanelExample
                 new Panel(new Text("Right adjusted\nRight").RightAligned())
                     .Expand()
                     .RoundedBorder()
-                    .Header("Right")
-                    .HeaderStyle("blue")
+                    .Header("[blue]Right[/]")
                     .HeaderAlignment(Justify.Right));
         }
     }
