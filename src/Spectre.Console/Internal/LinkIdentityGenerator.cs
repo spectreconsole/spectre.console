@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Spectre.Console.Internal
 {
@@ -23,9 +24,19 @@ namespace Spectre.Console.Internal
             unchecked
             {
                 return Math.Abs(
-                    link.GetHashCode() +
+                    GetLinkHashCode(link) +
                     _random.Next(0, int.MaxValue));
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static int GetLinkHashCode(string link)
+        {
+#if NET5_0
+            return link.GetHashCode(StringComparison.Ordinal);
+#else
+            return link.GetHashCode();
+#endif
         }
     }
 }

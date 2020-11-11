@@ -180,6 +180,15 @@ namespace Spectre.Console
         /// <inheritdoc/>
         public override int GetHashCode()
         {
+            int? GetLinkHashCode()
+            {
+#if NET5_0
+                return Link?.GetHashCode(StringComparison.Ordinal);
+#else
+                return Link?.GetHashCode();
+#endif
+            }
+
             unchecked
             {
                 var hash = (int)2166136261;
@@ -189,7 +198,7 @@ namespace Spectre.Console
 
                 if (Link != null)
                 {
-                    hash = (hash * 16777619) ^ Link?.GetHashCode() ?? 0;
+                    hash = (hash * 16777619) ^ GetLinkHashCode() ?? 0;
                 }
 
                 return hash;

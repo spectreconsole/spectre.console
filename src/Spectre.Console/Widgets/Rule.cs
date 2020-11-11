@@ -96,7 +96,7 @@ namespace Spectre.Console
 
         private IEnumerable<Segment> GetTitleSegments(RenderContext context, string title, int width)
         {
-            title = title.NormalizeLineEndings().Replace("\n", " ").Trim();
+            title = title.NormalizeLineEndings().ReplaceExact("\n", " ").Trim();
             var markup = new Markup(title, Style);
             return ((IRenderable)markup).Render(context.WithSingleLine(), width);
         }

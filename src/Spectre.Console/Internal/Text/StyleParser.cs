@@ -147,7 +147,7 @@ namespace Spectre.Console.Internal
             error = null;
 
             hex ??= string.Empty;
-            hex = hex.Replace("#", string.Empty).Trim();
+            hex = hex.ReplaceExact("#", string.Empty).Trim();
 
             try
             {

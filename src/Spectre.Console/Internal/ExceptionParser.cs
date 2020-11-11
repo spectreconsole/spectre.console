@@ -31,7 +31,7 @@ namespace Spectre.Console.Internal
             }
 
             var line = lines.Dequeue();
-            line = line.Replace(" ---> ", string.Empty);
+            line = line.ReplaceExact(" ---> ", string.Empty);
 
             var match = _messageRegex.Match(line);
             if (!match.Success)

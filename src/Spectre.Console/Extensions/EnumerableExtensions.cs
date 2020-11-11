@@ -69,11 +69,13 @@ namespace Spectre.Console.Internal
             return source.Select((value, index) => func(value, index));
         }
 
+#if !NET5_0
         public static IEnumerable<(TFirst First, TSecond Second)> Zip<TFirst, TSecond>(
             this IEnumerable<TFirst> source, IEnumerable<TSecond> first)
         {
             return source.Zip(first, (first, second) => (first, second));
         }
+#endif
 
         public static IEnumerable<(TFirst First, TSecond Second, TThird Third)> Zip<TFirst, TSecond, TThird>(
             this IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third)

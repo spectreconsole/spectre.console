@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
 
@@ -8,6 +9,7 @@ namespace Spectre.Console
     /// <summary>
     /// A renderable piece of markup text.
     /// </summary>
+    [SuppressMessage("Naming", "CA1724:Type names should not match namespaces")]
     public sealed class Markup : Renderable, IAlignable, IOverflowable
     {
         private readonly Paragraph _paragraph;
