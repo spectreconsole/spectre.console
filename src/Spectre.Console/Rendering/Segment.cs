@@ -237,7 +237,7 @@ namespace Spectre.Console.Rendering
                 }
 
                 // Does the segment contain a newline?
-                if (segment.Text.Contains("\n"))
+                if (segment.Text.ContainsExact("\n"))
                 {
                     // Is it a new line?
                     if (segment.Text == "\n")
