@@ -58,8 +58,8 @@ var age = AnsiConsole.Prompt(
         {
             return age switch
             {
-                <= 99 => ValidationResult.Error("[red]Too low[/]"),
-                >= 99 => ValidationResult.Error("[red]Too high[/]"),
+                < 99 => ValidationResult.Error("[red]Too low[/]"),
+                > 99 => ValidationResult.Error("[red]Too high[/]"),
                 _ => ValidationResult.Success(),
             };
         }));
