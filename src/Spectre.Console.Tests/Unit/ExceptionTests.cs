@@ -20,7 +20,7 @@ namespace Spectre.Console.Tests.Unit
             var result = console.WriteExceptionAndGetLines(dex);
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(result);
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace Spectre.Console.Tests.Unit
             var result = console.WriteExceptionAndGetLines(dex, ExceptionFormats.ShortenTypes);
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(result);
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace Spectre.Console.Tests.Unit
             var result = console.WriteExceptionAndGetLines(dex, ExceptionFormats.ShortenMethods);
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(result);
         }
 
         [Fact]
@@ -62,7 +62,7 @@ namespace Spectre.Console.Tests.Unit
             var result = console.WriteExceptionAndGetLines(dex);
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(result);
         }
 
         public static Exception GetException(Action action)
