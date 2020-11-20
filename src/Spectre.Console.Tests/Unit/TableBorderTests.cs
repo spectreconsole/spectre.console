@@ -1,11 +1,15 @@
+using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Rendering;
+using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
+    [UsesVerify]
     public sealed class TableBorderTests
     {
+        [UsesVerify]
         public sealed class NoBorder
         {
             [Fact]
@@ -32,7 +36,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -42,14 +46,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(4);
-                console.Lines[0].ShouldBe("Header 1 Header 2");
-                console.Lines[1].ShouldBe("Cell     Cell    ");
-                console.Lines[2].ShouldBe("Cell     Cell    ");
-                console.Lines[3].ShouldBe("Footer 1 Footer 2");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class AsciiBorder
         {
             [Fact]
@@ -76,7 +77,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -86,18 +87,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("+---------------------+");
-                console.Lines[1].ShouldBe("| Header 1 | Header 2 |");
-                console.Lines[2].ShouldBe("|----------+----------|");
-                console.Lines[3].ShouldBe("| Cell     | Cell     |");
-                console.Lines[4].ShouldBe("| Cell     | Cell     |");
-                console.Lines[5].ShouldBe("|----------+----------|");
-                console.Lines[6].ShouldBe("| Footer 1 | Footer 2 |");
-                console.Lines[7].ShouldBe("+---------------------+");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class Ascii2Border
         {
             [Fact]
@@ -124,7 +118,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -134,18 +128,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("+----------+----------+");
-                console.Lines[1].ShouldBe("| Header 1 | Header 2 |");
-                console.Lines[2].ShouldBe("|----------+----------|");
-                console.Lines[3].ShouldBe("| Cell     | Cell     |");
-                console.Lines[4].ShouldBe("| Cell     | Cell     |");
-                console.Lines[5].ShouldBe("|----------+----------|");
-                console.Lines[6].ShouldBe("| Footer 1 | Footer 2 |");
-                console.Lines[7].ShouldBe("+----------+----------+");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class AsciiDoubleHeadBorder
         {
             [Fact]
@@ -172,7 +159,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -182,18 +169,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("+----------+----------+");
-                console.Lines[1].ShouldBe("| Header 1 | Header 2 |");
-                console.Lines[2].ShouldBe("|==========+==========|");
-                console.Lines[3].ShouldBe("| Cell     | Cell     |");
-                console.Lines[4].ShouldBe("| Cell     | Cell     |");
-                console.Lines[5].ShouldBe("+----------+----------+");
-                console.Lines[6].ShouldBe("| Footer 1 | Footer 2 |");
-                console.Lines[7].ShouldBe("+----------+----------+");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class SquareBorder
         {
             [Fact]
@@ -220,7 +200,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -230,18 +210,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("┌──────────┬──────────┐");
-                console.Lines[1].ShouldBe("│ Header 1 │ Header 2 │");
-                console.Lines[2].ShouldBe("├──────────┼──────────┤");
-                console.Lines[3].ShouldBe("│ Cell     │ Cell     │");
-                console.Lines[4].ShouldBe("│ Cell     │ Cell     │");
-                console.Lines[5].ShouldBe("├──────────┼──────────┤");
-                console.Lines[6].ShouldBe("│ Footer 1 │ Footer 2 │");
-                console.Lines[7].ShouldBe("└──────────┴──────────┘");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class RoundedBorder
         {
             [Fact]
@@ -268,7 +241,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -278,18 +251,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("╭──────────┬──────────╮");
-                console.Lines[1].ShouldBe("│ Header 1 │ Header 2 │");
-                console.Lines[2].ShouldBe("├──────────┼──────────┤");
-                console.Lines[3].ShouldBe("│ Cell     │ Cell     │");
-                console.Lines[4].ShouldBe("│ Cell     │ Cell     │");
-                console.Lines[5].ShouldBe("├──────────┼──────────┤");
-                console.Lines[6].ShouldBe("│ Footer 1 │ Footer 2 │");
-                console.Lines[7].ShouldBe("╰──────────┴──────────╯");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class MinimalBorder
         {
             [Fact]
@@ -316,7 +282,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -326,18 +292,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("                       ");
-                console.Lines[1].ShouldBe("  Header 1 │ Header 2  ");
-                console.Lines[2].ShouldBe(" ──────────┼────────── ");
-                console.Lines[3].ShouldBe("  Cell     │ Cell      ");
-                console.Lines[4].ShouldBe("  Cell     │ Cell      ");
-                console.Lines[5].ShouldBe(" ──────────┼────────── ");
-                console.Lines[6].ShouldBe("  Footer 1 │ Footer 2  ");
-                console.Lines[7].ShouldBe("                       ");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class MinimalHeavyHeadBorder
         {
             [Fact]
@@ -364,7 +323,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -374,18 +333,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("                       ");
-                console.Lines[1].ShouldBe("  Header 1 │ Header 2  ");
-                console.Lines[2].ShouldBe(" ━━━━━━━━━━┿━━━━━━━━━━ ");
-                console.Lines[3].ShouldBe("  Cell     │ Cell      ");
-                console.Lines[4].ShouldBe("  Cell     │ Cell      ");
-                console.Lines[5].ShouldBe(" ━━━━━━━━━━┿━━━━━━━━━━ ");
-                console.Lines[6].ShouldBe("  Footer 1 │ Footer 2  ");
-                console.Lines[7].ShouldBe("                       ");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class MinimalDoubleHeadBorder
         {
             [Fact]
@@ -412,7 +364,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -422,18 +374,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("                       ");
-                console.Lines[1].ShouldBe("  Header 1 │ Header 2  ");
-                console.Lines[2].ShouldBe(" ══════════╪══════════ ");
-                console.Lines[3].ShouldBe("  Cell     │ Cell      ");
-                console.Lines[4].ShouldBe("  Cell     │ Cell      ");
-                console.Lines[5].ShouldBe(" ══════════╪══════════ ");
-                console.Lines[6].ShouldBe("  Footer 1 │ Footer 2  ");
-                console.Lines[7].ShouldBe("                       ");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class SimpleBorder
         {
             [Fact]
@@ -460,7 +405,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -470,18 +415,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("                       ");
-                console.Lines[1].ShouldBe("  Header 1   Header 2  ");
-                console.Lines[2].ShouldBe("───────────────────────");
-                console.Lines[3].ShouldBe("  Cell       Cell      ");
-                console.Lines[4].ShouldBe("  Cell       Cell      ");
-                console.Lines[5].ShouldBe("───────────────────────");
-                console.Lines[6].ShouldBe("  Footer 1   Footer 2  ");
-                console.Lines[7].ShouldBe("                       ");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class HorizontalBorder
         {
             [Fact]
@@ -508,7 +446,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -518,18 +456,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("───────────────────────");
-                console.Lines[1].ShouldBe("  Header 1   Header 2  ");
-                console.Lines[2].ShouldBe("───────────────────────");
-                console.Lines[3].ShouldBe("  Cell       Cell      ");
-                console.Lines[4].ShouldBe("  Cell       Cell      ");
-                console.Lines[5].ShouldBe("───────────────────────");
-                console.Lines[6].ShouldBe("  Footer 1   Footer 2  ");
-                console.Lines[7].ShouldBe("───────────────────────");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class SimpleHeavyBorder
         {
             [Fact]
@@ -556,7 +487,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -566,18 +497,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("                       ");
-                console.Lines[1].ShouldBe("  Header 1   Header 2  ");
-                console.Lines[2].ShouldBe("━━━━━━━━━━━━━━━━━━━━━━━");
-                console.Lines[3].ShouldBe("  Cell       Cell      ");
-                console.Lines[4].ShouldBe("  Cell       Cell      ");
-                console.Lines[5].ShouldBe("━━━━━━━━━━━━━━━━━━━━━━━");
-                console.Lines[6].ShouldBe("  Footer 1   Footer 2  ");
-                console.Lines[7].ShouldBe("                       ");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class HeavyBorder
         {
             [Fact]
@@ -604,7 +528,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -614,18 +538,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("┏━━━━━━━━━━┳━━━━━━━━━━┓");
-                console.Lines[1].ShouldBe("┃ Header 1 ┃ Header 2 ┃");
-                console.Lines[2].ShouldBe("┣━━━━━━━━━━╋━━━━━━━━━━┫");
-                console.Lines[3].ShouldBe("┃ Cell     ┃ Cell     ┃");
-                console.Lines[4].ShouldBe("┃ Cell     ┃ Cell     ┃");
-                console.Lines[5].ShouldBe("┣━━━━━━━━━━╋━━━━━━━━━━┫");
-                console.Lines[6].ShouldBe("┃ Footer 1 ┃ Footer 2 ┃");
-                console.Lines[7].ShouldBe("┗━━━━━━━━━━┻━━━━━━━━━━┛");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class HeavyEdgeBorder
         {
             [Fact]
@@ -652,7 +569,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -662,18 +579,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("┏━━━━━━━━━━┯━━━━━━━━━━┓");
-                console.Lines[1].ShouldBe("┃ Header 1 │ Header 2 ┃");
-                console.Lines[2].ShouldBe("┠──────────┼──────────┨");
-                console.Lines[3].ShouldBe("┃ Cell     │ Cell     ┃");
-                console.Lines[4].ShouldBe("┃ Cell     │ Cell     ┃");
-                console.Lines[5].ShouldBe("┠──────────┼──────────┨");
-                console.Lines[6].ShouldBe("┃ Footer 1 │ Footer 2 ┃");
-                console.Lines[7].ShouldBe("┗━━━━━━━━━━┷━━━━━━━━━━┛");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class HeavyHeadBorder
         {
             [Fact]
@@ -700,7 +610,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -710,18 +620,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("┏━━━━━━━━━━┳━━━━━━━━━━┓");
-                console.Lines[1].ShouldBe("┃ Header 1 ┃ Header 2 ┃");
-                console.Lines[2].ShouldBe("┡━━━━━━━━━━╇━━━━━━━━━━┩");
-                console.Lines[3].ShouldBe("│ Cell     │ Cell     │");
-                console.Lines[4].ShouldBe("│ Cell     │ Cell     │");
-                console.Lines[5].ShouldBe("├──────────┼──────────┤");
-                console.Lines[6].ShouldBe("│ Footer 1 │ Footer 2 │");
-                console.Lines[7].ShouldBe("└──────────┴──────────┘");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class DoubleBorder
         {
             [Fact]
@@ -748,7 +651,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -758,18 +661,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("╔══════════╦══════════╗");
-                console.Lines[1].ShouldBe("║ Header 1 ║ Header 2 ║");
-                console.Lines[2].ShouldBe("╠══════════╬══════════╣");
-                console.Lines[3].ShouldBe("║ Cell     ║ Cell     ║");
-                console.Lines[4].ShouldBe("║ Cell     ║ Cell     ║");
-                console.Lines[5].ShouldBe("╠══════════╬══════════╣");
-                console.Lines[6].ShouldBe("║ Footer 1 ║ Footer 2 ║");
-                console.Lines[7].ShouldBe("╚══════════╩══════════╝");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class DoubleEdgeBorder
         {
             [Fact]
@@ -796,7 +692,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -806,18 +702,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(8);
-                console.Lines[0].ShouldBe("╔══════════╤══════════╗");
-                console.Lines[1].ShouldBe("║ Header 1 │ Header 2 ║");
-                console.Lines[2].ShouldBe("╟──────────┼──────────╢");
-                console.Lines[3].ShouldBe("║ Cell     │ Cell     ║");
-                console.Lines[4].ShouldBe("║ Cell     │ Cell     ║");
-                console.Lines[5].ShouldBe("╟──────────┼──────────╢");
-                console.Lines[6].ShouldBe("║ Footer 1 │ Footer 2 ║");
-                console.Lines[7].ShouldBe("╚══════════╧══════════╝");
+                return Verifier.Verify(console.Output);
             }
         }
 
+        [UsesVerify]
         public sealed class MarkdownBorder
         {
             [Fact]
@@ -844,7 +733,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -854,18 +743,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(7);
-                console.Lines[0].ShouldBe("                       ");
-                console.Lines[1].ShouldBe("| Header 1 | Header 2 |");
-                console.Lines[2].ShouldBe("| -------- | -------- |");
-                console.Lines[3].ShouldBe("| Cell     | Cell     |");
-                console.Lines[4].ShouldBe("| Cell     | Cell     |");
-                console.Lines[5].ShouldBe("| Footer 1 | Footer 2 |");
-                console.Lines[6].ShouldBe("                       ");
+                return Verifier.Verify(console.Output);
             }
 
             [Fact]
-            public void Should_Render_Left_Aligned_Table_Columns_As_Expected()
+            public Task Should_Render_Left_Aligned_Table_Columns_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -875,18 +757,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(7);
-                console.Lines[0].ShouldBe("                       ");
-                console.Lines[1].ShouldBe("| Header 1 | Header 2 |");
-                console.Lines[2].ShouldBe("| -------- | :------- |");
-                console.Lines[3].ShouldBe("| Cell     | Cell     |");
-                console.Lines[4].ShouldBe("| Cell     | Cell     |");
-                console.Lines[5].ShouldBe("| Footer 1 | Footer 2 |");
-                console.Lines[6].ShouldBe("                       ");
+                return Verifier.Verify(console.Output);
             }
 
             [Fact]
-            public void Should_Render_Center_Aligned_Table_Columns_As_Expected()
+            public Task Should_Render_Center_Aligned_Table_Columns_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -896,18 +771,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(7);
-                console.Lines[0].ShouldBe("                       ");
-                console.Lines[1].ShouldBe("| Header 1 | Header 2 |");
-                console.Lines[2].ShouldBe("| -------- | :------: |");
-                console.Lines[3].ShouldBe("| Cell     |   Cell   |");
-                console.Lines[4].ShouldBe("| Cell     |   Cell   |");
-                console.Lines[5].ShouldBe("| Footer 1 | Footer 2 |");
-                console.Lines[6].ShouldBe("                       ");
+                return Verifier.Verify(console.Output);
             }
 
             [Fact]
-            public void Should_Render_Right_Aligned_Table_Columns_As_Expected()
+            public Task Should_Render_Right_Aligned_Table_Columns_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -917,14 +785,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(7);
-                console.Lines[0].ShouldBe("                       ");
-                console.Lines[1].ShouldBe("| Header 1 | Header 2 |");
-                console.Lines[2].ShouldBe("| -------- | -------: |");
-                console.Lines[3].ShouldBe("| Cell     |     Cell |");
-                console.Lines[4].ShouldBe("| Cell     |     Cell |");
-                console.Lines[5].ShouldBe("| Footer 1 | Footer 2 |");
-                console.Lines[6].ShouldBe("                       ");
+                return Verifier.Verify(console.Output);
             }
         }
 

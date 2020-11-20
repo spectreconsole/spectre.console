@@ -1,0 +1,4 @@
+Options                                                         
+  -h, --help             Show command line help.                
+  -c, --configuration    The configuration to run for.          
+                         The default for most projects is Debug.

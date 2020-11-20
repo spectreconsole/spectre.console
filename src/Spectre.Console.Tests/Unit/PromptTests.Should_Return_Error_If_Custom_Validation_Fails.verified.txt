@@ -1,0 +1,7 @@
+Guess number: 22
+Too low
+Guess number: 102
+Too high
+Guess number: ABC
+Invalid input
+Guess number: 99

@@ -1,0 +1,26 @@
+{
+  Item1: {
+    Text: Foo,
+    Style: {
+      Foreground: {
+        R: 255
+      },
+      Background: {
+        G: 128
+      },
+      Decoration: Bold
+    }
+  },
+  Item2: {
+    Text:  Bar,
+    Style: {
+      Foreground: {
+        R: 255
+      },
+      Background: {
+        G: 128
+      },
+      Decoration: Bold
+    }
+  }
+}

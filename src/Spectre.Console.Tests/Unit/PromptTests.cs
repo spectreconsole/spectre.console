@@ -1,13 +1,15 @@
 using System;
-using Shouldly;
+using System.Threading.Tasks;
+using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
+    [UsesVerify]
     public sealed class PromptTests
     {
         [Fact]
-        public void Should_Return_Validation_Error_If_Value_Cannot_Be_Converted()
+        public Task Should_Return_Validation_Error_If_Value_Cannot_Be_Converted()
         {
             // Given
             var console = new PlainConsole();
@@ -18,14 +20,11 @@ namespace Spectre.Console.Tests.Unit
             console.Prompt(new TextPrompt<int>("Age?"));
 
             // Then
-            console.Lines.Count.ShouldBe(3);
-            console.Lines[0].ShouldBe("Age? ninety-nine");
-            console.Lines[1].ShouldBe("Invalid input");
-            console.Lines[2].ShouldBe("Age? 99");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Chose_Default_Value_If_Nothing_Is_Entered()
+        public Task Should_Chose_Default_Value_If_Nothing_Is_Entered()
         {
             // Given
             var console = new PlainConsole();
@@ -39,12 +38,11 @@ namespace Spectre.Console.Tests.Unit
                     .DefaultValue("Banana"));
 
             // Then
-            console.Lines.Count.ShouldBe(1);
-            console.Lines[0].ShouldBe("Favorite fruit? [Banana/Orange] (Banana): Banana");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
-        public void Should_Return_Error_If_An_Invalid_Choice_Is_Made()
+        public Task Should_Return_Error_If_An_Invalid_Choice_Is_Made()
         {
             // Given
             var console = new PlainConsole();
@@ -59,14 +57,11 @@ namespace Spectre.Console.Tests.Unit
                     .DefaultValue("Banana"));
 
             // Then
-            console.Lines.Count.ShouldBe(3);
-            console.Lines[0].ShouldBe("Favorite fruit? [Banana/Orange] (Banana): Apple");
-            console.Lines[1].ShouldBe("Please select one of the available options");
-            console.Lines[2].ShouldBe("Favorite fruit? [Banana/Orange] (Banana): Banana");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
-        public void Should_Accept_Choice_In_List()
+        public Task Should_Accept_Choice_In_List()
         {
             // Given
             var console = new PlainConsole();
@@ -80,12 +75,11 @@ namespace Spectre.Console.Tests.Unit
                     .DefaultValue("Banana"));
 
             // Then
-            console.Lines.Count.ShouldBe(1);
-            console.Lines[0].ShouldBe("Favorite fruit? [Banana/Orange] (Banana): Orange");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
-        public void Should_Return_Error_If_Custom_Validation_Fails()
+        public Task Should_Return_Error_If_Custom_Validation_Fails()
         {
             // Given
             var console = new PlainConsole();
@@ -113,14 +107,7 @@ namespace Spectre.Console.Tests.Unit
                     }));
 
             // Then
-            console.Lines.Count.ShouldBe(7);
-            console.Lines[0].ShouldBe("Guess number: 22");
-            console.Lines[1].ShouldBe("Too low");
-            console.Lines[2].ShouldBe("Guess number: 102");
-            console.Lines[3].ShouldBe("Too high");
-            console.Lines[4].ShouldBe("Guess number: ABC");
-            console.Lines[5].ShouldBe("Invalid input");
-            console.Lines[6].ShouldBe("Guess number: 99");
+            return Verifier.Verify(console.Output);
         }
     }
 }
