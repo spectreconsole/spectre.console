@@ -1,6 +1,8 @@
 using System.Text;
+using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Rendering;
+using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
@@ -37,6 +39,7 @@ namespace Spectre.Console.Tests.Unit
             }
         }
 
+        [UsesVerify]
         public sealed class TheSplitLinesMethod
         {
             [Fact]
@@ -73,7 +76,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Split_Segments_With_Linebreak_In_Text()
+            public Task Should_Split_Segments_With_Linebreak_In_Text()
             {
                 var context = new RenderContext(Encoding.UTF8, false);
                 var lines = Segment.SplitLines(
@@ -88,20 +91,7 @@ namespace Spectre.Console.Tests.Unit
                     });
 
                 // Then
-                lines.Count.ShouldBe(4);
-
-                lines[0].Count.ShouldBe(1);
-                lines[0][0].Text.ShouldBe("Foo");
-
-                lines[1].Count.ShouldBe(1);
-                lines[1][0].Text.ShouldBe("Bar");
-
-                lines[2].Count.ShouldBe(2);
-                lines[2][0].Text.ShouldBe("Baz");
-                lines[2][1].Text.ShouldBe("Qux");
-
-                lines[3].Count.ShouldBe(1);
-                lines[3][0].Text.ShouldBe("Corgi");
+                return Verifier.Verify(lines);
             }
         }
     }

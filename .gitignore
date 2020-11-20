@@ -88,3 +88,5 @@ packages
 
 # Windows
 Thumbs.db
+
+*.received.*

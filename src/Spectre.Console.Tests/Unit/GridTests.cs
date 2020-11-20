@@ -1,9 +1,12 @@
 using System;
+using System.Threading.Tasks;
 using Shouldly;
+using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
+    [UsesVerify]
     public sealed class GridTests
     {
         public sealed class TheAddColumnMethod
@@ -208,7 +211,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Should_Render_Grid()
+        public Task Should_Render_Grid()
         {
             var console = new PlainConsole(width: 80);
             var grid = new Grid();
@@ -222,11 +225,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(grid);
 
             // Then
-            console.Lines.Count.ShouldBe(4);
-            console.Lines[0].ShouldBe("Options                                                         ");
-            console.Lines[1].ShouldBe("  -h, --help             Show command line help.                ");
-            console.Lines[2].ShouldBe("  -c, --configuration    The configuration to run for.          ");
-            console.Lines[3].ShouldBe("                         The default for most projects is Debug.");
+            return Verifier.Verify(console.Lines);
         }
     }
 }

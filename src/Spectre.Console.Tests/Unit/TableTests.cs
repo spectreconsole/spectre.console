@@ -1,9 +1,12 @@
 using System;
+using System.Threading.Tasks;
 using Shouldly;
+using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
+    [UsesVerify]
     public sealed class TableTests
     {
         public sealed class TheAddColumnMethod
@@ -117,10 +120,11 @@ namespace Spectre.Console.Tests.Unit
             }
         }
 
+        [UsesVerify]
         public sealed class TheAddEmptyRowMethod
         {
             [Fact]
-            public void Should_Render_Table_Correctly()
+            public Task Should_Render_Table_Correctly()
             {
                 // Given
                 var console = new PlainConsole(width: 80);
@@ -134,19 +138,12 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                console.Lines.Count.ShouldBe(7);
-                console.Lines[0].ShouldBe("┌────────┬────────┬───────┐");
-                console.Lines[1].ShouldBe("│ Foo    │ Bar    │ Baz   │");
-                console.Lines[2].ShouldBe("├────────┼────────┼───────┤");
-                console.Lines[3].ShouldBe("│ Qux    │ Corgi  │ Waldo │");
-                console.Lines[4].ShouldBe("│        │        │       │");
-                console.Lines[5].ShouldBe("│ Grault │ Garply │ Fred  │");
-                console.Lines[6].ShouldBe("└────────┴────────┴───────┘");
+                return Verifier.Verify(console.Lines);
             }
         }
 
         [Fact]
-        public void Should_Render_Table_Correctly()
+        public Task Should_Render_Table_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -159,17 +156,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(6);
-            console.Lines[0].ShouldBe("┌────────┬────────┬───────┐");
-            console.Lines[1].ShouldBe("│ Foo    │ Bar    │ Baz   │");
-            console.Lines[2].ShouldBe("├────────┼────────┼───────┤");
-            console.Lines[3].ShouldBe("│ Qux    │ Corgi  │ Waldo │");
-            console.Lines[4].ShouldBe("│ Grault │ Garply │ Fred  │");
-            console.Lines[5].ShouldBe("└────────┴────────┴───────┘");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Render_Table_With_Footers_Correctly()
+        public Task Should_Render_Table_With_Footers_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -184,19 +175,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(8);
-            console.Lines[0].ShouldBe("┌────────┬────────┬───────┐");
-            console.Lines[1].ShouldBe("│    Foo │ Bar    │ Baz   │");
-            console.Lines[2].ShouldBe("├────────┼────────┼───────┤");
-            console.Lines[3].ShouldBe("│    Qux │ Corgi  │ Waldo │");
-            console.Lines[4].ShouldBe("│ Grault │ Garply │ Fred  │");
-            console.Lines[5].ShouldBe("├────────┼────────┼───────┤");
-            console.Lines[6].ShouldBe("│    Oof │        │ Zab   │");
-            console.Lines[7].ShouldBe("└────────┴────────┴───────┘");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Left_Align_Table_Correctly()
+        public Task Should_Left_Align_Table_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -210,17 +193,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(6);
-            console.Lines[0].ShouldBe("┌────────┬────────┬───────┐");
-            console.Lines[1].ShouldBe("│ Foo    │ Bar    │ Baz   │");
-            console.Lines[2].ShouldBe("├────────┼────────┼───────┤");
-            console.Lines[3].ShouldBe("│ Qux    │ Corgi  │ Waldo │");
-            console.Lines[4].ShouldBe("│ Grault │ Garply │ Fred  │");
-            console.Lines[5].ShouldBe("└────────┴────────┴───────┘");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Center_Table_Correctly()
+        public Task Should_Center_Table_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -234,17 +211,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(6);
-            console.Lines[0].ShouldBe("                          ┌────────┬────────┬───────┐                           ");
-            console.Lines[1].ShouldBe("                          │ Foo    │ Bar    │ Baz   │                           ");
-            console.Lines[2].ShouldBe("                          ├────────┼────────┼───────┤                           ");
-            console.Lines[3].ShouldBe("                          │ Qux    │ Corgi  │ Waldo │                           ");
-            console.Lines[4].ShouldBe("                          │ Grault │ Garply │ Fred  │                           ");
-            console.Lines[5].ShouldBe("                          └────────┴────────┴───────┘                           ");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Right_Align_Table_Correctly()
+        public Task Should_Right_Align_Table_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -258,17 +229,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(6);
-            console.Lines[0].ShouldBe("                                                     ┌────────┬────────┬───────┐");
-            console.Lines[1].ShouldBe("                                                     │ Foo    │ Bar    │ Baz   │");
-            console.Lines[2].ShouldBe("                                                     ├────────┼────────┼───────┤");
-            console.Lines[3].ShouldBe("                                                     │ Qux    │ Corgi  │ Waldo │");
-            console.Lines[4].ShouldBe("                                                     │ Grault │ Garply │ Fred  │");
-            console.Lines[5].ShouldBe("                                                     └────────┴────────┴───────┘");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Render_Table_Nested_In_Panels_Correctly()
+        public Task Should_Render_Table_Nested_In_Panels_Correctly()
         {
             // A simple table
             var console = new PlainConsole(width: 80);
@@ -286,22 +251,11 @@ namespace Spectre.Console.Tests.Unit
             }));
 
             // Then
-            console.Lines.Count.ShouldBe(11);
-            console.Lines[00].ShouldBe("┌───────────────────────────────────┐");
-            console.Lines[01].ShouldBe("│ +-------------------------------+ │");
-            console.Lines[02].ShouldBe("│ | ╭──────────┬────────┬───────╮ | │");
-            console.Lines[03].ShouldBe("│ | │ Foo      │ Bar    │   Baz │ | │");
-            console.Lines[04].ShouldBe("│ | ├──────────┼────────┼───────┤ | │");
-            console.Lines[05].ShouldBe("│ | │ Qux      │ Corgi  │ Waldo │ | │");
-            console.Lines[06].ShouldBe("│ | │ Quuuuuux │        │       │ | │");
-            console.Lines[07].ShouldBe("│ | │ Grault   │ Garply │  Fred │ | │");
-            console.Lines[08].ShouldBe("│ | ╰──────────┴────────┴───────╯ | │");
-            console.Lines[09].ShouldBe("│ +-------------------------------+ │");
-            console.Lines[10].ShouldBe("└───────────────────────────────────┘");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Render_Table_With_Column_Justification_Correctly()
+        public Task Should_Render_Table_With_Column_Justification_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -316,17 +270,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(6);
-            console.Lines[0].ShouldBe("┌────────┬────────┬────────────────────────────┐");
-            console.Lines[1].ShouldBe("│ Foo    │    Bar │            Baz             │");
-            console.Lines[2].ShouldBe("├────────┼────────┼────────────────────────────┤");
-            console.Lines[3].ShouldBe("│ Qux    │  Corgi │           Waldo            │");
-            console.Lines[4].ShouldBe("│ Grault │ Garply │ Lorem ipsum dolor sit amet │");
-            console.Lines[5].ShouldBe("└────────┴────────┴────────────────────────────┘");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Expand_Table_To_Available_Space_If_Specified()
+        public Task Should_Expand_Table_To_Available_Space_If_Specified()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -339,18 +287,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(6);
-            console.Lines[0].Length.ShouldBe(80);
-            console.Lines[0].ShouldBe("┌───────────────────────────┬───────────────────────────┬──────────────────────┐");
-            console.Lines[1].ShouldBe("│ Foo                       │ Bar                       │ Baz                  │");
-            console.Lines[2].ShouldBe("├───────────────────────────┼───────────────────────────┼──────────────────────┤");
-            console.Lines[3].ShouldBe("│ Qux                       │ Corgi                     │ Waldo                │");
-            console.Lines[4].ShouldBe("│ Grault                    │ Garply                    │ Fred                 │");
-            console.Lines[5].ShouldBe("└───────────────────────────┴───────────────────────────┴──────────────────────┘");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Render_Table_With_No_Border_Correctly()
+        public Task Should_Render_Table_With_No_Border_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -363,14 +304,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(3);
-            console.Lines[0].ShouldBe("Foo    Bar    Baz  ");
-            console.Lines[1].ShouldBe("Qux    Corgi  Waldo");
-            console.Lines[2].ShouldBe("Grault Garply Fred ");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Render_Table_With_Multiple_Rows_In_Cell_Correctly()
+        public Task Should_Render_Table_With_Multiple_Rows_In_Cell_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -383,18 +321,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(7);
-            console.Lines[0].ShouldBe("┌────────┬────────┬───────┐");
-            console.Lines[1].ShouldBe("│ Foo    │ Bar    │ Baz   │");
-            console.Lines[2].ShouldBe("├────────┼────────┼───────┤");
-            console.Lines[3].ShouldBe("│ Qux    │ Corgi  │ Waldo │");
-            console.Lines[4].ShouldBe("│ Quuux  │        │       │");
-            console.Lines[5].ShouldBe("│ Grault │ Garply │ Fred  │");
-            console.Lines[6].ShouldBe("└────────┴────────┴───────┘");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Render_Table_With_Cell_Padding_Correctly()
+        public Task Should_Render_Table_With_Cell_Padding_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -408,18 +339,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(7);
-            console.Lines[0].ShouldBe("┌────────┬────────┬──────────┐");
-            console.Lines[1].ShouldBe("│ Foo    │ Bar    │   Baz    │");
-            console.Lines[2].ShouldBe("├────────┼────────┼──────────┤");
-            console.Lines[3].ShouldBe("│ Qux    │ Corgi  │   Waldo  │");
-            console.Lines[4].ShouldBe("│ Quuux  │        │          │");
-            console.Lines[5].ShouldBe("│ Grault │ Garply │   Fred   │");
-            console.Lines[6].ShouldBe("└────────┴────────┴──────────┘");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Render_Table_Without_Footer_If_No_Rows_Are_Added()
+        public Task Should_Render_Table_Without_Footer_If_No_Rows_Are_Added()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -431,14 +355,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(3);
-            console.Lines[0].ShouldBe("┌─────┬─────┬────────┐");
-            console.Lines[1].ShouldBe("│ Foo │ Bar │   Baz  │");
-            console.Lines[2].ShouldBe("└─────┴─────┴────────┘");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Not_Draw_Tables_That_Are_Impossible_To_Draw()
+        public Task Should_Not_Draw_Tables_That_Are_Impossible_To_Draw()
         {
             // Given
             var console = new PlainConsole(width: 25);
@@ -471,23 +392,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(12);
-            console.Lines[00].ShouldBe("╭───────┬───────┬───────╮");
-            console.Lines[01].ShouldBe("│ ┌───┐ │ ┌───┐ │ ┌───┐ │");
-            console.Lines[02].ShouldBe("│ │ A │ │ │ D │ │ │ G │ │");
-            console.Lines[03].ShouldBe("│ │ B │ │ │ E │ │ │ H │ │");
-            console.Lines[04].ShouldBe("│ │ C │ │ │ F │ │ │ I │ │");
-            console.Lines[05].ShouldBe("│ └───┘ │ └───┘ │ └───┘ │");
-            console.Lines[06].ShouldBe("├───────┼───────┼───────┤");
-            console.Lines[07].ShouldBe("│ Hello │ World │       │");
-            console.Lines[08].ShouldBe("│ …     │ Whaat │   Lol │");
-            console.Lines[09].ShouldBe("│ Hej   │ Värld │       │");
-            console.Lines[10].ShouldBe("│       │ en    │       │");
-            console.Lines[11].ShouldBe("╰───────┴───────┴───────╯");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Render_Table_With_Title_And_Caption_Correctly()
+        public Task Should_Render_Table_With_Title_And_Caption_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -502,19 +411,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(8);
-            console.Lines[0].ShouldBe("        Hello World        ");
-            console.Lines[1].ShouldBe("╭────────┬────────┬───────╮");
-            console.Lines[2].ShouldBe("│ Foo    │ Bar    │ Baz   │");
-            console.Lines[3].ShouldBe("├────────┼────────┼───────┤");
-            console.Lines[4].ShouldBe("│ Qux    │ Corgi  │ Waldo │");
-            console.Lines[5].ShouldBe("│ Grault │ Garply │ Fred  │");
-            console.Lines[6].ShouldBe("╰────────┴────────┴───────╯");
-            console.Lines[7].ShouldBe("       Goodbye World       ");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Left_Align_Table_With_Title_And_Caption_Correctly()
+        public Task Should_Left_Align_Table_With_Title_And_Caption_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -530,19 +431,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(8);
-            console.Lines[0].ShouldBe("        Hello World        ");
-            console.Lines[1].ShouldBe("╭────────┬────────┬───────╮");
-            console.Lines[2].ShouldBe("│ Foo    │ Bar    │ Baz   │");
-            console.Lines[3].ShouldBe("├────────┼────────┼───────┤");
-            console.Lines[4].ShouldBe("│ Qux    │ Corgi  │ Waldo │");
-            console.Lines[5].ShouldBe("│ Grault │ Garply │ Fred  │");
-            console.Lines[6].ShouldBe("╰────────┴────────┴───────╯");
-            console.Lines[7].ShouldBe("       Goodbye World       ");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Center_Table_With_Title_And_Caption_Correctly()
+        public Task Should_Center_Table_With_Title_And_Caption_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -558,19 +451,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(8);
-            console.Lines[0].ShouldBe("                                  Hello World                                   ");
-            console.Lines[1].ShouldBe("                          ╭────────┬────────┬───────╮                           ");
-            console.Lines[2].ShouldBe("                          │ Foo    │ Bar    │ Baz   │                           ");
-            console.Lines[3].ShouldBe("                          ├────────┼────────┼───────┤                           ");
-            console.Lines[4].ShouldBe("                          │ Qux    │ Corgi  │ Waldo │                           ");
-            console.Lines[5].ShouldBe("                          │ Grault │ Garply │ Fred  │                           ");
-            console.Lines[6].ShouldBe("                          ╰────────┴────────┴───────╯                           ");
-            console.Lines[7].ShouldBe("                                 Goodbye World                                  ");
+            return Verifier.Verify(console.Lines);
         }
 
         [Fact]
-        public void Should_Right_Align_Table_With_Title_And_Caption_Correctly()
+        public Task Should_Right_Align_Table_With_Title_And_Caption_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -586,15 +471,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(table);
 
             // Then
-            console.Lines.Count.ShouldBe(8);
-            console.Lines[0].ShouldBe("                                                             Hello World        ");
-            console.Lines[1].ShouldBe("                                                     ╭────────┬────────┬───────╮");
-            console.Lines[2].ShouldBe("                                                     │ Foo    │ Bar    │ Baz   │");
-            console.Lines[3].ShouldBe("                                                     ├────────┼────────┼───────┤");
-            console.Lines[4].ShouldBe("                                                     │ Qux    │ Corgi  │ Waldo │");
-            console.Lines[5].ShouldBe("                                                     │ Grault │ Garply │ Fred  │");
-            console.Lines[6].ShouldBe("                                                     ╰────────┴────────┴───────╯");
-            console.Lines[7].ShouldBe("                                                            Goodbye World       ");
+            return Verifier.Verify(console.Lines);
         }
     }
 }

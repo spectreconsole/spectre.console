@@ -1,11 +1,15 @@
+using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Rendering;
+using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
+    [UsesVerify]
     public sealed class BoxBorderTests
     {
+        [UsesVerify]
         public sealed class NoBorder
         {
             public sealed class TheSafeGetBorderMethod
@@ -22,7 +26,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -32,13 +36,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(panel);
 
                 // Then
-                console.Lines.Count.ShouldBe(3);
-                console.Lines[0].ShouldBe("  Greeting     ");
-                console.Lines[1].ShouldBe("  Hello World  ");
-                console.Lines[2].ShouldBe("               ");
+                return Verifier.Verify(console.Lines);
             }
         }
 
+        [UsesVerify]
         public sealed class AsciiBorder
         {
             public sealed class TheSafeGetBorderMethod
@@ -55,7 +57,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -65,13 +67,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(panel);
 
                 // Then
-                console.Lines.Count.ShouldBe(3);
-                console.Lines[0].ShouldBe("+-Greeting----+");
-                console.Lines[1].ShouldBe("| Hello World |");
-                console.Lines[2].ShouldBe("+-------------+");
+                return Verifier.Verify(console.Lines);
             }
         }
 
+        [UsesVerify]
         public sealed class DoubleBorder
         {
             public sealed class TheSafeGetBorderMethod
@@ -88,7 +88,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -98,13 +98,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(panel);
 
                 // Then
-                console.Lines.Count.ShouldBe(3);
-                console.Lines[0].ShouldBe("╔═Greeting════╗");
-                console.Lines[1].ShouldBe("║ Hello World ║");
-                console.Lines[2].ShouldBe("╚═════════════╝");
+                return Verifier.Verify(console.Lines);
             }
         }
 
+        [UsesVerify]
         public sealed class HeavyBorder
         {
             public sealed class TheSafeGetBorderMethod
@@ -121,7 +119,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -131,13 +129,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(panel);
 
                 // Then
-                console.Lines.Count.ShouldBe(3);
-                console.Lines[0].ShouldBe("┏━Greeting━━━━┓");
-                console.Lines[1].ShouldBe("┃ Hello World ┃");
-                console.Lines[2].ShouldBe("┗━━━━━━━━━━━━━┛");
+                return Verifier.Verify(console.Lines);
             }
         }
 
+        [UsesVerify]
         public sealed class RoundedBorder
         {
             [Fact]
@@ -151,7 +147,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -161,13 +157,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(panel);
 
                 // Then
-                console.Lines.Count.ShouldBe(3);
-                console.Lines[0].ShouldBe("╭─Greeting────╮");
-                console.Lines[1].ShouldBe("│ Hello World │");
-                console.Lines[2].ShouldBe("╰─────────────╯");
+                return Verifier.Verify(console.Lines);
             }
         }
 
+        [UsesVerify]
         public sealed class SquareBorder
         {
             [Fact]
@@ -181,7 +175,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Render_As_Expected()
+            public Task Should_Render_As_Expected()
             {
                 // Given
                 var console = new PlainConsole();
@@ -191,10 +185,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(panel);
 
                 // Then
-                console.Lines.Count.ShouldBe(3);
-                console.Lines[0].ShouldBe("┌─Greeting────┐");
-                console.Lines[1].ShouldBe("│ Hello World │");
-                console.Lines[2].ShouldBe("└─────────────┘");
+                return Verifier.Verify(console.Lines);
             }
         }
 

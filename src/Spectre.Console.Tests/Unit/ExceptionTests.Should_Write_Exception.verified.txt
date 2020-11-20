@@ -1,0 +1,6 @@
+[
+  System.InvalidOperationException: Throwing!,
+    at Spectre.Console.Tests.Data.TestExceptions.MethodThatThrows(Nullable`1 number) in C:\Code\spectre.console\src\Spectre.Console.Tests\Data\Exceptions.cs:9      ,
+    at Spectre.Console.Tests.Unit.ExceptionTests.<>c.<Should_Write_Exception>b__0_0() in C:\Code\spectre.console\src\Spectre.Console.Tests\Unit\ExceptionTests.cs:17,
+    at Spectre.Console.Tests.Unit.ExceptionTests.GetException(Action action) in C:\Code\spectre.console\src\Spectre.Console.Tests\Unit\ExceptionTests.cs:72         
+]

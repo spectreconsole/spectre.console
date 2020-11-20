@@ -1,9 +1,11 @@
 using System.Collections.Generic;
-using Shouldly;
+using System.Threading.Tasks;
+using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
+    [UsesVerify]
     public sealed class ColumnsTests
     {
         private sealed class User
@@ -13,7 +15,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Should_Render_Columns_Correctly()
+        public Task Should_Render_Columns_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 61);
@@ -36,11 +38,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(new Columns(cards));
 
             // Then
-            console.Lines.Count.ShouldBe(4);
-            console.Lines[0].ShouldBe("╭────────────────────╮ ╭────────────────╮ ╭─────────────────╮");
-            console.Lines[1].ShouldBe("│ Savannah Thompson  │ │ Sophie Ramos   │ │ Katrin Goldberg │");
-            console.Lines[2].ShouldBe("│ Australia          │ │ United States  │ │ Germany         │");
-            console.Lines[3].ShouldBe("╰────────────────────╯ ╰────────────────╯ ╰─────────────────╯");
+            return Verifier.Verify(console.Lines);
         }
     }
 }

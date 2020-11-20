@@ -1,0 +1,5 @@
+[
+  Favorite fruit? [Banana/Orange] (Banana): Apple,
+  Please select one of the available options,
+  Favorite fruit? [Banana/Orange] (Banana): Banana
+]
