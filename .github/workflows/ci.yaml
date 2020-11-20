@@ -83,3 +83,11 @@ jobs:
         run: |
           dotnet tool restore
           dotnet cake
+      
+      - name: Upload Test Results
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: verify-test-results
+          path: |
+            **/*.received.*
