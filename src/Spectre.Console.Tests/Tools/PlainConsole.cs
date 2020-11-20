@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Spectre.Console.Rendering;
 
@@ -25,9 +24,8 @@ namespace Spectre.Console.Tests
         public string Link { get; set; }
 
         public StringWriter Writer { get; }
-        public string RawOutput => Writer.ToString();
-        public string Output => Writer.ToString().TrimEnd('\n');
-        public IReadOnlyList<string> Lines => Output.Split(new char[] { '\n' });
+        public string Output => Writer.ToString();
+        public IReadOnlyList<string> Lines => Output.TrimEnd('\n').Split(new char[] { '\n' });
 
         public PlainConsole(
             int width = 80, int height = 9000, Encoding encoding = null,
@@ -61,15 +59,10 @@ namespace Spectre.Console.Tests
             Writer.Write(segment.Text);
         }
 
-        public string[] WriteExceptionAndGetLines(Exception ex, ExceptionFormats formats = ExceptionFormats.Default)
+        public string WriteNormalizedException(Exception ex, ExceptionFormats formats = ExceptionFormats.Default)
         {
             this.WriteException(ex, formats);
-
-            return Output.NormalizeStackTrace()
-                .NormalizeLineEndings()
-                .Split(new char[] { '\n' })
-                .Select(line => line.TrimEnd())
-                .ToArray();
+            return Output.NormalizeStackTrace();
         }
     }
 }

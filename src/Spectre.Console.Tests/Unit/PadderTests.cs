@@ -22,7 +22,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(new Padder(table).Padding(1, 2, 3, 4));
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace Spectre.Console.Tests.Unit
                 .Expand());
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace Spectre.Console.Tests.Unit
                 .Expand());
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
     }
 }

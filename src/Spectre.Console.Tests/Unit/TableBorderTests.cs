@@ -46,7 +46,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -128,7 +128,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -169,7 +169,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -210,7 +210,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -251,7 +251,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -292,7 +292,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -333,7 +333,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -374,7 +374,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -415,7 +415,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -456,7 +456,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -497,7 +497,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -538,7 +538,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -579,7 +579,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -620,7 +620,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -661,7 +661,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -702,7 +702,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 
@@ -743,7 +743,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
 
             [Fact]
@@ -757,7 +757,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
 
             [Fact]
@@ -771,7 +771,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
 
             [Fact]
@@ -785,7 +785,7 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(table);
 
                 // Then
-                return Verifier.Verify(console.Lines);
+                return Verifier.Verify(console.Output);
             }
         }
 

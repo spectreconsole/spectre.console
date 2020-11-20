@@ -225,7 +225,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(grid);
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
     }
 }

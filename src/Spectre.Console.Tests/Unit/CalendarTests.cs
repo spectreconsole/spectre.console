@@ -22,7 +22,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(calendar);
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(calendar);
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(calendar);
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(calendar);
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -94,7 +94,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(calendar);
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
     }
 }

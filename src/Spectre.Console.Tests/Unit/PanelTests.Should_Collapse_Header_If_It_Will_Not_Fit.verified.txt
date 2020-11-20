@@ -1,6 +1,4 @@
-[
-  ┌─Greet…─┐,
-  │ Hello  │,
-  │ World  │,
-  └────────┘
-]
+┌─Greet…─┐
+│ Hello  │
+│ World  │
+└────────┘

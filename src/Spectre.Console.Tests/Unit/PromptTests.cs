@@ -59,7 +59,7 @@ namespace Spectre.Console.Tests.Unit
                     .DefaultValue("Banana"));
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -77,7 +77,7 @@ namespace Spectre.Console.Tests.Unit
                     .DefaultValue("Banana"));
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -109,7 +109,7 @@ namespace Spectre.Console.Tests.Unit
                     }));
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(new Panel(new Text("Hello World")));
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -35,7 +35,7 @@ namespace Spectre.Console.Tests.Unit
             });
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace Spectre.Console.Tests.Unit
             });
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace Spectre.Console.Tests.Unit
             });
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace Spectre.Console.Tests.Unit
             });
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -103,7 +103,7 @@ namespace Spectre.Console.Tests.Unit
             });
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -120,7 +120,7 @@ namespace Spectre.Console.Tests.Unit
             });
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -137,7 +137,7 @@ namespace Spectre.Console.Tests.Unit
             });
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -150,7 +150,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(new Panel(new Text(" \n💩\n ")));
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(new Panel(new Text("Hello World\nFoo Bar")));
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -178,7 +178,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(text);
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -194,7 +194,7 @@ namespace Spectre.Console.Tests.Unit
             });
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -211,7 +211,7 @@ namespace Spectre.Console.Tests.Unit
                 });
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -228,7 +228,7 @@ namespace Spectre.Console.Tests.Unit
                 });
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -241,7 +241,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(new Panel(new Panel(new Text("Hello World"))));
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
@@ -265,7 +265,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(panel);
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(console.Output);
         }
     }
 }

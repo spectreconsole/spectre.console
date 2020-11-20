@@ -1,6 +1,4 @@
-[
-  InvalidOperationException: Throwing!,
-    at Spectre.Console.Tests.Data.TestExceptions.MethodThatThrows(Nullable`1 number) in /xyz/Exceptions.cs:nn,
-    at Spectre.Console.Tests.Unit.ExceptionTests.<>c.<Should_Write_Exception_With_Shortened_Types>b__1_0() in /xyz/ExceptionTests.cs:nn,
-    at Spectre.Console.Tests.Unit.ExceptionTests.GetException(Action action) in /xyz/ExceptionTests.cs:nn
-]
+InvalidOperationException: Throwing!
+  at Spectre.Console.Tests.Data.TestExceptions.MethodThatThrows(Nullable`1 number) in /xyz/Exceptions.cs:nn                           
+  at Spectre.Console.Tests.Unit.ExceptionTests.<>c.<Should_Write_Exception_With_Shortened_Types>b__1_0() in /xyz/ExceptionTests.cs:nn
+  at Spectre.Console.Tests.Unit.ExceptionTests.GetException(Action action) in /xyz/ExceptionTests.cs:nn                              

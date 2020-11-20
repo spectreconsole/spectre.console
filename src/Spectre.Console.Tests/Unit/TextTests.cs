@@ -44,9 +44,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(text);
 
             // Then
-            console.Output
-                .NormalizeLineEndings()
-                .ShouldBe("Hello World");
+            console.Output.ShouldBe("Hello World");
         }
 
         [Theory]
@@ -62,7 +60,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(text);
 
             // Then
-            console.RawOutput.ShouldBe("Hello\n\nWorld\n\n");
+            console.Output.ShouldBe("Hello\n\nWorld\n\n");
         }
 
         [Fact]

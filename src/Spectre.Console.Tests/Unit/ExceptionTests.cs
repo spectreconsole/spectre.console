@@ -17,7 +17,7 @@ namespace Spectre.Console.Tests.Unit
             var dex = GetException(() => TestExceptions.MethodThatThrows(null));
 
             // When
-            var result = console.WriteExceptionAndGetLines(dex);
+            var result = console.WriteNormalizedException(dex);
 
             // Then
             return Verifier.Verify(result);
@@ -31,7 +31,7 @@ namespace Spectre.Console.Tests.Unit
             var dex = GetException(() => TestExceptions.MethodThatThrows(null));
 
             // When
-            var result = console.WriteExceptionAndGetLines(dex, ExceptionFormats.ShortenTypes);
+            var result = console.WriteNormalizedException(dex, ExceptionFormats.ShortenTypes);
 
             // Then
             return Verifier.Verify(result);
@@ -45,7 +45,7 @@ namespace Spectre.Console.Tests.Unit
             var dex = GetException(() => TestExceptions.MethodThatThrows(null));
 
             // When
-            var result = console.WriteExceptionAndGetLines(dex, ExceptionFormats.ShortenMethods);
+            var result = console.WriteNormalizedException(dex, ExceptionFormats.ShortenMethods);
 
             // Then
             return Verifier.Verify(result);
@@ -59,7 +59,7 @@ namespace Spectre.Console.Tests.Unit
             var dex = GetException(() => TestExceptions.ThrowWithInnerException());
 
             // When
-            var result = console.WriteExceptionAndGetLines(dex);
+            var result = console.WriteNormalizedException(dex);
 
             // Then
             return Verifier.Verify(result);

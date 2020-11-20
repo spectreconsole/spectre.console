@@ -20,10 +20,10 @@ namespace Spectre.Console.Tests.Unit
                 .AddRow(new Panel("Hello World").RoundedBorder()));
 
             // When
-            var result = recorder.ExportText().Split(new[] { '\n' });
+            var result = recorder.ExportText();
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(result);
         }
 
         [Fact]
@@ -40,11 +40,10 @@ namespace Spectre.Console.Tests.Unit
                     .BorderColor(Color.Red).RoundedBorder()));
 
             // When
-            var html = recorder.ExportHtml();
-            var result = html.Split(new[] { '\n' });
+            var result = recorder.ExportHtml();
 
             // Then
-            return Verifier.Verify(console.Lines);
+            return Verifier.Verify(result);
         }
     }
 }

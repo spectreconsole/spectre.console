@@ -1,3 +1,1 @@
-[
-  Favorite fruit? [Banana/Orange] (Banana): Orange
-]
+Favorite fruit? [Banana/Orange] (Banana): Orange
