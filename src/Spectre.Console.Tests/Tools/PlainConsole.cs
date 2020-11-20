@@ -62,7 +62,7 @@ namespace Spectre.Console.Tests
         public string WriteNormalizedException(Exception ex, ExceptionFormats formats = ExceptionFormats.Default)
         {
             this.WriteException(ex, formats);
-            return Output.NormalizeStackTrace();
+            return Output.NormalizeStackTrace().NormalizeLineEndings();
         }
     }
 }
