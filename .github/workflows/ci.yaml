@@ -84,7 +84,7 @@ jobs:
           dotnet tool restore
           dotnet cake
       
-      - name: Upload Test Results
+      - name: Upload Verify Test Results
         if: failure()
         uses: actions/upload-artifact@v2
         with:
