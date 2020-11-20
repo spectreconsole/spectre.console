@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Spectre.Console.Rendering;
 
@@ -62,7 +63,10 @@ namespace Spectre.Console.Tests
         public string WriteNormalizedException(Exception ex, ExceptionFormats formats = ExceptionFormats.Default)
         {
             this.WriteException(ex, formats);
-            return Output.NormalizeStackTrace().NormalizeLineEndings();
+            return string.Join("\n", Output.NormalizeStackTrace()
+                .NormalizeLineEndings()
+                .Split(new char[] { '\n' })
+                .Select(line => line.TrimEnd()));
         }
     }
 }
