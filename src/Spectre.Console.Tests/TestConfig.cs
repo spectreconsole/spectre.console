@@ -1,7 +1,7 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace Spectre.Console.Tests.Unit
+namespace Spectre.Console.Tests
 {
     public static class TestConfig
     {
@@ -10,9 +10,13 @@ namespace Spectre.Console.Tests.Unit
         {
             VerifyTests.VerifierSettings.DeriveTestDirectory((_, directory) =>
             {
-                var snapshots = Path.Combine(directory, "Snapshots");
-                Directory.CreateDirectory(snapshots);
-                return Path.Combine(snapshots);
+                var expectations = Path.Combine(directory, "Expectations");
+                if (!Directory.Exists(expectations))
+                {
+                    Directory.CreateDirectory(expectations);
+                }
+
+                return expectations;
             });
         }
     }
