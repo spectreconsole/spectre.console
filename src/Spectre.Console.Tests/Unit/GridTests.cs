@@ -75,10 +75,11 @@ namespace Spectre.Console.Tests.Unit
             }
         }
 
+        [UsesVerify]
         public sealed class TheAddEmptyRowMethod
         {
             [Fact]
-            public void Should_Add_Empty_Row()
+            public Task Should_Add_Empty_Row()
             {
                 // Given
                 var console = new PlainConsole(width: 80);
@@ -92,14 +93,11 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(grid);
 
                 // Then
-                console.Lines.Count.ShouldBe(3);
-                console.Lines[0].ShouldBe("Foo  Bar  ");
-                console.Lines[1].ShouldBe("          ");
-                console.Lines[2].ShouldBe("Qux  Corgi");
+                return Verifier.Verify(console.Output);
             }
 
             [Fact]
-            public void Should_Add_Empty_Row_At_The_End()
+            public Task Should_Add_Empty_Row_At_The_End()
             {
                 // Given
                 var console = new PlainConsole(width: 80);
@@ -114,16 +112,12 @@ namespace Spectre.Console.Tests.Unit
                 console.Render(grid);
 
                 // Then
-                console.Lines.Count.ShouldBe(4);
-                console.Lines[0].ShouldBe("Foo  Bar  ");
-                console.Lines[1].ShouldBe("          ");
-                console.Lines[2].ShouldBe("Qux  Corgi");
-                console.Lines[3].ShouldBe("          ");
+                return Verifier.Verify(console.Output);
             }
         }
 
         [Fact]
-        public void Should_Render_Grid_Correctly()
+        public Task Should_Render_Grid_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -138,13 +132,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(grid);
 
             // Then
-            console.Lines.Count.ShouldBe(2);
-            console.Lines[0].ShouldBe("Qux     Corgi   Waldo");
-            console.Lines[1].ShouldBe("Grault  Garply  Fred ");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
-        public void Should_Render_Grid_Column_Alignment_Correctly()
+        public Task Should_Render_Grid_Column_Alignment_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -160,14 +152,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(grid);
 
             // Then
-            console.Lines.Count.ShouldBe(3);
-            console.Lines[0].ShouldBe("   Foo   Bar    Baz  ");
-            console.Lines[1].ShouldBe("   Qux  Corgi   Waldo");
-            console.Lines[2].ShouldBe("Grault  Garply  Fred ");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
-        public void Should_Use_Default_Padding()
+        public Task Should_Use_Default_Padding()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -181,14 +170,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(grid);
 
             // Then
-            console.Lines.Count.ShouldBe(3);
-            console.Lines[0].ShouldBe("Foo     Bar     Baz  ");
-            console.Lines[1].ShouldBe("Qux     Corgi   Waldo");
-            console.Lines[2].ShouldBe("Grault  Garply  Fred ");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
-        public void Should_Render_Explicit_Grid_Column_Padding_Correctly()
+        public Task Should_Render_Explicit_Grid_Column_Padding_Correctly()
         {
             // Given
             var console = new PlainConsole(width: 80);
@@ -204,10 +190,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(grid);
 
             // Then
-            console.Lines.Count.ShouldBe(3);
-            console.Lines[0].ShouldBe("   Foo   Bar   Baz     ");
-            console.Lines[1].ShouldBe("   Qux   Corgi Waldo   ");
-            console.Lines[2].ShouldBe("   GraultGarplyFred    ");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]

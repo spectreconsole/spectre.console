@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Shouldly;
 using VerifyXunit;
 using Xunit;
 
@@ -25,7 +24,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Should_Chose_Default_Value_If_Nothing_Is_Entered()
+        public Task Should_Chose_Default_Value_If_Nothing_Is_Entered()
         {
             // Given
             var console = new PlainConsole();
@@ -39,8 +38,7 @@ namespace Spectre.Console.Tests.Unit
                     .DefaultValue("Banana"));
 
             // Then
-            console.Lines.Count.ShouldBe(1);
-            console.Lines[0].ShouldBe("Favorite fruit? [Banana/Orange] (Banana): Banana");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]

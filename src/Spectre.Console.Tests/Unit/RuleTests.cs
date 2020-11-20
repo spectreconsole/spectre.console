@@ -1,12 +1,15 @@
+using System.Threading.Tasks;
 using Shouldly;
+using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
+    [UsesVerify]
     public sealed class RuleTests
     {
         [Fact]
-        public void Should_Render_Default_Rule_Without_Title()
+        public Task Should_Render_Default_Rule_Without_Title()
         {
             // Given
             var console = new PlainConsole(width: 40);
@@ -15,12 +18,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(new Rule());
 
             // Then
-            console.Lines.Count.ShouldBe(1);
-            console.Lines[0].ShouldBe("────────────────────────────────────────");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
-        public void Should_Render_Default_Rule_With_Specified_Box()
+        public Task Should_Render_Default_Rule_With_Specified_Box()
         {
             // Given
             var console = new PlainConsole(width: 40);
@@ -29,12 +31,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(new Rule().DoubleBorder());
 
             // Then
-            console.Lines.Count.ShouldBe(1);
-            console.Lines[0].ShouldBe("════════════════════════════════════════");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
-        public void Should_Render_With_Specified_Box()
+        public Task Should_Render_With_Specified_Box()
         {
             // Given
             var console = new PlainConsole(width: 40);
@@ -43,12 +44,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(new Rule("Hello World").DoubleBorder());
 
             // Then
-            console.Lines.Count.ShouldBe(1);
-            console.Lines[0].ShouldBe("═════════════ Hello World ══════════════");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
-        public void Should_Render_Default_Rule_With_Title_Centered_By_Default()
+        public Task Should_Render_Default_Rule_With_Title_Centered_By_Default()
         {
             // Given
             var console = new PlainConsole(width: 40);
@@ -57,12 +57,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(new Rule("Hello World"));
 
             // Then
-            console.Lines.Count.ShouldBe(1);
-            console.Lines[0].ShouldBe("───────────── Hello World ──────────────");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
-        public void Should_Render_Default_Rule_With_Title_Left_Aligned()
+        public Task Should_Render_Default_Rule_With_Title_Left_Aligned()
         {
             // Given
             var console = new PlainConsole(width: 40);
@@ -74,12 +73,11 @@ namespace Spectre.Console.Tests.Unit
             });
 
             // Then
-            console.Lines.Count.ShouldBe(1);
-            console.Lines[0].ShouldBe("── Hello World ─────────────────────────");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
-        public void Should_Render_Default_Rule_With_Title_Right_Aligned()
+        public Task Should_Render_Default_Rule_With_Title_Right_Aligned()
         {
             // Given
             var console = new PlainConsole(width: 40);
@@ -91,12 +89,11 @@ namespace Spectre.Console.Tests.Unit
             });
 
             // Then
-            console.Lines.Count.ShouldBe(1);
-            console.Lines[0].ShouldBe("───────────────────────── Hello World ──");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
-        public void Should_Convert_Line_Breaks_In_Title_To_Spaces()
+        public Task Should_Convert_Line_Breaks_In_Title_To_Spaces()
         {
             // Given
             var console = new PlainConsole(width: 40);
@@ -105,12 +102,11 @@ namespace Spectre.Console.Tests.Unit
             console.Render(new Rule("Hello\nWorld\r\n!"));
 
             // Then
-            console.Lines.Count.ShouldBe(1);
-            console.Lines[0].ShouldBe("──────────── Hello World ! ─────────────");
+            return Verifier.Verify(console.Output);
         }
 
         [Fact]
-        public void Should_Truncate_Title()
+        public Task Should_Truncate_Title()
         {
             // Given
             var console = new PlainConsole(width: 40);
@@ -119,8 +115,7 @@ namespace Spectre.Console.Tests.Unit
             console.Render(new Rule("          Hello World    "));
 
             // Then
-            console.Lines.Count.ShouldBe(1);
-            console.Lines[0].ShouldBe("───────────── Hello World ──────────────");
+            return Verifier.Verify(console.Output);
         }
 
         [Theory]

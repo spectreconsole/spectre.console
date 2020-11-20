@@ -19,23 +19,21 @@ namespace Spectre.Console.Tests.Unit
             result.ShouldBe(4);
         }
 
+        [UsesVerify]
         public sealed class TheSplitMethod
         {
             [Fact]
-            public void Should_Split_Segment_Correctly()
+            public Task Should_Split_Segment_Correctly()
             {
                 // Given
                 var style = new Style(Color.Red, Color.Green, Decoration.Bold);
                 var segment = new Segment("Foo Bar", style);
 
                 // When
-                var (first, second) = segment.Split(3);
+                var result = segment.Split(3);
 
                 // Then
-                first.Text.ShouldBe("Foo");
-                first.Style.ShouldBe(style);
-                second.Text.ShouldBe(" Bar");
-                second.Style.ShouldBe(style);
+                return Verifier.Verify(result);
             }
         }
 
@@ -43,7 +41,7 @@ namespace Spectre.Console.Tests.Unit
         public sealed class TheSplitLinesMethod
         {
             [Fact]
-            public void Should_Split_Segment()
+            public Task Should_Split_Segment()
             {
                 var context = new RenderContext(Encoding.UTF8, false);
 
@@ -73,6 +71,7 @@ namespace Spectre.Console.Tests.Unit
 
                 lines[2].Count.ShouldBe(1);
                 lines[2][0].Text.ShouldBe("Corgi");
+                return Verifier.Verify(lines);
             }
 
             [Fact]
