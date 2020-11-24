@@ -65,6 +65,20 @@ namespace Spectre.Console.Tests.Unit
             return Verifier.Verify(result);
         }
 
+        [Fact]
+        public Task Should_Write_Exceptions_With_Generic_Type_Parameters_In_Callsite_As_Expected()
+        {
+            // Given
+            var console = new PlainConsole(width: 1024);
+            var dex = GetException(() => TestExceptions.ThrowWithGenericInnerException());
+
+            // When
+            var result = console.WriteNormalizedException(dex);
+
+            // Then
+            return Verifier.Verify(result);
+        }
+
         public static Exception GetException(Action action)
         {
             try
