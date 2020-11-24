@@ -1,0 +1,7 @@
+System.InvalidOperationException: Something threw!
+     System.InvalidOperationException: Throwing!
+       at Spectre.Console.Tests.Data.TestExceptions.GenericMethodThatThrows[[T0,T1,TRet]](Nullable`1 number) in /xyz/Exceptions.cs:nn
+       at Spectre.Console.Tests.Data.TestExceptions.ThrowWithGenericInnerException() in /xyz/Exceptions.cs:nn
+  at Spectre.Console.Tests.Data.TestExceptions.ThrowWithGenericInnerException() in /xyz/Exceptions.cs:nn
+  at Spectre.Console.Tests.Unit.ExceptionTests.<>c.<Should_Write_Exceptions_With_Generic_Type_Parameters_In_Callsite_As_Expected>b__4_0() in /xyz/ExceptionTests.cs:nn
+  at Spectre.Console.Tests.Unit.ExceptionTests.GetException(Action action) in /xyz/ExceptionTests.cs:nn

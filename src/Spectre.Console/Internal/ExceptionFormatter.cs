@@ -41,12 +41,15 @@ namespace Spectre.Console.Internal
         {
             var shortenTypes = (settings.Format & ExceptionFormats.ShortenTypes) != 0;
             var type = Emphasize(ex.Type, new[] { '.' }, settings.Style.Exception, shortenTypes, settings);
+
             var message = $"[{settings.Style.Message.ToMarkup()}]{ex.Message.EscapeMarkup()}[/]";
             return new Markup(string.Concat(type, ": ", message));
         }
 
         private static Grid GetStackFrames(ExceptionInfo ex, ExceptionSettings settings)
         {
+            var styles = settings.Style;
+
             var grid = new Grid();
             grid.AddColumn(new GridColumn().PadLeft(2).PadRight(0).NoWrap());
             grid.AddColumn(new GridColumn().PadLeft(1).PadRight(0));
@@ -66,14 +69,16 @@ namespace Spectre.Console.Internal
 
                 // Method
                 var shortenMethods = (settings.Format & ExceptionFormats.ShortenMethods) != 0;
-                builder.Append(Emphasize(frame.Method, new[] { '.' }, settings.Style.Method, shortenMethods, settings));
-                builder.Append('[').Append(settings.Style.Parenthesis.ToMarkup()).Append(']').Append('(').Append("[/]");
+                builder.Append(Emphasize(frame.Method, new[] { '.' }, styles.Method, shortenMethods, settings));
+                builder.AppendWithStyle(styles.Parenthesis, "(");
                 AppendParameters(builder, frame, settings);
-                builder.Append('[').Append(settings.Style.Parenthesis.ToMarkup()).Append(']').Append(')').Append("[/]");
+                builder.AppendWithStyle(styles.Parenthesis, ")");
 
                 if (frame.Path != null)
                 {
-                    builder.Append(" [").Append(settings.Style.Dimmed.ToMarkup()).Append("]in[/] ");
+                    builder.Append(' ');
+                    builder.AppendWithStyle(styles.Dimmed, "in");
+                    builder.Append(' ');
 
                     // Path
                     AppendPath(builder, frame, settings);
@@ -81,13 +86,13 @@ namespace Spectre.Console.Internal
                     // Line number
                     if (frame.LineNumber != null)
                     {
-                        builder.Append('[').Append(settings.Style.Dimmed.ToMarkup()).Append("]:[/]");
-                        builder.Append('[').Append(settings.Style.LineNumber.ToMarkup()).Append(']').Append(frame.LineNumber).Append("[/]");
+                        builder.AppendWithStyle(styles.Dimmed, ":");
+                        builder.AppendWithStyle(styles.LineNumber, frame.LineNumber);
                     }
                 }
 
                 grid.AddRow(
-                    $"[{settings.Style.Dimmed.ToMarkup()}]at[/]",
+                    $"[{styles.Dimmed.ToMarkup()}]at[/]",
                     builder.ToString());
             }
 
@@ -98,7 +103,7 @@ namespace Spectre.Console.Internal
         {
             var typeColor = settings.Style.ParameterType.ToMarkup();
             var nameColor = settings.Style.ParameterName.ToMarkup();
-            var parameters = frame.Parameters.Select(x => $"[{typeColor}]{x.Type.EscapeMarkup()}[/] [{nameColor}]{x.Name}[/]");
+            var parameters = frame.Parameters.Select(x => $"[{typeColor}]{x.Type.EscapeMarkup()}[/] [{nameColor}]{x.Name.EscapeMarkup()}[/]");
             builder.Append(string.Join(", ", parameters));
         }
 
@@ -146,16 +151,18 @@ namespace Spectre.Console.Internal
             {
                 if (!compact)
                 {
-                    builder.Append('[').Append(settings.Style.NonEmphasized.ToMarkup()).Append(']')
-                        .Append(type, 0, index + 1).Append("[/]");
+                    builder.AppendWithStyle(
+                        settings.Style.NonEmphasized,
+                        type.Substring(0, index + 1).EscapeMarkup());
                 }
 
-                builder.Append('[').Append(color.ToMarkup()).Append(']')
-                    .Append(type, index + 1, type.Length - index - 1).Append("[/]");
+                builder.AppendWithStyle(
+                    color,
+                    type.Substring(index + 1, type.Length - index - 1).EscapeMarkup());
             }
             else
             {
-                builder.Append(type);
+                builder.Append(type.EscapeMarkup());
             }
 
             return builder.ToString();
