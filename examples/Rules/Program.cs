@@ -7,34 +7,34 @@ namespace EmojiExample
         public static void Main(string[] args)
         {
             // No title
-            WrapInPanel(
+            Render(
                 new Rule()
                     .RuleStyle(Style.Parse("yellow"))
                     .AsciiBorder()
                     .LeftAligned());
 
             // Left aligned title
-            WrapInPanel(
+            Render(
                 new Rule("[blue]Left aligned[/]")
                     .RuleStyle(Style.Parse("red"))
                     .DoubleBorder()
                     .LeftAligned());
 
             // Centered title
-            WrapInPanel(
+            Render(
                 new Rule("[green]Centered[/]")
                     .RuleStyle(Style.Parse("green"))
                     .HeavyBorder()
                     .Centered());
 
             // Right aligned title
-            WrapInPanel(
+            Render(
                 new Rule("[red]Right aligned[/]")
                     .RuleStyle(Style.Parse("blue"))
                     .RightAligned());
         }
 
-        private static void WrapInPanel(Rule rule)
+        private static void Render(Rule rule)
         {
             AnsiConsole.Render(rule);
             AnsiConsole.WriteLine();
