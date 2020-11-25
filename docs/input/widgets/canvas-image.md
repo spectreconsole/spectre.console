@@ -69,7 +69,7 @@ image.Mutate(ctx => ctx.Grayscale().Rotate(-45).EntropyCrop());
 AnsiConsole.Render(image);
 ```
 
-# Result
+## Result
 
 <pre style="font-size:90%;font-family:consolas,'Courier New',monospace;line-height: normal; padding: 0px;background-color: #222222; padding: 20px;">
 <span>                    </span><span style="background-color: #282828">  </span><span style="background-color: #222222">  </span><span style="background-color: #232323">  </span><span style="background-color: #353535">  </span><span style="background-color: #4B4B4B">  </span><span style="background-color: #595959">    </span><span style="background-color: #3B3B3B">  </span><span style="background-color: #202020">  </span><span style="background-color: #191919">  </span><span>                        </span>
