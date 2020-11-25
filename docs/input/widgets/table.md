@@ -1,5 +1,5 @@
 Title: Table
-Order: 3
+Order: 0
 RedirectFrom: tables
 ---
 
