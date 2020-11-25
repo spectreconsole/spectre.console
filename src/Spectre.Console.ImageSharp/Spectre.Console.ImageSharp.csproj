@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Nullable>enable</Nullable>
-    <Description>A library that extends Spectre.Console with ImageSharp super powers.</Description>
+    <Description>A library that extends Spectre.Console with ImageSharp superpowers.</Description>
   </PropertyGroup>
 
   <ItemGroup>
