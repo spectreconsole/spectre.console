@@ -51,8 +51,8 @@ AnsiConsole.Render(image);
 
 # Manipulating images
 
-You can take full advantage of using [ImageSharp](https://github.com/SixLabors/ImageSharp)
-and manipulate images directly via the [ImageSharp Processing API](https://docs.sixlabors.com/api/ImageSharp/SixLabors.ImageSharp.Processing.html).
+You can take full advantage of [ImageSharp](https://github.com/SixLabors/ImageSharp)
+and manipulate images directly via it's [Processing API](https://docs.sixlabors.com/api/ImageSharp/SixLabors.ImageSharp.Processing.html).
 
 ```csharp
 // Load an image
