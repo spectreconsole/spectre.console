@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Spectre.Console.Rendering;
@@ -19,16 +20,21 @@ namespace Spectre.Console.Tests
         public int Height => _console.Height;
         public IAnsiConsoleCursor Cursor => _console.Cursor;
         public TestableConsoleInput Input { get; }
+        public RenderPipeline Pipeline => _console.Pipeline;
 
         IAnsiConsoleInput IAnsiConsole.Input => Input;
 
-        public TestableAnsiConsole(ColorSystem system, AnsiSupport ansi = AnsiSupport.Yes, int width = 80)
+        public TestableAnsiConsole(
+            ColorSystem system, AnsiSupport ansi = AnsiSupport.Yes,
+            InteractionSupport interaction = InteractionSupport.Yes,
+            int width = 80)
         {
             _writer = new StringWriter();
             _console = AnsiConsole.Create(new AnsiConsoleSettings
             {
                 Ansi = ansi,
                 ColorSystem = (ColorSystemSupport)system,
+                Interactive = interaction,
                 Out = _writer,
                 LinkIdentityGenerator = new TestLinkIdentityGenerator(),
             });
@@ -47,9 +53,17 @@ namespace Spectre.Console.Tests
             _console.Clear(home);
         }
 
-        public void Write(Segment segment)
+        public void Write(IEnumerable<Segment> segments)
         {
-            _console.Write(segment);
+            if (segments is null)
+            {
+                return;
+            }
+
+            foreach (var segment in segments)
+            {
+                _console.Write(segment);
+            }
         }
     }
 }

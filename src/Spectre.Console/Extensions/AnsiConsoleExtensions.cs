@@ -22,10 +22,30 @@ namespace Spectre.Console
         /// Writes the specified string value to the console.
         /// </summary>
         /// <param name="console">The console to write to.</param>
+        /// <param name="segment">The segment to write.</param>
+        public static void Write(this IAnsiConsole console, Segment segment)
+        {
+            if (console is null)
+            {
+                throw new ArgumentNullException(nameof(console));
+            }
+
+            if (segment is null)
+            {
+                throw new ArgumentNullException(nameof(segment));
+            }
+
+            console.Write(new[] { segment });
+        }
+
+        /// <summary>
+        /// Writes the specified string value to the console.
+        /// </summary>
+        /// <param name="console">The console to write to.</param>
         /// <param name="text">The text to write.</param>
         public static void Write(this IAnsiConsole console, string text)
         {
-            Write(console, text, Style.Plain);
+            Render(console, new Text(text, Style.Plain));
         }
 
         /// <summary>
@@ -36,17 +56,7 @@ namespace Spectre.Console
         /// <param name="style">The text style.</param>
         public static void Write(this IAnsiConsole console, string text, Style style)
         {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
-
-            if (text is null)
-            {
-                throw new ArgumentNullException(nameof(text));
-            }
-
-            console.Write(new Segment(text, style));
+            Render(console, new Text(text, style));
         }
 
         /// <summary>
@@ -60,7 +70,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(console));
             }
 
-            console.Write(Environment.NewLine, Style.Plain);
+            Render(console, new Text(Environment.NewLine, Style.Plain));
         }
 
         /// <summary>
@@ -91,8 +101,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(text));
             }
 
-            console.Write(new Segment(text, style));
-            console.WriteLine();
+            console.Write(text + Environment.NewLine, style);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Spectre.Console
             }
 
             alignment ??= panel.Header?.Alignment;
-            return Header(panel, new PanelHeader(text,  alignment));
+            return Header(panel, new PanelHeader(text, alignment));
         }
 
         /// <summary>

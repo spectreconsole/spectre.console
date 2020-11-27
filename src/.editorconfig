@@ -90,3 +90,6 @@ dotnet_diagnostic.IDE0004.severity = warning
 
 # CA1810: Initialize reference type static fields inline
 dotnet_diagnostic.CA1810.severity = none
+
+# IDE0044: Add readonly modifier
+dotnet_diagnostic.IDE0044.severity = warning

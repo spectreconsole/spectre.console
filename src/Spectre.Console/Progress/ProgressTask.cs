@@ -1,0 +1,267 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Spectre.Console.Internal;
+
+namespace Spectre.Console
+{
+    /// <summary>
+    /// Represents a progress task.
+    /// </summary>
+    public sealed class ProgressTask
+    {
+        private readonly List<ProgressSample> _samples;
+        private readonly object _lock;
+
+        private double _maxValue;
+        private string _description;
+
+        /// <summary>
+        /// Gets the task ID.
+        /// </summary>
+        public int Id { get; }
+
+        /// <summary>
+        /// Gets or sets the task description.
+        /// </summary>
+        public string Description
+        {
+            get => _description;
+            set => Update(description: value);
+        }
+
+        /// <summary>
+        /// Gets or sets the max value of the task.
+        /// </summary>
+        public double MaxValue
+        {
+            get => _maxValue;
+            set => Update(maxValue: value);
+        }
+
+        /// <summary>
+        /// Gets the value of the task.
+        /// </summary>
+        public double Value { get; private set; }
+
+        /// <summary>
+        /// Gets the start time of the task.
+        /// </summary>
+        public DateTime? StartTime { get; private set; }
+
+        /// <summary>
+        /// Gets the stop time of the task.
+        /// </summary>
+        public DateTime? StopTime { get; private set; }
+
+        /// <summary>
+        /// Gets the task state.
+        /// </summary>
+        public ProgressTaskState State { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the task has started.
+        /// </summary>
+        public bool IsStarted => StartTime != null;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the task has finished.
+        /// </summary>
+        public bool IsFinished => Value >= MaxValue;
+
+        /// <summary>
+        /// Gets the percentage done of the task.
+        /// </summary>
+        public double Percentage => GetPercentage();
+
+        /// <summary>
+        /// Gets the speed measured in steps/second.
+        /// </summary>
+        public double? Speed => GetSpeed();
+
+        /// <summary>
+        /// Gets the elapsed time.
+        /// </summary>
+        public TimeSpan? ElapsedTime => GetElapsedTime();
+
+        /// <summary>
+        /// Gets the remaining time.
+        /// </summary>
+        public TimeSpan? RemainingTime => GetRemainingTime();
+
+        internal ProgressTask(int id, string description, double maxValue, bool autoStart)
+        {
+            _samples = new List<ProgressSample>();
+            _lock = new object();
+            _maxValue = maxValue;
+
+            _description = description?.RemoveNewLines()?.Trim() ?? throw new ArgumentNullException(nameof(description));
+            if (string.IsNullOrWhiteSpace(_description))
+            {
+                throw new ArgumentException("Task name cannot be empty", nameof(description));
+            }
+
+            Id = id;
+            State = new ProgressTaskState();
+            Value = 0;
+            StartTime = autoStart ? DateTime.Now : null;
+        }
+
+        /// <summary>
+        /// Starts the task.
+        /// </summary>
+        public void StartTask()
+        {
+            lock (_lock)
+            {
+                StartTime = DateTime.Now;
+                StopTime = null;
+            }
+        }
+
+        /// <summary>
+        /// Stops the task.
+        /// </summary>
+        public void StopTask()
+        {
+            lock (_lock)
+            {
+                var now = DateTime.Now;
+                if (StartTime == null)
+                {
+                    StartTime = now;
+                }
+
+                StopTime = now;
+            }
+        }
+
+        /// <summary>
+        /// Increments the task's value.
+        /// </summary>
+        /// <param name="value">The value to increment with.</param>
+        public void Increment(double value)
+        {
+            Update(increment: value);
+        }
+
+        private void Update(
+            string? description = null,
+            double? maxValue = null,
+            double? increment = null)
+        {
+            lock (_lock)
+            {
+                var startValue = Value;
+
+                if (description != null)
+                {
+                    description = description?.RemoveNewLines()?.Trim();
+                    if (string.IsNullOrWhiteSpace(description))
+                    {
+                        throw new InvalidOperationException("Task name cannot be empty.");
+                    }
+
+                    _description = description;
+                }
+
+                if (maxValue != null)
+                {
+                    _maxValue += maxValue.Value;
+                }
+
+                if (increment != null)
+                {
+                    Value += increment.Value;
+                }
+
+                var timestamp = DateTime.Now;
+                var threshold = timestamp - TimeSpan.FromSeconds(30);
+
+                // Remove samples that's too old
+                while (_samples.Count > 0 && _samples[0].Timestamp < threshold)
+                {
+                    _samples.RemoveAt(0);
+                }
+
+                // Keep maximum of 1000 samples
+                while (_samples.Count > 1000)
+                {
+                    _samples.RemoveAt(0);
+                }
+
+                _samples.Add(new ProgressSample(timestamp, Value - startValue));
+            }
+        }
+
+        private double GetPercentage()
+        {
+            var percentage = (Value / MaxValue) * 100;
+            percentage = Math.Min(100, Math.Max(0, percentage));
+            return percentage;
+        }
+
+        private double? GetSpeed()
+        {
+            lock (_lock)
+            {
+                if (StartTime == null)
+                {
+                    return null;
+                }
+
+                if (_samples.Count == 0)
+                {
+                    return null;
+                }
+
+                var totalTime = _samples.Last().Timestamp - _samples[0].Timestamp;
+                if (totalTime == TimeSpan.Zero)
+                {
+                    return null;
+                }
+
+                var totalCompleted = _samples.Sum(x => x.Value);
+                return totalCompleted / totalTime.TotalSeconds;
+            }
+        }
+
+        private TimeSpan? GetElapsedTime()
+        {
+            lock (_lock)
+            {
+                if (StartTime == null)
+                {
+                    return null;
+                }
+
+                if (StopTime != null)
+                {
+                    return StopTime - StartTime;
+                }
+
+                return DateTime.Now - StartTime;
+            }
+        }
+
+        private TimeSpan? GetRemainingTime()
+        {
+            lock (_lock)
+            {
+                if (IsFinished)
+                {
+                    return TimeSpan.Zero;
+                }
+
+                var speed = GetSpeed();
+                if (speed == null)
+                {
+                    return null;
+                }
+
+                var estimate = (MaxValue - Value) / speed.Value;
+                return TimeSpan.FromSeconds(estimate);
+            }
+        }
+    }
+}

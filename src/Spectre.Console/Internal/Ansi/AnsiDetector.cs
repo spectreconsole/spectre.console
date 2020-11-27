@@ -121,6 +121,8 @@ namespace Spectre.Console.Internal
                             // Enabling failed.
                             return false;
                         }
+
+                        isLegacy = false;
                     }
 
                     return true;

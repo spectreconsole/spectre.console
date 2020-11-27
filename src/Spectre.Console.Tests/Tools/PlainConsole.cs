@@ -18,6 +18,7 @@ namespace Spectre.Console.Tests
         public int Height { get; }
 
         IAnsiConsoleInput IAnsiConsole.Input => Input;
+        public RenderPipeline Pipeline { get; }
 
         public Decoration Decoration { get; set; }
         public Color Foreground { get; set; }
@@ -31,14 +32,15 @@ namespace Spectre.Console.Tests
         public PlainConsole(
             int width = 80, int height = 9000, Encoding encoding = null,
             bool supportsAnsi = true, ColorSystem colorSystem = ColorSystem.Standard,
-            bool legacyConsole = false)
+            bool legacyConsole = false, bool interactive = true)
         {
-            Capabilities = new Capabilities(supportsAnsi, colorSystem, legacyConsole);
+            Capabilities = new Capabilities(supportsAnsi, colorSystem, legacyConsole, interactive);
             Encoding = encoding ?? Encoding.UTF8;
             Width = width;
             Height = height;
             Writer = new StringWriter();
             Input = new TestableConsoleInput();
+            Pipeline = new RenderPipeline();
         }
 
         public void Dispose()
@@ -50,14 +52,17 @@ namespace Spectre.Console.Tests
         {
         }
 
-        public void Write(Segment segment)
+        public void Write(IEnumerable<Segment> segments)
         {
-            if (segment is null)
+            if (segments is null)
             {
-                throw new ArgumentNullException(nameof(segment));
+                return;
             }
 
-            Writer.Write(segment.Text);
+            foreach (var segment in segments)
+            {
+                Writer.Write(segment.Text);
+            }
         }
 
         public string WriteNormalizedException(Exception ex, ExceptionFormats formats = ExceptionFormats.Default)

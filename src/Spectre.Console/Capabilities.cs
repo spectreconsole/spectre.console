@@ -37,16 +37,23 @@ namespace Spectre.Console
         public bool LegacyConsole { get; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether or not the console supports interaction.
+        /// </summary>
+        public bool SupportsInteraction { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Capabilities"/> class.
         /// </summary>
         /// <param name="supportsAnsi">Whether or not ANSI escape sequences are supported.</param>
         /// <param name="colorSystem">The color system that is supported.</param>
         /// <param name="legacyConsole">Whether or not this is a legacy console.</param>
-        public Capabilities(bool supportsAnsi, ColorSystem colorSystem, bool legacyConsole)
+        /// <param name="supportsInteraction">Whether or not the console supports interaction.</param>
+        public Capabilities(bool supportsAnsi, ColorSystem colorSystem, bool legacyConsole, bool supportsInteraction)
         {
             SupportsAnsi = supportsAnsi;
             ColorSystem = colorSystem;
             LegacyConsole = legacyConsole;
+            SupportsInteraction = supportsInteraction;
         }
 
         /// <summary>

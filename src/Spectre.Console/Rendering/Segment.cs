@@ -72,7 +72,7 @@ namespace Spectre.Console.Rendering
 
         private Segment(string text, Style style, bool lineBreak, bool control)
         {
-            Text = text?.NormalizeLineEndings() ?? throw new ArgumentNullException(nameof(text));
+            Text = text?.NormalizeNewLines() ?? throw new ArgumentNullException(nameof(text));
             Style = style ?? throw new ArgumentNullException(nameof(style));
             IsLineBreak = lineBreak;
             IsWhiteSpace = string.IsNullOrWhiteSpace(text);
@@ -100,6 +100,11 @@ namespace Spectre.Console.Rendering
             if (context is null)
             {
                 throw new ArgumentNullException(nameof(context));
+            }
+
+            if (IsControlCode)
+            {
+                return 0;
             }
 
             return Text.CellLength(context);
@@ -477,16 +482,22 @@ namespace Spectre.Console.Rendering
                     continue;
                 }
 
+                // Both control codes?
+                if (segment.IsControlCode && previous.IsControlCode)
+                {
+                    previous = Control(previous.Text + segment.Text);
+                    continue;
+                }
+
                 // Same style?
-                if (previous.Style.Equals(segment.Style) && !previous.IsLineBreak)
+                if (previous.Style.Equals(segment.Style) && !previous.IsLineBreak && !previous.IsControlCode)
                 {
                     previous = new Segment(previous.Text + segment.Text, previous.Style);
+                    continue;
                 }
-                else
-                {
-                    result.Add(previous);
-                    previous = segment;
-                }
+
+                result.Add(previous);
+                previous = segment;
             }
 
             if (previous != null)

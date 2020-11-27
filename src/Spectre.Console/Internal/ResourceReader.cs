@@ -24,7 +24,7 @@ namespace Spectre.Console.Internal
 
                 using (var reader = new StreamReader(stream))
                 {
-                    return reader.ReadToEnd().NormalizeLineEndings();
+                    return reader.ReadToEnd().NormalizeNewLines();
                 }
             }
         }

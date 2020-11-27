@@ -16,8 +16,8 @@ namespace Spectre.Console
         private readonly List<TableColumn> _columns;
         private readonly List<TableRow> _rows;
 
-        private static Style _defaultHeadingStyle = new Style(Color.Silver);
-        private static Style _defaultCaptionStyle = new Style(Color.Grey);
+        private static readonly Style _defaultHeadingStyle = new Style(Color.Silver);
+        private static readonly Style _defaultCaptionStyle = new Style(Color.Grey);
 
         /// <summary>
         /// Gets the table columns.
@@ -447,12 +447,10 @@ namespace Spectre.Console
 
         private (int Min, int Max) MeasureColumn(TableColumn column, RenderContext options, int maxWidth)
         {
-            var padding = column.Padding?.GetWidth() ?? 0;
-
             // Predetermined width?
             if (column.Width != null)
             {
-                return (column.Width.Value + padding, column.Width.Value + padding);
+                return (column.Width.Value, column.Width.Value);
             }
 
             var columnIndex = _columns.IndexOf(column);
@@ -473,6 +471,8 @@ namespace Spectre.Console
                 minWidths.Add(rowMeasure.Min);
                 maxWidths.Add(rowMeasure.Max);
             }
+
+            var padding = column.Padding?.GetWidth() ?? 0;
 
             return (minWidths.Count > 0 ? minWidths.Max() : padding,
                     maxWidths.Count > 0 ? maxWidths.Max() : maxWidth);

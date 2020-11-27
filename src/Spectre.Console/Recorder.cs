@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text;
 using Spectre.Console.Rendering;
 
@@ -8,7 +10,8 @@ namespace Spectre.Console
     /// <summary>
     /// A console recorder used to record output from a console.
     /// </summary>
-    public sealed class Recorder : IAnsiConsole, IDisposable
+    [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly")]
+    public class Recorder : IAnsiConsole, IDisposable
     {
         private readonly IAnsiConsole _console;
         private readonly List<Segment> _recorded;
@@ -31,6 +34,14 @@ namespace Spectre.Console
         /// <inheritdoc/>
         public int Height => _console.Height;
 
+        /// <inheritdoc/>
+        public RenderPipeline Pipeline => _console.Pipeline;
+
+        /// <summary>
+        /// Gets a list containing all recorded segments.
+        /// </summary>
+        protected List<Segment> Recorded => _recorded;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Recorder"/> class.
         /// </summary>
@@ -42,6 +53,7 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize")]
         public void Dispose()
         {
             // Only used for scoping.
@@ -54,20 +66,25 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        public void Write(Segment segment)
+        public void Write(IEnumerable<Segment> segments)
         {
-            if (segment is null)
+            if (segments is null)
             {
-                throw new ArgumentNullException(nameof(segment));
+                throw new ArgumentNullException(nameof(segments));
             }
 
-            // Don't record control codes.
-            if (!segment.IsControlCode)
-            {
-                _recorded.Add(segment);
-            }
+            Record(segments);
 
-            _console.Write(segment);
+            _console.Write(segments);
+        }
+
+        /// <summary>
+        /// Records the specified segments.
+        /// </summary>
+        /// <param name="segments">The segments to be recorded.</param>
+        protected virtual void Record(IEnumerable<Segment> segments)
+        {
+            Recorded.AddRange(segments.Where(s => !s.IsControlCode));
         }
 
         /// <summary>
