@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text;
 using Spectre.Console.Rendering;
 
@@ -29,6 +30,11 @@ namespace Spectre.Console
         IAnsiConsoleInput Input { get; }
 
         /// <summary>
+        /// Gets the render pipeline.
+        /// </summary>
+        RenderPipeline Pipeline { get; }
+
+        /// <summary>
         /// Gets the buffer width of the console.
         /// </summary>
         int Width { get; }
@@ -45,9 +51,9 @@ namespace Spectre.Console
         void Clear(bool home);
 
         /// <summary>
-        /// Writes a string followed by a line terminator to the console.
+        /// Writes multiple segments to the console.
         /// </summary>
-        /// <param name="segment">The segment to write.</param>
-        void Write(Segment segment);
+        /// <param name="segments">The segments to write.</param>
+        void Write(IEnumerable<Segment> segments);
     }
 }

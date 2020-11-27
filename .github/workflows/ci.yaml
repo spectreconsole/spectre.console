@@ -69,14 +69,7 @@ jobs:
         shell: bash
         run: |
           dotnet tool restore
-          dotnet example info
-          dotnet example tables
-          dotnet example grids
-          dotnet example panels
-          dotnet example colors
-          dotnet example emojis
-          dotnet example exceptions
-          dotnet example calendars
+          dotnet example --all
 
       - name: Build
         shell: bash

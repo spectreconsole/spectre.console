@@ -50,12 +50,18 @@ namespace Spectre.Console.Internal
                 }
             }
 
+            var supportsInteraction = settings.Interactive == InteractionSupport.Yes;
+            if (settings.Interactive == InteractionSupport.Detect)
+            {
+                supportsInteraction = InteractivityDetector.IsInteractive();
+            }
+
             var colorSystem = settings.ColorSystem == ColorSystemSupport.Detect
                 ? ColorSystemDetector.Detect(supportsAnsi)
                 : (ColorSystem)settings.ColorSystem;
 
             // Get the capabilities
-            var capabilities = new Capabilities(supportsAnsi, colorSystem, legacyConsole);
+            var capabilities = new Capabilities(supportsAnsi, colorSystem, legacyConsole, supportsInteraction);
 
             // Create the renderer
             if (supportsAnsi)

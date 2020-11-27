@@ -52,8 +52,7 @@ namespace Spectre.Console
         /// <param name="args">An array of objects to write.</param>
         public static void MarkupLine(this IAnsiConsole console, IFormatProvider provider, string format, params object[] args)
         {
-            Markup(console, provider, format, args);
-            console.WriteLine();
+            Markup(console, provider, format + Environment.NewLine, args);
         }
     }
 }

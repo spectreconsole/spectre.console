@@ -12,6 +12,11 @@ namespace Spectre.Console.Internal
 
             foreach (var segment in Segment.Merge(segments))
             {
+                if (segment.IsControlCode)
+                {
+                    continue;
+                }
+
                 builder.Append(segment.Text);
             }
 

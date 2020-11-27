@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Spectre.Console.Rendering;
@@ -14,6 +15,7 @@ namespace Spectre.Console.Internal
 
         public Capabilities Capabilities { get; }
         public Encoding Encoding { get; }
+        public RenderPipeline Pipeline { get; }
         public IAnsiConsoleCursor Cursor => _cursor;
         public IAnsiConsoleInput Input => _input;
 
@@ -43,8 +45,9 @@ namespace Spectre.Console.Internal
                 System.Console.SetOut(@out ?? throw new ArgumentNullException(nameof(@out)));
             }
 
-            Encoding = System.Console.OutputEncoding;
             Capabilities = capabilities;
+            Encoding = System.Console.OutputEncoding;
+            Pipeline = new RenderPipeline();
         }
 
         public void Clear(bool home)
@@ -60,14 +63,22 @@ namespace Spectre.Console.Internal
             }
         }
 
-        public void Write(Segment segment)
+        public void Write(IEnumerable<Segment> segments)
         {
-            if (_lastStyle?.Equals(segment.Style) != true)
+            foreach (var segment in segments)
             {
-                SetStyle(segment.Style);
-            }
+                if (segment.IsControlCode)
+                {
+                    continue;
+                }
 
-            System.Console.Write(segment.Text.NormalizeLineEndings(native: true));
+                if (_lastStyle?.Equals(segment.Style) != true)
+                {
+                    SetStyle(segment.Style);
+                }
+
+                System.Console.Write(segment.Text.NormalizeNewLines(native: true));
+            }
         }
 
         private void SetStyle(Style style)

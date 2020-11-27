@@ -8,31 +8,31 @@ namespace Spectre.Console
         /// <summary>
         /// Try to detect the color system.
         /// </summary>
-        Detect = -1,
+        Detect = 0,
 
         /// <summary>
         /// No colors.
         /// </summary>
-        NoColors = 0,
+        NoColors = 1,
 
         /// <summary>
         /// Legacy, 3-bit mode.
         /// </summary>
-        Legacy = 1,
+        Legacy = 2,
 
         /// <summary>
         /// Standard, 4-bit mode.
         /// </summary>
-        Standard = 2,
+        Standard = 3,
 
         /// <summary>
         /// 8-bit mode.
         /// </summary>
-        EightBit = 3,
+        EightBit = 4,
 
         /// <summary>
         /// 24-bit mode.
         /// </summary>
-        TrueColor = 4,
+        TrueColor = 5,
     }
 }

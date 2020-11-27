@@ -19,6 +19,12 @@ namespace Spectre.Console
         public ColorSystemSupport ColorSystem { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether or
+        /// not the console is interactive.
+        /// </summary>
+        public InteractionSupport Interactive { get; set; }
+
+        /// <summary>
         /// Gets or sets the link identity generator.
         /// </summary>
         public ILinkIdentityGenerator? LinkIdentityGenerator { get; set; }

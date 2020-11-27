@@ -15,6 +15,11 @@ namespace Spectre.Console.Internal
 
             foreach (var (_, first, _, segment) in segments.Enumerate())
             {
+                if (segment.IsControlCode)
+                {
+                    continue;
+                }
+
                 if (segment.Text == "\n" && !first)
                 {
                     builder.Append('\n');

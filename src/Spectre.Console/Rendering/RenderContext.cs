@@ -49,7 +49,7 @@ namespace Spectre.Console.Rendering
             Encoding = encoding ?? throw new System.ArgumentNullException(nameof(encoding));
             LegacyConsole = legacyConsole;
             Justification = justification;
-            Unicode = Encoding == Encoding.UTF8 || Encoding == Encoding.Unicode;
+            Unicode = Encoding.EncodingName.ContainsExact("Unicode");
             SingleLine = singleLine;
         }
 

@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -26,19 +26,26 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(renderable));
             }
 
-            var options = new RenderContext(console.Encoding, console.Capabilities.LegacyConsole);
-            var segments = renderable.Render(options, console.Width).ToArray();
-            segments = Segment.Merge(segments).ToArray();
+            var context = new RenderContext(console.Encoding, console.Capabilities.LegacyConsole);
+            var renderables = console.Pipeline.Process(context, new[] { renderable });
 
-            foreach (var segment in segments)
+            Render(console, context, renderables);
+        }
+
+        private static void Render(IAnsiConsole console, RenderContext options, IEnumerable<IRenderable> renderables)
+        {
+            if (renderables is null)
             {
-                if (string.IsNullOrEmpty(segment.Text))
-                {
-                    continue;
-                }
-
-                console.Write(segment.Text, segment.Style);
+                return;
             }
+
+            var result = new List<Segment>();
+            foreach (var renderable in renderables)
+            {
+                result.AddRange(renderable.Render(options, console.Width));
+            }
+
+            console.Write(Segment.Merge(result));
         }
     }
 }
