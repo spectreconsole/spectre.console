@@ -46,10 +46,13 @@ namespace Spectre.Console
         /// Initializes a new instance of the <see cref="CanvasImage"/> class.
         /// </summary>
         /// <param name="filename">The image filename.</param>
-        public CanvasImage(string filename)
+        public CanvasImage(string filename, CanvasRenderMode renderMode = CanvasRenderMode.Block)
         {
             Image = SixLabors.ImageSharp.Image.Load<Rgba32>(filename);
+            RenderMode = renderMode;
         }
+
+        public CanvasRenderMode RenderMode { get; }
 
         /// <inheritdoc/>
         protected override Measurement Measure(RenderContext context, int maxWidth)
@@ -98,7 +101,7 @@ namespace Spectre.Console
                 image.Mutate(i => i.Resize(width, height, resampler));
             }
 
-            var canvas = new Canvas(width, height)
+            var canvas = new Canvas(width, height, RenderMode)
             {
                 MaxWidth = MaxWidth,
                 PixelWidth = PixelWidth,
