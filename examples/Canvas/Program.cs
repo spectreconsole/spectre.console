@@ -24,12 +24,21 @@ namespace CanvasExample
             });
 
             image.MaxWidth(32);
-            Render(image, "Image from file (16 wide)");
+            Render(image, "Image from file (32 wide)");
 
-            // Draw image again, but without render width
-            image.NoMaxWidth();
-            image.Mutate(ctx => ctx.Grayscale().Rotate(-45).EntropyCrop());
-            Render(image, "Image from file (fit, greyscale, rotated)");
+
+            var image2 = new CanvasImage("cake.png", CanvasRenderMode.Interlaced);
+
+            // Draw image without render width
+            image2.NoMaxWidth();
+            image2.BilinearResampler();
+            image2.Mutate(ctx => ctx.Grayscale().Rotate(-45).EntropyCrop());
+            image2.Mutate(c =>
+            {
+                var (width, height) = c.GetCurrentSize();
+                c.Resize(width / 2, height);
+            });
+            Render(image2, "Image from file (fit, greyscale, rotated)");
         }
 
         private static void Render(IRenderable canvas, string title)
