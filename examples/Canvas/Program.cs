@@ -16,8 +16,13 @@ namespace CanvasExample
             // This requires the "Spectre.Console.ImageSharp" NuGet package.
             var image = new CanvasImage("cake.png", CanvasRenderMode.Interlaced);
 
-            image.Mutate(c => c.Resize(32, 64));
             image.BilinearResampler();
+            image.Mutate(c =>
+            {
+                var (width, height) = c.GetCurrentSize();
+                c.Resize(width / 2, height);
+            });
+
             image.MaxWidth(32);
             Render(image, "Image from file (16 wide)");
 
