@@ -35,17 +35,20 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the pixel width.
         /// </summary>
-        public int PixelWidth { get; set; } = 2;
+        public int PixelWidth { get; set; } = 1;
+
+        public CanvasRenderMode RenderMode { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Canvas"/> class.
         /// </summary>
         /// <param name="width">The canvas width.</param>
         /// <param name="height">The canvas height.</param>
-        public Canvas(int width, int height)
+        public Canvas(int width, int height, CanvasRenderMode renderMode = CanvasRenderMode.Block)
         {
             Width = width;
             Height = height;
+            RenderMode = renderMode;
 
             _pixels = new Color?[Width, Height];
         }
@@ -81,6 +84,16 @@ namespace Spectre.Console
 
         /// <inheritdoc/>
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+        {
+            return RenderMode switch
+                   {
+                       CanvasRenderMode.Block  => RenderBlock(context, maxWidth),
+                       CanvasRenderMode.Interlaced => RenderInterlaced(context, maxWidth),
+                       _ => throw new ArgumentOutOfRangeException()
+                   };
+        }
+
+        private IEnumerable<Segment> RenderBlock(RenderContext context, int maxWidth)
         {
             if (PixelWidth < 0)
             {
@@ -125,6 +138,54 @@ namespace Spectre.Console
                     {
                         yield return new Segment(pixel);
                     }
+                }
+
+                yield return Segment.LineBreak;
+            }
+        }
+
+        private IEnumerable<Segment> RenderInterlaced(RenderContext context, int maxWidth)
+        {
+            if (PixelWidth < 0)
+            {
+                throw new InvalidOperationException("Pixel width must be greater than zero.");
+            }
+
+            var pixels = _pixels;
+            var pixel = new string('▄', PixelWidth);
+            var emptyPixel = new string(' ', PixelWidth);
+            var width = Width;
+            var height = Height;
+
+            // Got a max width?
+            if (MaxWidth != null)
+            {
+                height = (int)(height * ((float)MaxWidth.Value) / Width);
+                width = MaxWidth.Value;
+            }
+
+            // Exceed the max width when we take pixel width into account?
+            if (width * PixelWidth > maxWidth)
+            {
+                height = (int)(height * (maxWidth / (float)(width * PixelWidth)));
+                width = maxWidth / PixelWidth;
+            }
+
+            // Need to rescale the pixel buffer?
+            if (Scale && (width != Width || height != Height))
+            {
+                pixels = ScaleDown(width, height);
+            }
+
+            for (var y = 0; y < height; y += 2)
+            {
+                for (var x = 0; x < width; x++)
+                {
+                    var colorTop = pixels[x, y];
+                    var colorBottom = y + 1 < height ? pixels[x, y + 1] : null;
+                    var p = colorBottom != null ? pixel : emptyPixel;
+
+                    yield return new Segment(p, new Style(colorBottom, colorTop));
                 }
 
                 yield return Segment.LineBreak;

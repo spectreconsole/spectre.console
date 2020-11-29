@@ -15,8 +15,9 @@ namespace CanvasExample
             // Draw an image using CanvasImage powered by ImageSharp.
             // This requires the "Spectre.Console.ImageSharp" NuGet package.
             var image = new CanvasImage("cake.png");
+            image.Mutate(c => c.Resize(32, 64));
             image.BilinearResampler();
-            image.MaxWidth(16);
+            image.MaxWidth(32);
             Render(image, "Image from file (16 wide)");
 
             // Draw image again, but without render width
