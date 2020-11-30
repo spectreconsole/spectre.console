@@ -2,19 +2,17 @@
 
 _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.console.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_
 
-A .NET Standard 2.0 library that makes it easier to create beautiful console applications.  
+A .NET 5/.NET Standard 2.0 library that makes it easier to create beautiful, cross platform, console applications.  
 It is heavily inspired by the excellent [Rich library](https://github.com/willmcgugan/rich) 
 for Python.
 
 ## Table of Contents
 
 1. [Features](#features)
-2. [Example](#example)
-3. [Installing](#installing)
-4. [Usage](#usage)  
-   4.1. [Using the static API](#using-the-static-api)  
-   4.2. [Creating a console](#creating-a-console)
-5. [Running examples](#running-examples)
+2. [Installing](#installing)
+3. [Documentation](#documentation)
+4. [Examples](#examples)
+5. [License](#license)
 
 ## Features
 
@@ -25,77 +23,27 @@ for Python.
   and blinking text.
 * Supports 3/4/8/24-bit colors in the terminal.  
   The library will detect the capabilities of the current terminal 
-  and downgrade colors as needed.
+  and downgrade colors as needed.  
 
-## Example
 
 ![Example](resources/gfx/screenshots/example.png)
 
 ## Installing
 
-The fastest way of getting started using Spectre.Console is to install the NuGet package.
+The fastest way of getting started using `Spectre.Console` is to install the NuGet package.
 
 ```csharp
 dotnet add package Spectre.Console
 ```
 
-## Usage
+## Documentation
 
-The `Spectre.Console` API is stateful and is not thread-safe.
-If you need to write to the console from different threads, make sure that 
-you take appropriate precautions, just like when you use the 
-regular `System.Console` API.
+The documentation for `Spectre.Console` can be found at
+https://spectresystems.github.io/spectre.console/
 
-If the current terminal does not support ANSI escape sequences, 
-`Spectre.Console` will fallback to using the `System.Console` API.
+## Examples
 
-_NOTE: This library is currently under development and APIs 
-might change or get removed at any point up until a 1.0 release._
-
-### Using the static API
-
-The static API is perfect when you just want to output text
-like you usually do with the `System.Console` API, but prettier.
-
-```csharp
-AnsiConsole.Foreground = Color.CornflowerBlue;
-AnsiConsole.Decoration = Decoration.Underline | Decoration.Bold;
-AnsiConsole.WriteLine("Hello World!");
-
-AnsiConsole.Reset();
-AnsiConsole.MarkupLine("[bold yellow on red]{0}[/] [underline]world[/]!", "Goodbye");
-```
-
-If you want to get a reference to the default `IAnsiConsole`, 
-you can access it via `AnsiConsole.Console`.
-
-### Creating a console
-
-Sometimes it's useful to explicitly create a console with specific 
-capabilities, such as during unit testing when you want control 
-over the environment your code runs in. 
-
-It's recommended to not use `AnsiConsole` in code that run as 
-part of a unit test.
-
-```csharp
-IAnsiConsole console = AnsiConsole.Create(
-    new AnsiConsoleSettings()
-    {
-        Ansi = AnsiSupport.Yes,
-        ColorSystem = ColorSystemSupport.TrueColor,
-        Out = new StringWriter(),
-    });
-```
-
-_NOTE: Even if you can specify a specific color system to use 
-when manually creating a console, remember that the user's terminal 
-might not be able to use it, so unless you're creating an IAnsiConsole 
-for testing, always use `ColorSystemSupport.Detect` and `AnsiSupport.Detect`._
-
-## Running examples
-
-To see Spectre.Console in action, install the 
+To see `Spectre.Console` in action, install the 
 [dotnet-example](https://github.com/patriksvensson/dotnet-example)
 global tool.
 
@@ -107,34 +55,18 @@ Now you can list available examples in this repository:
 
 ```
 > dotnet example
-
-╭────────────┬───────────────────────────────────────┬──────────────────────────────────────────────────────╮
-│ Name       │ Path                                  │ Description                                          │
-├────────────┼───────────────────────────────────────┼──────────────────────────────────────────────────────┤
-│ Borders    │ examples/Borders/Borders.csproj       │ Demonstrates the different kind of borders.          │
-│ Calendars  │ examples/Calendars/Calendars.csproj   │ Demonstrates how to render calendars.                │
-│ Colors     │ examples/Colors/Colors.csproj         │ Demonstrates how to use colors in the console.       │
-│ Columns    │ examples/Columns/Columns.csproj       │ Demonstrates how to render data into columns.        │
-│ Emojis     │ examples/Emojis/Emojis.csproj         │ Demonstrates how to render emojis.                   │
-│ Exceptions │ examples/Exceptions/Exceptions.csproj │ Demonstrates how to render formatted exceptions.     │
-│ Grids      │ examples/Grids/Grids.csproj           │ Demonstrates how to render grids in a console.       │
-│ Info       │ examples/Info/Info.csproj             │ Displays the capabilities of the current console.    │
-│ Links      │ examples/Links/Links.csproj           │ Demonstrates how to render links in a console.       │
-│ Panels     │ examples/Panels/Panels.csproj         │ Demonstrates how to render items in panels.          │
-│ Rules      │ examples/Rules/Rules.csproj           │ Demonstrates how to render horizontal rules (lines). │
-│ Tables     │ examples/Tables/Tables.csproj         │ Demonstrates how to render tables in a console.      │
-╰────────────┴───────────────────────────────────────┴──────────────────────────────────────────────────────╯
 ```
 
 And to run an example:
 
 ```
 > dotnet example tables
-┌──────────┬──────────┬────────┐
-│ Foo      │ Bar      │ Baz    │
-├──────────┼──────────┼────────┤
-│ Hello    │ World!   │        │
-│ Bonjour  │ le       │ monde! │
-│ Hej      │ Världen! │        │
-└──────────┴──────────┴────────┘
 ```
+
+## License
+
+Copyright © Spectre Systems.
+
+Spectre.Console is provided as-is under the MIT license. For more information see LICENSE.
+
+* For SixLabors.ImageSharp, see https://github.com/SixLabors/ImageSharp/blob/master/LICENSE

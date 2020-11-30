@@ -5,7 +5,7 @@ Order: 1
 The fastest way of getting started using Spectre.Console is
 to install the NuGet package.
 
-```shell
+```text
 > dotnet add package Spectre.Console
 ```
 

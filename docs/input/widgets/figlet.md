@@ -1,5 +1,6 @@
 Title: Figlet
-Order: 5
+Order: 3
+RedirectFrom: figlet
 ---
 
 Spectre.Console can render [FIGlet](http://www.figlet.org/) text by using the `FigletText` class.
