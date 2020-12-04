@@ -1,8 +1,11 @@
+using System.Threading.Tasks;
 using Shouldly;
+using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
+    [UsesVerify]
     public sealed class ProgressTests
     {
         [Fact]
@@ -53,6 +56,36 @@ namespace Spectre.Console.Tests.Unit
                     "[38;5;8m━━━━━━━━━━[0m\n" + // Task
                     "          \n" + // Bottom padding
                     "[?25h"); // show cursor
+        }
+
+        [Fact]
+        public Task Foo()
+        {
+            // Given
+            var console = new PlainConsole(width: 20);
+
+            var progress = new Progress(console)
+                .Columns(new ProgressColumn[]
+                {
+                    new TaskDescriptionColumn(),
+                    new ProgressBarColumn(),
+                    new PercentageColumn(),
+                    new RemainingTimeColumn(),
+                    new SpinnerColumn(),
+                })
+                .AutoRefresh(false)
+                .AutoClear(false);
+
+            // When
+            progress.Start(ctx =>
+            {
+                ctx.AddTask("foo");
+                ctx.AddTask("bar");
+                ctx.AddTask("baz");
+            });
+
+            // Then
+            return Verifier.Verify(console.Output);
         }
     }
 }
