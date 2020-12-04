@@ -11,7 +11,7 @@ namespace Spectre.Console.Tests
     {
         public Capabilities Capabilities { get; }
         public Encoding Encoding { get; }
-        public IAnsiConsoleCursor Cursor => throw new NotSupportedException();
+        public IAnsiConsoleCursor Cursor => new DummyCursor();
         public TestableConsoleInput Input { get; }
 
         public int Width { get; }

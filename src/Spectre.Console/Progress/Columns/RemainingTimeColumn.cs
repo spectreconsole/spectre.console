@@ -8,6 +8,12 @@ namespace Spectre.Console
     /// </summary>
     public sealed class RemainingTimeColumn : ProgressColumn
     {
+        /// <inheritdoc/>
+        protected internal override int? ColumnWidth => 7;
+
+        /// <inheritdoc/>
+        protected internal override bool NoWrap => true;
+
         /// <summary>
         /// Gets or sets the style of the remaining time text.
         /// </summary>

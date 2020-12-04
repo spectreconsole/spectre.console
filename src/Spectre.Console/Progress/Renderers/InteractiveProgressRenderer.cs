@@ -65,9 +65,15 @@ namespace Spectre.Console.Internal
                 for (var columnIndex = 0; columnIndex < _columns.Count; columnIndex++)
                 {
                     var column = new GridColumn().PadRight(1);
+
                     if (_columns[columnIndex].ColumnWidth != null)
                     {
                         column.Width = _columns[columnIndex].ColumnWidth;
+                    }
+
+                    if (_columns[columnIndex].NoWrap)
+                    {
+                        column.NoWrap();
                     }
 
                     // Last column?

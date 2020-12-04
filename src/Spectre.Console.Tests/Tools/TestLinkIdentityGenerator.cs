@@ -1,4 +1,4 @@
-namespace Spectre.Console.Tests.Tools
+namespace Spectre.Console.Tests
 {
     public sealed class TestLinkIdentityGenerator : ILinkIdentityGenerator
     {

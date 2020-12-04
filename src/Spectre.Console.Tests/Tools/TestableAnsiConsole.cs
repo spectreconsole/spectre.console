@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Spectre.Console.Rendering;
-using Spectre.Console.Tests.Tools;
 
 namespace Spectre.Console.Tests
 {

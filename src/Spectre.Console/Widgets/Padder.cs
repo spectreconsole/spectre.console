@@ -58,6 +58,11 @@ namespace Spectre.Console
             var width = childWidth + paddingWidth;
             var result = new List<Segment>();
 
+            if (width > maxWidth)
+            {
+                width = maxWidth;
+            }
+
             // Top padding
             for (var i = 0; i < Padding.GetTopSafe(); i++)
             {

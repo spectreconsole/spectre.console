@@ -14,6 +14,12 @@ namespace Spectre.Console
         private readonly string _ansiSequence = "⣷⣯⣟⡿⢿⣻⣽⣾";
         private readonly string _asciiSequence = "-\\|/-\\|/";
 
+        /// <inheritdoc/>
+        protected internal override int? ColumnWidth => 1;
+
+        /// <inheritdoc/>
+        protected internal override bool NoWrap => true;
+
         /// <summary>
         /// Gets or sets the style of the spinner.
         /// </summary>

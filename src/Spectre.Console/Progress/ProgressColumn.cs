@@ -9,6 +9,11 @@ namespace Spectre.Console
     public abstract class ProgressColumn
     {
         /// <summary>
+        /// Gets a value indicating whether or not content should not wrap.
+        /// </summary>
+        protected internal virtual bool NoWrap { get; }
+
+        /// <summary>
         /// Gets the requested column width for the column.
         /// </summary>
         protected internal virtual int? ColumnWidth { get; }
