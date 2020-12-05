@@ -15,7 +15,7 @@ using SpectreEnvironment = Spectre.IO.Environment;
 
 namespace Generator.Commands
 {
-    public sealed class EmojiGeneratorCommand : AsyncCommand<GeneratorCommandSettings>
+    public sealed class EmojiGeneratorCommand : AsyncCommand<EmojiGeneratorCommand.Settings>
     {
         private readonly IFileSystem _fileSystem;
         private readonly IEnvironment _environment;
@@ -24,8 +24,14 @@ namespace Generator.Commands
         private readonly Dictionary<string, string> _templates = new Dictionary<string, string>
         {
             { "Templates/Emoji.Generated.template", "Emoji.Generated.cs" },
-            { "Templates/Emoji.Json.template", "emojis.json" },
+            { "Templates/Emoji.Json.template", "emojis.json" }, // For documentation
         };
+
+        public sealed class Settings : GeneratorSettings
+        {
+            [CommandOption("-i|--input <PATH>")]
+            public string Input { get; set; }
+        }
 
         public EmojiGeneratorCommand()
         {
@@ -34,7 +40,7 @@ namespace Generator.Commands
             _parser = new HtmlParser();
         }
 
-        public override async Task<int> ExecuteAsync(CommandContext context, GeneratorCommandSettings settings)
+        public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
         {
             var output = new DirectoryPath(settings.Output);
             if (!_fileSystem.Directory.Exists(settings.Output))
@@ -60,7 +66,7 @@ namespace Generator.Commands
             return 0;
         }
 
-        private async Task<Stream> FetchEmojis(GeneratorCommandSettings settings)
+        private async Task<Stream> FetchEmojis(Settings settings)
         {
             var input = string.IsNullOrEmpty(settings.Input)
                 ? _environment.WorkingDirectory

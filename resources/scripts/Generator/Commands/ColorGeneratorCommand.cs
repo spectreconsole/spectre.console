@@ -7,7 +7,7 @@ using Spectre.IO;
 
 namespace Generator.Commands
 {
-    public sealed class ColorGeneratorCommand : Command<GeneratorCommandSettings>
+    public sealed class ColorGeneratorCommand : Command<ColorGeneratorCommand.Settings>
     {
         private readonly IFileSystem _fileSystem;
 
@@ -16,7 +16,13 @@ namespace Generator.Commands
             _fileSystem = new FileSystem();
         }
 
-        public override int Execute(CommandContext context, GeneratorCommandSettings settings)
+        public sealed class Settings : GeneratorSettings
+        {
+            [CommandOption("-i|--input <PATH>")]
+            public string Input { get; set; }
+        }
+
+        public override int Execute(CommandContext context, Settings settings)
         {
             var templates = new FilePath[]
             {
@@ -49,14 +55,5 @@ namespace Generator.Commands
 
             return 0;
         }
-    }
-
-    public sealed class GeneratorCommandSettings : CommandSettings
-    {
-        [CommandArgument(0, "<OUTPUT>")]
-        public string Output { get; set; }
-
-        [CommandOption("-i|--input <PATH>")]
-        public string Input { get; set; }
     }
 }

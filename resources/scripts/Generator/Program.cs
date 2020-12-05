@@ -12,6 +12,7 @@ namespace Generator
             {
                 config.AddCommand<ColorGeneratorCommand>("colors");
                 config.AddCommand<EmojiGeneratorCommand>("emoji");
+                config.AddCommand<SpinnerGeneratorCommand>("spinners");
             });
 
             return app.Run(args);

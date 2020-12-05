@@ -15,9 +15,9 @@ namespace Spectre.Console.Internal
         private readonly Stopwatch _stopwatch;
         private TimeSpan _lastUpdate;
 
-        public override TimeSpan RefreshRate => TimeSpan.FromMilliseconds(100);
+        public override TimeSpan RefreshRate { get; }
 
-        public InteractiveProgressRenderer(IAnsiConsole console, List<ProgressColumn> columns)
+        public InteractiveProgressRenderer(IAnsiConsole console, List<ProgressColumn> columns, TimeSpan refreshRate)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
             _columns = columns ?? throw new ArgumentNullException(nameof(columns));
@@ -25,6 +25,8 @@ namespace Spectre.Console.Internal
             _lock = new object();
             _stopwatch = new Stopwatch();
             _lastUpdate = TimeSpan.Zero;
+
+            RefreshRate = refreshRate;
         }
 
         public override void Started()

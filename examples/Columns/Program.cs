@@ -1,39 +1,31 @@
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 using Spectre.Console;
 
 namespace ColumnsExample
 {
     public static class Program
     {
-        public static async Task Main()
+        public static void Main()
         {
-            // Download some random users
-            using var client = new HttpClient();
-            dynamic users = JObject.Parse(
-                await client.GetStringAsync("https://randomuser.me/api/?results=15"));
-
-            // Create a card for each user
             var cards = new List<Panel>();
-            foreach(var user in users.results)
+            foreach(var user in User.LoadUsers())
             {
-                cards.Add(new Panel(GetCardContent(user))
-                    .Header($"{user.location.country}")
-                    .RoundedBorder().Expand());
+                cards.Add(
+                    new Panel(GetCardContent(user))
+                        .Header($"{user.Country}")
+                        .RoundedBorder().Expand());
             }
 
             // Render all cards in columns
             AnsiConsole.Render(new Columns(cards));
         }
 
-        private static string GetCardContent(dynamic user)
+        private static string GetCardContent(User user)
         {
-            var name = $"{user.name.first} {user.name.last}";
-            var country = $"{user.location.city}";
+            var name = $"{user.FirstName} {user.LastName}";
+            var city = $"{user.City}";
 
-            return $"[b]{name}[/]\n[yellow]{country}[/]";
+            return $"[b]{name}[/]\n[yellow]{city}[/]";
         }
     }
 }

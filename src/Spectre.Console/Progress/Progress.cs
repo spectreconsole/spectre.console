@@ -26,6 +26,12 @@ namespace Spectre.Console
         /// </summary>
         public bool AutoClear { get; set; }
 
+        /// <summary>
+        /// Gets or sets the refresh rate if <c>AutoRefresh</c> is enabled.
+        /// Defaults to 10 times/second.
+        /// </summary>
+        public TimeSpan RefreshRate { get; set; } = TimeSpan.FromMilliseconds(100);
+
         internal List<ProgressColumn> Columns { get; }
 
         /// <summary>
@@ -110,7 +116,7 @@ namespace Spectre.Console
             if (interactive)
             {
                 var columns = new List<ProgressColumn>(Columns);
-                return new InteractiveProgressRenderer(_console, columns);
+                return new InteractiveProgressRenderer(_console, columns, RefreshRate);
             }
             else
             {
