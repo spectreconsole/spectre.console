@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Spectre.Console.Internal;
 
 namespace Spectre.Console
@@ -20,6 +21,8 @@ namespace Spectre.Console
         /// Gets a value indicating whether or not all tasks have completed.
         /// </summary>
         public bool IsFinished => _tasks.All(task => task.IsFinished);
+
+        internal Encoding Encoding => _console.Encoding;
 
         internal ProgressContext(IAnsiConsole console, ProgressRenderer renderer)
         {
@@ -56,14 +59,11 @@ namespace Spectre.Console
             _console.Render(new ControlSequence(string.Empty));
         }
 
-        internal void EnumerateTasks(Action<ProgressTask> action)
+        internal IReadOnlyList<ProgressTask> GetTasks()
         {
             lock (_taskLock)
             {
-                foreach (var task in _tasks)
-                {
-                    action(task);
-                }
+                return new List<ProgressTask>(_tasks);
             }
         }
     }

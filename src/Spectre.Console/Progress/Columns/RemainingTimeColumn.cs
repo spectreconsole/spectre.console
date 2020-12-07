@@ -9,9 +9,6 @@ namespace Spectre.Console
     public sealed class RemainingTimeColumn : ProgressColumn
     {
         /// <inheritdoc/>
-        protected internal override int? ColumnWidth => 7;
-
-        /// <inheritdoc/>
         protected internal override bool NoWrap => true;
 
         /// <summary>
@@ -29,6 +26,12 @@ namespace Spectre.Console
             }
 
             return new Text($"{remaining.Value:h\\:mm\\:ss}", Style ?? Style.Plain);
+        }
+
+        /// <inheritdoc/>
+        public override int? GetColumnWidth(RenderContext context)
+        {
+            return 7;
         }
     }
 }

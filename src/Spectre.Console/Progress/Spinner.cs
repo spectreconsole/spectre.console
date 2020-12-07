@@ -6,7 +6,7 @@ namespace Spectre.Console
     /// <summary>
     /// Represents a spinner used in a <see cref="SpinnerColumn"/>.
     /// </summary>
-    public abstract partial class ProgressSpinner
+    public abstract partial class Spinner
     {
         /// <summary>
         /// Gets the update interval for the spinner.

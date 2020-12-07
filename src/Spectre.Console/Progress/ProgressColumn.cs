@@ -14,11 +14,6 @@ namespace Spectre.Console
         protected internal virtual bool NoWrap { get; }
 
         /// <summary>
-        /// Gets the requested column width for the column.
-        /// </summary>
-        protected internal virtual int? ColumnWidth { get; }
-
-        /// <summary>
         /// Gets a renderable representing the column.
         /// </summary>
         /// <param name="context">The render context.</param>
@@ -26,5 +21,15 @@ namespace Spectre.Console
         /// <param name="deltaTime">The elapsed time since last call.</param>
         /// <returns>A renderable representing the column.</returns>
         public abstract IRenderable Render(RenderContext context, ProgressTask task, TimeSpan deltaTime);
+
+        /// <summary>
+        /// Gets the width of the column.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>The width of the column, or <c>null</c> to calculate.</returns>
+        public virtual int? GetColumnWidth(RenderContext context)
+        {
+            return null;
+        }
     }
 }

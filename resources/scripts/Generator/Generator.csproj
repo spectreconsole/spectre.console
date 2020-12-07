@@ -15,7 +15,10 @@
     <None Update="Data\colors.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Data\spinners.json">
+    <None Update="Data\spinners_default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\spinners_sindresorhus.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Templates\ColorTable.Generated.template">
@@ -27,7 +30,7 @@
     <None Update="Templates\ColorPalette.Generated.template">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Templates\ProgressSpinner.Generated.template">
+    <None Update="Templates\Spinner.Generated.template">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Templates\Emoji.Json.template">

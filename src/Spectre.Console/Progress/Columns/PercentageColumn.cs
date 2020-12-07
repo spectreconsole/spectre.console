@@ -8,9 +8,6 @@ namespace Spectre.Console
     /// </summary>
     public sealed class PercentageColumn : ProgressColumn
     {
-        /// <inheritdoc/>
-        protected internal override int? ColumnWidth => 4;
-
         /// <summary>
         /// Gets or sets the style for a non-complete task.
         /// </summary>
@@ -27,6 +24,12 @@ namespace Spectre.Console
             var percentage = (int)task.Percentage;
             var style = percentage == 100 ? CompletedStyle : Style ?? Style.Plain;
             return new Text($"{percentage}%", style).RightAligned();
+        }
+
+        /// <inheritdoc/>
+        public override int? GetColumnWidth(RenderContext context)
+        {
+            return 4;
         }
     }
 }
