@@ -19,4 +19,4 @@ if(!$?) {
 Pop-Location
 
 # Copy the files to the correct location
-Copy-Item  (Join-Path "$Output" "ProgressSpinner.Generated.cs") -Destination "$Source/Progress/ProgressSpinner.Generated.cs"
+Copy-Item  (Join-Path "$Output" "Spinner.Generated.cs") -Destination "$Source/Progress/Spinner.Generated.cs"

@@ -21,8 +21,8 @@ namespace Generator.Commands
         {
             // Read the spinner model.
             var spinners = new List<Spinner>();
-            spinners.AddRange(Spinner.Parse(File.ReadAllText("Data/spinners.json")));
             spinners.AddRange(Spinner.Parse(File.ReadAllText("Data/spinners_default.json")));
+            spinners.AddRange(Spinner.Parse(File.ReadAllText("Data/spinners_sindresorhus.json")));
 
             var output = new DirectoryPath(settings.Output);
             if (!_fileSystem.Directory.Exists(settings.Output))
@@ -31,7 +31,7 @@ namespace Generator.Commands
             }
 
             // Parse the Scriban template.
-            var templatePath = new FilePath("Templates/ProgressSpinner.Generated.template");
+            var templatePath = new FilePath("Templates/Spinner.Generated.template");
             var template = Template.Parse(File.ReadAllText(templatePath.FullPath));
 
             // Render the template with the model.

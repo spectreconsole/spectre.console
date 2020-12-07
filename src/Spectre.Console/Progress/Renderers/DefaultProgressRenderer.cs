@@ -6,7 +6,7 @@ using Spectre.Console.Rendering;
 
 namespace Spectre.Console.Internal
 {
-    internal sealed class InteractiveProgressRenderer : ProgressRenderer
+    internal sealed class DefaultProgressRenderer : ProgressRenderer
     {
         private readonly IAnsiConsole _console;
         private readonly List<ProgressColumn> _columns;
@@ -17,7 +17,7 @@ namespace Spectre.Console.Internal
 
         public override TimeSpan RefreshRate { get; }
 
-        public InteractiveProgressRenderer(IAnsiConsole console, List<ProgressColumn> columns, TimeSpan refreshRate)
+        public DefaultProgressRenderer(IAnsiConsole console, List<ProgressColumn> columns, TimeSpan refreshRate)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
             _columns = columns ?? throw new ArgumentNullException(nameof(columns));
@@ -60,6 +60,8 @@ namespace Spectre.Console.Internal
                     _stopwatch.Start();
                 }
 
+                var renderContext = new RenderContext(_console.Encoding, _console.Capabilities.LegacyConsole);
+
                 var delta = _stopwatch.Elapsed - _lastUpdate;
                 _lastUpdate = _stopwatch.Elapsed;
 
@@ -68,9 +70,10 @@ namespace Spectre.Console.Internal
                 {
                     var column = new GridColumn().PadRight(1);
 
-                    if (_columns[columnIndex].ColumnWidth != null)
+                    var columnWidth = _columns[columnIndex].GetColumnWidth(renderContext);
+                    if (columnWidth != null)
                     {
-                        column.Width = _columns[columnIndex].ColumnWidth;
+                        column.Width = columnWidth;
                     }
 
                     if (_columns[columnIndex].NoWrap)
@@ -88,12 +91,11 @@ namespace Spectre.Console.Internal
                 }
 
                 // Add rows
-                var renderContext = new RenderContext(_console.Encoding, _console.Capabilities.LegacyConsole);
-                context.EnumerateTasks(task =>
+                foreach (var task in context.GetTasks())
                 {
                     var columns = _columns.Select(column => column.Render(renderContext, task, delta));
                     grid.AddRow(columns.ToArray());
-                });
+                }
 
                 _live.SetRenderable(new Padder(grid, new Padding(0, 1)));
             }

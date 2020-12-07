@@ -34,6 +34,8 @@ namespace Spectre.Console
 
         internal List<ProgressColumn> Columns { get; }
 
+        internal ProgressRenderer? FallbackRenderer { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Progress"/> class.
         /// </summary>
@@ -116,11 +118,11 @@ namespace Spectre.Console
             if (interactive)
             {
                 var columns = new List<ProgressColumn>(Columns);
-                return new InteractiveProgressRenderer(_console, columns, RefreshRate);
+                return new DefaultProgressRenderer(_console, columns, RefreshRate);
             }
             else
             {
-                return new NonInteractiveProgressRenderer();
+                return FallbackRenderer ?? new FallbackProgressRenderer();
             }
         }
     }

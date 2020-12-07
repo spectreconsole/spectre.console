@@ -4,7 +4,7 @@ using Spectre.Console.Rendering;
 
 namespace Spectre.Console.Internal
 {
-    internal sealed class NonInteractiveProgressRenderer : ProgressRenderer
+    internal sealed class FallbackProgressRenderer : ProgressRenderer
     {
         private const double FirstMilestone = 25;
         private static readonly double?[] _milestones = new double?[] { FirstMilestone, 50, 75, 95, 96, 97, 98, 99, 100 };
@@ -16,7 +16,7 @@ namespace Spectre.Console.Internal
 
         public override TimeSpan RefreshRate => TimeSpan.FromSeconds(1);
 
-        public NonInteractiveProgressRenderer()
+        public FallbackProgressRenderer()
         {
             _taskMilestones = new Dictionary<int, double>();
             _lock = new object();
@@ -29,7 +29,7 @@ namespace Spectre.Console.Internal
                 var hasStartedTasks = false;
                 var updates = new List<(string, double)>();
 
-                context.EnumerateTasks(task =>
+                foreach (var task in context.GetTasks())
                 {
                     if (!task.IsStarted || task.IsFinished)
                     {
@@ -42,12 +42,15 @@ namespace Spectre.Console.Internal
                     {
                         updates.Add((task.Description, task.Percentage));
                     }
-                });
+                }
 
                 // Got started tasks but no updates for 30 seconds?
                 if (hasStartedTasks && updates.Count == 0 && (DateTime.Now - _lastUpdate) > TimeSpan.FromSeconds(30))
                 {
-                    context.EnumerateTasks(task => updates.Add((task.Description, task.Percentage)));
+                    foreach (var task in context.GetTasks())
+                    {
+                        updates.Add((task.Description, task.Percentage));
+                    }
                 }
 
                 if (updates.Count > 0)

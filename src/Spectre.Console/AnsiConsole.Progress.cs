@@ -13,5 +13,14 @@ namespace Spectre.Console
         {
             return Console.Progress();
         }
+
+        /// <summary>
+        /// Creates a new <see cref="Status"/> instance.
+        /// </summary>
+        /// <returns>A <see cref="Status"/> instance.</returns>
+        public static Status Status()
+        {
+            return Console.Status();
+        }
     }
 }

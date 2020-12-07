@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Spectre.Console.Internal;
 
 namespace Spectre.Console.Rendering
@@ -8,7 +7,7 @@ namespace Spectre.Console.Rendering
     {
         private readonly object _lock = new object();
         private IRenderable? _renderable;
-        private int? _height;
+        private SegmentShape? _shape;
 
         public void SetRenderable(IRenderable renderable)
         {
@@ -22,12 +21,12 @@ namespace Spectre.Console.Rendering
         {
             lock (_lock)
             {
-                if (_height == null)
+                if (_shape == null)
                 {
                     return new ControlSequence(string.Empty);
                 }
 
-                return new ControlSequence("\r" + "\u001b[1A".Repeat(_height.Value - 1));
+                return new ControlSequence("\r" + "\u001b[1A".Repeat(_shape.Value.Height - 1));
             }
         }
 
@@ -35,12 +34,12 @@ namespace Spectre.Console.Rendering
         {
             lock (_lock)
             {
-                if (_height == null)
+                if (_shape == null)
                 {
                     return new ControlSequence(string.Empty);
                 }
 
-                return new ControlSequence("\r\u001b[2K" + "\u001b[1A\u001b[2K".Repeat(_height.Value - 1));
+                return new ControlSequence("\r\u001b[2K" + "\u001b[1A\u001b[2K".Repeat(_shape.Value.Height - 1));
             }
         }
 
@@ -53,27 +52,27 @@ namespace Spectre.Console.Rendering
                     var segments = _renderable.Render(context, maxWidth);
                     var lines = Segment.SplitLines(context, segments);
 
-                    _height = lines.Count;
+                    var shape = SegmentShape.Calculate(context, lines);
+                    _shape = _shape == null ? shape : _shape.Value.Inflate(shape);
+                    _shape.Value.SetShape(context, lines);
 
-                    var result = new List<Segment>();
                     foreach (var (_, _, last, line) in lines.Enumerate())
                     {
                         foreach (var item in line)
                         {
-                            result.Add(item);
+                            yield return item;
                         }
 
                         if (!last)
                         {
-                            result.Add(Segment.LineBreak);
+                            yield return Segment.LineBreak;
                         }
                     }
 
-                    return result;
+                    yield break;
                 }
 
-                _height = 0;
-                return Enumerable.Empty<Segment>();
+                _shape = null;
             }
         }
     }
