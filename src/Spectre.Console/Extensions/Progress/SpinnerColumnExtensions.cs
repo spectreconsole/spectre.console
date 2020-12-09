@@ -20,11 +20,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(column));
             }
 
-            if (style != null)
-            {
-                column.Style = style;
-            }
-
+            column.Style = style;
             return column;
         }
     }

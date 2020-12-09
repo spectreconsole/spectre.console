@@ -54,7 +54,7 @@ namespace Spectre.Console.Rendering
 
                     var shape = SegmentShape.Calculate(context, lines);
                     _shape = _shape == null ? shape : _shape.Value.Inflate(shape);
-                    _shape.Value.SetShape(context, lines);
+                    _shape.Value.Apply(context, ref lines);
 
                     foreach (var (_, _, last, line) in lines.Enumerate())
                     {

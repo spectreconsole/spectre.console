@@ -40,7 +40,7 @@ namespace Spectre.Console.Rendering
                 Math.Max(Height, other.Height));
         }
 
-        public void SetShape(RenderContext context, List<SegmentLine> lines)
+        public void Apply(RenderContext context, ref List<SegmentLine> lines)
         {
             foreach (var line in lines)
             {
@@ -52,14 +52,15 @@ namespace Spectre.Console.Rendering
                 }
             }
 
-            if (lines.Count < Height)
+            if (lines.Count < Height && Width > 0)
             {
                 var missing = Height - lines.Count;
                 for (var i = 0; i < missing; i++)
                 {
-                    var line = new SegmentLine();
-                    line.Add(new Segment(new string(' ', Width)));
-                    lines.Add(line);
+                    lines.Add(new SegmentLine
+                    {
+                        new Segment(new string(' ', Width)),
+                    });
                 }
             }
         }

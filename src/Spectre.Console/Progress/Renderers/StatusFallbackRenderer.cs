@@ -11,7 +11,7 @@ namespace Spectre.Console.Internal
         private IRenderable? _renderable;
         private string? _lastStatus;
 
-        public override TimeSpan RefreshRate => TimeSpan.FromSeconds(1);
+        public override TimeSpan RefreshRate => TimeSpan.FromMilliseconds(100);
 
         public StatusFallbackRenderer()
         {
