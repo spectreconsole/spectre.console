@@ -620,49 +620,5 @@ namespace Spectre.Console.Rendering
 
             return cells;
         }
-
-        internal static (int Width, int Height) GetShape(RenderContext context, List<SegmentLine> lines)
-        {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (lines is null)
-            {
-                throw new ArgumentNullException(nameof(lines));
-            }
-
-            var height = lines.Count;
-            var width = lines.Max(l => CellCount(context, l));
-
-            return (width, height);
-        }
-
-        internal static List<SegmentLine> SetShape(RenderContext context, List<SegmentLine> lines, (int Width, int Height) shape)
-        {
-            foreach (var line in lines)
-            {
-                var length = CellCount(context, line);
-                var missing = shape.Width - length;
-                if (missing > 0)
-                {
-                    line.Add(new Segment(new string(' ', missing)));
-                }
-            }
-
-            if (lines.Count < shape.Height)
-            {
-                var missing = shape.Height - lines.Count;
-                for (int i = 0; i < missing; i++)
-                {
-                    var line = new SegmentLine();
-                    line.Add(new Segment(new string(' ', shape.Width)));
-                    lines.Add(line);
-                }
-            }
-
-            return lines;
-        }
     }
 }
