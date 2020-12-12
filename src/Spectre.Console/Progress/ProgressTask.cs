@@ -167,12 +167,18 @@ namespace Spectre.Console
 
                 if (maxValue != null)
                 {
-                    _maxValue += maxValue.Value;
+                    _maxValue = maxValue.Value;
                 }
 
                 if (increment != null)
                 {
                     Value += increment.Value;
+                }
+
+                // Need to cap the max value?
+                if (Value > _maxValue)
+                {
+                    Value = _maxValue;
                 }
 
                 var timestamp = DateTime.Now;
