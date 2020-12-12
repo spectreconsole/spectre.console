@@ -59,7 +59,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public Task Foo()
+        public Task Should_Reduce_Width_If_Needed()
         {
             // Given
             var console = new PlainConsole(width: 20);
@@ -86,6 +86,30 @@ namespace Spectre.Console.Tests.Unit
 
             // Then
             return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        public void Setting_Max_Value_Should_Set_The_MaxValue_And_Cap_Value()
+        {
+            // Given
+            var task = default(ProgressTask);
+            var console = new PlainConsole();
+            var progress = new Progress(console)
+                .Columns(new[] { new ProgressBarColumn() })
+                .AutoRefresh(false)
+                .AutoClear(false);
+
+            // When
+            progress.Start(ctx =>
+            {
+                task = ctx.AddTask("foo");
+                task.Increment(100);
+                task.MaxValue = 20;
+            });
+
+            // Then
+            task.MaxValue.ShouldBe(20);
+            task.Value.ShouldBe(20);
         }
     }
 }
