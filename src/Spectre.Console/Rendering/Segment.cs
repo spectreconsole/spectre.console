@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Spectre.Console.Internal;
 
 namespace Spectre.Console.Rendering
 {
@@ -145,6 +146,7 @@ namespace Spectre.Console.Rendering
         /// </summary>
         /// <param name="offset">The offset where to split the segment.</param>
         /// <returns>One or two new segments representing the split.</returns>
+        [Obsolete("Use Split(RenderContext, Int32) instead")]
         public (Segment First, Segment? Second) Split(int offset)
         {
             if (offset < 0)
@@ -160,6 +162,44 @@ namespace Spectre.Console.Rendering
             return (
                 new Segment(Text.Substring(0, offset), Style),
                 new Segment(Text.Substring(offset, Text.Length - offset), Style));
+        }
+
+        /// <summary>
+        /// Splits the segment at the offset.
+        /// </summary>
+        /// <param name="context">The render context.</param>
+        /// <param name="offset">The offset where to split the segment.</param>
+        /// <returns>One or two new segments representing the split.</returns>
+        public (Segment First, Segment? Second) Split(RenderContext context, int offset)
+        {
+            if (offset < 0)
+            {
+                return (this, null);
+            }
+
+            if (offset >= CellCount(context))
+            {
+                return (this, null);
+            }
+
+            var index = 0;
+            if (offset > 0)
+            {
+                var accumulated = 0;
+                foreach (var character in Text)
+                {
+                    index++;
+                    accumulated += Cell.GetCellLength(context, character);
+                    if (accumulated >= offset)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return (
+                new Segment(Text.Substring(0, index), Style),
+                new Segment(Text.Substring(index, Text.Length - index), Style));
         }
 
         /// <summary>
@@ -219,14 +259,16 @@ namespace Spectre.Console.Rendering
             while (stack.Count > 0)
             {
                 var segment = stack.Pop();
+                var segmentLength = segment.CellCount(context);
 
                 // Does this segment make the line exceed the max width?
-                if (line.CellCount(context) + segment.CellCount(context) > maxWidth)
+                var lineLength = line.CellCount(context);
+                if (lineLength + segmentLength > maxWidth)
                 {
-                    var diff = -(maxWidth - (line.Length + segment.Text.Length));
+                    var diff = -(maxWidth - (lineLength + segmentLength));
                     var offset = segment.Text.Length - diff;
 
-                    var (first, second) = segment.Split(offset);
+                    var (first, second) = segment.Split(context, offset);
 
                     line.Add(first);
                     lines.Add(line);

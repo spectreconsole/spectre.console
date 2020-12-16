@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
+using Shouldly;
 using Spectre.Console.Rendering;
 using VerifyXunit;
 using Xunit;
@@ -260,6 +262,24 @@ namespace Spectre.Console.Tests.Unit
                 .Expand().RoundedBorder()
                 .BorderStyle(new Style().Foreground(Color.Grey))
                 .Header("[grey]Short paths[/]");
+
+            // When
+            console.Render(panel);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        public Task Should_Wrap_Table_With_CJK_Tables_In_Panel_Correctly()
+        {
+            // Given
+            var console = new PlainConsole(width: 80);
+
+            var table = new Table();
+            table.AddColumn("测试");
+            table.AddRow("测试");
+            var panel = new Panel(table);
 
             // When
             console.Render(panel);
