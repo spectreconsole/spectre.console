@@ -22,18 +22,43 @@ namespace Spectre.Console.Tests.Unit
         [UsesVerify]
         public sealed class TheSplitMethod
         {
-            [Fact]
-            public Task Should_Split_Segment_Correctly()
+            [Theory]
+            [InlineData("Foo Bar", 0, "", "Foo Bar")]
+            [InlineData("Foo Bar", 1, "F", "oo Bar")]
+            [InlineData("Foo Bar", 2, "Fo", "o Bar")]
+            [InlineData("Foo Bar", 3, "Foo", " Bar")]
+            [InlineData("Foo Bar", 4, "Foo ", "Bar")]
+            [InlineData("Foo Bar", 5, "Foo B", "ar")]
+            [InlineData("Foo Bar", 6, "Foo Ba", "r")]
+            [InlineData("Foo Bar", 7, "Foo Bar", null)]
+            [InlineData("Foo 测试 Bar", 0, "", "Foo 测试 Bar")]
+            [InlineData("Foo 测试 Bar", 1, "F", "oo 测试 Bar")]
+            [InlineData("Foo 测试 Bar", 2, "Fo", "o 测试 Bar")]
+            [InlineData("Foo 测试 Bar", 3, "Foo", " 测试 Bar")]
+            [InlineData("Foo 测试 Bar", 4, "Foo ", "测试 Bar")]
+            [InlineData("Foo 测试 Bar", 5, "Foo 测", "试 Bar")]
+            [InlineData("Foo 测试 Bar", 6, "Foo 测", "试 Bar")]
+            [InlineData("Foo 测试 Bar", 7, "Foo 测试", " Bar")]
+            [InlineData("Foo 测试 Bar", 8, "Foo 测试", " Bar")]
+            [InlineData("Foo 测试 Bar", 9, "Foo 测试 ", "Bar")]
+            [InlineData("Foo 测试 Bar", 10, "Foo 测试 B", "ar")]
+            [InlineData("Foo 测试 Bar", 11, "Foo 测试 Ba", "r")]
+            [InlineData("Foo 测试 Bar", 12, "Foo 测试 Bar", null)]
+            public void Should_Split_Segment_Correctly(string text, int offset, string expectedFirst, string expectedSecond)
             {
                 // Given
                 var style = new Style(Color.Red, Color.Green, Decoration.Bold);
-                var segment = new Segment("Foo Bar", style);
+                var context = new RenderContext(Encoding.UTF8, false);
+                var segment = new Segment(text, style);
 
                 // When
-                var result = segment.Split(3);
+                var (first, second) = segment.Split(context, offset);
 
                 // Then
-                return Verifier.Verify(result);
+                first.Text.ShouldBe(expectedFirst);
+                first.Style.ShouldBe(style);
+                second?.Text?.ShouldBe(expectedSecond);
+                second?.Style?.ShouldBe(style);
             }
         }
 
