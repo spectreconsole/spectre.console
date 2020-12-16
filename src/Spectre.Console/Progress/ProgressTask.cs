@@ -265,6 +265,14 @@ namespace Spectre.Console
                     return null;
                 }
 
+                // If the speed is zero, the estimate below
+                // will return infinity (since it's a double),
+                // so let's set the speed to 1 in that case.
+                if (speed == 0)
+                {
+                    speed = 1;
+                }
+
                 var estimate = (MaxValue - Value) / speed.Value;
                 return TimeSpan.FromSeconds(estimate);
             }
