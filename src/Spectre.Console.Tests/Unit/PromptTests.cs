@@ -13,8 +13,8 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new PlainConsole();
-            console.Input.PushText("ninety-nine");
-            console.Input.PushText("99");
+            console.Input.PushTextWithEnter("ninety-nine");
+            console.Input.PushTextWithEnter("99");
 
             // When
             console.Prompt(new TextPrompt<int>("Age?"));
@@ -46,8 +46,8 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new PlainConsole();
-            console.Input.PushText("Apple");
-            console.Input.PushText("Banana");
+            console.Input.PushTextWithEnter("Apple");
+            console.Input.PushTextWithEnter("Banana");
 
             // When
             console.Prompt(
@@ -65,7 +65,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new PlainConsole();
-            console.Input.PushText("Orange");
+            console.Input.PushTextWithEnter("Orange");
 
             // When
             console.Prompt(
@@ -79,14 +79,73 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        public Task Should_Auto_Complete_To_First_Choice_If_Pressing_Tab_On_Empty_String()
+        {
+            // Given
+            var console = new PlainConsole();
+            console.Input.PushKey(ConsoleKey.Tab);
+            console.Input.PushKey(ConsoleKey.Enter);
+
+            // When
+            console.Prompt(
+                new TextPrompt<string>("Favorite fruit?")
+                    .AddChoice("Banana")
+                    .AddChoice("Orange")
+                    .DefaultValue("Banana"));
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        public Task Should_Auto_Complete_To_Best_Match()
+        {
+            // Given
+            var console = new PlainConsole();
+            console.Input.PushText("Band");
+            console.Input.PushKey(ConsoleKey.Tab);
+            console.Input.PushKey(ConsoleKey.Enter);
+
+            // When
+            console.Prompt(
+                new TextPrompt<string>("Favorite fruit?")
+                    .AddChoice("Banana")
+                    .AddChoice("Bandana")
+                    .AddChoice("Orange"));
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        public Task Should_Auto_Complete_To_Next_Choice_When_Pressing_Tab_On_A_Match()
+        {
+            // Given
+            var console = new PlainConsole();
+            console.Input.PushText("Apple");
+            console.Input.PushKey(ConsoleKey.Tab);
+            console.Input.PushKey(ConsoleKey.Enter);
+
+            // When
+            console.Prompt(
+                new TextPrompt<string>("Favorite fruit?")
+                    .AddChoice("Apple")
+                    .AddChoice("Banana")
+                    .AddChoice("Orange"));
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
         public Task Should_Return_Error_If_Custom_Validation_Fails()
         {
             // Given
             var console = new PlainConsole();
-            console.Input.PushText("22");
-            console.Input.PushText("102");
-            console.Input.PushText("ABC");
-            console.Input.PushText("99");
+            console.Input.PushTextWithEnter("22");
+            console.Input.PushTextWithEnter("102");
+            console.Input.PushTextWithEnter("ABC");
+            console.Input.PushTextWithEnter("99");
 
             // When
             console.Prompt(

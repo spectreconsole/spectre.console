@@ -177,7 +177,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            obj.DefaultValue = new TextPrompt<T>.DefaultValueContainer(value);
+            obj.DefaultValue = new DefaultPromptValue<T>(value);
             return obj;
         }
 
