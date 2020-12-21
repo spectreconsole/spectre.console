@@ -23,7 +23,11 @@ namespace Spectre.Console.Tests
             {
                 PushCharacter(character);
             }
+        }
 
+        public void PushTextWithEnter(string input)
+        {
+            PushText(input);
             PushKey(ConsoleKey.Enter);
         }
 

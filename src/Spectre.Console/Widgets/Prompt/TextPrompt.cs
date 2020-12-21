@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Text;
+using Spectre.Console.Internal;
 
 namespace Spectre.Console
 {
@@ -68,27 +67,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the default value.
         /// </summary>
-        internal DefaultValueContainer? DefaultValue { get; set; }
-
-        /// <summary>
-        /// A nullable container for a default value.
-        /// </summary>
-        internal sealed class DefaultValueContainer
-        {
-            /// <summary>
-            /// Gets the default value.
-            /// </summary>
-            public T Value { get; }
-
-            /// <summary>
-            /// Initializes a new instance of the <see cref="DefaultValueContainer"/> class.
-            /// </summary>
-            /// <param name="value">The default value.</param>
-            public DefaultValueContainer(T value)
-            {
-                Value = value;
-            }
-        }
+        internal DefaultPromptValue<T>? DefaultValue { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextPrompt{T}"/> class.
@@ -116,19 +95,20 @@ namespace Spectre.Console
             }
 
             var promptStyle = PromptStyle ?? Style.Plain;
+            var choices = Choices.Select(choice => TypeConverterHelper.ConvertToString(choice));
 
             WritePrompt(console);
 
             while (true)
             {
-                var input = console.ReadLine(promptStyle, IsSecret);
+                var input = console.ReadLine(promptStyle, IsSecret, choices);
 
                 // Nothing entered?
                 if (string.IsNullOrWhiteSpace(input))
                 {
                     if (DefaultValue != null)
                     {
-                        console.Write(TextPrompt<T>.GetTypeConverter().ConvertToInvariantString(DefaultValue.Value), promptStyle);
+                        console.Write(TypeConverterHelper.ConvertToString(DefaultValue.Value), promptStyle);
                         console.WriteLine();
                         return DefaultValue.Value;
                     }
@@ -142,7 +122,7 @@ namespace Spectre.Console
                 console.WriteLine();
 
                 // Try convert the value to the expected type.
-                if (!TextPrompt<T>.TryConvert(input, out var result) || result == null)
+                if (!TypeConverterHelper.TryConvertFromString<T>(input, out var result) || result == null)
                 {
                     console.MarkupLine(ValidationErrorMessage);
                     WritePrompt(console);
@@ -191,7 +171,7 @@ namespace Spectre.Console
 
             if (ShowChoices && Choices.Count > 0)
             {
-                var choices = string.Join("/", Choices.Select(choice => TextPrompt<T>.GetTypeConverter().ConvertToInvariantString(choice)));
+                var choices = string.Join("/", Choices.Select(choice => TypeConverterHelper.ConvertToString(choice)));
                 builder.AppendFormat(CultureInfo.InvariantCulture, " [blue][[{0}]][/]", choices);
             }
 
@@ -200,7 +180,7 @@ namespace Spectre.Console
                 builder.AppendFormat(
                     CultureInfo.InvariantCulture,
                     " [green]({0})[/]",
-                    TextPrompt<T>.GetTypeConverter().ConvertToInvariantString(DefaultValue.Value));
+                    TypeConverterHelper.ConvertToString(DefaultValue.Value));
             }
 
             var markup = builder.ToString().Trim();
@@ -211,58 +191,6 @@ namespace Spectre.Console
             }
 
             console.Markup(markup + " ");
-        }
-
-        /// <summary>
-        /// Tries to convert the input string to <typeparamref name="T"/>.
-        /// </summary>
-        /// <param name="input">The input to convert.</param>
-        /// <param name="result">The result.</param>
-        /// <returns><c>true</c> if the conversion succeeded, otherwise <c>false</c>.</returns>
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types")]
-        private static bool TryConvert(string input, [MaybeNull] out T result)
-        {
-            try
-            {
-                result = (T)TextPrompt<T>.GetTypeConverter().ConvertFromInvariantString(input);
-                return true;
-            }
-            catch
-            {
-#pragma warning disable CS8601 // Possible null reference assignment.
-                result = default;
-#pragma warning restore CS8601 // Possible null reference assignment.
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Gets the type converter that's used to convert values.
-        /// </summary>
-        /// <returns>The type converter that's used to convert values.</returns>
-        private static TypeConverter GetTypeConverter()
-        {
-            var converter = TypeDescriptor.GetConverter(typeof(T));
-            if (converter != null)
-            {
-                return converter;
-            }
-
-            var attribute = typeof(T).GetCustomAttribute<TypeConverterAttribute>();
-            if (attribute != null)
-            {
-                var type = Type.GetType(attribute.ConverterTypeName, false, false);
-                if (type != null)
-                {
-                    converter = Activator.CreateInstance(type) as TypeConverter;
-                    if (converter != null)
-                    {
-                        return converter;
-                    }
-                }
-            }
-
-            throw new InvalidOperationException("Could not find type converter");
         }
 
         private bool ValidateResult(T value, [NotNullWhen(false)] out string? message)

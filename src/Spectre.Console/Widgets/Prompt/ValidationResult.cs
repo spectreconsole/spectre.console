@@ -1,7 +1,7 @@
-﻿namespace Spectre.Console
+namespace Spectre.Console
 {
     /// <summary>
-    /// Represents a validation result.
+    /// Represents a prompt validation result.
     /// </summary>
     public sealed class ValidationResult
     {

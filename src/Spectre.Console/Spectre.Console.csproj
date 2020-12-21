@@ -2,16 +2,17 @@
 
   <PropertyGroup>
     <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
+    <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Figlet\Fonts\Standard.flf" />
+    <None Remove="Widgets\Figlet\Fonts\Standard.flf" />
   </ItemGroup>
 
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="Properties/stylecop.json" />
-    <EmbeddedResource Include="Figlet\Fonts\Standard.flf" />
+    <EmbeddedResource Include="Widgets\Figlet\Fonts\Standard.flf" />
     <None Include="../../resources/gfx/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
   </ItemGroup>
 

@@ -10,6 +10,8 @@ namespace Spectre.Console
     /// </summary>
     public sealed class FigletFont
     {
+        private const string StandardFont = "Spectre.Console/Widgets/Figlet/Fonts/Standard.flf";
+
         private readonly Dictionary<int, FigletCharacter> _characters;
         private static readonly Lazy<FigletFont> _standard;
 
@@ -40,7 +42,8 @@ namespace Spectre.Console
 
         static FigletFont()
         {
-            _standard = new Lazy<FigletFont>(() => Parse(ResourceReader.ReadManifestData("Spectre.Console/Figlet/Fonts/Standard.flf")));
+            _standard = new Lazy<FigletFont>(() => Parse(
+                ResourceReader.ReadManifestData(StandardFont)));
         }
 
         internal FigletFont(IEnumerable<FigletCharacter> characters, FigletHeader header)

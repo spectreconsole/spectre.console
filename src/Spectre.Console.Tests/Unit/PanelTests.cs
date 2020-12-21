@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Shouldly;
 using Spectre.Console.Rendering;
 using VerifyXunit;
 using Xunit;
