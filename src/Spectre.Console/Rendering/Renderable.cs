@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Spectre.Console.Rendering
 {
@@ -8,12 +9,14 @@ namespace Spectre.Console.Rendering
     public abstract class Renderable : IRenderable
     {
         /// <inheritdoc/>
+        [DebuggerStepThrough]
         Measurement IRenderable.Measure(RenderContext context, int maxWidth)
         {
             return Measure(context, maxWidth);
         }
 
         /// <inheritdoc/>
+        [DebuggerStepThrough]
         IEnumerable<Segment> IRenderable.Render(RenderContext context, int maxWidth)
         {
             return Render(context, maxWidth);

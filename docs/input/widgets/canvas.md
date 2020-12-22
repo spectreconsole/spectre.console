@@ -1,5 +1,5 @@
 Title: Canvas
-Order: 4
+Order: 5
 ---
 
 `Canvas` is a widget that allows you to render arbitrary "pixels" 

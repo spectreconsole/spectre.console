@@ -1,5 +1,5 @@
 Title: Rule
-Order: 1
+Order: 2
 RedirectFrom: rule
 ---
 
