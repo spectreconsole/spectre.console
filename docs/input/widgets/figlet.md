@@ -1,5 +1,5 @@
 Title: Figlet
-Order: 3
+Order: 4
 RedirectFrom: figlet
 ---
 

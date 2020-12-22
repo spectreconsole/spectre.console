@@ -150,7 +150,7 @@ namespace Spectre.Console
         /// <param name="table">The table.</param>
         /// <param name="width">The width.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Table Width(this Table table, int width)
+        public static Table Width(this Table table, int? width)
         {
             if (table is null)
             {

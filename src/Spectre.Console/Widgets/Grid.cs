@@ -43,6 +43,11 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Gets or sets the width of the grid.
+        /// </summary>
+        public int? Width { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Grid"/> class.
         /// </summary>
         public Grid()
@@ -124,6 +129,7 @@ namespace Spectre.Console
                 ShowHeaders = false,
                 IsGrid = true,
                 PadRightCell = _padRightCell,
+                Width = Width,
             };
 
             foreach (var column in _columns)

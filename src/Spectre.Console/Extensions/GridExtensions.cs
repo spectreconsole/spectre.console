@@ -97,5 +97,22 @@ namespace Spectre.Console
             grid.AddRow(columns.Select(column => new Markup(column)).ToArray());
             return grid;
         }
+
+        /// <summary>
+        /// Sets the grid width.
+        /// </summary>
+        /// <param name="grid">The grid.</param>
+        /// <param name="width">The width.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Grid Width(this Grid grid, int? width)
+        {
+            if (grid is null)
+            {
+                throw new ArgumentNullException(nameof(grid));
+            }
+
+            grid.Width = width;
+            return grid;
+        }
     }
 }
