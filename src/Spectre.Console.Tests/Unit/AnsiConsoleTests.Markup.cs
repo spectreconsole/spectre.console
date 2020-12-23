@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Shouldly;
+using Spectre.Console.Testing;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
@@ -18,7 +19,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Output_Expected_Ansi_For_Markup(string markup, string expected)
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
 
                 // When
                 console.Markup(markup);
@@ -32,7 +33,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Be_Able_To_Escape_Tags(string markup, string expected)
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
 
                 // When
                 console.Markup(markup);
@@ -49,7 +50,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Throw_If_Encounters_Malformed_Tag(string markup, string expected)
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
 
                 // When
                 var result = Record.Exception(() => console.Markup(markup));
@@ -63,7 +64,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Throw_If_Tags_Are_Unbalanced()
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
 
                 // When
                 var result = Record.Exception(() => console.Markup("[yellow][blue]Hello[/]"));
@@ -77,7 +78,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Throw_If_Encounters_Closing_Tag()
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
 
                 // When
                 var result = Record.Exception(() => console.Markup("Hello[/]World"));

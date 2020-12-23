@@ -6,22 +6,22 @@ namespace Spectre.Console
     public enum CursorDirection
     {
         /// <summary>
-        /// Up
+        /// Moves cursor up.
         /// </summary>
         Up,
 
         /// <summary>
-        /// Down
+        /// Moves cursor down.
         /// </summary>
         Down,
 
         /// <summary>
-        /// Left
+        /// Moves cursor left.
         /// </summary>
         Left,
 
         /// <summary>
-        /// Right
+        /// Moves cursor right.
         /// </summary>
         Right,
     }

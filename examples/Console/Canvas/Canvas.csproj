@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ExampleTitle>Canvas</ExampleTitle>
+    <ExampleDescription>Demonstrates how to render pixels and images.</ExampleDescription>
+    <ExampleGroup>Widgets</ExampleGroup>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Spectre.Console.ImageSharp\Spectre.Console.ImageSharp.csproj" />
+    <ProjectReference Include="..\..\..\src\Spectre.Console\Spectre.Console.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="cake.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

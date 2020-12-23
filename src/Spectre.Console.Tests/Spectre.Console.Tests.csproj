@@ -2,8 +2,11 @@
 
   <PropertyGroup>
     <TargetFrameworks>net5.0</TargetFrameworks>
-    <IsPackable>false</IsPackable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Spectre.Console\Cli\Internal\Constants.cs" Link="Imported\Constants.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Data\starwars.flf" />
@@ -25,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Spectre.Console.Testing\Spectre.Console.Testing.csproj" />
     <ProjectReference Include="..\Spectre.Console\Spectre.Console.csproj" />
   </ItemGroup>
 

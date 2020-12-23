@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Shouldly;
 using Spectre.Console.Rendering;
+using Spectre.Console.Testing;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
@@ -20,7 +21,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Inject_Renderable_Before_Writing_To_Console()
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             console.Pipeline.Attach(new HelloRenderHook());
 
             // When

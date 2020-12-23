@@ -1,0 +1,4 @@
+Error: Encountered unterminated quoted string 'Rufus'.
+
+       --name "Rufus
+              ^^^^^^ Did you forget the closing quotation mark?

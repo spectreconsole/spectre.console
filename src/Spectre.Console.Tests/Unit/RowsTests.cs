@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Spectre.Console.Rendering;
+using Spectre.Console.Testing;
 using VerifyXunit;
 using Xunit;
 
@@ -12,7 +13,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Rows()
         {
             // Given
-            var console = new PlainConsole(width: 60);
+            var console = new FakeConsole(width: 60);
             var rows = new Rows(
                 new IRenderable[]
                 {
@@ -34,7 +35,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Rows_Correctly_Inside_Other_Widget()
         {
             // Given
-            var console = new PlainConsole(width: 60);
+            var console = new FakeConsole(width: 60);
             var table = new Table()
                 .AddColumns("Foo", "Bar")
                 .AddRow("HELLO WORLD")
@@ -56,7 +57,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Rows_Correctly_Inside_Other_Widget_When_Expanded()
         {
             // Given
-            var console = new PlainConsole(width: 60);
+            var console = new FakeConsole(width: 60);
             var table = new Table()
                 .AddColumns("Foo", "Bar")
                 .AddRow("HELLO WORLD")

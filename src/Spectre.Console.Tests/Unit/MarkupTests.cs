@@ -1,5 +1,6 @@
 using System;
 using Shouldly;
+using Spectre.Console.Testing;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
@@ -30,7 +31,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Throw_If_Closing_Tag_Is_Not_Properly_Escaped(string input)
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
 
             // When
             var result = Record.Exception(() => new Markup(input));
@@ -45,7 +46,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Escape_Markup_Blocks_As_Expected()
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             var markup = new Markup("Hello [[ World ]] !");
 
             // When
@@ -61,7 +62,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Render_Links_As_Expected(string input, string output)
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             var markup = new Markup(input);
 
             // When

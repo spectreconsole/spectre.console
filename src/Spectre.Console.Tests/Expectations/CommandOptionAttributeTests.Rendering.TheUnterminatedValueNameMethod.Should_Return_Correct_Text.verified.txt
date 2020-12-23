@@ -1,0 +1,5 @@
+Error: An error occured when parsing template.
+       Encountered unterminated value name 'BAR'.
+
+       --foo|-f <BAR
+                ^^^^ Unterminated value name

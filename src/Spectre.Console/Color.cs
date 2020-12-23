@@ -182,7 +182,9 @@ namespace Spectre.Console
             }
 
             // Should not happen, but this will make things easier if we mess things up...
-            Debug.Assert(color.Number >= 0 && color.Number < 16, "Color does not fall inside the standard palette range.");
+            Debug.Assert(
+                color.Number >= 0 && color.Number < 16,
+                "Color does not fall inside the standard palette range.");
 
             return color.Number.Value switch
             {

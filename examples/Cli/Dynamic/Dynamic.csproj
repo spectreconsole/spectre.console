@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <ExampleName>Dynamic</ExampleName>
+    <ExampleDescription>Demonstrates how to define dynamic commands.</ExampleDescription>
+    <ExampleGroup>Cli</ExampleGroup>
+    <ExampleVisible>false</ExampleVisible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Spectre.Console\Spectre.Console.csproj" />
+  </ItemGroup>
+
+</Project>
