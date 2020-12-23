@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Spectre.Console
     public sealed class TextPrompt<T> : IPrompt<T>
     {
         private readonly string _prompt;
+        private readonly StringComparer? _comparer;
 
         /// <summary>
         /// Gets or sets the prompt style.
@@ -24,7 +26,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets the list of choices.
         /// </summary>
-        public HashSet<T> Choices { get; }
+        public List<T> Choices { get; } = new List<T>();
 
         /// <summary>
         /// Gets or sets the message for invalid choices.
@@ -60,6 +62,12 @@ namespace Spectre.Console
         public bool AllowEmpty { get; set; }
 
         /// <summary>
+        /// Gets or sets the function to get the display string for a choice. By default
+        /// the corresponding <see cref="TypeConverter"/> is used.
+        /// </summary>
+        public Func<T, string> DisplaySelector = TypeConverterHelper.ConvertToString;
+
+        /// <summary>
         /// Gets or sets the validator.
         /// </summary>
         public Func<T, ValidationResult>? Validator { get; set; }
@@ -74,11 +82,10 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="prompt">The prompt markup text.</param>
         /// <param name="comparer">The comparer used for choices.</param>
-        public TextPrompt(string prompt, IEqualityComparer<T>? comparer = null)
+        public TextPrompt(string prompt, StringComparer? comparer = null)
         {
             _prompt = prompt;
-
-            Choices = new HashSet<T>(comparer ?? EqualityComparer<T>.Default);
+            _comparer = comparer;
         }
 
         /// <summary>
@@ -95,7 +102,8 @@ namespace Spectre.Console
             }
 
             var promptStyle = PromptStyle ?? Style.Plain;
-            var choices = Choices.Select(choice => TypeConverterHelper.ConvertToString(choice));
+            var choices = Choices.Select(choice => DisplaySelector(choice)).ToList();
+            var choiceMap = Choices.ToDictionary(choice => DisplaySelector(choice), choice => choice, _comparer);
 
             WritePrompt(console);
 
@@ -108,7 +116,7 @@ namespace Spectre.Console
                 {
                     if (DefaultValue != null)
                     {
-                        console.Write(TypeConverterHelper.ConvertToString(DefaultValue.Value), promptStyle);
+                        console.Write(DisplaySelector(DefaultValue.Value), promptStyle);
                         console.WriteLine();
                         return DefaultValue.Value;
                     }
@@ -121,17 +129,10 @@ namespace Spectre.Console
 
                 console.WriteLine();
 
-                // Try convert the value to the expected type.
-                if (!TypeConverterHelper.TryConvertFromString<T>(input, out var result) || result == null)
-                {
-                    console.MarkupLine(ValidationErrorMessage);
-                    WritePrompt(console);
-                    continue;
-                }
-
+                T? result;
                 if (Choices.Count > 0)
                 {
-                    if (Choices.Contains(result))
+                    if (choiceMap.TryGetValue(input, out result) && result != null)
                     {
                         return result;
                     }
@@ -141,6 +142,12 @@ namespace Spectre.Console
                         WritePrompt(console);
                         continue;
                     }
+                }
+                else if (!TypeConverterHelper.TryConvertFromString<T>(input, out result) || result == null)
+                {
+                    console.MarkupLine(ValidationErrorMessage);
+                    WritePrompt(console);
+                    continue;
                 }
 
                 // Run all validators
@@ -171,7 +178,7 @@ namespace Spectre.Console
 
             if (ShowChoices && Choices.Count > 0)
             {
-                var choices = string.Join("/", Choices.Select(choice => TypeConverterHelper.ConvertToString(choice)));
+                var choices = string.Join("/", Choices.Select(choice => DisplaySelector(choice)));
                 builder.AppendFormat(CultureInfo.InvariantCulture, " [blue][[{0}]][/]", choices);
             }
 

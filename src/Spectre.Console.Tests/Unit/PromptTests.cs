@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Shouldly;
 using VerifyXunit;
 using Xunit;
 
@@ -167,6 +168,30 @@ namespace Spectre.Console.Tests.Unit
 
             // Then
             return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        public Task Should_Use_Custom_Display_Selector()
+        {
+            // When
+            var console = new PlainConsole();
+            console.Input.PushTextWithEnter("Banana");
+
+            var result = console.Prompt(
+                new TextPrompt<Fruit>("Favorite fruit?")
+                    .AddChoice(new Fruit { Id = 1, Text = "Apple" })
+                    .AddChoice(new Fruit { Id = 2, Text = "Banana" })
+                    .WithDisplaySelector(testData => testData.Text));
+
+            result.Id.ShouldBe(2);
+
+            return Verifier.Verify(console.Output);
+        }
+
+        private class Fruit
+        {
+            public int Id { get; set; }
+            public string Text { get; set; }
         }
     }
 }

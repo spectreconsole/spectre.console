@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Spectre.Console
 {
@@ -247,6 +248,28 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Adds multiple choices to the prompt.
+        /// </summary>
+        /// <typeparam name="T">The prompt result type.</typeparam>
+        /// <param name="obj">The prompt.</param>
+        /// <param name="choices">The choices to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static TextPrompt<T> AddChoices<T>(this TextPrompt<T> obj, IEnumerable<T> choices)
+        {
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            foreach (var choice in choices)
+            {
+                obj.Choices.Add(choice);
+            }
+
+            return obj;
+        }
+
+        /// <summary>
         /// Replaces prompt user input with asterixes in the console.
         /// </summary>
         /// <typeparam name="T">The prompt type.</typeparam>
@@ -260,6 +283,24 @@ namespace Spectre.Console
             }
 
             obj.IsSecret = true;
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the function to create a display string for a given choice.
+        /// </summary>
+        /// <typeparam name="T">The prompt type.</typeparam>
+        /// <param name="obj">The prompt.</param>
+        /// <param name="displaySelector">The function to get a display string for a given choice.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static TextPrompt<T> WithDisplaySelector<T>(this TextPrompt<T> obj, Func<T, string> displaySelector)
+        {
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            obj.DisplaySelector = displaySelector;
             return obj;
         }
     }
