@@ -65,7 +65,7 @@ namespace Spectre.Console
         /// Gets or sets the function to get the display string for a choice. By default
         /// the corresponding <see cref="TypeConverter"/> is used.
         /// </summary>
-        public Func<T, string> DisplaySelector = TypeConverterHelper.ConvertToString;
+        public Func<T, string> DisplaySelector { get; set; } = TypeConverterHelper.ConvertToString;
 
         /// <summary>
         /// Gets or sets the validator.
