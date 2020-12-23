@@ -260,6 +260,10 @@ namespace Spectre.Console
             {
                 throw new ArgumentNullException(nameof(obj));
             }
+            if (choices is null)
+            {
+                throw new ArgumentNullException(nameof(choices));
+            }
 
             foreach (var choice in choices)
             {
