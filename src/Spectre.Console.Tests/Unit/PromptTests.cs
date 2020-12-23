@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Spectre.Console.Testing;
 using Shouldly;
 using VerifyXunit;
 using Xunit;
@@ -13,7 +14,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Return_Validation_Error_If_Value_Cannot_Be_Converted()
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             console.Input.PushTextWithEnter("ninety-nine");
             console.Input.PushTextWithEnter("99");
 
@@ -28,7 +29,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Chose_Default_Value_If_Nothing_Is_Entered()
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             console.Input.PushKey(ConsoleKey.Enter);
 
             // When
@@ -46,7 +47,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Return_Error_If_An_Invalid_Choice_Is_Made()
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             console.Input.PushTextWithEnter("Apple");
             console.Input.PushTextWithEnter("Banana");
 
@@ -65,7 +66,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Accept_Choice_In_List()
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             console.Input.PushTextWithEnter("Orange");
 
             // When
@@ -83,7 +84,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Auto_Complete_To_First_Choice_If_Pressing_Tab_On_Empty_String()
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             console.Input.PushKey(ConsoleKey.Tab);
             console.Input.PushKey(ConsoleKey.Enter);
 
@@ -102,7 +103,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Auto_Complete_To_Best_Match()
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             console.Input.PushText("Band");
             console.Input.PushKey(ConsoleKey.Tab);
             console.Input.PushKey(ConsoleKey.Enter);
@@ -122,7 +123,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Auto_Complete_To_Next_Choice_When_Pressing_Tab_On_A_Match()
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             console.Input.PushText("Apple");
             console.Input.PushKey(ConsoleKey.Tab);
             console.Input.PushKey(ConsoleKey.Enter);
@@ -142,7 +143,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Return_Error_If_Custom_Validation_Fails()
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             console.Input.PushTextWithEnter("22");
             console.Input.PushTextWithEnter("102");
             console.Input.PushTextWithEnter("ABC");
@@ -174,7 +175,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Use_Custom_Converter()
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             console.Input.PushTextWithEnter("Banana");
 
             // When

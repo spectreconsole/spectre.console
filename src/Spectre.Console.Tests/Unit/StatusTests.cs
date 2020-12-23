@@ -1,15 +1,16 @@
 using Shouldly;
+using Spectre.Console.Testing;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
-    public sealed partial class StatusTests
+    public sealed class StatusTests
     {
         [Fact]
         public void Should_Render_Status_Correctly()
         {
             // Given
-            var console = new TestableAnsiConsole(ColorSystem.TrueColor, width: 10);
+            var console = new FakeAnsiConsole(ColorSystem.TrueColor, width: 10);
 
             var status = new Status(console);
             status.AutoRefresh = false;

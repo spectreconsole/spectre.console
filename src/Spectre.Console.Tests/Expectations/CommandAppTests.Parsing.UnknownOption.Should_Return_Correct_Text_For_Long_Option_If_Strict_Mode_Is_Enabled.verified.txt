@@ -1,0 +1,4 @@
+Error: Unknown option 'unknown'.
+
+       dog --unknown
+           ^^^^^^^^^ Unknown option

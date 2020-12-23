@@ -1,4 +1,5 @@
 using Shouldly;
+using Spectre.Console.Testing;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
@@ -13,7 +14,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Return_Correct_Code(bool foreground, string expected)
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.TrueColor);
+                var console = new FakeAnsiConsole(ColorSystem.TrueColor);
 
                 // When
                 console.Write("Hello", new Style().SetColor(new Color(128, 0, 128), foreground));
@@ -28,7 +29,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Return_Eight_Bit_Ansi_Code_For_Known_Colors(bool foreground, string expected)
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.TrueColor);
+                var console = new FakeAnsiConsole(ColorSystem.TrueColor);
 
                 // When
                 console.Write("Hello", new Style().SetColor(Color.Purple, foreground));
@@ -46,7 +47,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Return_Correct_Code_For_Known_Color(bool foreground, string expected)
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.EightBit);
+                var console = new FakeAnsiConsole(ColorSystem.EightBit);
 
                 // When
                 console.Write("Hello", new Style().SetColor(Color.Olive, foreground));
@@ -61,7 +62,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Map_TrueColor_To_Nearest_Eight_Bit_Color_If_Possible(bool foreground, string expected)
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.EightBit);
+                var console = new FakeAnsiConsole(ColorSystem.EightBit);
 
                 // When
                 console.Write("Hello", new Style().SetColor(new Color(128, 128, 0), foreground));
@@ -76,7 +77,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Estimate_TrueColor_To_Nearest_Eight_Bit_Color(bool foreground, string expected)
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.EightBit);
+                var console = new FakeAnsiConsole(ColorSystem.EightBit);
 
                 // When
                 console.Write("Hello", new Style().SetColor(new Color(126, 127, 0), foreground));
@@ -94,7 +95,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Return_Correct_Code_For_Known_Color(bool foreground, string expected)
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.Standard);
+                var console = new FakeAnsiConsole(ColorSystem.Standard);
 
                 // When
                 console.Write("Hello", new Style().SetColor(Color.Olive, foreground));
@@ -114,7 +115,7 @@ namespace Spectre.Console.Tests.Unit
                 string expected)
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.Standard);
+                var console = new FakeAnsiConsole(ColorSystem.Standard);
 
                 // When
                 console.Write("Hello", new Style().SetColor(new Color(r, g, b), foreground));
@@ -134,7 +135,7 @@ namespace Spectre.Console.Tests.Unit
                 string expected)
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.Standard);
+                var console = new FakeAnsiConsole(ColorSystem.Standard);
 
                 // When
                 console.Write("Hello", new Style().SetColor(new Color(r, g, b), foreground));
@@ -152,7 +153,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Return_Correct_Code_For_Known_Color(bool foreground, string expected)
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.Legacy);
+                var console = new FakeAnsiConsole(ColorSystem.Legacy);
 
                 // When
                 console.Write("Hello", new Style().SetColor(Color.Olive, foreground));
@@ -172,7 +173,7 @@ namespace Spectre.Console.Tests.Unit
                 string expected)
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.Legacy);
+                var console = new FakeAnsiConsole(ColorSystem.Legacy);
 
                 // When
                 console.Write("Hello", new Style().SetColor(new Color(r, g, b), foreground));
@@ -192,7 +193,7 @@ namespace Spectre.Console.Tests.Unit
                 string expected)
             {
                 // Given
-                var console = new TestableAnsiConsole(ColorSystem.Legacy);
+                var console = new FakeAnsiConsole(ColorSystem.Legacy);
 
                 // When
                 console.Write("Hello", new Style().SetColor(new Color(r, g, b), foreground));

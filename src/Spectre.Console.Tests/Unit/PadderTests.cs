@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Spectre.Console.Testing;
 using VerifyXunit;
 using Xunit;
 
@@ -11,7 +12,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Padded_Object_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 60);
+            var console = new FakeConsole(width: 60);
             var table = new Table();
             table.AddColumn("Foo");
             table.AddColumn("Bar");
@@ -29,7 +30,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Expanded_Padded_Object_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 60);
+            var console = new FakeConsole(width: 60);
             var table = new Table();
             table.AddColumn("Foo");
             table.AddColumn("Bar");
@@ -49,7 +50,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Padded_Object_Correctly_When_Nested_Within_Other_Object()
         {
             // Given
-            var console = new PlainConsole(width: 60);
+            var console = new FakeConsole(width: 60);
             var table = new Table();
             table.AddColumn("Foo");
             table.AddColumn("Bar", c => c.PadLeft(0).PadRight(0));

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Rendering;
+using Spectre.Console.Testing;
 using VerifyXunit;
 using Xunit;
 
@@ -29,7 +30,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var panel = Fixture.GetPanel().NoBorder();
 
                 // When
@@ -60,7 +61,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var panel = Fixture.GetPanel().AsciiBorder();
 
                 // When
@@ -91,7 +92,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var panel = Fixture.GetPanel().DoubleBorder();
 
                 // When
@@ -122,7 +123,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var panel = Fixture.GetPanel().HeavyBorder();
 
                 // When
@@ -150,7 +151,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var panel = Fixture.GetPanel().RoundedBorder();
 
                 // When
@@ -178,7 +179,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var panel = Fixture.GetPanel().SquareBorder();
 
                 // When

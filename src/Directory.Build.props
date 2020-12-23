@@ -6,6 +6,7 @@
     <DebugType>embedded</DebugType>
     <MinVerSkip Condition="'$(Configuration)' == 'Debug'">true</MinVerSkip>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup Label="Deterministic Build" Condition="'$(GITHUB_ACTIONS)' == 'true'">
@@ -32,13 +33,13 @@
   </PropertyGroup>
   
   <ItemGroup Label="Package References">
-    <PackageReference Include="MinVer" PrivateAssets="All" Version="2.3.0" />
+    <PackageReference Include="MinVer" PrivateAssets="All" Version="2.4.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="1.0.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.113">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.312">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Roslynator.Analyzers" Version="3.0.0">

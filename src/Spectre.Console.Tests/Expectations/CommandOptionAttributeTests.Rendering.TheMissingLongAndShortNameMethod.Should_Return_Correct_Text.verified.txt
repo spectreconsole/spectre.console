@@ -1,0 +1,5 @@
+Error: An error occured when parsing template.
+       No long or short name for option has been specified.
+
+       <FOO>
+       ^^^^^ Missing option. Was this meant to be an argument?

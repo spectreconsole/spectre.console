@@ -1,4 +1,5 @@
 using Shouldly;
+using Spectre.Console.Testing;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
@@ -9,7 +10,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Substitute_Emoji_Shortcodes_In_Markdown()
         {
             // Given
-            var console = new TestableAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+            var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
 
             // When
             console.Markup("Hello :globe_showing_europe_africa:!");

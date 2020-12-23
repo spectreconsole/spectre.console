@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Shouldly;
+using Spectre.Console.Testing;
 using VerifyXunit;
 using Xunit;
 
@@ -12,7 +13,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Render_Task_Correctly()
         {
             // Given
-            var console = new TestableAnsiConsole(ColorSystem.TrueColor, width: 10);
+            var console = new FakeAnsiConsole(ColorSystem.TrueColor, width: 10);
 
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
@@ -37,7 +38,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Not_Auto_Clear_If_Specified()
         {
             // Given
-            var console = new TestableAnsiConsole(ColorSystem.TrueColor, width: 10);
+            var console = new FakeAnsiConsole(ColorSystem.TrueColor, width: 10);
 
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
@@ -62,7 +63,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Reduce_Width_If_Needed()
         {
             // Given
-            var console = new PlainConsole(width: 20);
+            var console = new FakeConsole(width: 20);
 
             var progress = new Progress(console)
                 .Columns(new ProgressColumn[]
@@ -93,7 +94,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var task = default(ProgressTask);
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
                 .AutoRefresh(false)

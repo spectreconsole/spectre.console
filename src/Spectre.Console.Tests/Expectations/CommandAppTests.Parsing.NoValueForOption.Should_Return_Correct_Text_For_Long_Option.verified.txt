@@ -1,0 +1,4 @@
+Error: Option 'name' is defined but no value has been provided.
+
+       dog --name
+           ^^^^^^ No value provided

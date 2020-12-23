@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Rendering;
+using Spectre.Console.Testing;
 using VerifyXunit;
 using Xunit;
 
@@ -39,7 +40,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().NoBorder();
 
                 // When
@@ -80,7 +81,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().AsciiBorder();
 
                 // When
@@ -121,7 +122,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().Ascii2Border();
 
                 // When
@@ -162,7 +163,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().AsciiDoubleHeadBorder();
 
                 // When
@@ -203,7 +204,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().SquareBorder();
 
                 // When
@@ -244,7 +245,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().RoundedBorder();
 
                 // When
@@ -285,7 +286,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().MinimalBorder();
 
                 // When
@@ -326,7 +327,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().MinimalHeavyHeadBorder();
 
                 // When
@@ -367,7 +368,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().MinimalDoubleHeadBorder();
 
                 // When
@@ -408,7 +409,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().SimpleBorder();
 
                 // When
@@ -449,7 +450,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().HorizontalBorder();
 
                 // When
@@ -490,7 +491,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().SimpleHeavyBorder();
 
                 // When
@@ -531,7 +532,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().HeavyBorder();
 
                 // When
@@ -572,7 +573,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().HeavyEdgeBorder();
 
                 // When
@@ -613,7 +614,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().HeavyHeadBorder();
 
                 // When
@@ -654,7 +655,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().DoubleBorder();
 
                 // When
@@ -695,7 +696,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().DoubleEdgeBorder();
 
                 // When
@@ -736,7 +737,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable().MarkdownBorder();
 
                 // When
@@ -750,7 +751,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_Left_Aligned_Table_Columns_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable(header2: Justify.Left).MarkdownBorder();
 
                 // When
@@ -764,7 +765,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_Center_Aligned_Table_Columns_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable(header2: Justify.Center).MarkdownBorder();
 
                 // When
@@ -778,7 +779,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_Right_Aligned_Table_Columns_As_Expected()
             {
                 // Given
-                var console = new PlainConsole();
+                var console = new FakeConsole();
                 var table = Fixture.GetTable(header2: Justify.Right).MarkdownBorder();
 
                 // When

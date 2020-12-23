@@ -1,4 +1,5 @@
 using Shouldly;
+using Spectre.Console.Testing;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
@@ -18,7 +19,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Write_Decorated_Text_Correctly(Decoration decoration, string expected)
         {
             // Given
-            var console = new TestableAnsiConsole(ColorSystem.TrueColor);
+            var console = new FakeAnsiConsole(ColorSystem.TrueColor);
 
             // When
             console.Write("Hello World", new Style().Decoration(decoration));
@@ -33,7 +34,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Write_Text_With_Multiple_Decorations_Correctly(Decoration decoration, string expected)
         {
             // Given
-            var console = new TestableAnsiConsole(ColorSystem.TrueColor);
+            var console = new FakeAnsiConsole(ColorSystem.TrueColor);
 
             // When
             console.Write("Hello World", new Style().Decoration(decoration));

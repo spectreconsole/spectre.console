@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Spectre.Console.Testing;
 using VerifyXunit;
 using Xunit;
 
@@ -11,7 +12,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Export_Text_As_Expected()
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             var recorder = new Recorder(console);
 
             recorder.Render(new Table()
@@ -30,7 +31,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Export_Html_As_Expected()
         {
             // Given
-            var console = new PlainConsole();
+            var console = new FakeConsole();
             var recorder = new Recorder(console);
 
             recorder.Render(new Table()

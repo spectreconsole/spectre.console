@@ -1,6 +1,7 @@
 using System.Text;
 using Shouldly;
 using Spectre.Console.Rendering;
+using Spectre.Console.Testing;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
@@ -37,7 +38,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Render_Unstyled_Text_As_Expected()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var text = new Text("Hello World");
 
             // When
@@ -53,7 +54,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Write_Line_Breaks(string input)
         {
             // Given
-            var console = new PlainConsole(width: 5);
+            var console = new FakeConsole(width: 5);
             var text = new Text(input);
 
             // When
@@ -67,7 +68,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Render_Panel_2()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
 
             // When
             console.Render(new Markup("[b]Hello World[/]\n[yellow]Hello World[/]"));
@@ -85,7 +86,7 @@ namespace Spectre.Console.Tests.Unit
             int width, string input, string expected)
         {
             // Given
-            var console = new PlainConsole(width);
+            var console = new FakeConsole(width);
             var text = new Text(input);
 
             // When
@@ -104,7 +105,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Overflow_Text_Correctly(Overflow overflow, string expected)
         {
             // Given
-            var console = new PlainConsole(14);
+            var console = new FakeConsole(14);
             var text = new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar qux")
                 .Overflow(overflow);
 

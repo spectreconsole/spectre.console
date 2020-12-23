@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Spectre.Console.Testing;
 using VerifyXunit;
 using Xunit;
 
@@ -11,7 +12,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
 
             // When
             console.Render(new BarChart()

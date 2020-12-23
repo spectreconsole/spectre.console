@@ -1,0 +1,4 @@
+Error: Option does not have a name.
+
+       dog -
+           ^ Did you forget the option name?

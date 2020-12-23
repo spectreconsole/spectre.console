@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <ExampleTitle>Borders</ExampleTitle>
+    <ExampleDescription>Demonstrates the different kind of borders.</ExampleDescription>
+    <ExampleGroup>Widgets</ExampleGroup>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Spectre.Console\Spectre.Console.csproj" />
+  </ItemGroup>
+
+</Project>

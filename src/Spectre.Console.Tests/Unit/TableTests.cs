@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Shouldly;
+using Spectre.Console.Testing;
 using VerifyXunit;
 using Xunit;
 
@@ -127,7 +128,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_Table_Correctly()
             {
                 // Given
-                var console = new PlainConsole(width: 80);
+                var console = new FakeConsole(width: 80);
                 var table = new Table();
                 table.AddColumns("Foo", "Bar", "Baz");
                 table.AddRow("Qux", "Corgi", "Waldo");
@@ -146,7 +147,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Table_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table();
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
@@ -163,7 +164,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Table_With_Footers_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table();
             table.AddColumn(new TableColumn("Foo").Footer("Oof").RightAligned());
             table.AddColumn("Bar");
@@ -182,7 +183,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Left_Align_Table_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table();
             table.Alignment = Justify.Left;
             table.AddColumns("Foo", "Bar", "Baz");
@@ -200,7 +201,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Center_Table_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table();
             table.Alignment = Justify.Center;
             table.AddColumns("Foo", "Bar", "Baz");
@@ -218,7 +219,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Right_Align_Table_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table();
             table.Alignment = Justify.Right;
             table.AddColumns("Foo", "Bar", "Baz");
@@ -236,7 +237,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Table_Nested_In_Panels_Correctly()
         {
             // A simple table
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table() { Border = TableBorder.Rounded };
             table.AddColumn("Foo");
             table.AddColumn("Bar");
@@ -258,7 +259,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Table_With_Column_Justification_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table();
             table.AddColumn(new TableColumn("Foo") { Alignment = Justify.Left });
             table.AddColumn(new TableColumn("Bar") { Alignment = Justify.Right });
@@ -277,7 +278,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Expand_Table_To_Available_Space_If_Specified()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table() { Expand = true };
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
@@ -294,7 +295,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Table_With_No_Border_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table { Border = TableBorder.None };
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux", "Corgi", "Waldo");
@@ -311,7 +312,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Table_With_Multiple_Rows_In_Cell_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table();
             table.AddColumns("Foo", "Bar", "Baz");
             table.AddRow("Qux\nQuuux", "Corgi", "Waldo");
@@ -328,7 +329,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Table_With_Cell_Padding_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table();
             table.AddColumns("Foo", "Bar");
             table.AddColumn(new TableColumn("Baz") { Padding = new Padding(3, 0, 2, 0) });
@@ -346,7 +347,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Table_Without_Rows()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table();
             table.AddColumns("Foo", "Bar");
             table.AddColumn(new TableColumn("Baz") { Padding = new Padding(3, 0, 2, 0) });
@@ -362,7 +363,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Not_Draw_Tables_That_Are_Impossible_To_Draw()
         {
             // Given
-            var console = new PlainConsole(width: 25);
+            var console = new FakeConsole(width: 25);
 
             var first = new Table().Border(TableBorder.Rounded).BorderColor(Color.Red);
             first.AddColumn(new TableColumn("[u]PS1[/]").Centered());
@@ -399,7 +400,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Table_With_Title_And_Caption_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table { Border = TableBorder.Rounded };
             table.Title = new TableTitle("Hello World");
             table.Caption = new TableTitle("Goodbye World");
@@ -418,7 +419,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Left_Align_Table_With_Title_And_Caption_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table { Border = TableBorder.Rounded };
             table.LeftAligned();
             table.Title = new TableTitle("Hello World");
@@ -438,7 +439,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Center_Table_With_Title_And_Caption_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table { Border = TableBorder.Rounded };
             table.Centered();
             table.Title = new TableTitle("Hello World");
@@ -458,7 +459,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Right_Align_Table_With_Title_And_Caption_Correctly()
         {
             // Given
-            var console = new PlainConsole(width: 80);
+            var console = new FakeConsole(width: 80);
             var table = new Table { Border = TableBorder.Rounded };
             table.RightAligned();
             table.Title = new TableTitle("Hello World");

@@ -1,0 +1,13 @@
+USAGE:
+    myapp <TEETH> [LEGS] [OPTIONS]
+
+ARGUMENTS:
+    [LEGS]     The number of legs
+    <TEETH>    The number of teeth the lion has
+
+OPTIONS:
+    -h, --help               Prints help information
+    -a, --alive              Indicates whether or not the animal is alive
+    -n, --name <VALUE>
+        --agility <VALUE>    The agility between 0 and 100
+    -c <CHILDREN>            The number of children the lion has
