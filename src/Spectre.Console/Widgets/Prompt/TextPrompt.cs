@@ -144,7 +144,7 @@ namespace Spectre.Console
                         continue;
                     }
                 }
-                else if (!TypeConverterHelper.TryConvertFromString<T>(input, out result) || result == null)
+                else if (!TypeConverterHelper.TryConvertFromString<T>(input, out result))
                 {
                     console.MarkupLine(ValidationErrorMessage);
                     WritePrompt(console);
