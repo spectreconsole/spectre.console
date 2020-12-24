@@ -189,7 +189,7 @@ namespace Spectre.Console.Internal
                 var normalized = rgb ?? string.Empty;
                 if (normalized.Length >= 3)
                 {
-                    // Trim parenthesises
+                    // Trim parentheses
                     normalized = normalized.Substring(3).Trim();
 
                     if (normalized.StartsWith("(", StringComparison.OrdinalIgnoreCase) &&

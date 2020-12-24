@@ -138,7 +138,7 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Convers a <see cref="int"/> to a <see cref="Color"/>.
+        /// Converts a <see cref="int"/> to a <see cref="Color"/>.
         /// </summary>
         /// <param name="number">The color number to convert.</param>
         public static implicit operator Color(int number)
@@ -147,7 +147,7 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Convers a <see cref="ConsoleColor"/> to a <see cref="Color"/>.
+        /// Converts a <see cref="ConsoleColor"/> to a <see cref="Color"/>.
         /// </summary>
         /// <param name="color">The color to convert.</param>
         public static implicit operator Color(ConsoleColor color)
@@ -156,7 +156,7 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Convers a <see cref="Color"/> to a <see cref="ConsoleColor"/>.
+        /// Converts a <see cref="Color"/> to a <see cref="ConsoleColor"/>.
         /// </summary>
         /// <param name="color">The console color to convert.</param>
         public static implicit operator ConsoleColor(Color color)
@@ -165,7 +165,7 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Convers a <see cref="Color"/> to a <see cref="ConsoleColor"/>.
+        /// Converts a <see cref="Color"/> to a <see cref="ConsoleColor"/>.
         /// </summary>
         /// <param name="color">The color to convert.</param>
         /// <returns>A <see cref="ConsoleColor"/> representing the <see cref="Color"/>.</returns>
@@ -207,7 +207,7 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Convers a color number into a <see cref="Color"/>.
+        /// Converts a color number into a <see cref="Color"/>.
         /// </summary>
         /// <param name="number">The color number.</param>
         /// <returns>The color representing the specified color number.</returns>
@@ -217,7 +217,7 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Convers a <see cref="ConsoleColor"/> to a <see cref="Color"/>.
+        /// Converts a <see cref="ConsoleColor"/> to a <see cref="Color"/>.
         /// </summary>
         /// <param name="color">The color to convert.</param>
         /// <returns>A <see cref="Color"/> representing the <see cref="ConsoleColor"/>.</returns>
