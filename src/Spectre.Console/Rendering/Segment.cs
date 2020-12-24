@@ -469,7 +469,7 @@ namespace Spectre.Console.Rendering
         /// <param name="segment">The segment to truncate.</param>
         /// <param name="maxWidth">The maximum width that the segment may occupy.</param>
         /// <returns>A new truncated segment, or <c>null</c>.</returns>
-        public static Segment? Truncate(RenderContext context, Segment segment, int maxWidth)
+        public static Segment? Truncate(RenderContext context, Segment? segment, int maxWidth)
         {
             if (context is null)
             {

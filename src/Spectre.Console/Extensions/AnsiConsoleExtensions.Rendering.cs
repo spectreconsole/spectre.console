@@ -34,11 +34,6 @@ namespace Spectre.Console
 
         private static void Render(IAnsiConsole console, RenderContext options, IEnumerable<IRenderable> renderables)
         {
-            if (renderables is null)
-            {
-                return;
-            }
-
             var result = new List<Segment>();
             foreach (var renderable in renderables)
             {

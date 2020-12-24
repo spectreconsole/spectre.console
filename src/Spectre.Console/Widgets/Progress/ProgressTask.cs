@@ -127,10 +127,7 @@ namespace Spectre.Console
             lock (_lock)
             {
                 var now = DateTime.Now;
-                if (StartTime == null)
-                {
-                    StartTime = now;
-                }
+                StartTime ??= now;
 
                 StopTime = now;
             }

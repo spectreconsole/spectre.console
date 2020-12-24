@@ -96,11 +96,6 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(style));
             }
 
-            if (source is null)
-            {
-                return style;
-            }
-
             var current = style;
             foreach (var item in source)
             {

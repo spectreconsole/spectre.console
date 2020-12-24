@@ -23,7 +23,7 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="text">The text to escape.</param>
         /// <returns>A string that is safe to use in markup.</returns>
-        public static string EscapeMarkup(this string text)
+        public static string EscapeMarkup(this string? text)
         {
             if (text == null)
             {
@@ -45,7 +45,7 @@ namespace Spectre.Console
             return Cell.GetCellLength(context, text);
         }
 
-        internal static string Capitalize(this string text, CultureInfo? culture = null)
+        internal static string Capitalize(this string? text, CultureInfo? culture = null)
         {
             if (text == null)
             {
