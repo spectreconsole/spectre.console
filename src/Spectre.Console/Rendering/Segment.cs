@@ -19,7 +19,7 @@ namespace Spectre.Console.Rendering
         public string Text { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not this is an expicit line break
+        /// Gets a value indicating whether or not this is an explicit line break
         /// that should be preserved.
         /// </summary>
         public bool IsLineBreak { get; }

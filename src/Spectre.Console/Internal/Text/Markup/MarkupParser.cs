@@ -44,13 +44,13 @@ namespace Spectre.Console.Internal
                 }
                 else if (token.Kind == MarkupTokenKind.Text)
                 {
-                    // Get the effecive style.
+                    // Get the effective style.
                     var effectiveStyle = style.Combine(stack.Reverse());
                     result.Append(Emoji.Replace(token.Value), effectiveStyle);
                 }
                 else
                 {
-                    throw new InvalidOperationException("Encountered unkown markup token.");
+                    throw new InvalidOperationException("Encountered unknown markup token.");
                 }
             }
 
