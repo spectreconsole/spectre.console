@@ -72,10 +72,7 @@ namespace Spectre.Console.Internal
                 var decoration = DecorationTable.GetDecoration(part);
                 if (decoration != null)
                 {
-                    if (effectiveDecoration == null)
-                    {
-                        effectiveDecoration = Decoration.None;
-                    }
+                    effectiveDecoration ??= Decoration.None;
 
                     effectiveDecoration |= decoration.Value;
                 }

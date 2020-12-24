@@ -53,10 +53,7 @@ namespace Spectre.Console.Internal
             var totalRemaining = total;
             var distributedTotal = new List<int>();
 
-            if (minimums == null)
-            {
-                minimums = ratios.Select(_ => 0).ToList();
-            }
+            minimums ??= ratios.Select(_ => 0).ToList();
 
             foreach (var (ratio, minimum) in ratios.Zip(minimums, (a, b) => (a, b)))
             {
