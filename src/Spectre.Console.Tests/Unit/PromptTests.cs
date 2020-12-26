@@ -171,27 +171,22 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public Task Should_Use_Custom_Display_Selector()
+        public Task Should_Use_Custom_Converter()
         {
-            // When
+            // Given
             var console = new PlainConsole();
             console.Input.PushTextWithEnter("Banana");
 
+            // When
             var result = console.Prompt(
-                new TextPrompt<Fruit>("Favorite fruit?")
-                    .AddChoice(new Fruit { Id = 1, Text = "Apple" })
-                    .AddChoice(new Fruit { Id = 2, Text = "Banana" })
-                    .WithDisplaySelector(testData => testData.Text));
+                new TextPrompt<(int, string)>("Favorite fruit?")
+                    .AddChoice((1, "Apple"))
+                    .AddChoice((2, "Banana"))
+                    .WithConverter(testData => testData.Item2));
 
-            result.Id.ShouldBe(2);
-
+            // Then
+            result.Item1.ShouldBe(2);
             return Verifier.Verify(console.Output);
-        }
-
-        private class Fruit
-        {
-            public int Id { get; set; }
-            public string Text { get; set; }
         }
     }
 }

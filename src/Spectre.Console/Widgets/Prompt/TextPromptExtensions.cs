@@ -298,14 +298,14 @@ namespace Spectre.Console
         /// <param name="obj">The prompt.</param>
         /// <param name="displaySelector">The function to get a display string for a given choice.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static TextPrompt<T> WithDisplaySelector<T>(this TextPrompt<T> obj, Func<T, string> displaySelector)
+        public static TextPrompt<T> WithConverter<T>(this TextPrompt<T> obj, Func<T, string>? displaySelector)
         {
             if (obj is null)
             {
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            obj.DisplaySelector = displaySelector;
+            obj.Converter = displaySelector;
             return obj;
         }
     }

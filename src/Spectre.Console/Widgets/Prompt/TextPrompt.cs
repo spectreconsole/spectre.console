@@ -62,10 +62,10 @@ namespace Spectre.Console
         public bool AllowEmpty { get; set; }
 
         /// <summary>
-        /// Gets or sets the function to get the display string for a choice. By default
+        /// Gets or sets the converter to get the display string for a choice. By default
         /// the corresponding <see cref="TypeConverter"/> is used.
         /// </summary>
-        public Func<T, string> DisplaySelector { get; set; } = TypeConverterHelper.ConvertToString;
+        public Func<T, string>? Converter { get; set; } = TypeConverterHelper.ConvertToString;
 
         /// <summary>
         /// Gets or sets the validator.
@@ -102,8 +102,9 @@ namespace Spectre.Console
             }
 
             var promptStyle = PromptStyle ?? Style.Plain;
-            var choices = Choices.Select(choice => DisplaySelector(choice)).ToList();
-            var choiceMap = Choices.ToDictionary(choice => DisplaySelector(choice), choice => choice, _comparer);
+            var converter = Converter ?? TypeConverterHelper.ConvertToString;
+            var choices = Choices.Select(choice => converter(choice)).ToList();
+            var choiceMap = Choices.ToDictionary(choice => converter(choice), choice => choice, _comparer);
 
             WritePrompt(console);
 
@@ -116,7 +117,7 @@ namespace Spectre.Console
                 {
                     if (DefaultValue != null)
                     {
-                        console.Write(DisplaySelector(DefaultValue.Value), promptStyle);
+                        console.Write(converter(DefaultValue.Value), promptStyle);
                         console.WriteLine();
                         return DefaultValue.Value;
                     }
@@ -178,7 +179,8 @@ namespace Spectre.Console
 
             if (ShowChoices && Choices.Count > 0)
             {
-                var choices = string.Join("/", Choices.Select(choice => DisplaySelector(choice)));
+                var converter = Converter ?? TypeConverterHelper.ConvertToString;
+                var choices = string.Join("/", Choices.Select(choice => converter(choice)));
                 builder.AppendFormat(CultureInfo.InvariantCulture, " [blue][[{0}]][/]", choices);
             }
 
