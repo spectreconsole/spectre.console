@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Shouldly;
 using VerifyXunit;
 using Xunit;
 
@@ -166,6 +167,25 @@ namespace Spectre.Console.Tests.Unit
                     }));
 
             // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        public Task Should_Use_Custom_Converter()
+        {
+            // Given
+            var console = new PlainConsole();
+            console.Input.PushTextWithEnter("Banana");
+
+            // When
+            var result = console.Prompt(
+                new TextPrompt<(int, string)>("Favorite fruit?")
+                    .AddChoice((1, "Apple"))
+                    .AddChoice((2, "Banana"))
+                    .WithConverter(testData => testData.Item2));
+
+            // Then
+            result.Item1.ShouldBe(2);
             return Verifier.Verify(console.Output);
         }
     }
