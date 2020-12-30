@@ -79,7 +79,6 @@ x64/
 _ReSharper*
 
 # NCrunch
-*.ncrunch*
 .*crunch*.local.xml
 _NCrunch_*
 

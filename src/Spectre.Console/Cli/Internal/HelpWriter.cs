@@ -244,13 +244,13 @@ namespace Spectre.Console.Cli.Internal
                 {
                     grid.AddRow(
                         $"[silver]<{argument.Name.EscapeMarkup()}>[/]",
-                        argument.Description?.TrimEnd('.') ?? string.Empty);
+                        argument.Description?.TrimEnd('.') ?? " ");
                 }
                 else
                 {
                     grid.AddRow(
                         $"[grey][[{argument.Name.EscapeMarkup()}]][/]",
-                        argument.Description?.TrimEnd('.') ?? string.Empty);
+                        argument.Description?.TrimEnd('.') ?? " ");
                 }
             }
 
@@ -324,7 +324,7 @@ namespace Spectre.Console.Cli.Internal
             {
                 grid.AddRow(
                     GetOptionParts(option),
-                    option.Description?.TrimEnd('.') ?? string.Empty);
+                    option.Description?.TrimEnd('.') ?? " ");
             }
 
             grid.AddEmptyRow();
@@ -370,7 +370,7 @@ namespace Spectre.Console.Cli.Internal
 
                 grid.AddRow(
                     arguments.ToString().TrimEnd(),
-                    child.Description?.TrimEnd('.') ?? string.Empty);
+                    child.Description?.TrimEnd('.') ?? " ");
             }
 
             grid.AddEmptyRow();
