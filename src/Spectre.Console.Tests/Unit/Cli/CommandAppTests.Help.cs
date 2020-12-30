@@ -226,6 +226,24 @@ namespace Spectre.Console.Tests.Unit.Cli
                 // Then
                 return Verifier.Verify(output);
             }
+
+            [Fact]
+            public Task Should_Not_Show_Truncated_Command_Table_If_Commands_Are_Missing_Description()
+            {
+                // Given
+                var fixture = new CommandAppFixture();
+                fixture.Configure(configurator =>
+                {
+                    configurator.SetApplicationName("myapp");
+                    configurator.AddCommand<NoDescriptionCommand>("bar");
+                });
+
+                // When
+                var (_, output, _, _) = fixture.Run("--help");
+
+                // Then
+                return Verifier.Verify(output);
+            }
         }
     }
 }
