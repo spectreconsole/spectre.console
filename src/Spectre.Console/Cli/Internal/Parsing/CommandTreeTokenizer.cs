@@ -116,34 +116,41 @@ namespace Spectre.Console.Cli.Internal
         {
             var position = reader.Position;
 
+            context.FlushRemaining();
             reader.Consume('\"');
-            context.AddRemaining('\"');
 
             var builder = new StringBuilder();
+            var terminated = false;
             while (!reader.ReachedEnd)
             {
                 var character = reader.Peek();
                 if (character == '\"')
                 {
+                    terminated = true;
+                    reader.Read();
                     break;
                 }
 
-                context.AddRemaining(character);
                 builder.Append(reader.Read());
             }
 
-            if (reader.Peek() != '\"')
+            if (!terminated)
             {
                 var unterminatedQuote = builder.ToString();
                 var token = new CommandTreeToken(CommandTreeToken.Kind.String, position, unterminatedQuote, $"\"{unterminatedQuote}");
                 throw CommandParseException.UnterminatedQuote(reader.Original, token);
             }
 
-            reader.Read();
-            context.AddRemaining('\"');
+            var quotedString = builder.ToString();
 
-            var value = builder.ToString();
-            return new CommandTreeToken(CommandTreeToken.Kind.String, position, value, $"\"{value}\"");
+            // Add to the context
+            context.AddRemaining(quotedString);
+            context.FlushRemaining();
+
+            return new CommandTreeToken(
+                CommandTreeToken.Kind.String,
+                position, quotedString,
+                quotedString);
         }
 
         private static IEnumerable<CommandTreeToken> ScanOptions(CommandTreeTokenizerContext context, TextBuffer reader)
