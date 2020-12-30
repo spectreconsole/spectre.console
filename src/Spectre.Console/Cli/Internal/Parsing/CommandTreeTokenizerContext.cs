@@ -32,6 +32,14 @@ namespace Spectre.Console.Cli.Internal
             }
         }
 
+        public void AddRemaining(string text)
+        {
+            if (Mode == CommandTreeTokenizer.Mode.Remaining)
+            {
+                _builder.Append(text);
+            }
+        }
+
         public void FlushRemaining()
         {
             if (Mode == CommandTreeTokenizer.Mode.Remaining)

@@ -11,7 +11,8 @@ namespace Spectre.Console.Tests.Unit.Cli
 {
     public sealed partial class CommandAppTests
     {
-        public static class Parsing
+        [UsesVerify]
+        public sealed class Parsing
         {
             [UsesVerify]
             public sealed class UnknownCommand
@@ -574,6 +575,23 @@ namespace Spectre.Console.Tests.Unit.Cli
                     // Then
                     result.ShouldBe("Error: Command 'dog' is missing required argument 'AGE'.");
                 }
+            }
+
+            [Fact]
+            public Task Should_Parse_Quoted_Strings_Correctly()
+            {
+                // Given
+                var fixture = new Fixture();
+                fixture.Configure(configurator =>
+                {
+                    configurator.AddCommand<DumpRemainingCommand>("foo");
+                });
+
+                // When
+                var result = fixture.Run("foo", "--", "/c", "\"set && pause\"");
+
+                // Then
+                return Verifier.Verify(result);
             }
         }
 

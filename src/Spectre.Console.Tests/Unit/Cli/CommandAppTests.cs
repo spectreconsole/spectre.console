@@ -720,7 +720,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 ctx.Remaining.Raw[0].ShouldBe("--foo");
                 ctx.Remaining.Raw[1].ShouldBe("bar");
                 ctx.Remaining.Raw[2].ShouldBe("-bar");
-                ctx.Remaining.Raw[3].ShouldBe("\"baz\"");
+                ctx.Remaining.Raw[3].ShouldBe("baz");
                 ctx.Remaining.Raw[4].ShouldBe("qux");
             }
         }

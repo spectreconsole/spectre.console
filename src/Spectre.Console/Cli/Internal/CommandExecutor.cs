@@ -24,6 +24,7 @@ namespace Spectre.Console.Cli.Internal
             }
 
             _registrar.RegisterInstance(typeof(IConfiguration), configuration);
+            _registrar.RegisterInstance(typeof(IAnsiConsole), configuration.Settings.Console.GetConsole());
 
             // Create the command model.
             var model = CommandModelBuilder.Build(configuration);
