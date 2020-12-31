@@ -53,6 +53,11 @@ namespace Spectre.Console.Rendering
         public static Segment Empty { get; } = new Segment(string.Empty, Style.Plain, false, false);
 
         /// <summary>
+        /// Creates padding segment of specified size. 
+        /// </summary>
+        public static Segment Padding(int size) => new(new string(' ', size));
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Segment"/> class.
         /// </summary>
         /// <param name="text">The segment text.</param>

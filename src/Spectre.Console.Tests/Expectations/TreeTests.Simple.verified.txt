@@ -1,0 +1,23 @@
+Root node
+├── child1
+│   ├── multiple 
+│   │    line 0
+│   ├── multiple 
+│   │    line 1
+│   ├── multiple 
+│   │    line 2
+│   ├── multiple 
+│   │    line 3
+│   ├── multiple 
+│   │    line 4
+│   ├── multiple 
+│   │    line 5
+│   ├── multiple 
+│   │    line 6
+│   ├── multiple 
+│   │    line 7
+│   ├── multiple 
+│   │    line 8
+│   └── multiple 
+│        line 9
+└── child2
