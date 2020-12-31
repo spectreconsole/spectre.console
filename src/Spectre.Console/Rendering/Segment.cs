@@ -550,42 +550,6 @@ namespace Spectre.Console.Rendering
             return result;
         }
 
-        internal static Segment TruncateWithEllipsis(string text, Style style, RenderContext context, int maxWidth)
-        {
-            if (text is null)
-            {
-                throw new ArgumentNullException(nameof(text));
-            }
-
-            if (style is null)
-            {
-                throw new ArgumentNullException(nameof(style));
-            }
-
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            var overflow = SplitOverflow(new Segment(text, style), Overflow.Ellipsis, context, maxWidth);
-            if (overflow.Count == 0)
-            {
-                if (maxWidth > 0)
-                {
-                    return new Segment(text, style);
-                }
-
-                // We got space for an ellipsis
-                return new Segment("…", style);
-            }
-
-            return SplitOverflow(
-                new Segment(text, style),
-                Overflow.Ellipsis,
-                context,
-                maxWidth)[0];
-        }
-
         internal static List<Segment> TruncateWithEllipsis(IEnumerable<Segment> segments, RenderContext context, int maxWidth)
         {
             if (segments is null)
