@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Spectre.Console.Internal;
@@ -33,10 +34,10 @@ namespace Spectre.Console
             return _rootNode
                 .Render(context, maxWidth)
                 .Concat(new List<Segment> { Segment.LineBreak })
-                .Concat(RenderChildren(context, maxWidth - 3, _rootNode, 0));
+                .Concat(RenderChildren(context, maxWidth - Rendering.PartSize, _rootNode, 0, false));
         }
 
-        private IEnumerable<Segment> RenderChildren(RenderContext context, int maxWidth, TreeNode node, int depth)
+        private IEnumerable<Segment> RenderChildren(RenderContext context, int maxWidth, TreeNode node, int depth, bool trailingTree)
         {
             var result = new List<Segment>();
             
@@ -47,9 +48,16 @@ namespace Spectre.Console
                 foreach (var (lineIndex, firstLine, lastLine, line) in lines.Enumerate())
                 {
                     var siblingConnectorSegment =
-                        new Segment(Rendering.GetPart(TreePart.SiblingConnector), Style); 
-                    result.AddRange(Enumerable.Repeat(siblingConnectorSegment, depth));
-                    
+                        new Segment(Rendering.GetPart(TreePart.SiblingConnector), Style);
+                    if (trailingTree)
+                    {
+                        result.Add(Segment.Padding(Rendering.PartSize));
+                    }
+                    else
+                    {
+                        result.AddRange(Enumerable.Repeat(siblingConnectorSegment, depth));
+                    }
+
                     if (firstLine)
                     {
                         result.Add(lastChild
@@ -64,8 +72,10 @@ namespace Spectre.Console
                     result.AddRange(line);
                     result.Add(Segment.LineBreak);
                 }
-                
-                result.AddRange(RenderChildren(context, maxWidth, childNode, depth + 1));
+
+                var lastChildOnFirstRow = depth == 0 && lastChild;
+                result.AddRange(RenderChildren(context, maxWidth - Rendering.PartSize, childNode, depth + 1,
+                    lastChildOnFirstRow));
             }
 
             return result;
