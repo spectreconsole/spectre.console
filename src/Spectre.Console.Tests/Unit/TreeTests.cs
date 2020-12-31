@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Spectre.Console.Rendering;
 using Spectre.Console.Testing;
 using VerifyXunit;
 using Xunit;
@@ -25,11 +24,13 @@ namespace Spectre.Console.Tests.Unit
             var nestedChildren = 
                 Enumerable.Range(0, 10)
                     .Select(x => new TreeNode(new Text($"multiple \n line {x}")));
+            var child3 = new TreeNode(new Text("child3"));
+            child3.AddChild(new TreeNode(new Text("single leaf\n multiline")));
             var children = new List<TreeNode>
             {
                 new(new Text("child1"), nestedChildren), 
                 new(new Text("child2")),
-                new(new Text("child3"), new List<TreeNode> {new TreeNode(new Text("single leaf\n multiline"))}),
+                child3,
             };
             var root = new TreeNode(new Text("Root node"), children);
             var tree = new Tree(root);
