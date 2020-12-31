@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,13 +8,8 @@ using Xunit;
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
-    public sealed class TreeTests
+    public sealed class TreeRenderingTests
     {
-        public TreeTests()
-        {
-            Environment.SetEnvironmentVariable("Verify_DisableClipboard", "true");
-        }
-        
         [Fact]
         public Task Representative_Tree()
         {

@@ -22,10 +22,33 @@ namespace Spectre.Console
             _rootNode = rootNode;
         }
         
-        // TODO MC: Implement Measure
         protected override Measurement Measure(RenderContext context, int maxWidth)
         {
-            return base.Measure(context, maxWidth);
+            return MeasureAtDepth(context, maxWidth, _rootNode, 0);
+        }
+
+        private Measurement MeasureAtDepth(RenderContext context, int maxWidth, TreeNode node, int depth)
+        {
+            var rootMeasurement = node.Measure(context, maxWidth);
+            var treeIndentation = depth * Rendering.PartSize;
+            var currentMax = rootMeasurement.Max + treeIndentation;
+            var currentMin = rootMeasurement.Min + treeIndentation;
+            
+            foreach (var child in node.Children)
+            {
+                var childMeasurement = MeasureAtDepth(context, maxWidth, child, depth + 1);
+                if (childMeasurement.Min > currentMin)
+                {
+                    currentMin = childMeasurement.Min;
+                }
+
+                if (childMeasurement.Max > currentMax)
+                {
+                    currentMax = childMeasurement.Max;
+                }
+            }
+
+            return new Measurement(currentMin, Math.Min(currentMax, maxWidth));
         }
 
         /// <inheritdoc/>

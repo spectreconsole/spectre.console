@@ -20,7 +20,6 @@ namespace Spectre.Console
             get => _children;
         }
 
-        // TODO MC: Test this
         public void AddChild(TreeNode child)
         {
             _children.Add(child);
