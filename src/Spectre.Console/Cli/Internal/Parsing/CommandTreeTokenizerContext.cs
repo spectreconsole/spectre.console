@@ -21,14 +21,7 @@ namespace Spectre.Console.Cli.Internal
         {
             if (Mode == CommandTreeTokenizer.Mode.Remaining)
             {
-                if (char.IsWhiteSpace(character))
-                {
-                    FlushRemaining();
-                }
-                else
-                {
-                    _builder.Append(character);
-                }
+                _builder.Append(character);
             }
         }
 
