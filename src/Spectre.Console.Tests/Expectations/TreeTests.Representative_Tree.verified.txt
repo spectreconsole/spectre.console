@@ -20,4 +20,7 @@ Root node
 │   │    line 8
 │   └── multiple 
 │        line 9
-└── child2
+├── child2
+└── child3
+    └── single leaf
+         multiline
