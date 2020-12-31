@@ -74,6 +74,9 @@ namespace Spectre.Console.Cli.Internal
                         tokens.Add(ScanString(context, reader));
                     }
                 }
+
+                // Flush remaining tokens
+                context.FlushRemaining();
             }
 
             return position;
@@ -145,7 +148,6 @@ namespace Spectre.Console.Cli.Internal
 
             // Add to the context
             context.AddRemaining(quotedString);
-            context.FlushRemaining();
 
             return new CommandTreeToken(
                 CommandTreeToken.Kind.String,
