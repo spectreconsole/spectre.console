@@ -112,7 +112,7 @@ namespace Spectre.Console
                 if (length < childWidth)
                 {
                     var diff = childWidth - length;
-                    content.Add(new Segment(new string(' ', diff)));
+                    content.Add(Segment.Padding(diff));
                 }
 
                 result.AddRange(content);

@@ -66,7 +66,7 @@ namespace Spectre.Console
             // Top padding
             for (var i = 0; i < Padding.GetTopSafe(); i++)
             {
-                result.Add(new Segment(new string(' ', width)));
+                result.Add(Segment.Padding(width));
                 result.Add(Segment.LineBreak);
             }
 
@@ -76,7 +76,7 @@ namespace Spectre.Console
                 // Left padding
                 if (Padding.GetLeftSafe() != 0)
                 {
-                    result.Add(new Segment(new string(' ', Padding.GetLeftSafe())));
+                    result.Add(Segment.Padding(Padding.GetLeftSafe()));
                 }
 
                 result.AddRange(line);
@@ -84,7 +84,7 @@ namespace Spectre.Console
                 // Right padding
                 if (Padding.GetRightSafe() != 0)
                 {
-                    result.Add(new Segment(new string(' ', Padding.GetRightSafe())));
+                    result.Add(Segment.Padding(Padding.GetRightSafe()));
                 }
 
                 // Missing space on right side?
@@ -92,7 +92,7 @@ namespace Spectre.Console
                 var diff = width - lineWidth - Padding.GetLeftSafe() - Padding.GetRightSafe();
                 if (diff > 0)
                 {
-                    result.Add(new Segment(new string(' ', diff)));
+                    result.Add(Segment.Padding(diff));
                 }
 
                 result.Add(Segment.LineBreak);
@@ -101,7 +101,7 @@ namespace Spectre.Console
             // Bottom padding
             for (var i = 0; i < Padding.GetBottomSafe(); i++)
             {
-                result.Add(new Segment(new string(' ', width)));
+                result.Add(Segment.Padding(width));
                 result.Add(Segment.LineBreak);
             }
 
