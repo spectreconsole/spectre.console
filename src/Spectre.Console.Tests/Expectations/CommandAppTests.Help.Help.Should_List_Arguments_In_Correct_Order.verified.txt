@@ -1,0 +1,12 @@
+USAGE:
+    myapp <FOO> <BAR> <BAZ> <CORGI> [QUX] [OPTIONS]
+
+ARGUMENTS:
+    <FOO>
+    <BAR>
+    <BAZ>
+    <CORGI>
+    [QUX]
+
+OPTIONS:
+    -h, --help    Prints help information

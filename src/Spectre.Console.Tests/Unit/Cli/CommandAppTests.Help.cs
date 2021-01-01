@@ -244,6 +244,24 @@ namespace Spectre.Console.Tests.Unit.Cli
                 // Then
                 return Verifier.Verify(output);
             }
+
+            [Fact]
+            public Task Should_List_Arguments_In_Correct_Order()
+            {
+                // Given
+                var fixture = new CommandAppFixture();
+                fixture.WithDefaultCommand<GenericCommand<ArgumentOrderSettings>>();
+                fixture.Configure(configurator =>
+                {
+                    configurator.SetApplicationName("myapp");
+                });
+
+                // When
+                var (_, output, _, _) = fixture.Run("--help");
+
+                // Then
+                return Verifier.Verify(output);
+            }
         }
     }
 }

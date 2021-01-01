@@ -11,12 +11,14 @@ namespace Spectre.Console.Cli.Internal
         private sealed class HelpArgument
         {
             public string Name { get; }
+            public int Position { get; set; }
             public bool Required { get; }
             public string? Description { get; }
 
-            public HelpArgument(string name, bool required, string? description)
+            public HelpArgument(string name, int position, bool required, string? description)
             {
                 Name = name;
+                Position = position;
                 Required = required;
                 Description = description;
             }
@@ -25,7 +27,7 @@ namespace Spectre.Console.Cli.Internal
             {
                 var arguments = new List<HelpArgument>();
                 arguments.AddRange(command?.Parameters?.OfType<CommandArgument>()?.Select(
-                    x => new HelpArgument(x.Value, x.Required, x.Description))
+                    x => new HelpArgument(x.Value, x.Position, x.Required, x.Description))
                     ?? Array.Empty<HelpArgument>());
                 return arguments;
             }
@@ -94,63 +96,61 @@ namespace Spectre.Console.Cli.Internal
             composer.Style("yellow", "USAGE:").LineBreak();
             composer.Tab().Text(model.GetApplicationName());
 
-            var parameters = new Stack<string>();
+            var parameters = new List<string>();
 
             if (command == null)
             {
-                parameters.Push("[aqua]<COMMAND>[/]");
-                parameters.Push("[grey][[OPTIONS]][/]");
+                parameters.Add("[grey][[OPTIONS]][/]");
+                parameters.Add("[aqua]<COMMAND>[/]");
             }
             else
             {
-                var current = command;
-                if (command.IsBranch)
-                {
-                    parameters.Push("[aqua]<COMMAND>[/]");
-                }
-
-                while (current != null)
+                foreach (var current in command.Flatten())
                 {
                     var isCurrent = current == command;
-                    if (isCurrent)
-                    {
-                        parameters.Push("[grey][[OPTIONS]][/]");
-                    }
-
-                    if (current.Parameters.OfType<CommandArgument>().Any())
-                    {
-                        var optionalArguments = current.Parameters.OfType<CommandArgument>().Where(x => !x.Required).ToArray();
-                        if (optionalArguments.Length > 0 || !isCurrent)
-                        {
-                            foreach (var optionalArgument in optionalArguments)
-                            {
-                                parameters.Push($"[silver][[{optionalArgument.Value.EscapeMarkup()}]][/]");
-                            }
-                        }
-
-                        if (isCurrent)
-                        {
-                            foreach (var argument in current.Parameters.OfType<CommandArgument>()
-                                .Where(a => a.Required).OrderBy(a => a.Position).ToArray())
-                            {
-                                parameters.Push($"[aqua]<{argument.Value.EscapeMarkup()}>[/]");
-                            }
-                        }
-                    }
 
                     if (!current.IsDefaultCommand)
                     {
                         if (isCurrent)
                         {
-                            parameters.Push($"[underline]{current.Name.EscapeMarkup()}[/]");
+                            parameters.Add($"[underline]{current.Name.EscapeMarkup()}[/]");
                         }
                         else
                         {
-                            parameters.Push($"{current.Name.EscapeMarkup()}");
+                            parameters.Add($"{current.Name.EscapeMarkup()}");
                         }
                     }
 
-                    current = current.Parent;
+                    if (current.Parameters.OfType<CommandArgument>().Any())
+                    {
+                        if (isCurrent)
+                        {
+                            foreach (var argument in current.Parameters.OfType<CommandArgument>()
+                                .Where(a => a.Required).OrderBy(a => a.Position).ToArray())
+                            {
+                                parameters.Add($"[aqua]<{argument.Value.EscapeMarkup()}>[/]");
+                            }
+                        }
+
+                        var optionalArguments = current.Parameters.OfType<CommandArgument>().Where(x => !x.Required).ToArray();
+                        if (optionalArguments.Length > 0 || !isCurrent)
+                        {
+                            foreach (var optionalArgument in optionalArguments)
+                            {
+                                parameters.Add($"[silver][[{optionalArgument.Value.EscapeMarkup()}]][/]");
+                            }
+                        }
+                    }
+
+                    if (isCurrent)
+                    {
+                        parameters.Add("[grey][[OPTIONS]][/]");
+                    }
+                }
+
+                if (command.IsBranch)
+                {
+                    parameters.Add("[aqua]<COMMAND>[/]");
                 }
             }
 
@@ -238,20 +238,18 @@ namespace Spectre.Console.Cli.Internal
             grid.AddColumn(new GridColumn { Padding = new Padding(4, 4), NoWrap = true });
             grid.AddColumn(new GridColumn { Padding = new Padding(0, 0) });
 
-            foreach (var argument in arguments)
+            foreach (var argument in arguments.Where(x => x.Required).OrderBy(x => x.Position))
             {
-                if (argument.Required)
-                {
-                    grid.AddRow(
-                        $"[silver]<{argument.Name.EscapeMarkup()}>[/]",
-                        argument.Description?.TrimEnd('.') ?? " ");
-                }
-                else
-                {
-                    grid.AddRow(
-                        $"[grey][[{argument.Name.EscapeMarkup()}]][/]",
-                        argument.Description?.TrimEnd('.') ?? " ");
-                }
+                grid.AddRow(
+                    $"[silver]<{argument.Name.EscapeMarkup()}>[/]",
+                    argument.Description?.TrimEnd('.') ?? " ");
+            }
+
+            foreach (var argument in arguments.Where(x => !x.Required).OrderBy(x => x.Position))
+            {
+                grid.AddRow(
+                    $"[grey][[{argument.Name.EscapeMarkup()}]][/]",
+                    argument.Description?.TrimEnd('.') ?? " ");
             }
 
             grid.AddEmptyRow();

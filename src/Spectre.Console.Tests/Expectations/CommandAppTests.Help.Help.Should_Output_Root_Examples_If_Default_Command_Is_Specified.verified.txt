@@ -5,8 +5,8 @@ EXAMPLES:
     myapp 12 -c 3
 
 ARGUMENTS:
-    [LEGS]     The number of legs
     <TEETH>    The number of teeth the lion has
+    [LEGS]     The number of legs
 
 OPTIONS:
     -h, --help               Prints help information

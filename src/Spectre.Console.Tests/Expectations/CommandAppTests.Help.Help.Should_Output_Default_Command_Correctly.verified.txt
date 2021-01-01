@@ -2,8 +2,8 @@ USAGE:
     myapp <TEETH> [LEGS] [OPTIONS]
 
 ARGUMENTS:
-    [LEGS]     The number of legs
     <TEETH>    The number of teeth the lion has
+    [LEGS]     The number of legs
 
 OPTIONS:
     -h, --help               Prints help information
