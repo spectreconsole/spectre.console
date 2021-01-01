@@ -51,6 +51,12 @@ namespace Spectre.Console.Cli.Internal
             return true;
         }
 
+        public void Consume()
+        {
+            EnsureNotAtEnd();
+            Read();
+        }
+
         public void Consume(char character)
         {
             EnsureNotAtEnd();

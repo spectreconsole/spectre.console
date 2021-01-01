@@ -63,16 +63,23 @@ namespace Spectre.Console.Cli.Internal
                 }
 
                 var character = reader.Peek();
-                if (!char.IsWhiteSpace(character))
+
+                // Eat whitespace
+                if (char.IsWhiteSpace(character))
                 {
-                    if (character == '-')
-                    {
-                        tokens.AddRange(ScanOptions(context, reader));
-                    }
-                    else
-                    {
-                        tokens.Add(ScanString(context, reader));
-                    }
+                    reader.Consume();
+                    continue;
+                }
+
+                if (character == '-')
+                {
+                    // Option
+                    tokens.AddRange(ScanOptions(context, reader));
+                }
+                else
+                {
+                    // Command or argument
+                    tokens.Add(ScanString(context, reader));
                 }
 
                 // Flush remaining tokens
