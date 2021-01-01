@@ -1,6 +1,9 @@
 namespace Spectre.Console.Rendering
 {
-    public class TreeRendering
+    /// <summary>
+    /// Selection of different renderings which can be used by <see cref="Tree"/>.
+    /// </summary>
+    public static class TreeRendering
     {
         /// <summary>
         /// Gets ASCII rendering of a tree.

@@ -4,7 +4,10 @@ using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
-    public class TreeNode : IRenderable
+    /// <summary>
+    /// Node of a tree.
+    /// </summary>
+    public sealed class TreeNode : IRenderable
     {
         private readonly IRenderable _renderable;
         private List<TreeNode> _children;

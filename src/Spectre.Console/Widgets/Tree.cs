@@ -9,7 +9,7 @@ namespace Spectre.Console
     /// <summary>
     ///     Representation of tree data.
     /// </summary>
-    public class Tree : Renderable
+    public sealed class Tree : Renderable
     {
         private readonly TreeNode _rootNode;
 
