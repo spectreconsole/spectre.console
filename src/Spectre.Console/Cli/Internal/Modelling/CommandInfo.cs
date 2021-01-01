@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 
 namespace Spectre.Console.Cli.Internal
@@ -50,6 +51,20 @@ namespace Spectre.Console.Cli.Internal
                     Description = description.Description;
                 }
             }
+        }
+
+        public List<CommandInfo> Flatten()
+        {
+            var result = new Stack<CommandInfo>();
+
+            var current = this;
+            while (current != null)
+            {
+                result.Push(current);
+                current = current.Parent;
+            }
+
+            return result.ToList();
         }
     }
 }
