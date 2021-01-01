@@ -57,10 +57,10 @@ namespace Spectre.Console
             return _rootNode
                 .Render(context, maxWidth)
                 .Concat(new List<Segment> { Segment.LineBreak })
-                .Concat(RenderChildren(context, maxWidth - Rendering.PartSize, _rootNode, 0, false));
+                .Concat(RenderChildren(context, maxWidth - Rendering.PartSize, _rootNode, 0));
         }
 
-        private IEnumerable<Segment> RenderChildren(RenderContext context, int maxWidth, TreeNode node, int depth, bool trailingTree)
+        private IEnumerable<Segment> RenderChildren(RenderContext context, int maxWidth, TreeNode node, int depth, int? trailingStarted = null)
         {
             var result = new List<Segment>();
             
@@ -72,9 +72,10 @@ namespace Spectre.Console
                 {
                     var siblingConnectorSegment =
                         new Segment(Rendering.GetPart(TreePart.SiblingConnector), Style);
-                    if (trailingTree)
+                    if (trailingStarted != null)
                     {
-                        result.Add(Segment.Padding(Rendering.PartSize));
+                        result.AddRange(Enumerable.Repeat(siblingConnectorSegment, trailingStarted.Value));
+                        result.AddRange(Enumerable.Repeat(Segment.Padding(Rendering.PartSize), depth - trailingStarted.Value));
                     }
                     else
                     {
@@ -96,9 +97,9 @@ namespace Spectre.Console
                     result.Add(Segment.LineBreak);
                 }
 
-                var lastChildOnFirstRow = depth == 0 && lastChild;
+                var childTrailingStarted = trailingStarted ?? (lastChild ? depth : null);
                 result.AddRange(RenderChildren(context, maxWidth - Rendering.PartSize, childNode, depth + 1,
-                    lastChildOnFirstRow));
+                    childTrailingStarted));
             }
 
             return result;
