@@ -2,9 +2,12 @@ using System;
 
 namespace Spectre.Console.Rendering
 {
-    class AsciiTreeRendering : ITreeRendering
+    /// <summary>
+    /// An ASCII rendering of a tree.
+    /// </summary>
+    public sealed class AsciiTreeRendering : ITreeRendering
     {
-
+        /// <inheritdoc/>
         public string GetPart(TreePart part)
         {
             return part switch
@@ -16,6 +19,7 @@ namespace Spectre.Console.Rendering
             };
         }
 
+        /// <inheritdoc/>
         public int PartSize => 4;
     }
 }

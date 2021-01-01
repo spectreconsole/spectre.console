@@ -12,23 +12,21 @@ namespace Spectre.Console.Tests.Unit
         public void Measure_Tree_Dominated_Width()
         {
             // Given
-            var nestedChildren = 
+            var nestedChildren =
                 Enumerable.Range(0, 10)
                     .Select(x => new TreeNode(new Text($"multiple \n line {x}")));
             var child3 = new TreeNode(new Text("child3"));
             child3.AddChild(new TreeNode(new Text("single leaf\n multiline")));
             var children = new List<TreeNode>
             {
-                new(new Text("child1"), nestedChildren), 
-                new(new Text("child2")),
-                child3,
+                new(new Text("child1"), nestedChildren), new(new Text("child2")), child3,
             };
             var root = new TreeNode(new Text("Root node"), children);
             var tree = new Tree(root);
 
             // When
             var measurement = ((IRenderable)tree).Measure(new RenderContext(Encoding.Unicode, false), 80);
-            
+
             // Then
             // Corresponds to "│   └── multiple"
             Assert.Equal(17, measurement.Min);
@@ -49,12 +47,12 @@ namespace Spectre.Console.Tests.Unit
                 currentNode.AddChild(newNode);
                 currentNode = newNode;
             }
-            
+
             var tree = new Tree(root);
 
             // When
             var measurement = ((IRenderable)tree).Measure(new RenderContext(Encoding.Unicode, false), 80);
-            
+
             // Then
             // Each node depth contributes 4 characters, so 100 node depth -> 400 character min width
             Assert.Equal(400, measurement.Min);
@@ -62,7 +60,7 @@ namespace Spectre.Console.Tests.Unit
             // Successfully capped at 80 terminal width
             Assert.Equal(80, measurement.Max);
         }
-        
+
         [Fact]
         public void Measure_Leaf_Dominated_Width()
         {
@@ -75,12 +73,12 @@ namespace Spectre.Console.Tests.Unit
                 currentNode.AddChild(newNode);
                 currentNode = newNode;
             }
-            
+
             var tree = new Tree(root);
 
             // When
             var measurement = ((IRenderable)tree).Measure(new RenderContext(Encoding.Unicode, false), 80);
-            
+
             // Then
             // Corresponds to "│   │   │   │   │   │   │   │   │   └── "
             Assert.Equal(40, measurement.Min);

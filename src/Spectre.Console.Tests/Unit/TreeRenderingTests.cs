@@ -15,7 +15,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new FakeConsole(width: 80);
-            var nestedChildren = 
+            var nestedChildren =
                 Enumerable.Range(0, 10)
                     .Select(x => new TreeNode(new Text($"multiple \n line {x}")));
             var child2 = new TreeNode(new Text("child2"));
@@ -26,12 +26,7 @@ namespace Spectre.Console.Tests.Unit
             var child3Child = new TreeNode(new Text("single leaf\n multiline"));
             child3Child.AddChild(new TreeNode(new Calendar(2020, 01)));
             child3.AddChild(child3Child);
-            var children = new List<TreeNode>
-            {
-                new(new Text("child1"), nestedChildren), 
-                child2,
-                child3,
-            };
+            var children = new List<TreeNode> { new(new Text("child1"), nestedChildren), child2, child3 };
             var root = new TreeNode(new Text("Root node"), children);
             var tree = new Tree(root);
 
