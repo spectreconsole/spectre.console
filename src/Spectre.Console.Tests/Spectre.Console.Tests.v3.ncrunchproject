@@ -1,0 +1,18 @@
+﻿<ProjectConfiguration>
+  <Settings>
+    <IgnoredTests>
+      <NamedTestSelector>
+        <TestName>Spectre.Console.Tests.Unit.Cli.CommandAppTests+Parsing+UnknownCommand.Should_Return_Correct_Text_With_Suggestion_And_No_Arguments_When_Root_Command_Is_Unknown_And_Distance_Is_Small</TestName>
+      </NamedTestSelector>
+      <NamedTestSelector>
+        <TestName>Spectre.Console.Tests.Unit.Cli.CommandAppTests+Parsing+UnknownCommand.Should_Return_Correct_Text_With_Suggestion_When_Command_Followed_By_Argument_Is_Unknown_And_Distance_Is_Small</TestName>
+      </NamedTestSelector>
+      <NamedTestSelector>
+        <TestName>Spectre.Console.Tests.Unit.Cli.CommandAppTests+Parsing+UnknownCommand.Should_Return_Correct_Text_With_Suggestion_When_Root_Command_After_Argument_Is_Unknown_And_Distance_Is_Small</TestName>
+      </NamedTestSelector>
+      <NamedTestSelector>
+        <TestName>Spectre.Console.Tests.Unit.Cli.CommandAppTests+Parsing+UnknownCommand.Should_Return_Correct_Text_With_Suggestion_When_Root_Command_Followed_By_Argument_Is_Unknown_And_Distance_Is_Small</TestName>
+      </NamedTestSelector>
+    </IgnoredTests>
+  </Settings>
+</ProjectConfiguration>
