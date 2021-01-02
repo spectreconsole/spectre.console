@@ -114,7 +114,7 @@ namespace Spectre.Console
                 case ParagraphBlock paragraphBlock:
                     return this.RenderParagraphBlock(paragraphBlock, context, maxWidth);
                 case ThematicBreakBlock thematicBreakBlock:
-                    break;
+                    return ((IRenderable)new Rule { Style = new Style(decoration: Decoration.Bold) }).Render(context, maxWidth);
                 case LeafBlock leafBlock:
                     break;
                 default:
@@ -169,11 +169,9 @@ namespace Spectre.Console
 
         private IRenderable RenderContainerInline(ContainerInline inline, RenderContext context, int maxWidth, Style style = null)
         {
-            style ??= Style.Plain;
             return new CompositeRenderable(inline.Select(x => this.RenderInline(x, context, maxWidth, style)));
         }
 
-        // TODO MC: Should return enumerable of segments here
         private IRenderable RenderInline(Inline inline, RenderContext context, int maxWidth, Style style)
         {
             switch (inline)
@@ -207,7 +205,15 @@ namespace Spectre.Console
                 case DelimiterInline delimiterInline:
                     break;
                 case EmphasisInline emphasisInline:
-                    return this.RenderContainerInline(emphasisInline, context, maxWidth);
+                    var styleDecoration =
+                        emphasisInline.DelimiterCount switch
+                        {
+                            1 => Decoration.Italic,
+                            2 => Decoration.Bold,
+                            _ => Decoration.None,
+                        };
+                    var emphasisChildStyle = new Style(decoration: styleDecoration);
+                    return this.RenderContainerInline(emphasisInline, context, maxWidth, emphasisChildStyle);
                 case LinkInline linkInline:
                     if (linkInline.IsImage)
                     {
@@ -219,8 +225,8 @@ namespace Spectre.Console
                         return Text.Empty;
                     }
 
-                    var childStyle = new Style(link: linkInline.Url);
-                    return this.RenderContainerInline(linkInline, context, maxWidth, childStyle);
+                    var linkInlineChildStyle = new Style(link: linkInline.Url);
+                    return this.RenderContainerInline(linkInline, context, maxWidth, linkInlineChildStyle);
                 case ContainerInline containerInline:
                     break;
                 case HtmlEntityInline htmlEntityInline:
