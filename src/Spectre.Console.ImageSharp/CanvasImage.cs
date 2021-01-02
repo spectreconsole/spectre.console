@@ -51,6 +51,11 @@ namespace Spectre.Console
             Image = SixLabors.ImageSharp.Image.Load<Rgba32>(filename);
         }
 
+        public CanvasImage(byte[] data)
+        {
+            Image = SixLabors.ImageSharp.Image.Load<Rgba32>(data);
+        }
+
         /// <inheritdoc/>
         protected override Measurement Measure(RenderContext context, int maxWidth)
         {
