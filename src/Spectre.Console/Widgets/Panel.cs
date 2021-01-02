@@ -55,7 +55,7 @@ namespace Spectre.Console
         /// <param name="content">The panel content.</param>
         public Panel(IRenderable content)
         {
-            _child = content ?? throw new System.ArgumentNullException(nameof(content));
+            _child = content ?? throw new ArgumentNullException(nameof(content));
         }
 
         /// <inheritdoc/>

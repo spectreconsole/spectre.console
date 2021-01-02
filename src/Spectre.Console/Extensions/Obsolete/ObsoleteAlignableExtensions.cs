@@ -22,7 +22,7 @@ namespace Spectre.Console
         {
             if (obj is null)
             {
-                throw new System.ArgumentNullException(nameof(obj));
+                throw new ArgumentNullException(nameof(obj));
             }
 
             obj.Alignment = alignment;

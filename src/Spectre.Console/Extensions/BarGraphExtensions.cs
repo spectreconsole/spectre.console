@@ -72,7 +72,7 @@ namespace Spectre.Console
 
             foreach (var item in items)
             {
-                AddItem<T>(chart, item);
+                AddItem(chart, item);
             }
 
             return chart;

@@ -16,8 +16,8 @@ namespace Spectre.Console.Internal
             string method, List<(string Type, string Name)> parameters,
             string? path, int? lineNumber)
         {
-            Method = method ?? throw new System.ArgumentNullException(nameof(method));
-            Parameters = parameters ?? throw new System.ArgumentNullException(nameof(parameters));
+            Method = method ?? throw new ArgumentNullException(nameof(method));
+            Parameters = parameters ?? throw new ArgumentNullException(nameof(parameters));
             Path = path;
             LineNumber = lineNumber;
         }
