@@ -67,29 +67,25 @@ namespace Spectre.Console
                     break;
                 case DefinitionTerm definitionTerm:
                     break;
-                case Figure figure:
-                    break;
-                case FigureCaption figureCaption:
-                    break;
-                case FooterBlock footerBlock:
-                    break;
-                case Footnote footnote:
-                    break;
-                case FootnoteGroup footnoteGroup:
-                    break;
-                case FootnoteLinkReferenceDefinition footnoteLinkReferenceDefinition:
-                    break;
+
+                // TODO: These features don't tend to be used in practice - feel free to add support!
                 case MathBlock mathBlock:
+                case Footnote footnote:
+                case FootnoteGroup footnoteGroup:
+                case FootnoteLinkReferenceDefinition footnoteLinkReferenceDefinition:
+                case Figure figure:
+                case FigureCaption figureCaption:
+                case YamlFrontMatterBlock yamlFrontMatterBlock:
+                case Abbreviation abbreviation:
+                    break;
+
+                case FooterBlock footerBlock:
                     break;
                 case Markdig.Extensions.Tables.Table table:
                     break;
                 case TableCell tableCell:
                     break;
                 case Markdig.Extensions.Tables.TableRow tableRow:
-                    break;
-                case YamlFrontMatterBlock yamlFrontMatterBlock:
-                    break;
-                case Abbreviation abbreviation:
                     break;
                 case FencedCodeBlock fencedCodeBlock:
                     break;
@@ -106,8 +102,6 @@ namespace Spectre.Console
                     var compositeRenderable =
                         new CompositeRenderable(quoteBlock.Select(this.RenderBlock));
                     return new Panel(compositeRenderable) { Border = new LeftHandSideBoxBorder() };
-                case ContainerBlock containerBlock:
-                    break;
                 case HeadingBlock headingBlock:
                     return this.RenderHeadingBlock(headingBlock);
                 case HtmlBlock htmlBlock:
@@ -202,15 +196,15 @@ namespace Spectre.Console
                     return new Text(Emoji.Replace(emojiInline.Content.ToString()), style);
                 case AbbreviationInline abbreviationInline:
                     break;
+
+                // TODO: Again, not commonly used, feel free to add support
                 case JiraLink jiraLink:
-                    break;
+                case SmartyPant smartyPant:
+                case TaskList taskList:
                 case MathInline mathInline:
                     break;
-                case SmartyPant smartyPant:
-                    break;
+
                 case PipeTableDelimiterInline pipeTableDelimiterInline:
-                    break;
-                case TaskList taskList:
                     break;
                 case AutolinkInline autolinkInline:
                     break;
@@ -219,8 +213,6 @@ namespace Spectre.Console
                 case EmphasisDelimiterInline emphasisDelimiterInline:
                     break;
                 case LinkDelimiterInline linkDelimiterInline:
-                    break;
-                case DelimiterInline delimiterInline:
                     break;
                 case EmphasisInline emphasisInline:
                     var styleDecoration =
@@ -257,8 +249,6 @@ namespace Spectre.Console
                     break;
                 case LiteralInline literalInline:
                     return new Text(literalInline.Content.ToString(), style);
-                case LeafInline leafInline:
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(inline));
             }
