@@ -38,7 +38,7 @@ namespace Spectre.Console
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
             var result = new List<Segment>();
-            var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+            var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().UseEmojiAndSmiley().Build();
             var doc = Markdig.Markdown.Parse(_markdownText, pipeline);
 
             foreach (var element in doc)
@@ -191,7 +191,7 @@ namespace Spectre.Console
                 case CustomContainerInline customContainerInline:
                     break;
                 case EmojiInline emojiInline:
-                    return new Text(emojiInline.Content.ToString(), style);
+                    return new Text(Emoji.Replace(emojiInline.Content.ToString()), style);
                 case AbbreviationInline abbreviationInline:
                     break;
                 case JiraLink jiraLink:
