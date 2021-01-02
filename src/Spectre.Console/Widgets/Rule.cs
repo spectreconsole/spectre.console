@@ -31,6 +31,13 @@ namespace Spectre.Console
         internal int TitlePadding { get; set; } = 2;
         internal int TitleSpacing { get; set; } = 1;
 
+        internal IRenderable? CustomRenderable { get; set; } = null;
+
+        internal Rule(IRenderable renderable)
+        {
+            this.CustomRenderable = renderable;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Rule"/> class.
         /// </summary>
@@ -52,7 +59,7 @@ namespace Spectre.Console
         {
             var extraLength = (2 * TitlePadding) + (2 * TitleSpacing);
 
-            if (Title == null || maxWidth <= extraLength)
+            if ((Title == null && CustomRenderable == null) || maxWidth <= extraLength)
             {
                 return GetLineWithoutTitle(context, maxWidth);
             }
@@ -96,8 +103,8 @@ namespace Spectre.Console
         private IEnumerable<Segment> GetTitleSegments(RenderContext context, string title, int width)
         {
             title = title.NormalizeNewLines().ReplaceExact("\n", " ").Trim();
-            var markup = new Markup(title, Style);
-            return ((IRenderable)markup).Render(context.WithSingleLine(), width);
+            IRenderable markup = this.CustomRenderable ?? new Markup(title, this.Style);
+            return markup.Render(context.WithSingleLine(), width);
         }
 
         private (Segment Left, Segment Right) GetLineSegments(RenderContext context, int width, IEnumerable<Segment> title)
