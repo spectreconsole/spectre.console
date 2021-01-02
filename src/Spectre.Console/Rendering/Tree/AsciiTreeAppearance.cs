@@ -5,10 +5,13 @@ namespace Spectre.Console.Rendering
     /// <summary>
     /// An ASCII rendering of a tree.
     /// </summary>
-    public sealed class AsciiTreeRendering : ITreeRendering
+    public sealed class AsciiTreeAppearance : TreeAppearance
     {
         /// <inheritdoc/>
-        public string GetPart(TreePart part)
+        public override int PartSize => 4;
+
+        /// <inheritdoc/>
+        public override string GetPart(TreePart part)
         {
             return part switch
             {
@@ -18,8 +21,5 @@ namespace Spectre.Console.Rendering
                 _ => throw new ArgumentOutOfRangeException(nameof(part), part, "Unknown tree part."),
             };
         }
-
-        /// <inheritdoc/>
-        public int PartSize => 4;
     }
 }

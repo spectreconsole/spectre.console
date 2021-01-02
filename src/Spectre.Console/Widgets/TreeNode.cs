@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Spectre.Console.Rendering;
@@ -7,10 +8,12 @@ namespace Spectre.Console
     /// <summary>
     /// Node of a tree.
     /// </summary>
-    public sealed class TreeNode : IRenderable
+    public sealed class TreeNode : IHasTreeNodes, IRenderable
     {
         private readonly IRenderable _renderable;
-        private List<TreeNode> _children;
+
+        /// <inheritdoc/>
+        public List<TreeNode> Children { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TreeNode"/> class.
@@ -19,25 +22,8 @@ namespace Spectre.Console
         /// <param name="children">Any children that the node is declared with.</param>
         public TreeNode(IRenderable renderable, IEnumerable<TreeNode>? children = null)
         {
-            _renderable = renderable;
-            _children = new List<TreeNode>(children ?? Enumerable.Empty<TreeNode>());
-        }
-
-        /// <summary>
-        /// Gets the children of this node.
-        /// </summary>
-        public List<TreeNode> Children
-        {
-            get => _children;
-        }
-
-        /// <summary>
-        /// Adds a child to the end of the node's list of children.
-        /// </summary>
-        /// <param name="child">Child to be added.</param>
-        public void AddChild(TreeNode child)
-        {
-            _children.Add(child);
+            _renderable = renderable ?? throw new ArgumentNullException(nameof(renderable));
+            Children = new List<TreeNode>(children ?? Enumerable.Empty<TreeNode>());
         }
 
         /// <inheritdoc/>
