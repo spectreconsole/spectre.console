@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
+        <Nullable>enable</Nullable>
+        <IsPackable>true</IsPackable>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Markdig" Version="0.22.1" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Spectre.Console.ImageSharp\Spectre.Console.ImageSharp.csproj" />
+      <ProjectReference Include="..\Spectre.Console\Spectre.Console.csproj" />
+    </ItemGroup>
+    
+</Project>
