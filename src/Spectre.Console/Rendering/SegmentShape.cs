@@ -48,7 +48,7 @@ namespace Spectre.Console.Rendering
                 var missing = Width - length;
                 if (missing > 0)
                 {
-                    line.Add(new Segment(new string(' ', missing)));
+                    line.Add(Segment.Padding(missing));
                 }
             }
 
@@ -59,7 +59,7 @@ namespace Spectre.Console.Rendering
                 {
                     lines.Add(new SegmentLine
                     {
-                        new Segment(new string(' ', Width)),
+                        Segment.Padding(Width),
                     });
                 }
             }

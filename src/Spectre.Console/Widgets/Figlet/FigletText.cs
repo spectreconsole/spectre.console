@@ -60,7 +60,7 @@ namespace Spectre.Console
 
                         if (lineWidth < maxWidth)
                         {
-                            yield return new Segment(new string(' ', maxWidth - lineWidth));
+                            yield return Segment.Padding(maxWidth - lineWidth);
                         }
                     }
                     else if (alignment == Justify.Center)
@@ -68,15 +68,15 @@ namespace Spectre.Console
                         var left = (maxWidth - lineWidth) / 2;
                         var right = left + ((maxWidth - lineWidth) % 2);
 
-                        yield return new Segment(new string(' ', left));
+                        yield return Segment.Padding(left);
                         yield return line;
-                        yield return new Segment(new string(' ', right));
+                        yield return Segment.Padding(right);
                     }
                     else if (alignment == Justify.Right)
                     {
                         if (lineWidth < maxWidth)
                         {
-                            yield return new Segment(new string(' ', maxWidth - lineWidth));
+                            yield return Segment.Padding(maxWidth - lineWidth);
                         }
 
                         yield return line;

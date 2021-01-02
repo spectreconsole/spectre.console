@@ -68,7 +68,7 @@ namespace Spectre.Console.Internal
                 case Justify.Right:
                     {
                         var diff = maxWidth - width;
-                        segments.Insert(0, new Segment(new string(' ', diff)));
+                        segments.Insert(0, Segment.Padding(diff));
                         break;
                     }
 
@@ -76,14 +76,14 @@ namespace Spectre.Console.Internal
                     {
                         // Left side.
                         var diff = (maxWidth - width) / 2;
-                        segments.Insert(0, new Segment(new string(' ', diff)));
+                        segments.Insert(0, Segment.Padding(diff));
 
                         // Right side
-                        segments.Add(new Segment(new string(' ', diff)));
+                        segments.Add(Segment.Padding(diff));
                         var remainder = (maxWidth - width) % 2;
                         if (remainder != 0)
                         {
-                            segments.Add(new Segment(new string(' ', remainder)));
+                            segments.Add(Segment.Padding(remainder));
                         }
 
                         break;
