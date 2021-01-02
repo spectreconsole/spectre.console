@@ -9,17 +9,17 @@ namespace TableExample
             var tree = new Tree();
 
             tree.AddNode(new FigletText("Dec 2020"));
-            tree.AddNode(new Markup("[link]Click to go to summary[/]"));
+            tree.AddNode("[link]Click to go to summary[/]");
 
             // Add the calendar nodes
-            tree.AddNode(new Markup("[blue]Calendar[/]"),
+            tree.AddNode("[blue]Calendar[/]",
                 node => node.AddNode(
                     new Calendar(2020, 12)
                         .AddCalendarEvent(2020, 12, 12)
                         .HideHeader()));
 
             // Add video games node
-            tree.AddNode(new Markup("[red]Played video games[/]"),
+            tree.AddNode("[red]Played video games[/]",
                 node => node.AddNode(
                     new Table()
                         .RoundedBorder()
@@ -31,8 +31,8 @@ namespace TableExample
 
 
             // Add the fruit nodes
-            tree.AddNode(new Markup("[green]Fruits[/]"), fruits =>
-                fruits.AddNode(new Markup("Eaten"),
+            tree.AddNode("[green]Fruits[/]", fruits =>
+                fruits.AddNode("Eaten",
                     node => node.AddNode(
                         new BarChart().Width(40)
                             .AddItem("Apple", 12, Color.Red)
