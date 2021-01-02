@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="Sample.md" />
+      <EmbeddedResource Include="Sample.md">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\src\Spectre.Console.Markdig\Spectre.Console.Markdig.csproj" />
+      <ProjectReference Include="..\..\..\src\Spectre.Console\Spectre.Console.csproj" />
+    </ItemGroup>
+
+</Project>

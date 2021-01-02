@@ -1,17 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using Markdig.Extensions.Abbreviations;
 using Markdig.Extensions.AutoIdentifiers;
 using Markdig.Extensions.CustomContainers;
 using Markdig.Extensions.DefinitionLists;
+using Markdig.Extensions.Emoji;
 using Markdig.Extensions.Figures;
 using Markdig.Extensions.Footers;
 using Markdig.Extensions.Footnotes;
+using Markdig.Extensions.JiraLinks;
 using Markdig.Extensions.Mathematics;
+using Markdig.Extensions.SmartyPants;
 using Markdig.Extensions.Tables;
+using Markdig.Extensions.TaskLists;
 using Markdig.Extensions.Yaml;
 using Markdig.Syntax;
+using Markdig.Syntax.Inlines;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -19,10 +26,12 @@ namespace Spectre.Console
     public class Markdown : Renderable
     {
         private readonly string _markdownText;
+        private HttpClient _httpClient;
 
         public Markdown(string markdownText)
         {
             _markdownText = markdownText;
+            _httpClient = new HttpClient();
         }
 
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
@@ -139,10 +148,9 @@ namespace Spectre.Console
         private IEnumerable<Segment> RenderParagraphBlock(ParagraphBlock paragraphBlock, RenderContext context,
             int maxWidth)
         {
-            var text = new Text(string.Join(Environment.NewLine, paragraphBlock.Inline));
-            text.Alignment = Justify.Left;
+            var text = this.RenderContainerInline(paragraphBlock.Inline, context, maxWidth);
 
-            foreach (var segment in ((IRenderable)text).Render(context, maxWidth))
+            foreach (var segment in text.Render(context, maxWidth))
             {
                 yield return segment;
             }
@@ -152,25 +160,119 @@ namespace Spectre.Console
 
         private IEnumerable<Segment> RenderHeadingBlock(HeadingBlock headingBlock, RenderContext context, int maxWidth)
         {
-            var inline = string.Join("\n", headingBlock.Inline);
-            if (headingBlock.Level <= 2)
-            {
-                foreach (var segment in ((IRenderable)new Rule(inline)).Render(context, maxWidth))
-                {
-                    yield return segment;
-                }
-
-                yield break;
-            }
-
-            var text = new Text(inline);
-            text.Alignment = Justify.Center;
-            foreach (var segment in ((IRenderable)text).Render(context, maxWidth))
+            var inline = this.RenderContainerInline(headingBlock.Inline, context, maxWidth);
+            foreach (var segment in ((IRenderable)new Rule(inline)).Render(context, maxWidth))
             {
                 yield return segment;
             }
+        }
 
-            yield return Segment.LineBreak;
+        private IRenderable RenderContainerInline(ContainerInline inline, RenderContext context, int maxWidth, Style style = null)
+        {
+            style ??= Style.Plain;
+            return new CompositeRenderable(inline.Select(x => this.RenderInline(x, context, maxWidth, style)));
+        }
+
+        // TODO MC: Should return enumerable of segments here
+        private IRenderable RenderInline(Inline inline, RenderContext context, int maxWidth, Style style)
+        {
+            switch (inline)
+            {
+                case FootnoteLink footnoteLink:
+                    break;
+                case CustomContainerInline customContainerInline:
+                    break;
+                case EmojiInline emojiInline:
+                    break;
+                case AbbreviationInline abbreviationInline:
+                    break;
+                case JiraLink jiraLink:
+                    break;
+                case MathInline mathInline:
+                    break;
+                case SmartyPant smartyPant:
+                    break;
+                case PipeTableDelimiterInline pipeTableDelimiterInline:
+                    break;
+                case TaskList taskList:
+                    break;
+                case AutolinkInline autolinkInline:
+                    break;
+                case CodeInline codeInline:
+                    break;
+                case EmphasisDelimiterInline emphasisDelimiterInline:
+                    break;
+                case LinkDelimiterInline linkDelimiterInline:
+                    break;
+                case DelimiterInline delimiterInline:
+                    break;
+                case EmphasisInline emphasisInline:
+                    return this.RenderContainerInline(emphasisInline, context, maxWidth);
+                case LinkInline linkInline:
+                    if (linkInline.IsImage)
+                    {
+                        if (this.TryGetCanvasImageForUrl(linkInline.Url, maxWidth, out var canvasImage))
+                        {
+                            return canvasImage;
+                        }
+
+                        return Text.Empty;
+                    }
+
+                    var childStyle = new Style(link: linkInline.Url);
+                    return this.RenderContainerInline(linkInline, context, maxWidth, childStyle);
+                case ContainerInline containerInline:
+                    break;
+                case HtmlEntityInline htmlEntityInline:
+                    break;
+                case HtmlInline htmlInline:
+                    break;
+                case LineBreakInline lineBreakInline:
+                    break;
+                case LiteralInline literalInline:
+                    return new Text(literalInline.Content.ToString(), style);
+                case LeafInline leafInline:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(inline));
+            }
+
+            return Text.Empty;
+        }
+
+        private bool TryGetCanvasImageForUrl(string url, int maxWidth, out CanvasImage canvasImage)
+        {
+            // TODO: Refactor this for easier unit testing - could do an initial "get image" pass to parallelise the IO too?
+            try
+            {
+                var imageStream = _httpClient.GetStreamAsync(url).Result;
+                using var memoryStream = new MemoryStream();
+                imageStream.CopyTo(memoryStream);
+
+                // TODO: Make the canvas size a little more dynamic
+                canvasImage = new CanvasImage(memoryStream.ToArray()) { MaxWidth = maxWidth / 4 };
+                return true;
+            }
+            catch (Exception)
+            {
+                canvasImage = null!;
+                return false;
+            }
+        }
+
+        private class CompositeRenderable : Renderable
+        {
+            private readonly IEnumerable<IRenderable> _renderables;
+
+            public CompositeRenderable(IEnumerable<IRenderable> renderables)
+            {
+                this._renderables = renderables;
+            }
+
+            protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+            {
+                return this._renderables.SelectMany(x => x.Render(context, maxWidth));
+            }
         }
     }
 }
