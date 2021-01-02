@@ -28,18 +28,18 @@ This is italic text
 Strikethrough
 ───────────────────────────────── Blockquotes ──────────────────────────────────
  │
- │ Blockquotes can also be nested...
- │  │
- │  │ ...by using additional greater-than signs right next to each other...
- │  │  │
- │  │  │ ...or with spaces between arrows.
- │  │  │
- │  │  │
- │  │
+ │ Blockquotes can also be nested...                                            
+ │  │                                                                           
+ │  │ ...by using additional greater-than signs right next to each other...     
+ │  │  │                                                                        
+ │  │  │ ...or with spaces between arrows.                                      
+ │  │  │                                                                        
+ │  │  │                                                                        
+ │  │                                                                           
  │
 ──────────────────────────────────── Lists ─────────────────────────────────────
 Unordered
- + Create a list by starting a line with , , or
+ + Create a list by starting a line with , , or 
  + Sub-lists are made by indenting 2 spaces:
   - Marker character change forces new list start:
    * Ac tristique libero volutpat at
@@ -51,12 +51,12 @@ Ordered
  2. Consectetur adipiscing elit
  3. Integer molestie lorem at massa
  4. You can use sequential numbers...
- 5. ...or keep all the numbers as
+ 5. ...or keep all the numbers as 
 Start numbering with offset:
  57. foo
  58. bar
 ───────────────────────────────────── Code ─────────────────────────────────────
-Inline
+Inline 
 Indented code
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │ // Some comments                                                             │
@@ -73,135 +73,135 @@ link text
 link with title
 Autoconverted link https://github.com/nodeca/pica (enable linkify to see)
 ──────────────────────────────────── Images ────────────────────────────────────
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
 
 Like links, Images also have a footnote style syntax
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+                                                                                
 
 With a reference later in the document defining the URL location:
 ─────────────────────────────────── Plugins ────────────────────────────────────
 The killer feature of  is very effective support ofsyntax plugins.
 ─────────────────────────────────── Emojies ────────────────────────────────────
  │
- │ Classic markup: 😉 :crush: 😢 :tear: 😆 😋
- │ Shortcuts (emoticons): 😃 😦 😎 😉
- │
+ │ Classic markup: 😉 :crush: 😢 :tear: 😆 😋                                   
+ │ Shortcuts (emoticons): 😃 😦 😎 😉                                           
+ │                                                                              
  │
 see how to change output with twemoji.
 ─────────────────────────── Subscript / Superscript ────────────────────────────

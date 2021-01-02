@@ -55,8 +55,8 @@ namespace Spectre.Console
         {
             switch (block)
             {
-                case BlankLineBlock blankLineBlock:
-                    break;
+                case BlankLineBlock:
+                    return new Text(Environment.NewLine);
                 case HeadingLinkReferenceDefinition headingLinkReferenceDefinition:
                     break;
                 case CustomContainer customContainer:
@@ -118,8 +118,6 @@ namespace Spectre.Console
                     return this.RenderParagraphBlock(paragraphBlock);
                 case ThematicBreakBlock:
                     return new Rule { Style = new Style(decoration: Decoration.Bold), Border = BoxBorder.Double };
-                case LeafBlock leafBlock:
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(block));
             }

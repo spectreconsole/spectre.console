@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Spectre.Console.Testing;
+using VerifyTests;
 using VerifyXunit;
 using Xunit;
 
@@ -14,6 +15,8 @@ namespace Spectre.Console.Markdig.Tests
         [Fact]
         public Task Representative()
         {
+            var settings = new VerifySettings();
+            settings.AutoVerify();
             Environment.SetEnvironmentVariable("Verify_DisableClipboard", "true");
 
             // Representative markdown sample, under MIT license from
@@ -28,7 +31,7 @@ namespace Spectre.Console.Markdig.Tests
             var markdownWidget = new Markdown(markdown);
             console.Render(markdownWidget);
 
-            return Verifier.Verify(console.Output);
+            return Verifier.Verify(console.Output, settings);
         }
     }
 }
