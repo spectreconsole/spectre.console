@@ -136,7 +136,8 @@ namespace Spectre.Console
         private IRenderable RenderListBlock(ListBlock listBlock)
         {
             var bulletChar = listBlock.BulletType;
-            var bullet = new Text($" {bulletChar} ");
+            var listDepthWhitespace = new string(' ', listBlock.GetListDepth());
+            var bullet = new Text($" {listDepthWhitespace}{bulletChar} ");
             var bulletEnumerable = Enumerable.Repeat(bullet, listBlock.Count);
 
             return new CompositeRenderable(Interleave(bulletEnumerable, listBlock.Select(this.RenderBlock)));
