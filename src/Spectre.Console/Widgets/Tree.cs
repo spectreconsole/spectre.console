@@ -9,10 +9,8 @@ namespace Spectre.Console
     /// <summary>
     ///     Representation of tree data.
     /// </summary>
-    public sealed class Tree : Renderable
+    public sealed class Tree : Renderable, IHasTreeNodes
     {
-        private readonly TreeNode _rootNode;
-
         /// <summary>
         /// Gets or sets the tree style.
         /// </summary>
@@ -24,12 +22,19 @@ namespace Spectre.Console
         public TreeAppearance Appearance { get; set; } = TreeAppearance.Ascii;
 
         /// <summary>
+        /// Gets the tree nodes.
+        /// </summary>
+        public List<TreeNode> Nodes { get; }
+
+        /// <inheritdoc/>
+        List<TreeNode> IHasTreeNodes.Children => Nodes;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Tree"/> class.
         /// </summary>
-        /// <param name="rootNode">Root node of the tree to be rendered.</param>
-        public Tree(TreeNode rootNode)
+        public Tree()
         {
-            _rootNode = rootNode ?? throw new ArgumentNullException(nameof(rootNode));
+            Nodes = new List<TreeNode>();
         }
 
         /// <inheritdoc />
@@ -59,20 +64,52 @@ namespace Spectre.Console
                 return new Measurement(currentMin, Math.Min(currentMax, maxWidth));
             }
 
-            return MeasureAtDepth(context, maxWidth, _rootNode, depth: 0);
+            if (Nodes.Count == 1)
+            {
+                return MeasureAtDepth(context, maxWidth, Nodes[0], depth: 0);
+            }
+            else
+            {
+                var root = new TreeNode(Text.Empty);
+                foreach (var node in Nodes)
+                {
+                    root.AddChild(node);
+                }
+
+                return MeasureAtDepth(context, maxWidth, root, depth: 0);
+            }
         }
 
         /// <inheritdoc />
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
-            return _rootNode
-                .Render(context, maxWidth)
-                .Concat(new List<Segment> { Segment.LineBreak })
-                .Concat(RenderChildren(context, maxWidth - Appearance.PartSize, _rootNode, depth: 0));
+            if (Nodes.Count == 1)
+            {
+                // Single root
+                return Nodes[0]
+                    .Render(context, maxWidth)
+                    .Concat(new List<Segment> { Segment.LineBreak })
+                    .Concat(RenderChildren(context, maxWidth - Appearance.PartSize, Nodes[0], depth: 0));
+            }
+            else
+            {
+                // Multiple roots
+                var root = new TreeNode(Text.Empty);
+                foreach (var node in Nodes)
+                {
+                    root.AddChild(node);
+                }
+
+                return Enumerable.Empty<Segment>()
+                    .Concat(RenderChildren(
+                        context, maxWidth - Appearance.PartSize, root,
+                        depth: 0));
+            }
         }
 
-        private IEnumerable<Segment> RenderChildren(RenderContext context, int maxWidth, TreeNode node, int depth,
-            int? trailingStarted = null)
+        private IEnumerable<Segment> RenderChildren(
+            RenderContext context, int maxWidth, TreeNode node,
+            int depth, int? trailingStarted = null)
         {
             var result = new List<Segment>();
             foreach (var (_, _, lastChild, childNode) in node.Children.Enumerate())
