@@ -94,19 +94,18 @@ namespace Spectre.Console
                 case FencedCodeBlock fencedCodeBlock:
                     break;
                 case CodeBlock codeBlock:
-                    break;
+                    var blockContents = codeBlock.Lines.ToString();
+                    return new Panel(blockContents) { Expand = true };
                 case LinkReferenceDefinitionGroup linkReferenceDefinitionGroup:
                     break;
                 case ListBlock listBlock:
                     return this.RenderListBlock(listBlock);
                 case ListItemBlock listItemBlock:
                     return this.RenderListItemBlock(listItemBlock);
-                case MarkdownDocument markdownDocument:
-                    break;
                 case QuoteBlock quoteBlock:
                     var compositeRenderable =
                         new CompositeRenderable(quoteBlock.Select(this.RenderBlock));
-                    return new Panel(compositeRenderable);
+                    return new Panel(compositeRenderable) { Border = new LeftHandSideBoxBorder() };
                 case ContainerBlock containerBlock:
                     break;
                 case HeadingBlock headingBlock:
