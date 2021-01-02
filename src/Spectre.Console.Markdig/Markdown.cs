@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using Markdig;
 using Markdig.Extensions.Abbreviations;
 using Markdig.Extensions.AutoIdentifiers;
 using Markdig.Extensions.CustomContainers;
@@ -37,7 +38,8 @@ namespace Spectre.Console
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
             var result = new List<Segment>();
-            var doc = Markdig.Markdown.Parse(_markdownText);
+            var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+            var doc = Markdig.Markdown.Parse(_markdownText, pipeline);
 
             foreach (var element in doc)
             {
@@ -206,12 +208,14 @@ namespace Spectre.Console
                     break;
                 case EmphasisInline emphasisInline:
                     var styleDecoration =
-                        emphasisInline.DelimiterCount switch
-                        {
-                            1 => Decoration.Italic,
-                            2 => Decoration.Bold,
-                            _ => Decoration.None,
-                        };
+                        emphasisInline.DelimiterChar == '~'
+                            ? Decoration.Strikethrough
+                            : emphasisInline.DelimiterCount switch
+                            {
+                                1 => Decoration.Italic,
+                                2 => Decoration.Bold,
+                                _ => Decoration.None,
+                            };
                     var emphasisChildStyle = new Style(decoration: styleDecoration);
                     return this.RenderContainerInline(emphasisInline, context, maxWidth, emphasisChildStyle);
                 case LinkInline linkInline:
