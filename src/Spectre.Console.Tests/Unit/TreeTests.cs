@@ -20,15 +20,15 @@ namespace Spectre.Console.Tests.Unit
                     .Select(x => new TreeNode(new Text($"multiple \n line {x}")));
             var child2 = new TreeNode(new Text("child2"));
             var child2Child = new TreeNode(new Text("child2Child"));
-            child2.AddChild(child2Child);
-            child2Child.AddChild(new TreeNode(new Text("Child 2 child\n child")));
+            child2.AddNode(child2Child);
+            child2Child.AddNode(new TreeNode(new Text("Child 2 child\n child")));
             var child3 = new TreeNode(new Text("child3"));
             var child3Child = new TreeNode(new Text("single leaf\n multiline"));
-            child3Child.AddChild(new TreeNode(new Calendar(2020, 01)));
-            child3.AddChild(child3Child);
+            child3Child.AddNode(new TreeNode(new Calendar(2020, 01)));
+            child3.AddNode(child3Child);
             var children = new List<TreeNode> { new(new Text("child1"), nestedChildren), child2, child3 };
             var root = new TreeNode(new Text("Root node"), children);
-            var tree = new Tree().AddChild(root);
+            var tree = new Tree().AddNode(root);
 
             // When
             console.Render(tree);
@@ -47,15 +47,15 @@ namespace Spectre.Console.Tests.Unit
                     .Select(x => new TreeNode(new Text($"multiple \n line {x}")));
             var child2 = new TreeNode(new Text("child2"));
             var child2Child = new TreeNode(new Text("child2Child"));
-            child2.AddChild(child2Child);
-            child2Child.AddChild(new TreeNode(new Text("Child 2 child\n child")));
+            child2.AddNode(child2Child);
+            child2Child.AddNode(new TreeNode(new Text("Child 2 child\n child")));
             var child3 = new TreeNode(new Text("child3"));
             var child3Child = new TreeNode(new Text("single leaf\n multiline"));
-            child3Child.AddChild(new TreeNode(new Calendar(2020, 01)));
-            child3.AddChild(child3Child);
+            child3Child.AddNode(new TreeNode(new Calendar(2020, 01)));
+            child3.AddNode(child3Child);
             var children = new List<TreeNode> { new(new Text("child1"), nestedChildren), child2, child3 };
             var root = new TreeNode(new Text("Root node"), children);
-            var tree = new Tree().AddChild(root).AddChild(child2Child);
+            var tree = new Tree().AddNode(root).AddNode(child2Child);
 
             // When
             console.Render(tree);
@@ -70,7 +70,7 @@ namespace Spectre.Console.Tests.Unit
             // Given
             var console = new FakeConsole(width: 80);
             var root = new TreeNode(new Text("Root node"), Enumerable.Empty<TreeNode>());
-            var tree = new Tree().AddChild(root);
+            var tree = new Tree().AddNode(root);
 
             // When
             console.Render(tree);

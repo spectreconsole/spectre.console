@@ -73,7 +73,7 @@ namespace Spectre.Console
                 var root = new TreeNode(Text.Empty);
                 foreach (var node in Nodes)
                 {
-                    root.AddChild(node);
+                    root.AddNode(node);
                 }
 
                 return MeasureAtDepth(context, maxWidth, root, depth: 0);
@@ -97,7 +97,7 @@ namespace Spectre.Console
                 var root = new TreeNode(Text.Empty);
                 foreach (var node in Nodes)
                 {
-                    root.AddChild(node);
+                    root.AddNode(node);
                 }
 
                 return Enumerable.Empty<Segment>()
