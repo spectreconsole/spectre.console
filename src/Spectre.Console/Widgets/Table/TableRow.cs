@@ -12,6 +12,9 @@ namespace Spectre.Console
     {
         private readonly List<IRenderable> _items;
 
+        internal bool IsHeader { get; }
+        internal bool IsFooter { get; }
+
         /// <summary>
         /// Gets a row item at the specified table column index.
         /// </summary>
@@ -27,8 +30,26 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="items">The row items.</param>
         public TableRow(IEnumerable<IRenderable> items)
+            : this(items, false, false)
+        {
+        }
+
+        private TableRow(IEnumerable<IRenderable> items, bool isHeader, bool isFooter)
         {
             _items = new List<IRenderable>(items ?? Array.Empty<IRenderable>());
+
+            IsHeader = isHeader;
+            IsFooter = isFooter;
+        }
+
+        internal static TableRow Header(IEnumerable<IRenderable> items)
+        {
+            return new TableRow(items, true, false);
+        }
+
+        internal static TableRow Footer(IEnumerable<IRenderable> items)
+        {
+            return new TableRow(items, false, true);
         }
 
         internal void Add(IRenderable item)
