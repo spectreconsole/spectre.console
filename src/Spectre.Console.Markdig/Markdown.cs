@@ -43,7 +43,7 @@ namespace Spectre.Console
 
             foreach (var element in doc)
             {
-                result.AddRange(this.RenderBlock(element, context, maxWidth));
+                result.AddRange(this.RenderBlock(element).Render(context, maxWidth));
             }
 
             result.Add(Segment.LineBreak);
@@ -51,7 +51,7 @@ namespace Spectre.Console
             return result;
         }
 
-        private IEnumerable<Segment> RenderBlock(Block block, RenderContext context, int maxWidth)
+        private IRenderable RenderBlock(Block block)
         {
             switch (block)
             {
@@ -98,83 +98,91 @@ namespace Spectre.Console
                 case LinkReferenceDefinitionGroup linkReferenceDefinitionGroup:
                     break;
                 case ListBlock listBlock:
-                    return this.RenderListBlock(listBlock, context, maxWidth);
+                    return this.RenderListBlock(listBlock);
                 case ListItemBlock listItemBlock:
-                    return this.RenderListItemBlock(listItemBlock, context, maxWidth);
+                    return this.RenderListItemBlock(listItemBlock);
                 case MarkdownDocument markdownDocument:
                     break;
                 case QuoteBlock quoteBlock:
-                    break;
+                    var compositeRenderable =
+                        new CompositeRenderable(quoteBlock.Select(this.RenderBlock));
+                    return new Panel(compositeRenderable);
                 case ContainerBlock containerBlock:
                     break;
                 case HeadingBlock headingBlock:
-                    return this.RenderHeadingBlock(headingBlock, context, maxWidth);
+                    return this.RenderHeadingBlock(headingBlock);
                 case HtmlBlock htmlBlock:
                     break;
                 case LinkReferenceDefinition linkReferenceDefinition:
                     break;
                 case ParagraphBlock paragraphBlock:
-                    return this.RenderParagraphBlock(paragraphBlock, context, maxWidth);
-                case ThematicBreakBlock thematicBreakBlock:
-                    return ((IRenderable)new Rule { Style = new Style(decoration: Decoration.Bold) }).Render(context, maxWidth);
+                    return this.RenderParagraphBlock(paragraphBlock);
+                case ThematicBreakBlock:
+                    return new Rule { Style = new Style(decoration: Decoration.Bold), Border = BoxBorder.Double };
                 case LeafBlock leafBlock:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(block));
             }
 
-            return Enumerable.Empty<Segment>();
+            return Text.Empty;
         }
 
-        private IEnumerable<Segment> RenderListItemBlock(ListItemBlock listItemBlock, RenderContext context,
-            int maxWidth)
+        private IRenderable RenderListItemBlock(ListItemBlock listItemBlock)
         {
-            return listItemBlock.SelectMany(block => this.RenderBlock(block, context, maxWidth));
+            return new CompositeRenderable(listItemBlock.Select(this.RenderBlock));
         }
 
-        private IEnumerable<Segment> RenderListBlock(ListBlock listBlock, RenderContext context,
-            int maxWidth)
+        private IRenderable RenderListBlock(ListBlock listBlock)
         {
             var bulletChar = listBlock.BulletType;
-            foreach (var item in listBlock)
-            {
-                yield return new Segment($" {bulletChar} ");
+            var bullet = new Text($" {bulletChar} ");
+            var bulletEnumerable = Enumerable.Repeat(bullet, listBlock.Count);
 
-                foreach (var segment in this.RenderBlock(item, context, maxWidth))
+            return new CompositeRenderable(Interleave(bulletEnumerable, listBlock.Select(this.RenderBlock)));
+        }
+
+        private static IEnumerable<T> Interleave<T>(IEnumerable<T> seqA, IEnumerable<T> seqB)
+        {
+            using var enumeratorA = seqA.GetEnumerator();
+            using var enumeratorB = seqB.GetEnumerator();
+
+            while (enumeratorA.MoveNext())
+            {
+                yield return enumeratorA.Current;
+
+                if (enumeratorB.MoveNext())
                 {
-                    yield return segment;
+                    yield return enumeratorB.Current;
                 }
             }
-        }
 
-        private IEnumerable<Segment> RenderParagraphBlock(ParagraphBlock paragraphBlock, RenderContext context,
-            int maxWidth)
-        {
-            var text = this.RenderContainerInline(paragraphBlock.Inline, context, maxWidth);
-
-            foreach (var segment in text.Render(context, maxWidth))
+            while (enumeratorB.MoveNext())
             {
-                yield return segment;
-            }
-
-            yield return Segment.LineBreak;
-        }
-
-        private IEnumerable<Segment> RenderHeadingBlock(HeadingBlock headingBlock, RenderContext context, int maxWidth)
-        {
-            var inline = this.RenderContainerInline(headingBlock.Inline, context, maxWidth);
-            foreach (var segment in ((IRenderable)new Rule(inline)).Render(context, maxWidth))
-            {
-                yield return segment;
+                yield return enumeratorB.Current;
             }
         }
 
-        private IRenderable RenderContainerInline(ContainerInline inline, RenderContext context, int maxWidth, Style style = null)
+        private IRenderable RenderParagraphBlock(ParagraphBlock paragraphBlock)
         {
-            return new CompositeRenderable(inline.Select(x => this.RenderInline(x, context, maxWidth, style)));
+            var text = this.RenderContainerInline(paragraphBlock.Inline);
+
+            return new CompositeRenderable(new List<IRenderable> { text, new Text(Environment.NewLine) });
         }
 
-        private IRenderable RenderInline(Inline inline, RenderContext context, int maxWidth, Style style)
+        private IRenderable RenderHeadingBlock(HeadingBlock headingBlock)
+        {
+            var inline = this.RenderContainerInline(headingBlock.Inline);
+
+            return new Rule(inline);
+        }
+
+        private IRenderable RenderContainerInline(ContainerInline inline, Style style = null)
+        {
+            return new CompositeRenderable(inline.Select(x => this.RenderInline(x, style)));
+        }
+
+        private IRenderable RenderInline(Inline inline, Style style)
         {
             switch (inline)
             {
@@ -183,7 +191,7 @@ namespace Spectre.Console
                 case CustomContainerInline customContainerInline:
                     break;
                 case EmojiInline emojiInline:
-                    break;
+                    return new Text(emojiInline.Content.ToString(), style);
                 case AbbreviationInline abbreviationInline:
                     break;
                 case JiraLink jiraLink:
@@ -217,11 +225,11 @@ namespace Spectre.Console
                                 _ => Decoration.None,
                             };
                     var emphasisChildStyle = new Style(decoration: styleDecoration);
-                    return this.RenderContainerInline(emphasisInline, context, maxWidth, emphasisChildStyle);
+                    return this.RenderContainerInline(emphasisInline, emphasisChildStyle);
                 case LinkInline linkInline:
                     if (linkInline.IsImage)
                     {
-                        if (this.TryGetCanvasImageForUrl(linkInline.Url, maxWidth, out var canvasImage))
+                        if (this.TryGetCanvasImageForUrl(linkInline.Url, out var canvasImage))
                         {
                             return canvasImage;
                         }
@@ -230,7 +238,7 @@ namespace Spectre.Console
                     }
 
                     var linkInlineChildStyle = new Style(link: linkInline.Url);
-                    return this.RenderContainerInline(linkInline, context, maxWidth, linkInlineChildStyle);
+                    return this.RenderContainerInline(linkInline, linkInlineChildStyle);
                 case ContainerInline containerInline:
                     break;
                 case HtmlEntityInline htmlEntityInline:
@@ -250,7 +258,7 @@ namespace Spectre.Console
             return Text.Empty;
         }
 
-        private bool TryGetCanvasImageForUrl(string url, int maxWidth, out CanvasImage canvasImage)
+        private bool TryGetCanvasImageForUrl(string url, out CanvasImage canvasImage)
         {
             // TODO: Refactor this for easier unit testing - could do an initial "get image" pass to parallelise the IO too?
             try
@@ -260,7 +268,7 @@ namespace Spectre.Console
                 imageStream.CopyTo(memoryStream);
 
                 // TODO: Make the canvas size a little more dynamic
-                canvasImage = new CanvasImage(memoryStream.ToArray()) { MaxWidth = maxWidth / 4 };
+                canvasImage = new CanvasImage(memoryStream.ToArray());
                 return true;
             }
             catch (Exception)
