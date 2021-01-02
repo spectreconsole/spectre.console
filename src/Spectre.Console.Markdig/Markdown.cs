@@ -135,12 +135,22 @@ namespace Spectre.Console
 
         private IRenderable RenderListBlock(ListBlock listBlock)
         {
-            var bulletChar = listBlock.BulletType;
-            var listDepthWhitespace = new string(' ', listBlock.GetListDepth());
-            var bullet = new Text($" {listDepthWhitespace}{bulletChar} ");
-            var bulletEnumerable = Enumerable.Repeat(bullet, listBlock.Count);
+            IEnumerable<string>? itemPrefixes;
+            if (listBlock.IsOrdered)
+            {
+                var startNum = int.Parse(listBlock.OrderedStart);
+                var orderedDelimiter = listBlock.OrderedDelimiter;
+                itemPrefixes = Enumerable.Range(startNum, listBlock.Count).Select(num => $"{num}{orderedDelimiter}");
+            }
+            else
+            {
+                itemPrefixes = Enumerable.Repeat(new string(listBlock.BulletType, 1), listBlock.Count);
+            }
 
-            return new CompositeRenderable(Interleave(bulletEnumerable, listBlock.Select(this.RenderBlock)));
+            var listDepthWhitespace = new string(' ', listBlock.GetListDepth());
+            var paddedItemPrefixes = itemPrefixes.Select(x => new Text($" {listDepthWhitespace}{x} "));
+
+            return new CompositeRenderable(Interleave(paddedItemPrefixes, listBlock.Select(this.RenderBlock)));
         }
 
         private static IEnumerable<T> Interleave<T>(IEnumerable<T> seqA, IEnumerable<T> seqB)
