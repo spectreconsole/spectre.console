@@ -39,12 +39,11 @@ namespace Spectre.Console
                 case FootnoteLink footnoteLink:
                 case CustomContainerInline customContainerInline:
                 case AbbreviationInline abbreviationInline:
+                case AutolinkInline autolinkInline:
                     break;
 
                 case EmojiInline emojiInline:
                     return new Text(Emoji.Replace(emojiInline.Content.ToString()), style){ Alignment = alignment };
-                case AutolinkInline autolinkInline:
-                    break;
                 case CodeInline codeInline:
                     break;
 

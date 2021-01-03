@@ -43,7 +43,6 @@ namespace Spectre.Console
                 .UsePipeTables()
                 .UseListExtras()
                 .UseDiagrams()
-                .UseAutoLinks()
                 .UseGenericAttributes()
                 .UseEmojiAndSmiley()
                 .Build();
