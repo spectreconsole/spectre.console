@@ -42,17 +42,16 @@ namespace Spectre.Console
                 case Abbreviation abbreviation:
                 case FooterBlock footerBlock:
                 case HtmlBlock htmlBlock:
+                case DefinitionItem definitionItem:
+                case DefinitionList definitionList:
+                case DefinitionTerm definitionTerm:
                     break;
 
                 case BlankLineBlock:
                     return new Text(Environment.NewLine);
                 case HeadingLinkReferenceDefinition headingLinkReferenceDefinition:
                     break;
-                case DefinitionItem definitionItem:
-                    break;
-                case DefinitionList definitionList:
-                    break;
-                case DefinitionTerm definitionTerm:
+                case LinkReferenceDefinition linkReferenceDefinition:
                     break;
                 case Markdig.Extensions.Tables.Table table:
                     return RenderTableBlock(table);
@@ -75,8 +74,6 @@ namespace Spectre.Console
                     return new Panel(compositeRenderable) { Border = new LeftHandSideBoxBorder() };
                 case HeadingBlock headingBlock:
                     return this.RenderHeadingBlock(headingBlock);
-                case LinkReferenceDefinition linkReferenceDefinition:
-                    break;
                 case ParagraphBlock paragraphBlock:
                     return this.RenderParagraphBlock(paragraphBlock, alignment);
                 case ThematicBreakBlock:

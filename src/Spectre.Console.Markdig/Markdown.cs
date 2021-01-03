@@ -37,7 +37,6 @@ namespace Spectre.Console
         {
             return new MarkdownPipelineBuilder()
                 .UseAutoIdentifiers()
-                .UseDefinitionLists()
                 .UseEmphasisExtras()
                 .UseGridTables()
                 .UseMediaLinks()
