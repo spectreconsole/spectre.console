@@ -51,7 +51,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Render_WiderThan_Terminal()
+        public void Render_Wider_Than_Terminal()
         {
             // Given
             var console = new FakeAnsiConsole(ColorSystem.Standard, width: 10);
@@ -64,7 +64,26 @@ namespace Spectre.Console.Tests.Unit
 
             // Then
             var numNewlines = console.Output.Count(x => x == '\n');
+            // Small terminal shrinks the canvas
             numNewlines.ShouldBe(expected: 2);
+        }
+
+        [Fact]
+        public void Render_Wider_Configured_With_Max_Width()
+        {
+            // Given
+            var console = new FakeAnsiConsole(ColorSystem.Standard, width: 80);
+            var canvas = new Canvas(width: 20, height: 10) { MaxWidth = 10 };
+            canvas.SetPixel(0, 0, Color.Aqua);
+            canvas.SetPixel(19, 9, Color.Grey);
+
+            // When
+            console.Render(canvas);
+
+            // Then
+            var numNewlines = console.Output.Count(x => x == '\n');
+            // MaxWidth truncates the canvas
+            numNewlines.ShouldBe(expected: 5);
         }
 
         [Fact]
