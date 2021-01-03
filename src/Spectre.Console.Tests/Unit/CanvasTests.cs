@@ -11,7 +11,7 @@ namespace Spectre.Console.Tests.Unit
     public class CanvasTests
     {
         [Fact]
-        public void SimpleRender()
+        public void Simple_Render()
         {
             // Given
             var console = new FakeAnsiConsole(ColorSystem.Standard);
@@ -27,7 +27,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void RenderWiderThanTerminal()
+        public void Render_WiderThan_Terminal()
         {
             // Given
             var console = new FakeAnsiConsole(ColorSystem.Standard, width: 10);
