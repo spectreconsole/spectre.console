@@ -252,10 +252,15 @@ Inserted text
 ──────────────────────────────────── <mark> ────────────────────────────────────
 Marked text
 ────────────────────────────────── Footnotes ───────────────────────────────────
-Footnote 1 link.
-Footnote 2 link.
+Footnote 1 link[^first].
+Footnote 2 link[^second].
 Inline footnote^[Text of inline footnote] definition.
-Duplicated footnote reference.
+Duplicated footnote reference[^second].
+[^first]: Footnote can have markup
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ and multiple paragraphs.                                                     │
+└──────────────────────────────────────────────────────────────────────────────┘
+[^second]: Footnote text.
 ─────────────────────────────── Definition lists ───────────────────────────────
 Compact style:
 Term 1~ Definition 1

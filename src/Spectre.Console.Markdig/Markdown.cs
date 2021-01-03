@@ -21,8 +21,7 @@ namespace Spectre.Console
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
             var result = new List<Segment>();
-            var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().UseEmojiAndSmiley().Build();
-            var doc = Markdig.Markdown.Parse(_markdownText, pipeline);
+            var doc = Markdig.Markdown.Parse(_markdownText, this.MakePipeline());
 
             foreach (var element in doc)
             {
@@ -34,6 +33,22 @@ namespace Spectre.Console
             return result;
         }
 
-
+        private MarkdownPipeline MakePipeline()
+        {
+            return new MarkdownPipelineBuilder()
+                .UseAbbreviations()
+                .UseAutoIdentifiers()
+                .UseDefinitionLists()
+                .UseEmphasisExtras()
+                .UseGridTables()
+                .UseMediaLinks()
+                .UsePipeTables()
+                .UseListExtras()
+                .UseDiagrams()
+                .UseAutoLinks()
+                .UseGenericAttributes()
+                .UseEmojiAndSmiley()
+                .Build();
+        }
     }
 }
