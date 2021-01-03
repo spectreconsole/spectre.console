@@ -64,6 +64,7 @@ namespace Spectre.Console.Tests.Unit
 
             // Then
             var numNewlines = console.Output.Count(x => x == '\n');
+
             // Small terminal shrinks the canvas
             numNewlines.ShouldBe(expected: 2);
         }
@@ -82,6 +83,7 @@ namespace Spectre.Console.Tests.Unit
 
             // Then
             var numNewlines = console.Output.Count(x => x == '\n');
+
             // MaxWidth truncates the canvas
             numNewlines.ShouldBe(expected: 5);
         }

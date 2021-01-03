@@ -48,6 +48,7 @@ namespace Spectre.Console
             {
                 throw new ArgumentException("Must be > 1", nameof(width));
             }
+
             if (height < 1)
             {
                 throw new ArgumentException("Must be > 1", nameof(height));
