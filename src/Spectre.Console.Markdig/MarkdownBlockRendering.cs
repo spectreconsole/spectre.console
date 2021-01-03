@@ -30,20 +30,8 @@ namespace Spectre.Console
         {
             switch (block)
             {
-                case BlankLineBlock:
-                    return new Text(Environment.NewLine);
-                case HeadingLinkReferenceDefinition headingLinkReferenceDefinition:
-                    break;
+                // TODO: These features are less adopted in practice and the MarkdownPipline isn't configured to generate them - feel free to add support!
                 case CustomContainer customContainer:
-                    break;
-                case DefinitionItem definitionItem:
-                    break;
-                case DefinitionList definitionList:
-                    break;
-                case DefinitionTerm definitionTerm:
-                    break;
-
-                // TODO: These features don't tend to be used in practice - feel free to add support!
                 case MathBlock mathBlock:
                 case Footnote footnote:
                 case FootnoteGroup footnoteGroup:
@@ -56,6 +44,16 @@ namespace Spectre.Console
                 case HtmlBlock htmlBlock:
                     break;
 
+                case BlankLineBlock:
+                    return new Text(Environment.NewLine);
+                case HeadingLinkReferenceDefinition headingLinkReferenceDefinition:
+                    break;
+                case DefinitionItem definitionItem:
+                    break;
+                case DefinitionList definitionList:
+                    break;
+                case DefinitionTerm definitionTerm:
+                    break;
                 case Markdig.Extensions.Tables.Table table:
                     return RenderTableBlock(table);
                 case FencedCodeBlock fencedCodeBlock:

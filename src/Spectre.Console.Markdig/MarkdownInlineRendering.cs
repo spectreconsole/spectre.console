@@ -29,22 +29,21 @@ namespace Spectre.Console
         {
             switch (inline)
             {
-                case FootnoteLink footnoteLink:
-                    break;
-                case CustomContainerInline customContainerInline:
-                    break;
-                case EmojiInline emojiInline:
-                    return new Text(Emoji.Replace(emojiInline.Content.ToString()), style){ Alignment = alignment };
-                case AbbreviationInline abbreviationInline:
-                    break;
-
-                // TODO: Again, not commonly used, feel free to add support
+                // TODO: These features are less adopted in practice and the MarkdownPipline isn't configured to generate them - feel free to add support!
                 case JiraLink jiraLink:
                 case SmartyPant smartyPant:
                 case TaskList taskList:
                 case MathInline mathInline:
+                case HtmlEntityInline htmlEntityInline:
+                case HtmlInline htmlInline:
+                case FootnoteLink footnoteLink:
+                case CustomContainerInline customContainerInline:
                     break;
 
+                case EmojiInline emojiInline:
+                    return new Text(Emoji.Replace(emojiInline.Content.ToString()), style){ Alignment = alignment };
+                case AbbreviationInline abbreviationInline:
+                    break;
                 case PipeTableDelimiterInline pipeTableDelimiterInline:
                     break;
                 case AutolinkInline autolinkInline:
@@ -81,10 +80,6 @@ namespace Spectre.Console
                     var linkInlineChildStyle = new Style(link: linkInline.Url);
                     return this.RenderContainerInline(linkInline, linkInlineChildStyle);
                 case ContainerInline containerInline:
-                    break;
-                case HtmlEntityInline htmlEntityInline:
-                    break;
-                case HtmlInline htmlInline:
                     break;
                 case LineBreakInline lineBreakInline:
                     break;
