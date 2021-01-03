@@ -25,7 +25,7 @@ namespace Spectre.Console
             _httpClient = httpClient;
         }
 
-        public IRenderable RenderInline(Inline inline, Style style, Justify alignment)
+        private IRenderable RenderInline(Inline inline, Style style, Justify alignment)
         {
             switch (inline)
             {

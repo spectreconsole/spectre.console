@@ -31,28 +31,30 @@ namespace Spectre.Console
             switch (block)
             {
                 // TODO: These features are less adopted in practice and the MarkdownPipeline isn't configured to generate them - feel free to add support!
-                case CustomContainer customContainer:
-                case MathBlock mathBlock:
-                case Footnote footnote:
-                case FootnoteGroup footnoteGroup:
-                case FootnoteLinkReferenceDefinition footnoteLinkReferenceDefinition:
-                case Figure figure:
-                case FigureCaption figureCaption:
-                case YamlFrontMatterBlock yamlFrontMatterBlock:
-                case Abbreviation abbreviation:
-                case FooterBlock footerBlock:
-                case HtmlBlock htmlBlock:
-                case DefinitionItem definitionItem:
-                case DefinitionList definitionList:
-                case DefinitionTerm definitionTerm:
+                case CustomContainer:
+                case MathBlock:
+                case Footnote:
+                case FootnoteGroup:
+                case FootnoteLinkReferenceDefinition:
+                case Figure:
+                case FigureCaption:
+                case YamlFrontMatterBlock:
+                case Abbreviation:
+                case FooterBlock:
+                case HtmlBlock:
+                case DefinitionItem:
+                case DefinitionList:
+                case DefinitionTerm:
+                    break;
+
+                // No point rendering these as the definitions are already reconciled by the parser.
+                case HeadingLinkReferenceDefinition:
+                case LinkReferenceDefinitionGroup:
+                case LinkReferenceDefinition:
                     break;
 
                 case BlankLineBlock:
                     return new Text(Environment.NewLine);
-                case HeadingLinkReferenceDefinition headingLinkReferenceDefinition:
-                    break;
-                case LinkReferenceDefinition linkReferenceDefinition:
-                    break;
                 case Markdig.Extensions.Tables.Table table:
                     return RenderTableBlock(table);
                 case FencedCodeBlock fencedCodeBlock:
@@ -69,8 +71,6 @@ namespace Spectre.Console
                         Header = new PanelHeader("code"),
                         Expand = true,
                     };
-                case LinkReferenceDefinitionGroup linkReferenceDefinitionGroup:
-                    break;
                 case ListBlock listBlock:
                     return this.RenderListBlock(listBlock);
                 case ListItemBlock listItemBlock:
