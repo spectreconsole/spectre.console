@@ -29,7 +29,7 @@ namespace Spectre.Console
         {
             switch (inline)
             {
-                // TODO: These features are less adopted in practice and the MarkdownPipline isn't configured to generate them - feel free to add support!
+                // TODO: These features are less adopted in practice and the MarkdownPipeline isn't configured to generate them - feel free to add support!
                 case JiraLink jiraLink:
                 case SmartyPant smartyPant:
                 case TaskList taskList:
@@ -45,7 +45,7 @@ namespace Spectre.Console
                 case EmojiInline emojiInline:
                     return new Text(Emoji.Replace(emojiInline.Content.ToString()), style){ Alignment = alignment };
                 case CodeInline codeInline:
-                    break;
+                    return new Text(codeInline.Content ?? string.Empty, new Style(background: Color.Grey));
 
                 case EmphasisInline emphasisInline:
                     var styleDecoration =

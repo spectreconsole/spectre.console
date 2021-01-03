@@ -30,7 +30,7 @@ namespace Spectre.Console
         {
             switch (block)
             {
-                // TODO: These features are less adopted in practice and the MarkdownPipline isn't configured to generate them - feel free to add support!
+                // TODO: These features are less adopted in practice and the MarkdownPipeline isn't configured to generate them - feel free to add support!
                 case CustomContainer customContainer:
                 case MathBlock mathBlock:
                 case Footnote footnote:
@@ -57,11 +57,18 @@ namespace Spectre.Console
                     return RenderTableBlock(table);
                 case FencedCodeBlock fencedCodeBlock:
                     var fencedCodeBlockContents = fencedCodeBlock.Lines.ToString();
-                    var header = fencedCodeBlock.Info == null ? null : new PanelHeader(fencedCodeBlock.Info);
-                    return new Panel(fencedCodeBlockContents) {Header = header, Expand = true};
+                    return new Panel(fencedCodeBlockContents)
+                    {
+                        Header = new PanelHeader(string.IsNullOrEmpty(fencedCodeBlock.Info) ? "code" : fencedCodeBlock.Info),
+                        Expand = true,
+                    };
                 case CodeBlock codeBlock:
                     var blockContents = codeBlock.Lines.ToString();
-                    return new Panel(blockContents) { Expand = true };
+                    return new Panel(blockContents)
+                    {
+                        Header = new PanelHeader("code"),
+                        Expand = true,
+                    };
                 case LinkReferenceDefinitionGroup linkReferenceDefinitionGroup:
                     break;
                 case ListBlock listBlock:
