@@ -44,6 +44,15 @@ namespace Spectre.Console
         /// <param name="height">The canvas height.</param>
         public Canvas(int width, int height)
         {
+            if (width < 1)
+            {
+                throw new ArgumentException("Must be > 1", nameof(width));
+            }
+            if (height < 1)
+            {
+                throw new ArgumentException("Must be > 1", nameof(height));
+            }
+
             Width = width;
             Height = height;
 

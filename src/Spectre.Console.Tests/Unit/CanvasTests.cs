@@ -11,6 +11,14 @@ namespace Spectre.Console.Tests.Unit
     public class CanvasTests
     {
         [Fact]
+        public void Canvas_Must_Have_Proper_Size()
+        {
+            Should.Throw<ArgumentException>(() => new Canvas(1, 0));
+
+            Should.Throw<ArgumentException>(() => new Canvas(0, 1));
+        }
+
+        [Fact]
         public void Simple_Render()
         {
             // Given
