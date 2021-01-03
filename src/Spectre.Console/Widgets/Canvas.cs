@@ -104,6 +104,12 @@ namespace Spectre.Console
             {
                 height = (int)(height * (maxWidth / (float)(width * PixelWidth)));
                 width = maxWidth / PixelWidth;
+
+                // If it's not possible to scale the canvas sufficiently, it's too small to render.
+                if (height == 0)
+                {
+                    yield break;
+                }
             }
 
             // Need to rescale the pixel buffer?

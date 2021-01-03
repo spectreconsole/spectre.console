@@ -27,7 +27,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Render_WiderThan_Terminal()
+        public void Render_Wider_Than_Terminal_Cannot_Be_Reduced_Further()
         {
             // Given
             var console = new FakeAnsiConsole(ColorSystem.Standard, width: 10);
@@ -39,8 +39,24 @@ namespace Spectre.Console.Tests.Unit
             console.Render(canvas);
 
             // Then
+            console.Output.ShouldBe(string.Empty);
+        }
+
+        [Fact]
+        public void Render_WiderThan_Terminal()
+        {
+            // Given
+            var console = new FakeAnsiConsole(ColorSystem.Standard, width: 10);
+            var canvas = new Canvas(width: 20, height: 10);
+            canvas.SetPixel(0, 0, Color.Aqua);
+            canvas.SetPixel(19, 9, Color.Grey);
+
+            // When
+            console.Render(canvas);
+
+            // Then
             var numNewlines = console.Output.Count(x => x == '\n');
-            numNewlines.ShouldBe(expected: 20);
+            numNewlines.ShouldBe(expected: 2);
         }
 
         [Fact]
