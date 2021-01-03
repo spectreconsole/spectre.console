@@ -79,14 +79,16 @@ namespace Spectre.Console
                 case FigureCaption figureCaption:
                 case YamlFrontMatterBlock yamlFrontMatterBlock:
                 case Abbreviation abbreviation:
+                case FooterBlock footerBlock:
+                case HtmlBlock htmlBlock:
                     break;
 
-                case FooterBlock footerBlock:
-                    break;
                 case Markdig.Extensions.Tables.Table table:
                     return this.RenderTableBlock(table);
                 case FencedCodeBlock fencedCodeBlock:
-                    break;
+                    var fendecCodeBlockContents = fencedCodeBlock.Lines.ToString();
+                    var header = fencedCodeBlock.Info == null ? null : new PanelHeader(fencedCodeBlock.Info);
+                    return new Panel(fendecCodeBlockContents) {Header = header, Expand = true};
                 case CodeBlock codeBlock:
                     var blockContents = codeBlock.Lines.ToString();
                     return new Panel(blockContents) { Expand = true };
@@ -102,8 +104,6 @@ namespace Spectre.Console
                     return new Panel(compositeRenderable) { Border = new LeftHandSideBoxBorder() };
                 case HeadingBlock headingBlock:
                     return this.RenderHeadingBlock(headingBlock);
-                case HtmlBlock htmlBlock:
-                    break;
                 case LinkReferenceDefinition linkReferenceDefinition:
                     break;
                 case ParagraphBlock paragraphBlock:
