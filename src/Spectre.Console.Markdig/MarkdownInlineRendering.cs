@@ -43,16 +43,11 @@ namespace Spectre.Console
 
                 case EmojiInline emojiInline:
                     return new Text(Emoji.Replace(emojiInline.Content.ToString()), style){ Alignment = alignment };
-                case PipeTableDelimiterInline pipeTableDelimiterInline:
-                    break;
                 case AutolinkInline autolinkInline:
                     break;
                 case CodeInline codeInline:
                     break;
-                case EmphasisDelimiterInline emphasisDelimiterInline:
-                    break;
-                case LinkDelimiterInline linkDelimiterInline:
-                    break;
+
                 case EmphasisInline emphasisInline:
                     var styleDecoration =
                         emphasisInline.DelimiterChar == '~'
@@ -78,10 +73,21 @@ namespace Spectre.Console
 
                     var linkInlineChildStyle = new Style(link: linkInline.Url);
                     return this.RenderContainerInline(linkInline, linkInlineChildStyle);
+
+                // We don't care what delimiters were used to compose a particular document structure
+                case PipeTableDelimiterInline:
+                    break;
+                case EmphasisDelimiterInline:
+                    break;
+                case LinkDelimiterInline:
+                    break;
+
+                // Line breaks in document don't necessarily correspond to what we'd like to see in the output.
+                case LineBreakInline:
+                    break;
+
                 case ContainerInline containerInline:
-                    break;
-                case LineBreakInline lineBreakInline:
-                    break;
+                    return this.RenderContainerInline(containerInline);
                 case LiteralInline literalInline:
                     return new Text(literalInline.Content.ToString(), style){ Alignment = alignment };
                 default:
