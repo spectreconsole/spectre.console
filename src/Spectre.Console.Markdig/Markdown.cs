@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -20,6 +21,7 @@ using Markdig.Extensions.TaskLists;
 using Markdig.Extensions.Yaml;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
+using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -51,7 +53,7 @@ namespace Spectre.Console
             return result;
         }
 
-        private IRenderable RenderBlock(Block block)
+        private IRenderable RenderBlock(Block block, Justify alignment = Justify.Left)
         {
             switch (block)
             {
@@ -82,11 +84,7 @@ namespace Spectre.Console
                 case FooterBlock footerBlock:
                     break;
                 case Markdig.Extensions.Tables.Table table:
-                    break;
-                case TableCell tableCell:
-                    break;
-                case Markdig.Extensions.Tables.TableRow tableRow:
-                    break;
+                    return this.RenderTableBlock(table);
                 case FencedCodeBlock fencedCodeBlock:
                     break;
                 case CodeBlock codeBlock:
@@ -100,7 +98,7 @@ namespace Spectre.Console
                     return this.RenderListItemBlock(listItemBlock);
                 case QuoteBlock quoteBlock:
                     var compositeRenderable =
-                        new CompositeRenderable(quoteBlock.Select(this.RenderBlock));
+                        new CompositeRenderable(quoteBlock.Select(x => this.RenderBlock(x)));
                     return new Panel(compositeRenderable) { Border = new LeftHandSideBoxBorder() };
                 case HeadingBlock headingBlock:
                     return this.RenderHeadingBlock(headingBlock);
@@ -109,7 +107,7 @@ namespace Spectre.Console
                 case LinkReferenceDefinition linkReferenceDefinition:
                     break;
                 case ParagraphBlock paragraphBlock:
-                    return this.RenderParagraphBlock(paragraphBlock);
+                    return this.RenderParagraphBlock(paragraphBlock, alignment);
                 case ThematicBreakBlock:
                     return new Rule { Style = new Style(decoration: Decoration.Bold), Border = BoxBorder.Double };
                 default:
@@ -121,7 +119,72 @@ namespace Spectre.Console
 
         private IRenderable RenderListItemBlock(ListItemBlock listItemBlock)
         {
-            return new CompositeRenderable(listItemBlock.Select(this.RenderBlock));
+            return new CompositeRenderable(listItemBlock.Select(x => this.RenderBlock(x)));
+        }
+
+        private IRenderable RenderTableBlock(Markdig.Extensions.Tables.Table table)
+        {
+            if (table.IsValid())
+            {
+                var renderedTable = new Table();
+
+                // Safe to unconditionally cast to TableRow as IsValid() ensures this is the case under the hood
+                foreach (var tableRow in table.Cast<Markdig.Extensions.Tables.TableRow>())
+                {
+                    if (tableRow.IsHeader)
+                    {
+                        AddColumnsToTable(tableRow, table.ColumnDefinitions, renderedTable);
+                    }
+                    else
+                    {
+                        AddRowToTable(tableRow, table.ColumnDefinitions, renderedTable);
+                    }
+                }
+
+                return renderedTable;
+            }
+
+            return new Text("Invalid table structure", new Style(Color.Red));
+        }
+
+        private void AddColumnsToTable(Markdig.Extensions.Tables.TableRow tableRow, List<TableColumnDefinition> columnDefinitions, Table renderedTable)
+        {
+            // Safe to unconditionally cast to TableCell as IsValid() ensures this is the case under the hood
+            foreach (var (cell, def) in tableRow.Cast<TableCell>().Zip(columnDefinitions))
+            {
+                renderedTable.AddColumn(new TableColumn(this.RenderTableCell(cell, def.Alignment)));
+            }
+        }
+
+        private void AddRowToTable(
+            Markdig.Extensions.Tables.TableRow tableRow,
+            List<TableColumnDefinition> columnDefinitions,
+            Table renderedTable)
+        {
+            var renderedRow = new List<IRenderable>();
+
+            // Safe to unconditionally cast to TableCell as IsValid() ensures this is the case under the hood
+            foreach (var (cell, def) in tableRow.Cast<TableCell>().Zip(columnDefinitions))
+            {
+                renderedRow.Add(this.RenderTableCell(cell, def.Alignment));
+            }
+
+            renderedTable.AddRow(renderedRow);
+        }
+
+        private IRenderable RenderTableCell(TableCell tableCell, TableColumnAlign? markdownAlignment)
+        {
+            var consoleAlignment = markdownAlignment switch
+            {
+                TableColumnAlign.Left => Justify.Left,
+                TableColumnAlign.Center => Justify.Center,
+                TableColumnAlign.Right => Justify.Right,
+                null => Justify.Left,
+                _ => throw new ArgumentOutOfRangeException(nameof(markdownAlignment), markdownAlignment,
+                    "Unable to convert between Markdig alignment and Spectre.Console alignment"),
+            };
+
+            return new CompositeRenderable(tableCell.Select(x => this.RenderBlock(x, consoleAlignment)));
         }
 
         private IRenderable RenderListBlock(ListBlock listBlock)
@@ -141,7 +204,7 @@ namespace Spectre.Console
             var listDepthWhitespace = new string(' ', listBlock.GetListDepth());
             var paddedItemPrefixes = itemPrefixes.Select(x => new Text($" {listDepthWhitespace}{x} "));
 
-            return new CompositeRenderable(Interleave(paddedItemPrefixes, listBlock.Select(this.RenderBlock)));
+            return new CompositeRenderable(Interleave(paddedItemPrefixes, listBlock.Select(x => this.RenderBlock(x))));
         }
 
         private static IEnumerable<T> Interleave<T>(IEnumerable<T> seqA, IEnumerable<T> seqB)
@@ -165,9 +228,9 @@ namespace Spectre.Console
             }
         }
 
-        private IRenderable RenderParagraphBlock(ParagraphBlock paragraphBlock)
+        private IRenderable RenderParagraphBlock(ParagraphBlock paragraphBlock, Justify alignment)
         {
-            var text = this.RenderContainerInline(paragraphBlock.Inline);
+            var text = this.RenderContainerInline(paragraphBlock.Inline, alignment: alignment);
 
             return new CompositeRenderable(new List<IRenderable> { text, new Text(Environment.NewLine) });
         }
@@ -179,12 +242,12 @@ namespace Spectre.Console
             return new Rule(inline);
         }
 
-        private IRenderable RenderContainerInline(ContainerInline inline, Style style = null)
+        private IRenderable RenderContainerInline(ContainerInline inline, Style? style = null, Justify alignment = Justify.Left)
         {
-            return new CompositeRenderable(inline.Select(x => this.RenderInline(x, style)));
+            return new CompositeRenderable(inline.Select(x => this.RenderInline(x, style ?? Style.Plain, alignment)));
         }
 
-        private IRenderable RenderInline(Inline inline, Style style)
+        private IRenderable RenderInline(Inline inline, Style style, Justify alignment)
         {
             switch (inline)
             {
@@ -193,7 +256,7 @@ namespace Spectre.Console
                 case CustomContainerInline customContainerInline:
                     break;
                 case EmojiInline emojiInline:
-                    return new Text(Emoji.Replace(emojiInline.Content.ToString()), style);
+                    return new Text(Emoji.Replace(emojiInline.Content.ToString()), style){ Alignment = alignment };
                 case AbbreviationInline abbreviationInline:
                     break;
 
@@ -248,7 +311,7 @@ namespace Spectre.Console
                 case LineBreakInline lineBreakInline:
                     break;
                 case LiteralInline literalInline:
-                    return new Text(literalInline.Content.ToString(), style);
+                    return new Text(literalInline.Content.ToString(), style){ Alignment = alignment };
                 default:
                     throw new ArgumentOutOfRangeException(nameof(inline));
             }
