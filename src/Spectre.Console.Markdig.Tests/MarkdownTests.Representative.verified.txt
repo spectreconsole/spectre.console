@@ -266,8 +266,9 @@ Compact style:
 Term 1~ Definition 1
 Term 2~ Definition 2a~ Definition 2b
 ──────────────────────────────── Abbreviations ─────────────────────────────────
-This is  abbreviation example.
+This is HTML abbreviation example.
 It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
+*[HTML]: Hyper Text Markup Language
 ────────────────────────────── Custom containers ───────────────────────────────
 ::: warninghere be dragons:::
 

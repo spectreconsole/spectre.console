@@ -36,7 +36,6 @@ namespace Spectre.Console
         private MarkdownPipeline MakePipeline()
         {
             return new MarkdownPipelineBuilder()
-                .UseAbbreviations()
                 .UseAutoIdentifiers()
                 .UseDefinitionLists()
                 .UseEmphasisExtras()
