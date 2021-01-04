@@ -54,6 +54,11 @@ namespace Spectre.Console.Internal
                 return (supportsAnsi, legacyConsole);
             }
 
+            return DetectFromTerm();
+        }
+
+        private static (bool SupportsAnsi, bool LegacyConsole) DetectFromTerm()
+        {
             // Check if the terminal is of type ANSI/VT100/xterm compatible.
             var term = Environment.GetEnvironmentVariable("TERM");
             if (!string.IsNullOrWhiteSpace(term))
@@ -101,8 +106,11 @@ namespace Spectre.Console.Internal
                     var @out = GetStdHandle(STD_OUTPUT_HANDLE);
                     if (!GetConsoleMode(@out, out var mode))
                     {
-                        // Could not get console mode.
-                        return false;
+                        // Could not get console mode, try TERM (set in cygwin, WSL-Shell).
+                        var (ansiFromTerm, legacyFromTerm) = DetectFromTerm();
+
+                        isLegacy = ansiFromTerm ? legacyFromTerm : isLegacy;
+                        return ansiFromTerm;
                     }
 
                     if ((mode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == 0)
