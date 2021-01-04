@@ -65,7 +65,6 @@ namespace Spectre.Console.Internal
             {
                 if (_regexes.Any(regex => regex.IsMatch(term)))
                 {
-                    System.Console.WriteLine("TERM matches");
                     return (true, false);
                 }
             }
