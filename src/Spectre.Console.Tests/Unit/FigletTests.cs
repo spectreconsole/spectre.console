@@ -1,14 +1,17 @@
 using System.Threading.Tasks;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Widgets/Figlet")]
     public sealed class FigletTests
     {
         [Fact]
+        [Expectation("Load_Stream")]
         public async Task Should_Load_Font_From_Stream()
         {
             // Given
@@ -24,6 +27,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render")]
         public async Task Should_Render_Text_Correctly()
         {
             // Given
@@ -38,6 +42,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Wrapped")]
         public async Task Should_Render_Wrapped_Text_Correctly()
         {
             // Given
@@ -52,6 +57,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_LeftAligned")]
         public async Task Should_Render_Left_Aligned_Text_Correctly()
         {
             // Given
@@ -67,6 +73,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Centered")]
         public async Task Should_Render_Centered_Text_Correctly()
         {
             // Given
@@ -82,6 +89,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_RightAligned")]
         public async Task Should_Render_Right_Aligned_Text_Correctly()
         {
             // Given

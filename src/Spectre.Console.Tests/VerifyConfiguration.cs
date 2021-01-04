@@ -1,5 +1,6 @@
-using System.IO;
 using System.Runtime.CompilerServices;
+using Spectre.Verify.Extensions;
+using VerifyTests;
 
 namespace Spectre.Console.Tests
 {
@@ -8,16 +9,7 @@ namespace Spectre.Console.Tests
         [ModuleInitializer]
         public static void Init()
         {
-            VerifyTests.VerifierSettings.DeriveTestDirectory((_, directory) =>
-            {
-                var expectations = Path.Combine(directory, "Expectations");
-                if (!Directory.Exists(expectations))
-                {
-                    Directory.CreateDirectory(expectations);
-                }
-
-                return expectations;
-            });
+            VerifierSettings.DerivePathInfo(Expectations.Initialize);
         }
     }
 }

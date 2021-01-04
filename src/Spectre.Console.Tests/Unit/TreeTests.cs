@@ -2,15 +2,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Widgets/Tree")]
     public class TreeTests
     {
         [Fact]
+        [Expectation("SingleRoot")]
         public Task Should_Render_Tree_With_Single_Root_Correctly()
         {
             // Given
@@ -38,6 +41,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("MultipleRoots")]
         public Task Should_Render_Tree_With_Multiple_Roots_Correctly()
         {
             // Given
@@ -65,6 +69,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("OnlyRoot")]
         public Task Should_Render_Tree_With_Only_Root_Node_Correctly()
         {
             // Given

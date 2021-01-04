@@ -2,12 +2,14 @@ using System;
 using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Widgets/Grid")]
     public sealed class GridTests
     {
         public sealed class TheAddColumnMethod
@@ -77,28 +79,12 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [UsesVerify]
+        [ExpectationPath("AddEmptyRow")]
         public sealed class TheAddEmptyRowMethod
         {
             [Fact]
+            [Expectation("Render")]
             public Task Should_Add_Empty_Row()
-            {
-                // Given
-                var console = new FakeConsole(width: 80);
-                var grid = new Grid();
-                grid.AddColumns(2);
-                grid.AddRow("Foo", "Bar");
-                grid.AddEmptyRow();
-                grid.AddRow("Qux", "Corgi");
-
-                // When
-                console.Render(grid);
-
-                // Then
-                return Verifier.Verify(console.Output);
-            }
-
-            [Fact]
-            public Task Should_Add_Empty_Row_At_The_End()
             {
                 // Given
                 var console = new FakeConsole(width: 80);
@@ -118,6 +104,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render")]
         public Task Should_Render_Grid_Correctly()
         {
             // Given
@@ -137,6 +124,26 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_2")]
+        public Task Should_Render_Grid_Correctly_2()
+        {
+            var console = new FakeConsole(width: 80);
+            var grid = new Grid();
+            grid.AddColumn(new GridColumn { NoWrap = true });
+            grid.AddColumn(new GridColumn { Padding = new Padding(2, 0, 0, 0) });
+            grid.AddRow("[bold]Options[/]", string.Empty);
+            grid.AddRow("  [blue]-h[/], [blue]--help[/]", "Show command line help.");
+            grid.AddRow("  [blue]-c[/], [blue]--configuration[/]", "The configuration to run for.\nThe default for most projects is [green]Debug[/].");
+
+            // When
+            console.Render(grid);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("Render_Alignment")]
         public Task Should_Render_Grid_Column_Alignment_Correctly()
         {
             // Given
@@ -157,6 +164,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Padding")]
         public Task Should_Use_Default_Padding()
         {
             // Given
@@ -175,6 +183,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_ExplicitPadding")]
         public Task Should_Render_Explicit_Grid_Column_Padding_Correctly()
         {
             // Given
@@ -186,24 +195,6 @@ namespace Spectre.Console.Tests.Unit
             grid.AddRow("Foo", "Bar", "Baz");
             grid.AddRow("Qux", "Corgi", "Waldo");
             grid.AddRow("Grault", "Garply", "Fred");
-
-            // When
-            console.Render(grid);
-
-            // Then
-            return Verifier.Verify(console.Output);
-        }
-
-        [Fact]
-        public Task Should_Render_Grid()
-        {
-            var console = new FakeConsole(width: 80);
-            var grid = new Grid();
-            grid.AddColumn(new GridColumn { NoWrap = true });
-            grid.AddColumn(new GridColumn { Padding = new Padding(2, 0, 0, 0) });
-            grid.AddRow("[bold]Options[/]", string.Empty);
-            grid.AddRow("  [blue]-h[/], [blue]--help[/]", "Show command line help.");
-            grid.AddRow("  [blue]-c[/], [blue]--configuration[/]", "The configuration to run for.\nThe default for most projects is [green]Debug[/].");
 
             // When
             console.Render(grid);

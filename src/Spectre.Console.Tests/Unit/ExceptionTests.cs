@@ -2,15 +2,18 @@ using System;
 using System.Threading.Tasks;
 using Spectre.Console.Testing;
 using Spectre.Console.Tests.Data;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Exception")]
     public sealed class ExceptionTests
     {
         [Fact]
+        [Expectation("Default")]
         public Task Should_Write_Exception()
         {
             // Given
@@ -25,6 +28,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("ShortenedTypes")]
         public Task Should_Write_Exception_With_Shortened_Types()
         {
             // Given
@@ -39,6 +43,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("ShortenedMethods")]
         public Task Should_Write_Exception_With_Shortened_Methods()
         {
             // Given
@@ -53,6 +58,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("InnerException")]
         public Task Should_Write_Exception_With_Inner_Exception()
         {
             // Given
@@ -67,6 +73,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("CallSite")]
         public Task Should_Write_Exceptions_With_Generic_Type_Parameters_In_Callsite_As_Expected()
         {
             // Given

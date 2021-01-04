@@ -2,6 +2,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Rendering;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
@@ -9,16 +10,6 @@ namespace Spectre.Console.Tests.Unit
 {
     public sealed class SegmentTests
     {
-        [Fact]
-        public void Lol()
-        {
-            var context = new RenderContext(Encoding.UTF8, false);
-
-            var result = new Segment("    ").CellCount(context);
-
-            result.ShouldBe(4);
-        }
-
         [UsesVerify]
         public sealed class TheSplitMethod
         {
@@ -66,6 +57,7 @@ namespace Spectre.Console.Tests.Unit
         public sealed class TheSplitLinesMethod
         {
             [Fact]
+            [Expectation("Segment", "Split")]
             public Task Should_Split_Segment()
             {
                 var context = new RenderContext(Encoding.UTF8, false);
@@ -100,6 +92,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("Segment", "Split_Linebreak")]
             public Task Should_Split_Segments_With_Linebreak_In_Text()
             {
                 var context = new RenderContext(Encoding.UTF8, false);

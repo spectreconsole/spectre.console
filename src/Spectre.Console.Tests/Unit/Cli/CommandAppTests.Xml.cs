@@ -4,18 +4,21 @@ using Spectre.Console.Tests.Data;
 using VerifyXunit;
 using Xunit;
 using Spectre.Console.Cli;
+using Spectre.Verify.Extensions;
 
 namespace Spectre.Console.Tests.Unit.Cli
 {
     public sealed partial class CommandAppTests
     {
         [UsesVerify]
+        [ExpectationPath("Cli/Xml")]
         public sealed class Xml
         {
             /// <summary>
             /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-1
             /// </summary>
             [Fact]
+            [Expectation("Test_1")]
             public Task Should_Dump_Correct_Model_For_Case_1()
             {
                 // Given
@@ -44,6 +47,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-2
             /// </summary>
             [Fact]
+            [Expectation("Test_2")]
             public Task Should_Dump_Correct_Model_For_Case_2()
             {
                 // Given
@@ -64,6 +68,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-3
             /// </summary>
             [Fact]
+            [Expectation("Test_3")]
             public Task Should_Dump_Correct_Model_For_Case_3()
             {
                 // Given
@@ -88,6 +93,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-4
             /// </summary>
             [Fact]
+            [Expectation("Test_4")]
             public Task Should_Dump_Correct_Model_For_Case_4()
             {
                 // Given
@@ -111,6 +117,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-5
             /// </summary>
             [Fact]
+            [Expectation("Test_5")]
             public Task Should_Dump_Correct_Model_For_Case_5()
             {
                 // Given
@@ -128,6 +135,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [Fact]
+            [Expectation("Test_6")]
             public Task Should_Dump_Correct_Model_For_Model_With_Default_Command()
             {
                 // Given

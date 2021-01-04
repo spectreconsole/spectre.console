@@ -1,15 +1,18 @@
 using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Widgets/Rule")]
     public sealed class RuleTests
     {
         [Fact]
+        [Expectation("Render")]
         public Task Should_Render_Default_Rule_Without_Title()
         {
             // Given
@@ -23,7 +26,8 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public Task Should_Render_Default_Rule_With_Specified_Box()
+        [Expectation("Render_Border_NoHeader")]
+        public Task Should_Render_Default_Rule_With_Specified_Border()
         {
             // Given
             var console = new FakeConsole(width: 40);
@@ -36,6 +40,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Border_Header")]
         public Task Should_Render_With_Specified_Box()
         {
             // Given
@@ -49,6 +54,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Header_DefaultAlignment")]
         public Task Should_Render_Default_Rule_With_Title_Centered_By_Default()
         {
             // Given
@@ -62,6 +68,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Header_LeftAligned")]
         public Task Should_Render_Default_Rule_With_Title_Left_Aligned()
         {
             // Given
@@ -78,6 +85,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Header_RightAligned")]
         public Task Should_Render_Default_Rule_With_Title_Right_Aligned()
         {
             // Given
@@ -94,6 +102,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Linebreaks")]
         public Task Should_Convert_Line_Breaks_In_Title_To_Spaces()
         {
             // Given
@@ -107,6 +116,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Truncate")]
         public Task Should_Truncate_Title()
         {
             // Given

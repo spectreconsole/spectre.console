@@ -2,15 +2,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Spectre.Console.Rendering;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Widgets/Panel")]
     public sealed class PanelTests
     {
         [Fact]
+        [Expectation("Render")]
         public Task Should_Render_Panel()
         {
             // Given
@@ -24,6 +27,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_ZeroPadding")]
         public Task Should_Render_Panel_With_Padding_Set_To_Zero()
         {
             // Given
@@ -40,6 +44,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Padding")]
         public Task Should_Render_Panel_With_Padding()
         {
             // Given
@@ -56,6 +61,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Header")]
         public Task Should_Render_Panel_With_Header()
         {
             // Given
@@ -74,6 +80,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Header_LeftAligned")]
         public Task Should_Render_Panel_With_Left_Aligned_Header()
         {
             // Given
@@ -91,6 +98,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Header_Centered")]
         public Task Should_Render_Panel_With_Centered_Header()
         {
             // Given
@@ -108,6 +116,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Header_RightAligned")]
         public Task Should_Render_Panel_With_Right_Aligned_Header()
         {
             // Given
@@ -125,6 +134,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Header_Collapse")]
         public Task Should_Collapse_Header_If_It_Will_Not_Fit()
         {
             // Given
@@ -142,6 +152,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Unicode")]
         public Task Should_Render_Panel_With_Unicode_Correctly()
         {
             // Given
@@ -155,6 +166,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Multiline")]
         public Task Should_Render_Panel_With_Multiple_Lines()
         {
             // Given
@@ -168,6 +180,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_LineEndings")]
         public Task Should_Preserve_Explicit_Line_Ending()
         {
             // Given
@@ -183,6 +196,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Expand")]
         public Task Should_Expand_Panel_If_Enabled()
         {
             // Given
@@ -199,6 +213,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Child_RightAligned")]
         public Task Should_Justify_Child_To_Right_Correctly()
         {
             // Given
@@ -216,6 +231,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Child_Centered")]
         public Task Should_Center_Child_Correctly()
         {
             // Given
@@ -233,6 +249,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Child_Panel")]
         public Task Should_Render_Panel_Inside_Panel_Correctly()
         {
             // Given
@@ -246,6 +263,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Wrap")]
         public Task Should_Wrap_Content_Correctly()
         {
             // Given
@@ -270,6 +288,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_CJK")]
         public Task Should_Wrap_Table_With_CJK_Tables_In_Panel_Correctly()
         {
             // Given
