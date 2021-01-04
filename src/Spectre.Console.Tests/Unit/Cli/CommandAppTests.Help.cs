@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Spectre.Console.Cli;
 using Spectre.Console.Testing;
 using Spectre.Console.Tests.Data;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
@@ -10,9 +11,11 @@ namespace Spectre.Console.Tests.Unit.Cli
     public sealed partial class CommandAppTests
     {
         [UsesVerify]
+        [ExpectationPath("Cli/Help")]
         public class Help
         {
             [Fact]
+            [Expectation("Root")]
             public Task Should_Output_Root_Correctly()
             {
                 // Given
@@ -33,6 +36,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [Fact]
+            [Expectation("Hidden_Commands")]
             public Task Should_Skip_Hidden_Commands()
             {
                 // Given
@@ -53,6 +57,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [Fact]
+            [Expectation("Command")]
             public Task Should_Output_Command_Correctly()
             {
                 // Given
@@ -75,6 +80,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [Fact]
+            [Expectation("Leaf")]
             public Task Should_Output_Leaf_Correctly()
             {
                 // Given
@@ -97,6 +103,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [Fact]
+            [Expectation("Default")]
             public Task Should_Output_Default_Command_Correctly()
             {
                 // Given
@@ -115,6 +122,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [Fact]
+            [Expectation("RootExamples")]
             public Task Should_Output_Root_Examples_Defined_On_Root()
             {
                 // Given
@@ -136,6 +144,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [Fact]
+            [Expectation("RootExamples_Children")]
             public Task Should_Output_Root_Examples_Defined_On_Direct_Children_If_Root_Have_No_Examples()
             {
                 // Given
@@ -157,6 +166,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [Fact]
+            [Expectation("RootExamples_Leafs")]
             public Task Should_Output_Root_Examples_Defined_On_Leaves_If_No_Other_Examples_Are_Found()
             {
                 // Given
@@ -182,6 +192,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [Fact]
+            [Expectation("CommandExamples")]
             public Task Should_Only_Output_Command_Examples_Defined_On_Command()
             {
                 // Given
@@ -209,6 +220,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [Fact]
+            [Expectation("DefaultExamples")]
             public Task Should_Output_Root_Examples_If_Default_Command_Is_Specified()
             {
                 // Given
@@ -228,6 +240,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [Fact]
+            [Expectation("NoDescription")]
             public Task Should_Not_Show_Truncated_Command_Table_If_Commands_Are_Missing_Description()
             {
                 // Given
@@ -246,6 +259,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [Fact]
+            [Expectation("ArgumentOrder")]
             public Task Should_List_Arguments_In_Correct_Order()
             {
                 // Given

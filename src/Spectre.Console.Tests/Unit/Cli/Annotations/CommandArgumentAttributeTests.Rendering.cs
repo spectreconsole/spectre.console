@@ -2,15 +2,17 @@ using System.Threading.Tasks;
 using Spectre.Console.Cli;
 using Spectre.Console.Testing;
 using Spectre.Console.Tests.Data;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit.Cli.Annotations
 {
+    [ExpectationPath("Cli/Arguments")]
     public sealed partial class CommandArgumentAttributeTests
     {
         [UsesVerify]
-        public sealed class TheArgumentCannotContainOptionsMethod
+        public sealed class ArgumentCannotContainOptions
         {
             public sealed class Settings : CommandSettings
             {
@@ -19,6 +21,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             }
 
             [Fact]
+            [Expectation("ArgumentCannotContainOptions")]
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
@@ -30,7 +33,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
         }
 
         [UsesVerify]
-        public sealed class TheMultipleValuesAreNotSupportedMethod
+        public sealed class MultipleValuesAreNotSupported
         {
             public sealed class Settings : CommandSettings
             {
@@ -39,6 +42,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             }
 
             [Fact]
+            [Expectation("MultipleValuesAreNotSupported")]
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
@@ -50,7 +54,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
         }
 
         [UsesVerify]
-        public sealed class TheValuesMustHaveNameMethod
+        public sealed class ValuesMustHaveName
         {
             public sealed class Settings : CommandSettings
             {
@@ -59,6 +63,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             }
 
             [Fact]
+            [Expectation("ValuesMustHaveName")]
             public Task Should_Return_Correct_Text()
             {
                 // Given, When

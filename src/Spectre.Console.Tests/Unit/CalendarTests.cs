@@ -1,15 +1,18 @@
 using System;
 using System.Threading.Tasks;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Widgets/Calendar")]
     public sealed class CalendarTests
     {
         [Fact]
+        [Expectation("Render")]
         public Task Should_Render_Calendar_Correctly()
         {
             // Given
@@ -27,6 +30,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Centered")]
         public Task Should_Center_Calendar_Correctly()
         {
             // Given
@@ -45,6 +49,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("LeftAligned")]
         public Task Should_Left_Align_Calendar_Correctly()
         {
             // Given
@@ -63,6 +68,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("RightAligned")]
         public Task Should_Right_Align_Calendar_Correctly()
         {
             // Given
@@ -81,6 +87,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Culture")]
         public Task Should_Render_Calendar_Correctly_For_Specific_Culture()
         {
             // Given

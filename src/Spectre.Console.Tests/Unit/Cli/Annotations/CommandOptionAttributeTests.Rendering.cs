@@ -3,15 +3,17 @@ using Shouldly;
 using Spectre.Console.Cli;
 using Spectre.Console.Testing;
 using Spectre.Console.Tests.Data;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit.Cli.Annotations
 {
+    [ExpectationPath("Cli/Arguments")]
     public sealed partial class CommandOptionAttributeTests
     {
         [UsesVerify]
-        public sealed class TheUnexpectedCharacterMethod
+        public sealed class UnexpectedCharacter
         {
             public sealed class Settings : CommandSettings
             {
@@ -20,6 +22,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             }
 
             [Fact]
+            [Expectation("UnexpectedCharacter")]
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
@@ -32,7 +35,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
         }
 
         [UsesVerify]
-        public sealed class TheUnterminatedValueNameMethod
+        public sealed class UnterminatedValueName
         {
             public sealed class Settings : CommandSettings
             {
@@ -41,6 +44,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             }
 
             [Fact]
+            [Expectation("UnterminatedValueName")]
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
@@ -53,7 +57,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
         }
 
         [UsesVerify]
-        public sealed class TheOptionsMustHaveNameMethod
+        public sealed class OptionsMustHaveName
         {
             public sealed class Settings : CommandSettings
             {
@@ -62,6 +66,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             }
 
             [Fact]
+            [Expectation("OptionsMustHaveName")]
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
@@ -74,7 +79,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
         }
 
         [UsesVerify]
-        public sealed class TheOptionNamesCannotStartWithDigitMethod
+        public sealed class OptionNamesCannotStartWithDigit
         {
             public sealed class Settings : CommandSettings
             {
@@ -83,6 +88,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             }
 
             [Fact]
+            [Expectation("OptionNamesCannotStartWithDigit")]
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
@@ -95,7 +101,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
         }
 
         [UsesVerify]
-        public sealed class TheInvalidCharacterInOptionNameMethod
+        public sealed class InvalidCharacterInOptionName
         {
             public sealed class Settings : CommandSettings
             {
@@ -104,6 +110,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             }
 
             [Fact]
+            [Expectation("InvalidCharacterInOptionName")]
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
@@ -116,7 +123,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
         }
 
         [UsesVerify]
-        public sealed class TheLongOptionMustHaveMoreThanOneCharacterMethod
+        public sealed class LongOptionMustHaveMoreThanOneCharacter
         {
             public sealed class Settings : CommandSettings
             {
@@ -125,6 +132,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             }
 
             [Fact]
+            [Expectation("LongOptionMustHaveMoreThanOneCharacter")]
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
@@ -137,7 +145,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
         }
 
         [UsesVerify]
-        public sealed class TheShortOptionMustOnlyBeOneCharacterMethod
+        public sealed class ShortOptionMustOnlyBeOneCharacter
         {
             public sealed class Settings : CommandSettings
             {
@@ -146,6 +154,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             }
 
             [Fact]
+            [Expectation("ShortOptionMustOnlyBeOneCharacter")]
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
@@ -158,7 +167,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
         }
 
         [UsesVerify]
-        public sealed class TheMultipleOptionValuesAreNotSupportedMethod
+        public sealed class MultipleOptionValuesAreNotSupported
         {
             public sealed class Settings : CommandSettings
             {
@@ -167,6 +176,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             }
 
             [Fact]
+            [Expectation("MultipleOptionValuesAreNotSupported")]
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
@@ -179,7 +189,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
         }
 
         [UsesVerify]
-        public sealed class TheInvalidCharacterInValueNameMethod
+        public sealed class InvalidCharacterInValueName
         {
             public sealed class Settings : CommandSettings
             {
@@ -188,6 +198,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             }
 
             [Fact]
+            [Expectation("InvalidCharacterInValueName")]
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
@@ -200,7 +211,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
         }
 
         [UsesVerify]
-        public sealed class TheMissingLongAndShortNameMethod
+        public sealed class MissingLongAndShortName
         {
             public sealed class Settings : CommandSettings
             {
@@ -209,6 +220,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             }
 
             [Fact]
+            [Expectation("MissingLongAndShortName")]
             public Task Should_Return_Correct_Text()
             {
                 // Given, When

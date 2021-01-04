@@ -1,14 +1,17 @@
 using System.Threading.Tasks;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Widgets/Padder")]
     public sealed class PadderTests
     {
         [Fact]
+        [Expectation("Render")]
         public Task Should_Render_Padded_Object_Correctly()
         {
             // Given
@@ -27,6 +30,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Expanded")]
         public Task Should_Render_Expanded_Padded_Object_Correctly()
         {
             // Given
@@ -47,6 +51,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Nested")]
         public Task Should_Render_Padded_Object_Correctly_When_Nested_Within_Other_Object()
         {
             // Given

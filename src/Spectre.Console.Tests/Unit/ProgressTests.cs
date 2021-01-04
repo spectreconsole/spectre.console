@@ -1,12 +1,14 @@
 using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Widgets/Progress")]
     public sealed class ProgressTests
     {
         [Fact]
@@ -60,6 +62,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_ReduceWidth")]
         public Task Should_Reduce_Width_If_Needed()
         {
             // Given

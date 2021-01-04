@@ -1,15 +1,18 @@
 using System.Threading.Tasks;
 using Spectre.Console.Rendering;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Widgets/Rows")]
     public sealed class RowsTests
     {
         [Fact]
+        [Expectation("Render")]
         public Task Should_Render_Rows()
         {
             // Given
@@ -32,6 +35,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Nested")]
         public Task Should_Render_Rows_Correctly_Inside_Other_Widget()
         {
             // Given
@@ -54,6 +58,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Expanded_And_Nested")]
         public Task Should_Render_Rows_Correctly_Inside_Other_Widget_When_Expanded()
         {
             // Given

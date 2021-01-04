@@ -2,12 +2,14 @@ using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Rendering;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Borders/Box")]
     public sealed class BoxBorderTests
     {
         [UsesVerify]
@@ -27,6 +29,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("NoBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -58,6 +61,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("AsciiBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -89,6 +93,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("DoubleBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -120,6 +125,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("HeavyBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -148,6 +154,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("RoundedBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -176,6 +183,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("SquareBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given

@@ -1,14 +1,17 @@
 using System.Threading.Tasks;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Widgets/BarChart")]
     public sealed class BarChartTests
     {
         [Fact]
+        [Expectation("Render")]
         public async Task Should_Render_Correctly()
         {
             // Given

@@ -4,6 +4,7 @@ using Shouldly;
 using Spectre.Console.Cli;
 using Spectre.Console.Testing;
 using Spectre.Console.Tests.Data;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
@@ -12,12 +13,15 @@ namespace Spectre.Console.Tests.Unit.Cli
     public sealed partial class CommandAppTests
     {
         [UsesVerify]
+        [ExpectationPath("Cli/Parsing")]
         public sealed class Parsing
         {
             [UsesVerify]
+            [ExpectationPath("UnknownCommand")]
             public sealed class UnknownCommand
             {
                 [Fact]
+                [Expectation("Test_1")]
                 public Task Should_Return_Correct_Text_When_Command_Is_Unknown()
                 {
                     // Given
@@ -35,23 +39,25 @@ namespace Spectre.Console.Tests.Unit.Cli
                 }
 
                 [Fact]
-                public Task Should_Return_Correct_Text_With_Suggestion_When_Root_Command_Followed_By_Argument_Is_Unknown_And_Distance_Is_Small()
+                [Expectation("Test_2")]
+                public Task Should_Return_Correct_Text_For_Unknown_Command_When_Current_Command_Has_No_Arguments()
                 {
                     // Given
                     var fixture = new Fixture();
-                    fixture.Configure(config =>
+                    fixture.Configure(configurator =>
                     {
-                        config.AddCommand<CatCommand>("cat");
+                        configurator.AddCommand<EmptyCommand>("empty");
                     });
 
                     // When
-                    var result = fixture.Run("bat", "14");
+                    var result = fixture.Run("empty", "other");
 
                     // Then
                     return Verifier.Verify(result);
                 }
 
                 [Fact]
+                [Expectation("Test_3")]
                 public Task Should_Return_Correct_Text_With_Suggestion_When_Command_Followed_By_Argument_Is_Unknown_And_Distance_Is_Small()
                 {
                     // Given
@@ -72,6 +78,25 @@ namespace Spectre.Console.Tests.Unit.Cli
                 }
 
                 [Fact]
+                [Expectation("Test_4")]
+                public Task Should_Return_Correct_Text_With_Suggestion_When_Root_Command_Followed_By_Argument_Is_Unknown_And_Distance_Is_Small()
+                {
+                    // Given
+                    var fixture = new Fixture();
+                    fixture.Configure(config =>
+                    {
+                        config.AddCommand<CatCommand>("cat");
+                    });
+
+                    // When
+                    var result = fixture.Run("bat", "14");
+
+                    // Then
+                    return Verifier.Verify(result);
+                }
+
+                [Fact]
+                [Expectation("Test_5")]
                 public Task Should_Return_Correct_Text_With_Suggestion_And_No_Arguments_When_Root_Command_Is_Unknown_And_Distance_Is_Small()
                 {
                     // Given
@@ -90,6 +115,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 }
 
                 [Fact]
+                [Expectation("Test_6")]
                 public Task Should_Return_Correct_Text_With_Suggestion_And_No_Arguments_When_Command_Is_Unknown_And_Distance_Is_Small()
                 {
                     // Given
@@ -111,6 +137,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 }
 
                 [Fact]
+                [Expectation("Test_7")]
                 public Task Should_Return_Correct_Text_With_Suggestion_When_Root_Command_After_Argument_Is_Unknown_And_Distance_Is_Small()
                 {
                     // Given
@@ -129,6 +156,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 }
 
                 [Fact]
+                [Expectation("Test_8")]
                 public Task Should_Return_Correct_Text_With_Suggestion_When_Command_After_Argument_Is_Unknown_And_Distance_Is_Small()
                 {
                     // Given
@@ -147,29 +175,14 @@ namespace Spectre.Console.Tests.Unit.Cli
                     // Then
                     return Verifier.Verify(result);
                 }
-
-                [Fact]
-                public Task Should_Return_Correct_Text_For_Unknown_Command_When_Current_Command_Has_No_Arguments()
-                {
-                    // Given
-                    var fixture = new Fixture();
-                    fixture.Configure(configurator =>
-                    {
-                        configurator.AddCommand<EmptyCommand>("empty");
-                    });
-
-                    // When
-                    var result = fixture.Run("empty", "other");
-
-                    // Then
-                    return Verifier.Verify(result);
-                }
             }
 
             [UsesVerify]
+            [ExpectationPath("CannotAssignValueToFlag")]
             public sealed class CannotAssignValueToFlag
             {
                 [Fact]
+                [Expectation("Test_1")]
                 public Task Should_Return_Correct_Text_For_Long_Option()
                 {
                     // Given
@@ -187,6 +200,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 }
 
                 [Fact]
+                [Expectation("Test_2")]
                 public Task Should_Return_Correct_Text_For_Short_Option()
                 {
                     // Given
@@ -205,9 +219,11 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [UsesVerify]
+            [ExpectationPath("NoValueForOption")]
             public sealed class NoValueForOption
             {
                 [Fact]
+                [Expectation("Test_1")]
                 public Task Should_Return_Correct_Text_For_Long_Option()
                 {
                     // Given
@@ -225,6 +241,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 }
 
                 [Fact]
+                [Expectation("Test_2")]
                 public Task Should_Return_Correct_Text_For_Short_Option()
                 {
                     // Given
@@ -243,9 +260,11 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [UsesVerify]
+            [ExpectationPath("NoMatchingArgument")]
             public sealed class NoMatchingArgument
             {
                 [Fact]
+                [Expectation("Test_1")]
                 public Task Should_Return_Correct_Text()
                 {
                     // Given
@@ -264,9 +283,11 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [UsesVerify]
+            [ExpectationPath("UnexpectedOption")]
             public sealed class UnexpectedOption
             {
                 [Fact]
+                [Expectation("Test_1")]
                 public Task Should_Return_Correct_Text_For_Long_Option()
                 {
                     // Given
@@ -284,6 +305,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 }
 
                 [Fact]
+                [Expectation("Test_2")]
                 public Task Should_Return_Correct_Text_For_Short_Option()
                 {
                     // Given
@@ -302,9 +324,11 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [UsesVerify]
+            [ExpectationPath("UnknownOption")]
             public sealed class UnknownOption
             {
                 [Fact]
+                [Expectation("Test_1")]
                 public Task Should_Return_Correct_Text_For_Long_Option_If_Strict_Mode_Is_Enabled()
                 {
                     // Given
@@ -323,6 +347,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 }
 
                 [Fact]
+                [Expectation("Test_2")]
                 public Task Should_Return_Correct_Text_For_Short_Option_If_Strict_Mode_Is_Enabled()
                 {
                     // Given
@@ -342,9 +367,11 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [UsesVerify]
+            [ExpectationPath("UnterminatedQuote")]
             public sealed class UnterminatedQuote
             {
                 [Fact]
+                [Expectation("Test_1")]
                 public Task Should_Return_Correct_Text()
                 {
                     // Given
@@ -363,9 +390,11 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [UsesVerify]
+            [ExpectationPath("OptionWithoutName")]
             public sealed class OptionWithoutName
             {
                 [Fact]
+                [Expectation("Test_1")]
                 public Task Should_Return_Correct_Text_For_Short_Option()
                 {
                     // Given
@@ -383,6 +412,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 }
 
                 [Fact]
+                [Expectation("Test_2")]
                 public Task Should_Return_Correct_Text_For_Missing_Long_Option_Value_With_Equality_Separator()
                 {
                     // Given
@@ -400,6 +430,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 }
 
                 [Fact]
+                [Expectation("Test_3")]
                 public Task Should_Return_Correct_Text_For_Missing_Long_Option_Value_With_Colon_Separator()
                 {
                     // Given
@@ -417,6 +448,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 }
 
                 [Fact]
+                [Expectation("Test_4")]
                 public Task Should_Return_Correct_Text_For_Missing_Short_Option_Value_With_Equality_Separator()
                 {
                     // Given
@@ -434,6 +466,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 }
 
                 [Fact]
+                [Expectation("Test_5")]
                 public Task Should_Return_Correct_Text_For_Missing_Short_Option_Value_With_Colon_Separator()
                 {
                     // Given
@@ -452,9 +485,11 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [UsesVerify]
+            [ExpectationPath("InvalidShortOptionName")]
             public sealed class InvalidShortOptionName
             {
                 [Fact]
+                [Expectation("Test_1")]
                 public Task Should_Return_Correct_Text()
                 {
                     // Given
@@ -473,9 +508,11 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [UsesVerify]
+            [ExpectationPath("LongOptionNameIsOneCharacter")]
             public sealed class LongOptionNameIsOneCharacter
             {
                 [Fact]
+                [Expectation("Test_1")]
                 public Task Should_Return_Correct_Text()
                 {
                     // Given
@@ -494,9 +531,11 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [UsesVerify]
+            [ExpectationPath("LongOptionNameIsMissing")]
             public sealed class LongOptionNameIsMissing
             {
                 [Fact]
+                [Expectation("Test_1")]
                 public Task Should_Return_Correct_Text()
                 {
                     // Given
@@ -515,9 +554,11 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [UsesVerify]
+            [ExpectationPath("LongOptionNameStartWithDigit")]
             public sealed class LongOptionNameStartWithDigit
             {
                 [Fact]
+                [Expectation("Test_1")]
                 public Task Should_Return_Correct_Text()
                 {
                     // Given
@@ -536,9 +577,11 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [UsesVerify]
+            [ExpectationPath("LongOptionNameContainSymbol")]
             public sealed class LongOptionNameContainSymbol
             {
                 [Fact]
+                [Expectation("Test_1")]
                 public Task Should_Return_Correct_Text()
                 {
                     // Given
@@ -578,6 +621,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             }
 
             [Fact]
+            [Expectation("Quoted_Strings")]
             public Task Should_Parse_Quoted_Strings_Correctly()
             {
                 // Given
