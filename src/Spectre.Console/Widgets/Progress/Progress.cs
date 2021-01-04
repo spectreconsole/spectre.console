@@ -110,6 +110,53 @@ namespace Spectre.Console
             }
         }
 
+        /// <summary>
+        /// Starts the progress task list.
+        /// </summary>
+        /// <param name="action">The action to execute.</param>
+        /// <typeparam name="T">The result type of task.</typeparam>
+        /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation.</returns>
+        public async Task<T> StartAsync<T>(Func<ProgressContext, Task<T>> action)
+        {
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            var renderer = CreateRenderer();
+            renderer.Started();
+
+            T result;
+
+            try
+            {
+                using (new RenderHookScope(_console, renderer))
+                {
+                    var context = new ProgressContext(_console, renderer);
+
+                    if (AutoRefresh)
+                    {
+                        using (var thread = new ProgressRefreshThread(context, renderer.RefreshRate))
+                        {
+                            result = await action(context).ConfigureAwait(false);
+                        }
+                    }
+                    else
+                    {
+                        result = await action(context).ConfigureAwait(false);
+                    }
+
+                    context.Refresh();
+                }
+            }
+            finally
+            {
+                renderer.Completed(AutoClear);
+            }
+
+            return result;
+        }
+
         private ProgressRenderer CreateRenderer()
         {
             var caps = _console.Capabilities;
