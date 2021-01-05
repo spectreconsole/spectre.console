@@ -80,34 +80,11 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(action));
             }
 
-            var renderer = CreateRenderer();
-            renderer.Started();
-
-            try
+            _ = await StartAsync<object?>(async progressContext =>
             {
-                using (new RenderHookScope(_console, renderer))
-                {
-                    var context = new ProgressContext(_console, renderer);
-
-                    if (AutoRefresh)
-                    {
-                        using (var thread = new ProgressRefreshThread(context, renderer.RefreshRate))
-                        {
-                            await action(context).ConfigureAwait(false);
-                        }
-                    }
-                    else
-                    {
-                        await action(context).ConfigureAwait(false);
-                    }
-
-                    context.Refresh();
-                }
-            }
-            finally
-            {
-                renderer.Completed(AutoClear);
-            }
+                await action(progressContext);
+                return default;
+            });
         }
 
         /// <summary>

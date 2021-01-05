@@ -60,30 +60,16 @@ namespace Spectre.Console
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task StartAsync(string status, Func<StatusContext, Task> action)
         {
-            // Set the progress columns
-            var spinnerColumn = new SpinnerColumn(Spinner ?? Spinner.Known.Default)
+            if (action is null)
             {
-                Style = SpinnerStyle ?? Style.Plain,
-            };
+                throw new ArgumentNullException(nameof(action));
+            }
 
-            var progress = new Progress(_console)
+            _ = await StartAsync<object?>(status, async statusContext =>
             {
-                FallbackRenderer = new StatusFallbackRenderer(),
-                AutoClear = true,
-                AutoRefresh = AutoRefresh,
-            };
-
-            progress.Columns(new ProgressColumn[]
-            {
-                spinnerColumn,
-                new TaskDescriptionColumn(),
+                await action(statusContext);
+                return default;
             });
-
-            await progress.StartAsync(async ctx =>
-            {
-                var statusContext = new StatusContext(ctx, ctx.AddTask(status), spinnerColumn);
-                await action(statusContext).ConfigureAwait(false);
-            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -95,6 +81,11 @@ namespace Spectre.Console
         /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation.</returns>
         public async Task<T> StartAsync<T>(string status, Func<StatusContext, Task<T>> action)
         {
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
             // Set the progress columns
             var spinnerColumn = new SpinnerColumn(Spinner ?? Spinner.Known.Default)
             {
