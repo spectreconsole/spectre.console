@@ -66,9 +66,11 @@ namespace Spectre.Console
         /// <param name="x">The X coordinate for the pixel.</param>
         /// <param name="y">The Y coordinate for the pixel.</param>
         /// <param name="color">The pixel color.</param>
-        public void SetPixel(int x, int y, Color color)
+        /// <returns>The same <see cref="Canvas"/> instance so that multiple calls can be chained.</returns>
+        public Canvas SetPixel(int x, int y, Color color)
         {
             _pixels[x, y] = color;
+            return this;
         }
 
         /// <inheritdoc/>
