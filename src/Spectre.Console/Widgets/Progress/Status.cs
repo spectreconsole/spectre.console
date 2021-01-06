@@ -60,6 +60,32 @@ namespace Spectre.Console
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task StartAsync(string status, Func<StatusContext, Task> action)
         {
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            _ = await StartAsync<object?>(status, async statusContext =>
+            {
+                await action(statusContext);
+                return default;
+            });
+        }
+
+        /// <summary>
+        /// Starts a new status display.
+        /// </summary>
+        /// <param name="status">The status to display.</param>
+        /// <param name="action">he action to execute.</param>
+        /// <typeparam name="T">The result type of task.</typeparam>
+        /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation.</returns>
+        public async Task<T> StartAsync<T>(string status, Func<StatusContext, Task<T>> action)
+        {
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
             // Set the progress columns
             var spinnerColumn = new SpinnerColumn(Spinner ?? Spinner.Known.Default)
             {
@@ -79,10 +105,10 @@ namespace Spectre.Console
                 new TaskDescriptionColumn(),
             });
 
-            await progress.StartAsync(async ctx =>
+            return await progress.StartAsync(async ctx =>
             {
                 var statusContext = new StatusContext(ctx, ctx.AddTask(status), spinnerColumn);
-                await action(statusContext).ConfigureAwait(false);
+                return await action(statusContext).ConfigureAwait(false);
             }).ConfigureAwait(false);
         }
     }
