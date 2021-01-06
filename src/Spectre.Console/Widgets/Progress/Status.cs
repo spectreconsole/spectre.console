@@ -55,6 +55,19 @@ namespace Spectre.Console
         /// <summary>
         /// Starts a new status display.
         /// </summary>
+        /// <typeparam name="T">The result type.</typeparam>
+        /// <param name="status">The status to display.</param>
+        /// <param name="func">he action to execute.</param>
+        /// <returns>The result.</returns>
+        public T Start<T>(string status, Func<StatusContext, T> func)
+        {
+            var task = StartAsync(status, ctx => Task.FromResult(func(ctx)));
+            return task.GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Starts a new status display.
+        /// </summary>
         /// <param name="status">The status to display.</param>
         /// <param name="action">he action to execute.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
@@ -67,23 +80,23 @@ namespace Spectre.Console
 
             _ = await StartAsync<object?>(status, async statusContext =>
             {
-                await action(statusContext);
+                await action(statusContext).ConfigureAwait(false);
                 return default;
-            });
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Starts a new status display.
+        /// Starts a new status display and returns a result.
         /// </summary>
-        /// <param name="status">The status to display.</param>
-        /// <param name="action">he action to execute.</param>
         /// <typeparam name="T">The result type of task.</typeparam>
+        /// <param name="status">The status to display.</param>
+        /// <param name="func">he action to execute.</param>
         /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation.</returns>
-        public async Task<T> StartAsync<T>(string status, Func<StatusContext, Task<T>> action)
+        public async Task<T> StartAsync<T>(string status, Func<StatusContext, Task<T>> func)
         {
-            if (action is null)
+            if (func is null)
             {
-                throw new ArgumentNullException(nameof(action));
+                throw new ArgumentNullException(nameof(func));
             }
 
             // Set the progress columns
@@ -108,7 +121,7 @@ namespace Spectre.Console
             return await progress.StartAsync(async ctx =>
             {
                 var statusContext = new StatusContext(ctx, ctx.AddTask(status), spinnerColumn);
-                return await action(statusContext).ConfigureAwait(false);
+                return await func(statusContext).ConfigureAwait(false);
             }).ConfigureAwait(false);
         }
     }

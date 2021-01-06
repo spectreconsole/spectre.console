@@ -69,6 +69,18 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Starts the progress task list and returns a result.
+        /// </summary>
+        /// <typeparam name="T">The result type.</typeparam>
+        /// <param name="func">he action to execute.</param>
+        /// <returns>The result.</returns>
+        public T Start<T>(Func<ProgressContext, T> func)
+        {
+            var task = StartAsync(ctx => Task.FromResult(func(ctx)));
+            return task.GetAwaiter().GetResult();
+        }
+
+        /// <summary>
         /// Starts the progress task list.
         /// </summary>
         /// <param name="action">The action to execute.</param>
@@ -82,13 +94,13 @@ namespace Spectre.Console
 
             _ = await StartAsync<object?>(async progressContext =>
             {
-                await action(progressContext);
+                await action(progressContext).ConfigureAwait(false);
                 return default;
-            });
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Starts the progress task list.
+        /// Starts the progress task list and returns a result.
         /// </summary>
         /// <param name="action">The action to execute.</param>
         /// <typeparam name="T">The result type of task.</typeparam>
