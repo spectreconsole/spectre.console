@@ -1,5 +1,6 @@
-Title: Prompt
-Order: 4
+Title: Text
+Order: 0
+RedirectFrom: prompt
 ---
 
 Sometimes you want to get some input from the user, and for this
