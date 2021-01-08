@@ -9,6 +9,8 @@ namespace Spectre.Console.Rendering
         private IRenderable? _renderable;
         private SegmentShape? _shape;
 
+        public bool HasRenderable => _renderable != null;
+
         public void SetRenderable(IRenderable renderable)
         {
             lock (_lock)

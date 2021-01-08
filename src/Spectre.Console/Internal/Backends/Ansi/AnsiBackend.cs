@@ -26,10 +26,10 @@ namespace Spectre.Console.Internal
             {
                 if (_out.IsStandardOut())
                 {
-                    return ConsoleHelper.GetSafeBufferWidth(Constants.DefaultBufferWidth);
+                    return ConsoleHelper.GetSafeWidth(Constants.DefaultTerminalWidth);
                 }
 
-                return Constants.DefaultBufferWidth;
+                return Constants.DefaultTerminalWidth;
             }
         }
 
@@ -39,10 +39,10 @@ namespace Spectre.Console.Internal
             {
                 if (_out.IsStandardOut())
                 {
-                    return ConsoleHelper.GetSafeBufferHeight(Constants.DefaultBufferHeight);
+                    return ConsoleHelper.GetSafeHeight(Constants.DefaultTerminalHeight);
                 }
 
-                return Constants.DefaultBufferHeight;
+                return Constants.DefaultTerminalHeight;
             }
         }
 
