@@ -33,4 +33,8 @@
     <ProjectReference Include="..\Spectre.Console\Spectre.Console.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Expectations\Widgets\Tree\" />
+  </ItemGroup>
+
 </Project>
