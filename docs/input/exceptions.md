@@ -2,7 +2,7 @@ Title: Exceptions
 Order: 3
 ---
 
-Exceptions isn't always readable when viewed in the terminal.  
+Exceptions aren't always readable when viewed in the terminal.  
 You can make exception a bit more readable by using the `WriteException` method.
 
 ```csharp
