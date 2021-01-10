@@ -25,15 +25,12 @@ namespace Spectre.Console
         /// <summary>
         /// Gets the tree's child nodes.
         /// </summary>
-        public List<Tree> Nodes { get; } = new List<Tree>();
+        public List<TreeNode> Nodes => _root.Nodes;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the tree is expanded or not.
         /// </summary>
         public bool Expanded { get; set; } = true;
-
-        /// <inheritdoc/>
-        List<TreeNode> IHasTreeNodes.Nodes => _root.Nodes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tree"/> class.
