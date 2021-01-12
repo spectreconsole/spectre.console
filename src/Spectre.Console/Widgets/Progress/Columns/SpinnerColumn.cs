@@ -16,6 +16,7 @@ namespace Spectre.Console
         private readonly object _lock;
         private Spinner _spinner;
         private int? _maxWidth;
+        private string? _completed;
 
         /// <inheritdoc/>
         protected internal override bool NoWrap => true;
@@ -35,6 +36,25 @@ namespace Spectre.Console
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the text that should be shown instead
+        /// of the spinner once a task completes.
+        /// </summary>
+        public string? CompletedText
+        {
+            get => _completed;
+            set
+            {
+                _completed = value;
+                _maxWidth = null;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the completed style.
+        /// </summary>
+        public Style? CompletedStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the style of the spinner.
@@ -67,7 +87,7 @@ namespace Spectre.Console
 
             if (!task.IsStarted || task.IsFinished)
             {
-                return new Markup(new string(' ', GetMaxWidth(context)));
+                return new Markup(CompletedText ?? " ", CompletedStyle ?? Style.Plain);
             }
 
             var accumulated = task.State.Update<double>(ACCUMULATED, acc => acc + deltaTime.TotalMilliseconds);
@@ -97,7 +117,9 @@ namespace Spectre.Console
                     var useAscii = (context.LegacyConsole || !context.Unicode) && _spinner.IsUnicode;
                     var spinner = useAscii ? Spinner.Known.Ascii : _spinner ?? Spinner.Known.Default;
 
-                    _maxWidth = spinner.Frames.Max(frame => Cell.GetCellLength(context, frame));
+                    _maxWidth = Math.Max(
+                        ((IRenderable)new Markup(CompletedText ?? " ")).Measure(context, int.MaxValue).Max,
+                        spinner.Frames.Max(frame => Cell.GetCellLength(context, frame)));
                 }
 
                 return _maxWidth.Value;
