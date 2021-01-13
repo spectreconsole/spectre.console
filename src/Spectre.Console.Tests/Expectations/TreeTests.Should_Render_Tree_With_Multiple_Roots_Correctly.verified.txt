@@ -38,6 +38,5 @@
 │               │ 26  │ 27  │ 28  │ 29  │ 30  │ 31  │     │
 │               │     │     │     │     │     │     │     │
 │               └─────┴─────┴─────┴─────┴─────┴─────┴─────┘
-└── child2Child
-    └── Child 2 child
-         child
+└── secondRoot
+    └── secondRoot child

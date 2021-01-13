@@ -7,7 +7,8 @@ using Spectre.Console.Rendering;
 namespace Spectre.Console
 {
     /// <summary>
-    ///     Representation of tree data.
+    /// Representation of non-circular tree data.
+    /// Each node added to the tree may only be present in it a single time, in order to facilitate cycle detection.
     /// </summary>
     public sealed class Tree : Renderable, IHasTreeNodes
     {
@@ -28,6 +29,8 @@ namespace Spectre.Console
 
         /// <inheritdoc/>
         List<TreeNode> IHasTreeNodes.Children => Nodes;
+
+        private HashSet<TreeNode>? _visitedNodes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tree"/> class.
@@ -83,28 +86,40 @@ namespace Spectre.Console
         /// <inheritdoc />
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
-            if (Nodes.Count == 1)
-            {
-                // Single root
-                return Nodes[0]
+            return Nodes.Count == 1 ? RenderSingleRoot(context, maxWidth) : RenderMultipleRoots(context, maxWidth);
+        }
+
+        private IEnumerable<Segment> RenderSingleRoot(RenderContext context, int maxWidth)
+        {
+            _visitedNodes = new HashSet<TreeNode>();
+
+            var singleRootResult =
+                Nodes[0]
                     .Render(context, maxWidth)
                     .Concat(new List<Segment> { Segment.LineBreak })
                     .Concat(RenderChildren(context, maxWidth - Appearance.PartSize, Nodes[0], depth: 0));
-            }
-            else
-            {
-                // Multiple roots
-                var root = new TreeNode(Text.Empty);
-                foreach (var node in Nodes)
-                {
-                    root.AddNode(node);
-                }
 
-                return Enumerable.Empty<Segment>()
-                    .Concat(RenderChildren(
-                        context, maxWidth - Appearance.PartSize, root,
-                        depth: 0));
+            _visitedNodes = null;
+            return singleRootResult;
+        }
+
+        private IEnumerable<Segment> RenderMultipleRoots(RenderContext context, int maxWidth)
+        {
+            _visitedNodes = new HashSet<TreeNode>();
+
+            var root = new TreeNode(Text.Empty);
+            foreach (var node in Nodes)
+            {
+                root.AddNode(node);
             }
+
+            var multipleRootResult =
+                RenderChildren(
+                        context, maxWidth - Appearance.PartSize, root,
+                        depth: 0);
+
+            _visitedNodes = null;
+            return multipleRootResult;
         }
 
         private IEnumerable<Segment> RenderChildren(
@@ -112,6 +127,12 @@ namespace Spectre.Console
             int depth, int? trailingStarted = null)
         {
             var result = new List<Segment>();
+
+            if (!_visitedNodes!.Add(node))
+            {
+                throw new CircularTreeException("Cycle detected in tree - unable to render.");
+            }
+
             foreach (var (_, _, lastChild, childNode) in node.Children.Enumerate())
             {
                 var lines = Segment.SplitLines(context, childNode.Render(context, maxWidth));
