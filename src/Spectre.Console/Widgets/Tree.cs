@@ -33,8 +33,6 @@ namespace Spectre.Console
         /// </summary>
         public bool Expanded { get; set; } = true;
 
-        private HashSet<TreeNode>? _visitedNodes;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Tree"/> class.
         /// </summary>
@@ -57,7 +55,7 @@ namespace Spectre.Console
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
             var result = new List<Segment>();
-            _visitedNodes = new HashSet<TreeNode>();
+            var visitedNodes = new HashSet<TreeNode>();
 
             var stack = new Stack<Queue<TreeNode>>();
             stack.Push(new Queue<TreeNode>(new[] { _root }));
@@ -81,7 +79,7 @@ namespace Spectre.Console
 
                 var isLastChild = stackNode.Count == 1;
                 var current = stackNode.Dequeue();
-                if (!_visitedNodes.Add(current))
+                if (!visitedNodes.Add(current))
                 {
                     throw new CircularTreeException("Cycle detected in tree - unable to render.");
                 }
@@ -122,7 +120,6 @@ namespace Spectre.Console
                 }
             }
 
-            _visitedNodes = null;
             return result;
         }
 
