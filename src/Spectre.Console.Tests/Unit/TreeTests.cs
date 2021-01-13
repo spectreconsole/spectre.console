@@ -26,8 +26,6 @@ namespace Spectre.Console.Tests.Unit
             var child2Child = new TreeNode(new Text("child2-1"));
             child2.AddNode(child2Child);
             child2Child.AddNode(new TreeNode(new Text("Child2-1-1\nchild")));
-            var secondRoot = new TreeNode(new Text("secondRoot"));
-            secondRoot.AddNode(new TreeNode(new Text("secondRoot child")));
             var child3 = new TreeNode(new Text("child3"));
             var child3Child = new TreeNode(new Text("single leaf\nmultiline"));
             child3Child.AddNode(new TreeNode(new Calendar(2021, 01)));
