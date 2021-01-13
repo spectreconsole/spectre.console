@@ -33,9 +33,9 @@ namespace Spectre.Console.Cli.Internal
                 {
                     // If there is a error message specified in the parameter validator attribute,
                     // then use that one, otherwise use the validation result.
-                    var result = validator.ErrorMessage != null
-                        ? ValidationResult.Error(validator.ErrorMessage)
-                        : validationResult;
+                    var result = string.IsNullOrWhiteSpace(validator.ErrorMessage)
+                        ? validationResult
+                        : ValidationResult.Error(validator.ErrorMessage);
 
                     throw CommandRuntimeException.ValidationFailed(result);
                 }
