@@ -117,7 +117,7 @@ namespace Spectre.Console
                 {
                     if (DefaultValue != null)
                     {
-                        console.Write(converter(DefaultValue.Value), promptStyle);
+                        console.Write(IsSecret ? "******" : converter(DefaultValue.Value), promptStyle);
                         console.WriteLine();
                         return DefaultValue.Value;
                     }
@@ -186,10 +186,11 @@ namespace Spectre.Console
 
             if (ShowDefaultValue && DefaultValue != null)
             {
+                var converter = Converter ?? TypeConverterHelper.ConvertToString;
                 builder.AppendFormat(
                     CultureInfo.InvariantCulture,
                     " [green]({0})[/]",
-                    TypeConverterHelper.ConvertToString(DefaultValue.Value));
+                    IsSecret ? "******" : converter(DefaultValue.Value));
             }
 
             var markup = builder.ToString().Trim();

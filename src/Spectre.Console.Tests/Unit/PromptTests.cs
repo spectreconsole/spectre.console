@@ -200,5 +200,23 @@ namespace Spectre.Console.Tests.Unit
             result.Item1.ShouldBe(2);
             return Verifier.Verify(console.Output);
         }
+
+        [Fact]
+        [Expectation("SecretDefaultValue")]
+        public Task Should_Chose_Masked_Default_Value_If_Nothing_Is_Entered_And_Prompt_Is_Secret()
+        {
+            // Given
+            var console = new FakeConsole();
+            console.Input.PushKey(ConsoleKey.Enter);
+
+            // When
+            console.Prompt(
+                new TextPrompt<string>("Favorite fruit?")
+                    .Secret()
+                    .DefaultValue("Banana"));
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
     }
 }
