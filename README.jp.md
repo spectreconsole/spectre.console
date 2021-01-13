@@ -111,6 +111,7 @@ Spectre.Consoleでできることを見るために、
 │ Panels     │ examples/Panels/Panels.csproj         │ Demonstrates how to render items in panels.          │
 │ Rules      │ examples/Rules/Rules.csproj           │ Demonstrates how to render horizontal rules (lines). │
 │ Tables     │ examples/Tables/Tables.csproj         │ Demonstrates how to render tables in a console.      │
+│ Trees      │ examples/Trees/Trees.csproj           │ Demonstrates how to render trees in a console.       │
 ╰────────────┴───────────────────────────────────────┴──────────────────────────────────────────────────────╯
 ```
 
