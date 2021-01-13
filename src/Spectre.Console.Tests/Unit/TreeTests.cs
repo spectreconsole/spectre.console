@@ -1,65 +1,42 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Widgets/Tree")]
     public class TreeTests
     {
         [Fact]
-        public Task Should_Render_Tree_With_Single_Root_Correctly()
+        [Expectation("Render")]
+        public Task Should_Render_Tree_Correctly()
         {
             // Given
             var console = new FakeConsole(width: 80);
-            var nestedChildren =
-                Enumerable.Range(0, 10)
-                    .Select(x => new TreeNode(new Text($"multiple \n line {x}")));
+
+            var tree = new Tree(new Text("Root node")).Guide(TreeGuide.DoubleLine);
+
+            var nestedChildren = Enumerable.Range(0, 10).Select(x => new Text($"multiple\nline {x}"));
             var child2 = new TreeNode(new Text("child2"));
-            var child2Child = new TreeNode(new Text("child2Child"));
+            var child2Child = new TreeNode(new Text("child2-1"));
             child2.AddNode(child2Child);
-            child2Child.AddNode(new TreeNode(new Text("Child 2 child\n child")));
-            var child3 = new TreeNode(new Text("child3"));
-            var child3Child = new TreeNode(new Text("single leaf\n multiline"));
-            child3Child.AddNode(new TreeNode(new Calendar(2020, 01)));
-            child3.AddNode(child3Child);
-            var children = new List<TreeNode> { new(new Text("child1"), nestedChildren), child2, child3 };
-            var root = new TreeNode(new Text("Root node"), children);
-            var tree = new Tree().AddNode(root);
-
-            // When
-            console.Render(tree);
-
-            // Then
-            return Verifier.Verify(console.Output);
-        }
-
-        [Fact]
-        public Task Should_Render_Tree_With_Multiple_Roots_Correctly()
-        {
-            // Given
-            var console = new FakeConsole(width: 80);
-            var nestedChildren =
-                Enumerable.Range(0, 10)
-                    .Select(x => new TreeNode(new Text($"multiple \n line {x}")));
-            var child2 = new TreeNode(new Text("child2"));
-            var child2Child = new TreeNode(new Text("child2Child"));
-            child2.AddNode(child2Child);
-            child2Child.AddNode(new TreeNode(new Text("Child 2 child\n child")));
+            child2Child.AddNode(new TreeNode(new Text("Child2-1-1\nchild")));
             var secondRoot = new TreeNode(new Text("secondRoot"));
             secondRoot.AddNode(new TreeNode(new Text("secondRoot child")));
-
             var child3 = new TreeNode(new Text("child3"));
-            var child3Child = new TreeNode(new Text("single leaf\n multiline"));
-            child3Child.AddNode(new TreeNode(new Calendar(2020, 01)));
+            var child3Child = new TreeNode(new Text("single leaf\nmultiline"));
+            child3Child.AddNode(new TreeNode(new Calendar(2021, 01)));
             child3.AddNode(child3Child);
-            var children = new List<TreeNode> { new(new Text("child1"), nestedChildren), child2, child3 };
-            var root = new TreeNode(new Text("Root node"), children);
-            var tree = new Tree().AddNode(root).AddNode(secondRoot);
+
+            tree.AddNode("child1").AddNodes(nestedChildren);
+            tree.AddNode(child2);
+            tree.AddNode(child3);
+            tree.AddNode("child4");
 
             // When
             console.Render(tree);
@@ -69,12 +46,12 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public Task Should_Render_Tree_With_Only_Root_Node_Correctly()
+        [Expectation("Render_NoChildren")]
+        public Task Should_Render_Tree_With_No_Child_Nodes_Correctly()
         {
             // Given
             var console = new FakeConsole(width: 80);
-            var root = new TreeNode(new Text("Root node"), Enumerable.Empty<TreeNode>());
-            var tree = new Tree().AddNode(root);
+            var tree = new Tree(new Text("Root node"));
 
             // When
             console.Render(tree);
@@ -91,10 +68,14 @@ namespace Spectre.Console.Tests.Unit
 
             var child2 = new TreeNode(new Text("child 2"));
             var child3 = new TreeNode(new Text("child 3"));
-            var child1 = new TreeNode(new Text("child 1"), new[] {child2, child3});
-            var root = new TreeNode(new Text("Root node"), new[] {child1});
-            child2.Children.Add(root);
-            var tree = new Tree().AddNode(root);
+            var child1 = new TreeNode(new Text("child 1"));
+            child1.AddNodes(child2, child3);
+            var root = new TreeNode(new Text("Branch Node"));
+            root.AddNodes(child1);
+            child2.AddNode(root);
+
+            var tree = new Tree("root node");
+            tree.AddNodes(root);
 
             // When
             Should.Throw<CircularTreeException>(() => console.Render(tree));

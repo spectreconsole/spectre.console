@@ -21,12 +21,12 @@ namespace Spectre.Console.Internal
 
         public int Width
         {
-            get { return ConsoleHelper.GetSafeBufferWidth(Constants.DefaultBufferWidth); }
+            get { return ConsoleHelper.GetSafeWidth(Constants.DefaultTerminalWidth); }
         }
 
         public int Height
         {
-            get { return ConsoleHelper.GetSafeBufferHeight(Constants.DefaultBufferHeight); }
+            get { return ConsoleHelper.GetSafeHeight(Constants.DefaultTerminalHeight); }
         }
 
         public FallbackBackend(TextWriter @out, Capabilities capabilities)

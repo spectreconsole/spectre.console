@@ -48,20 +48,20 @@ namespace Spectre.Console
         {
             var maxValue = Data.Max(item => item.Value);
 
-            var table = new Grid();
-            table.Collapse();
-            table.AddColumn(new GridColumn().PadRight(2).RightAligned());
-            table.AddColumn(new GridColumn().PadLeft(0));
-            table.Width = Width;
+            var grid = new Grid();
+            grid.Collapse();
+            grid.AddColumn(new GridColumn().PadRight(2).RightAligned());
+            grid.AddColumn(new GridColumn().PadLeft(0));
+            grid.Width = Width;
 
             if (!string.IsNullOrWhiteSpace(Label))
             {
-                table.AddRow(Text.Empty, new Markup(Label).Alignment(LabelAlignment));
+                grid.AddRow(Text.Empty, new Markup(Label).Alignment(LabelAlignment));
             }
 
             foreach (var item in Data)
             {
-                table.AddRow(
+                grid.AddRow(
                     new Markup(item.Label),
                     new ProgressBar()
                     {
@@ -76,7 +76,7 @@ namespace Spectre.Console
                     });
             }
 
-            return ((IRenderable)table).Render(context, maxWidth);
+            return ((IRenderable)grid).Render(context, maxWidth);
         }
     }
 }

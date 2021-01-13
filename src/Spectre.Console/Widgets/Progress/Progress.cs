@@ -69,6 +69,18 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Starts the progress task list and returns a result.
+        /// </summary>
+        /// <typeparam name="T">The result type.</typeparam>
+        /// <param name="func">he action to execute.</param>
+        /// <returns>The result.</returns>
+        public T Start<T>(Func<ProgressContext, T> func)
+        {
+            var task = StartAsync(ctx => Task.FromResult(func(ctx)));
+            return task.GetAwaiter().GetResult();
+        }
+
+        /// <summary>
         /// Starts the progress task list.
         /// </summary>
         /// <param name="action">The action to execute.</param>
@@ -80,8 +92,30 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(action));
             }
 
+            _ = await StartAsync<object?>(async progressContext =>
+            {
+                await action(progressContext).ConfigureAwait(false);
+                return default;
+            }).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Starts the progress task list and returns a result.
+        /// </summary>
+        /// <param name="action">The action to execute.</param>
+        /// <typeparam name="T">The result type of task.</typeparam>
+        /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation.</returns>
+        public async Task<T> StartAsync<T>(Func<ProgressContext, Task<T>> action)
+        {
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
             var renderer = CreateRenderer();
             renderer.Started();
+
+            T result;
 
             try
             {
@@ -93,12 +127,12 @@ namespace Spectre.Console
                     {
                         using (var thread = new ProgressRefreshThread(context, renderer.RefreshRate))
                         {
-                            await action(context).ConfigureAwait(false);
+                            result = await action(context).ConfigureAwait(false);
                         }
                     }
                     else
                     {
-                        await action(context).ConfigureAwait(false);
+                        result = await action(context).ConfigureAwait(false);
                     }
 
                     context.Refresh();
@@ -108,6 +142,8 @@ namespace Spectre.Console
             {
                 renderer.Completed(AutoClear);
             }
+
+            return result;
         }
 
         private ProgressRenderer CreateRenderer()

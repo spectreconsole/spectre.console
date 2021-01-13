@@ -1,5 +1,5 @@
 Title: Bar Chart
-Order: 1
+Order: 20
 ---
 
 Use `BarChart` to render bar charts to the console.

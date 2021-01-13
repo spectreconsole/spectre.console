@@ -89,7 +89,14 @@ namespace Spectre.Console
         /// </summary>
         public TimeSpan? RemainingTime => GetRemainingTime();
 
-        internal ProgressTask(int id, string description, double maxValue, bool autoStart)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProgressTask"/> class.
+        /// </summary>
+        /// <param name="id">The task ID.</param>
+        /// <param name="description">The task description.</param>
+        /// <param name="maxValue">The task max value.</param>
+        /// <param name="autoStart">Whether or not the task should start automatically.</param>
+        public ProgressTask(int id, string description, double maxValue, bool autoStart = true)
         {
             _samples = new List<ProgressSample>();
             _lock = new object();

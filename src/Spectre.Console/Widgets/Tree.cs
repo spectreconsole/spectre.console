@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Spectre.Console.Internal;
@@ -12,171 +11,125 @@ namespace Spectre.Console
     /// </summary>
     public sealed class Tree : Renderable, IHasTreeNodes
     {
+        private readonly TreeNode _root;
+
         /// <summary>
         /// Gets or sets the tree style.
         /// </summary>
-        public Style Style { get; set; } = Style.Plain;
+        public Style? Style { get; set; }
 
         /// <summary>
-        ///  Gets or sets the appearance of the tree.
+        ///  Gets or sets the tree guide lines.
         /// </summary>
-        public TreeAppearance Appearance { get; set; } = TreeAppearance.Ascii;
+        public TreeGuide Guide { get; set; } = TreeGuide.Line;
 
         /// <summary>
-        /// Gets the tree nodes.
+        /// Gets the tree's child nodes.
         /// </summary>
-        public List<TreeNode> Nodes { get; }
+        public List<TreeNode> Nodes => _root.Nodes;
 
-        /// <inheritdoc/>
-        List<TreeNode> IHasTreeNodes.Children => Nodes;
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the tree is expanded or not.
+        /// </summary>
+        public bool Expanded { get; set; } = true;
 
         private HashSet<TreeNode>? _visitedNodes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Tree"/> class.
         /// </summary>
-        public Tree()
+        /// <param name="renderable">The tree label.</param>
+        public Tree(IRenderable renderable)
         {
-            Nodes = new List<TreeNode>();
+            _root = new TreeNode(renderable);
         }
 
-        /// <inheritdoc />
-        protected override Measurement Measure(RenderContext context, int maxWidth)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Tree"/> class.
+        /// </summary>
+        /// <param name="label">The tree label.</param>
+        public Tree(string label)
         {
-            Measurement MeasureAtDepth(RenderContext context, int maxWidth, TreeNode node, int depth)
-            {
-                var rootMeasurement = node.Measure(context, maxWidth);
-                var treeIndentation = depth * Appearance.PartSize;
-                var currentMax = rootMeasurement.Max + treeIndentation;
-                var currentMin = rootMeasurement.Min + treeIndentation;
-
-                foreach (var child in node.Children)
-                {
-                    var childMeasurement = MeasureAtDepth(context, maxWidth, child, depth + 1);
-                    if (childMeasurement.Min > currentMin)
-                    {
-                        currentMin = childMeasurement.Min;
-                    }
-
-                    if (childMeasurement.Max > currentMax)
-                    {
-                        currentMax = childMeasurement.Max;
-                    }
-                }
-
-                return new Measurement(currentMin, Math.Min(currentMax, maxWidth));
-            }
-
-            if (Nodes.Count == 1)
-            {
-                return MeasureAtDepth(context, maxWidth, Nodes[0], depth: 0);
-            }
-            else
-            {
-                var root = new TreeNode(Text.Empty);
-                foreach (var node in Nodes)
-                {
-                    root.AddNode(node);
-                }
-
-                return MeasureAtDepth(context, maxWidth, root, depth: 0);
-            }
+            _root = new TreeNode(new Markup(label));
         }
 
         /// <inheritdoc />
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
-            return Nodes.Count == 1 ? RenderSingleRoot(context, maxWidth) : RenderMultipleRoots(context, maxWidth);
-        }
-
-        private IEnumerable<Segment> RenderSingleRoot(RenderContext context, int maxWidth)
-        {
-            _visitedNodes = new HashSet<TreeNode>();
-
-            var singleRootResult =
-                Nodes[0]
-                    .Render(context, maxWidth)
-                    .Concat(new List<Segment> { Segment.LineBreak })
-                    .Concat(RenderChildren(context, maxWidth - Appearance.PartSize, Nodes[0], depth: 0));
-
-            _visitedNodes = null;
-            return singleRootResult;
-        }
-
-        private IEnumerable<Segment> RenderMultipleRoots(RenderContext context, int maxWidth)
-        {
-            _visitedNodes = new HashSet<TreeNode>();
-
-            var root = new TreeNode(Text.Empty);
-            foreach (var node in Nodes)
-            {
-                root.AddNode(node);
-            }
-
-            var multipleRootResult =
-                RenderChildren(
-                        context, maxWidth - Appearance.PartSize, root,
-                        depth: 0);
-
-            _visitedNodes = null;
-            return multipleRootResult;
-        }
-
-        private IEnumerable<Segment> RenderChildren(
-            RenderContext context, int maxWidth, TreeNode node,
-            int depth, int? trailingStarted = null)
-        {
             var result = new List<Segment>();
+            _visitedNodes = new HashSet<TreeNode>();
 
-            if (!_visitedNodes!.Add(node))
-            {
-                throw new CircularTreeException("Cycle detected in tree - unable to render.");
-            }
+            var stack = new Stack<Queue<TreeNode>>();
+            stack.Push(new Queue<TreeNode>(new[] { _root }));
 
-            foreach (var (_, _, lastChild, childNode) in node.Children.Enumerate())
+            var levels = new List<Segment>();
+            levels.Add(GetGuide(context, TreeGuidePart.Continue));
+
+            while (stack.Count > 0)
             {
-                var lines = Segment.SplitLines(context, childNode.Render(context, maxWidth));
-                foreach (var (_, isFirstLine, _, line) in lines.Enumerate())
+                var stackNode = stack.Pop();
+                if (stackNode.Count == 0)
                 {
-                    var siblingConnectorSegment =
-                        new Segment(Appearance.GetPart(TreePart.SiblingConnector), Style);
-                    if (trailingStarted != null)
+                    levels.RemoveLast();
+                    if (levels.Count > 0)
                     {
-                        result.AddRange(Enumerable.Repeat(siblingConnectorSegment, trailingStarted.Value));
-                        result.AddRange(Enumerable.Repeat(
-                            Segment.Padding(Appearance.PartSize),
-                            depth - trailingStarted.Value));
-                    }
-                    else
-                    {
-                        result.AddRange(Enumerable.Repeat(siblingConnectorSegment, depth));
+                        levels.AddOrReplaceLast(GetGuide(context, TreeGuidePart.Fork));
                     }
 
-                    if (isFirstLine)
+                    continue;
+                }
+
+                var isLastChild = stackNode.Count == 1;
+                var current = stackNode.Dequeue();
+                if (!_visitedNodes.Add(current))
+                {
+                    throw new CircularTreeException("Cycle detected in tree - unable to render.");
+                }
+
+                stack.Push(stackNode);
+
+                if (isLastChild)
+                {
+                    levels.AddOrReplaceLast(GetGuide(context, TreeGuidePart.End));
+                }
+
+                var prefix = levels.Skip(1).ToList();
+                var renderableLines = Segment.SplitLines(context, current.Renderable.Render(context, maxWidth - Segment.CellCount(context, prefix)));
+
+                foreach (var (_, isFirstLine, _, line) in renderableLines.Enumerate())
+                {
+                    if (prefix.Count > 0)
                     {
-                        result.Add(lastChild
-                            ? new Segment(Appearance.GetPart(TreePart.BottomChildBranch), Style)
-                            : new Segment(Appearance.GetPart(TreePart.ChildBranch), Style));
-                    }
-                    else
-                    {
-                        result.Add(lastChild ? Segment.Padding(Appearance.PartSize) : siblingConnectorSegment);
+                        result.AddRange(prefix.ToList());
                     }
 
                     result.AddRange(line);
                     result.Add(Segment.LineBreak);
+
+                    if (isFirstLine && prefix.Count > 0)
+                    {
+                        var part = isLastChild ? TreeGuidePart.Space : TreeGuidePart.Continue;
+                        prefix.AddOrReplaceLast(GetGuide(context, part));
+                    }
                 }
 
-                var childTrailingStarted = trailingStarted ?? (lastChild ? depth : null);
+                if (current.Expanded && current.Nodes.Count > 0)
+                {
+                    levels.AddOrReplaceLast(GetGuide(context, isLastChild ? TreeGuidePart.Space : TreeGuidePart.Continue));
+                    levels.Add(GetGuide(context, current.Nodes.Count == 1 ? TreeGuidePart.End : TreeGuidePart.Fork));
 
-                result.AddRange(
-                    RenderChildren(
-                        context, maxWidth - Appearance.PartSize,
-                        childNode, depth + 1,
-                        childTrailingStarted));
+                    stack.Push(new Queue<TreeNode>(current.Nodes));
+                }
             }
 
+            _visitedNodes = null;
             return result;
+        }
+
+        private Segment GetGuide(RenderContext context, TreeGuidePart part)
+        {
+            var guide = Guide.GetSafeTreeGuide(context.LegacyConsole || !context.Unicode);
+            return new Segment(guide.GetPart(part), Style ?? Style.Plain);
         }
     }
 }

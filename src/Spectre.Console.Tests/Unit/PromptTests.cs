@@ -4,13 +4,16 @@ using Spectre.Console.Testing;
 using Shouldly;
 using VerifyXunit;
 using Xunit;
+using Spectre.Verify.Extensions;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Widgets/Prompt")]
     public sealed class PromptTests
     {
         [Fact]
+        [Expectation("ConversionError")]
         public Task Should_Return_Validation_Error_If_Value_Cannot_Be_Converted()
         {
             // Given
@@ -26,6 +29,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("DefaultValue")]
         public Task Should_Chose_Default_Value_If_Nothing_Is_Entered()
         {
             // Given
@@ -44,6 +48,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("InvalidChoice")]
         public Task Should_Return_Error_If_An_Invalid_Choice_Is_Made()
         {
             // Given
@@ -63,6 +68,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("AcceptChoice")]
         public Task Should_Accept_Choice_In_List()
         {
             // Given
@@ -81,6 +87,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("AutoComplete_Empty")]
         public Task Should_Auto_Complete_To_First_Choice_If_Pressing_Tab_On_Empty_String()
         {
             // Given
@@ -100,6 +107,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("AutoComplete_BestMatch")]
         public Task Should_Auto_Complete_To_Best_Match()
         {
             // Given
@@ -120,6 +128,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("AutoComplete_NextChoice")]
         public Task Should_Auto_Complete_To_Next_Choice_When_Pressing_Tab_On_A_Match()
         {
             // Given
@@ -140,6 +149,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("CustomValidation")]
         public Task Should_Return_Error_If_Custom_Validation_Fails()
         {
             // Given
@@ -172,6 +182,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("CustomConverter")]
         public Task Should_Use_Custom_Converter()
         {
             // Given

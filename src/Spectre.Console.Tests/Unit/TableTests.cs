@@ -2,12 +2,14 @@ using System;
 using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Widgets/Table")]
     public sealed class TableTests
     {
         public sealed class TheAddColumnMethod
@@ -125,6 +127,7 @@ namespace Spectre.Console.Tests.Unit
         public sealed class TheAddEmptyRowMethod
         {
             [Fact]
+            [Expectation("AddEmptyRow")]
             public Task Should_Render_Table_Correctly()
             {
                 // Given
@@ -144,6 +147,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render")]
         public Task Should_Render_Table_Correctly()
         {
             // Given
@@ -161,6 +165,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Footers")]
         public Task Should_Render_Table_With_Footers_Correctly()
         {
             // Given
@@ -180,6 +185,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_LeftAligned")]
         public Task Should_Left_Align_Table_Correctly()
         {
             // Given
@@ -198,6 +204,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Centered")]
         public Task Should_Center_Table_Correctly()
         {
             // Given
@@ -216,6 +223,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_RightAligned")]
         public Task Should_Right_Align_Table_Correctly()
         {
             // Given
@@ -234,6 +242,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Nested")]
         public Task Should_Render_Table_Nested_In_Panels_Correctly()
         {
             // A simple table
@@ -256,6 +265,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_ColumnJustification")]
         public Task Should_Render_Table_With_Column_Justification_Correctly()
         {
             // Given
@@ -275,6 +285,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Expand")]
         public Task Should_Expand_Table_To_Available_Space_If_Specified()
         {
             // Given
@@ -292,23 +303,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public Task Should_Render_Table_With_No_Border_Correctly()
-        {
-            // Given
-            var console = new FakeConsole(width: 80);
-            var table = new Table { Border = TableBorder.None };
-            table.AddColumns("Foo", "Bar", "Baz");
-            table.AddRow("Qux", "Corgi", "Waldo");
-            table.AddRow("Grault", "Garply", "Fred");
-
-            // When
-            console.Render(table);
-
-            // Then
-            return Verifier.Verify(console.Output);
-        }
-
-        [Fact]
+        [Expectation("Render_Multiline")]
         public Task Should_Render_Table_With_Multiple_Rows_In_Cell_Correctly()
         {
             // Given
@@ -326,6 +321,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_CellPadding")]
         public Task Should_Render_Table_With_Cell_Padding_Correctly()
         {
             // Given
@@ -344,6 +340,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_NoRows")]
         public Task Should_Render_Table_Without_Rows()
         {
             // Given
@@ -360,6 +357,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Impossible")]
         public Task Should_Not_Draw_Tables_That_Are_Impossible_To_Draw()
         {
             // Given
@@ -397,6 +395,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Title_Caption")]
         public Task Should_Render_Table_With_Title_And_Caption_Correctly()
         {
             // Given
@@ -416,6 +415,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Title_Caption_LeftAligned")]
         public Task Should_Left_Align_Table_With_Title_And_Caption_Correctly()
         {
             // Given
@@ -436,6 +436,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Title_Caption_Centered")]
         public Task Should_Center_Table_With_Title_And_Caption_Correctly()
         {
             // Given
@@ -456,6 +457,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Title_Caption_RightAligned")]
         public Task Should_Right_Align_Table_With_Title_And_Caption_Correctly()
         {
             // Given

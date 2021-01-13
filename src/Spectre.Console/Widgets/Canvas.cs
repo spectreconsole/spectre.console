@@ -44,6 +44,16 @@ namespace Spectre.Console
         /// <param name="height">The canvas height.</param>
         public Canvas(int width, int height)
         {
+            if (width < 1)
+            {
+                throw new ArgumentException("Must be > 1", nameof(width));
+            }
+
+            if (height < 1)
+            {
+                throw new ArgumentException("Must be > 1", nameof(height));
+            }
+
             Width = width;
             Height = height;
 
@@ -56,9 +66,11 @@ namespace Spectre.Console
         /// <param name="x">The X coordinate for the pixel.</param>
         /// <param name="y">The Y coordinate for the pixel.</param>
         /// <param name="color">The pixel color.</param>
-        public void SetPixel(int x, int y, Color color)
+        /// <returns>The same <see cref="Canvas"/> instance so that multiple calls can be chained.</returns>
+        public Canvas SetPixel(int x, int y, Color color)
         {
             _pixels[x, y] = color;
+            return this;
         }
 
         /// <inheritdoc/>
@@ -104,6 +116,12 @@ namespace Spectre.Console
             {
                 height = (int)(height * (maxWidth / (float)(width * PixelWidth)));
                 width = maxWidth / PixelWidth;
+
+                // If it's not possible to scale the canvas sufficiently, it's too small to render.
+                if (height == 0)
+                {
+                    yield break;
+                }
             }
 
             // Need to rescale the pixel buffer?

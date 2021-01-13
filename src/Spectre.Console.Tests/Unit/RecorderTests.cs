@@ -1,14 +1,17 @@
 using System.Threading.Tasks;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Widgets/Recorder")]
     public sealed class RecorderTests
     {
         [Fact]
+        [Expectation("Text")]
         public Task Should_Export_Text_As_Expected()
         {
             // Given
@@ -28,6 +31,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Html")]
         public Task Should_Export_Html_As_Expected()
         {
             // Given

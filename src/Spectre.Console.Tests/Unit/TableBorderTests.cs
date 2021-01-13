@@ -2,12 +2,14 @@ using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Rendering;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
+    [ExpectationPath("Borders/Table")]
     public sealed class TableBorderTests
     {
         [UsesVerify]
@@ -37,6 +39,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("NoBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -78,6 +81,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("AsciiBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -119,6 +123,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("Ascii2Border")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -160,6 +165,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("AsciiDoubleHeadBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -201,6 +207,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("SquareBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -242,6 +249,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("RoundedBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -283,6 +291,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("MinimalBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -324,6 +333,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("MinimalHeavyHeadBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -365,6 +375,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("MinimalDoubleHeadBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -406,6 +417,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("SimpleBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -447,6 +459,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("HorizontalBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -488,6 +501,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("SimpleHeavyBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -529,6 +543,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("HeavyBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -570,6 +585,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("HeavyEdgeBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -611,6 +627,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("HeavyHeadBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -652,6 +669,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("DoubleBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -693,6 +711,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("DoubleEdgeBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -734,6 +753,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("MarkdownBorder")]
             public Task Should_Render_As_Expected()
             {
                 // Given
@@ -748,6 +768,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("MarkdownBorder_LeftAligned")]
             public Task Should_Render_Left_Aligned_Table_Columns_As_Expected()
             {
                 // Given
@@ -762,6 +783,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("MarkdownBorder_Centered")]
             public Task Should_Render_Center_Aligned_Table_Columns_As_Expected()
             {
                 // Given
@@ -776,6 +798,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
+            [Expectation("MarkdownBorder_RightAligned")]
             public Task Should_Render_Right_Aligned_Table_Columns_As_Expected()
             {
                 // Given

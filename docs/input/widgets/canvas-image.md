@@ -1,5 +1,5 @@
 Title: Canvas Image
-Order: 6
+Order: 70
 ---
 
 To add [ImageSharp](https://github.com/SixLabors/ImageSharp) superpowers to 

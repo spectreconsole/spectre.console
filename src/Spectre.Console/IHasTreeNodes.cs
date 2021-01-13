@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Spectre.Console
 {
@@ -8,8 +8,8 @@ namespace Spectre.Console
     public interface IHasTreeNodes
     {
         /// <summary>
-        /// Gets the children of this node.
+        /// Gets the tree's child nodes.
         /// </summary>
-        public List<TreeNode> Children { get; }
+        List<TreeNode> Nodes { get; }
     }
 }
