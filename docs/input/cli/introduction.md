@@ -58,17 +58,19 @@ in the previous step.
 ```csharp
 public class AddPackageCommand : Command<AddPackageSettings>
 {
-    public override int Execute(AddPackageSettings settings, ILookup<string, string> remaining)
+    public override int Execute(CommandContext context, AddPackageSettings settings)
     {
         // Omitted
+        return 0;
     }
 }
 
 public class AddReferenceCommand : Command<AddReferenceSettings>
 {
-    public override int Execute(AddReferenceSettings settings, ILookup<string, string> remaining)
+    public override int Execute(CommandContext context, AddReferenceSettings settings)
     {
         // Omitted
+        return 0;
     }
 }
 ```
