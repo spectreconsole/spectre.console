@@ -35,6 +35,11 @@ namespace Spectre.Console
         public int PageSize { get; set; } = 10;
 
         /// <summary>
+        /// Gets or sets the highlight color of the selected choice.
+        /// </summary>
+        public Color? HighlightColor { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SelectionPrompt{T}"/> class.
         /// </summary>
         public SelectionPrompt()
@@ -61,7 +66,7 @@ namespace Spectre.Console
 
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
 
-            var list = new RenderableSelectionList<T>(console, Title, PageSize, Choices, converter);
+            var list = new RenderableSelectionList<T>(console, Title, PageSize, Choices, converter, HighlightColor);
             using (new RenderHookScope(console, list))
             {
                 console.Cursor.Hide();
