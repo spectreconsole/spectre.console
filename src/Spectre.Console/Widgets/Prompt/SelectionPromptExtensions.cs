@@ -108,16 +108,16 @@ namespace Spectre.Console
         /// </summary>
         /// <typeparam name="T">The prompt result type.</typeparam>
         /// <param name="obj">The prompt.</param>
-        /// <param name="highlightColor">The highlight color of the selected choice.</param>
+        /// <param name="highlightStyle">The highlight style of the selected choice.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static SelectionPrompt<T> HighlightColor<T>(this SelectionPrompt<T> obj, Color highlightColor)
+        public static SelectionPrompt<T> HighlightStyle<T>(this SelectionPrompt<T> obj, Style highlightStyle)
         {
             if (obj is null)
             {
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            obj.HighlightColor = highlightColor;
+            obj.HighlightStyle = highlightStyle;
             return obj;
         }
 

@@ -36,9 +36,9 @@ namespace Spectre.Console
         public int PageSize { get; set; } = 10;
 
         /// <summary>
-        /// Gets or sets the highlight color of the selected choice.
+        /// Gets or sets the highlight style of the selected choice.
         /// </summary>
-        public Color? HighlightColor { get; set; }
+        public Style? HighlightStyle { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not
@@ -73,7 +73,7 @@ namespace Spectre.Console
 
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
 
-            var list = new RenderableMultiSelectionList<T>(console, Title, PageSize, Choices, converter, HighlightColor);
+            var list = new RenderableMultiSelectionList<T>(console, Title, PageSize, Choices, converter, HighlightStyle);
             using (new RenderHookScope(console, list))
             {
                 console.Cursor.Hide();

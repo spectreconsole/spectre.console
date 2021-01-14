@@ -12,12 +12,12 @@ namespace Spectre.Console
         private readonly string? _title;
         private readonly Style _highlightStyle;
 
-        public RenderableSelectionList(IAnsiConsole console, string? title, int requestedPageSize, List<T> choices, Func<T, string>? converter, Color? highlightColor)
+        public RenderableSelectionList(IAnsiConsole console, string? title, int requestedPageSize, List<T> choices, Func<T, string>? converter, Style? highlightStyle)
             : base(console, requestedPageSize, choices, converter)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
             _title = title;
-            _highlightStyle = new Style(foreground: highlightColor ?? Color.Blue);
+            _highlightStyle = highlightStyle ?? new Style(foreground: Color.Blue);
         }
 
         protected override int CalculatePageSize(int requestedPageSize)
