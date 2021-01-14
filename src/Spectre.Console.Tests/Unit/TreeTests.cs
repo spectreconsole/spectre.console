@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Shouldly;
 using Spectre.Console.Testing;
 using Spectre.Verify.Extensions;
 using VerifyXunit;
@@ -55,6 +56,30 @@ namespace Spectre.Console.Tests.Unit
 
             // Then
             return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        public void Should_Throw_If_Tree_Contains_Cycles()
+        {
+            // Given
+            var console = new FakeConsole(width: 80);
+
+            var child2 = new TreeNode(new Text("child 2"));
+            var child3 = new TreeNode(new Text("child 3"));
+            var child1 = new TreeNode(new Text("child 1"));
+            child1.AddNodes(child2, child3);
+            var root = new TreeNode(new Text("Branch Node"));
+            root.AddNodes(child1);
+            child2.AddNode(root);
+
+            var tree = new Tree("root node");
+            tree.AddNodes(root);
+
+            // When
+            var result = Record.Exception(() => console.Render(tree));
+
+            // Then
+            result.ShouldBeOfType<CircularTreeException>();
         }
     }
 }

@@ -6,7 +6,8 @@ using Spectre.Console.Rendering;
 namespace Spectre.Console
 {
     /// <summary>
-    /// A renderable tree.
+    /// Representation of non-circular tree data.
+    /// Each node added to the tree may only be present in it a single time, in order to facilitate cycle detection.
     /// </summary>
     public sealed class Tree : Renderable, IHasTreeNodes
     {
@@ -54,6 +55,7 @@ namespace Spectre.Console
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
             var result = new List<Segment>();
+            var visitedNodes = new HashSet<TreeNode>();
 
             var stack = new Stack<Queue<TreeNode>>();
             stack.Push(new Queue<TreeNode>(new[] { _root }));
@@ -77,6 +79,10 @@ namespace Spectre.Console
 
                 var isLastChild = stackNode.Count == 1;
                 var current = stackNode.Dequeue();
+                if (!visitedNodes.Add(current))
+                {
+                    throw new CircularTreeException("Cycle detected in tree - unable to render.");
+                }
 
                 stack.Push(stackNode);
 
