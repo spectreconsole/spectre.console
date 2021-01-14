@@ -77,7 +77,7 @@ namespace Spectre.Console.Tests.Unit
 
             // When
             var result = Record.Exception(() => console.Render(tree));
-            
+
             // Then
             result.ShouldBeOfType<CircularTreeException>();
         }
