@@ -17,12 +17,12 @@ namespace Spectre.Console
 
         public RenderableMultiSelectionList(
             IAnsiConsole console, string? title, int pageSize,
-            List<T> choices, Func<T, string>? converter)
+            List<T> choices, Func<T, string>? converter, Color? highlightColor)
             : base(console, pageSize, choices, converter)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
             _title = title;
-            _highlightStyle = new Style(foreground: Color.Blue);
+            _highlightStyle = new Style(foreground: highlightColor ?? Color.Blue);
 
             Selections = new HashSet<int>();
         }

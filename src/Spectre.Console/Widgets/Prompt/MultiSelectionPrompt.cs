@@ -36,6 +36,11 @@ namespace Spectre.Console
         public int PageSize { get; set; } = 10;
 
         /// <summary>
+        /// Gets or sets the highlight color of the selected choice.
+        /// </summary>
+        public Color? HighlightColor { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not
         /// at least one selection is required.
         /// </summary>
@@ -68,7 +73,7 @@ namespace Spectre.Console
 
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
 
-            var list = new RenderableMultiSelectionList<T>(console, Title, PageSize, Choices, converter);
+            var list = new RenderableMultiSelectionList<T>(console, Title, PageSize, Choices, converter, HighlightColor);
             using (new RenderHookScope(console, list))
             {
                 console.Cursor.Hide();
