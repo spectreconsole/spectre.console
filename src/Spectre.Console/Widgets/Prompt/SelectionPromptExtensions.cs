@@ -104,7 +104,7 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Sets the highlight color of the selected choice.
+        /// Sets the highlight style of the selected choice.
         /// </summary>
         /// <typeparam name="T">The prompt result type.</typeparam>
         /// <param name="obj">The prompt.</param>
