@@ -59,7 +59,7 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
-        public void Tree_With_Cycle_Throws()
+        public void Should_Throw_If_Tree_Contains_Cycles()
         {
             // Given
             var console = new FakeConsole(width: 80);
