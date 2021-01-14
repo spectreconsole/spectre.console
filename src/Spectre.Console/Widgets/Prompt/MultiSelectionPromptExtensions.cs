@@ -104,6 +104,24 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Sets the highlight color of the selected choice.
+        /// </summary>
+        /// <typeparam name="T">The prompt result type.</typeparam>
+        /// <param name="obj">The prompt.</param>
+        /// <param name="highlightColor">The highlight color of the selected choice.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static MultiSelectionPrompt<T> HighlightColor<T>(this MultiSelectionPrompt<T> obj, Color highlightColor)
+        {
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            obj.HighlightColor = highlightColor;
+            return obj;
+        }
+
+        /// <summary>
         /// Requires no choice to be selected.
         /// </summary>
         /// <typeparam name="T">The prompt result type.</typeparam>
