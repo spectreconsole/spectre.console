@@ -76,7 +76,10 @@ namespace Spectre.Console.Tests.Unit
             tree.AddNodes(root);
 
             // When
-            Should.Throw<CircularTreeException>(() => console.Render(tree));
+            var result = Record.Exception(() => console.Render(tree));
+            
+            // Then
+            result.ShouldBeOfType<CircularTreeException>();
         }
     }
 }
