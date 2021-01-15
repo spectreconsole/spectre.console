@@ -24,6 +24,11 @@ namespace Spectre.Console
         public List<T> Choices { get; }
 
         /// <summary>
+        /// Gets the initially selected choices.
+        /// </summary>
+        public HashSet<int> Selected { get; }
+
+        /// <summary>
         /// Gets or sets the converter to get the display string for a choice. By default
         /// the corresponding <see cref="TypeConverter"/> is used.
         /// </summary>
@@ -52,6 +57,7 @@ namespace Spectre.Console
         public MultiSelectionPrompt()
         {
             Choices = new List<T>();
+            Selected = new HashSet<int>();
         }
 
         /// <inheritdoc/>
@@ -73,7 +79,7 @@ namespace Spectre.Console
 
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
 
-            var list = new RenderableMultiSelectionList<T>(console, Title, PageSize, Choices, converter, HighlightStyle);
+            var list = new RenderableMultiSelectionList<T>(console, Title, PageSize, Choices, Selected, converter, HighlightStyle);
             using (new RenderHookScope(console, list))
             {
                 console.Cursor.Hide();
