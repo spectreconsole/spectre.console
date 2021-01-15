@@ -17,14 +17,15 @@ namespace Spectre.Console
 
         public RenderableMultiSelectionList(
             IAnsiConsole console, string? title, int pageSize,
-            List<T> choices, Func<T, string>? converter, Style? highlightStyle)
+            List<T> choices, HashSet<int> selections,
+            Func<T, string>? converter, Style? highlightStyle)
             : base(console, pageSize, choices, converter)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
             _title = title;
             _highlightStyle = highlightStyle ?? new Style(foreground: Color.Blue);
 
-            Selections = new HashSet<int>();
+            Selections = new HashSet<int>(selections);
         }
 
         public void Select()
@@ -52,7 +53,8 @@ namespace Spectre.Console
             return pageSize;
         }
 
-        protected override IRenderable Build(int pointerIndex, bool scrollable, IEnumerable<(int Original, int Index, string Item)> choices)
+        protected override IRenderable Build(int pointerIndex, bool scrollable,
+            IEnumerable<(int Original, int Index, string Item)> choices)
         {
             var list = new List<IRenderable>();
 
