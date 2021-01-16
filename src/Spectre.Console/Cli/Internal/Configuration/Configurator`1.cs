@@ -1,7 +1,7 @@
 using System;
 using Spectre.Console.Cli.Unsafe;
 
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConfigurator<TSettings>
         where TSettings : CommandSettings

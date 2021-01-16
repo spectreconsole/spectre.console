@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Spectre.Console.Cli.Internal;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console.Cli
@@ -74,11 +73,11 @@ namespace Spectre.Console.Cli
                 if (!_executed)
                 {
                     // Add built-in (hidden) commands.
-                    _configurator.AddBranch(Constants.Commands.Branch, cli =>
+                    _configurator.AddBranch(CliConstants.Commands.Branch, cli =>
                     {
                         cli.HideBranch();
-                        cli.AddCommand<VersionCommand>(Constants.Commands.Version);
-                        cli.AddCommand<XmlDocCommand>(Constants.Commands.XmlDoc);
+                        cli.AddCommand<VersionCommand>(CliConstants.Commands.Version);
+                        cli.AddCommand<XmlDocCommand>(CliConstants.Commands.XmlDoc);
                     });
 
                     _executed = true;

@@ -1,5 +1,4 @@
 using System.Globalization;
-using Spectre.Console.Cli.Internal;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console.Cli

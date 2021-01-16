@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     internal sealed class CommandValueLookup : IEnumerable<(CommandParameter Parameter, object? Value)>
     {

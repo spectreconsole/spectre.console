@@ -1,5 +1,4 @@
 using System;
-using Spectre.Console.Cli.Internal;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console.Cli
@@ -33,7 +32,7 @@ namespace Spectre.Console.Cli
 
         internal static CommandRuntimeException MissingRequiredArgument(CommandTree node, CommandArgument argument)
         {
-            if (node.Command.Name == Constants.DefaultCommandName)
+            if (node.Command.Name == CliConstants.DefaultCommandName)
             {
                 return new CommandRuntimeException($"Missing required argument '{argument.Value}'.");
             }

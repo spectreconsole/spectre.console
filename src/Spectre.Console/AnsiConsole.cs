@@ -1,5 +1,4 @@
 using System;
-using Spectre.Console.Internal;
 
 namespace Spectre.Console
 {
@@ -16,6 +15,7 @@ namespace Spectre.Console
                 ColorSystem = ColorSystemSupport.Detect,
                 Out = System.Console.Out,
             });
+
             Created = true;
             return console;
         });
@@ -33,25 +33,9 @@ namespace Spectre.Console
         public static IAnsiConsoleCursor Cursor => _recorder?.Cursor ?? _console.Value.Cursor;
 
         /// <summary>
-        /// Gets the console's capabilities.
+        /// Gets the console profile.
         /// </summary>
-        public static Capabilities Capabilities => Console.Capabilities;
-
-        /// <summary>
-        /// Gets the buffer width of the console.
-        /// </summary>
-        public static int Width
-        {
-            get => Console.Width;
-        }
-
-        /// <summary>
-        /// Gets the buffer height of the console.
-        /// </summary>
-        public static int Height
-        {
-            get => Console.Height;
-        }
+        public static Profile Profile => Console.Profile;
 
         /// <summary>
         /// Creates a new <see cref="IAnsiConsole"/> instance
@@ -61,7 +45,8 @@ namespace Spectre.Console
         /// <returns>An <see cref="IAnsiConsole"/> instance.</returns>
         public static IAnsiConsole Create(AnsiConsoleSettings settings)
         {
-            return BackendBuilder.Build(settings);
+            var factory = new AnsiConsoleFactory();
+            return factory.Create(settings);
         }
     }
 }

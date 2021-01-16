@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 
 namespace Spectre.Console
@@ -19,19 +20,25 @@ namespace Spectre.Console
         public ColorSystemSupport ColorSystem { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or
-        /// not the console is interactive.
+        /// Gets or sets the out buffer.
+        /// </summary>
+        public TextWriter? Out { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the
+        /// terminal is interactive or not.
         /// </summary>
         public InteractionSupport Interactive { get; set; }
 
         /// <summary>
-        /// Gets or sets the link identity generator.
+        /// Gets or sets the environment variables.
+        /// If not value is provided the default environment variables will be used.
         /// </summary>
-        public ILinkIdentityGenerator? LinkIdentityGenerator { get; set; }
+        public Dictionary<string, string>? EnvironmentVariables { get; set; }
 
         /// <summary>
-        /// Gets or sets the out buffer.
+        /// Gets or sets the profile enrichers to use.
         /// </summary>
-        public TextWriter? Out { get; set; }
+        public List<IProfileEnricher>? Enrichers { get; set; }
     }
 }

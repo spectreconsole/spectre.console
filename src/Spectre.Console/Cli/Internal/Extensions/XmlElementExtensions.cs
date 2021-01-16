@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     internal static class XmlElementExtensions
     {

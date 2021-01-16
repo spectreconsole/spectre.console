@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal static class DictionaryExtensions
     {

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Spectre.Console.Internal;
 
 namespace Spectre.Console.Rendering
 {

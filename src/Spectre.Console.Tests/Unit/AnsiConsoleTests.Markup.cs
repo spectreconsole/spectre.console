@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Shouldly;
 using Spectre.Console.Testing;
 using Xunit;
@@ -8,14 +7,11 @@ namespace Spectre.Console.Tests.Unit
 {
     public partial class AnsiConsoleTests
     {
-        [SuppressMessage("Naming", "CA1724:Type names should not match namespaces")]
         public sealed class Markup
         {
             [Theory]
             [InlineData("[yellow]Hello[/]", "[93mHello[0m")]
             [InlineData("[yellow]Hello [italic]World[/]![/]", "[93mHello [0m[3;93mWorld[0m[93m![0m")]
-            [InlineData("[link=https://patriksvensson.se]Click to visit my blog[/]", "]8;id=1024;https://patriksvensson.se\\Click to visit my blog]8;;\\")]
-            [InlineData("[link]https://patriksvensson.se[/]", "]8;id=1024;https://patriksvensson.se\\https://patriksvensson.se]8;;\\")]
             public void Should_Output_Expected_Ansi_For_Markup(string markup, string expected)
             {
                 // Given
@@ -26,6 +22,32 @@ namespace Spectre.Console.Tests.Unit
 
                 // Then
                 console.Output.ShouldBe(expected);
+            }
+
+            [Fact]
+            public void Should_Output_Expected_Ansi_For_Link_With_Url_And_Text()
+            {
+                // Given
+                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+
+                // When
+                console.Markup("[link=https://patriksvensson.se]Click to visit my blog[/]");
+
+                // Then
+                console.Output.ShouldMatch("]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\\\\Click to visit my blog]8;;\\\\");
+            }
+
+            [Fact]
+            public void Should_Output_Expected_Ansi_For_Link_With_Only_Url()
+            {
+                // Given
+                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+
+                // When
+                console.Markup("[link]https://patriksvensson.se[/]");
+
+                // Then
+                console.Output.ShouldMatch("]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\\\\https:\\/\\/patriksvensson\\.se]8;;\\\\");
             }
 
             [Theory]

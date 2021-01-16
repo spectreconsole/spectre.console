@@ -1,13 +1,11 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     internal sealed class TextBuffer : IDisposable
     {
         // There is some kind of bug
-        [SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "VS bug")]
         private readonly StringReader _reader;
 
         public bool ReachedEnd => _reader.Peek() == -1;

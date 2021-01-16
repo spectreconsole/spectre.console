@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal static class Ratio
     {

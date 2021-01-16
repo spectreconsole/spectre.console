@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Spectre.Console.Rendering;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal abstract class ProgressRenderer : IRenderHook
     {

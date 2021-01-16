@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -10,29 +9,19 @@ namespace Spectre.Console
     /// <summary>
     /// A console recorder used to record output from a console.
     /// </summary>
-    [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly")]
     public class Recorder : IAnsiConsole, IDisposable
     {
         private readonly IAnsiConsole _console;
         private readonly List<Segment> _recorded;
 
         /// <inheritdoc/>
-        public Capabilities Capabilities => _console.Capabilities;
-
-        /// <inheritdoc/>
-        public Encoding Encoding => _console.Encoding;
+        public Profile Profile => _console.Profile;
 
         /// <inheritdoc/>
         public IAnsiConsoleCursor Cursor => _console.Cursor;
 
         /// <inheritdoc/>
         public IAnsiConsoleInput Input => _console.Input;
-
-        /// <inheritdoc/>
-        public int Width => _console.Width;
-
-        /// <inheritdoc/>
-        public int Height => _console.Height;
 
         /// <inheritdoc/>
         public RenderPipeline Pipeline => _console.Pipeline;

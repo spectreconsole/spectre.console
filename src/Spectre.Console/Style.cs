@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using Spectre.Console.Internal;
 
 namespace Spectre.Console
 {
@@ -146,7 +144,6 @@ namespace Spectre.Console
         /// Implicitly converts <see cref="string"/> into a <see cref="Style"/>.
         /// </summary>
         /// <param name="style">The style string.</param>
-        [SuppressMessage("Usage", "CA2225:Operator overloads have named alternates")]
         public static implicit operator Style(string style)
         {
             return Parse(style);

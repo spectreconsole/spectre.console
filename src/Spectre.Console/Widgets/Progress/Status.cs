@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Spectre.Console.Internal;
 
 namespace Spectre.Console
 {
@@ -107,7 +106,7 @@ namespace Spectre.Console
 
             var progress = new Progress(_console)
             {
-                FallbackRenderer = new StatusFallbackRenderer(),
+                FallbackRenderer = new FallbackStatusRenderer(),
                 AutoClear = true,
                 AutoRefresh = AutoRefresh,
             };

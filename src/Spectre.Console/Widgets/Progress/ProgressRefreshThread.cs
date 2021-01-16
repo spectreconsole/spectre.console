@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal sealed class ProgressRefreshThread : IDisposable
     {

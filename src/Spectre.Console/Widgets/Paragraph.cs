@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console

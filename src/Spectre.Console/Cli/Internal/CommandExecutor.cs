@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     internal sealed class CommandExecutor
     {

@@ -1,11 +1,9 @@
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal static class TextWriterExtensions
     {
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types")]
         public static bool IsStandardOut(this TextWriter writer)
         {
             try

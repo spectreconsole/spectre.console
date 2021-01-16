@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal static class TypeConverterHelper
     {
@@ -12,7 +12,6 @@ namespace Spectre.Console.Internal
             return GetTypeConverter<T>().ConvertToInvariantString(input);
         }
 
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types")]
         public static bool TryConvertFromString<T>(string input, [MaybeNull] out T result)
         {
             try

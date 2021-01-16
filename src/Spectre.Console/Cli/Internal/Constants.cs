@@ -1,6 +1,6 @@
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
-    internal static class Constants
+    internal static class CliConstants
     {
         public const string DefaultCommandName = "__default_command";
         public const string True = "true";

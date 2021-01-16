@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -148,8 +147,8 @@ namespace Spectre.Console
 
         private ProgressRenderer CreateRenderer()
         {
-            var caps = _console.Capabilities;
-            var interactive = caps.SupportsInteraction && caps.SupportsAnsi;
+            var caps = _console.Profile.Capabilities;
+            var interactive = caps.Interactive && caps.Ansi;
 
             if (interactive)
             {

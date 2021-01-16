@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     [Description("Displays the CLI library version")]
     [SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes")]

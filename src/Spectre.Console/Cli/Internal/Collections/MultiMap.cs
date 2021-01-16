@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     [SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes")]
     internal sealed class MultiMap<TKey, TValue> : IMultiMap, ILookup<TKey, TValue>, IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>

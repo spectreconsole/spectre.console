@@ -1,6 +1,6 @@
 using System;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal readonly struct ProgressSample
     {

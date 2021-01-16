@@ -9,13 +9,9 @@ namespace Spectre.Console.Testing
 {
     public sealed class FakeConsole : IAnsiConsole, IDisposable
     {
-        public Capabilities Capabilities { get; }
-        public Encoding Encoding { get; }
+        public Profile Profile { get; }
         public IAnsiConsoleCursor Cursor => new FakeAnsiConsoleCursor();
         public FakeConsoleInput Input { get; }
-
-        public int Width { get; }
-        public int Height { get; }
 
         IAnsiConsoleInput IAnsiConsole.Input => Input;
         public RenderPipeline Pipeline { get; }
@@ -34,13 +30,18 @@ namespace Spectre.Console.Testing
             bool supportsAnsi = true, ColorSystem colorSystem = ColorSystem.Standard,
             bool legacyConsole = false, bool interactive = true)
         {
-            Capabilities = new Capabilities(supportsAnsi, colorSystem, legacyConsole, interactive);
-            Encoding = encoding ?? Encoding.UTF8;
-            Width = width;
-            Height = height;
             Writer = new StringWriter();
             Input = new FakeConsoleInput();
             Pipeline = new RenderPipeline();
+
+            Profile = new Profile("Fake console", Writer, encoding ?? Encoding.UTF8);
+            Profile.Width = width;
+            Profile.Height = height;
+            Profile.ColorSystem = colorSystem;
+            Profile.Capabilities.Ansi = supportsAnsi;
+            Profile.Capabilities.Legacy = legacyConsole;
+            Profile.Capabilities.Interactive = interactive;
+            Profile.Capabilities.Links = true;
         }
 
         public void Dispose()

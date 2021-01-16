@@ -1,5 +1,4 @@
 using System;
-using Spectre.Console.Cli.Internal;
 
 namespace Spectre.Console.Cli
 {

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console.Testing
@@ -13,10 +12,7 @@ namespace Spectre.Console.Testing
 
         public string Output => _writer.ToString();
 
-        public Capabilities Capabilities => _console.Capabilities;
-        public Encoding Encoding => _console.Encoding;
-        public int Width { get; }
-        public int Height => _console.Height;
+        public Profile Profile => _console.Profile;
         public IAnsiConsoleCursor Cursor => _console.Cursor;
         public FakeConsoleInput Input { get; }
         public RenderPipeline Pipeline => _console.Pipeline;
@@ -24,21 +20,22 @@ namespace Spectre.Console.Testing
         IAnsiConsoleInput IAnsiConsole.Input => Input;
 
         public FakeAnsiConsole(
-            ColorSystem system, AnsiSupport ansi = AnsiSupport.Yes,
-            InteractionSupport interaction = InteractionSupport.Yes,
+            ColorSystem system,
+            AnsiSupport ansi = AnsiSupport.Yes,
             int width = 80)
         {
             _writer = new StringWriter();
-            _console = AnsiConsole.Create(new AnsiConsoleSettings
+
+            var factory = AnsiConsoleFactory.NoEnrichers();
+            _console = factory.Create(new AnsiConsoleSettings
             {
                 Ansi = ansi,
                 ColorSystem = (ColorSystemSupport)system,
-                Interactive = interaction,
                 Out = _writer,
-                LinkIdentityGenerator = new FakeLinkIdentityGenerator(1024),
             });
 
-            Width = width;
+            _console.Profile.Width = width;
+
             Input = new FakeConsoleInput();
         }
 

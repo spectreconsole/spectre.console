@@ -1,4 +1,4 @@
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     /// <summary>
     /// Representation of a multi map.

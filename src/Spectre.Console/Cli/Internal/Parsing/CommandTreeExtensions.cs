@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     internal static class CommandTreeExtensions
     {

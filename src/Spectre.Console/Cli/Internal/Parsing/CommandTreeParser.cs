@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     internal class CommandTreeParser
     {
@@ -317,7 +317,7 @@ namespace Spectre.Console.Cli.Internal
                         {
                             if (parameter.ParameterKind == ParameterKind.Flag)
                             {
-                                if (!Constants.AcceptedBooleanValues.Contains(valueToken.Value, StringComparer.OrdinalIgnoreCase))
+                                if (!CliConstants.AcceptedBooleanValues.Contains(valueToken.Value, StringComparer.OrdinalIgnoreCase))
                                 {
                                     // Flags cannot be assigned a value.
                                     throw CommandParseException.CannotAssignValueToFlag(context.Arguments, token);

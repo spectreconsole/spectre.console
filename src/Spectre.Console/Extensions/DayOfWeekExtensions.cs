@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal static class DayOfWeekExtensions
     {

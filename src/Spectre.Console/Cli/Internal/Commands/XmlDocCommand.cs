@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     [Description("Generates an XML representation of the CLI configuration.")]
     [SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes")]
