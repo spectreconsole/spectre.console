@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Spectre.Console
 {
@@ -10,7 +9,6 @@ namespace Spectre.Console
     /// Support for text decorations is up to the terminal.
     /// </remarks>
     [Flags]
-    [SuppressMessage("Naming", "CA1714:Flags enums should have plural names")]
     public enum Decoration
     {
         /// <summary>

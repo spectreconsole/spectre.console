@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal static class ResourceReader
     {

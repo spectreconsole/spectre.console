@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal struct FileSize
     {
@@ -31,7 +31,7 @@ namespace Spectre.Console.Internal
 
             var bytes = Bytes / @base;
 
-            return Unit == FileSizeUnit.Bytes
+            return Unit == FileSizeUnit.Byte
                 ? ((int)bytes).ToString(culture ?? CultureInfo.InvariantCulture)
                 : bytes.ToString("F1", culture ?? CultureInfo.InvariantCulture);
         }
@@ -78,7 +78,7 @@ namespace Spectre.Console.Internal
                 }
             }
 
-            return FileSizeUnit.Bytes;
+            return FileSizeUnit.Byte;
         }
 
         private static double GetBase(FileSizeUnit unit)

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     /// <summary>
     /// Represents a configuration.

@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal static class DecorationTable
     {
         private static readonly Dictionary<string, Decoration?> _lookup;
         private static readonly Dictionary<Decoration, string> _reverseLookup;
 
-        [SuppressMessage("Performance", "CA1810:Initialize reference type static fields inline")]
         static DecorationTable()
         {
             _lookup = new Dictionary<string, Decoration?>(StringComparer.OrdinalIgnoreCase)

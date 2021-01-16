@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal static class ColorSystemDetector
     {

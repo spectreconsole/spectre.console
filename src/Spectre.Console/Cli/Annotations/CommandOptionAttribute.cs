@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Spectre.Console.Cli.Internal;
 
 namespace Spectre.Console.Cli
 {

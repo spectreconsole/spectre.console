@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     internal sealed class StringWriterWithEncoding : StringWriter
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     internal sealed class DelegateCommand : ICommand
     {

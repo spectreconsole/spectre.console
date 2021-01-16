@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -63,14 +62,14 @@ namespace Spectre.Console
         /// <inheritdoc/>
         public List<T> Show(IAnsiConsole console)
         {
-            if (!console.Capabilities.SupportsInteraction)
+            if (!console.Profile.Capabilities.Interactive)
             {
                 throw new NotSupportedException(
                     "Cannot show multi selection prompt since the current " +
                     "terminal isn't interactive.");
             }
 
-            if (!console.Capabilities.SupportsAnsi)
+            if (!console.Profile.Capabilities.Ansi)
             {
                 throw new NotSupportedException(
                     "Cannot show multi selection prompt since the current " +

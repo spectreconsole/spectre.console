@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Text;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal static class StringBuilderExtensions
     {

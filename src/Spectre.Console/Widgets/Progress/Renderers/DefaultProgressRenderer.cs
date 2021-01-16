@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Spectre.Console.Rendering;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal sealed class DefaultProgressRenderer : ProgressRenderer
     {
@@ -60,7 +60,7 @@ namespace Spectre.Console.Internal
                     _stopwatch.Start();
                 }
 
-                var renderContext = new RenderContext(_console.Encoding, _console.Capabilities.LegacyConsole);
+                var renderContext = new RenderContext(_console.Profile.Encoding, _console.Profile.Capabilities.Legacy);
 
                 var delta = _stopwatch.Elapsed - _lastUpdate;
                 _lastUpdate = _stopwatch.Elapsed;

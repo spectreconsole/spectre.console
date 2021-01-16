@@ -1,3 +1,5 @@
+using System;
+
 namespace Spectre.Console
 {
     /// <summary>
@@ -5,14 +7,16 @@ namespace Spectre.Console
     /// </summary>
     public sealed class Capabilities
     {
-        /// <summary>
-        /// Gets a value indicating whether or not
-        /// the console supports Ansi.
-        /// </summary>
-        public bool SupportsAnsi { get; }
+        private readonly Profile _profile;
 
         /// <summary>
-        /// Gets a value indicating whether or not
+        /// Gets or sets a value indicating whether or not
+        /// the console supports Ansi.
+        /// </summary>
+        public bool Ansi { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not
         /// the console support links.
         /// </summary>
         /// <remarks>
@@ -20,69 +24,48 @@ namespace Spectre.Console
         /// once we have more information about the terminal
         /// we're running inside.
         /// </remarks>
-        public bool SupportLinks => SupportsAnsi && !LegacyConsole;
+        public bool Links { get; set; }
 
         /// <summary>
-        /// Gets the color system.
-        /// </summary>
-        public ColorSystem ColorSystem { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether or not
-        /// this is a legacy console (cmd.exe).
+        /// Gets or sets a value indicating whether or not
+        /// this is a legacy console (cmd.exe) on an OS
+        /// prior to Windows 10.
         /// </summary>
         /// <remarks>
         /// Only relevant when running on Microsoft Windows.
         /// </remarks>
-        public bool LegacyConsole { get; }
+        public bool Legacy { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the console supports interaction.
+        /// Gets a value indicating whether console output
+        /// has been redirected.
         /// </summary>
-        public bool SupportsInteraction { get; set; }
+        public bool Tty
+        {
+            get
+            {
+                if (_profile.Out.IsStandardOut())
+                {
+                    return System.Console.IsOutputRedirected;
+                }
+
+                // Not stdout, so must be a TTY.
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether
+        /// or not the console supports interaction.
+        /// </summary>
+        public bool Interactive { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Capabilities"/> class.
         /// </summary>
-        /// <param name="supportsAnsi">Whether or not ANSI escape sequences are supported.</param>
-        /// <param name="colorSystem">The color system that is supported.</param>
-        /// <param name="legacyConsole">Whether or not this is a legacy console.</param>
-        /// <param name="supportsInteraction">Whether or not the console supports interaction.</param>
-        public Capabilities(bool supportsAnsi, ColorSystem colorSystem, bool legacyConsole, bool supportsInteraction)
+        internal Capabilities(Profile profile)
         {
-            SupportsAnsi = supportsAnsi;
-            ColorSystem = colorSystem;
-            LegacyConsole = legacyConsole;
-            SupportsInteraction = supportsInteraction;
-        }
-
-        /// <summary>
-        /// Checks whether the current capabilities supports
-        /// the specified color system.
-        /// </summary>
-        /// <param name="colorSystem">The color system to check.</param>
-        /// <returns><c>true</c> if the color system is supported, otherwise <c>false</c>.</returns>
-        public bool Supports(ColorSystem colorSystem)
-        {
-            return (int)colorSystem <= (int)ColorSystem;
-        }
-
-        /// <inheritdoc/>
-        public override string ToString()
-        {
-            var supportsAnsi = SupportsAnsi ? "Yes" : "No";
-            var legacyConsole = LegacyConsole ? "Legacy" : "Modern";
-            var bits = ColorSystem switch
-            {
-                ColorSystem.NoColors => "1 bit",
-                ColorSystem.Legacy => "3 bits",
-                ColorSystem.Standard => "4 bits",
-                ColorSystem.EightBit => "8 bits",
-                ColorSystem.TrueColor => "24 bits",
-                _ => "?",
-            };
-
-            return $"ANSI={supportsAnsi}, Colors={ColorSystem}, Kind={legacyConsole} ({bits})";
+            _profile = profile ?? throw new ArgumentNullException(nameof(profile));
         }
     }
 }

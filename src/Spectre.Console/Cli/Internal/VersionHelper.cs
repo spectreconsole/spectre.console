@@ -1,12 +1,10 @@
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     internal static class VersionHelper
     {
-        [SuppressMessage("Design", "CA1031:Do not catch general exception types")]
         public static string GetVersion(Assembly? assembly)
         {
             if (assembly == null)

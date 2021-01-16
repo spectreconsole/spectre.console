@@ -1,4 +1,4 @@
-namespace Spectre.Console.Cli.Internal
+namespace Spectre.Console.Cli
 {
     // Consider removing this in favor for value tuples at some point.
     internal sealed class CommandTreeParserResult

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Text;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -10,14 +9,9 @@ namespace Spectre.Console
     public interface IAnsiConsole
     {
         /// <summary>
-        /// Gets the console's capabilities.
+        /// Gets the console profile.
         /// </summary>
-        Capabilities Capabilities { get; }
-
-        /// <summary>
-        /// Gets the console output encoding.
-        /// </summary>
-        Encoding Encoding { get; }
+        Profile Profile { get; }
 
         /// <summary>
         /// Gets the console cursor.
@@ -33,16 +27,6 @@ namespace Spectre.Console
         /// Gets the render pipeline.
         /// </summary>
         RenderPipeline Pipeline { get; }
-
-        /// <summary>
-        /// Gets the buffer width of the console.
-        /// </summary>
-        int Width { get; }
-
-        /// <summary>
-        /// Gets the buffer height of the console.
-        /// </summary>
-        int Height { get; }
 
         /// <summary>
         /// Clears the console.

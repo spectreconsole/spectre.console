@@ -1,6 +1,5 @@
 using System;
 using System.Globalization;
-using Spectre.Console.Internal;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console

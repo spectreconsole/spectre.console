@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal static partial class ColorTable
     {
         private static readonly Dictionary<int, string> _nameLookup;
         private static readonly Dictionary<string, int> _numberLookup;
 
-        [SuppressMessage("Performance", "CA1810:Initialize reference type static fields inline")]
         static ColorTable()
         {
             _numberLookup = GenerateTable();

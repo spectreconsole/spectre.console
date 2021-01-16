@@ -23,9 +23,9 @@ namespace Spectre.Console
         protected override int CalculatePageSize(int requestedPageSize)
         {
             var pageSize = requestedPageSize;
-            if (pageSize > _console.Height - 4)
+            if (pageSize > _console.Profile.Height - 4)
             {
-                pageSize = _console.Height - 4;
+                pageSize = _console.Profile.Height - 4;
             }
 
             return pageSize;

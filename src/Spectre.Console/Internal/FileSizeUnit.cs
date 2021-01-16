@@ -1,10 +1,8 @@
-using System;
-
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal enum FileSizeUnit
     {
-        Bytes = 0,
+        Byte = 0,
         KiloByte = 1,
         MegaByte = 2,
         GigaByte = 3,

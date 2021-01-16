@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Spectre.Console.Internal
+namespace Spectre.Console
 {
     internal static class EnumerableExtensions
     {

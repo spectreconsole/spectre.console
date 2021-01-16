@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Spectre.Console.Cli
 {
@@ -7,7 +6,6 @@ namespace Spectre.Console.Cli
     /// Represents case sensitivity.
     /// </summary>
     [Flags]
-    [SuppressMessage("Naming", "CA1714:Flags enums should have plural names")]
     public enum CaseSensitivity
     {
         /// <summary>

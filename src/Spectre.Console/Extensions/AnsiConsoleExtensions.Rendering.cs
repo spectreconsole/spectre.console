@@ -26,7 +26,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(renderable));
             }
 
-            var context = new RenderContext(console.Encoding, console.Capabilities.LegacyConsole);
+            var context = new RenderContext(console.Profile.Encoding, console.Profile.Capabilities.Legacy);
             var renderables = console.Pipeline.Process(context, new[] { renderable });
 
             Render(console, context, renderables);
@@ -37,7 +37,7 @@ namespace Spectre.Console
             var result = new List<Segment>();
             foreach (var renderable in renderables)
             {
-                result.AddRange(renderable.Render(options, console.Width));
+                result.AddRange(renderable.Render(options, console.Profile.Width));
             }
 
             console.Write(Segment.Merge(result));
