@@ -22,7 +22,6 @@ namespace Spectre.Console
             profile.Capabilities.Legacy = false;
             profile.Capabilities.Interactive = false;
             profile.Capabilities.Links = false;
-            profile.Width = 120;
         }
     }
 }
