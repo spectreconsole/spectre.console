@@ -26,6 +26,23 @@ namespace Spectre.Console.Cli
         }
 
         /// <summary>
+        /// Overrides the auto-detected version of the application.
+        /// </summary>
+        /// <param name="configurator">The configurator.</param>
+        /// <param name="version">The version of application.</param>
+        /// <returns>A configurator that can be used to configure the application further.</returns>
+        public static IConfigurator SetApplicationVersion(this IConfigurator configurator, string version)
+        {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
+            configurator.Settings.ApplicationVersion = version;
+            return configurator;
+        }
+
+        /// <summary>
         /// Configures the console.
         /// </summary>
         /// <param name="configurator">The configurator.</param>

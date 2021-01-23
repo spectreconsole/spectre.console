@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Spectre.Console.Cli
@@ -16,7 +15,7 @@ namespace Spectre.Console.Cli
             _registrar.Register(typeof(DefaultPairDeconstructor), typeof(DefaultPairDeconstructor));
         }
 
-        public Task<int> Execute(IConfiguration configuration, IEnumerable<string> args)
+        public Task<int> Execute(IConfiguration configuration, IReadOnlyCollection<string> args)
         {
             if (configuration == null)
             {
@@ -44,7 +43,7 @@ namespace Spectre.Console.Cli
                         firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase))
                     {
                         var console = configuration.Settings.Console.GetConsole();
-                        console.WriteLine(VersionHelper.GetVersion(Assembly.GetEntryAssembly()));
+                        console.WriteLine(ResolveApplicationVersion(configuration));
                         return Task.FromResult(0);
                     }
                 }
@@ -82,6 +81,10 @@ namespace Spectre.Console.Cli
             // Execute the command tree.
             return Execute(leaf, parsedResult.Tree, context, resolver, configuration);
         }
+
+        private static string ResolveApplicationVersion(IConfiguration configuration) =>
+            configuration.Settings.ApplicationVersion ?? // potential override
+            VersionHelper.GetApplicationVersion();
 
         private static Task<int> Execute(
             CommandTree leaf,

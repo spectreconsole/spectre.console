@@ -11,6 +11,7 @@ namespace Demo
             app.Configure(config =>
             {
                 config.SetApplicationName("fake-dotnet");
+                // config.SetApplicationVersion("1.3.3.7-ultra!");
                 config.ValidateExamples();
                 config.AddExample(new[] { "run", "--no-build" });
 

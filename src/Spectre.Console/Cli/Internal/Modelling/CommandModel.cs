@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
@@ -26,9 +27,16 @@ namespace Spectre.Console.Cli
             Examples = new List<string[]>(examples ?? Array.Empty<string[]>());
         }
 
-        public string GetApplicationName()
-        {
-            return ApplicationName ?? Path.GetFileName(Assembly.GetEntryAssembly()?.Location) ?? "?";
-        }
+        public string GetApplicationName() =>
+            ApplicationName ??
+            Path.GetFileName(GetApplicationFile()) ?? // it is actually null safe
+            "?";
+
+        private static string? GetApplicationFile() =>
+            Assembly.GetEntryAssembly()?.Location switch // location can be empty string or null
+            {
+                var location when !string.IsNullOrWhiteSpace(location) => location,
+                _ => Process.GetCurrentProcess().MainModule?.FileName,
+            };
     }
 }

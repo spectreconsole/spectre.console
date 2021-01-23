@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Spectre.Console.Rendering;
 
@@ -84,7 +85,7 @@ namespace Spectre.Console.Cli
                 }
 
                 return await _executor
-                    .Execute(_configurator, args)
+                    .Execute(_configurator, args.ToArray())
                     .ConfigureAwait(false);
             }
             catch (Exception ex)

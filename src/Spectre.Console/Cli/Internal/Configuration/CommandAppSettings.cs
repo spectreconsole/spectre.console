@@ -5,6 +5,7 @@ namespace Spectre.Console.Cli
     internal sealed class CommandAppSettings : ICommandAppSettings
     {
         public string? ApplicationName { get; set; }
+        public string? ApplicationVersion { get; set; }
         public IAnsiConsole? Console { get; set; }
         public ICommandInterceptor? Interceptor { get; set; }
         public ITypeRegistrarFrontend Registrar { get; set; }

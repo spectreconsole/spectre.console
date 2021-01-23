@@ -5,22 +5,20 @@ namespace Spectre.Console.Cli
 {
     internal static class VersionHelper
     {
-        public static string GetVersion(Assembly? assembly)
-        {
-            if (assembly == null)
-            {
-                return "?";
-            }
+        private static string? TryGetAssemblyVersion(Assembly? assembly) =>
+            assembly?
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+                .InformationalVersion;
 
-            try
-            {
-                var info = FileVersionInfo.GetVersionInfo(assembly.Location);
-                return info.ProductVersion ?? assembly?.GetName()?.Version?.ToString() ?? "?";
-            }
-            catch
-            {
-                return "?";
-            }
-        }
+        private static FileVersionInfo? TryGetMainModuleVersionInfo() =>
+            Process.GetCurrentProcess().MainModule?.FileVersionInfo;
+
+        public static string GetVersion(Assembly? assembly) =>
+            TryGetAssemblyVersion(assembly) ?? "?";
+
+        public static string GetApplicationVersion() =>
+            TryGetAssemblyVersion(Assembly.GetEntryAssembly()) ??
+            TryGetMainModuleVersionInfo()?.ProductVersion ??
+            "?";
     }
 }
