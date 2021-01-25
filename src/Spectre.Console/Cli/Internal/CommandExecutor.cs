@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Spectre.Console.Cli
@@ -82,9 +83,12 @@ namespace Spectre.Console.Cli
             return Execute(leaf, parsedResult.Tree, context, resolver, configuration);
         }
 
-        private static string ResolveApplicationVersion(IConfiguration configuration) =>
-            configuration.Settings.ApplicationVersion ?? // potential override
-            VersionHelper.GetApplicationVersion();
+        private static string ResolveApplicationVersion(IConfiguration configuration)
+        {
+            return
+                configuration.Settings.ApplicationVersion ?? // potential override
+                VersionHelper.GetVersion(Assembly.GetEntryAssembly());
+        }
 
         private static Task<int> Execute(
             CommandTree leaf,

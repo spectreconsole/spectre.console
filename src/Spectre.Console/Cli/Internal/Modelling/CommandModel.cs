@@ -27,16 +27,25 @@ namespace Spectre.Console.Cli
             Examples = new List<string[]>(examples ?? Array.Empty<string[]>());
         }
 
-        public string GetApplicationName() =>
-            ApplicationName ??
-            Path.GetFileName(GetApplicationFile()) ?? // it is actually null safe
-            "?";
+        public string GetApplicationName()
+        {
+            return
+                ApplicationName ??
+                Path.GetFileName(GetApplicationFile()) ?? // null is propagated by GetFileName
+                "?";
+        }
 
-        private static string? GetApplicationFile() =>
-            Assembly.GetEntryAssembly()?.Location switch // location can be empty string or null
+        private static string? GetApplicationFile()
+        {
+            var location = Assembly.GetEntryAssembly()?.Location;
+            if (string.IsNullOrWhiteSpace(location))
             {
-                var location when !string.IsNullOrWhiteSpace(location) => location,
-                _ => Process.GetCurrentProcess().MainModule?.FileName,
-            };
+                // this is special case for single file executable
+                // (Assembly.Location returns empty string)
+                return Process.GetCurrentProcess().MainModule?.FileName;
+            }
+
+            return location;
+        }
     }
 }
