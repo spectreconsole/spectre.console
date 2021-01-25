@@ -44,7 +44,7 @@ namespace Spectre.Console.Cli
                         firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase))
                     {
                         var console = configuration.Settings.Console.GetConsole();
-                        console.WriteLine(VersionHelper.GetVersion(Assembly.GetEntryAssembly()));
+                        console.WriteLine(ResolveApplicationVersion(configuration));
                         return Task.FromResult(0);
                     }
                 }
@@ -81,6 +81,13 @@ namespace Spectre.Console.Cli
 
             // Execute the command tree.
             return Execute(leaf, parsedResult.Tree, context, resolver, configuration);
+        }
+
+        private static string ResolveApplicationVersion(IConfiguration configuration)
+        {
+            return
+                configuration.Settings.ApplicationVersion ?? // potential override
+                VersionHelper.GetVersion(Assembly.GetEntryAssembly());
         }
 
         private static Task<int> Execute(

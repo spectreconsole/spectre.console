@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Reflection;
 
 namespace Spectre.Console.Cli
@@ -7,20 +6,9 @@ namespace Spectre.Console.Cli
     {
         public static string GetVersion(Assembly? assembly)
         {
-            if (assembly == null)
-            {
-                return "?";
-            }
-
-            try
-            {
-                var info = FileVersionInfo.GetVersionInfo(assembly.Location);
-                return info.ProductVersion ?? assembly?.GetName()?.Version?.ToString() ?? "?";
-            }
-            catch
-            {
-                return "?";
-            }
+            return assembly?
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+                .InformationalVersion ?? "?";
         }
     }
 }

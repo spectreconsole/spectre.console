@@ -11,6 +11,11 @@ namespace Spectre.Console.Cli
         string? ApplicationName { get; set; }
 
         /// <summary>
+        /// Gets or sets the application version (use it to override auto-detected value).
+        /// </summary>
+        string? ApplicationVersion { get; set; }
+
+        /// <summary>
         /// Gets or sets the <see cref="IAnsiConsole"/>.
         /// </summary>
         IAnsiConsole? Console { get; set; }

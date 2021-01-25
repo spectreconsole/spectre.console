@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
@@ -28,7 +29,23 @@ namespace Spectre.Console.Cli
 
         public string GetApplicationName()
         {
-            return ApplicationName ?? Path.GetFileName(Assembly.GetEntryAssembly()?.Location) ?? "?";
+            return
+                ApplicationName ??
+                Path.GetFileName(GetApplicationFile()) ?? // null is propagated by GetFileName
+                "?";
+        }
+
+        private static string? GetApplicationFile()
+        {
+            var location = Assembly.GetEntryAssembly()?.Location;
+            if (string.IsNullOrWhiteSpace(location))
+            {
+                // this is special case for single file executable
+                // (Assembly.Location returns empty string)
+                return Process.GetCurrentProcess().MainModule?.FileName;
+            }
+
+            return location;
         }
     }
 }
