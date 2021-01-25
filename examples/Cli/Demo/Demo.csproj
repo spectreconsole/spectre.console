@@ -8,7 +8,6 @@
     <ExampleDescription>Demonstrates the most common use cases of Spectre.Cli.</ExampleDescription>
     <ExampleGroup>Cli</ExampleGroup>
     <ExampleVisible>false</ExampleVisible>
-    <Version>1.2.3.4-beta.5</Version>
   </PropertyGroup>
 
   <ItemGroup>

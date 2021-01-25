@@ -85,7 +85,7 @@ namespace Spectre.Console.Cli
                 }
 
                 return await _executor
-                    .Execute(_configurator, args.ToArray())
+                    .Execute(_configurator, args)
                     .ConfigureAwait(false);
             }
             catch (Exception ex)

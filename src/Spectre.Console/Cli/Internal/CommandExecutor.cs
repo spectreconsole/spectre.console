@@ -16,7 +16,7 @@ namespace Spectre.Console.Cli
             _registrar.Register(typeof(DefaultPairDeconstructor), typeof(DefaultPairDeconstructor));
         }
 
-        public Task<int> Execute(IConfiguration configuration, IReadOnlyCollection<string> args)
+        public Task<int> Execute(IConfiguration configuration, IEnumerable<string> args)
         {
             if (configuration == null)
             {
