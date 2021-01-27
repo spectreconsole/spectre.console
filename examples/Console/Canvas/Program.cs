@@ -26,7 +26,7 @@ namespace CanvasExample
             image.Mutate(ctx => ctx.Grayscale().Rotate(-45).EntropyCrop());
             Render(image, "Image from file (fit, greyscale, rotated)");
 
-            //Draw image again, but load from embedded resource rather than file
+            // Draw image again, but load from embedded resource rather than file
             using (var fileStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Canvas.cake.png"))
             {
                 Debug.Assert(fileStream != null);

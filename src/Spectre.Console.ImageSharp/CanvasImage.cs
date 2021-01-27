@@ -55,7 +55,7 @@ namespace Spectre.Console
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasImage"/> class.
         /// </summary>
-        /// <param name="data">Buffer containing an image</param>
+        /// <param name="data">Buffer containing an image.</param>
         public CanvasImage(ReadOnlySpan<byte> data)
         {
             Image = SixLabors.ImageSharp.Image.Load<Rgba32>(data);
@@ -64,7 +64,7 @@ namespace Spectre.Console
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasImage"/> class.
         /// </summary>
-        /// <param name="data">Stream containing an image</param>
+        /// <param name="data">Stream containing an image.</param>
         public CanvasImage(Stream data)
         {
             Image = SixLabors.ImageSharp.Image.Load<Rgba32>(data);
