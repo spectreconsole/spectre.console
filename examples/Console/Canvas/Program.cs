@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Reflection;
 using SixLabors.ImageSharp.Processing;
 using Spectre.Console;
 using Spectre.Console.Rendering;
@@ -23,6 +25,16 @@ namespace CanvasExample
             image.NoMaxWidth();
             image.Mutate(ctx => ctx.Grayscale().Rotate(-45).EntropyCrop());
             Render(image, "Image from file (fit, greyscale, rotated)");
+
+            // Draw image again, but load from embedded resource rather than file
+            using (var fileStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Canvas.cake.png"))
+            {
+                Debug.Assert(fileStream != null);
+                var embeddedImage = new CanvasImage(fileStream);
+                embeddedImage.BilinearResampler();
+                embeddedImage.MaxWidth(16);
+                Render(embeddedImage, "Image from embedded resource (16 wide)");
+            }
         }
 
         private static void Render(IRenderable canvas, string title)
