@@ -14,9 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="cake.png">
+    <EmbeddedResource Include="cake.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

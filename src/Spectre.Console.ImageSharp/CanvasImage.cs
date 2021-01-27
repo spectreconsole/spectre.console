@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Processing.Processors.Transforms;
@@ -49,6 +50,24 @@ namespace Spectre.Console
         public CanvasImage(string filename)
         {
             Image = SixLabors.ImageSharp.Image.Load<Rgba32>(filename);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasImage"/> class.
+        /// </summary>
+        /// <param name="data">Buffer containing an image</param>
+        public CanvasImage(ReadOnlySpan<byte> data)
+        {
+            Image = SixLabors.ImageSharp.Image.Load<Rgba32>(data);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CanvasImage"/> class.
+        /// </summary>
+        /// <param name="data">Stream containing an image</param>
+        public CanvasImage(Stream data)
+        {
+            Image = SixLabors.ImageSharp.Image.Load<Rgba32>(data);
         }
 
         /// <inheritdoc/>
