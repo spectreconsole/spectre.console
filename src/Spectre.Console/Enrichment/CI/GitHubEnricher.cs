@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace Spectre.Console
+namespace Spectre.Console.Enrichment
 {
-    internal sealed class GitHubProfile : IProfileEnricher
+    internal sealed class GitHubEnricher : IProfileEnricher
     {
+        public string Name => "GitHub";
+
         public bool Enabled(IDictionary<string, string> environmentVariables)
         {
             if (environmentVariables.TryGetValue("GITHUB_ACTIONS", out var value))
@@ -17,7 +19,6 @@ namespace Spectre.Console
 
         public void Enrich(Profile profile)
         {
-            profile.Name = "GitHub Actions";
             profile.Capabilities.Ansi = true;
             profile.Capabilities.Legacy = false;
             profile.Capabilities.Interactive = false;

@@ -8,6 +8,11 @@ namespace Spectre.Console
     public interface IProfileEnricher
     {
         /// <summary>
+        /// Gets the name of the enricher.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
         /// Gets whether or not this enricher is enabled.
         /// </summary>
         /// <param name="environmentVariables">The environment variables.</param>

@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace Spectre.Console
+namespace Spectre.Console.Enrichment
 {
-    internal sealed class JenkinsProfile : IProfileEnricher
+    internal sealed class JenkinsEnricher : IProfileEnricher
     {
+        public string Name => "Jenkins";
+
         public bool Enabled(IDictionary<string, string> environmentVariables)
         {
             return environmentVariables.ContainsKey("JENKINS_URL");
@@ -11,7 +13,6 @@ namespace Spectre.Console
 
         public void Enrich(Profile profile)
         {
-            profile.Name = "Jenkins";
             profile.Capabilities.Interactive = false;
         }
     }

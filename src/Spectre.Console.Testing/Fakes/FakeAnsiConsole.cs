@@ -26,12 +26,16 @@ namespace Spectre.Console.Testing
         {
             _writer = new StringWriter();
 
-            var factory = AnsiConsoleFactory.NoEnrichers();
+            var factory = new AnsiConsoleFactory();
             _console = factory.Create(new AnsiConsoleSettings
             {
                 Ansi = ansi,
                 ColorSystem = (ColorSystemSupport)system,
                 Out = _writer,
+                Enrichment = new ProfileEnrichment
+                {
+                    UseDefaultEnrichers = false,
+                },
             });
 
             _console.Profile.Width = width;

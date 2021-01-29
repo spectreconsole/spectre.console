@@ -11,18 +11,11 @@ namespace Spectre.Console.Testing
     {
         public Profile Profile { get; }
         public IAnsiConsoleCursor Cursor => new FakeAnsiConsoleCursor();
-        public FakeConsoleInput Input { get; }
-
         IAnsiConsoleInput IAnsiConsole.Input => Input;
         public RenderPipeline Pipeline { get; }
 
-        public Decoration Decoration { get; set; }
-        public Color Foreground { get; set; }
-        public Color Background { get; set; }
-        public string Link { get; set; }
-
-        public StringWriter Writer { get; }
-        public string Output => Writer.ToString();
+        public FakeConsoleInput Input { get; }
+        public string Output => Profile.Out.ToString();
         public IReadOnlyList<string> Lines => Output.TrimEnd('\n').Split(new char[] { '\n' });
 
         public FakeConsole(
@@ -30,11 +23,10 @@ namespace Spectre.Console.Testing
             bool supportsAnsi = true, ColorSystem colorSystem = ColorSystem.Standard,
             bool legacyConsole = false, bool interactive = true)
         {
-            Writer = new StringWriter();
             Input = new FakeConsoleInput();
             Pipeline = new RenderPipeline();
 
-            Profile = new Profile("Fake console", Writer, encoding ?? Encoding.UTF8);
+            Profile = new Profile(new StringWriter(), encoding ?? Encoding.UTF8);
             Profile.Width = width;
             Profile.Height = height;
             Profile.ColorSystem = colorSystem;
@@ -46,7 +38,7 @@ namespace Spectre.Console.Testing
 
         public void Dispose()
         {
-            Writer.Dispose();
+            Profile.Out.Dispose();
         }
 
         public void Clear(bool home)
@@ -62,7 +54,7 @@ namespace Spectre.Console.Testing
 
             foreach (var segment in segments)
             {
-                Writer.Write(segment.Text);
+                Profile.Out.Write(segment.Text);
             }
         }
 

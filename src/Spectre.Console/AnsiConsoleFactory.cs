@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Spectre.Console.Enrichment;
 
 namespace Spectre.Console
 {
@@ -11,49 +10,6 @@ namespace Spectre.Console
     /// </summary>
     public sealed class AnsiConsoleFactory
     {
-        private readonly List<IProfileEnricher> _enrichers;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AnsiConsoleFactory"/> class.
-        /// </summary>
-        public AnsiConsoleFactory()
-        {
-            _enrichers = new List<IProfileEnricher>
-            {
-                new AppVeyorProfile(),
-                new BambooProfile(),
-                new BitbucketProfile(),
-                new BitriseProfile(),
-                new ContinuaCIProfile(),
-                new GitHubProfile(),
-                new GitLabProfile(),
-                new GoCDProfile(),
-                new JenkinsProfile(),
-                new MyGetProfile(),
-                new TeamCityProfile(),
-                new TfsProfile(),
-                new TravisProfile(),
-            };
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AnsiConsoleFactory"/> class.
-        /// </summary>
-        /// <param name="enrichers">The profile enrichers to use.</param>
-        public AnsiConsoleFactory(IEnumerable<IProfileEnricher> enrichers)
-        {
-            _enrichers = new List<IProfileEnricher>(enrichers ?? Enumerable.Empty<IProfileEnricher>());
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="AnsiConsoleFactory"/> without default profile enrichers.
-        /// </summary>
-        /// <returns>A new <see cref="AnsiConsoleFactory"/> without default profile enrichers.</returns>
-        public static AnsiConsoleFactory NoEnrichers()
-        {
-            return new AnsiConsoleFactory(Enumerable.Empty<IProfileEnricher>());
-        }
-
         /// <summary>
         /// Creates an ANSI console.
         /// </summary>
@@ -86,7 +42,7 @@ namespace Spectre.Console
                 interactive = Environment.UserInteractive;
             }
 
-            var profile = new Profile("Default", buffer, encoding)
+            var profile = new Profile(buffer, encoding)
             {
                 ColorSystem = colorSystem,
             };
@@ -97,41 +53,12 @@ namespace Spectre.Console
             profile.Capabilities.Interactive = interactive;
 
             // Enrich the profile
-            var variables = GetEnvironmentVariables(settings);
-            var customEnrichers = settings.Enrichers ?? Enumerable.Empty<IProfileEnricher>();
-            foreach (var enricher in _enrichers.Concat(customEnrichers))
-            {
-                if (enricher.Enabled(variables))
-                {
-                    enricher.Enrich(profile);
-                }
-            }
+            ProfileEnricher.Enrich(
+                profile,
+                settings.Enrichment,
+                settings.EnvironmentVariables);
 
             return new AnsiConsoleFacade(profile);
-        }
-
-        private static IDictionary<string, string> GetEnvironmentVariables(AnsiConsoleSettings settings)
-        {
-            if (settings.EnvironmentVariables != null)
-            {
-                return new Dictionary<string, string>(settings.EnvironmentVariables, StringComparer.OrdinalIgnoreCase);
-            }
-
-            return Environment.GetEnvironmentVariables()
-                .Cast<System.Collections.DictionaryEntry>()
-                .Aggregate(
-                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase),
-                    (dictionary, entry) =>
-                    {
-                        var key = (string)entry.Key;
-                        if (!dictionary.TryGetValue(key, out _))
-                        {
-                            dictionary.Add(key, entry.Value as string ?? string.Empty);
-                        }
-
-                        return dictionary;
-                    },
-                    dictionary => dictionary);
         }
 
         private static (bool Ansi, bool Legacy) DetectAnsi(AnsiConsoleSettings settings, System.IO.TextWriter buffer)

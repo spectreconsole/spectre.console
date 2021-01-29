@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -9,7 +10,9 @@ namespace Spectre.Console
     /// </summary>
     public sealed class Profile
     {
-        private string _name;
+        private readonly HashSet<string> _enrichers;
+        private static readonly string[] _defaultEnricher = new[] { "Default" };
+
         private TextWriter _out;
         private Encoding _encoding;
         private Capabilities _capabilities;
@@ -17,19 +20,18 @@ namespace Spectre.Console
         private int? _height;
 
         /// <summary>
-        /// Gets or sets the profile name.
+        /// Gets the enrichers used to build this profile.
         /// </summary>
-        public string Name
+        public IReadOnlyCollection<string> Enrichers
         {
-            get => _name;
-            set
+            get
             {
-                if (value == null)
+                if (_enrichers.Count > 0)
                 {
-                    throw new InvalidOperationException("Profile name cannot be null");
+                    return _enrichers;
                 }
 
-                _name = value;
+                return _defaultEnricher;
             }
         }
 
@@ -139,12 +141,11 @@ namespace Spectre.Console
         /// <summary>
         /// Initializes a new instance of the <see cref="Profile"/> class.
         /// </summary>
-        /// <param name="name">The profile name.</param>
         /// <param name="out">The output buffer.</param>
         /// <param name="encoding">The output encoding.</param>
-        public Profile(string name, TextWriter @out, Encoding encoding)
+        public Profile(TextWriter @out, Encoding encoding)
         {
-            _name = name ?? throw new ArgumentNullException(nameof(name));
+            _enrichers = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             _out = @out ?? throw new ArgumentNullException(nameof(@out));
             _encoding = encoding ?? throw new ArgumentNullException(nameof(encoding));
             _capabilities = new Capabilities(this);
@@ -159,6 +160,16 @@ namespace Spectre.Console
         public bool Supports(ColorSystem colorSystem)
         {
             return (int)colorSystem <= (int)ColorSystem;
+        }
+
+        internal void AddEnricher(string name)
+        {
+            if (name is null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            _enrichers.Add(name);
         }
 
         private int GetWidth()
