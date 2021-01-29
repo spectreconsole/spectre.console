@@ -9,7 +9,7 @@ namespace InfoExample
             var grid = new Grid()
                 .AddColumn(new GridColumn().NoWrap().PadRight(4))
                 .AddColumn()
-                .AddRow("[b]Profile[/]", $"{AnsiConsole.Console.Profile.Name}")
+                .AddRow("[b]Enrichers[/]", string.Join(", ", AnsiConsole.Profile.Enrichers))
                 .AddRow("[b]Color system[/]", $"{AnsiConsole.Profile.ColorSystem}")
                 .AddRow("[b]Supports ansi?[/]", $"{YesNo(AnsiConsole.Profile.Capabilities.Ansi)}")
                 .AddRow("[b]Supports links?[/]", $"{YesNo(AnsiConsole.Profile.Capabilities.Links)}")

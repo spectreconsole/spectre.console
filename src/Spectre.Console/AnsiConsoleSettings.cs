@@ -31,14 +31,22 @@ namespace Spectre.Console
         public InteractionSupport Interactive { get; set; }
 
         /// <summary>
+        /// Gets or sets the profile enrichments settings.
+        /// </summary>
+        public ProfileEnrichment Enrichment { get; set; }
+
+        /// <summary>
         /// Gets or sets the environment variables.
         /// If not value is provided the default environment variables will be used.
         /// </summary>
         public Dictionary<string, string>? EnvironmentVariables { get; set; }
 
         /// <summary>
-        /// Gets or sets the profile enrichers to use.
+        /// Initializes a new instance of the <see cref="AnsiConsoleSettings"/> class.
         /// </summary>
-        public List<IProfileEnricher>? Enrichers { get; set; }
+        public AnsiConsoleSettings()
+        {
+            Enrichment = new ProfileEnrichment();
+        }
     }
 }

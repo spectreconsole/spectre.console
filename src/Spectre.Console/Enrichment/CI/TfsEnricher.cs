@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace Spectre.Console
+namespace Spectre.Console.Enrichment
 {
-    internal sealed class BambooProfile : IProfileEnricher
+    internal sealed class TfsEnricher : IProfileEnricher
     {
+        public string Name => "TFS";
+
         public bool Enabled(IDictionary<string, string> environmentVariables)
         {
-            return environmentVariables.ContainsKey("bamboo_buildNumber");
+            return environmentVariables.ContainsKey("TF_BUILD");
         }
 
         public void Enrich(Profile profile)
         {
-            profile.Name = "Bamboo";
             profile.Capabilities.Interactive = false;
         }
     }

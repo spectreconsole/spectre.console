@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace Spectre.Console
+namespace Spectre.Console.Enrichment
 {
-    internal sealed class BitbucketProfile : IProfileEnricher
+    internal sealed class BitbucketEnricher : IProfileEnricher
     {
+        public string Name => "Bitbucket";
+
         public bool Enabled(IDictionary<string, string> environmentVariables)
         {
             return environmentVariables.ContainsKey("BITBUCKET_REPO_OWNER") ||
@@ -13,7 +15,6 @@ namespace Spectre.Console
 
         public void Enrich(Profile profile)
         {
-            profile.Name = "BitBucket";
             profile.Capabilities.Interactive = false;
         }
     }

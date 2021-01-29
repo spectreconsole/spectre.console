@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace Spectre.Console
+namespace Spectre.Console.Enrichment
 {
-    internal sealed class GitLabProfile : IProfileEnricher
+    internal sealed class GitLabEnricher : IProfileEnricher
     {
+        public string Name => "GitLab";
+
         public bool Enabled(IDictionary<string, string> environmentVariables)
         {
             if (environmentVariables.TryGetValue("CI_SERVER", out var value))
@@ -17,7 +19,6 @@ namespace Spectre.Console
 
         public void Enrich(Profile profile)
         {
-            profile.Name = "GitLab";
             profile.Capabilities.Interactive = false;
         }
     }
