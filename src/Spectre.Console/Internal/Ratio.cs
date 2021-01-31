@@ -40,7 +40,7 @@ namespace Spectre.Console
             return result;
         }
 
-        public static List<int> Distribute(int total, List<int> ratios, List<int>? minimums = null)
+        public static List<int> Distribute(int total, IList<int> ratios, IList<int>? minimums = null)
         {
             if (minimums != null)
             {
