@@ -44,7 +44,7 @@ namespace Spectre.Console
             return Cell.GetCellLength(context, text);
         }
 
-        internal static string Capitalize(this string? text, CultureInfo? culture = null)
+        internal static string CapitalizeFirstLetter(this string? text, CultureInfo? culture = null)
         {
             if (text == null)
             {

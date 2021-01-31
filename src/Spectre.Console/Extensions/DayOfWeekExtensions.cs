@@ -10,7 +10,7 @@ namespace Spectre.Console
             culture ??= CultureInfo.InvariantCulture;
             return culture.DateTimeFormat
                 .GetAbbreviatedDayName(day)
-                .Capitalize(culture);
+                .CapitalizeFirstLetter(culture);
         }
 
         public static DayOfWeek GetNextWeekDay(this DayOfWeek day)

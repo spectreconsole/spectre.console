@@ -1,0 +1,186 @@
+using System.Threading.Tasks;
+using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
+using VerifyXunit;
+using Xunit;
+
+namespace Spectre.Console.Tests.Unit
+{
+    [UsesVerify]
+    [ExpectationPath("Widgets/BreakdownChart")]
+    public sealed class BreakdownChartTests
+    {
+        [Fact]
+        [Expectation("Default")]
+        public async Task Should_Render_Correctly()
+        {
+            // Given
+            var console = new FakeConsole(width: 80);
+
+            // When
+            console.Render(new BreakdownChart()
+                .AddItem("SCSS", 37, Color.Red)
+                .AddItem("HTML", 28.3, Color.Blue)
+                .AddItem("C#", 22.6, Color.Green)
+                .AddItem("JavaScript", 6, Color.Yellow)
+                .AddItem("Ruby", 6, Color.LightGreen)
+                .AddItem("Shell", 0.1, Color.Aqua));
+
+            // Then
+            await Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("Width")]
+        public async Task Should_Render_With_Specific_Width()
+        {
+            // Given
+            var console = new FakeConsole(width: 80);
+
+            // When
+            console.Render(new BreakdownChart()
+                .Width(60)
+                .AddItem("SCSS", 37, Color.Red)
+                .AddItem("HTML", 28.3, Color.Blue)
+                .AddItem("C#", 22.6, Color.Green)
+                .AddItem("JavaScript", 6, Color.Yellow)
+                .AddItem("Ruby", 6, Color.LightGreen)
+                .AddItem("Shell", 0.1, Color.Aqua));
+
+            // Then
+            await Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("ShowAsPercentages")]
+        public async Task Should_Render_Correctly_With_Specific_Width()
+        {
+            // Given
+            var console = new FakeConsole(width: 80);
+
+            // When
+            console.Render(new BreakdownChart()
+                .Width(60)
+                .ShowAsPercentages()
+                .AddItem("SCSS", 37, Color.Red)
+                .AddItem("HTML", 28.3, Color.Blue)
+                .AddItem("C#", 22.6, Color.Green)
+                .AddItem("JavaScript", 6, Color.Yellow)
+                .AddItem("Ruby", 6, Color.LightGreen)
+                .AddItem("Shell", 0.1, Color.Aqua));
+
+            // Then
+            await Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("HideTags")]
+        public async Task Should_Render_Correctly_Without_Tags()
+        {
+            // Given
+            var console = new FakeConsole(width: 80);
+
+            // When
+            console.Render(new BreakdownChart()
+                .Width(60)
+                .HideTags()
+                .AddItem("SCSS", 37, Color.Red)
+                .AddItem("HTML", 28.3, Color.Blue)
+                .AddItem("C#", 22.6, Color.Green)
+                .AddItem("JavaScript", 6, Color.Yellow)
+                .AddItem("Ruby", 6, Color.LightGreen)
+                .AddItem("Shell", 0.1, Color.Aqua));
+
+            // Then
+            await Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("HideTagValues")]
+        public async Task Should_Render_Correctly_Without_Tag_Values()
+        {
+            // Given
+            var console = new FakeConsole(width: 80);
+
+            // When
+            console.Render(new BreakdownChart()
+                .Width(60)
+                .HideTagValues()
+                .AddItem("SCSS", 37, Color.Red)
+                .AddItem("HTML", 28.3, Color.Blue)
+                .AddItem("C#", 22.6, Color.Green)
+                .AddItem("JavaScript", 6, Color.Yellow)
+                .AddItem("Ruby", 6, Color.LightGreen)
+                .AddItem("Shell", 0.1, Color.Aqua));
+
+            // Then
+            await Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("Culture")]
+        public async Task Should_Render_Correctly_With_Specific_Culture()
+        {
+            // Given
+            var console = new FakeConsole(width: 80);
+
+            // When
+            console.Render(new BreakdownChart()
+                .Width(60)
+                .Culture("sv-SE")
+                .AddItem("SCSS", 37, Color.Red)
+                .AddItem("HTML", 28.3, Color.Blue)
+                .AddItem("C#", 22.6, Color.Green)
+                .AddItem("JavaScript", 6, Color.Yellow)
+                .AddItem("Ruby", 6, Color.LightGreen)
+                .AddItem("Shell", 0.1, Color.Aqua));
+
+            // Then
+            await Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("FullSize")]
+        public async Task Should_Render_FullSize_Mode_Correctly()
+        {
+            // Given
+            var console = new FakeConsole(width: 80);
+
+            // When
+            console.Render(new BreakdownChart()
+                .Width(60)
+                .FullSize()
+                .AddItem("SCSS", 37, Color.Red)
+                .AddItem("HTML", 28.3, Color.Blue)
+                .AddItem("C#", 22.6, Color.Green)
+                .AddItem("JavaScript", 6, Color.Yellow)
+                .AddItem("Ruby", 6, Color.LightGreen)
+                .AddItem("Shell", 0.1, Color.Aqua));
+
+            // Then
+            await Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("Ansi")]
+        public async Task Should_Render_Correct_Ansi()
+        {
+            // Given
+            var console = new FakeAnsiConsole(ColorSystem.EightBit, width: 80);
+
+            // When
+            console.Render(new BreakdownChart()
+                .Width(60)
+                .FullSize()
+                .AddItem("SCSS", 37, Color.Red)
+                .AddItem("HTML", 28.3, Color.Blue)
+                .AddItem("C#", 22.6, Color.Green)
+                .AddItem("JavaScript", 6, Color.Yellow)
+                .AddItem("Ruby", 6, Color.LightGreen)
+                .AddItem("Shell", 0.1, Color.Aqua));
+
+            // Then
+            await Verifier.Verify(console.Output);
+        }
+    }
+}

@@ -163,7 +163,7 @@ namespace Spectre.Console
                 return Array.Empty<Segment>();
             }
 
-            var paragraph = new Markup(header.Text.Capitalize(), header.Style ?? defaultStyle)
+            var paragraph = new Markup(header.Text.CapitalizeFirstLetter(), header.Style ?? defaultStyle)
                 .Alignment(Justify.Center)
                 .Overflow(Overflow.Ellipsis);
 

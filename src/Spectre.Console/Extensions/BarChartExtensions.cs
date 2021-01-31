@@ -6,7 +6,7 @@ namespace Spectre.Console
     /// <summary>
     /// Contains extension methods for <see cref="BarChart"/>.
     /// </summary>
-    public static class BarGraphExtensions
+    public static class BarChartExtensions
     {
         /// <summary>
         /// Adds an item to the bar chart.
@@ -42,10 +42,18 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(chart));
             }
 
-            chart.Data.Add(new BarChartItem(
-                    item.Label,
-                    item.Value,
-                    item.Color));
+            if (item is BarChartItem barChartItem)
+            {
+                chart.Data.Add(barChartItem);
+            }
+            else
+            {
+                chart.Data.Add(
+                    new BarChartItem(
+                        item.Label,
+                        item.Value,
+                        item.Color));
+            }
 
             return chart;
         }

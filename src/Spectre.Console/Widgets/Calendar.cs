@@ -22,7 +22,7 @@ namespace Spectre.Console
         private TableBorder _border;
         private bool _useSafeBorder;
         private Style? _borderStyle;
-        private CultureInfo _culture;
+        private CultureInfo? _culture;
         private Style _highlightStyle;
         private bool _showHeader;
         private Style? _headerStyle;
@@ -79,7 +79,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the calendar's <see cref="CultureInfo"/>.
         /// </summary>
-        public CultureInfo Culture
+        public CultureInfo? Culture
         {
             get => _culture;
             set => MarkAsDirty(() => _culture = value);

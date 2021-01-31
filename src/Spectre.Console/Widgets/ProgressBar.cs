@@ -5,7 +5,7 @@ using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
-    internal sealed class ProgressBar : Renderable
+    internal sealed class ProgressBar : Renderable, IHasCulture
     {
         public double Value { get; set; }
         public double MaxValue { get; set; } = 100;
@@ -15,6 +15,7 @@ namespace Spectre.Console
         public char UnicodeBar { get; set; } = '━';
         public char AsciiBar { get; set; } = '-';
         public bool ShowValue { get; set; }
+        public CultureInfo? Culture { get; set; }
 
         public Style CompletedStyle { get; set; } = new Style(foreground: Color.Yellow);
         public Style FinishedStyle { get; set; } = new Style(foreground: Color.Green);
@@ -36,17 +37,26 @@ namespace Spectre.Console
 
             var bars = Math.Max(0, (int)(width * (completed / MaxValue)));
 
-            var value = completed.ToString(CultureInfo.InvariantCulture);
+            var value = completed.ToString(Culture ?? CultureInfo.InvariantCulture);
             if (ShowValue)
             {
                 bars = bars - value.Length - 1;
+                bars = Math.Max(0, bars);
             }
 
             yield return new Segment(new string(token, bars), style);
 
             if (ShowValue)
             {
-                yield return new Segment(" " + value, style);
+                // TODO: Fix this at some point
+                if (bars == 0)
+                {
+                    yield return new Segment(value, style);
+                }
+                else
+                {
+                    yield return new Segment(" " + value, style);
+                }
             }
 
             if (bars < width)

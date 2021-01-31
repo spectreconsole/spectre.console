@@ -10,6 +10,6 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the culture.
         /// </summary>
-        CultureInfo Culture { get; set; }
+        CultureInfo? Culture { get; set; }
     }
 }
