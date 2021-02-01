@@ -21,12 +21,6 @@ namespace Spectre.Console
         public int? Width { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not
-        /// to show values as percentages or not.
-        /// </summary>
-        public bool ShowAsPercentages { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether or not to show tags.
         /// </summary>
         public bool ShowTags { get; set; } = true;
@@ -35,6 +29,11 @@ namespace Spectre.Console
         /// Gets or sets a value indicating whether or not to show tag values.
         /// </summary>
         public bool ShowTagValues { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the tag value format.
+        /// </summary>
+        public string? TagValueFormat { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the
@@ -91,8 +90,8 @@ namespace Spectre.Console
                 {
                     Width = width,
                     Culture = Culture,
-                    ShowPercentages = ShowAsPercentages,
                     ShowTagValues = ShowTagValues,
+                    TagValueFormat = TagValueFormat,
                 });
             }
 
