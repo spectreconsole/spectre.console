@@ -16,15 +16,10 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new FakeConsole(width: 80);
+            var chart = Fixture.GetChart();
 
             // When
-            console.Render(new BreakdownChart()
-                .AddItem("SCSS", 37, Color.Red)
-                .AddItem("HTML", 28.3, Color.Blue)
-                .AddItem("C#", 22.6, Color.Green)
-                .AddItem("JavaScript", 6, Color.Yellow)
-                .AddItem("Ruby", 6, Color.LightGreen)
-                .AddItem("Shell", 0.1, Color.Aqua));
+            console.Render(chart);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -36,38 +31,28 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new FakeConsole(width: 80);
+            var chart = Fixture.GetChart().Width(60);
 
             // When
-            console.Render(new BreakdownChart()
-                .Width(60)
-                .AddItem("SCSS", 37, Color.Red)
-                .AddItem("HTML", 28.3, Color.Blue)
-                .AddItem("C#", 22.6, Color.Green)
-                .AddItem("JavaScript", 6, Color.Yellow)
-                .AddItem("Ruby", 6, Color.LightGreen)
-                .AddItem("Shell", 0.1, Color.Aqua));
+            console.Render(chart);
 
             // Then
             await Verifier.Verify(console.Output);
         }
 
         [Fact]
-        [Expectation("ShowAsPercentages")]
-        public async Task Should_Render_Correctly_With_Specific_Width()
+        [Expectation("TagFormat")]
+        public async Task Should_Render_Correctly_With_Specific_Tag_Formatter()
         {
             // Given
             var console = new FakeConsole(width: 80);
+            var chart = Fixture.GetChart()
+                .Width(60)
+                .Culture("sv-SE")
+                .TagValueFormat("{0}%");
 
             // When
-            console.Render(new BreakdownChart()
-                .Width(60)
-                .ShowAsPercentages()
-                .AddItem("SCSS", 37, Color.Red)
-                .AddItem("HTML", 28.3, Color.Blue)
-                .AddItem("C#", 22.6, Color.Green)
-                .AddItem("JavaScript", 6, Color.Yellow)
-                .AddItem("Ruby", 6, Color.LightGreen)
-                .AddItem("Shell", 0.1, Color.Aqua));
+            console.Render(chart);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -79,17 +64,10 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new FakeConsole(width: 80);
+            var chart = Fixture.GetChart().Width(60).HideTags();
 
             // When
-            console.Render(new BreakdownChart()
-                .Width(60)
-                .HideTags()
-                .AddItem("SCSS", 37, Color.Red)
-                .AddItem("HTML", 28.3, Color.Blue)
-                .AddItem("C#", 22.6, Color.Green)
-                .AddItem("JavaScript", 6, Color.Yellow)
-                .AddItem("Ruby", 6, Color.LightGreen)
-                .AddItem("Shell", 0.1, Color.Aqua));
+            console.Render(chart);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -101,17 +79,10 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new FakeConsole(width: 80);
+            var chart = Fixture.GetChart().Width(60).HideTagValues();
 
             // When
-            console.Render(new BreakdownChart()
-                .Width(60)
-                .HideTagValues()
-                .AddItem("SCSS", 37, Color.Red)
-                .AddItem("HTML", 28.3, Color.Blue)
-                .AddItem("C#", 22.6, Color.Green)
-                .AddItem("JavaScript", 6, Color.Yellow)
-                .AddItem("Ruby", 6, Color.LightGreen)
-                .AddItem("Shell", 0.1, Color.Aqua));
+            console.Render(chart);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -123,17 +94,10 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new FakeConsole(width: 80);
+            var chart = Fixture.GetChart().Width(60).Culture("sv-SE");
 
             // When
-            console.Render(new BreakdownChart()
-                .Width(60)
-                .Culture("sv-SE")
-                .AddItem("SCSS", 37, Color.Red)
-                .AddItem("HTML", 28.3, Color.Blue)
-                .AddItem("C#", 22.6, Color.Green)
-                .AddItem("JavaScript", 6, Color.Yellow)
-                .AddItem("Ruby", 6, Color.LightGreen)
-                .AddItem("Shell", 0.1, Color.Aqua));
+            console.Render(chart);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -145,17 +109,10 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new FakeConsole(width: 80);
+            var chart = Fixture.GetChart().Width(60).FullSize();
 
             // When
-            console.Render(new BreakdownChart()
-                .Width(60)
-                .FullSize()
-                .AddItem("SCSS", 37, Color.Red)
-                .AddItem("HTML", 28.3, Color.Blue)
-                .AddItem("C#", 22.6, Color.Green)
-                .AddItem("JavaScript", 6, Color.Yellow)
-                .AddItem("Ruby", 6, Color.LightGreen)
-                .AddItem("Shell", 0.1, Color.Aqua));
+            console.Render(chart);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -167,20 +124,27 @@ namespace Spectre.Console.Tests.Unit
         {
             // Given
             var console = new FakeAnsiConsole(ColorSystem.EightBit, width: 80);
+            var chart = Fixture.GetChart().Width(60).FullSize();
 
             // When
-            console.Render(new BreakdownChart()
-                .Width(60)
-                .FullSize()
-                .AddItem("SCSS", 37, Color.Red)
-                .AddItem("HTML", 28.3, Color.Blue)
-                .AddItem("C#", 22.6, Color.Green)
-                .AddItem("JavaScript", 6, Color.Yellow)
-                .AddItem("Ruby", 6, Color.LightGreen)
-                .AddItem("Shell", 0.1, Color.Aqua));
+            console.Render(chart);
 
             // Then
             await Verifier.Verify(console.Output);
+        }
+
+        public static class Fixture
+        {
+            public static BreakdownChart GetChart()
+            {
+                return new BreakdownChart()
+                    .AddItem("SCSS", 37, Color.Red)
+                    .AddItem("HTML", 28.3, Color.Blue)
+                    .AddItem("C#", 22.6, Color.Green)
+                    .AddItem("JavaScript", 6, Color.Yellow)
+                    .AddItem("Ruby", 6, Color.LightGreen)
+                    .AddItem("Shell", 0.1, Color.Aqua);
+            }
         }
     }
 }

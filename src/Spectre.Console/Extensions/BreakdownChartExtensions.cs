@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Spectre.Console
 {
@@ -137,18 +138,19 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// All values will be shown as percentages.
+        /// Tags will be shown.
         /// </summary>
         /// <param name="chart">The breakdown chart.</param>
+        /// <param name="format">The tag value format.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static BreakdownChart ShowAsPercentages(this BreakdownChart chart)
+        public static BreakdownChart TagValueFormat(this BreakdownChart chart, string? format)
         {
             if (chart is null)
             {
                 throw new ArgumentNullException(nameof(chart));
             }
 
-            chart.ShowAsPercentages = true;
+            chart.TagValueFormat = format;
             return chart;
         }
 

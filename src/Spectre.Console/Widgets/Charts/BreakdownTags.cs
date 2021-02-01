@@ -11,8 +11,8 @@ namespace Spectre.Console
 
         public int? Width { get; set; }
         public CultureInfo? Culture { get; set; }
-        public bool ShowPercentages { get; set; }
         public bool ShowTagValues { get; set; } = true;
+        public string? TagValueFormat { get; set; }
 
         public BreakdownTags(List<IBreakdownChartItem> data)
         {
@@ -56,11 +56,13 @@ namespace Spectre.Console
 
         private string FormatValue(IBreakdownChartItem item, CultureInfo culture)
         {
+            var formatter = TagValueFormat ?? "{0}";
+
             if (ShowTagValues)
             {
-                return string.Format(culture, "{0} [grey]{1}{2}[/]",
-                    item.Label.EscapeMarkup(), item.Value,
-                    ShowPercentages ? "%" : string.Empty);
+                return string.Format(culture, "{0} [grey]{1}[/]",
+                    item.Label.EscapeMarkup(),
+                    string.Format(culture, formatter, item.Value));
             }
 
             return item.Label.EscapeMarkup();
