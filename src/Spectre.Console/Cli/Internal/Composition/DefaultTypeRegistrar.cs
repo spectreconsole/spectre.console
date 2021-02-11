@@ -35,5 +35,21 @@ namespace Spectre.Console.Cli
             var registration = new ComponentRegistration(service, new CachingActivator(new InstanceActivator(implementation)));
             _registry.Enqueue(registry => registry.Register(registration));
         }
+
+        public void RegisterLazy(Type service, Func<object> factory)
+        {
+            if (factory is null)
+            {
+                throw new ArgumentNullException(nameof(factory));
+            }
+
+            _registry.Enqueue(registry =>
+            {
+                var activator = new CachingActivator(new InstanceActivator(factory()));
+                var registration = new ComponentRegistration(service, activator);
+
+                registry.Register(registration);
+            });
+        }
     }
 }

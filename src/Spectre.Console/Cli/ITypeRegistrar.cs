@@ -22,6 +22,13 @@ namespace Spectre.Console.Cli
         void RegisterInstance(Type service, object implementation);
 
         /// <summary>
+        /// Registers the specified instance lazily.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="factory">The factory that creates the implementation.</param>
+        void RegisterLazy(Type service, Func<object> factory);
+
+        /// <summary>
         /// Builds the type resolver representing the registrations
         /// specified in the current instance.
         /// </summary>

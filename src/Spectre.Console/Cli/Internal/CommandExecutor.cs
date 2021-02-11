@@ -24,7 +24,7 @@ namespace Spectre.Console.Cli
             }
 
             _registrar.RegisterInstance(typeof(IConfiguration), configuration);
-            _registrar.RegisterInstance(typeof(IAnsiConsole), configuration.Settings.Console.GetConsole());
+            _registrar.RegisterLazy(typeof(IAnsiConsole), () => configuration.Settings.Console.GetConsole());
 
             // Create the command model.
             var model = CommandModelBuilder.Build(configuration);
