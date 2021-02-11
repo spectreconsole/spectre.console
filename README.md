@@ -12,6 +12,7 @@ for Python.
 2. [Installing](#installing)
 3. [Documentation](#documentation)
 4. [Examples](#examples)
+5. [Sponsors](#sponsors)
 5. [License](#license)
 
 ## Features
@@ -62,6 +63,22 @@ And to run an example:
 ```
 > dotnet example tables
 ```
+
+## Sponsors
+
+Sponsors of Spectre.Console are:
+
+* Rodney Littles II (@RLittlesII)
+* Martin Björkström (@bjorkstromm)
+* Dave Glick (@daveaglick)
+* Kim Gunanrsson (@kimgunnarsson)
+* Andrew McClenaghan (@andymac4182)
+* C. Augusto Proiete (@augustoproiete)
+* Viktor Elofsson (@vktr)
+* Steven Knox (@stevenknox)
+* David Pendray (@dpen2000)
+
+Thank you very much!
 
 ## License
 
