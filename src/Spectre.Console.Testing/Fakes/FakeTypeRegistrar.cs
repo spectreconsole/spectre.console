@@ -37,6 +37,19 @@ namespace Spectre.Console.Testing
             }
         }
 
+        public void RegisterLazy(Type service, Func<object> factory)
+        {
+            if (factory is null)
+            {
+                throw new ArgumentNullException(nameof(factory));
+            }
+
+            if (!Instances.ContainsKey(service))
+            {
+                Instances.Add(service, new List<object> { factory() });
+            }
+        }
+
         public ITypeResolver Build()
         {
             return _resolver;
