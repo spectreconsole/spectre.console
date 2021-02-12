@@ -28,7 +28,7 @@ namespace Spectre.Console
             var (supportsAnsi, legacyConsole) = DetectAnsi(settings, buffer);
 
             // Use the provided encoding or fall back to UTF-8
-            var encoding = buffer.IsStandardOut() ? System.Console.OutputEncoding : Encoding.UTF8;
+            var encoding = buffer.IsStandardOut() || buffer.IsStandardError() ? System.Console.OutputEncoding : Encoding.UTF8;
 
             // Get the color system
             var colorSystem = settings.ColorSystem == ColorSystemSupport.Detect
@@ -73,14 +73,14 @@ namespace Spectre.Console
                 // Check whether or not this is a legacy console from the existing instance (if any).
                 // We need to do this because once we upgrade the console to support ENABLE_VIRTUAL_TERMINAL_PROCESSING
                 // on Windows, there is no way of detecting whether or not we're running on a legacy console or not.
-                if (AnsiConsole.Created && !legacyConsole && buffer.IsStandardOut() && AnsiConsole.Profile.Capabilities.Legacy)
+                if (AnsiConsole.Created && !legacyConsole && (buffer.IsStandardOut() || buffer.IsStandardError()) && AnsiConsole.Profile.Capabilities.Legacy)
                 {
                     legacyConsole = AnsiConsole.Profile.Capabilities.Legacy;
                 }
             }
             else
             {
-                if (buffer.IsStandardOut())
+                if (buffer.IsStandardOut() || buffer.IsStandardError())
                 {
                     // Are we running on Windows?
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
