@@ -73,7 +73,7 @@ namespace Spectre.Console
                 }
 
                 // Need to update the output encoding for stdout?
-                if (_out.IsStandardOut())
+                if (_out.IsStandardOut() || _out.IsStandardError())
                 {
                     System.Console.OutputEncoding = value;
                 }

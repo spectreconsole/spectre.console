@@ -15,5 +15,17 @@ namespace Spectre.Console
                 return false;
             }
         }
+
+        public static bool IsStandardError(this TextWriter writer)
+        {
+            try
+            {
+                return writer == System.Console.Error;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

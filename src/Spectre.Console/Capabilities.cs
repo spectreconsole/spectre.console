@@ -49,6 +49,11 @@ namespace Spectre.Console
                     return System.Console.IsOutputRedirected;
                 }
 
+                if (_profile.Out.IsStandardError())
+                {
+                    return System.Console.IsErrorRedirected;
+                }
+
                 // Not stdout, so must be a TTY.
                 return true;
             }
