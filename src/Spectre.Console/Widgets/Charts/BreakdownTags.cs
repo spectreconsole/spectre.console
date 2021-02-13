@@ -12,7 +12,7 @@ namespace Spectre.Console
         public int? Width { get; set; }
         public CultureInfo? Culture { get; set; }
         public bool ShowTagValues { get; set; } = true;
-        public string? TagValueFormat { get; set; }
+        public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
 
         public BreakdownTags(List<IBreakdownChartItem> data)
         {
@@ -56,16 +56,21 @@ namespace Spectre.Console
 
         private string FormatValue(IBreakdownChartItem item, CultureInfo culture)
         {
-            var formatter = TagValueFormat ?? "{0}";
+            var formatter = ValueFormatter ?? DefaultFormatter;
 
             if (ShowTagValues)
             {
                 return string.Format(culture, "{0} [grey]{1}[/]",
                     item.Label.EscapeMarkup(),
-                    string.Format(culture, formatter, item.Value));
+                    formatter(item.Value, culture));
             }
 
             return item.Label.EscapeMarkup();
+        }
+
+        private static string DefaultFormatter(double value, CultureInfo culture)
+        {
+            return value.ToString(culture);
         }
     }
 }

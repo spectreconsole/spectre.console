@@ -44,6 +44,11 @@ namespace Spectre.Console
                 bars = Math.Max(0, bars);
             }
 
+            if (bars < 0)
+            {
+                yield break;
+            }
+
             yield return new Segment(new string(token, bars), style);
 
             if (ShowValue)

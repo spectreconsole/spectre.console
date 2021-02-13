@@ -141,16 +141,53 @@ namespace Spectre.Console
         /// Tags will be shown.
         /// </summary>
         /// <param name="chart">The breakdown chart.</param>
-        /// <param name="format">The tag value format.</param>
+        /// <param name="func">The value formatter to use.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static BreakdownChart TagValueFormat(this BreakdownChart chart, string? format)
+        public static BreakdownChart UseValueFormatter(this BreakdownChart chart, Func<double, CultureInfo, string>? func)
         {
             if (chart is null)
             {
                 throw new ArgumentNullException(nameof(chart));
             }
 
-            chart.TagValueFormat = format;
+            chart.ValueFormatter = func;
+            return chart;
+        }
+
+        /// <summary>
+        /// Tags will be shown.
+        /// </summary>
+        /// <param name="chart">The breakdown chart.</param>
+        /// <param name="func">The value formatter to use.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static BreakdownChart UseValueFormatter(this BreakdownChart chart, Func<double, string>? func)
+        {
+            if (chart is null)
+            {
+                throw new ArgumentNullException(nameof(chart));
+            }
+
+            chart.ValueFormatter = func != null
+                ? (value, _) => func(value)
+                : null;
+
+            return chart;
+        }
+
+        /// <summary>
+        /// Tags will be shown.
+        /// </summary>
+        /// <param name="chart">The breakdown chart.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static BreakdownChart ShowPercentage(this BreakdownChart chart)
+        {
+            if (chart is null)
+            {
+                throw new ArgumentNullException(nameof(chart));
+            }
+
+            chart.ValueFormatter = (value, culture) => string.Format(culture, "{0}%", value);
+
             return chart;
         }
 
