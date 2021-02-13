@@ -31,9 +31,9 @@ namespace Spectre.Console
         public bool ShowTagValues { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets the tag value format.
+        /// Gets or sets the tag value formatter.
         /// </summary>
-        public string? TagValueFormat { get; set; }
+        public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the
@@ -91,7 +91,7 @@ namespace Spectre.Console
                     Width = width,
                     Culture = Culture,
                     ShowTagValues = ShowTagValues,
-                    TagValueFormat = TagValueFormat,
+                    ValueFormatter = ValueFormatter,
                 });
             }
 

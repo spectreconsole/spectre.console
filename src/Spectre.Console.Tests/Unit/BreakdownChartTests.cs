@@ -42,14 +42,14 @@ namespace Spectre.Console.Tests.Unit
 
         [Fact]
         [Expectation("TagFormat")]
-        public async Task Should_Render_Correctly_With_Specific_Tag_Formatter()
+        public async Task Should_Render_Correctly_With_Specific_Value_Formatter()
         {
             // Given
             var console = new FakeConsole(width: 80);
             var chart = Fixture.GetChart()
                 .Width(60)
                 .Culture("sv-SE")
-                .TagValueFormat("{0}%");
+                .UseValueFormatter((v, c) => string.Format(c, "{0}%", v));
 
             // When
             console.Render(chart);
