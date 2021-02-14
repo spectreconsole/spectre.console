@@ -53,7 +53,7 @@ namespace Spectre.Console
 
         /// <summary>
         /// Gets or sets the text that should be shown instead
-        /// of the spinner once a task completes.
+        /// of the spinner before a task begins.
         /// </summary>
         public string? PendingText
         {
@@ -71,7 +71,7 @@ namespace Spectre.Console
         public Style? CompletedStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the completed style.
+        /// Gets or sets the pending style.
         /// </summary>
         public Style? PendingStyle { get; set; }
 
