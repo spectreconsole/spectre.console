@@ -141,7 +141,8 @@ namespace Spectre.Console
                     var useAscii = (context.LegacyConsole || !context.Unicode) && _spinner.IsUnicode;
                     var spinner = useAscii ? Spinner.Known.Ascii : _spinner ?? Spinner.Known.Default;
 
-                    _maxWidth = Math.Max(Math.Max(
+                    _maxWidth = Math.Max(
+                        Math.Max(
                         ((IRenderable)new Markup(PendingText ?? " ")).Measure(context, int.MaxValue).Max,
                         ((IRenderable)new Markup(CompletedText ?? " ")).Measure(context, int.MaxValue).Max),
                         spinner.Frames.Max(frame => Cell.GetCellLength(context, frame)));
