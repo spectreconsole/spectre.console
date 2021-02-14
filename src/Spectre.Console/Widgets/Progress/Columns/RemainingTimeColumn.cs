@@ -22,16 +22,21 @@ namespace Spectre.Console
             var remaining = task.RemainingTime;
             if (remaining == null)
             {
-                return new Markup("-:--:--");
+                return new Markup("--:--:--");
             }
 
-            return new Text($"{remaining.Value:h\\:mm\\:ss}", Style ?? Style.Plain);
+            if (remaining.Value.TotalHours > 99)
+            {
+                return new Markup("**:**:**");
+            }
+
+            return new Text($"{remaining.Value:hh\\:mm\\:ss}", Style ?? Style.Plain);
         }
 
         /// <inheritdoc/>
         public override int? GetColumnWidth(RenderContext context)
         {
-            return 7;
+            return 8;
         }
     }
 }
