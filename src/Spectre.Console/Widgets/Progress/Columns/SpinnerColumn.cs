@@ -16,6 +16,7 @@ namespace Spectre.Console
         private Spinner _spinner;
         private int? _maxWidth;
         private string? _completed;
+        private string? _pending;
 
         /// <inheritdoc/>
         protected internal override bool NoWrap => true;
@@ -51,9 +52,28 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Gets or sets the text that should be shown instead
+        /// of the spinner once a task completes.
+        /// </summary>
+        public string? PendingText
+        {
+            get => _pending;
+            set
+            {
+                _pending = value;
+                _maxWidth = null;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the completed style.
         /// </summary>
         public Style? CompletedStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the completed style.
+        /// </summary>
+        public Style? PendingStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the style of the spinner.
@@ -84,7 +104,12 @@ namespace Spectre.Console
             var useAscii = (context.LegacyConsole || !context.Unicode) && _spinner.IsUnicode;
             var spinner = useAscii ? Spinner.Known.Ascii : _spinner ?? Spinner.Known.Default;
 
-            if (!task.IsStarted || task.IsFinished)
+            if (!task.IsStarted)
+            {
+                return new Markup(PendingText ?? " ", PendingStyle ?? Style.Plain);
+            }
+
+            if (task.IsFinished)
             {
                 return new Markup(CompletedText ?? " ", CompletedStyle ?? Style.Plain);
             }
@@ -116,8 +141,9 @@ namespace Spectre.Console
                     var useAscii = (context.LegacyConsole || !context.Unicode) && _spinner.IsUnicode;
                     var spinner = useAscii ? Spinner.Known.Ascii : _spinner ?? Spinner.Known.Default;
 
-                    _maxWidth = Math.Max(
-                        ((IRenderable)new Markup(CompletedText ?? " ")).Measure(context, int.MaxValue).Max,
+                    _maxWidth = Math.Max(Math.Max(
+                        ((IRenderable)new Markup(PendingText ?? " ")).Measure(context, int.MaxValue).Max,
+                        ((IRenderable)new Markup(CompletedText ?? " ")).Measure(context, int.MaxValue).Max),
                         spinner.Frames.Max(frame => Cell.GetCellLength(context, frame)));
                 }
 
