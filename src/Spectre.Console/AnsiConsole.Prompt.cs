@@ -38,10 +38,15 @@ namespace Spectre.Console
         /// Displays a prompt with two choices, yes or no.
         /// </summary>
         /// <param name="prompt">The prompt markup text.</param>
+        /// <param name="defaultValue">Specifies the default answer.</param>
         /// <returns><c>true</c> if the user selected "yes", otherwise <c>false</c>.</returns>
-        public static bool Confirm(string prompt)
+        public static bool Confirm(string prompt, bool defaultValue = true)
         {
-            return new ConfirmationPrompt(prompt).Show(Console);
+            return new ConfirmationPrompt(prompt)
+            {
+                DefaultValue = defaultValue,
+            }
+            .Show(Console);
         }
     }
 }

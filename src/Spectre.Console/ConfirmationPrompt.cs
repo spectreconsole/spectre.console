@@ -18,6 +18,11 @@ namespace Spectre.Console
         public char No { get; set; } = 'n';
 
         /// <summary>
+        /// Gets or sets a value indicating whether "yes" is the default answer.
+        /// </summary>
+        public bool DefaultValue { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets the message for invalid choices.
         /// </summary>
         public string InvalidChoiceMessage { get; set; } = "[red]Please select one of the available options[/]";
@@ -51,7 +56,7 @@ namespace Spectre.Console
                 .ValidationErrorMessage(InvalidChoiceMessage)
                 .ShowChoices(ShowChoices)
                 .ShowDefaultValue(ShowDefaultValue)
-                .DefaultValue(Yes)
+                .DefaultValue(DefaultValue ? Yes : No)
                 .AddChoice(Yes)
                 .AddChoice(No);
 
