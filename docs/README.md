@@ -7,7 +7,7 @@ To start contributing to the [Spectre.Console](https://github.com/spectresystems
 The documentation site uses [Statiq](https://statiq.dev), a static site generator. To build the documentation site run the following in a command-line terminal.
 
 ```
-> dotnet run preview --virtual-dir "spectre.console"
+> Preview.ps1
 ```
 
 After the build is complete, you can navigate to [http://localhost:5080/spectre.console](http://localhost:5080/spectre.console).
@@ -29,13 +29,7 @@ Layout and styling can also be found in the [input](./input) directory. Look for
     
 ## Custom Build Features
 
-The documentation site has custom enhancements to Statiq located under the [./src](./src) directory. Enhancements to the build process include:
-
-- [Extension Methods](./src/Extensions)
-- [Models](./src/Models)
-- [Pipelines](./src/Pipelines)
-- [Shortcodes](./src/Shortcodes)
-- [Utilities](./src/Utilities)
+The documentation site has custom enhancements to Statiq located under the [./src](./src) directory.
 
 ## License
 

@@ -29,7 +29,7 @@ Python用の素晴らしい[Rich ライブラリ](https://github.com/willmcgugan
 
 ## 例
 
-![Example](resources/gfx/screenshots/example.png)
+![Example](docs/input/assets/images/example.png)
 
 ## 使用方法
 

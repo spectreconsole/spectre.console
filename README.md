@@ -27,7 +27,7 @@ for Python.
   and downgrade colors as needed.  
 
 
-![Example](resources/gfx/screenshots/example.png)
+![Example](docs/input/assets/images/example.png)
 
 ## Installing
 
