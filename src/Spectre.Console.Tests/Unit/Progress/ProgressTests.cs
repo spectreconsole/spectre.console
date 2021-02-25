@@ -115,5 +115,74 @@ namespace Spectre.Console.Tests.Unit
             task.MaxValue.ShouldBe(20);
             task.Value.ShouldBe(20);
         }
+
+        [Fact]
+        public void Setting_Value_Should_Override_Incremented_Value()
+        {
+            // Given
+            var task = default(ProgressTask);
+            var console = new FakeConsole();
+            var progress = new Progress(console)
+                .Columns(new[] { new ProgressBarColumn() })
+                .AutoRefresh(false)
+                .AutoClear(false);
+
+            // When
+            progress.Start(ctx =>
+            {
+                task = ctx.AddTask("foo");
+                task.Increment(50);
+                task.Value = 20;
+            });
+
+            // Then
+            task.MaxValue.ShouldBe(100);
+            task.Value.ShouldBe(20);
+        }
+
+        [Fact]
+        public void Setting_Value_To_MaxValue_Should_Finish_Task()
+        {
+            // Given
+            var task = default(ProgressTask);
+            var console = new FakeConsole();
+            var progress = new Progress(console)
+                .Columns(new[] { new ProgressBarColumn() })
+                .AutoRefresh(false)
+                .AutoClear(false);
+
+            // When
+            progress.Start(ctx =>
+            {
+                task = ctx.AddTask("foo");
+                task.Value = task.MaxValue;
+            });
+
+            // Then
+            task.IsFinished.ShouldBe(true);
+        }
+
+        [Fact]
+        public void Should_Increment_Manually_Set_Value()
+        {
+            // Given
+            var task = default(ProgressTask);
+            var console = new FakeConsole();
+            var progress = new Progress(console)
+                .Columns(new[] { new ProgressBarColumn() })
+                .AutoRefresh(false)
+                .AutoClear(false);
+
+            // When
+            progress.Start(ctx =>
+            {
+                task = ctx.AddTask("foo");
+                task.Value = 50;
+                task.Increment(10);
+            });
+
+            // Then
+            task.Value.ShouldBe(60);
+        }
     }
 }

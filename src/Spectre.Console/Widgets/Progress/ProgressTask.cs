@@ -14,6 +14,7 @@ namespace Spectre.Console
 
         private double _maxValue;
         private string _description;
+        private double _value;
 
         /// <summary>
         /// Gets the task ID.
@@ -39,9 +40,13 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Gets the value of the task.
+        /// Gets or sets the value of the task.
         /// </summary>
-        public double Value { get; private set; }
+        public double Value
+        {
+            get => _value;
+            set => Update(value: value);
+        }
 
         /// <summary>
         /// Gets the start time of the task.
@@ -100,6 +105,7 @@ namespace Spectre.Console
             _samples = new List<ProgressSample>();
             _lock = new object();
             _maxValue = maxValue;
+            _value = 0;
 
             _description = description?.RemoveNewLines()?.Trim() ?? throw new ArgumentNullException(nameof(description));
             if (string.IsNullOrWhiteSpace(_description))
@@ -109,7 +115,6 @@ namespace Spectre.Console
 
             Id = id;
             State = new ProgressTaskState();
-            Value = 0;
             StartTime = autoStart ? DateTime.Now : null;
         }
 
@@ -151,7 +156,8 @@ namespace Spectre.Console
         private void Update(
             string? description = null,
             double? maxValue = null,
-            double? increment = null)
+            double? increment = null,
+            double? value = null)
         {
             lock (_lock)
             {
@@ -175,13 +181,18 @@ namespace Spectre.Console
 
                 if (increment != null)
                 {
-                    Value += increment.Value;
+                    _value += increment.Value;
+                }
+
+                if (value != null)
+                {
+                    _value = value.Value;
                 }
 
                 // Need to cap the max value?
-                if (Value > _maxValue)
+                if (_value > _maxValue)
                 {
-                    Value = _maxValue;
+                    _value = _maxValue;
                 }
 
                 var timestamp = DateTime.Now;
