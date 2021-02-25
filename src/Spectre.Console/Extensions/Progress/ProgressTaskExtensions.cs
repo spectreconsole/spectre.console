@@ -40,5 +40,22 @@ namespace Spectre.Console
             task.MaxValue = value;
             return task;
         }
+
+        /// <summary>
+        /// Sets the value of the task.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static ProgressTask Value(this ProgressTask task, double value)
+        {
+            if (task is null)
+            {
+                throw new ArgumentNullException(nameof(task));
+            }
+
+            task.Value = value;
+            return task;
+        }
     }
 }
