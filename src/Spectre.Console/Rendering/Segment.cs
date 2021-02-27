@@ -135,7 +135,13 @@ namespace Spectre.Console.Rendering
                 throw new ArgumentNullException(nameof(segments));
             }
 
-            return segments.Sum(segment => segment.CellCount(context));
+            var sum = 0;
+            foreach (var segment in segments)
+            {
+                sum += segment.CellCount(context);
+            }
+
+            return sum;
         }
 
         /// <summary>

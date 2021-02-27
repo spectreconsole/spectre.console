@@ -8,7 +8,13 @@ namespace Spectre.Console
     {
         public static int GetCellLength(RenderContext context, string text)
         {
-            return text.Sum(rune => GetCellLength(context, rune));
+            var sum = 0;
+            foreach (var rune in text)
+            {
+                sum += GetCellLength(context, rune);
+            }
+
+            return sum;
         }
 
         public static int GetCellLength(RenderContext context, char rune)
