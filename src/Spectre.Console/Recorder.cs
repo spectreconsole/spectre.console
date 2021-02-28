@@ -67,6 +67,13 @@ namespace Spectre.Console
             _console.Write(segments);
         }
 
+        internal Recorder Clone(IAnsiConsole console)
+        {
+            var recorder = new Recorder(console);
+            recorder.Recorded.AddRange(Recorded);
+            return recorder;
+        }
+
         /// <summary>
         /// Records the specified segments.
         /// </summary>
