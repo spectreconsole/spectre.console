@@ -7,25 +7,43 @@ namespace Spectre.Console
     /// </summary>
     public static partial class AnsiConsole
     {
-        private static readonly Lazy<IAnsiConsole> _console = new Lazy<IAnsiConsole>(() =>
-        {
-            var console = Create(new AnsiConsoleSettings
+        private static Recorder? _recorder;
+        private static Lazy<IAnsiConsole> _console = new Lazy<IAnsiConsole>(
+            () =>
             {
-                Ansi = AnsiSupport.Detect,
-                ColorSystem = ColorSystemSupport.Detect,
-                Out = System.Console.Out,
+                var console = Create(new AnsiConsoleSettings
+                {
+                    Ansi = AnsiSupport.Detect,
+                    ColorSystem = ColorSystemSupport.Detect,
+                    Out = System.Console.Out,
+                });
+
+                Created = true;
+                return console;
             });
 
-            Created = true;
-            return console;
-        });
-
-        private static Recorder? _recorder;
-
         /// <summary>
-        /// Gets the underlying <see cref="IAnsiConsole"/>.
+        /// Gets or sets the underlying <see cref="IAnsiConsole"/>.
         /// </summary>
-        public static IAnsiConsole Console => _recorder ?? _console.Value;
+        public static IAnsiConsole Console
+        {
+            get
+            {
+                return _recorder ?? _console.Value;
+            }
+            set
+            {
+                _console = new Lazy<IAnsiConsole>(() => value);
+
+                if (_recorder != null)
+                {
+                    // Recreate the recorder
+                    _recorder = _recorder.Clone(value);
+                }
+
+                Created = true;
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="IAnsiConsoleCursor"/>.

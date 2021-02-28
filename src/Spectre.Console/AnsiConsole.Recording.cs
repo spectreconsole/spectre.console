@@ -13,7 +13,10 @@ namespace Spectre.Console
         /// </summary>
         public static void Record()
         {
-            _recorder = new Recorder(_console.Value);
+            if (_recorder == null)
+            {
+                _recorder = new Recorder(Console);
+            }
         }
 
         /// <summary>
