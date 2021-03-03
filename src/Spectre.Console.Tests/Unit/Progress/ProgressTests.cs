@@ -184,5 +184,36 @@ namespace Spectre.Console.Tests.Unit
             // Then
             task.Value.ShouldBe(60);
         }
+
+        [Fact]
+        public void Should_Hide_Completed_Tasks()
+        {
+            // Given
+            var task = default(ProgressTask);
+            var console = new FakeAnsiConsole(ColorSystem.TrueColor, width: 10);
+
+            var progress = new Progress(console)
+                .Columns(new[] { new ProgressBarColumn() })
+                .AutoRefresh(false)
+                .AutoClear(false)
+                .HideCompleted(true);
+
+            // When
+            progress.Start(ctx =>
+            {
+                task = ctx.AddTask("foo");
+                task.Value = task.MaxValue;
+            });
+
+            // Then
+            console.Output
+                .NormalizeLineEndings()
+                .ShouldBe(
+                    "[?25l" + // Hide cursor
+                    " \n" + // top padding
+                    "…\n" + // hidden task
+                    " \n" + // bottom padding
+                    "[?25h"); // show cursor
+        }
     }
 }

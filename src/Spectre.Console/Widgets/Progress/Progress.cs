@@ -26,6 +26,13 @@ namespace Spectre.Console
         public bool AutoClear { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether or not the task list should
+        /// only include tasks not completed
+        /// Defaults to <c>false</c>.
+        /// </summary>
+        public bool HideCompleted { get; set; }
+
+        /// <summary>
         /// Gets or sets the refresh rate if <c>AutoRefresh</c> is enabled.
         /// Defaults to 10 times/second.
         /// </summary>
@@ -153,7 +160,7 @@ namespace Spectre.Console
             if (interactive)
             {
                 var columns = new List<ProgressColumn>(Columns);
-                return new DefaultProgressRenderer(_console, columns, RefreshRate);
+                return new DefaultProgressRenderer(_console, columns, RefreshRate, HideCompleted);
             }
             else
             {

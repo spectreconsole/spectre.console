@@ -75,5 +75,25 @@ namespace Spectre.Console
 
             return progress;
         }
+
+        /// <summary>
+        /// Sets whether or not hide completed is enabled.
+        /// If enabled, the task tabled will be removed once it is
+        /// completed.
+        /// </summary>
+        /// <param name="progress">The <see cref="Progress"/> instance.</param>
+        /// <param name="enabled">Whether or not hide completed is enabled.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Progress HideCompleted(this Progress progress, bool enabled)
+        {
+            if (progress is null)
+            {
+                throw new ArgumentNullException(nameof(progress));
+            }
+
+            progress.HideCompleted = enabled;
+
+            return progress;
+        }
     }
 }
