@@ -14,10 +14,11 @@ namespace Spectre.Console
         private readonly object _lock;
         private readonly Stopwatch _stopwatch;
         private TimeSpan _lastUpdate;
+        private bool _hideCompleted;
 
         public override TimeSpan RefreshRate { get; }
 
-        public DefaultProgressRenderer(IAnsiConsole console, List<ProgressColumn> columns, TimeSpan refreshRate)
+        public DefaultProgressRenderer(IAnsiConsole console, List<ProgressColumn> columns, TimeSpan refreshRate, bool hideCompleted)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
             _columns = columns ?? throw new ArgumentNullException(nameof(columns));
@@ -25,6 +26,7 @@ namespace Spectre.Console
             _lock = new object();
             _stopwatch = new Stopwatch();
             _lastUpdate = TimeSpan.Zero;
+            _hideCompleted = hideCompleted;
 
             RefreshRate = refreshRate;
         }
@@ -91,7 +93,7 @@ namespace Spectre.Console
                 }
 
                 // Add rows
-                foreach (var task in context.GetTasks())
+                foreach (var task in context.GetTasks().Where(tsk => !(_hideCompleted && tsk.IsFinished)))
                 {
                     var columns = _columns.Select(column => column.Render(renderContext, task, delta));
                     grid.AddRow(columns.ToArray());
