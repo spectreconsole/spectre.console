@@ -1,9 +1,17 @@
 ﻿using Logging.Commands;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Spectre.Console.Cli;
-using Spectre.Console.Rendering;
+
+/*
+ * Dynamically control serilog configuration via command line parameters
+ *
+ * This works around the chicken and egg situation with configuring serilog via the command line.
+ * The logger needs to be configured prior to executing the parser, but the logger needs the parsed values
+ * to be configured. By using serilog.sinks.map we can defer configuration. We use a LogLevelSwitch to control the
+ * logging levels dynamically, and then we use a serilog enricher that has it's state populated via a
+ * Spectre.Console CommandInterceptor
+ */
 
 namespace Logging
 {
@@ -18,9 +26,14 @@ namespace Logging
             var serviceCollection = new ServiceCollection()
                 .AddLogging(configure =>
                     configure.AddSerilog(new LoggerConfiguration()
-                        .MinimumLevel.Debug()
-                        .Enrich.With<LogFileNameEnricher>()
-                        .WriteTo.Map(LogFileNameEnricher.LogFilePathPropertyName,
+                        // log level will be dynamically be controlled by our log interceptor upon running
+                        .MinimumLevel.ControlledBy(LogInterceptor.LogLevel)
+                        // the log enricher will add a new property with the log file path from the settings
+                        // that we can use to set the path dynamically
+                        .Enrich.With<LoggingEnricher>()
+                        // serilog.sinks.map will defer the configuration of the sink to be ondemand
+                        // allowing us to look at the properties set by the enricher to set the path appropriately
+                        .WriteTo.Map(LoggingEnricher.LogFilePathPropertyName,
                             (logFilePath, wt) => wt.File($"{logFilePath}"), 1)
                         .CreateLogger()
                     )

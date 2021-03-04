@@ -13,6 +13,7 @@ namespace Logging.Commands
         {
             _console = console;
             _logger = logger;
+            _logger.LogDebug("{0} initialized", nameof(HelloCommand));
         }
 
         public class Settings : LogCommandSettings

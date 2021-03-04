@@ -35,7 +35,7 @@ namespace Logging
                 throw new ArgumentNullException(nameof(func));
             }
 
-            _builder.AddSingleton(service, (provider) => func());
+            _builder.AddSingleton(service, _ => func());
         }
     }
 }
