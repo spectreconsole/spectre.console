@@ -63,6 +63,7 @@ await AnsiConsole.Progress()
 AnsiConsole.Progress()
     .AutoRefresh(false) // Turn off auto refresh
     .AutoClear(false)   // Do not remove the task list when done
+    .HideCompleted(false)   // Hide tasks as they are completed
     .Columns(new ProgressColumn[] 
     {
         new TaskDescriptionColumn(),    // Task description
