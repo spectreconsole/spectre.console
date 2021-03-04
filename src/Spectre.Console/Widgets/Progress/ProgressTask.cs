@@ -71,7 +71,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets a value indicating whether or not the task has finished.
         /// </summary>
-        public bool IsFinished => Value >= MaxValue;
+        public bool IsFinished => StopTime != null || Value >= MaxValue;
 
         /// <summary>
         /// Gets the percentage done of the task.
@@ -107,7 +107,8 @@ namespace Spectre.Console
             _maxValue = maxValue;
             _value = 0;
 
-            _description = description?.RemoveNewLines()?.Trim() ?? throw new ArgumentNullException(nameof(description));
+            _description = description?.RemoveNewLines()?.Trim() ??
+                           throw new ArgumentNullException(nameof(description));
             if (string.IsNullOrWhiteSpace(_description))
             {
                 throw new ArgumentException("Task name cannot be empty", nameof(description));
@@ -125,13 +126,18 @@ namespace Spectre.Console
         {
             lock (_lock)
             {
+                if (StopTime != null)
+                {
+                    throw new InvalidOperationException("Stopped tasks cannot be restarted");
+                }
+
                 StartTime = DateTime.Now;
                 StopTime = null;
             }
         }
 
         /// <summary>
-        /// Stops the task.
+        /// Stops and marks the task as finished.
         /// </summary>
         public void StopTask()
         {
