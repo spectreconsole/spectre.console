@@ -189,7 +189,9 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Hide_Completed_Tasks()
         {
             // Given
-            var task = default(ProgressTask);
+            var taskFinished = default(ProgressTask);
+            var taskInProgress1 = default(ProgressTask);
+            var taskInProgress2 = default(ProgressTask);
             var console = new FakeAnsiConsole(ColorSystem.TrueColor, width: 10);
 
             var progress = new Progress(console)
@@ -201,8 +203,11 @@ namespace Spectre.Console.Tests.Unit
             // When
             progress.Start(ctx =>
             {
-                task = ctx.AddTask("foo");
-                task.Value = task.MaxValue;
+                taskInProgress1 = ctx.AddTask("foo");
+                taskFinished = ctx.AddTask("bar");
+                taskInProgress2 = ctx.AddTask("baz");
+                taskInProgress2.Increment(20);
+                taskFinished.Value = taskFinished.MaxValue;
             });
 
             // Then
@@ -210,9 +215,10 @@ namespace Spectre.Console.Tests.Unit
                 .NormalizeLineEndings()
                 .ShouldBe(
                     "[?25l" + // Hide cursor
-                    " \n" + // top padding
-                    "…\n" + // hidden task
-                    " \n" + // bottom padding
+                    "          \n" + // top padding
+                    "[38;5;8m━━━━━━━━━━[0m\n" + // taskInProgress1
+                    "[38;5;11m━━[0m[38;5;8m━━━━━━━━[0m\n" + // taskInProgress2
+                    "          \n" + // bottom padding
                     "[?25h"); // show cursor
         }
     }
