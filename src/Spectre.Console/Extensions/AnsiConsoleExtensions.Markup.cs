@@ -28,7 +28,17 @@ namespace Spectre.Console
         /// <param name="args">An array of objects to write.</param>
         public static void Markup(this IAnsiConsole console, IFormatProvider provider, string format, params object[] args)
         {
-            console.Render(MarkupParser.Parse(string.Format(provider, format, args)));
+            Markup(console, string.Format(provider, format, args));
+        }
+
+        /// <summary>
+        /// Writes the specified markup to the console.
+        /// </summary>
+        /// <param name="console">The console to write to.</param>
+        /// <param name="value">The value to write.</param>
+        public static void Markup(this IAnsiConsole console, string value)
+        {
+            console.Render(MarkupParser.Parse(value));
         }
 
         /// <summary>
@@ -40,6 +50,16 @@ namespace Spectre.Console
         public static void MarkupLine(this IAnsiConsole console, string format, params object[] args)
         {
             MarkupLine(console, CultureInfo.CurrentCulture, format, args);
+        }
+
+        /// <summary>
+        /// Writes the specified markup, followed by the current line terminator, to the console.
+        /// </summary>
+        /// <param name="console">The console to write to.</param>
+        /// <param name="value">The value to write.</param>
+        public static void MarkupLine(this IAnsiConsole console, string value)
+        {
+            Markup(console, value + Environment.NewLine);
         }
 
         /// <summary>

@@ -71,5 +71,19 @@ namespace Spectre.Console.Tests.Unit
             // Then
             console.Output.ShouldBe(output);
         }
+
+        [Fact]
+        public void Should_not_fail_with_brackets_on_calls_without_args()
+        {
+            // Given
+            var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+
+            // When
+            console.MarkupLine("{");
+
+            // Then
+            console.Output.NormalizeLineEndings()
+                .ShouldBe("{\n");
+        }
     }
 }
