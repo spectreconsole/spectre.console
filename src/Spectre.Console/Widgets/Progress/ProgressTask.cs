@@ -7,7 +7,7 @@ namespace Spectre.Console
     /// <summary>
     /// Represents a progress task.
     /// </summary>
-    public sealed class ProgressTask
+    public sealed class ProgressTask : IProgress<double>
     {
         private readonly List<ProgressSample> _samples;
         private readonly object _lock;
@@ -296,6 +296,12 @@ namespace Spectre.Console
                 var estimate = (MaxValue - Value) / speed.Value;
                 return TimeSpan.FromSeconds(estimate);
             }
+        }
+
+        /// <inheritdoc />
+        void IProgress<double>.Report(double value)
+        {
+            Update(increment: value - Value);
         }
     }
 }
