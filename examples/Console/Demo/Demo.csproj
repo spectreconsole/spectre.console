@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ExampleTitle>Demo</ExampleTitle>
+    <ExampleDescription>Demonstation of Spectre.Console.</ExampleDescription>
+    <ExampleGroup>Misc</ExampleGroup>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Spectre.Console\Spectre.Console.csproj" />
+    <ProjectReference Include="..\..\..\src\Spectre.Console.ImageSharp\Spectre.Console.ImageSharp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="linux.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="smiley.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

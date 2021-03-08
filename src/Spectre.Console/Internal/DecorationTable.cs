@@ -22,9 +22,12 @@ namespace Spectre.Console
                 { "underline", Decoration.Underline },
                 { "u", Decoration.Underline },
                 { "invert", Decoration.Invert },
+                { "reverse", Decoration.Invert },
                 { "conceal", Decoration.Conceal },
+                { "blink", Decoration.SlowBlink },
                 { "slowblink", Decoration.SlowBlink },
                 { "rapidblink", Decoration.RapidBlink },
+                { "strike", Decoration.Strikethrough },
                 { "strikethrough", Decoration.Strikethrough },
                 { "s", Decoration.Strikethrough },
             };
