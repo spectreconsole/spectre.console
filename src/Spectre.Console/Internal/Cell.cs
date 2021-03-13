@@ -1,4 +1,3 @@
-using System.Linq;
 using Spectre.Console.Rendering;
 using Wcwidth;
 

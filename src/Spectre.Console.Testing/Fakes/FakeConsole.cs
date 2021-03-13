@@ -12,6 +12,7 @@ namespace Spectre.Console.Testing
         public Profile Profile { get; }
         public IAnsiConsoleCursor Cursor => new FakeAnsiConsoleCursor();
         IAnsiConsoleInput IAnsiConsole.Input => Input;
+        public IExclusivityMode ExclusivityMode { get; }
         public RenderPipeline Pipeline { get; }
 
         public FakeConsoleInput Input { get; }
@@ -24,6 +25,7 @@ namespace Spectre.Console.Testing
             bool legacyConsole = false, bool interactive = true)
         {
             Input = new FakeConsoleInput();
+            ExclusivityMode = new FakeExclusivityMode();
             Pipeline = new RenderPipeline();
 
             Profile = new Profile(new StringWriter(), encoding ?? Encoding.UTF8);

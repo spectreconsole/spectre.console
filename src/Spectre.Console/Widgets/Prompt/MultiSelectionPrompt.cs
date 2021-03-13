@@ -72,6 +72,11 @@ namespace Spectre.Console
         /// <inheritdoc/>
         public List<T> Show(IAnsiConsole console)
         {
+            if (console is null)
+            {
+                throw new ArgumentNullException(nameof(console));
+            }
+
             if (!console.Profile.Capabilities.Interactive)
             {
                 throw new NotSupportedException(
@@ -86,50 +91,53 @@ namespace Spectre.Console
                     "terminal does not support ANSI escape sequences.");
             }
 
-            var converter = Converter ?? TypeConverterHelper.ConvertToString;
-            var list = new RenderableMultiSelectionList<T>(
-                console, Title, PageSize, Choices,
-                Selected, converter, HighlightStyle,
-                MoreChoicesText, InstructionsText);
-
-            using (new RenderHookScope(console, list))
+            return console.RunExclusive(() =>
             {
-                console.Cursor.Hide();
-                list.Redraw();
+                var converter = Converter ?? TypeConverterHelper.ConvertToString;
+                var list = new RenderableMultiSelectionList<T>(
+                    console, Title, PageSize, Choices,
+                    Selected, converter, HighlightStyle,
+                    MoreChoicesText, InstructionsText);
 
-                while (true)
+                using (new RenderHookScope(console, list))
                 {
-                    var key = console.Input.ReadKey(true);
-                    if (key.Key == ConsoleKey.Enter)
+                    console.Cursor.Hide();
+                    list.Redraw();
+
+                    while (true)
                     {
-                        if (Required && list.Selections.Count == 0)
+                        var key = console.Input.ReadKey(true);
+                        if (key.Key == ConsoleKey.Enter)
                         {
+                            if (Required && list.Selections.Count == 0)
+                            {
+                                continue;
+                            }
+
+                            break;
+                        }
+
+                        if (key.Key == ConsoleKey.Spacebar)
+                        {
+                            list.Select();
+                            list.Redraw();
                             continue;
                         }
 
-                        break;
-                    }
-
-                    if (key.Key == ConsoleKey.Spacebar)
-                    {
-                        list.Select();
-                        list.Redraw();
-                        continue;
-                    }
-
-                    if (list.Update(key.Key))
-                    {
-                        list.Redraw();
+                        if (list.Update(key.Key))
+                        {
+                            list.Redraw();
+                        }
                     }
                 }
-            }
 
-            list.Clear();
-            console.Cursor.Show();
+                list.Clear();
+                console.Cursor.Show();
 
-            return list.Selections
-                .Select(index => Choices[index])
-                .ToList();
+                return list.Selections
+                    .Select(index => Choices[index])
+                    .ToList();
+            });
         }
     }
 }

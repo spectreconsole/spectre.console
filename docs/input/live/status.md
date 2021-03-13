@@ -1,10 +1,17 @@
 Title: Status
 Order: 6
+RedirectFrom: status
 ---
 
 Spectre.Console can display information about long running tasks in the console. 
 
-<img src="assets/images/status.gif" style="max-width: 100%;margin-bottom:20px;">
+<img src="../assets/images/status.gif" style="max-width: 100%;margin-bottom:20px;">
+
+<div class="alert alert-warning" role="alert">
+  <i class="fas fa-exclamation-triangle icon-web"></i> The status display is not 
+  thread safe, and using it together with other interactive components such as 
+  prompts, progress displays or other status displays are not supported.
+</div>
 
 If the current terminal isn't considered "interactive", such as when running 
 in a continuous integration system, or the terminal can't display 

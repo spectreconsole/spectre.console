@@ -9,12 +9,14 @@ namespace Spectre.Console.Testing
     {
         private readonly StringWriter _writer;
         private readonly IAnsiConsole _console;
+        private readonly FakeExclusivityMode _exclusivityLock;
 
         public string Output => _writer.ToString();
 
         public Profile Profile => _console.Profile;
         public IAnsiConsoleCursor Cursor => _console.Cursor;
         public FakeConsoleInput Input { get; }
+        public IExclusivityMode ExclusivityMode => _exclusivityLock;
         public RenderPipeline Pipeline => _console.Pipeline;
 
         IAnsiConsoleInput IAnsiConsole.Input => Input;
@@ -24,6 +26,7 @@ namespace Spectre.Console.Testing
             AnsiSupport ansi = AnsiSupport.Yes,
             int width = 80)
         {
+            _exclusivityLock = new FakeExclusivityMode();
             _writer = new StringWriter();
 
             var factory = new AnsiConsoleFactory();

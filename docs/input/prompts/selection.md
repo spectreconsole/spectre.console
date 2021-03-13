@@ -7,6 +7,11 @@ a single item from a provided list.
 
 <img src="../assets/images/selection.gif" style="width: 100%;" />
 
+<div class="alert alert-warning" role="alert" style="margin-top:20px;">
+  <i class="fas fa-exclamation-triangle icon-web"></i> Using prompts inside 
+  status or progress displays, are not supported.
+</div>
+
 # Usage
 
 ```csharp

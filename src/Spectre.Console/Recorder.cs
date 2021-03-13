@@ -24,6 +24,9 @@ namespace Spectre.Console
         public IAnsiConsoleInput Input => _console.Input;
 
         /// <inheritdoc/>
+        public IExclusivityMode ExclusivityMode => _console.ExclusivityMode;
+
+        /// <inheritdoc/>
         public RenderPipeline Pipeline => _console.Pipeline;
 
         /// <summary>

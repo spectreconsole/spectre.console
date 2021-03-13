@@ -24,6 +24,11 @@ namespace Spectre.Console
         IAnsiConsoleInput Input { get; }
 
         /// <summary>
+        /// Gets the exclusivity mode.
+        /// </summary>
+        IExclusivityMode ExclusivityMode { get; }
+
+        /// <summary>
         /// Gets the render pipeline.
         /// </summary>
         RenderPipeline Pipeline { get; }

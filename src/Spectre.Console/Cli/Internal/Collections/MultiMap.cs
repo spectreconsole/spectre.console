@@ -165,7 +165,9 @@ namespace Spectre.Console.Cli
             if (pair.Key != null)
             {
 #pragma warning disable CS8604 // Possible null reference argument of value.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                 Add((TKey)pair.Key, (TValue)pair.Value);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 #pragma warning restore CS8604 // Possible null reference argument of value.
             }
         }

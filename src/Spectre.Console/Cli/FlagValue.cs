@@ -31,7 +31,9 @@ namespace Spectre.Console.Cli
             set
             {
 #pragma warning disable CS8601 // Possible null reference assignment.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
                 Value = (T)value;
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 #pragma warning restore CS8601 // Possible null reference assignment.
             }
         }

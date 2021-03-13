@@ -68,35 +68,38 @@ namespace Spectre.Console
                     "terminal does not support ANSI escape sequences.");
             }
 
-            var converter = Converter ?? TypeConverterHelper.ConvertToString;
-            var list = new RenderableSelectionList<T>(
-                console, Title, PageSize, Choices,
-                converter, HighlightStyle, MoreChoicesText);
-
-            using (new RenderHookScope(console, list))
+            return console.RunExclusive(() =>
             {
-                console.Cursor.Hide();
-                list.Redraw();
+                var converter = Converter ?? TypeConverterHelper.ConvertToString;
+                var list = new RenderableSelectionList<T>(
+                    console, Title, PageSize, Choices,
+                    converter, HighlightStyle, MoreChoicesText);
 
-                while (true)
+                using (new RenderHookScope(console, list))
                 {
-                    var key = console.Input.ReadKey(true);
-                    if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.Spacebar)
-                    {
-                        break;
-                    }
+                    console.Cursor.Hide();
+                    list.Redraw();
 
-                    if (list.Update(key.Key))
+                    while (true)
                     {
-                        list.Redraw();
+                        var key = console.Input.ReadKey(true);
+                        if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.Spacebar)
+                        {
+                            break;
+                        }
+
+                        if (list.Update(key.Key))
+                        {
+                            list.Redraw();
+                        }
                     }
                 }
-            }
 
-            list.Clear();
-            console.Cursor.Show();
+                list.Clear();
+                console.Cursor.Show();
 
-            return Choices[list.Index];
+                return Choices[list.Index];
+            });
         }
     }
 }

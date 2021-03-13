@@ -100,66 +100,69 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(console));
             }
 
-            var promptStyle = PromptStyle ?? Style.Plain;
-            var converter = Converter ?? TypeConverterHelper.ConvertToString;
-            var choices = Choices.Select(choice => converter(choice)).ToList();
-            var choiceMap = Choices.ToDictionary(choice => converter(choice), choice => choice, _comparer);
-
-            WritePrompt(console);
-
-            while (true)
+            return console.RunExclusive(() =>
             {
-                var input = console.ReadLine(promptStyle, IsSecret, choices);
+                var promptStyle = PromptStyle ?? Style.Plain;
+                var converter = Converter ?? TypeConverterHelper.ConvertToString;
+                var choices = Choices.Select(choice => converter(choice)).ToList();
+                var choiceMap = Choices.ToDictionary(choice => converter(choice), choice => choice, _comparer);
 
-                // Nothing entered?
-                if (string.IsNullOrWhiteSpace(input))
+                WritePrompt(console);
+
+                while (true)
                 {
-                    if (DefaultValue != null)
+                    var input = console.ReadLine(promptStyle, IsSecret, choices);
+
+                    // Nothing entered?
+                    if (string.IsNullOrWhiteSpace(input))
                     {
-                        console.Write(IsSecret ? "******" : converter(DefaultValue.Value), promptStyle);
-                        console.WriteLine();
-                        return DefaultValue.Value;
+                        if (DefaultValue != null)
+                        {
+                            console.Write(IsSecret ? "******" : converter(DefaultValue.Value), promptStyle);
+                            console.WriteLine();
+                            return DefaultValue.Value;
+                        }
+
+                        if (!AllowEmpty)
+                        {
+                            continue;
+                        }
                     }
 
-                    if (!AllowEmpty)
-                    {
-                        continue;
-                    }
-                }
+                    console.WriteLine();
 
-                console.WriteLine();
-
-                T? result;
-                if (Choices.Count > 0)
-                {
-                    if (choiceMap.TryGetValue(input, out result) && result != null)
+                    T? result;
+                    if (Choices.Count > 0)
                     {
-                        return result;
+                        if (choiceMap.TryGetValue(input, out result) && result != null)
+                        {
+                            return result;
+                        }
+                        else
+                        {
+                            console.MarkupLine(InvalidChoiceMessage);
+                            WritePrompt(console);
+                            continue;
+                        }
                     }
-                    else
+                    else if (!TypeConverterHelper.TryConvertFromString<T>(input, out result) || result == null)
                     {
-                        console.MarkupLine(InvalidChoiceMessage);
+                        console.MarkupLine(ValidationErrorMessage);
                         WritePrompt(console);
                         continue;
                     }
-                }
-                else if (!TypeConverterHelper.TryConvertFromString<T>(input, out result) || result == null)
-                {
-                    console.MarkupLine(ValidationErrorMessage);
-                    WritePrompt(console);
-                    continue;
-                }
 
-                // Run all validators
-                if (!ValidateResult(result, out var validationMessage))
-                {
-                    console.MarkupLine(validationMessage);
-                    WritePrompt(console);
-                    continue;
-                }
+                    // Run all validators
+                    if (!ValidateResult(result, out var validationMessage))
+                    {
+                        console.MarkupLine(validationMessage);
+                        WritePrompt(console);
+                        continue;
+                    }
 
-                return result;
-            }
+                    return result;
+                }
+            });
         }
 
         /// <summary>

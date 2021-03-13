@@ -118,38 +118,41 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(action));
             }
 
-            var renderer = CreateRenderer();
-            renderer.Started();
-
-            T result;
-
-            try
+            return await _console.RunExclusive(async () =>
             {
-                using (new RenderHookScope(_console, renderer))
-                {
-                    var context = new ProgressContext(_console, renderer);
+                var renderer = CreateRenderer();
+                renderer.Started();
 
-                    if (AutoRefresh)
+                T result;
+
+                try
+                {
+                    using (new RenderHookScope(_console, renderer))
                     {
-                        using (var thread = new ProgressRefreshThread(context, renderer.RefreshRate))
+                        var context = new ProgressContext(_console, renderer);
+
+                        if (AutoRefresh)
+                        {
+                            using (var thread = new ProgressRefreshThread(context, renderer.RefreshRate))
+                            {
+                                result = await action(context).ConfigureAwait(false);
+                            }
+                        }
+                        else
                         {
                             result = await action(context).ConfigureAwait(false);
                         }
-                    }
-                    else
-                    {
-                        result = await action(context).ConfigureAwait(false);
-                    }
 
-                    context.Refresh();
+                        context.Refresh();
+                    }
                 }
-            }
-            finally
-            {
-                renderer.Completed(AutoClear);
-            }
+                finally
+                {
+                    renderer.Completed(AutoClear);
+                }
 
-            return result;
+                return result;
+            }).ConfigureAwait(false);
         }
 
         private ProgressRenderer CreateRenderer()

@@ -13,9 +13,10 @@ namespace Spectre.Console
         public Profile Profile { get; }
         public IAnsiConsoleCursor Cursor => GetBackend().Cursor;
         public IAnsiConsoleInput Input { get; }
+        public IExclusivityMode ExclusivityMode { get; }
         public RenderPipeline Pipeline { get; }
 
-        public AnsiConsoleFacade(Profile profile)
+        public AnsiConsoleFacade(Profile profile, IExclusivityMode exclusivityMode)
         {
             _renderLock = new object();
             _ansiBackend = new AnsiConsoleBackend(profile);
@@ -23,6 +24,7 @@ namespace Spectre.Console
 
             Profile = profile ?? throw new ArgumentNullException(nameof(profile));
             Input = new DefaultInput(Profile);
+            ExclusivityMode = exclusivityMode ?? throw new ArgumentNullException(nameof(exclusivityMode));
             Pipeline = new RenderPipeline();
         }
 

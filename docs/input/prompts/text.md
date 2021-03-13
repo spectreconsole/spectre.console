@@ -1,10 +1,15 @@
-Title: Text
+Title: Text prompt
 Order: 0
 RedirectFrom: prompt
 ---
 
 Sometimes you want to get some input from the user, and for this
 you can use the `Prompt<TResult>`.
+
+<div class="alert alert-warning" role="alert">
+  <i class="fas fa-exclamation-triangle icon-web"></i> The use of prompts 
+  insides status or progress displays is not supported.
+</div>
 
 # Confirmation
 
