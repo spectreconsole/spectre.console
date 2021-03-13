@@ -184,7 +184,7 @@ namespace Spectre.Console.Cli
                 {
                     var current = queue.Dequeue();
 
-                    foreach (var cmd in current.Commands)
+                    foreach (var cmd in current.Commands.Where(x => !x.IsHidden))
                     {
                         if (cmd.Examples.Count > 0)
                         {

@@ -46,7 +46,9 @@ namespace Spectre.Console.Tests.Unit.Cli
                     configurator.SetApplicationName("myapp");
                     configurator.AddCommand<DogCommand>("dog");
                     configurator.AddCommand<HorseCommand>("horse");
-                    configurator.AddCommand<GiraffeCommand>("giraffe").IsHidden();
+                    configurator.AddCommand<GiraffeCommand>("giraffe")
+                        .WithExample(new[] { "giraffe", "123" })
+                        .IsHidden();
                 });
 
                 // When
