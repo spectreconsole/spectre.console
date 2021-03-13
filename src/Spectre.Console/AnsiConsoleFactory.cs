@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using Spectre.Console.Enrichment;
+using Spectre.Console.Internal;
 
 namespace Spectre.Console
 {
@@ -58,7 +59,9 @@ namespace Spectre.Console
                 settings.Enrichment,
                 settings.EnvironmentVariables);
 
-            return new AnsiConsoleFacade(profile);
+            return new AnsiConsoleFacade(
+                profile,
+                settings.ExclusivityMode ?? new DefaultExclusivityMode());
         }
 
         private static (bool Ansi, bool Legacy) DetectAnsi(AnsiConsoleSettings settings, System.IO.TextWriter buffer)

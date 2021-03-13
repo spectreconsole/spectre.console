@@ -59,6 +59,7 @@ namespace Cursor
                 new MultiSelectionPrompt<string>()
                     .PageSize(10)
                     .Title("What are your [green]favorite fruits[/]?")
+                    .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
                     .InstructionsText("[grey](Press [blue]<space>[/] to toggle a fruit, [green]<enter>[/] to accept)[/]")
                     .AddChoices(new[]
                     {
@@ -75,6 +76,7 @@ namespace Cursor
                 fruit = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
                         .Title("Ok, but if you could only choose [green]one[/]?")
+                        .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
                         .AddChoices(favorites));
             }
 

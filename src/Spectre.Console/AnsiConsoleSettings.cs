@@ -31,6 +31,11 @@ namespace Spectre.Console
         public InteractionSupport Interactive { get; set; }
 
         /// <summary>
+        /// Gets or sets the exclusivity mode.
+        /// </summary>
+        public IExclusivityMode? ExclusivityMode { get; set; }
+
+        /// <summary>
         /// Gets or sets the profile enrichments settings.
         /// </summary>
         public ProfileEnrichment Enrichment { get; set; }
