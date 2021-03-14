@@ -25,6 +25,22 @@ namespace Spectre.Console.Tests.Unit
             }
         }
 
+        public sealed class TheRemoveMethod
+        {
+            [Theory]
+            [InlineData("Hello World", "Hello World")]
+            [InlineData("Hello [blue]World", "Hello World")]
+            [InlineData("Hello [blue]World[/]", "Hello World")]
+            public void Should_Remove_Markup_From_Text(string input, string expected)
+            {
+                // Given, When
+                var result = Markup.Remove(input);
+
+                // Then
+                result.ShouldBe(expected);
+            }
+        }
+
         [Theory]
         [InlineData("Hello [[ World ]")]
         [InlineData("Hello [[ World ] !")]

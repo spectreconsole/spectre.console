@@ -56,9 +56,11 @@ namespace Spectre.Console
                 var prompt = choice.Index == pointerIndex ? Prompt : string.Empty;
                 var style = current ? _highlightStyle : Style.Plain;
 
-                grid.AddRow(
-                    new Markup(prompt, style),
-                    new Markup(choice.Item.EscapeMarkup(), style));
+                var item = current
+                    ? new Text(choice.Item.RemoveMarkup(), style)
+                    : (IRenderable)new Markup(choice.Item, style);
+
+                grid.AddRow(new Markup(prompt, style), item);
             }
 
             list.Add(grid);

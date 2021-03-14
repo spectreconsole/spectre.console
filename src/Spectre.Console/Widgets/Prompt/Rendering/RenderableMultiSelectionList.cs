@@ -81,10 +81,11 @@ namespace Spectre.Console
                 var checkbox = selected ? SelectedCheckbox : Checkbox;
 
                 var style = current ? _highlightStyle : Style.Plain;
+                var item = current
+                    ? new Text(choice.Item.RemoveMarkup(), style)
+                    : (IRenderable)new Markup(choice.Item, style);
 
-                grid.AddRow(
-                    new Markup($"{prompt}{checkbox}", style),
-                    new Markup(choice.Item.EscapeMarkup(), style));
+                grid.AddRow(new Markup(prompt + checkbox, style), item);
             }
 
             list.Add(grid);

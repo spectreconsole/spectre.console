@@ -63,5 +63,20 @@ namespace Spectre.Console
 
             return text.EscapeMarkup();
         }
+
+        /// <summary>
+        /// Removes markup from the specified string.
+        /// </summary>
+        /// <param name="text">The text to remove markup from.</param>
+        /// <returns>A string that does not have any markup.</returns>
+        public static string Remove(string text)
+        {
+            if (text is null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            return text.RemoveMarkup();
+        }
     }
 }
