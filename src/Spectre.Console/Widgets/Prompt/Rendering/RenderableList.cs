@@ -47,6 +47,10 @@ namespace Spectre.Console
             {
                 ConsoleKey.UpArrow => _index - 1,
                 ConsoleKey.DownArrow => _index + 1,
+                ConsoleKey.Home => 0,
+                ConsoleKey.End => _choices.Count - 1,
+                ConsoleKey.PageUp => _index - CalculatePageSize(_requestedPageSize),
+                ConsoleKey.PageDown => _index + CalculatePageSize(_requestedPageSize),
                 _ => _index,
             };
 
