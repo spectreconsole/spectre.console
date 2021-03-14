@@ -15,6 +15,7 @@ var fruit = AnsiConsole.Prompt(
     new SelectionPrompt<string>()
         .Title("What's your [green]favorite fruit[/]?")
         .PageSize(10)
+        .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
         .AddChoice("Apple")
         .AddChoices(new[] {
             "Apricot", "Avocado", 

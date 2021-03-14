@@ -8,9 +8,13 @@ namespace Spectre.Console
     {
         private const string Checkbox = "[[ ]]";
         private const string SelectedCheckbox = "[[X]]";
+        private const string MoreChoicesText = "[grey](Move up and down to reveal more choices)[/]";
+        private const string InstructionsText = "[grey](Press <space> to select, <enter> to accept)[/]";
 
         private readonly IAnsiConsole _console;
         private readonly string? _title;
+        private readonly Markup _moreChoices;
+        private readonly Markup _instructions;
         private readonly Style _highlightStyle;
 
         public HashSet<int> Selections { get; set; }
@@ -18,12 +22,15 @@ namespace Spectre.Console
         public RenderableMultiSelectionList(
             IAnsiConsole console, string? title, int pageSize,
             List<T> choices, HashSet<int> selections,
-            Func<T, string>? converter, Style? highlightStyle)
+            Func<T, string>? converter, Style? highlightStyle,
+            string? moreChoicesText, string? instructionsText)
             : base(console, pageSize, choices, converter)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
             _title = title;
             _highlightStyle = highlightStyle ?? new Style(foreground: Color.Blue);
+            _moreChoices = new Markup(moreChoicesText ?? MoreChoicesText);
+            _instructions = new Markup(instructionsText ?? InstructionsText);
 
             Selections = new HashSet<int>(selections);
         }
@@ -93,10 +100,12 @@ namespace Spectre.Console
 
             if (scrollable)
             {
-                list.Add(new Markup("[grey](Move up and down to reveal more choices)[/]"));
+                // (Move up and down to reveal more choices)
+                list.Add(_moreChoices);
             }
 
-            list.Add(new Markup("[grey](Press <space> to select)[/]"));
+            // (Press <space> to select)
+            list.Add(_instructions);
 
             return new Rows(list);
         }

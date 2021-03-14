@@ -39,6 +39,11 @@ namespace Spectre.Console
         public Style? HighlightStyle { get; set; }
 
         /// <summary>
+        /// Gets or sets the text that will be displayed if there are more choices to show.
+        /// </summary>
+        public string? MoreChoicesText { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SelectionPrompt{T}"/> class.
         /// </summary>
         public SelectionPrompt()
@@ -64,8 +69,10 @@ namespace Spectre.Console
             }
 
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
+            var list = new RenderableSelectionList<T>(
+                console, Title, PageSize, Choices,
+                converter, HighlightStyle, MoreChoicesText);
 
-            var list = new RenderableSelectionList<T>(console, Title, PageSize, Choices, converter, HighlightStyle);
             using (new RenderHookScope(console, list))
             {
                 console.Cursor.Hide();

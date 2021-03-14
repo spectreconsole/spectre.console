@@ -7,17 +7,23 @@ namespace Spectre.Console
     internal sealed class RenderableSelectionList<T> : RenderableList<T>
     {
         private const string Prompt = ">";
+        private const string MoreChoicesText = "[grey](Move up and down to reveal more choices)[/]";
 
         private readonly IAnsiConsole _console;
         private readonly string? _title;
+        private readonly Markup _moreChoices;
         private readonly Style _highlightStyle;
 
-        public RenderableSelectionList(IAnsiConsole console, string? title, int requestedPageSize, List<T> choices, Func<T, string>? converter, Style? highlightStyle)
+        public RenderableSelectionList(
+            IAnsiConsole console, string? title, int requestedPageSize,
+            List<T> choices, Func<T, string>? converter, Style? highlightStyle,
+            string? moreChoices)
             : base(console, requestedPageSize, choices, converter)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
             _title = title;
             _highlightStyle = highlightStyle ?? new Style(foreground: Color.Blue);
+            _moreChoices = new Markup(moreChoices ?? MoreChoicesText);
         }
 
         protected override int CalculatePageSize(int requestedPageSize)
@@ -67,8 +73,9 @@ namespace Spectre.Console
 
             if (scrollable)
             {
+                // (Move up and down to reveal more choices)
                 list.Add(Text.Empty);
-                list.Add(new Markup("[grey](Move up and down to reveal more choices)[/]"));
+                list.Add(_moreChoices);
             }
 
             return new Rows(list);

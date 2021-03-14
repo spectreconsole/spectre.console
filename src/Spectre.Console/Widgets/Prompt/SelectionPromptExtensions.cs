@@ -122,6 +122,24 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Sets the text that will be displayed if there are more choices to show.
+        /// </summary>
+        /// <typeparam name="T">The prompt result type.</typeparam>
+        /// <param name="obj">The prompt.</param>
+        /// <param name="text">The text to display.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static SelectionPrompt<T> MoreChoicesText<T>(this SelectionPrompt<T> obj, string? text)
+        {
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            obj.MoreChoicesText = text;
+            return obj;
+        }
+
+        /// <summary>
         /// Sets the function to create a display string for a given choice.
         /// </summary>
         /// <typeparam name="T">The prompt type.</typeparam>

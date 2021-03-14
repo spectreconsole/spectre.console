@@ -45,6 +45,16 @@ namespace Spectre.Console
         public Style? HighlightStyle { get; set; }
 
         /// <summary>
+        /// Gets or sets the text that will be displayed if there are more choices to show.
+        /// </summary>
+        public string? MoreChoicesText { get; set; }
+
+        /// <summary>
+        /// Gets or sets the text that instructs the user of how to select items.
+        /// </summary>
+        public string? InstructionsText { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not
         /// at least one selection is required.
         /// </summary>
@@ -77,8 +87,11 @@ namespace Spectre.Console
             }
 
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
+            var list = new RenderableMultiSelectionList<T>(
+                console, Title, PageSize, Choices,
+                Selected, converter, HighlightStyle,
+                MoreChoicesText, InstructionsText);
 
-            var list = new RenderableMultiSelectionList<T>(console, Title, PageSize, Choices, Selected, converter, HighlightStyle);
             using (new RenderHookScope(console, list))
             {
                 console.Cursor.Hide();
