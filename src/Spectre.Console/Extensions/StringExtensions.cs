@@ -34,6 +34,32 @@ namespace Spectre.Console
                 .ReplaceExact("]", "]]");
         }
 
+        /// <summary>
+        /// Removes markup from the specified string.
+        /// </summary>
+        /// <param name="text">The text to remove markup from.</param>
+        /// <returns>A string that does not have any markup.</returns>
+        public static string RemoveMarkup(this string? text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return string.Empty;
+            }
+
+            var result = new StringBuilder();
+
+            var tokenizer = new MarkupTokenizer(text);
+            while (tokenizer.MoveNext() && tokenizer.Current != null)
+            {
+                if (tokenizer.Current.Kind == MarkupTokenKind.Text)
+                {
+                    result.Append(tokenizer.Current.Value);
+                }
+            }
+
+            return result.ToString();
+        }
+
         internal static int CellLength(this string text, RenderContext context)
         {
             if (context is null)
