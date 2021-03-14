@@ -14,6 +14,7 @@ Spectre.Console to show their support and to ensure the longevity of the project
 * [Viktor Elofsson](https://github.com/vktr)
 * [Steven Knox](https://github.com/stevenknox)
 * [David Pendray](https://github.com/dpen2000)
+* [Elmah.io](https://github.com/elmahio)
 
 I really appreciate it.  
 **Thank you very much!**
