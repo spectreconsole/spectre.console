@@ -68,7 +68,7 @@ namespace Spectre.Console
 
             if (settings.Ansi == AnsiSupport.Detect)
             {
-                (supportsAnsi, legacyConsole) = AnsiDetector.Detect(true);
+                (supportsAnsi, legacyConsole) = AnsiDetector.Detect(buffer.IsStandardError(), true);
 
                 // Check whether or not this is a legacy console from the existing instance (if any).
                 // We need to do this because once we upgrade the console to support ENABLE_VIRTUAL_TERMINAL_PROCESSING
@@ -93,7 +93,7 @@ namespace Spectre.Console
                         else
                         {
                             // Try detecting whether or not this
-                            (_, legacyConsole) = AnsiDetector.Detect(false);
+                            (_, legacyConsole) = AnsiDetector.Detect(buffer.IsStandardError(), false);
                         }
                     }
                 }
