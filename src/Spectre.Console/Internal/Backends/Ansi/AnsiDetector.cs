@@ -32,7 +32,7 @@ namespace Spectre.Console
             new Regex("bvterm"), // Bitvise SSH Client
         };
 
-        public static (bool SupportsAnsi, bool LegacyConsole) Detect(bool upgrade)
+        public static (bool SupportsAnsi, bool LegacyConsole) Detect(bool stdError, bool upgrade)
         {
             // Running on Windows?
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -44,7 +44,7 @@ namespace Spectre.Console
                     return (true, false);
                 }
 
-                var supportsAnsi = Windows.SupportsAnsi(upgrade, out var legacyConsole);
+                var supportsAnsi = Windows.SupportsAnsi(stdError, upgrade, out var legacyConsole);
                 return (supportsAnsi, legacyConsole);
             }
 
@@ -72,6 +72,9 @@ namespace Spectre.Console
             private const int STD_OUTPUT_HANDLE = -11;
 
             [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:Field names should not contain underscore")]
+            private const int STD_ERROR_HANDLE = -12;
+
+            [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:Field names should not contain underscore")]
             private const uint ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
 
             [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:Field names should not contain underscore")]
@@ -89,13 +92,13 @@ namespace Spectre.Console
             [DllImport("kernel32.dll")]
             public static extern uint GetLastError();
 
-            public static bool SupportsAnsi(bool upgrade, out bool isLegacy)
+            public static bool SupportsAnsi(bool upgrade, bool stdError, out bool isLegacy)
             {
                 isLegacy = false;
 
                 try
                 {
-                    var @out = GetStdHandle(STD_OUTPUT_HANDLE);
+                    var @out = GetStdHandle(stdError ? STD_ERROR_HANDLE : STD_OUTPUT_HANDLE);
                     if (!GetConsoleMode(@out, out var mode))
                     {
                         // Could not get console mode, try TERM (set in cygwin, WSL-Shell).
