@@ -189,6 +189,42 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Sets the text that will be displayed if there are more choices to show.
+        /// </summary>
+        /// <typeparam name="T">The prompt result type.</typeparam>
+        /// <param name="obj">The prompt.</param>
+        /// <param name="text">The text to display.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static MultiSelectionPrompt<T> MoreChoicesText<T>(this MultiSelectionPrompt<T> obj, string? text)
+        {
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            obj.MoreChoicesText = text;
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the text that instructs the user of how to select items.
+        /// </summary>
+        /// <typeparam name="T">The prompt result type.</typeparam>
+        /// <param name="obj">The prompt.</param>
+        /// <param name="text">The text to display.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static MultiSelectionPrompt<T> InstructionsText<T>(this MultiSelectionPrompt<T> obj, string? text)
+        {
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            obj.InstructionsText = text;
+            return obj;
+        }
+
+        /// <summary>
         /// Requires no choice to be selected.
         /// </summary>
         /// <typeparam name="T">The prompt result type.</typeparam>

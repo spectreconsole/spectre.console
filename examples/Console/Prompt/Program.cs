@@ -59,6 +59,7 @@ namespace Cursor
                 new MultiSelectionPrompt<string>()
                     .PageSize(10)
                     .Title("What are your [green]favorite fruits[/]?")
+                    .InstructionsText("[grey](Press [blue]<space>[/] to toggle a fruit, [green]<enter>[/] to accept)[/]")
                     .AddChoices(new[]
                     {
                         "Apple", "Apricot", "Avocado", "Banana", "Blackcurrant", "Blueberry",
@@ -88,8 +89,8 @@ namespace Cursor
 
             return AnsiConsole.Prompt(
                 new TextPrompt<string>("What's your [green]favorite sport[/]?")
-                    .InvalidChoiceMessage("[red]That's not a valid fruit[/]")
-                    .DefaultValue("Lol")
+                    .InvalidChoiceMessage("[red]That's not a sport![/]")
+                    .DefaultValue("Sport?")
                     .AddChoice("Soccer")
                     .AddChoice("Hockey")
                     .AddChoice("Basketball"));
