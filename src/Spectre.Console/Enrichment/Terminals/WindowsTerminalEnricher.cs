@@ -14,6 +14,7 @@ namespace Spectre.Console.Enrichment
         public void Enrich(Profile profile)
         {
             profile.Capabilities.Links = true;
+            profile.Capabilities.AlternateBuffer = profile.Capabilities.Ansi;
         }
     }
 }

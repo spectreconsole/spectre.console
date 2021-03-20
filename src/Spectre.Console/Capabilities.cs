@@ -16,6 +16,12 @@ namespace Spectre.Console
         public bool Ansi { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether or not the
+        /// terminal supports alternating buffers.
+        /// </summary>
+        public bool AlternateBuffer { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not
         /// the console support links.
         /// </summary>
