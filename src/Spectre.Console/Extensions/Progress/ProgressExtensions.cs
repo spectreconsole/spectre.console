@@ -14,7 +14,7 @@ namespace Spectre.Console
         /// <param name="progress">The <see cref="Progress"/> instance.</param>
         /// <param name="columns">The columns to use.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static Progress Columns(this Progress progress, ProgressColumn[] columns)
+        public static Progress Columns(this Progress progress, params ProgressColumn[] columns)
         {
             if (progress is null)
             {
