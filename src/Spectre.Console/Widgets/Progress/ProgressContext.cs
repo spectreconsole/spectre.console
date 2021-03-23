@@ -33,7 +33,7 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="description">The task description.</param>
         /// <param name="settings">The task settings.</param>
-        /// <returns>The task's ID.</returns>
+        /// <returns>The newly created task.</returns>
         public ProgressTask AddTask(string description, ProgressTaskSettings? settings = null)
         {
             lock (_taskLock)
