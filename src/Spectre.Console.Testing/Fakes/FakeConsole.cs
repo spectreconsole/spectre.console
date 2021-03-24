@@ -36,6 +36,7 @@ namespace Spectre.Console.Testing
             Profile.Capabilities.Legacy = legacyConsole;
             Profile.Capabilities.Interactive = interactive;
             Profile.Capabilities.Links = true;
+            Profile.Capabilities.Unicode = true;
         }
 
         public void Dispose()
@@ -47,14 +48,9 @@ namespace Spectre.Console.Testing
         {
         }
 
-        public void Write(IEnumerable<Segment> segments)
+        public void Write(IRenderable renderable)
         {
-            if (segments is null)
-            {
-                return;
-            }
-
-            foreach (var segment in segments)
+            foreach (var segment in renderable.GetSegments(this))
             {
                 Profile.Out.Write(segment.Text);
             }

@@ -1,18 +1,17 @@
-using System.Collections.Generic;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
     internal sealed class LegacyConsoleBackend : IAnsiConsoleBackend
     {
-        private readonly Profile _profile;
+        private readonly IAnsiConsole _console;
         private Style _lastStyle;
 
         public IAnsiConsoleCursor Cursor { get; }
 
-        public LegacyConsoleBackend(Profile profile)
+        public LegacyConsoleBackend(IAnsiConsole console)
         {
-            _profile = profile ?? throw new System.ArgumentNullException(nameof(profile));
+            _console = console ?? throw new System.ArgumentNullException(nameof(console));
             _lastStyle = Style.Plain;
 
             Cursor = new LegacyConsoleCursor();
@@ -31,9 +30,9 @@ namespace Spectre.Console
             }
         }
 
-        public void Render(IEnumerable<Segment> segments)
+        public void Write(IRenderable renderable)
         {
-            foreach (var segment in segments)
+            foreach (var segment in renderable.GetSegments(_console))
             {
                 if (segment.IsControlCode)
                 {
@@ -45,7 +44,7 @@ namespace Spectre.Console
                     SetStyle(segment.Style);
                 }
 
-                _profile.Out.Write(segment.Text.NormalizeNewLines(native: true));
+                _console.Profile.Out.Write(segment.Text.NormalizeNewLines(native: true));
             }
         }
 
@@ -56,13 +55,13 @@ namespace Spectre.Console
             System.Console.ResetColor();
 
             var background = Color.ToConsoleColor(style.Background);
-            if (_profile.ColorSystem != ColorSystem.NoColors && (int)background != -1)
+            if (_console.Profile.ColorSystem != ColorSystem.NoColors && (int)background != -1)
             {
                 System.Console.BackgroundColor = background;
             }
 
             var foreground = Color.ToConsoleColor(style.Foreground);
-            if (_profile.ColorSystem != ColorSystem.NoColors && (int)foreground != -1)
+            if (_console.Profile.ColorSystem != ColorSystem.NoColors && (int)foreground != -1)
             {
                 System.Console.ForegroundColor = foreground;
             }

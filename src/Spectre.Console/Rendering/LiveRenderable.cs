@@ -51,7 +51,7 @@ namespace Spectre.Console.Rendering
                 if (_renderable != null)
                 {
                     var segments = _renderable.Render(context, maxWidth);
-                    var lines = Segment.SplitLines(context, segments);
+                    var lines = Segment.SplitLines(segments);
 
                     var shape = SegmentShape.Calculate(context, lines);
                     _shape = _shape == null ? shape : _shape.Value.Inflate(shape);

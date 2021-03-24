@@ -1,4 +1,3 @@
-using System.Text;
 using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Rendering;
@@ -39,11 +38,10 @@ namespace Spectre.Console.Tests.Unit
             {
                 // Given
                 var style = new Style(Color.Red, Color.Green, Decoration.Bold);
-                var context = new RenderContext(Encoding.UTF8, false);
                 var segment = new Segment(text, style);
 
                 // When
-                var (first, second) = segment.Split(context, offset);
+                var (first, second) = segment.Split(offset);
 
                 // Then
                 first.Text.ShouldBe(expectedFirst);
@@ -60,10 +58,8 @@ namespace Spectre.Console.Tests.Unit
             [Expectation("Segment", "Split")]
             public Task Should_Split_Segment()
             {
-                var context = new RenderContext(Encoding.UTF8, false);
-
+                // Given, When
                 var lines = Segment.SplitLines(
-                    context,
                     new[]
                     {
                         new Segment("Foo"),
@@ -95,9 +91,8 @@ namespace Spectre.Console.Tests.Unit
             [Expectation("Segment", "Split_Linebreak")]
             public Task Should_Split_Segments_With_Linebreak_In_Text()
             {
-                var context = new RenderContext(Encoding.UTF8, false);
+                // Given, Given
                 var lines = Segment.SplitLines(
-                    context,
                     new[]
                     {
                         new Segment("Foo\n"),

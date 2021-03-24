@@ -19,7 +19,7 @@ namespace Spectre.Console.Tests.Unit
             var chart = Fixture.GetChart();
 
             // When
-            console.Render(chart);
+            console.Write(chart);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -34,7 +34,7 @@ namespace Spectre.Console.Tests.Unit
             var chart = Fixture.GetChart().Width(60);
 
             // When
-            console.Render(chart);
+            console.Write(chart);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -52,7 +52,7 @@ namespace Spectre.Console.Tests.Unit
                 .UseValueFormatter((v, c) => string.Format(c, "{0}%", v));
 
             // When
-            console.Render(chart);
+            console.Write(chart);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -67,7 +67,7 @@ namespace Spectre.Console.Tests.Unit
             var chart = Fixture.GetChart().Width(60).HideTags();
 
             // When
-            console.Render(chart);
+            console.Write(chart);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -82,7 +82,7 @@ namespace Spectre.Console.Tests.Unit
             var chart = Fixture.GetChart().Width(60).HideTagValues();
 
             // When
-            console.Render(chart);
+            console.Write(chart);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -97,7 +97,7 @@ namespace Spectre.Console.Tests.Unit
             var chart = Fixture.GetChart().Width(60).Culture("sv-SE");
 
             // When
-            console.Render(chart);
+            console.Write(chart);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -112,7 +112,7 @@ namespace Spectre.Console.Tests.Unit
             var chart = Fixture.GetChart().Width(60).FullSize();
 
             // When
-            console.Render(chart);
+            console.Write(chart);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -127,7 +127,7 @@ namespace Spectre.Console.Tests.Unit
             var chart = Fixture.GetChart().Width(60).FullSize();
 
             // When
-            console.Render(chart);
+            console.Write(chart);
 
             // Then
             await Verifier.Verify(console.Output);

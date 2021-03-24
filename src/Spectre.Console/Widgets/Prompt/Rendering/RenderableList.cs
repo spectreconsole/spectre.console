@@ -33,12 +33,12 @@ namespace Spectre.Console
 
         public void Clear()
         {
-            _console.Render(_live.RestoreCursor());
+            _console.Write(_live.RestoreCursor());
         }
 
         public void Redraw()
         {
-            _console.Render(new ControlSequence(string.Empty));
+            _console.Write(new ControlSequence(string.Empty));
         }
 
         public bool Update(ConsoleKey key)

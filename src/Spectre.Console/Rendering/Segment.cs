@@ -100,36 +100,24 @@ namespace Spectre.Console.Rendering
         /// Gets the number of cells that this segment
         /// occupies in the console.
         /// </summary>
-        /// <param name="context">The render context.</param>
         /// <returns>The number of cells that this segment occupies in the console.</returns>
-        public int CellCount(RenderContext context)
+        public int CellCount()
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             if (IsControlCode)
             {
                 return 0;
             }
 
-            return Text.CellLength(context);
+            return Cell.GetCellLength(Text);
         }
 
         /// <summary>
         /// Gets the number of cells that the segments occupies in the console.
         /// </summary>
-        /// <param name="context">The render context.</param>
         /// <param name="segments">The segments to measure.</param>
         /// <returns>The number of cells that the segments occupies in the console.</returns>
-        public static int CellCount(RenderContext context, IEnumerable<Segment> segments)
+        public static int CellCount(IEnumerable<Segment> segments)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             if (segments is null)
             {
                 throw new ArgumentNullException(nameof(segments));
@@ -138,7 +126,7 @@ namespace Spectre.Console.Rendering
             var sum = 0;
             foreach (var segment in segments)
             {
-                sum += segment.CellCount(context);
+                sum += segment.CellCount();
             }
 
             return sum;
@@ -158,7 +146,6 @@ namespace Spectre.Console.Rendering
         /// </summary>
         /// <param name="offset">The offset where to split the segment.</param>
         /// <returns>One or two new segments representing the split.</returns>
-        [Obsolete("Use Split(RenderContext, Int32) instead")]
         public (Segment First, Segment? Second) Split(int offset)
         {
             if (offset < 0)
@@ -166,30 +153,7 @@ namespace Spectre.Console.Rendering
                 return (this, null);
             }
 
-            if (offset >= Text.Length)
-            {
-                return (this, null);
-            }
-
-            return (
-                new Segment(Text.Substring(0, offset), Style),
-                new Segment(Text.Substring(offset, Text.Length - offset), Style));
-        }
-
-        /// <summary>
-        /// Splits the segment at the offset.
-        /// </summary>
-        /// <param name="context">The render context.</param>
-        /// <param name="offset">The offset where to split the segment.</param>
-        /// <returns>One or two new segments representing the split.</returns>
-        public (Segment First, Segment? Second) Split(RenderContext context, int offset)
-        {
-            if (offset < 0)
-            {
-                return (this, null);
-            }
-
-            if (offset >= CellCount(context))
+            if (offset >= CellCount())
             {
                 return (this, null);
             }
@@ -201,7 +165,7 @@ namespace Spectre.Console.Rendering
                 foreach (var character in Text)
                 {
                     index++;
-                    accumulated += Cell.GetCellLength(context, character);
+                    accumulated += Cell.GetCellLength(character);
                     if (accumulated >= offset)
                     {
                         break;
@@ -226,38 +190,26 @@ namespace Spectre.Console.Rendering
         /// <summary>
         /// Splits the provided segments into lines.
         /// </summary>
-        /// <param name="context">The render context.</param>
         /// <param name="segments">The segments to split.</param>
         /// <returns>A collection of lines.</returns>
-        public static List<SegmentLine> SplitLines(RenderContext context, IEnumerable<Segment> segments)
+        public static List<SegmentLine> SplitLines(IEnumerable<Segment> segments)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             if (segments is null)
             {
                 throw new ArgumentNullException(nameof(segments));
             }
 
-            return SplitLines(context, segments, int.MaxValue);
+            return SplitLines(segments, int.MaxValue);
         }
 
         /// <summary>
         /// Splits the provided segments into lines with a maximum width.
         /// </summary>
-        /// <param name="context">The render context.</param>
         /// <param name="segments">The segments to split into lines.</param>
         /// <param name="maxWidth">The maximum width.</param>
         /// <returns>A list of lines.</returns>
-        public static List<SegmentLine> SplitLines(RenderContext context, IEnumerable<Segment> segments, int maxWidth)
+        public static List<SegmentLine> SplitLines(IEnumerable<Segment> segments, int maxWidth)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             if (segments is null)
             {
                 throw new ArgumentNullException(nameof(segments));
@@ -271,16 +223,16 @@ namespace Spectre.Console.Rendering
             while (stack.Count > 0)
             {
                 var segment = stack.Pop();
-                var segmentLength = segment.CellCount(context);
+                var segmentLength = segment.CellCount();
 
                 // Does this segment make the line exceed the max width?
-                var lineLength = line.CellCount(context);
+                var lineLength = line.CellCount();
                 if (lineLength + segmentLength > maxWidth)
                 {
                     var diff = -(maxWidth - (lineLength + segmentLength));
                     var offset = segment.Text.Length - diff;
 
-                    var (first, second) = segment.Split(context, offset);
+                    var (first, second) = segment.Split(offset);
 
                     line.Add(first);
                     lines.Add(line);
@@ -356,22 +308,16 @@ namespace Spectre.Console.Rendering
         /// </summary>
         /// <param name="segment">The segment to split.</param>
         /// <param name="overflow">The overflow strategy to use.</param>
-        /// <param name="context">The render context.</param>
         /// <param name="maxWidth">The maximum width.</param>
         /// <returns>A list of segments that has been split.</returns>
-        public static List<Segment> SplitOverflow(Segment segment, Overflow? overflow, RenderContext context, int maxWidth)
+        public static List<Segment> SplitOverflow(Segment segment, Overflow? overflow, int maxWidth)
         {
             if (segment is null)
             {
                 throw new ArgumentNullException(nameof(segment));
             }
 
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (segment.CellCount(context) <= maxWidth)
+            if (segment.CellCount() <= maxWidth)
             {
                 return new List<Segment>(1) { segment };
             }
@@ -383,7 +329,7 @@ namespace Spectre.Console.Rendering
 
             if (overflow == Overflow.Fold)
             {
-                var totalLength = segment.Text.CellLength(context);
+                var totalLength = segment.Text.CellLength();
                 var lengthLeft = totalLength;
                 while (lengthLeft > 0)
                 {
@@ -431,17 +377,11 @@ namespace Spectre.Console.Rendering
         /// <summary>
         /// Truncates the segments to the specified width.
         /// </summary>
-        /// <param name="context">The render context.</param>
         /// <param name="segments">The segments to truncate.</param>
         /// <param name="maxWidth">The maximum width that the segments may occupy.</param>
         /// <returns>A list of segments that has been truncated.</returns>
-        public static List<Segment> Truncate(RenderContext context, IEnumerable<Segment> segments, int maxWidth)
+        public static List<Segment> Truncate(IEnumerable<Segment> segments, int maxWidth)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             if (segments is null)
             {
                 throw new ArgumentNullException(nameof(segments));
@@ -452,7 +392,7 @@ namespace Spectre.Console.Rendering
             var totalWidth = 0;
             foreach (var segment in segments)
             {
-                var segmentCellWidth = segment.CellCount(context);
+                var segmentCellWidth = segment.CellCount();
                 if (totalWidth + segmentCellWidth > maxWidth)
                 {
                     break;
@@ -464,7 +404,7 @@ namespace Spectre.Console.Rendering
 
             if (result.Count == 0 && segments.Any())
             {
-                var segment = Truncate(context, segments.First(), maxWidth);
+                var segment = Truncate(segments.First(), maxWidth);
                 if (segment != null)
                 {
                     result.Add(segment);
@@ -477,23 +417,17 @@ namespace Spectre.Console.Rendering
         /// <summary>
         /// Truncates the segment to the specified width.
         /// </summary>
-        /// <param name="context">The render context.</param>
         /// <param name="segment">The segment to truncate.</param>
         /// <param name="maxWidth">The maximum width that the segment may occupy.</param>
         /// <returns>A new truncated segment, or <c>null</c>.</returns>
-        public static Segment? Truncate(RenderContext context, Segment? segment, int maxWidth)
+        public static Segment? Truncate(Segment? segment, int maxWidth)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             if (segment is null)
             {
                 return null;
             }
 
-            if (segment.CellCount(context) <= maxWidth)
+            if (segment.CellCount() <= maxWidth)
             {
                 return segment;
             }
@@ -501,7 +435,7 @@ namespace Spectre.Console.Rendering
             var builder = new StringBuilder();
             foreach (var character in segment.Text)
             {
-                var accumulatedCellWidth = builder.ToString().CellLength(context);
+                var accumulatedCellWidth = builder.ToString().CellLength();
                 if (accumulatedCellWidth >= maxWidth)
                 {
                     break;
@@ -562,24 +496,19 @@ namespace Spectre.Console.Rendering
             return result;
         }
 
-        internal static List<Segment> TruncateWithEllipsis(IEnumerable<Segment> segments, RenderContext context, int maxWidth)
+        internal static List<Segment> TruncateWithEllipsis(IEnumerable<Segment> segments, int maxWidth)
         {
             if (segments is null)
             {
                 throw new ArgumentNullException(nameof(segments));
             }
 
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            if (CellCount(context, segments) <= maxWidth)
+            if (CellCount(segments) <= maxWidth)
             {
                 return new List<Segment>(segments);
             }
 
-            segments = TrimEnd(Truncate(context, segments, maxWidth - 1));
+            segments = TrimEnd(Truncate(segments, maxWidth - 1));
             if (!segments.Any())
             {
                 return new List<Segment>(1);

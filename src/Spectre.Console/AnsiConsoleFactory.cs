@@ -52,6 +52,7 @@ namespace Spectre.Console
             profile.Capabilities.Links = supportsAnsi && !legacyConsole;
             profile.Capabilities.Legacy = legacyConsole;
             profile.Capabilities.Interactive = interactive;
+            profile.Capabilities.Unicode = encoding.EncodingName.ContainsExact("Unicode");
 
             // Enrich the profile
             ProfileEnricher.Enrich(
@@ -95,7 +96,7 @@ namespace Spectre.Console
                         }
                         else
                         {
-                            // Try detecting whether or not this
+                            // Try detecting whether or not this is a legacy console
                             (_, legacyConsole) = AnsiDetector.Detect(buffer.IsStandardError(), false);
                         }
                     }

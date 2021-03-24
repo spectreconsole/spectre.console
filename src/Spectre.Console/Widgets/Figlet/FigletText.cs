@@ -53,7 +53,7 @@ namespace Spectre.Console
                 {
                     var line = new Segment(string.Concat(row.Select(x => x.Lines[index])), style);
 
-                    var lineWidth = line.CellCount(context);
+                    var lineWidth = line.CellCount();
                     if (alignment == Justify.Left)
                     {
                         yield return line;

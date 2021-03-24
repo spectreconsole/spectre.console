@@ -1,4 +1,5 @@
 using System;
+using Spectre.Console.Internal;
 
 namespace Spectre.Console
 {

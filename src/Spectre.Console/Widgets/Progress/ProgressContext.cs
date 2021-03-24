@@ -52,7 +52,7 @@ namespace Spectre.Console
         public void Refresh()
         {
             _renderer.Update(this);
-            _console.Render(new ControlSequence(string.Empty));
+            _console.Write(new ControlSequence(string.Empty));
         }
 
         internal IReadOnlyList<ProgressTask> GetTasks()

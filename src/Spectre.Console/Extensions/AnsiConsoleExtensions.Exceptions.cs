@@ -15,7 +15,7 @@ namespace Spectre.Console
         /// <param name="format">The exception format options.</param>
         public static void WriteException(this IAnsiConsole console, Exception exception, ExceptionFormats format = ExceptionFormats.Default)
         {
-            Render(console, exception.GetRenderable(format));
+            console.Write(exception.GetRenderable(format));
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace Spectre.Console
         /// <param name="settings">The exception settings.</param>
         public static void WriteException(this IAnsiConsole console, Exception exception, ExceptionSettings settings)
         {
-            Render(console, exception.GetRenderable(settings));
+            console.Write(exception.GetRenderable(settings));
         }
     }
 }

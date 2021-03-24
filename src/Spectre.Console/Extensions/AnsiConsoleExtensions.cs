@@ -1,5 +1,4 @@
 using System;
-using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
@@ -22,30 +21,10 @@ namespace Spectre.Console
         /// Writes the specified string value to the console.
         /// </summary>
         /// <param name="console">The console to write to.</param>
-        /// <param name="segment">The segment to write.</param>
-        public static void Write(this IAnsiConsole console, Segment segment)
-        {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
-
-            if (segment is null)
-            {
-                throw new ArgumentNullException(nameof(segment));
-            }
-
-            console.Write(new[] { segment });
-        }
-
-        /// <summary>
-        /// Writes the specified string value to the console.
-        /// </summary>
-        /// <param name="console">The console to write to.</param>
         /// <param name="text">The text to write.</param>
         public static void Write(this IAnsiConsole console, string text)
         {
-            Render(console, new Text(text, Style.Plain));
+            console.Write(new Text(text, Style.Plain));
         }
 
         /// <summary>
@@ -56,7 +35,7 @@ namespace Spectre.Console
         /// <param name="style">The text style.</param>
         public static void Write(this IAnsiConsole console, string text, Style style)
         {
-            Render(console, new Text(text, style));
+            console.Write(new Text(text, style));
         }
 
         /// <summary>
@@ -70,7 +49,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(console));
             }
 
-            Render(console, new Text(Environment.NewLine, Style.Plain));
+            console.Write(new Text(Environment.NewLine, Style.Plain));
         }
 
         /// <summary>

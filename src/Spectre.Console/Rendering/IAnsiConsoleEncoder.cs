@@ -9,10 +9,11 @@ namespace Spectre.Console.Rendering
     public interface IAnsiConsoleEncoder
     {
         /// <summary>
-        /// Encodes the specified segments.
+        /// Encodes the specified <see cref="IRenderable"/> enumerator.
         /// </summary>
-        /// <param name="segments">The segments to encode.</param>
-        /// <returns>The encoded string.</returns>
-        string Encode(IEnumerable<Segment> segments);
+        /// <param name="console">The console to use when encoding.</param>
+        /// <param name="renderable">The renderable objects to encode.</param>
+        /// <returns>A string representing the encoded result.</returns>
+        string Encode(IAnsiConsole console, IEnumerable<IRenderable> renderable);
     }
 }

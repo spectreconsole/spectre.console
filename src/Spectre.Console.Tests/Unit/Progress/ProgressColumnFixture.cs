@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+using System;
 using Spectre.Console.Rendering;
 using Spectre.Console.Testing;
 
@@ -21,8 +20,8 @@ namespace Spectre.Console.Tests.Unit
         public string Render()
         {
             var console = new FakeConsole();
-            var context = new RenderContext(Encoding.UTF8, false);
-            console.Render(Column.Render(context, Task, TimeSpan.Zero));
+            var context = new RenderContext(console.Profile.Capabilities);
+            console.Write(Column.Render(context, Task, TimeSpan.Zero));
             return console.Output;
         }
     }

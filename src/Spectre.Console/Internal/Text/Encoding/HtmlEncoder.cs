@@ -3,52 +3,57 @@ using System.Collections.Generic;
 using System.Text;
 using Spectre.Console.Rendering;
 
-namespace Spectre.Console
+namespace Spectre.Console.Internal
 {
     internal sealed class HtmlEncoder : IAnsiConsoleEncoder
     {
-        public string Encode(IEnumerable<Segment> segments)
+        public string Encode(IAnsiConsole console, IEnumerable<IRenderable> renderables)
         {
+            var context = new RenderContext(EncoderCapabilities.Default);
             var builder = new StringBuilder();
 
             builder.Append("<pre style=\"font-size:90%;font-family:consolas,'Courier New',monospace\">\n");
 
-            foreach (var (_, first, _, segment) in segments.Enumerate())
+            foreach (var renderable in renderables)
             {
-                if (segment.IsControlCode)
+                var segments = renderable.Render(context, console.Profile.Width);
+                foreach (var (_, first, _, segment) in segments.Enumerate())
                 {
-                    continue;
-                }
-
-                if (segment.Text == "\n" && !first)
-                {
-                    builder.Append('\n');
-                    continue;
-                }
-
-                var parts = segment.Text.Split(new[] { '\n' }, StringSplitOptions.None);
-                foreach (var (_, _, last, line) in parts.Enumerate())
-                {
-                    if (string.IsNullOrEmpty(line))
+                    if (segment.IsControlCode)
                     {
                         continue;
                     }
 
-                    builder.Append("<span");
-                    if (!segment.Style.Equals(Style.Plain))
-                    {
-                        builder.Append(" style=\"");
-                        builder.Append(BuildCss(segment.Style));
-                        builder.Append('"');
-                    }
-
-                    builder.Append('>');
-                    builder.Append(line);
-                    builder.Append("</span>");
-
-                    if (parts.Length > 1 && !last)
+                    if (segment.Text == "\n" && !first)
                     {
                         builder.Append('\n');
+                        continue;
+                    }
+
+                    var parts = segment.Text.Split(new[] { '\n' }, StringSplitOptions.None);
+                    foreach (var (_, _, last, line) in parts.Enumerate())
+                    {
+                        if (string.IsNullOrEmpty(line))
+                        {
+                            continue;
+                        }
+
+                        builder.Append("<span");
+                        if (!segment.Style.Equals(Style.Plain))
+                        {
+                            builder.Append(" style=\"");
+                            builder.Append(BuildCss(segment.Style));
+                            builder.Append('"');
+                        }
+
+                        builder.Append('>');
+                        builder.Append(line);
+                        builder.Append("</span>");
+
+                        if (parts.Length > 1 && !last)
+                        {
+                            builder.Append('\n');
+                        }
                     }
                 }
             }

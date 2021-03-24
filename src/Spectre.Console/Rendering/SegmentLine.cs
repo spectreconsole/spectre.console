@@ -16,16 +16,10 @@ namespace Spectre.Console.Rendering
         /// <summary>
         /// Gets the number of cells the segment line occupies.
         /// </summary>
-        /// <param name="context">The render context.</param>
         /// <returns>The cell width of the segment line.</returns>
-        public int CellCount(RenderContext context)
+        public int CellCount()
         {
-            if (context is null)
-            {
-                throw new System.ArgumentNullException(nameof(context));
-            }
-
-            return Segment.CellCount(context, this);
+            return Segment.CellCount(this);
         }
 
         /// <summary>

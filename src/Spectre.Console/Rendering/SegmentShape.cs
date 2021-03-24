@@ -28,7 +28,7 @@ namespace Spectre.Console.Rendering
             }
 
             var height = lines.Count;
-            var width = lines.Max(l => Segment.CellCount(context, l));
+            var width = lines.Max(l => Segment.CellCount(l));
 
             return new SegmentShape(width, height);
         }
@@ -44,7 +44,7 @@ namespace Spectre.Console.Rendering
         {
             foreach (var line in lines)
             {
-                var length = Segment.CellCount(context, line);
+                var length = Segment.CellCount(line);
                 var missing = Width - length;
                 if (missing > 0)
                 {

@@ -39,7 +39,7 @@ namespace Spectre.Console.Tests.Unit
             }
 
             // When
-            console.Render(new Columns(cards));
+            console.Write(new Columns(cards));
 
             // Then
             return Verifier.Verify(console.Output);

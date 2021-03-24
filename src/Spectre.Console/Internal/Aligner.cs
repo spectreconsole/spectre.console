@@ -6,14 +6,14 @@ namespace Spectre.Console
 {
     internal static class Aligner
     {
-        public static string Align(RenderContext context, string text, Justify? alignment, int maxWidth)
+        public static string Align(string text, Justify? alignment, int maxWidth)
         {
             if (alignment == null || alignment == Justify.Left)
             {
                 return text;
             }
 
-            var width = Cell.GetCellLength(context, text);
+            var width = Cell.GetCellLength(text);
             if (width >= maxWidth)
             {
                 return text;
@@ -57,7 +57,7 @@ namespace Spectre.Console
                 return;
             }
 
-            var width = Segment.CellCount(context, segments);
+            var width = Segment.CellCount(segments);
             if (width >= maxWidth)
             {
                 return;

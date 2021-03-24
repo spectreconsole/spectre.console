@@ -50,7 +50,7 @@ namespace Spectre.Console.Tests.Unit
             canvas.SetPixel(4, 4, Color.Yellow);
 
             // When
-            console.Render(canvas);
+            console.Write(canvas);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -67,7 +67,7 @@ namespace Spectre.Console.Tests.Unit
                 .SetPixel(1, 1, Color.Grey));
 
             // When
-            console.Render(panel);
+            console.Write(panel);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -84,7 +84,7 @@ namespace Spectre.Console.Tests.Unit
             canvas.SetPixel(19, 9, Color.Grey);
 
             // When
-            console.Render(canvas);
+            console.Write(canvas);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -101,7 +101,7 @@ namespace Spectre.Console.Tests.Unit
             canvas.SetPixel(19, 9, Color.Aqua);
 
             // When
-            console.Render(canvas);
+            console.Write(canvas);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -117,7 +117,7 @@ namespace Spectre.Console.Tests.Unit
             canvas.SetPixel(19, 1, Color.Grey);
 
             // When
-            console.Render(canvas);
+            console.Write(canvas);
 
             // Then
             console.Output.ShouldBeEmpty();

@@ -23,7 +23,7 @@ namespace Spectre.Console.Tests.Unit
                 .AddCalendarEvent(new DateTime(2020, 10, 12));
 
             // When
-            console.Render(calendar);
+            console.Write(calendar);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -42,7 +42,7 @@ namespace Spectre.Console.Tests.Unit
                 .AddCalendarEvent(new DateTime(2020, 10, 12));
 
             // When
-            console.Render(calendar);
+            console.Write(calendar);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -61,7 +61,7 @@ namespace Spectre.Console.Tests.Unit
                 .AddCalendarEvent(new DateTime(2020, 10, 12));
 
             // When
-            console.Render(calendar);
+            console.Write(calendar);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -80,7 +80,7 @@ namespace Spectre.Console.Tests.Unit
                 .AddCalendarEvent(new DateTime(2020, 10, 12));
 
             // When
-            console.Render(calendar);
+            console.Write(calendar);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -99,7 +99,7 @@ namespace Spectre.Console.Tests.Unit
                 .AddCalendarEvent(new DateTime(2020, 10, 12));
 
             // When
-            console.Render(calendar);
+            console.Write(calendar);
 
             // Then
             return Verifier.Verify(console.Output);

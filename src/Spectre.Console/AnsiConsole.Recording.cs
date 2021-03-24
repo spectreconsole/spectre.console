@@ -34,9 +34,9 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Exports all recorded console output as HTML.
+        /// Exports all recorded console output as HTML text.
         /// </summary>
-        /// <returns>The recorded output as HTML.</returns>
+        /// <returns>The recorded output as HTML text.</returns>
         public static string ExportHtml()
         {
             if (_recorder == null)

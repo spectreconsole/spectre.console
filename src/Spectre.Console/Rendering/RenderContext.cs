@@ -1,4 +1,4 @@
-using System.Text;
+using System;
 
 namespace Spectre.Console.Rendering
 {
@@ -7,20 +7,12 @@ namespace Spectre.Console.Rendering
     /// </summary>
     public sealed class RenderContext
     {
-        /// <summary>
-        /// Gets the console's output encoding.
-        /// </summary>
-        public Encoding Encoding { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether or not this a legacy console (i.e. cmd.exe).
-        /// </summary>
-        public bool LegacyConsole { get; }
+        private readonly IReadOnlyCapabilities _capabilities;
 
         /// <summary>
         /// Gets a value indicating whether or not unicode is supported.
         /// </summary>
-        public bool Unicode { get; }
+        public bool Unicode => _capabilities.Unicode;
 
         /// <summary>
         /// Gets the current justification.
@@ -36,20 +28,18 @@ namespace Spectre.Console.Rendering
         /// <summary>
         /// Initializes a new instance of the <see cref="RenderContext"/> class.
         /// </summary>
-        /// <param name="encoding">The console's output encoding.</param>
-        /// <param name="legacyConsole">A value indicating whether or not this a legacy console (i.e. cmd.exe).</param>
-        /// <param name="justification">The justification to use when rendering.</param>
-        public RenderContext(Encoding encoding, bool legacyConsole, Justify? justification = null)
-            : this(encoding, legacyConsole, justification, false)
+        /// <param name="capabilities">The capabilities.</param>
+        /// <param name="justification">The justification.</param>
+        public RenderContext(IReadOnlyCapabilities capabilities, Justify? justification = null)
+            : this(capabilities, justification, false)
         {
         }
 
-        private RenderContext(Encoding encoding, bool legacyConsole, Justify? justification = null, bool singleLine = false)
+        private RenderContext(IReadOnlyCapabilities capabilities, Justify? justification = null, bool singleLine = false)
         {
-            Encoding = encoding ?? throw new System.ArgumentNullException(nameof(encoding));
-            LegacyConsole = legacyConsole;
+            _capabilities = capabilities ?? throw new ArgumentNullException(nameof(capabilities));
+
             Justification = justification;
-            Unicode = Encoding.EncodingName.ContainsExact("Unicode");
             SingleLine = singleLine;
         }
 
@@ -60,7 +50,7 @@ namespace Spectre.Console.Rendering
         /// <returns>A new <see cref="RenderContext"/> instance.</returns>
         public RenderContext WithJustification(Justify? justification)
         {
-            return new RenderContext(Encoding, LegacyConsole, justification);
+            return new RenderContext(_capabilities, justification, SingleLine);
         }
 
         /// <summary>
@@ -75,7 +65,7 @@ namespace Spectre.Console.Rendering
         /// <returns>A new <see cref="RenderContext"/> instance.</returns>
         internal RenderContext WithSingleLine()
         {
-            return new RenderContext(Encoding, LegacyConsole, Justification, true);
+            return new RenderContext(_capabilities, Justification, true);
         }
     }
 }

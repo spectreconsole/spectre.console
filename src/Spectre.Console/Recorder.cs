@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -12,7 +11,7 @@ namespace Spectre.Console
     public class Recorder : IAnsiConsole, IDisposable
     {
         private readonly IAnsiConsole _console;
-        private readonly List<Segment> _recorded;
+        private readonly List<IRenderable> _recorded;
 
         /// <inheritdoc/>
         public Profile Profile => _console.Profile;
@@ -30,18 +29,13 @@ namespace Spectre.Console
         public RenderPipeline Pipeline => _console.Pipeline;
 
         /// <summary>
-        /// Gets a list containing all recorded segments.
-        /// </summary>
-        protected List<Segment> Recorded => _recorded;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Recorder"/> class.
         /// </summary>
         /// <param name="console">The console to record output for.</param>
         public Recorder(IAnsiConsole console)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
-            _recorded = new List<Segment>();
+            _recorded = new List<IRenderable>();
         }
 
         /// <inheritdoc/>
@@ -58,32 +52,23 @@ namespace Spectre.Console
         }
 
         /// <inheritdoc/>
-        public void Write(IEnumerable<Segment> segments)
+        public void Write(IRenderable renderable)
         {
-            if (segments is null)
+            if (renderable is null)
             {
-                throw new ArgumentNullException(nameof(segments));
+                throw new ArgumentNullException(nameof(renderable));
             }
 
-            Record(segments);
+            _recorded.Add(renderable);
 
-            _console.Write(segments);
+            _console.Write(renderable);
         }
 
         internal Recorder Clone(IAnsiConsole console)
         {
             var recorder = new Recorder(console);
-            recorder.Recorded.AddRange(Recorded);
+            recorder._recorded.AddRange(_recorded);
             return recorder;
-        }
-
-        /// <summary>
-        /// Records the specified segments.
-        /// </summary>
-        /// <param name="segments">The segments to be recorded.</param>
-        protected virtual void Record(IEnumerable<Segment> segments)
-        {
-            Recorded.AddRange(segments.Where(s => !s.IsControlCode));
         }
 
         /// <summary>
@@ -98,7 +83,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(encoder));
             }
 
-            return encoder.Encode(_recorded);
+            return encoder.Encode(_console, _recorded);
         }
     }
 }

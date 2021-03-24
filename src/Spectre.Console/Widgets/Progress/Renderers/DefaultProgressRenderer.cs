@@ -42,7 +42,7 @@ namespace Spectre.Console
             {
                 if (clear)
                 {
-                    _console.Render(_live.RestoreCursor());
+                    _console.Write(_live.RestoreCursor());
                 }
                 else
                 {
@@ -62,7 +62,7 @@ namespace Spectre.Console
                     _stopwatch.Start();
                 }
 
-                var renderContext = new RenderContext(_console.Profile.Encoding, _console.Profile.Capabilities.Legacy);
+                var renderContext = new RenderContext(_console.Profile.Capabilities);
 
                 var delta = _stopwatch.Elapsed - _lastUpdate;
                 _lastUpdate = _stopwatch.Elapsed;

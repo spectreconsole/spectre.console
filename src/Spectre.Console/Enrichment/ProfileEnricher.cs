@@ -8,7 +8,6 @@ namespace Spectre.Console.Enrichment
     {
         private static readonly List<IProfileEnricher> _defaultEnrichers = new List<IProfileEnricher>
         {
-            new WindowsTerminalEnricher(),
             new AppVeyorEnricher(),
             new BambooEnricher(),
             new BitbucketEnricher(),

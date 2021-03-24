@@ -32,7 +32,7 @@ namespace Spectre.Console
             var width = Math.Min(Width ?? maxWidth, maxWidth);
             var completed = Math.Min(MaxValue, Math.Max(0, Value));
 
-            var token = !context.Unicode || context.LegacyConsole ? AsciiBar : UnicodeBar;
+            var token = !context.Unicode ? AsciiBar : UnicodeBar;
             var style = completed >= MaxValue ? FinishedStyle : CompletedStyle;
 
             var bars = Math.Max(0, (int)(width * (completed / MaxValue)));

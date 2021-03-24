@@ -38,7 +38,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void Markup(this IAnsiConsole console, string value)
         {
-            console.Render(MarkupParser.Parse(value));
+            console.Write(MarkupParser.Parse(value));
         }
 
         /// <summary>
