@@ -5,7 +5,7 @@ namespace Spectre.Console
     /// <summary>
     /// Represents console capabilities.
     /// </summary>
-    public sealed class Capabilities
+    public sealed class Capabilities : IReadOnlyCapabilities
     {
         private readonly Profile _profile;
 
@@ -19,11 +19,6 @@ namespace Spectre.Console
         /// Gets or sets a value indicating whether or not
         /// the console support links.
         /// </summary>
-        /// <remarks>
-        /// There is probably a lot of room for improvement here
-        /// once we have more information about the terminal
-        /// we're running inside.
-        /// </remarks>
         public bool Links { get; set; }
 
         /// <summary>
@@ -37,8 +32,8 @@ namespace Spectre.Console
         public bool Legacy { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether console output
-        /// has been redirected.
+        /// Gets a value indicating whether or not
+        /// console output has been redirected.
         /// </summary>
         public bool Tty
         {
@@ -64,6 +59,12 @@ namespace Spectre.Console
         /// or not the console supports interaction.
         /// </summary>
         public bool Interactive { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether
+        /// or not the console supports Unicode.
+        /// </summary>
+        public bool Unicode { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Capabilities"/> class.

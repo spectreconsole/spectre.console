@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -40,9 +39,9 @@ namespace Spectre.Console
         void Clear(bool home);
 
         /// <summary>
-        /// Writes multiple segments to the console.
+        /// Writes a <see cref="IRenderable"/> to the console.
         /// </summary>
-        /// <param name="segments">The segments to write.</param>
-        void Write(IEnumerable<Segment> segments);
+        /// <param name="renderable">The <see cref="IRenderable"/> to write.</param>
+        void Write(IRenderable renderable);
     }
 }

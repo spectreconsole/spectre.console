@@ -47,7 +47,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().NoBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -89,7 +89,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().AsciiBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -131,7 +131,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().Ascii2Border();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -173,7 +173,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().AsciiDoubleHeadBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -215,7 +215,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().SquareBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -257,7 +257,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().RoundedBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -299,7 +299,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().MinimalBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -341,7 +341,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().MinimalHeavyHeadBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -383,7 +383,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().MinimalDoubleHeadBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -425,7 +425,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().SimpleBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -467,7 +467,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().HorizontalBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -509,7 +509,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().SimpleHeavyBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -551,7 +551,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().HeavyBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -593,7 +593,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().HeavyEdgeBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -635,7 +635,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().HeavyHeadBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -677,7 +677,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().DoubleBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -719,7 +719,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().DoubleEdgeBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -761,7 +761,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable().MarkdownBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -776,7 +776,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable(header2: Justify.Left).MarkdownBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -791,7 +791,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable(header2: Justify.Center).MarkdownBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -806,7 +806,7 @@ namespace Spectre.Console.Tests.Unit
                 var table = Fixture.GetTable(header2: Justify.Right).MarkdownBorder();
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);

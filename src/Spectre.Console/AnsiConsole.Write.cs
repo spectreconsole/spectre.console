@@ -14,7 +14,7 @@ namespace Spectre.Console
         /// <param name="value">The value to write.</param>
         public static void Write(string value)
         {
-            Console.Write(value, CurrentStyle);
+            Write(value, CurrentStyle);
         }
 
         /// <summary>

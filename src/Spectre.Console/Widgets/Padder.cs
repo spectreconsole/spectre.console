@@ -70,7 +70,7 @@ namespace Spectre.Console
             }
 
             var child = _child.Render(context, maxWidth - paddingWidth);
-            foreach (var (_, _, _, line) in Segment.SplitLines(context, child).Enumerate())
+            foreach (var line in Segment.SplitLines(child))
             {
                 // Left padding
                 if (Padding.GetLeftSafe() != 0)
@@ -87,7 +87,7 @@ namespace Spectre.Console
                 }
 
                 // Missing space on right side?
-                var lineWidth = line.CellCount(context);
+                var lineWidth = line.CellCount();
                 var diff = width - lineWidth - Padding.GetLeftSafe() - Padding.GetRightSafe();
                 if (diff > 0)
                 {

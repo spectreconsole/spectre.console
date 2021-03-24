@@ -66,7 +66,7 @@ namespace Spectre.Console.Tests.Unit
             var markup = new Markup("Hello [[ World ]] !");
 
             // When
-            console.Render(markup);
+            console.Write(markup);
 
             // Then
             console.Output.ShouldBe("Hello [ World ] !");
@@ -82,7 +82,7 @@ namespace Spectre.Console.Tests.Unit
             var markup = new Markup(input);
 
             // When
-            console.Render(markup);
+            console.Write(markup);
 
             // Then
             console.Output.ShouldBe(output);

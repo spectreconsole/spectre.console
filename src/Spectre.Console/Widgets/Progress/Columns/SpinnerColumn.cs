@@ -101,7 +101,7 @@ namespace Spectre.Console
         /// <inheritdoc/>
         public override IRenderable Render(RenderContext context, ProgressTask task, TimeSpan deltaTime)
         {
-            var useAscii = (context.LegacyConsole || !context.Unicode) && _spinner.IsUnicode;
+            var useAscii = !context.Unicode && _spinner.IsUnicode;
             var spinner = useAscii ? Spinner.Known.Ascii : _spinner ?? Spinner.Known.Default;
 
             if (!task.IsStarted)
@@ -138,14 +138,14 @@ namespace Spectre.Console
             {
                 if (_maxWidth == null)
                 {
-                    var useAscii = (context.LegacyConsole || !context.Unicode) && _spinner.IsUnicode;
+                    var useAscii = !context.Unicode && _spinner.IsUnicode;
                     var spinner = useAscii ? Spinner.Known.Ascii : _spinner ?? Spinner.Known.Default;
 
                     _maxWidth = Math.Max(
                         Math.Max(
                         ((IRenderable)new Markup(PendingText ?? " ")).Measure(context, int.MaxValue).Max,
                         ((IRenderable)new Markup(CompletedText ?? " ")).Measure(context, int.MaxValue).Max),
-                        spinner.Frames.Max(frame => Cell.GetCellLength(context, frame)));
+                        spinner.Frames.Max(frame => Cell.GetCellLength(frame)));
                 }
 
                 return _maxWidth.Value;

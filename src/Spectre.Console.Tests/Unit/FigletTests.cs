@@ -20,7 +20,7 @@ namespace Spectre.Console.Tests.Unit
             var text = new FigletText(font, "Patrik was here");
 
             // When
-            console.Render(text);
+            console.Write(text);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -35,7 +35,7 @@ namespace Spectre.Console.Tests.Unit
             var text = new FigletText(FigletFont.Default, "Patrik was here");
 
             // When
-            console.Render(text);
+            console.Write(text);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -50,7 +50,7 @@ namespace Spectre.Console.Tests.Unit
             var text = new FigletText(FigletFont.Default, "Spectre.Console");
 
             // When
-            console.Render(text);
+            console.Write(text);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -66,7 +66,7 @@ namespace Spectre.Console.Tests.Unit
                 .Alignment(Justify.Left);
 
             // When
-            console.Render(text);
+            console.Write(text);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -82,7 +82,7 @@ namespace Spectre.Console.Tests.Unit
                 .Alignment(Justify.Center);
 
             // When
-            console.Render(text);
+            console.Write(text);
 
             // Then
             await Verifier.Verify(console.Output);
@@ -98,7 +98,7 @@ namespace Spectre.Console.Tests.Unit
                 .Alignment(Justify.Right);
 
             // When
-            console.Render(text);
+            console.Write(text);
 
             // Then
             await Verifier.Verify(console.Output);

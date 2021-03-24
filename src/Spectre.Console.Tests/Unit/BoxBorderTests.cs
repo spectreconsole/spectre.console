@@ -37,7 +37,7 @@ namespace Spectre.Console.Tests.Unit
                 var panel = Fixture.GetPanel().NoBorder();
 
                 // When
-                console.Render(panel);
+                console.Write(panel);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -69,7 +69,7 @@ namespace Spectre.Console.Tests.Unit
                 var panel = Fixture.GetPanel().AsciiBorder();
 
                 // When
-                console.Render(panel);
+                console.Write(panel);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -101,7 +101,7 @@ namespace Spectre.Console.Tests.Unit
                 var panel = Fixture.GetPanel().DoubleBorder();
 
                 // When
-                console.Render(panel);
+                console.Write(panel);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -133,7 +133,7 @@ namespace Spectre.Console.Tests.Unit
                 var panel = Fixture.GetPanel().HeavyBorder();
 
                 // When
-                console.Render(panel);
+                console.Write(panel);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -162,7 +162,7 @@ namespace Spectre.Console.Tests.Unit
                 var panel = Fixture.GetPanel().RoundedBorder();
 
                 // When
-                console.Render(panel);
+                console.Write(panel);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -191,7 +191,7 @@ namespace Spectre.Console.Tests.Unit
                 var panel = Fixture.GetPanel().SquareBorder();
 
                 // When
-                console.Render(panel);
+                console.Write(panel);
 
                 // Then
                 return Verifier.Verify(console.Output);

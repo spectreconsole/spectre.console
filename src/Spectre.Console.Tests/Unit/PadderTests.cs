@@ -23,7 +23,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Corgi", "Waldo");
 
             // When
-            console.Render(new Padder(table).Padding(1, 2, 3, 4));
+            console.Write(new Padder(table).Padding(1, 2, 3, 4));
 
             // Then
             return Verifier.Verify(console.Output);
@@ -42,7 +42,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Corgi", "Waldo");
 
             // When
-            console.Render(new Padder(table)
+            console.Write(new Padder(table)
                 .Padding(1, 2, 3, 4)
                 .Expand());
 
@@ -64,7 +64,7 @@ namespace Spectre.Console.Tests.Unit
                 .Padding(2, 1));
 
             // When
-            console.Render(new Padder(table)
+            console.Write(new Padder(table)
                 .Padding(1, 2, 3, 4)
                 .Expand());
 

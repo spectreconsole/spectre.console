@@ -18,7 +18,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole();
             var recorder = new Recorder(console);
 
-            recorder.Render(new Table()
+            recorder.Write(new Table()
                 .AddColumns("Foo", "Bar", "Qux")
                 .AddRow("Corgi", "Waldo", "Zap")
                 .AddRow(new Panel("Hello World").RoundedBorder()));
@@ -32,13 +32,13 @@ namespace Spectre.Console.Tests.Unit
 
         [Fact]
         [Expectation("Html")]
-        public Task Should_Export_Html_As_Expected()
+        public Task Should_Export_Html_Text_As_Expected()
         {
             // Given
             var console = new FakeConsole();
             var recorder = new Recorder(console);
 
-            recorder.Render(new Table()
+            recorder.Write(new Table()
                 .AddColumns("[red on black]Foo[/]", "[green bold]Bar[/]", "[blue italic]Qux[/]")
                 .AddRow("[invert underline]Corgi[/]", "[bold strikethrough]Waldo[/]", "[dim]Zap[/]")
                 .AddRow(new Panel("[blue]Hello World[/]")

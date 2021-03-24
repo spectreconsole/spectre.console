@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -19,13 +18,14 @@ namespace Spectre.Console
         public AnsiConsoleFacade(Profile profile, IExclusivityMode exclusivityMode)
         {
             _renderLock = new object();
-            _ansiBackend = new AnsiConsoleBackend(profile);
-            _legacyBackend = new LegacyConsoleBackend(profile);
 
             Profile = profile ?? throw new ArgumentNullException(nameof(profile));
             Input = new DefaultInput(Profile);
             ExclusivityMode = exclusivityMode ?? throw new ArgumentNullException(nameof(exclusivityMode));
             Pipeline = new RenderPipeline();
+
+            _ansiBackend = new AnsiConsoleBackend(this);
+            _legacyBackend = new LegacyConsoleBackend(this);
         }
 
         public void Clear(bool home)
@@ -36,11 +36,11 @@ namespace Spectre.Console
             }
         }
 
-        public void Write(IEnumerable<Segment> segments)
+        public void Write(IRenderable renderable)
         {
             lock (_renderLock)
             {
-                GetBackend().Render(segments);
+                GetBackend().Write(renderable);
             }
         }
 

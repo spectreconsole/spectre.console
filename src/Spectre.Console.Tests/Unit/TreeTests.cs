@@ -37,7 +37,7 @@ namespace Spectre.Console.Tests.Unit
             tree.AddNode("child4");
 
             // When
-            console.Render(tree);
+            console.Write(tree);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -52,7 +52,7 @@ namespace Spectre.Console.Tests.Unit
             var tree = new Tree(new Text("Root node"));
 
             // When
-            console.Render(tree);
+            console.Write(tree);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -76,7 +76,7 @@ namespace Spectre.Console.Tests.Unit
             tree.AddNodes(root);
 
             // When
-            var result = Record.Exception(() => console.Render(tree));
+            var result = Record.Exception(() => console.Write(tree));
 
             // Then
             result.ShouldBeOfType<CircularTreeException>();

@@ -47,7 +47,7 @@ namespace Spectre.Console
             ShowBorder = _table.Border.Visible;
             HasRows = Rows.Any(row => !row.IsHeader && !row.IsFooter);
             HasFooters = Rows.Any(column => column.IsFooter);
-            Border = table.Border.GetSafeBorder((options.LegacyConsole || !options.Unicode) && table.UseSafeBorder);
+            Border = table.Border.GetSafeBorder(!options.Unicode && table.UseSafeBorder);
             BorderStyle = table.BorderStyle ?? Style.Plain;
 
             TableWidth = tableWidth;

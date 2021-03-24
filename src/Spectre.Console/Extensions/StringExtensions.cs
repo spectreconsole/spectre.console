@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
@@ -60,14 +59,9 @@ namespace Spectre.Console
             return result.ToString();
         }
 
-        internal static int CellLength(this string text, RenderContext context)
+        internal static int CellLength(this string text)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
-            return Cell.GetCellLength(context, text);
+            return Cell.GetCellLength(text);
         }
 
         internal static string CapitalizeFirstLetter(this string? text, CultureInfo? culture = null)

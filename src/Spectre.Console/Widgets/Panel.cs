@@ -78,7 +78,7 @@ namespace Spectre.Console
         {
             var edgeWidth = EdgeWidth;
 
-            var border = BoxExtensions.GetSafeBorder(Border, (context.LegacyConsole || !context.Unicode) && UseSafeBorder);
+            var border = BoxExtensions.GetSafeBorder(Border, !context.Unicode && UseSafeBorder);
             var borderStyle = BorderStyle ?? Style.Plain;
 
             var showBorder = true;
@@ -110,7 +110,7 @@ namespace Spectre.Console
 
             // Split the child segments into lines.
             var childSegments = ((IRenderable)child).Render(context, childWidth);
-            foreach (var (_, _, last, line) in Segment.SplitLines(context, childSegments, childWidth).Enumerate())
+            foreach (var (_, _, last, line) in Segment.SplitLines(childSegments, childWidth).Enumerate())
             {
                 if (line.Count == 1 && line[0].IsWhiteSpace)
                 {
@@ -128,7 +128,7 @@ namespace Spectre.Console
                 content.AddRange(line);
 
                 // Do we need to pad the panel?
-                var length = line.Sum(segment => segment.CellCount(context));
+                var length = line.Sum(segment => segment.CellCount());
                 if (length < childWidth)
                 {
                     var diff = childWidth - length;

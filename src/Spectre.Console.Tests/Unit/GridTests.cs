@@ -96,7 +96,7 @@ namespace Spectre.Console.Tests.Unit
                 grid.AddEmptyRow();
 
                 // When
-                console.Render(grid);
+                console.Write(grid);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -117,7 +117,7 @@ namespace Spectre.Console.Tests.Unit
             grid.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(grid);
+            console.Write(grid);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -136,7 +136,7 @@ namespace Spectre.Console.Tests.Unit
             grid.AddRow("  [blue]-c[/], [blue]--configuration[/]", "The configuration to run for.\nThe default for most projects is [green]Debug[/].");
 
             // When
-            console.Render(grid);
+            console.Write(grid);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -157,7 +157,7 @@ namespace Spectre.Console.Tests.Unit
             grid.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(grid);
+            console.Write(grid);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -176,7 +176,7 @@ namespace Spectre.Console.Tests.Unit
             grid.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(grid);
+            console.Write(grid);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -197,7 +197,7 @@ namespace Spectre.Console.Tests.Unit
             grid.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(grid);
+            console.Write(grid);
 
             // Then
             return Verifier.Verify(console.Output);

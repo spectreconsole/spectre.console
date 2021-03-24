@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Spectre.Console.Rendering;
 
@@ -42,6 +41,7 @@ namespace Spectre.Console.Testing
             });
 
             _console.Profile.Width = width;
+            _console.Profile.Capabilities.Unicode = true;
 
             Input = new FakeConsoleInput();
         }
@@ -56,17 +56,9 @@ namespace Spectre.Console.Testing
             _console.Clear(home);
         }
 
-        public void Write(IEnumerable<Segment> segments)
+        public void Write(IRenderable renderable)
         {
-            if (segments is null)
-            {
-                return;
-            }
-
-            foreach (var segment in segments)
-            {
-                _console.Write(segment);
-            }
+            _console.Write(renderable);
         }
     }
 }

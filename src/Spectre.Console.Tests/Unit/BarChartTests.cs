@@ -18,7 +18,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 80);
 
             // When
-            console.Render(new BarChart()
+            console.Write(new BarChart()
                 .Width(60)
                 .Label("Number of fruits")
                 .AddItem("Apple", 12)
@@ -37,7 +37,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 80);
 
             // When
-            console.Render(new BarChart()
+            console.Write(new BarChart()
                 .Width(60)
                 .Label("Number of fruits")
                 .AddItem("Apple", 0)

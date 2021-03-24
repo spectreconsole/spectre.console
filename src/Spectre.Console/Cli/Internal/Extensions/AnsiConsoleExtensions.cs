@@ -23,7 +23,7 @@ namespace Spectre.Console.Cli
             if (renderable != null)
             {
                 console ??= _console.Value;
-                console.Render(renderable);
+                console.Write(renderable);
             }
         }
 
@@ -34,7 +34,7 @@ namespace Spectre.Console.Cli
             {
                 if (renderable != null)
                 {
-                    console.Render(renderable);
+                    console.Write(renderable);
                 }
             }
         }

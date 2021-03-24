@@ -139,7 +139,7 @@ namespace Spectre.Console.Tests.Unit
                 table.AddRow("Grault", "Garply", "Fred");
 
                 // When
-                console.Render(table);
+                console.Write(table);
 
                 // Then
                 return Verifier.Verify(console.Output);
@@ -158,7 +158,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -178,7 +178,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -197,7 +197,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -216,7 +216,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -235,7 +235,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -255,7 +255,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Grault", "Garply", "Fred");
 
             // Render a table in some panels.
-            console.Render(new Panel(new Panel(table)
+            console.Write(new Panel(new Panel(table)
             {
                 Border = BoxBorder.Ascii,
             }));
@@ -278,7 +278,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Grault", "Garply", "Lorem ipsum dolor sit amet");
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -296,7 +296,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -314,7 +314,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -333,7 +333,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -350,7 +350,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddColumn(new TableColumn("Baz") { Padding = new Padding(3, 0, 2, 0) });
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -388,7 +388,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow(new Markup("[blue]Hej[/]"), new Markup("[yellow]Världen[/]"), Text.Empty);
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -408,7 +408,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -429,7 +429,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -450,7 +450,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -471,7 +471,7 @@ namespace Spectre.Console.Tests.Unit
             table.AddRow("Grault", "Garply", "Fred");
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);

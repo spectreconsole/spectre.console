@@ -91,7 +91,7 @@ namespace Spectre.Console
                 }
 
                 var prefix = levels.Skip(1).ToList();
-                var renderableLines = Segment.SplitLines(context, current.Renderable.Render(context, maxWidth - Segment.CellCount(context, prefix)));
+                var renderableLines = Segment.SplitLines(current.Renderable.Render(context, maxWidth - Segment.CellCount(prefix)));
 
                 foreach (var (_, isFirstLine, _, line) in renderableLines.Enumerate())
                 {
@@ -124,7 +124,7 @@ namespace Spectre.Console
 
         private Segment GetGuide(RenderContext context, TreeGuidePart part)
         {
-            var guide = Guide.GetSafeTreeGuide(context.LegacyConsole || !context.Unicode);
+            var guide = Guide.GetSafeTreeGuide(safe: !context.Unicode);
             return new Segment(guide.GetPart(part), Style ?? Style.Plain);
         }
     }

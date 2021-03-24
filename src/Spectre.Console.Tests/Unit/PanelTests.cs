@@ -20,7 +20,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 80);
 
             // When
-            console.Render(new Panel(new Text("Hello World")));
+            console.Write(new Panel(new Text("Hello World")));
 
             // Then
             return Verifier.Verify(console.Output);
@@ -34,7 +34,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 80);
 
             // When
-            console.Render(new Panel(new Text("Hello World"))
+            console.Write(new Panel(new Text("Hello World"))
             {
                 Padding = new Padding(0, 0, 0, 0),
             });
@@ -51,7 +51,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 80);
 
             // When
-            console.Render(new Panel(new Text("Hello World"))
+            console.Write(new Panel(new Text("Hello World"))
             {
                 Padding = new Padding(3, 1, 5, 2),
             });
@@ -68,7 +68,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 80);
 
             // When
-            console.Render(new Panel("Hello World")
+            console.Write(new Panel("Hello World")
             {
                 Header = new PanelHeader("Greeting"),
                 Expand = true,
@@ -87,7 +87,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 80);
 
             // When
-            console.Render(new Panel("Hello World")
+            console.Write(new Panel("Hello World")
             {
                 Header = new PanelHeader("Greeting").LeftAligned(),
                 Expand = true,
@@ -105,7 +105,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 80);
 
             // When
-            console.Render(new Panel("Hello World")
+            console.Write(new Panel("Hello World")
             {
                 Header = new PanelHeader("Greeting").Centered(),
                 Expand = true,
@@ -123,7 +123,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 80);
 
             // When
-            console.Render(new Panel("Hello World")
+            console.Write(new Panel("Hello World")
             {
                 Header = new PanelHeader("Greeting").RightAligned(),
                 Expand = true,
@@ -141,7 +141,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 10);
 
             // When
-            console.Render(new Panel("Hello World")
+            console.Write(new Panel("Hello World")
             {
                 Header = new PanelHeader("Greeting"),
                 Expand = true,
@@ -159,7 +159,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 80);
 
             // When
-            console.Render(new Panel(new Text(" \n💩\n ")));
+            console.Write(new Panel(new Text(" \n💩\n ")));
 
             // Then
             return Verifier.Verify(console.Output);
@@ -173,7 +173,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 80);
 
             // When
-            console.Render(new Panel(new Text("Hello World\nFoo Bar")));
+            console.Write(new Panel(new Text("Hello World\nFoo Bar")));
 
             // Then
             return Verifier.Verify(console.Output);
@@ -189,7 +189,7 @@ namespace Spectre.Console.Tests.Unit
                 new Markup("I heard [underline on blue]you[/] like 📦\n\n\n\nSo I put a 📦 in a 📦"));
 
             // When
-            console.Render(text);
+            console.Write(text);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -203,7 +203,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 80);
 
             // When
-            console.Render(new Panel(new Text("Hello World"))
+            console.Write(new Panel(new Text("Hello World"))
             {
                 Expand = true,
             });
@@ -220,7 +220,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 25);
 
             // When
-            console.Render(
+            console.Write(
                 new Panel(new Text("Hello World").RightAligned())
                 {
                     Expand = true,
@@ -238,7 +238,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 25);
 
             // When
-            console.Render(
+            console.Write(
                 new Panel(new Text("Hello World").Centered())
                 {
                     Expand = true,
@@ -256,7 +256,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 80);
 
             // When
-            console.Render(new Panel(new Panel(new Text("Hello World"))));
+            console.Write(new Panel(new Panel(new Text("Hello World"))));
 
             // Then
             return Verifier.Verify(console.Output);
@@ -281,7 +281,7 @@ namespace Spectre.Console.Tests.Unit
                 .Header("[grey]Short paths[/]");
 
             // When
-            console.Render(panel);
+            console.Write(panel);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -300,7 +300,7 @@ namespace Spectre.Console.Tests.Unit
             var panel = new Panel(table);
 
             // When
-            console.Render(panel);
+            console.Write(panel);
 
             // Then
             return Verifier.Verify(console.Output);

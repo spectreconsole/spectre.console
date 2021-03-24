@@ -1,5 +1,4 @@
 using System;
-using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
@@ -16,11 +15,11 @@ namespace Spectre.Console
         {
             if (show)
             {
-                _backend.Render(new[] { Segment.Control("\u001b[?25h") });
+                _backend.Write(new ControlSequence("\u001b[?25h"));
             }
             else
             {
-                _backend.Render(new[] { Segment.Control("\u001b[?25l") });
+                _backend.Write(new ControlSequence("\u001b[?25l"));
             }
         }
 
@@ -34,23 +33,23 @@ namespace Spectre.Console
             switch (direction)
             {
                 case CursorDirection.Up:
-                    _backend.Render(new[] { Segment.Control($"\u001b[{steps}A") });
+                    _backend.Write(new ControlSequence($"\u001b[{steps}A"));
                     break;
                 case CursorDirection.Down:
-                    _backend.Render(new[] { Segment.Control($"\u001b[{steps}B") });
+                    _backend.Write(new ControlSequence($"\u001b[{steps}B"));
                     break;
                 case CursorDirection.Right:
-                    _backend.Render(new[] { Segment.Control($"\u001b[{steps}C") });
+                    _backend.Write(new ControlSequence($"\u001b[{steps}C"));
                     break;
                 case CursorDirection.Left:
-                    _backend.Render(new[] { Segment.Control($"\u001b[{steps}D") });
+                    _backend.Write(new ControlSequence($"\u001b[{steps}D"));
                     break;
             }
         }
 
         public void SetPosition(int column, int line)
         {
-            _backend.Render(new[] { Segment.Control($"\u001b[{line};{column}H") });
+            _backend.Write(new ControlSequence($"\u001b[{line};{column}H"));
         }
     }
 }

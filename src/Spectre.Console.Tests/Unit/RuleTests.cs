@@ -19,7 +19,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 40);
 
             // When
-            console.Render(new Rule());
+            console.Write(new Rule());
 
             // Then
             return Verifier.Verify(console.Output);
@@ -33,7 +33,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 40);
 
             // When
-            console.Render(new Rule().DoubleBorder());
+            console.Write(new Rule().DoubleBorder());
 
             // Then
             return Verifier.Verify(console.Output);
@@ -47,7 +47,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 40);
 
             // When
-            console.Render(new Rule("Hello World").DoubleBorder());
+            console.Write(new Rule("Hello World").DoubleBorder());
 
             // Then
             return Verifier.Verify(console.Output);
@@ -61,7 +61,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 40);
 
             // When
-            console.Render(new Rule("Hello World"));
+            console.Write(new Rule("Hello World"));
 
             // Then
             return Verifier.Verify(console.Output);
@@ -75,7 +75,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 40);
 
             // When
-            console.Render(new Rule("Hello World")
+            console.Write(new Rule("Hello World")
             {
                 Alignment = Justify.Left,
             });
@@ -92,7 +92,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 40);
 
             // When
-            console.Render(new Rule("Hello World")
+            console.Write(new Rule("Hello World")
             {
                 Alignment = Justify.Right,
             });
@@ -109,7 +109,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 40);
 
             // When
-            console.Render(new Rule("Hello\nWorld\r\n!"));
+            console.Write(new Rule("Hello\nWorld\r\n!"));
 
             // Then
             return Verifier.Verify(console.Output);
@@ -123,7 +123,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 40);
 
             // When
-            console.Render(new Rule("          Hello World    "));
+            console.Write(new Rule("          Hello World    "));
 
             // Then
             return Verifier.Verify(console.Output);
@@ -149,7 +149,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width);
 
             // When
-            console.Render(new Rule(input));
+            console.Write(new Rule(input));
 
             // Then
             console.Lines.Count.ShouldBe(1);

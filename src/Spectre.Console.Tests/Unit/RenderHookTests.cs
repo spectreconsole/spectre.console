@@ -25,7 +25,7 @@ namespace Spectre.Console.Tests.Unit
             console.Pipeline.Attach(new HelloRenderHook());
 
             // When
-            console.Render(new Text("World"));
+            console.Write(new Text("World"));
 
             // Then
             console.Lines[0].ShouldBe("Hello");

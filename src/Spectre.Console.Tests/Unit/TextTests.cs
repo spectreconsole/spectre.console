@@ -1,4 +1,3 @@
-using System.Text;
 using Shouldly;
 using Spectre.Console.Rendering;
 using Spectre.Console.Testing;
@@ -12,10 +11,11 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Consider_The_Longest_Word_As_Minimum_Width()
         {
             // Given
+            var caps = new FakeCapabilities { Unicode = true };
             var text = new Text("Foo Bar Baz\nQux\nLol mobile");
 
             // When
-            var result = ((IRenderable)text).Measure(new RenderContext(Encoding.Unicode, false), 80);
+            var result = ((IRenderable)text).Measure(new RenderContext(caps), 80);
 
             // Then
             result.Min.ShouldBe(6);
@@ -25,10 +25,11 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Consider_The_Longest_Line_As_Maximum_Width()
         {
             // Given
+            var caps = new FakeCapabilities { Unicode = true };
             var text = new Text("Foo Bar Baz\nQux\nLol mobile");
 
             // When
-            var result = ((IRenderable)text).Measure(new RenderContext(Encoding.Unicode, false), 80);
+            var result = ((IRenderable)text).Measure(new RenderContext(caps), 80);
 
             // Then
             result.Max.ShouldBe(11);
@@ -42,7 +43,7 @@ namespace Spectre.Console.Tests.Unit
             var text = new Text("Hello World");
 
             // When
-            console.Render(text);
+            console.Write(text);
 
             // Then
             console.Output.ShouldBe("Hello World");
@@ -58,7 +59,7 @@ namespace Spectre.Console.Tests.Unit
             var text = new Text(input);
 
             // When
-            console.Render(text);
+            console.Write(text);
 
             // Then
             console.Output.ShouldBe("Hello\n\nWorld\n\n");
@@ -71,7 +72,7 @@ namespace Spectre.Console.Tests.Unit
             var console = new FakeConsole(width: 80);
 
             // When
-            console.Render(new Markup("[b]Hello World[/]\n[yellow]Hello World[/]"));
+            console.Write(new Markup("[b]Hello World[/]\n[yellow]Hello World[/]"));
 
             // Then
             console.Lines.Count.ShouldBe(2);
@@ -90,7 +91,7 @@ namespace Spectre.Console.Tests.Unit
             var text = new Text(input);
 
             // When
-            console.Render(text);
+            console.Write(text);
 
             // Then
             console.Output
@@ -110,7 +111,7 @@ namespace Spectre.Console.Tests.Unit
                 .Overflow(overflow);
 
             // When
-            console.Render(text);
+            console.Write(text);
 
             // Then
             console.Output

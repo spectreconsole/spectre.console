@@ -43,12 +43,7 @@ namespace Spectre.Console
             get => _out;
             set
             {
-                if (value == null)
-                {
-                    throw new InvalidOperationException("Output buffer cannot be null");
-                }
-
-                _out = value;
+                _out = value ?? throw new InvalidOperationException("Output buffer cannot be null");
 
                 // Reset the width and height if not a TTY.
                 if (!Capabilities.Tty)
@@ -129,12 +124,7 @@ namespace Spectre.Console
             get => _capabilities;
             set
             {
-                if (value == null)
-                {
-                    throw new InvalidOperationException("Profile capabilities cannot be null");
-                }
-
-                _capabilities = value;
+                _capabilities = value ?? throw new InvalidOperationException("Profile capabilities cannot be null");
             }
         }
 

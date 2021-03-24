@@ -59,10 +59,10 @@ namespace Spectre.Console
 
             // Get the title and make sure it fits.
             var title = GetTitleSegments(context, Title, maxWidth - extraLength);
-            if (Segment.CellCount(context, title) > maxWidth - extraLength)
+            if (Segment.CellCount(title) > maxWidth - extraLength)
             {
                 // Truncate the title
-                title = Segment.TruncateWithEllipsis(title, context, maxWidth - extraLength);
+                title = Segment.TruncateWithEllipsis(title, maxWidth - extraLength);
                 if (!title.Any())
                 {
                     // We couldn't fit the title at all.
@@ -83,7 +83,7 @@ namespace Spectre.Console
 
         private IEnumerable<Segment> GetLineWithoutTitle(RenderContext context, int maxWidth)
         {
-            var border = Border.GetSafeBorder(context.LegacyConsole || !context.Unicode);
+            var border = Border.GetSafeBorder(safe: !context.Unicode);
             var text = border.GetPart(BoxBorderPart.Top).Repeat(maxWidth);
 
             return new[]
@@ -102,9 +102,9 @@ namespace Spectre.Console
 
         private (Segment Left, Segment Right) GetLineSegments(RenderContext context, int width, IEnumerable<Segment> title)
         {
-            var titleLength = Segment.CellCount(context, title);
+            var titleLength = Segment.CellCount(title);
 
-            var border = Border.GetSafeBorder(context.LegacyConsole || !context.Unicode);
+            var border = Border.GetSafeBorder(safe: !context.Unicode);
             var borderPart = border.GetPart(BoxBorderPart.Top);
 
             var alignment = Alignment ?? Justify.Center;
@@ -112,7 +112,7 @@ namespace Spectre.Console
             {
                 var left = new Segment(borderPart.Repeat(TitlePadding) + new string(' ', TitleSpacing), Style ?? Style.Plain);
 
-                var rightLength = width - titleLength - left.CellCount(context) - TitleSpacing;
+                var rightLength = width - titleLength - left.CellCount() - TitleSpacing;
                 var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(rightLength), Style ?? Style.Plain);
 
                 return (left, right);
@@ -122,7 +122,7 @@ namespace Spectre.Console
                 var leftLength = ((width - titleLength) / 2) - TitleSpacing;
                 var left = new Segment(borderPart.Repeat(leftLength) + new string(' ', TitleSpacing), Style ?? Style.Plain);
 
-                var rightLength = width - titleLength - left.CellCount(context) - TitleSpacing;
+                var rightLength = width - titleLength - left.CellCount() - TitleSpacing;
                 var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(rightLength), Style ?? Style.Plain);
 
                 return (left, right);
@@ -131,7 +131,7 @@ namespace Spectre.Console
             {
                 var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(TitlePadding), Style ?? Style.Plain);
 
-                var leftLength = width - titleLength - right.CellCount(context) - TitleSpacing;
+                var leftLength = width - titleLength - right.CellCount() - TitleSpacing;
                 var left = new Segment(borderPart.Repeat(leftLength) + new string(' ', TitleSpacing), Style ?? Style.Plain);
 
                 return (left, right);

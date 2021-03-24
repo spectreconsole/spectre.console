@@ -33,7 +33,7 @@ namespace Spectre.Console
                     var justification = context.Columns[columnIndex].Alignment;
                     var childContext = context.Options.WithJustification(justification);
 
-                    var lines = Segment.SplitLines(context.Options, cell.Render(childContext, rowWidth));
+                    var lines = Segment.SplitLines(cell.Render(childContext, rowWidth));
                     cellHeight = Math.Max(cellHeight, lines.Count);
                     cells.Add(lines);
                 }
@@ -41,7 +41,7 @@ namespace Spectre.Console
                 // Show top of header?
                 if (isFirstRow && context.ShowBorder)
                 {
-                    var separator = Aligner.Align(context.Options, context.Border.GetColumnRow(TablePart.Top, columnWidths, context.Columns), context.Alignment, context.MaxWidth);
+                    var separator = Aligner.Align(context.Border.GetColumnRow(TablePart.Top, columnWidths, context.Columns), context.Alignment, context.MaxWidth);
                     result.Add(new Segment(separator, context.BorderStyle));
                     result.Add(Segment.LineBreak);
                 }
@@ -52,7 +52,7 @@ namespace Spectre.Console
                     var textBorder = context.Border.GetColumnRow(TablePart.FooterSeparator, columnWidths, context.Columns);
                     if (!string.IsNullOrEmpty(textBorder))
                     {
-                        var separator = Aligner.Align(context.Options, textBorder, context.Alignment, context.MaxWidth);
+                        var separator = Aligner.Align(textBorder, context.Alignment, context.MaxWidth);
                         result.Add(new Segment(separator, context.BorderStyle));
                         result.Add(Segment.LineBreak);
                     }
@@ -89,7 +89,7 @@ namespace Spectre.Console
                         rowResult.AddRange(cell[cellRowIndex]);
 
                         // Pad cell content right
-                        var length = cell[cellRowIndex].Sum(segment => segment.CellCount(context.Options));
+                        var length = cell[cellRowIndex].Sum(segment => segment.CellCount());
                         if (length < columnWidths[cellIndex])
                         {
                             rowResult.Add(new Segment(new string(' ', columnWidths[cellIndex] - length)));
@@ -123,9 +123,9 @@ namespace Spectre.Console
                     Aligner.Align(context.Options, rowResult, context.Alignment, context.MaxWidth);
 
                     // Is the row larger than the allowed max width?
-                    if (Segment.CellCount(context.Options, rowResult) > context.MaxWidth)
+                    if (Segment.CellCount(rowResult) > context.MaxWidth)
                     {
-                        result.AddRange(Segment.Truncate(context.Options, rowResult, context.MaxWidth));
+                        result.AddRange(Segment.Truncate(rowResult, context.MaxWidth));
                     }
                     else
                     {
@@ -138,7 +138,7 @@ namespace Spectre.Console
                 // Show header separator?
                 if (isFirstRow && context.ShowBorder && context.ShowHeaders && context.HasRows)
                 {
-                    var separator = Aligner.Align(context.Options, context.Border.GetColumnRow(TablePart.HeaderSeparator, columnWidths, context.Columns), context.Alignment, context.MaxWidth);
+                    var separator = Aligner.Align(context.Border.GetColumnRow(TablePart.HeaderSeparator, columnWidths, context.Columns), context.Alignment, context.MaxWidth);
                     result.Add(new Segment(separator, context.BorderStyle));
                     result.Add(Segment.LineBreak);
                 }
@@ -146,7 +146,7 @@ namespace Spectre.Console
                 // Show bottom of footer?
                 if (isLastRow && context.ShowBorder)
                 {
-                    var separator = Aligner.Align(context.Options, context.Border.GetColumnRow(TablePart.Bottom, columnWidths, context.Columns), context.Alignment, context.MaxWidth);
+                    var separator = Aligner.Align(context.Border.GetColumnRow(TablePart.Bottom, columnWidths, context.Columns), context.Alignment, context.MaxWidth);
                     result.Add(new Segment(separator, context.BorderStyle));
                     result.Add(Segment.LineBreak);
                 }

@@ -28,7 +28,7 @@ namespace Spectre.Console.Tests.Unit
                 });
 
             // When
-            console.Render(rows);
+            console.Write(rows);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -51,7 +51,7 @@ namespace Spectre.Console.Tests.Unit
                 }), new Text("Qux"));
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);
@@ -74,7 +74,7 @@ namespace Spectre.Console.Tests.Unit
                 }).Expand(), new Text("Qux"));
 
             // When
-            console.Render(table);
+            console.Write(table);
 
             // Then
             return Verifier.Verify(console.Output);

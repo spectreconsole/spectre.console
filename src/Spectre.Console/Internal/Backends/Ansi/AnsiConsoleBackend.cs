@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using Spectre.Console.Rendering;
 
@@ -8,21 +7,21 @@ namespace Spectre.Console
     internal sealed class AnsiConsoleBackend : IAnsiConsoleBackend
     {
         private readonly AnsiBuilder _builder;
-        private readonly Profile _profile;
+        private readonly IAnsiConsole _console;
 
         public IAnsiConsoleCursor Cursor { get; }
 
-        public AnsiConsoleBackend(Profile profile)
+        public AnsiConsoleBackend(IAnsiConsole console)
         {
-            _profile = profile ?? throw new ArgumentNullException(nameof(profile));
-            _builder = new AnsiBuilder(profile);
+            _console = console ?? throw new ArgumentNullException(nameof(console));
+            _builder = new AnsiBuilder(_console.Profile);
 
             Cursor = new AnsiConsoleCursor(this);
         }
 
         public void Clear(bool home)
         {
-            Render(new[] { Segment.Control("\u001b[2J") });
+            Write(new ControlSequence("\u001b[2J"));
 
             if (home)
             {
@@ -30,10 +29,10 @@ namespace Spectre.Console
             }
         }
 
-        public void Render(IEnumerable<Segment> segments)
+        public void Write(IRenderable renderable)
         {
             var builder = new StringBuilder();
-            foreach (var segment in segments)
+            foreach (var segment in renderable.GetSegments(_console))
             {
                 if (segment.IsControlCode)
                 {
@@ -58,8 +57,8 @@ namespace Spectre.Console
 
             if (builder.Length > 0)
             {
-                _profile.Out.Write(builder.ToString());
-                _profile.Out.Flush();
+                _console.Profile.Out.Write(builder.ToString());
+                _console.Profile.Out.Flush();
             }
         }
     }
