@@ -44,7 +44,7 @@ namespace Spectre.Console
                     return (true, false);
                 }
 
-                var supportsAnsi = Windows.SupportsAnsi(stdError, upgrade, out var legacyConsole);
+                var supportsAnsi = Windows.SupportsAnsi(upgrade, stdError, out var legacyConsole);
                 return (supportsAnsi, legacyConsole);
             }
 
