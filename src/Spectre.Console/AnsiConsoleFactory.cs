@@ -28,8 +28,8 @@ namespace Spectre.Console
             // Detect if the terminal support ANSI or not
             var (supportsAnsi, legacyConsole) = DetectAnsi(settings, buffer);
 
-            // Use the provided encoding or fall back to UTF-8
-            var encoding = buffer.IsStandardOut() || buffer.IsStandardError() ? System.Console.OutputEncoding : Encoding.UTF8;
+            // Use console encoding or fall back to provided encoding
+            var encoding = buffer.IsStandardOut() || buffer.IsStandardError() ? System.Console.OutputEncoding : buffer.Encoding;
 
             // Get the color system
             var colorSystem = settings.ColorSystem == ColorSystemSupport.Detect
