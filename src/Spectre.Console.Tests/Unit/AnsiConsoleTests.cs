@@ -7,6 +7,23 @@ namespace Spectre.Console.Tests.Unit
 {
     public partial class AnsiConsoleTests
     {
+        [Theory]
+        [InlineData(false, "Hello[2JWorld")]
+        [InlineData(true, "Hello[2J[0;0HWorld")]
+        public void Should_Clear_Screen(bool home, string expected)
+        {
+            // Given
+            var console = new FakeAnsiConsole(ColorSystem.Standard);
+
+            // When
+            console.Write("Hello");
+            console.Clear(home);
+            console.Write("World");
+
+            // Then
+            console.Output.ShouldBe(expected);
+        }
+
         [Fact]
         public void Should_Combine_Decoration_And_Colors()
         {

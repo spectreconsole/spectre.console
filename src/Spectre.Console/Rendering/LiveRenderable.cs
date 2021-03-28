@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using static Spectre.Console.AnsiSequences;
 
 namespace Spectre.Console.Rendering
 {
@@ -27,7 +28,8 @@ namespace Spectre.Console.Rendering
                     return new ControlSequence(string.Empty);
                 }
 
-                return new ControlSequence("\r" + "\u001b[1A".Repeat(_shape.Value.Height - 1));
+                var linesToMoveUp = _shape.Value.Height - 1;
+                return new ControlSequence("\r" + CUU(linesToMoveUp));
             }
         }
 
@@ -40,7 +42,8 @@ namespace Spectre.Console.Rendering
                     return new ControlSequence(string.Empty);
                 }
 
-                return new ControlSequence("\r\u001b[2K" + "\u001b[1A\u001b[2K".Repeat(_shape.Value.Height - 1));
+                var linesToClear = _shape.Value.Height - 1;
+                return new ControlSequence("\r" + EL(2) + (CUU(1) + EL(2)).Repeat(linesToClear));
             }
         }
 
