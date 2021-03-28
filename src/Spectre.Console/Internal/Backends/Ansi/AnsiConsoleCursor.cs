@@ -1,4 +1,5 @@
 using System;
+using static Spectre.Console.AnsiSequences;
 
 namespace Spectre.Console
 {
@@ -15,11 +16,11 @@ namespace Spectre.Console
         {
             if (show)
             {
-                _backend.Write(new ControlSequence("\u001b[?25h"));
+                _backend.Write(new ControlSequence(SM(DECTCEM)));
             }
             else
             {
-                _backend.Write(new ControlSequence("\u001b[?25l"));
+                _backend.Write(new ControlSequence(RM(DECTCEM)));
             }
         }
 
@@ -33,23 +34,23 @@ namespace Spectre.Console
             switch (direction)
             {
                 case CursorDirection.Up:
-                    _backend.Write(new ControlSequence($"\u001b[{steps}A"));
+                    _backend.Write(new ControlSequence(CUU(steps)));
                     break;
                 case CursorDirection.Down:
-                    _backend.Write(new ControlSequence($"\u001b[{steps}B"));
+                    _backend.Write(new ControlSequence(CUD(steps)));
                     break;
                 case CursorDirection.Right:
-                    _backend.Write(new ControlSequence($"\u001b[{steps}C"));
+                    _backend.Write(new ControlSequence(CUF(steps)));
                     break;
                 case CursorDirection.Left:
-                    _backend.Write(new ControlSequence($"\u001b[{steps}D"));
+                    _backend.Write(new ControlSequence(CUB(steps)));
                     break;
             }
         }
 
         public void SetPosition(int column, int line)
         {
-            _backend.Write(new ControlSequence($"\u001b[{line};{column}H"));
+            _backend.Write(new ControlSequence(CUP(line, column)));
         }
     }
 }

@@ -1,13 +1,18 @@
-using Shouldly;
+using System.Threading.Tasks;
 using Spectre.Console.Testing;
+using Spectre.Verify.Extensions;
+using VerifyXunit;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
+    [UsesVerify]
+    [ExpectationPath("Widgets/Status")]
     public sealed class StatusTests
     {
         [Fact]
-        public void Should_Render_Status_Correctly()
+        [Expectation("Render")]
+        public Task Should_Render_Status_Correctly()
         {
             // Given
             var console = new FakeAnsiConsole(ColorSystem.TrueColor, width: 10);
@@ -28,16 +33,7 @@ namespace Spectre.Console.Tests.Unit
             });
 
             // Then
-            console.Output
-                .NormalizeLineEndings()
-                .ShouldBe(
-                    "[?25l     \n" +
-                    "[38;5;11m*[0m foo\n" +
-                    "     [1A[1A     \n" +
-                    "[38;5;11m-[0m bar\n" +
-                    "     [1A[1A     \n" +
-                    "[38;5;11m*[0m baz\n" +
-                    "     [2K[1A[2K[1A[2K[?25h");
+            return Verifier.Verify(console.Output);
         }
     }
 }

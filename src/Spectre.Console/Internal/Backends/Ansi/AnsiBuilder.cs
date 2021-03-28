@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using static Spectre.Console.AnsiSequences;
 
 namespace Spectre.Console
 {
@@ -49,9 +50,8 @@ namespace Spectre.Console
                 return text;
             }
 
-            var ansiCodes = string.Join(";", result);
             var ansi = result.Length > 0
-                ? $"\u001b[{ansiCodes}m{text}\u001b[0m"
+                ? $"{SGR(result)}{text}{SGR(0)}"
                 : text;
 
             if (style.Link != null && !_profile.Capabilities.Legacy)
@@ -65,7 +65,7 @@ namespace Spectre.Console
                 }
 
                 var linkId = _linkHasher.GenerateId(link, text);
-                ansi = $"\u001b]8;id={linkId};{link}\u001b\\{ansi}\u001b]8;;\u001b\\";
+                ansi = $"{CSI}]8;id={linkId};{link}{CSI}\\{ansi}{CSI}]8;;{CSI}\\";
             }
 
             return ansi;

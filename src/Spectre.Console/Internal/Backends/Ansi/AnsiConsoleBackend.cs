@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using Spectre.Console.Rendering;
+using static Spectre.Console.AnsiSequences;
 
 namespace Spectre.Console
 {
@@ -21,11 +22,11 @@ namespace Spectre.Console
 
         public void Clear(bool home)
         {
-            Write(new ControlSequence("\u001b[2J"));
+            Write(new ControlSequence(ED(2)));
 
             if (home)
             {
-                Cursor.SetPosition(0, 0);
+                Write(new ControlSequence(CUP(0, 0)));
             }
         }
 
