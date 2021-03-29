@@ -76,7 +76,7 @@ namespace Spectre.Console.Cli
             _registrar.RegisterInstance(typeof(IRemainingArguments), parsedResult.Remaining);
 
             // Create the resolver and the context.
-            var resolver = new TypeResolverAdapter(_registrar.Build());
+            using var resolver = new TypeResolverAdapter(_registrar.Build());
             var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data);
 
             // Execute the command tree.

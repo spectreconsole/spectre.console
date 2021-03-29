@@ -2,7 +2,7 @@ using System;
 
 namespace Spectre.Console.Cli
 {
-    internal sealed class TypeResolverAdapter : ITypeResolver
+    internal sealed class TypeResolverAdapter : ITypeResolver, IDisposable
     {
         private readonly ITypeResolver? _resolver;
 
@@ -41,6 +41,14 @@ namespace Spectre.Console.Cli
             catch (Exception ex)
             {
                 throw CommandRuntimeException.CouldNotResolveType(type, ex);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_resolver is IDisposable disposable)
+            {
+                disposable.Dispose();
             }
         }
     }
