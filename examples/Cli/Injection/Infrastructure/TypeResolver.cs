@@ -4,7 +4,7 @@ using Spectre.Console.Cli;
 
 namespace Injection
 {
-    public sealed class TypeResolver : ITypeResolver
+    public sealed class TypeResolver : ITypeResolver, IDisposable
     {
         private readonly IServiceProvider _provider;
 
@@ -16,6 +16,14 @@ namespace Injection
         public object Resolve(Type type)
         {
             return _provider.GetRequiredService(type);
+        }
+
+        public void Dispose()
+        {
+            if (_provider is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
         }
     }
 }
