@@ -15,25 +15,27 @@ namespace Spectre.Console
                 // No colors supported
                 return ColorSystem.NoColors;
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                if (supportsAnsi)
-                {
-                    var regex = new Regex("^Microsoft Windows (?'major'[0-9]*).(?'minor'[0-9]*).(?'build'[0-9]*)\\s*$");
-                    var match = regex.Match(RuntimeInformation.OSDescription);
-                    if (match.Success && int.TryParse(match.Groups["major"].Value, out var major))
-                    {
-                        if (major > 10)
-                        {
-                            // Future Patrik will thank me.
-                            return ColorSystem.TrueColor;
-                        }
 
-                        if (major == 10 && int.TryParse(match.Groups["build"].Value, out var build) && build >= 15063)
-                        {
-                            return ColorSystem.TrueColor;
-                        }
-                    }
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                if (!supportsAnsi)
+                {
+                    return ColorSystem.EightBit;
+                }
+
+                var os = Environment.OSVersion;
+                var major = os.Version.Major;
+                var build = os.Version.Minor;
+
+                if (major > 10)
+                {
+                    // Future Patrik will thank me.
+                    return ColorSystem.TrueColor;
+                }
+
+                if (major == 10 && build >= 15063)
+                {
+                    return ColorSystem.TrueColor;
                 }
             }
             else
