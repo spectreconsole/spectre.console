@@ -27,7 +27,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(renderable));
             }
 
-            var context = new RenderContext(console.Profile.Capabilities);
+            var context = new RenderContext(console.Profile.ColorSystem, console.Profile.Capabilities);
             var renderables = console.Pipeline.Process(context, new[] { renderable });
 
             return GetSegments(console, context, renderables);

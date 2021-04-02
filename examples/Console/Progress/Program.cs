@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Spectre.Console;
 
@@ -25,8 +26,12 @@ namespace ProgressExample
                 .Start(ctx =>
                 {
                     var random = new Random(DateTime.Now.Millisecond);
-                    var tasks = CreateTasks(ctx, random);
 
+                    // Create some tasks
+                    var tasks = CreateTasks(ctx, random);
+                    var warpTask = ctx.AddTask("Going to warp", autoStart: false).IsIndeterminate();
+
+                    // Wait for all tasks (except the indeterminate one) to complete
                     while (!ctx.IsFinished)
                     {
                         // Increment progress
@@ -44,13 +49,24 @@ namespace ProgressExample
                         // Simulate some delay
                         Thread.Sleep(100);
                     }
+
+                    // Now start the "warp" task
+                    warpTask.StartTask();
+                    warpTask.IsIndeterminate(false);
+                    while (!ctx.IsFinished)
+                    {
+                        warpTask.Increment(12 * random.NextDouble());
+
+                        // Simulate some delay
+                        Thread.Sleep(100);
+                    }
                 });
 
             // Done
             AnsiConsole.MarkupLine("[green]Done![/]");
         }
 
-        private static List<(ProgressTask, int)> CreateTasks(ProgressContext progress, Random random)
+        private static List<(ProgressTask Task, int Delay)> CreateTasks(ProgressContext progress, Random random)
         {
             var tasks = new List<(ProgressTask, int)>();
             while (tasks.Count < 5)

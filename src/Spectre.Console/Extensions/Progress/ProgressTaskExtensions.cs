@@ -57,5 +57,22 @@ namespace Spectre.Console
             task.Value = value;
             return task;
         }
+
+        /// <summary>
+        /// Sets whether the task is considered indeterminate or not.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        /// <param name="indeterminate">Whether the task is considered indeterminate or not.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static ProgressTask IsIndeterminate(this ProgressTask task, bool indeterminate = true)
+        {
+            if (task is null)
+            {
+                throw new ArgumentNullException(nameof(task));
+            }
+
+            task.IsIndeterminate = indeterminate;
+            return task;
+        }
     }
 }

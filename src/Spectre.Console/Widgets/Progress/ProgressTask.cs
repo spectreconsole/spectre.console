@@ -94,6 +94,12 @@ namespace Spectre.Console
         public TimeSpan? RemainingTime => GetRemainingTime();
 
         /// <summary>
+        /// Gets or sets a value indicating whether the ProgressBar shows
+        /// actual values or generic, continuous progress feedback.
+        /// </summary>
+        public bool IsIndeterminate { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ProgressTask"/> class.
         /// </summary>
         /// <param name="id">The task ID.</param>
