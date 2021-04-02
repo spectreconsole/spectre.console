@@ -9,7 +9,7 @@ namespace Spectre.Console
 
         public AnsiLinkHasher()
         {
-            _random = new Random(DateTime.Now.Millisecond);
+            _random = new Random(Environment.TickCount);
         }
 
         public int GenerateId(string link, string text)
