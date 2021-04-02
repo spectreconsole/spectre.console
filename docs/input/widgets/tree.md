@@ -10,10 +10,10 @@ The `Tree` widget can be used to render hierarchical data.
 
 ```csharp
 // Create the tree
-var tree = new Tree("Root");
+var root = new Tree("Root");
 
 // Add some nodes
-var foo = tree.AddNode("[yellow]Foo[/]");
+var foo = root.AddNode("[yellow]Foo[/]");
 var table = foo.AddNode(new Table()
     .RoundedBorder()
     .AddColumn("First")
@@ -25,7 +25,7 @@ var table = foo.AddNode(new Table()
 table.AddNode("[blue]Baz[/]");
 foo.AddNode("Qux");
 
-var bar = tree.AddNode("[yellow]Bar[/]");
+var bar = root.AddNode("[yellow]Bar[/]");
 bar.AddNode(new Calendar(2020, 12)
     .AddCalendarEvent(2020, 12, 12)
     .HideHeader());
