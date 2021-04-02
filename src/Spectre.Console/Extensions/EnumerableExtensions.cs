@@ -6,6 +6,17 @@ namespace Spectre.Console
 {
     internal static class EnumerableExtensions
     {
+        public static IEnumerable<T> Repeat<T>(this IEnumerable<T> source, int count)
+        {
+            while (count-- > 0)
+            {
+                foreach (var item in source)
+                {
+                    yield return item;
+                }
+            }
+        }
+
         public static int IndexOf<T>(this IEnumerable<T> source, T item)
             where T : class
         {

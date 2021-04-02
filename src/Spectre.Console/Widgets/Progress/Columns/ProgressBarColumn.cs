@@ -28,6 +28,11 @@ namespace Spectre.Console
         /// </summary>
         public Style RemainingStyle { get; set; } = new Style(foreground: Color.Grey);
 
+        /// <summary>
+        /// Gets or sets the style of an indeterminate progress bar.
+        /// </summary>
+        public Style IndeterminateStyle { get; set; } = ProgressBar.DefaultPulseStyle;
+
         /// <inheritdoc/>
         public override IRenderable Render(RenderContext context, ProgressTask task, TimeSpan deltaTime)
         {
@@ -39,6 +44,8 @@ namespace Spectre.Console
                 CompletedStyle = CompletedStyle,
                 FinishedStyle = FinishedStyle,
                 RemainingStyle = RemainingStyle,
+                IndeterminateStyle = IndeterminateStyle,
+                IsIndeterminate = task.IsIndeterminate,
             };
         }
     }

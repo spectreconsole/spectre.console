@@ -16,5 +16,10 @@ namespace Spectre.Console
         /// will be auto started. Defaults to <c>true</c>.
         /// </summary>
         public bool AutoStart { get; set; } = true;
+
+        /// <summary>
+        /// Gets the default progress task settings.
+        /// </summary>
+        internal static ProgressTaskSettings Default { get; } = new ProgressTaskSettings();
     }
 }

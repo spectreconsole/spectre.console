@@ -62,7 +62,7 @@ namespace Spectre.Console
                     _stopwatch.Start();
                 }
 
-                var renderContext = new RenderContext(_console.Profile.Capabilities);
+                var renderContext = new RenderContext(_console.Profile.ColorSystem, _console.Profile.Capabilities);
 
                 var delta = _stopwatch.Elapsed - _lastUpdate;
                 _lastUpdate = _stopwatch.Elapsed;

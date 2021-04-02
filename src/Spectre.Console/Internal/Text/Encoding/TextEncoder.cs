@@ -20,7 +20,7 @@ namespace Spectre.Console.Internal
     {
         public string Encode(IAnsiConsole console, IEnumerable<IRenderable> renderables)
         {
-            var context = new RenderContext(EncoderCapabilities.Default);
+            var context = new RenderContext(ColorSystem.TrueColor, EncoderCapabilities.Default);
             var builder = new StringBuilder();
 
             foreach (var renderable in renderables)

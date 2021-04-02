@@ -15,7 +15,7 @@ namespace Spectre.Console.Tests.Unit
             var text = new Text("Foo Bar Baz\nQux\nLol mobile");
 
             // When
-            var result = ((IRenderable)text).Measure(new RenderContext(caps), 80);
+            var result = ((IRenderable)text).Measure(new RenderContext(ColorSystem.TrueColor, caps), 80);
 
             // Then
             result.Min.ShouldBe(6);
@@ -29,7 +29,7 @@ namespace Spectre.Console.Tests.Unit
             var text = new Text("Foo Bar Baz\nQux\nLol mobile");
 
             // When
-            var result = ((IRenderable)text).Measure(new RenderContext(caps), 80);
+            var result = ((IRenderable)text).Measure(new RenderContext(ColorSystem.TrueColor, caps), 80);
 
             // Then
             result.Max.ShouldBe(11);
