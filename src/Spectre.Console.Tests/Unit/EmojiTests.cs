@@ -41,5 +41,56 @@ namespace Spectre.Console.Tests.Unit
                 result.ShouldBe("Hello 🌍!");
             }
         }
+
+        public sealed class Parsing
+        {
+            [Theory]
+            [InlineData(":", ":")]
+            [InlineData("::", "::")]
+            [InlineData(":::", ":::")]
+            [InlineData("::::", "::::")]
+            [InlineData("::i:", "::i:")]
+            [InlineData(":i:i:", ":i:i:")]
+            [InlineData("::globe_showing_europe_africa::", ":🌍:")]
+            [InlineData(":globe_showing_europe_africa::globe_showing_europe_africa:", "🌍🌍")]
+            [InlineData("::globe_showing_europe_africa:::test:::globe_showing_europe_africa:::", ":🌍::test::🌍::")]
+            public void Can_Handle_Different_Combinations(string markup, string expected)
+            {
+                // Given
+                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+
+                // When
+                console.Markup(markup);
+
+                // Then
+                console.Output.ShouldBe(expected);
+            }
+
+            [Fact]
+            public void Should_Leave_Single_Colons()
+            {
+                // Given
+                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+
+                // When
+                console.Markup("Hello :globe_showing_europe_africa:! Output: good");
+
+                // Then
+                console.Output.ShouldBe("Hello 🌍! Output: good");
+            }
+
+            [Fact]
+            public void Unknown_emojis_should_remain()
+            {
+                // Given
+                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+
+                // When
+                console.Markup("Hello :globe_showing_flat_earth:!");
+
+                // Then
+                console.Output.ShouldBe("Hello :globe_showing_flat_earth:!");
+            }
+        }
     }
 }

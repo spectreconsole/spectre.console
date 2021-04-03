@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Wcwidth" Version="0.2.0" />
+    <PackageReference Include="System.Memory" Version="4.5.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
   </ItemGroup>
 
   <ItemGroup>
