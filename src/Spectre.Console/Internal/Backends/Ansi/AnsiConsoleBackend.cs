@@ -23,10 +23,11 @@ namespace Spectre.Console
         public void Clear(bool home)
         {
             Write(new ControlSequence(ED(2)));
+            Write(new ControlSequence(ED(3)));
 
             if (home)
             {
-                Write(new ControlSequence(CUP(0, 0)));
+                Write(new ControlSequence(CUP(1, 1)));
             }
         }
 
