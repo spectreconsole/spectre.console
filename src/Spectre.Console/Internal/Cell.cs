@@ -4,11 +4,14 @@ namespace Spectre.Console
 {
     internal static class Cell
     {
+        private static readonly int?[] _runeWidthCache = new int?[char.MaxValue];
+
         public static int GetCellLength(string text)
         {
             var sum = 0;
-            foreach (var rune in text)
+            for (var index = 0; index < text.Length; index++)
             {
+                var rune = text[index];
                 sum += GetCellLength(rune);
             }
 
@@ -28,7 +31,7 @@ namespace Spectre.Console
                 return 1;
             }
 
-            return UnicodeCalculator.GetWidth(rune);
+            return _runeWidthCache[rune] ??= UnicodeCalculator.GetWidth(rune);
         }
     }
 }
