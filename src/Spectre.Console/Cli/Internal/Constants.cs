@@ -17,6 +17,7 @@ namespace Spectre.Console.Cli
             public const string Branch = "cli";
             public const string Version = "version";
             public const string XmlDoc = "xmldoc";
+            public const string Explain = "explain";
         }
     }
 }
