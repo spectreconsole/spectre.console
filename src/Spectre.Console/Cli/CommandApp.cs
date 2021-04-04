@@ -78,6 +78,7 @@ namespace Spectre.Console.Cli
                         cli.HideBranch();
                         cli.AddCommand<VersionCommand>(CliConstants.Commands.Version);
                         cli.AddCommand<XmlDocCommand>(CliConstants.Commands.XmlDoc);
+                        cli.AddCommand<ExplainCommand>(CliConstants.Commands.Explain);
                     });
 
                     _executed = true;
