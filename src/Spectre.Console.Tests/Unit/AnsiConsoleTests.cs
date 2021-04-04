@@ -8,8 +8,8 @@ namespace Spectre.Console.Tests.Unit
     public partial class AnsiConsoleTests
     {
         [Theory]
-        [InlineData(false, "Hello[2JWorld")]
-        [InlineData(true, "Hello[2J[0;0HWorld")]
+        [InlineData(false, "Hello[2J[3JWorld")]
+        [InlineData(true, "Hello[2J[3J[1;1HWorld")]
         public void Should_Clear_Screen(bool home, string expected)
         {
             // Given
