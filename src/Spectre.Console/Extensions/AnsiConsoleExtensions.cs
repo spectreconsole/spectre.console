@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
@@ -81,6 +84,34 @@ namespace Spectre.Console
             }
 
             console.Write(text + Environment.NewLine, style);
+        }
+
+        /// <summary>
+        /// Gets the segments for a renderable.
+        /// </summary>
+        /// <param name="console">The console.</param>
+        /// <param name="renderable">The renderable.</param>
+        /// <returns>An enumerable containing segments representing the specified <see cref="IRenderable"/>.</returns>
+        public static IEnumerable<Segment> GetSegments(this IAnsiConsole console, IRenderable renderable)
+        {
+            if (console is null)
+            {
+                throw new ArgumentNullException(nameof(console));
+            }
+
+            if (renderable is null)
+            {
+                throw new ArgumentNullException(nameof(renderable));
+            }
+
+            var context = new RenderContext(console.Profile.ColorSystem, console.Profile.Capabilities);
+            var renderables = console.Pipeline.Process(context, new[] { renderable });
+
+            var segments = renderables
+                .Select(renderable => renderable.Render(context, console.Profile.Width))
+                .SelectMany(_ => _);
+
+            return Segment.Merge(segments);
         }
     }
 }

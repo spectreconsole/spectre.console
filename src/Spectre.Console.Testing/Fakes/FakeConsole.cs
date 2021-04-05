@@ -50,7 +50,7 @@ namespace Spectre.Console.Testing
 
         public void Write(IRenderable renderable)
         {
-            foreach (var segment in renderable.GetSegments(this))
+            foreach (var segment in this.GetSegments(renderable))
             {
                 Profile.Out.Write(segment.Text);
             }

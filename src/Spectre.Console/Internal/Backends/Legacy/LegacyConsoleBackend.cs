@@ -32,7 +32,7 @@ namespace Spectre.Console
 
         public void Write(IRenderable renderable)
         {
-            foreach (var segment in renderable.GetSegments(_console))
+            foreach (var segment in _console.GetSegments(renderable))
             {
                 if (segment.IsControlCode)
                 {
