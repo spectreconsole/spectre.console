@@ -65,7 +65,7 @@ namespace Spectre.Console
                 }
 
                 var linkId = _linkHasher.GenerateId(link, text);
-                ansi = $"{CSI}]8;id={linkId};{link}{CSI}\\{ansi}{CSI}]8;;{CSI}\\";
+                ansi = $"{ESC}]8;id={linkId};{link}{ESC}\\{ansi}{ESC}]8;;{ESC}\\";
             }
 
             return ansi;
