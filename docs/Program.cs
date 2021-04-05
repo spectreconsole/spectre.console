@@ -11,11 +11,11 @@ namespace Docs
         public static async Task<int> Main(string[] args) =>
             await Bootstrapper.Factory
                 .CreateWeb(args)
-                .AddSetting(Keys.Host, "spectresystems.github.io")
+                .AddSetting(Keys.Host, "spectreconsole.github.io")
                 .AddSetting(Keys.LinkRoot, "/spectre.console")
                 .AddSetting(Keys.LinksUseHttps, true)
                 .AddSetting(Constants.EditLink, ConfigureEditLink())
-                .ConfigureSite("spectresystems", "spectre.console", "main")
+                .ConfigureSite("spectreconsole", "spectre.console", "main")
                 .ConfigureDeployment(deployBranch: "docs")
                 .AddShortcode("Children", typeof(ChildrenShortcode))
                 .AddShortcode("ColorTable", typeof(ColorTableShortcode))
