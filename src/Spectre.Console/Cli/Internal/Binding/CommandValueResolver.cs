@@ -44,6 +44,11 @@ namespace Spectre.Console.Cli
                             binder.Bind(parameter, resolver, value);
                             CommandValidator.ValidateParameter(parameter, lookup);
                         }
+                        else if (Nullable.GetUnderlyingType(parameter.ParameterType) != null ||
+                                 !parameter.ParameterType.IsValueType)
+                        {
+                            lookup.SetValue(parameter, null);
+                        }
                     }
                 }
 
