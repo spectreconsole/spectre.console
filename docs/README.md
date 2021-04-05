@@ -1,6 +1,6 @@
 # Documentation
 
-To start contributing to the [Spectre.Console](https://github.com/spectresystems/spectre.console) documentation, you will need the [.NET Core SDK](https://dot.net) 3.1 or higher.
+To start contributing to the [Spectre.Console](https://github.com/spectreconsole/spectre.console) documentation, you will need the [.NET Core SDK](https://dot.net) 3.1 or higher.
 
 ## Running Preview Site
 
@@ -35,7 +35,7 @@ The documentation site has custom enhancements to Statiq located under the [./sr
 
 MIT License
 
-Copyright (c) 2020 Spectre Systems AB
+Copyright (c) 2020 Patrik Svensson, Phil Scott
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

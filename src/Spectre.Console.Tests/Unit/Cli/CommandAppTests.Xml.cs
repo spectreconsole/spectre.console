@@ -14,9 +14,6 @@ namespace Spectre.Console.Tests.Unit.Cli
         [ExpectationPath("Cli/Xml")]
         public sealed class Xml
         {
-            /// <summary>
-            /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-1
-            /// </summary>
             [Fact]
             [Expectation("Test_1")]
             public Task Should_Dump_Correct_Model_For_Case_1()
@@ -43,9 +40,6 @@ namespace Spectre.Console.Tests.Unit.Cli
                 return Verifier.Verify(output);
             }
 
-            /// <summary>
-            /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-2
-            /// </summary>
             [Fact]
             [Expectation("Test_2")]
             public Task Should_Dump_Correct_Model_For_Case_2()
@@ -64,9 +58,6 @@ namespace Spectre.Console.Tests.Unit.Cli
                 return Verifier.Verify(output);
             }
 
-            /// <summary>
-            /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-3
-            /// </summary>
             [Fact]
             [Expectation("Test_3")]
             public Task Should_Dump_Correct_Model_For_Case_3()
@@ -89,9 +80,6 @@ namespace Spectre.Console.Tests.Unit.Cli
                 return Verifier.Verify(output);
             }
 
-            /// <summary>
-            /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-4
-            /// </summary>
             [Fact]
             [Expectation("Test_4")]
             public Task Should_Dump_Correct_Model_For_Case_4()
@@ -113,9 +101,6 @@ namespace Spectre.Console.Tests.Unit.Cli
                 return Verifier.Verify(output);
             }
 
-            /// <summary>
-            /// https://github.com/spectresystems/spectre.cli/wiki/Test-cases#test-case-5
-            /// </summary>
             [Fact]
             [Expectation("Test_5")]
             public Task Should_Dump_Correct_Model_For_Case_5()

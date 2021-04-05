@@ -40,7 +40,7 @@ dotnet add package Spectre.Console
 ## Documentation
 
 The documentation for `Spectre.Console` can be found at
-https://spectresystems.github.io/spectre.console/
+https://spectreconsole.github.io/spectre.console/
 
 ## Examples
 
@@ -85,7 +85,7 @@ I really appreciate it.
 
 ## License
 
-Copyright © Spectre Systems.
+Copyright © Patrik Svensson, Phil Scott
 
 Spectre.Console is provided as-is under the MIT license. For more information see LICENSE.
 

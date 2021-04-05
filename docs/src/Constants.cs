@@ -17,7 +17,7 @@ namespace Docs
 
         public static class Colors
         {
-            public const string Url = "https://raw.githubusercontent.com/spectresystems/spectre.console/main/resources/scripts/Generator/Data/colors.json";
+            public const string Url = "https://raw.githubusercontent.com/spectreconsole/spectre.console/main/resources/scripts/Generator/Data/colors.json";
             public const string Root = "COLORS_ROOT";
         }
 

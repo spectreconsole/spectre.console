@@ -34,7 +34,7 @@ dotnet add package Spectre.Console
 ## 文档
 
 `Spectre.Console`的文档可以在这里查看
-https://spectresystems.github.io/spectre.console/
+https://spectreconsole.github.io/spectre.console/
 
 ## 例子
 
@@ -58,7 +58,7 @@ https://spectresystems.github.io/spectre.console/
 
 ## License
 
-版权所有 © Spectre Systems。
+版权所有 © Patrik Svensson, Phil Scott
 
 Spectre.Console 基于 MIT 协议提供。查看 LICENSE 文件了解更多信息。
 

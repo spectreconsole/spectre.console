@@ -39,7 +39,7 @@ dotnet add package Spectre.Console
 مستندات `Spectre.Console` را در اینجا می‌توایند پیدا کنید:
 
 <div dir="ltr">
-https://spectresystems.github.io/spectre.console/
+https://spectreconsole.github.io/spectre.console/
 </div>
 
 <h2 id="examples">مثال‌ها</h2>
@@ -67,7 +67,7 @@ https://spectresystems.github.io/spectre.console/
 <h2 id="license">مجوز</h2>
 
 <div dir="ltr">
-Copyright © Spectre Systems.
+Copyright © Patrik Svensson, Phil Scott
 </div>
 
 همانطور که Spectre.Console تحت مجوز MIT ارائه شده است؛ برای کسب اطلاعات بیشتر به مجوز مراجعه کنید.
