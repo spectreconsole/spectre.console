@@ -5,9 +5,14 @@ namespace Spectre.Console
     internal static class AnsiSequences
     {
         /// <summary>
+        /// The ASCII escape character (decimal 27).
+        /// </summary>
+        public const string ESC = "\u001b";
+
+        /// <summary>
         /// Introduces a control sequence that uses 8-bit characters.
         /// </summary>
-        public const string CSI = "\u001b";
+        public const string CSI = ESC + "[";
 
         /// <summary>
         /// Text cursor enable.
@@ -24,21 +29,10 @@ namespace Spectre.Console
         /// See <see href="https://vt100.net/docs/vt510-rm/SGR.html"/>.
         /// </remarks>
         /// <returns>The ANSI escape code.</returns>
-        public static string SGR(params int[] codes)
-        {
-            return CSI + "[" + string.Join(";", codes.Select(c => c.ToString())) + "m";
-        }
-
-        /// <summary>
-        /// This control function selects one or more character attributes at the same time.
-        /// </summary>
-        /// <remarks>
-        /// See <see href="https://vt100.net/docs/vt510-rm/SGR.html"/>.
-        /// </remarks>
-        /// <returns>The ANSI escape code.</returns>
         public static string SGR(params byte[] codes)
         {
-            return CSI + "[" + string.Join(";", codes.Select(c => c.ToString())) + "m";
+            var joinedCodes = string.Join(";", codes.Select(c => c.ToString()));
+            return $"{CSI}{joinedCodes}m";
         }
 
         /// <summary>
@@ -53,7 +47,7 @@ namespace Spectre.Console
         /// <returns>The ANSI escape code.</returns>
         public static string ED(int code)
         {
-            return CSI + $"[{code}J";
+            return $"{CSI}{code}J";
         }
 
         /// <summary>
@@ -68,7 +62,7 @@ namespace Spectre.Console
         /// <returns>The ANSI escape code.</returns>
         public static string CUU(int steps)
         {
-            return CSI + $"[{steps}A";
+            return $"{CSI}{steps}A";
         }
 
         /// <summary>
@@ -83,7 +77,7 @@ namespace Spectre.Console
         /// <returns>The ANSI escape code.</returns>
         public static string CUD(int steps)
         {
-            return CSI + $"[{steps}B";
+            return $"{CSI}{steps}B";
         }
 
         /// <summary>
@@ -97,7 +91,7 @@ namespace Spectre.Console
         /// <returns>The ANSI escape code.</returns>
         public static string CUF(int steps)
         {
-            return CSI + $"[{steps}C";
+            return $"{CSI}{steps}C";
         }
 
         /// <summary>
@@ -111,7 +105,7 @@ namespace Spectre.Console
         /// <returns>The ANSI escape code.</returns>
         public static string CUB(int steps)
         {
-            return CSI + $"[{steps}D";
+            return $"{CSI}{steps}D";
         }
 
         /// <summary>
@@ -125,7 +119,7 @@ namespace Spectre.Console
         /// <returns>The ANSI escape code.</returns>
         public static string CUP(int line, int column)
         {
-            return CSI + $"[{line};{column}H";
+            return $"{CSI}{line};{column}H";
         }
 
         /// <summary>
@@ -137,7 +131,7 @@ namespace Spectre.Console
         /// <returns>The ANSI escape code.</returns>
         public static string RM(int code)
         {
-            return CSI + $"[?{code}l";
+            return $"{CSI}?{code}l";
         }
 
         /// <summary>
@@ -149,7 +143,7 @@ namespace Spectre.Console
         /// <returns>The ANSI escape code.</returns>
         public static string SM(int code)
         {
-            return CSI + $"[?{code}h";
+            return $"{CSI}?{code}h";
         }
 
         /// <summary>
@@ -163,7 +157,7 @@ namespace Spectre.Console
         /// <returns>The ANSI escape code.</returns>
         public static string EL(int code)
         {
-            return CSI + $"[{code}K";
+            return $"{CSI}{code}K";
         }
     }
 }
