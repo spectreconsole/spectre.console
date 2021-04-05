@@ -34,7 +34,7 @@ dotnet add package Spectre.Console
 ## 文档
 
 `Spectre.Console`的文档可以在这里查看
-https://spectreconsole.github.io/spectre.console/
+https://spectreconsole.net/
 
 ## 例子
 

@@ -40,7 +40,7 @@ dotnet add package Spectre.Console
 ## Documentation
 
 The documentation for `Spectre.Console` can be found at
-https://spectreconsole.github.io/spectre.console/
+https://spectreconsole.net/
 
 ## Examples
 

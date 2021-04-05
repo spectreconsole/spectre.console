@@ -39,7 +39,7 @@ dotnet add package Spectre.Console
 مستندات `Spectre.Console` را در اینجا می‌توایند پیدا کنید:
 
 <div dir="ltr">
-https://spectreconsole.github.io/spectre.console/
+https://spectreconsole.net/
 </div>
 
 <h2 id="examples">مثال‌ها</h2>
