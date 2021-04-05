@@ -34,11 +34,6 @@ namespace Spectre.Console
         /// </summary>
         public static Style Plain { get; } = new Style();
 
-        private Style()
-            : this(null, null, null, null)
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Style"/> class.
         /// </summary>
