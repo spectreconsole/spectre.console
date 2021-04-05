@@ -11,8 +11,7 @@ namespace Docs
         public static async Task<int> Main(string[] args) =>
             await Bootstrapper.Factory
                 .CreateWeb(args)
-                .AddSetting(Keys.Host, "spectreconsole.github.io")
-                .AddSetting(Keys.LinkRoot, "/spectre.console")
+                .AddSetting(Keys.Host, "spectreconsole.net")
                 .AddSetting(Keys.LinksUseHttps, true)
                 .AddSetting(Constants.EditLink, ConfigureEditLink())
                 .ConfigureSite("spectreconsole", "spectre.console", "main")

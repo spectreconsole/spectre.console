@@ -1,1 +1,1 @@
-dotnet run -- preview --virtual-dir "spectre.console"
+dotnet run -- preview
