@@ -233,7 +233,7 @@ namespace Spectre.Console.Cli
 
         private static ParameterKind GetParameterKind(Type type)
         {
-            if (type == typeof(bool))
+            if (type == typeof(bool) || type == typeof(bool?))
             {
                 return ParameterKind.Flag;
             }
