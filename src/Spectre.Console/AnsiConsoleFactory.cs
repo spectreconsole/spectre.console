@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using System.Text;
 using Spectre.Console.Enrichment;
 using Spectre.Console.Internal;
 
