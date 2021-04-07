@@ -17,7 +17,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the color system to use.
         /// </summary>
-        public ColorSystemSupport ColorSystem { get; set; }
+        public ColorSystemSupport ColorSystem { get; set; } = ColorSystemSupport.Detect;
 
         /// <summary>
         /// Gets or sets the out buffer.

@@ -21,7 +21,7 @@ namespace Spectre.Console.Testing
         IAnsiConsoleInput IAnsiConsole.Input => Input;
 
         public FakeAnsiConsole(
-            ColorSystem system,
+            ColorSystem colors,
             AnsiSupport ansi = AnsiSupport.Yes,
             int width = 80)
         {
@@ -32,7 +32,7 @@ namespace Spectre.Console.Testing
             _console = factory.Create(new AnsiConsoleSettings
             {
                 Ansi = ansi,
-                ColorSystem = (ColorSystemSupport)system,
+                ColorSystem = (ColorSystemSupport)colors,
                 Out = _writer,
                 Enrichment = new ProfileEnrichment
                 {

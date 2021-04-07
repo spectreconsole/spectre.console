@@ -1,3 +1,4 @@
+using System.IO;
 using Shouldly;
 using Spectre.Console.Testing;
 using Xunit;
@@ -6,6 +7,25 @@ namespace Spectre.Console.Tests.Unit
 {
     public partial class AnsiConsoleTests
     {
+        [Theory]
+        [InlineData(ColorSystemSupport.NoColors, ColorSystem.NoColors)]
+        [InlineData(ColorSystemSupport.Legacy, ColorSystem.Legacy)]
+        [InlineData(ColorSystemSupport.Standard, ColorSystem.Standard)]
+        [InlineData(ColorSystemSupport.EightBit, ColorSystem.EightBit)]
+        [InlineData(ColorSystemSupport.TrueColor, ColorSystem.TrueColor)]
+        public void Should_Create_Console_With_Requested_ColorSystem(ColorSystemSupport requested, ColorSystem expected)
+        {
+            // Given, When
+            var console = AnsiConsole.Create(new AnsiConsoleSettings
+            {
+                ColorSystem = requested,
+                Out = new StringWriter(),
+            });
+
+            // Then
+            console.Profile.ColorSystem.ShouldBe(expected);
+        }
+
         public sealed class TrueColor
         {
             [Theory]
