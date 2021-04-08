@@ -50,5 +50,27 @@ namespace Spectre.Console
             column.CompletedStyle = style;
             return column;
         }
+
+        /// <summary>
+        /// Sets the style for a failed task.
+        /// </summary>
+        /// <param name="column">The column.</param>
+        /// <param name="style">The style.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static PercentageColumn FailedStyle(this PercentageColumn column, Style style)
+        {
+            if (column is null)
+            {
+                throw new ArgumentNullException(nameof(column));
+            }
+
+            if (style is null)
+            {
+                throw new ArgumentNullException(nameof(style));
+            }
+
+            column.FailedStyle = style;
+            return column;
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace Spectre.Console
                 return new List<Segment>(new[] { new Segment("…", context.BorderStyle ?? Style.Plain) });
             }
 
+
             var result = new List<Segment>();
             result.AddRange(RenderAnnotation(context, context.Title, _defaultHeadingStyle));
 

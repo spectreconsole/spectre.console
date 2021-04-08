@@ -73,6 +73,8 @@ namespace Spectre.Console
         /// </summary>
         public bool IsFinished => StopTime != null || Value >= MaxValue;
 
+        public bool IsFailed { set;  get; } = false;
+
         /// <summary>
         /// Gets the percentage done of the task.
         /// </summary>
@@ -151,6 +153,21 @@ namespace Spectre.Console
             {
                 var now = DateTime.Now;
                 StartTime ??= now;
+
+                StopTime = now;
+            }
+        }
+        /// <summary>
+        /// Stops and marks the task as failed
+        /// </summary>
+        public void failTask()
+        {
+            lock (_lock)
+            {
+                var now = DateTime.Now;
+                StartTime ??= now;
+
+                IsFailed = true;
 
                 StopTime = now;
             }

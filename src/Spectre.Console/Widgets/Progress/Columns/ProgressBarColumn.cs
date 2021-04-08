@@ -29,6 +29,11 @@ namespace Spectre.Console
         public Style RemainingStyle { get; set; } = new Style(foreground: Color.Grey);
 
         /// <summary>
+        /// Gets or sets the style for a failed task.
+        /// </summary>
+        public Style FailedStyle { get; set; } = new Style(foreground: Color.Red);
+
+        /// <summary>
         /// Gets or sets the style of an indeterminate progress bar.
         /// </summary>
         public Style IndeterminateStyle { get; set; } = ProgressBar.DefaultPulseStyle;
@@ -41,7 +46,7 @@ namespace Spectre.Console
                 MaxValue = task.MaxValue,
                 Value = task.Value,
                 Width = Width,
-                CompletedStyle = CompletedStyle,
+                CompletedStyle = task.IsFailed ? FailedStyle : CompletedStyle,
                 FinishedStyle = FinishedStyle,
                 RemainingStyle = RemainingStyle,
                 IndeterminateStyle = IndeterminateStyle,
