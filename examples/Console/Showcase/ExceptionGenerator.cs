@@ -1,7 +1,7 @@
 using System;
 using Spectre.Console;
 
-namespace Demo
+namespace Showcase
 {
     public static class ExceptionGenerator
     {

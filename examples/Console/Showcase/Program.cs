@@ -4,7 +4,7 @@ using SixLabors.ImageSharp.Processing;
 using System.Threading;
 using Spectre.Console.Rendering;
 
-namespace Demo
+namespace Showcase
 {
     public static partial class Program
     {
