@@ -1,5 +1,5 @@
 Title: Migrate from Spectre.Cli
-Order: 2
+Order: 10
 ---
 
 The functionality in `Spectre.Cli` has been moved into the `Spectre.Console`
