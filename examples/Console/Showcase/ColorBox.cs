@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Spectre.Console;
 using Spectre.Console.Rendering;
 
-namespace Demo
+namespace Showcase
 {
     public static partial class Program
     {
