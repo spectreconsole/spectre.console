@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using Spectre.Console.Cli;
 
-namespace Injection.Commands
+namespace Spectre.Console.Examples
 {
     public sealed class DefaultCommand : Command<DefaultCommand.Settings>
     {

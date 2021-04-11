@@ -1,6 +1,4 @@
-using Spectre.Console;
-
-namespace LinkExample
+namespace Spectre.Console.Examples
 {
     public static class Program
     {

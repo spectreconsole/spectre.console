@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ProgressExample
+namespace Spectre.Console.Examples
 {
     public static class DescriptionGenerator
     {

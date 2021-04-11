@@ -1,10 +1,6 @@
-using System;
-using Spectre.Console;
-using SixLabors.ImageSharp.Processing;
-using System.Threading;
 using Spectre.Console.Rendering;
 
-namespace Showcase
+namespace Spectre.Console.Examples
 {
     public static partial class Program
     {
@@ -102,7 +98,7 @@ namespace Showcase
                     "✓ [bold purple]8-bit color[/]\n" +
                     "✓ [bold yellow]Truecolor (16.7 million)[/]\n" +
                     "✓ [bold aqua]Automatic color conversion[/]"),
-                new ColorBox(6));
+                new ColorBox(height: 6));
 
             return colorTable;
         }

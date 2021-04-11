@@ -1,7 +1,6 @@
-using System;
 using Spectre.Console.Cli;
 
-namespace Delegates
+namespace Spectre.Console.Examples
 {
     public static partial class Program
     {
@@ -22,7 +21,7 @@ namespace Delegates
 
         private static int Foo(CommandContext context)
         {
-            Console.WriteLine("Foo");
+            AnsiConsole.WriteLine("Foo");
             return 0;
         }
 
@@ -30,7 +29,7 @@ namespace Delegates
         {
             for (var index = 0; index < settings.Count; index++)
             {
-                Console.WriteLine("Bar");
+                AnsiConsole.WriteLine("Bar");
             }
 
             return 0;

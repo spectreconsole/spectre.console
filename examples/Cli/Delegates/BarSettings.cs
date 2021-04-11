@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using Spectre.Console.Cli;
 
-namespace Delegates
+namespace Spectre.Console.Examples
 {
     public static partial class Program
     {

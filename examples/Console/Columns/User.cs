@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ColumnsExample
+namespace Spectre.Console.Examples
 {
     public sealed class User
     {
@@ -22,9 +22,9 @@ namespace ColumnsExample
                 },
                 new User
                 {
-                    FirstName = "Brandon",
-                    LastName = "Cole",
-                    City = "Washington",
+                    FirstName = "Phil",
+                    LastName = "Scott",
+                    City = "Dayton",
                     Country = "United States",
                 },
                 new User

@@ -1,8 +1,7 @@
-﻿using Logging.Commands;
 using Serilog.Core;
 using Spectre.Console.Cli;
 
-namespace Logging
+namespace Spectre.Console.Examples
 {
     public class LogInterceptor : ICommandInterceptor
     {

@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Shared.csproj" />
     <ProjectReference Include="..\..\..\src\Spectre.Console.ImageSharp\Spectre.Console.ImageSharp.csproj" />
-    <ProjectReference Include="..\..\..\src\Spectre.Console\Spectre.Console.csproj" />
   </ItemGroup>
 
   <ItemGroup>

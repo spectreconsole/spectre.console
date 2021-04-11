@@ -1,8 +1,7 @@
 using System;
 using System.Security.Authentication;
-using Spectre.Console;
 
-namespace Exceptions
+namespace Spectre.Console.Examples
 {
     public static class Program
     {

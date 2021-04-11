@@ -4,9 +4,8 @@ Licensed under GNU Free Documentation License 1.2
 */
 
 using System;
-using Spectre.Console;
 
-namespace CanvasExample
+namespace Spectre.Console.Examples
 {
     public static class Mandelbrot
     {

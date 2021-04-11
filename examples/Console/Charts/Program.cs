@@ -1,7 +1,6 @@
-using Spectre.Console;
 using Spectre.Console.Rendering;
 
-namespace Charts
+namespace Spectre.Console.Examples
 {
     public static class Program
     {
