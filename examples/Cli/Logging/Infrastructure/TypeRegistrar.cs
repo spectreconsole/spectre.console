@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
-namespace Logging
+namespace Spectre.Console.Examples
 {
     public sealed class TypeRegistrar : ITypeRegistrar
     {

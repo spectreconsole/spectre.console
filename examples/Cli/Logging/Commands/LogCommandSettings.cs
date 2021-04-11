@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using Serilog.Events;
 using Spectre.Console.Cli;
 
-namespace Logging.Commands
+namespace Spectre.Console.Examples
 {
     public class LogCommandSettings : CommandSettings
     {

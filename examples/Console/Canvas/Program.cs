@@ -1,10 +1,9 @@
 using System.Diagnostics;
 using System.Reflection;
 using SixLabors.ImageSharp.Processing;
-using Spectre.Console;
 using Spectre.Console.Rendering;
 
-namespace CanvasExample
+namespace Spectre.Console.Examples
 {
     public static class Program
     {

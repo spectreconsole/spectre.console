@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Spectre.Console;
 
-namespace ColumnsExample
+namespace Spectre.Console.Examples
 {
     public static class Program
     {

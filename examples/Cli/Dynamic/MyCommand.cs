@@ -1,7 +1,7 @@
 using System;
 using Spectre.Console.Cli;
 
-namespace Dynamic
+namespace Spectre.Console.Examples
 {
     public sealed class MyCommand : Command
     {
@@ -13,7 +13,7 @@ namespace Dynamic
                 
             }
 
-            Console.WriteLine("Value = {0}", data);
+            AnsiConsole.WriteLine("Value = {0}", data);
             return 0;
         }
     }

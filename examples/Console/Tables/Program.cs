@@ -1,7 +1,4 @@
-using System.Diagnostics;
-using Spectre.Console;
-
-namespace TableExample
+namespace Spectre.Console.Examples
 {
     public static class Program
     {

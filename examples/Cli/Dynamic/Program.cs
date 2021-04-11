@@ -1,7 +1,7 @@
 using System.Linq;
 using Spectre.Console.Cli;
 
-namespace Dynamic
+namespace Spectre.Console.Examples
 {
     public static class Program
     {
