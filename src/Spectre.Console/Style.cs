@@ -94,15 +94,6 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Creates a copy of the current <see cref="Style"/>.
-        /// </summary>
-        /// <returns>A copy of the current <see cref="Style"/>.</returns>
-        public Style Clone()
-        {
-            return new Style(Foreground, Background, Decoration, Link);
-        }
-
-        /// <summary>
         /// Combines this style with another one.
         /// </summary>
         /// <param name="other">The item to combine with this.</param>
