@@ -66,5 +66,13 @@ namespace Spectre.Console
             var factory = new AnsiConsoleFactory();
             return factory.Create(settings);
         }
+
+        /// <summary>
+        /// Clears the console.
+        /// </summary>
+        public static void Clear()
+        {
+            Console.Clear();
+        }
     }
 }
