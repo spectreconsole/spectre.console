@@ -16,7 +16,7 @@ namespace Spectre.Console.Testing
         public RenderPipeline Pipeline { get; }
 
         public FakeConsoleInput Input { get; }
-        public string Output => Profile.Out.ToString();
+        public string Output => Profile.Out.Writer.ToString();
         public IReadOnlyList<string> Lines => Output.TrimEnd('\n').Split(new char[] { '\n' });
 
         public FakeConsole(
@@ -28,10 +28,10 @@ namespace Spectre.Console.Testing
             ExclusivityMode = new FakeExclusivityMode();
             Pipeline = new RenderPipeline();
 
-            Profile = new Profile(new StringWriter(), encoding ?? Encoding.UTF8);
+            Profile = new Profile(new AnsiConsoleOutput(new StringWriter()), encoding ?? Encoding.UTF8);
             Profile.Width = width;
             Profile.Height = height;
-            Profile.ColorSystem = colorSystem;
+            Profile.Capabilities.ColorSystem = colorSystem;
             Profile.Capabilities.Ansi = supportsAnsi;
             Profile.Capabilities.Legacy = legacyConsole;
             Profile.Capabilities.Interactive = interactive;
@@ -41,7 +41,7 @@ namespace Spectre.Console.Testing
 
         public void Dispose()
         {
-            Profile.Out.Dispose();
+            Profile.Out.Writer.Dispose();
         }
 
         public void Clear(bool home)
@@ -52,7 +52,7 @@ namespace Spectre.Console.Testing
         {
             foreach (var segment in renderable.GetSegments(this))
             {
-                Profile.Out.Write(segment.Text);
+                Profile.Out.Writer.Write(segment.Text);
             }
         }
 

@@ -19,11 +19,11 @@ namespace Spectre.Console.Tests.Unit
             var console = AnsiConsole.Create(new AnsiConsoleSettings
             {
                 ColorSystem = requested,
-                Out = new StringWriter(),
+                Out = new AnsiConsoleOutput(new StringWriter()),
             });
 
             // Then
-            console.Profile.ColorSystem.ShouldBe(expected);
+            console.Profile.Capabilities.ColorSystem.ShouldBe(expected);
         }
 
         public sealed class TrueColor

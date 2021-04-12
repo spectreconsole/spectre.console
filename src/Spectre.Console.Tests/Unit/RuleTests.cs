@@ -130,7 +130,6 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Theory]
-        [InlineData(0, "Hello World Hello World Hello World Hello World Hello World", "")]
         [InlineData(1, "Hello World Hello World Hello World Hello World Hello World", "─")]
         [InlineData(2, "Hello World Hello World Hello World Hello World Hello World", "──")]
         [InlineData(3, "Hello World Hello World Hello World Hello World Hello World", "───")]

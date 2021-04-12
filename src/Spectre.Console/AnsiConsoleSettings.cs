@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 
 namespace Spectre.Console
 {
@@ -22,7 +21,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the out buffer.
         /// </summary>
-        public TextWriter? Out { get; set; }
+        public IAnsiConsoleOutput? Out { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the

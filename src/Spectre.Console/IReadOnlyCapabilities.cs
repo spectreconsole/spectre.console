@@ -1,3 +1,5 @@
+using System;
+
 namespace Spectre.Console
 {
     /// <summary>
@@ -5,6 +7,11 @@ namespace Spectre.Console
     /// </summary>
     public interface IReadOnlyCapabilities
     {
+        /// <summary>
+        /// Gets the color system.
+        /// </summary>
+        ColorSystem ColorSystem { get; }
+
         /// <summary>
         /// Gets a value indicating whether or not
         /// the console supports Ansi.
@@ -31,7 +38,8 @@ namespace Spectre.Console
         /// Gets a value indicating whether or not
         /// console output has been redirected.
         /// </summary>
-        bool Tty { get; }
+        [Obsolete("Use Profile.Out.IsTerminal instead")]
+        bool IsTerminal { get; }
 
         /// <summary>
         /// Gets a value indicating whether

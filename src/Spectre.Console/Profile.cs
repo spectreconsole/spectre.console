@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace Spectre.Console
@@ -13,7 +12,7 @@ namespace Spectre.Console
         private readonly HashSet<string> _enrichers;
         private static readonly string[] _defaultEnricher = new[] { "Default" };
 
-        private TextWriter _out;
+        private IAnsiConsoleOutput _out;
         private Encoding _encoding;
         private Capabilities _capabilities;
         private int? _width;
@@ -38,15 +37,15 @@ namespace Spectre.Console
         /// <summary>
         /// Gets or sets the out buffer.
         /// </summary>
-        public TextWriter Out
+        public IAnsiConsoleOutput Out
         {
             get => _out;
             set
             {
                 _out = value ?? throw new InvalidOperationException("Output buffer cannot be null");
 
-                // Reset the width and height if not a TTY.
-                if (!Capabilities.Tty)
+                // Reset the width and height if this is a terminal.
+                if (value.IsTerminal)
                 {
                     _width = null;
                     _height = null;
@@ -67,12 +66,7 @@ namespace Spectre.Console
                     throw new InvalidOperationException("Encoding cannot be null");
                 }
 
-                // Need to update the output encoding for stdout?
-                if (_out.IsStandardOut() || _out.IsStandardError())
-                {
-                    System.Console.OutputEncoding = value;
-                }
-
+                _out.SetEncoding(value);
                 _encoding = value;
             }
         }
@@ -82,10 +76,10 @@ namespace Spectre.Console
         /// </summary>
         public int Width
         {
-            get => GetWidth();
+            get => _width ?? _out.Width;
             set
             {
-                if (_width <= 0)
+                if (value <= 0)
                 {
                     throw new InvalidOperationException("Console width must be greater than zero");
                 }
@@ -99,10 +93,10 @@ namespace Spectre.Console
         /// </summary>
         public int Height
         {
-            get => GetHeight();
+            get => _height ?? _out.Height;
             set
             {
-                if (_height <= 0)
+                if (value <= 0)
                 {
                     throw new InvalidOperationException("Console height must be greater than zero");
                 }
@@ -110,11 +104,6 @@ namespace Spectre.Console
                 _height = value;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the color system.
-        /// </summary>
-        public ColorSystem ColorSystem { get; set; }
 
         /// <summary>
         /// Gets or sets the capabilities of the profile.
@@ -133,12 +122,12 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="out">The output buffer.</param>
         /// <param name="encoding">The output encoding.</param>
-        public Profile(TextWriter @out, Encoding encoding)
+        public Profile(IAnsiConsoleOutput @out, Encoding encoding)
         {
             _enrichers = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             _out = @out ?? throw new ArgumentNullException(nameof(@out));
             _encoding = encoding ?? throw new ArgumentNullException(nameof(encoding));
-            _capabilities = new Capabilities(this);
+            _capabilities = new Capabilities(_out);
         }
 
         /// <summary>
@@ -149,7 +138,7 @@ namespace Spectre.Console
         /// <returns><c>true</c> if the color system is supported, otherwise <c>false</c>.</returns>
         public bool Supports(ColorSystem colorSystem)
         {
-            return (int)colorSystem <= (int)ColorSystem;
+            return (int)colorSystem <= (int)Capabilities.ColorSystem;
         }
 
         internal void AddEnricher(string name)
@@ -160,36 +149,6 @@ namespace Spectre.Console
             }
 
             _enrichers.Add(name);
-        }
-
-        private int GetWidth()
-        {
-            if (_width != null)
-            {
-                return _width.Value;
-            }
-
-            if (!Capabilities.Tty)
-            {
-                return ConsoleHelper.GetSafeWidth(Constants.DefaultTerminalWidth);
-            }
-
-            return Constants.DefaultTerminalWidth;
-        }
-
-        private int GetHeight()
-        {
-            if (_height != null)
-            {
-                return _height.Value;
-            }
-
-            if (!Capabilities.Tty)
-            {
-                return ConsoleHelper.GetSafeHeight(Constants.DefaultTerminalHeight);
-            }
-
-            return Constants.DefaultTerminalHeight;
         }
     }
 }

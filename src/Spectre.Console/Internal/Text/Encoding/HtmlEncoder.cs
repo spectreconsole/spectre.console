@@ -9,7 +9,7 @@ namespace Spectre.Console.Internal
     {
         public string Encode(IAnsiConsole console, IEnumerable<IRenderable> renderables)
         {
-            var context = new RenderContext(ColorSystem.TrueColor, EncoderCapabilities.Default);
+            var context = new RenderContext(new EncoderCapabilities(ColorSystem.TrueColor));
             var builder = new StringBuilder();
 
             builder.Append("<pre style=\"font-size:90%;font-family:consolas,'Courier New',monospace\">\n");

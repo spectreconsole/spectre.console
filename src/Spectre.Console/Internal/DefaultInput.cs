@@ -13,11 +13,6 @@ namespace Spectre.Console
 
         public ConsoleKeyInfo ReadKey(bool intercept)
         {
-            if (_profile.Capabilities.Tty)
-            {
-                throw new InvalidOperationException("Cannot read input from a TTY console.");
-            }
-
             if (!_profile.Capabilities.Interactive)
             {
                 throw new InvalidOperationException("Failed to read input in non-interactive mode.");

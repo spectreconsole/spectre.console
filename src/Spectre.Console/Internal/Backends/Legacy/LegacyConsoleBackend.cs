@@ -44,7 +44,7 @@ namespace Spectre.Console
                     SetStyle(segment.Style);
                 }
 
-                _console.Profile.Out.Write(segment.Text.NormalizeNewLines(native: true));
+                _console.Profile.Out.Writer.Write(segment.Text.NormalizeNewLines(native: true));
             }
         }
 
@@ -55,13 +55,13 @@ namespace Spectre.Console
             System.Console.ResetColor();
 
             var background = Color.ToConsoleColor(style.Background);
-            if (_console.Profile.ColorSystem != ColorSystem.NoColors && (int)background != -1)
+            if (_console.Profile.Capabilities.ColorSystem != ColorSystem.NoColors && (int)background != -1)
             {
                 System.Console.BackgroundColor = background;
             }
 
             var foreground = Color.ToConsoleColor(style.Foreground);
-            if (_console.Profile.ColorSystem != ColorSystem.NoColors && (int)foreground != -1)
+            if (_console.Profile.Capabilities.ColorSystem != ColorSystem.NoColors && (int)foreground != -1)
             {
                 System.Console.ForegroundColor = foreground;
             }

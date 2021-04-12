@@ -29,7 +29,7 @@ namespace Spectre.Console
             {
                 codes = codes.Concat(
                     AnsiColorBuilder.GetAnsiCodes(
-                        _profile.ColorSystem,
+                        _profile.Capabilities.ColorSystem,
                         style.Foreground,
                         true));
             }
@@ -39,7 +39,7 @@ namespace Spectre.Console
             {
                 codes = codes.Concat(
                     AnsiColorBuilder.GetAnsiCodes(
-                        _profile.ColorSystem,
+                        _profile.Capabilities.ColorSystem,
                         style.Background,
                         false));
             }

@@ -22,13 +22,18 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(settings));
             }
 
-            var buffer = settings.Out ?? System.Console.Out;
+            var output = settings.Out ?? new AnsiConsoleOutput(System.Console.Out);
+            if (output.Writer == null)
+            {
+                throw new InvalidOperationException("Output writer was null");
+            }
 
             // Detect if the terminal support ANSI or not
-            var (supportsAnsi, legacyConsole) = DetectAnsi(settings, buffer);
+            var (supportsAnsi, legacyConsole) = DetectAnsi(settings, output.Writer);
 
             // Use console encoding or fall back to provided encoding
-            var encoding = buffer.IsStandardOut() || buffer.IsStandardError() ? System.Console.OutputEncoding : buffer.Encoding;
+            var encoding = output.Writer.IsStandardOut() || output.Writer.IsStandardError()
+                ? System.Console.OutputEncoding : output.Writer.Encoding;
 
             // Get the color system
             var colorSystem = settings.ColorSystem == ColorSystemSupport.Detect
@@ -42,11 +47,9 @@ namespace Spectre.Console
                 interactive = Environment.UserInteractive;
             }
 
-            var profile = new Profile(buffer, encoding)
-            {
-                ColorSystem = colorSystem,
-            };
+            var profile = new Profile(output, encoding);
 
+            profile.Capabilities.ColorSystem = colorSystem;
             profile.Capabilities.Ansi = supportsAnsi;
             profile.Capabilities.Links = supportsAnsi && !legacyConsole;
             profile.Capabilities.Legacy = legacyConsole;
