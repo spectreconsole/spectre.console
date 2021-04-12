@@ -7,7 +7,7 @@ namespace Spectre.Console.Examples
             /////////////////////////////////////////////////////////////////
             // No colors
             /////////////////////////////////////////////////////////////////
-            if (AnsiConsole.Profile.ColorSystem == ColorSystem.NoColors)
+            if (AnsiConsole.Profile.Capabilities.ColorSystem == ColorSystem.NoColors)
             {
                 AnsiConsole.WriteLine("No colors are supported.");
                 return;

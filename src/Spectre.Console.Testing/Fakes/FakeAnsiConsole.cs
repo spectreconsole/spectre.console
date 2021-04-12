@@ -33,7 +33,7 @@ namespace Spectre.Console.Testing
             {
                 Ansi = ansi,
                 ColorSystem = (ColorSystemSupport)colors,
-                Out = _writer,
+                Out = new AnsiConsoleOutput(_writer),
                 Enrichment = new ProfileEnrichment
                 {
                     UseDefaultEnrichers = false,

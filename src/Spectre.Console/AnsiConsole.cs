@@ -15,7 +15,7 @@ namespace Spectre.Console
                 {
                     Ansi = AnsiSupport.Detect,
                     ColorSystem = ColorSystemSupport.Detect,
-                    Out = System.Console.Out,
+                    Out = new AnsiConsoleOutput(System.Console.Out),
                 });
 
                 Created = true;

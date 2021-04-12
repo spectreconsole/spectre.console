@@ -59,8 +59,8 @@ namespace Spectre.Console
 
             if (builder.Length > 0)
             {
-                _console.Profile.Out.Write(builder.ToString());
-                _console.Profile.Out.Flush();
+                _console.Profile.Out.Writer.Write(builder.ToString());
+                _console.Profile.Out.Writer.Flush();
             }
         }
     }

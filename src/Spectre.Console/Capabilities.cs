@@ -7,7 +7,12 @@ namespace Spectre.Console
     /// </summary>
     public sealed class Capabilities : IReadOnlyCapabilities
     {
-        private readonly Profile _profile;
+        private readonly IAnsiConsoleOutput _out;
+
+        /// <summary>
+        /// Gets or sets the color system.
+        /// </summary>
+        public ColorSystem ColorSystem { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not
@@ -33,26 +38,10 @@ namespace Spectre.Console
 
         /// <summary>
         /// Gets a value indicating whether or not
-        /// console output has been redirected.
+        /// the output is a terminal.
         /// </summary>
-        public bool Tty
-        {
-            get
-            {
-                if (_profile.Out.IsStandardOut())
-                {
-                    return System.Console.IsOutputRedirected;
-                }
-
-                if (_profile.Out.IsStandardError())
-                {
-                    return System.Console.IsErrorRedirected;
-                }
-
-                // Not stdout, so must be a TTY.
-                return true;
-            }
-        }
+        [Obsolete("Use Profile.Out.IsTerminal instead")]
+        public bool IsTerminal => _out.IsTerminal;
 
         /// <summary>
         /// Gets or sets a value indicating whether
@@ -67,11 +56,12 @@ namespace Spectre.Console
         public bool Unicode { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Capabilities"/> class.
+        /// Initializes a new instance of the
+        /// <see cref="Capabilities"/> class.
         /// </summary>
-        internal Capabilities(Profile profile)
+        internal Capabilities(IAnsiConsoleOutput @out)
         {
-            _profile = profile ?? throw new ArgumentNullException(nameof(profile));
+            _out = @out ?? throw new ArgumentNullException(nameof(@out));
         }
     }
 }
