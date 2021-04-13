@@ -22,10 +22,11 @@ namespace Spectre.Console.Cli
 
         public sealed class Settings : CommandSettings
         {
-            public Settings(string[]? commands, bool? detailed)
+            public Settings(string[]? commands, bool? detailed, bool includeHidden)
             {
                 Commands = commands;
                 Detailed = detailed;
+                IncludeHidden = includeHidden;
             }
 
             [CommandArgument(0, "[command]")]
@@ -34,6 +35,10 @@ namespace Spectre.Console.Cli
             [Description("Include detailed information about the commands.")]
             [CommandOption("-d|--detailed")]
             public bool? Detailed { get; }
+
+            [Description("Include hidden commands.")]
+            [CommandOption("--hidden")]
+            public bool IncludeHidden { get; }
         }
 
         public override int Execute([NotNull] CommandContext context, [NotNull] Settings settings)
@@ -52,7 +57,8 @@ namespace Spectre.Console.Cli
                 AddCommands(
                     tree.AddNode(ParentMarkup("Commands")),
                     commands,
-                    settings.Detailed ?? false);
+                    settings.Detailed ?? false,
+                    settings.IncludeHidden);
             }
             else
             {
@@ -82,7 +88,8 @@ namespace Spectre.Console.Cli
                 AddCommands(
                     tree.AddNode(ParentMarkup("Commands")),
                     new[] { currentCommand },
-                    settings.Detailed ?? true);
+                    settings.Detailed ?? true,
+                    settings.IncludeHidden);
             }
 
             _writer.Write(tree);
@@ -126,10 +133,15 @@ namespace Spectre.Console.Cli
             }
         }
 
-        private void AddCommands(TreeNode node, IEnumerable<CommandInfo> commands, bool detailed)
+        private void AddCommands(TreeNode node, IEnumerable<CommandInfo> commands, bool detailed, bool includeHidden)
         {
             foreach (var command in commands)
             {
+                if (!includeHidden && command.IsHidden)
+                {
+                    continue;
+                }
+
                 var commandName = $"[green]{command.Name}[/]";
                 if (command.IsDefaultCommand)
                 {
@@ -164,7 +176,7 @@ namespace Spectre.Console.Cli
                 if (command.Children.Count > 0)
                 {
                     var childNode = commandNode.AddNode(ParentMarkup("Child Commands"));
-                    AddCommands(childNode, command.Children, detailed);
+                    AddCommands(childNode, command.Children, detailed, includeHidden);
                 }
             }
         }
