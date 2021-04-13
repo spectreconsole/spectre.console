@@ -44,9 +44,14 @@ namespace Spectre.Console.Cli
 
             if (settings.Commands == null || settings.Commands.Length == 0)
             {
+                // If there is a default command we'll want to include it in the list too.
+                var commands = _commandModel.DefaultCommand != null
+                    ? new[] { _commandModel.DefaultCommand }.Concat(_commandModel.Commands)
+                    : _commandModel.Commands;
+
                 AddCommands(
                     tree.AddNode(ParentMarkup("Commands")),
-                    _commandModel.Commands,
+                    commands,
                     settings.Detailed ?? false);
             }
             else
