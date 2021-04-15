@@ -358,15 +358,15 @@ namespace Spectre.Console.Tests.Unit.Cli
 
             // Then
             registrar.Registrations.ContainsKey(typeof(ICommand)).ShouldBeTrue();
-            registrar.Registrations.ContainsKey(typeof(DogSettings));
             registrar.Registrations[typeof(ICommand)].ShouldContain(typeof(DogCommand));
         }
 
         [Fact]
-        public void Should_Register_Default_Command_Settings_When_Configuring_Application()
+        public void Can_Register_Default_Command_Settings_When_Configuring_Application()
         {
             // Given
             var registrar = new FakeTypeRegistrar();
+            registrar.Register(typeof(DogSettings), typeof(DogSettings));
             var app = new CommandApp<DogCommand>(registrar);
             app.Configure(config =>
             {
@@ -380,7 +380,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // Then
-            registrar.Registrations.ContainsKey(typeof(DogSettings));
+            registrar.Registrations.ContainsKey(typeof(DogSettings)).ShouldBeTrue();
             registrar.Registrations[typeof(DogSettings)].Count.ShouldBe(1);
             registrar.Registrations[typeof(DogSettings)].ShouldContain(typeof(DogSettings));
         }
@@ -415,10 +415,12 @@ namespace Spectre.Console.Tests.Unit.Cli
         }
 
         [Fact]
-        public void Should_Register_Command_Settings_When_Configuring_Application()
+        public void Can_Register_Command_Settings_When_Configuring_Application()
         {
             // Given
             var registrar = new FakeTypeRegistrar();
+            registrar.Register(typeof(DogSettings), typeof(DogSettings));
+            registrar.Register(typeof(MammalSettings), typeof(MammalSettings));
             var app = new CommandApp(registrar);
             app.Configure(config =>
             {

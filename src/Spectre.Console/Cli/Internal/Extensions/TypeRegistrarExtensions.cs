@@ -31,11 +31,6 @@ namespace Spectre.Console.Cli
                     registrar?.Register(command.CommandType, command.CommandType);
                 }
 
-                if (!command.SettingsType.IsAbstract)
-                {
-                    registrar?.Register(command.SettingsType, command.SettingsType);
-                }
-
                 foreach (var parameter in command.Parameters)
                 {
                     var pairDeconstructor = parameter?.PairDeconstructor?.Type;
