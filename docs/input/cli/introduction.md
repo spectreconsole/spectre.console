@@ -75,6 +75,8 @@ public class AddReferenceCommand : Command<AddReferenceSettings>
 }
 ```
 
+You can use `AsyncCommand` if you need async support.
+
 ## Let's tie it together
 
 Now when we have our commands and settings implemented, we can compose a command tree
