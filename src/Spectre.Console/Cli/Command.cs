@@ -5,6 +5,7 @@ namespace Spectre.Console.Cli
     /// <summary>
     /// Base class for a command without settings.
     /// </summary>
+    /// <seealso cref="AsyncCommand"/>
     public abstract class Command : ICommand<EmptyCommandSettings>
     {
         /// <summary>
