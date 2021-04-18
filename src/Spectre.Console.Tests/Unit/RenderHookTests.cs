@@ -21,7 +21,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Inject_Renderable_Before_Writing_To_Console()
         {
             // Given
-            var console = new FakeConsole();
+            var console = new TestConsole();
             console.Pipeline.Attach(new HelloRenderHook());
 
             // When

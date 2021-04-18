@@ -17,7 +17,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Panel()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             // When
             console.Write(new Panel(new Text("Hello World")));
@@ -31,7 +31,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Panel_With_Padding_Set_To_Zero()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             // When
             console.Write(new Panel(new Text("Hello World"))
@@ -48,7 +48,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Panel_With_Padding()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             // When
             console.Write(new Panel(new Text("Hello World"))
@@ -65,7 +65,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Panel_With_Header()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             // When
             console.Write(new Panel("Hello World")
@@ -84,7 +84,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Panel_With_Left_Aligned_Header()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             // When
             console.Write(new Panel("Hello World")
@@ -102,7 +102,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Panel_With_Centered_Header()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             // When
             console.Write(new Panel("Hello World")
@@ -120,7 +120,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Panel_With_Right_Aligned_Header()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             // When
             console.Write(new Panel("Hello World")
@@ -138,7 +138,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Collapse_Header_If_It_Will_Not_Fit()
         {
             // Given
-            var console = new FakeConsole(width: 10);
+            var console = new TestConsole().Width(10);
 
             // When
             console.Write(new Panel("Hello World")
@@ -156,7 +156,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Panel_With_Unicode_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             // When
             console.Write(new Panel(new Text(" \n💩\n ")));
@@ -170,7 +170,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Panel_With_Multiple_Lines()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             // When
             console.Write(new Panel(new Text("Hello World\nFoo Bar")));
@@ -184,7 +184,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Preserve_Explicit_Line_Ending()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var text = new Panel(
                 new Markup("I heard [underline on blue]you[/] like 📦\n\n\n\nSo I put a 📦 in a 📦"));
 
@@ -200,7 +200,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Expand_Panel_If_Enabled()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             // When
             console.Write(new Panel(new Text("Hello World"))
@@ -217,7 +217,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Justify_Child_To_Right_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 25);
+            var console = new TestConsole().Width(25);
 
             // When
             console.Write(
@@ -235,7 +235,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Center_Child_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 25);
+            var console = new TestConsole().Width(25);
 
             // When
             console.Write(
@@ -253,7 +253,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Panel_Inside_Panel_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             // When
             console.Write(new Panel(new Panel(new Text("Hello World"))));
@@ -267,7 +267,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Wrap_Content_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 84);
+            var console = new TestConsole().Width(84);
             var rows = new List<IRenderable>();
             var grid = new Grid();
             grid.AddColumn(new GridColumn().PadLeft(2).PadRight(0));
@@ -292,7 +292,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Wrap_Table_With_CJK_Tables_In_Panel_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             var table = new Table();
             table.AddColumn("测试");

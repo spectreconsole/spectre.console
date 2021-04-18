@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Spectre.Console.Testing
 {
-    public sealed class FakeExclusivityMode : IExclusivityMode
+    internal sealed class NoopExclusivityMode : IExclusivityMode
     {
         public T Run<T>(Func<T> func)
         {

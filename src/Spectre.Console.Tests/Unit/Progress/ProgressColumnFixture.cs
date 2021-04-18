@@ -19,7 +19,7 @@ namespace Spectre.Console.Tests.Unit
 
         public string Render()
         {
-            var console = new FakeConsole();
+            var console = new TestConsole();
             var context = new RenderContext(console.Profile.Capabilities);
             console.Write(Column.Render(context, Task, TimeSpan.Zero));
             return console.Output;

@@ -15,7 +15,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             // When
             console.Write(new BarChart()
@@ -34,7 +34,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Correctly_2()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             // When
             console.Write(new BarChart()

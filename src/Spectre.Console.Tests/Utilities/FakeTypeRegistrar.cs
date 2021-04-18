@@ -6,13 +6,11 @@ namespace Spectre.Console.Testing
 {
     public sealed class FakeTypeRegistrar : ITypeRegistrar
     {
-        private readonly ITypeResolver _resolver;
         public Dictionary<Type, List<Type>> Registrations { get; }
         public Dictionary<Type, List<object>> Instances { get; }
 
-        public FakeTypeRegistrar(ITypeResolver resolver = null)
+        public FakeTypeRegistrar()
         {
-            _resolver = resolver;
             Registrations = new Dictionary<Type, List<Type>>();
             Instances = new Dictionary<Type, List<object>>();
         }
@@ -52,7 +50,7 @@ namespace Spectre.Console.Testing
 
         public ITypeResolver Build()
         {
-            return _resolver;
+            return null;
         }
     }
 }

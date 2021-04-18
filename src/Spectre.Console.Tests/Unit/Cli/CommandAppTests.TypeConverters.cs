@@ -14,7 +14,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Bind_Using_Custom_Type_Converter_If_Specified()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -22,15 +22,15 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                      "cat", "--name", "Tiger",
                      "--agility", "FOOBAR",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<CatSettings>().And(cat =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<CatSettings>().And(cat =>
                 {
                     cat.Agility.ShouldBe(6);
                 });

@@ -13,7 +13,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Output_The_Version_To_The_Console()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(config =>
                 {
                     config.AddBranch<AnimalSettings>("animal", animal =>
@@ -27,10 +27,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run(Constants.VersionCommand);
+                var result = fixture.Run(Constants.VersionCommand);
 
                 // Then
-                output.ShouldStartWith("Spectre.Cli version ");
+                result.Output.ShouldStartWith("Spectre.Cli version ");
             }
         }
     }

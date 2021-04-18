@@ -42,7 +42,10 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Canvas_Correctly()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.Standard);
+            var console = new TestConsole()
+                .Colors(ColorSystem.Standard)
+                .EmitAnsiSequences();
+
             var canvas = new Canvas(width: 5, height: 5);
             canvas.SetPixel(0, 0, Color.Red);
             canvas.SetPixel(4, 0, Color.Green);
@@ -61,7 +64,10 @@ namespace Spectre.Console.Tests.Unit
         public async Task Simple_Measure()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.Standard);
+            var console = new TestConsole()
+                .Colors(ColorSystem.Standard)
+                .EmitAnsiSequences();
+
             var panel = new Panel(new Canvas(width: 2, height: 2)
                 .SetPixel(0, 0, Color.Aqua)
                 .SetPixel(1, 1, Color.Grey));
@@ -78,7 +84,11 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Scale_Down_Canvas_Is_Bigger_Than_Terminal()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.Standard, width: 10);
+            var console = new TestConsole()
+                .Width(10)
+                .Colors(ColorSystem.Standard)
+                .EmitAnsiSequences();
+
             var canvas = new Canvas(width: 20, height: 10);
             canvas.SetPixel(0, 0, Color.Aqua);
             canvas.SetPixel(19, 9, Color.Grey);
@@ -95,7 +105,10 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Scale_Down_Canvas_If_MaxWidth_Is_Set()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.Standard, width: 80);
+            var console = new TestConsole()
+                .Colors(ColorSystem.Standard)
+                .EmitAnsiSequences();
+
             var canvas = new Canvas(width: 20, height: 10) { MaxWidth = 10 };
             canvas.SetPixel(0, 0, Color.Aqua);
             canvas.SetPixel(19, 9, Color.Aqua);
@@ -111,7 +124,11 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Not_Render_Canvas_If_Canvas_Cannot_Be_Scaled_Down()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.Standard, width: 10);
+            var console = new TestConsole()
+                .Width(10)
+                .Colors(ColorSystem.Standard)
+                .EmitAnsiSequences();
+
             var canvas = new Canvas(width: 20, height: 2);
             canvas.SetPixel(0, 0, Color.Aqua);
             canvas.SetPixel(19, 1, Color.Grey);

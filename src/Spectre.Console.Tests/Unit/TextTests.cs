@@ -11,11 +11,11 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Consider_The_Longest_Word_As_Minimum_Width()
         {
             // Given
-            var caps = new FakeCapabilities { Unicode = true };
+            var caps = new TestCapabilities { Unicode = true };
             var text = new Text("Foo Bar Baz\nQux\nLol mobile");
 
             // When
-            var result = ((IRenderable)text).Measure(new RenderContext(caps), 80);
+            var result = ((IRenderable)text).Measure(caps.CreateRenderContext(), 80);
 
             // Then
             result.Min.ShouldBe(6);
@@ -25,11 +25,11 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Consider_The_Longest_Line_As_Maximum_Width()
         {
             // Given
-            var caps = new FakeCapabilities { Unicode = true };
+            var caps = new TestCapabilities { Unicode = true };
             var text = new Text("Foo Bar Baz\nQux\nLol mobile");
 
             // When
-            var result = ((IRenderable)text).Measure(new RenderContext(caps), 80);
+            var result = ((IRenderable)text).Measure(caps.CreateRenderContext(), 80);
 
             // Then
             result.Max.ShouldBe(11);
@@ -39,7 +39,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Render_Unstyled_Text_As_Expected()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var text = new Text("Hello World");
 
             // When
@@ -55,7 +55,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Write_Line_Breaks(string input)
         {
             // Given
-            var console = new FakeConsole(width: 5);
+            var console = new TestConsole();
             var text = new Text(input);
 
             // When
@@ -69,7 +69,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Render_Panel_2()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             // When
             console.Write(new Markup("[b]Hello World[/]\n[yellow]Hello World[/]"));
@@ -87,7 +87,7 @@ namespace Spectre.Console.Tests.Unit
             int width, string input, string expected)
         {
             // Given
-            var console = new FakeConsole(width);
+            var console = new TestConsole().Width(width);
             var text = new Text(input);
 
             // When
@@ -106,7 +106,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Overflow_Text_Correctly(Overflow overflow, string expected)
         {
             // Given
-            var console = new FakeConsole(14);
+            var console = new TestConsole().Width(14);
             var text = new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar qux")
                 .Overflow(overflow);
 

@@ -15,7 +15,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Can_Mix_Safe_And_Unsafe_Configurators()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -31,15 +31,15 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "animal", "--alive", "mammal", "--name",
                     "Rufus", "dog", "12", "--good-boy",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<DogSettings>().And(dog =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
                 {
                     dog.Age.ShouldBe(12);
                     dog.GoodBoy.ShouldBe(true);
@@ -52,7 +52,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Can_Turn_Safety_On_After_Turning_It_Off_For_Branch()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -69,15 +69,15 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "animal", "--alive", "mammal", "--name",
                     "Rufus", "dog", "12", "--good-boy",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<DogSettings>().And(dog =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
                 {
                     dog.Age.ShouldBe(12);
                     dog.GoodBoy.ShouldBe(true);
@@ -112,7 +112,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Pass_Case_1()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -128,15 +128,15 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "animal", "--alive", "mammal", "--name",
                     "Rufus", "dog", "12", "--good-boy",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<DogSettings>().And(dog =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
                 {
                     dog.Age.ShouldBe(12);
                     dog.GoodBoy.ShouldBe(true);
@@ -149,7 +149,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Pass_Case_2()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -157,15 +157,15 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "dog", "12", "4", "--good-boy",
                     "--name", "Rufus", "--alive",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<DogSettings>().And(dog =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
                 {
                     dog.Legs.ShouldBe(12);
                     dog.Age.ShouldBe(4);
@@ -179,7 +179,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Pass_Case_3()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -191,15 +191,15 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "animal", "dog", "12", "--good-boy",
                     "--name", "Rufus",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<DogSettings>().And(dog =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
                 {
                     dog.Age.ShouldBe(12);
                     dog.GoodBoy.ShouldBe(true);
@@ -212,7 +212,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Pass_Case_4()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -223,15 +223,15 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "animal", "4", "dog", "12",
                     "--good-boy", "--name", "Rufus",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<DogSettings>().And(dog =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
                 {
                     dog.Legs.ShouldBe(4);
                     dog.Age.ShouldBe(12);
@@ -245,7 +245,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Pass_Case_5()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -253,14 +253,14 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "multi", "--foo", "a", "--foo", "b", "--bar", "1", "--foo", "c", "--bar", "2",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<OptionVectorSettings>().And(vec =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<OptionVectorSettings>().And(vec =>
                 {
                     vec.Foo.Length.ShouldBe(3);
                     vec.Foo.ShouldBe(new[] { "a", "b", "c" });
@@ -273,7 +273,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Pass_Case_6()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -281,14 +281,14 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "multi", "a", "b", "c",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<ArgumentVectorSettings>().And(vec =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<ArgumentVectorSettings>().And(vec =>
                 {
                     vec.Foo.Length.ShouldBe(3);
                     vec.Foo.ShouldBe(new[] { "a", "b", "c" });
