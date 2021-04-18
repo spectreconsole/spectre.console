@@ -56,7 +56,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Assign_Values_To_Argument_Vector()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -64,14 +64,14 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "multi", "a", "b", "c",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<ArgumentVectorSettings>().And(vec =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<ArgumentVectorSettings>().And(vec =>
                 {
                     vec.Foo.Length.ShouldBe(3);
                     vec.Foo[0].ShouldBe("a");
@@ -84,7 +84,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Assign_Values_To_Option_Vector()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -92,15 +92,15 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "cmd", "--foo", "red",
                     "--bar", "4", "--foo", "blue",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<OptionVectorSettings>().And(vec =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<OptionVectorSettings>().And(vec =>
                 {
                     vec.Foo.ShouldBe(new string[] { "red", "blue" });
                     vec.Bar.ShouldBe(new int[] { 4 });

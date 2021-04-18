@@ -35,10 +35,10 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Inject_Parameters()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 var dependency = new FakeDependency();
 
-                app.WithDefaultCommand<GenericCommand<InjectSettings>>();
+                app.SetDefaultCommand<GenericCommand<InjectSettings>>();
                 app.Configure(config =>
                 {
                     config.Settings.Registrar.RegisterInstance(dependency);
@@ -46,15 +46,15 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "--name", "foo",
                     "--age", "35",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<InjectSettings>().And(injected =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<InjectSettings>().And(injected =>
                 {
                     injected.ShouldNotBeNull();
                     injected.Fake.ShouldBeSameAs(dependency);

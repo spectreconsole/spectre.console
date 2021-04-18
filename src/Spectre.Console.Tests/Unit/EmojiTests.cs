@@ -10,7 +10,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Substitute_Emoji_Shortcodes_In_Markdown()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+            var console = new TestConsole();
 
             // When
             console.Markup("Hello :globe_showing_europe_africa:!");
@@ -57,7 +57,7 @@ namespace Spectre.Console.Tests.Unit
             public void Can_Handle_Different_Combinations(string markup, string expected)
             {
                 // Given
-                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new TestConsole();
 
                 // When
                 console.Markup(markup);
@@ -70,7 +70,7 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Leave_Single_Colons()
             {
                 // Given
-                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new TestConsole();
 
                 // When
                 console.Markup("Hello :globe_showing_europe_africa:! Output: good");
@@ -80,10 +80,10 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Unknown_emojis_should_remain()
+            public void Unknown_emojis_should_remain_unchanged()
             {
                 // Given
-                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new TestConsole();
 
                 // When
                 console.Markup("Hello :globe_showing_flat_earth:!");

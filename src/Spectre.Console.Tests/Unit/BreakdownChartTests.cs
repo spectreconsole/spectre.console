@@ -15,7 +15,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var chart = Fixture.GetChart();
 
             // When
@@ -30,7 +30,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_With_Specific_Width()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var chart = Fixture.GetChart().Width(60);
 
             // When
@@ -45,7 +45,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Correctly_With_Specific_Value_Formatter()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var chart = Fixture.GetChart()
                 .Width(60)
                 .Culture("sv-SE")
@@ -63,7 +63,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Correctly_Without_Tags()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var chart = Fixture.GetChart().Width(60).HideTags();
 
             // When
@@ -78,7 +78,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Correctly_Without_Tag_Values()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var chart = Fixture.GetChart().Width(60).HideTagValues();
 
             // When
@@ -93,7 +93,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Correctly_With_Specific_Culture()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var chart = Fixture.GetChart().Width(60).Culture("sv-SE");
 
             // When
@@ -108,7 +108,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_FullSize_Mode_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var chart = Fixture.GetChart().Width(60).FullSize();
 
             // When
@@ -123,7 +123,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Correct_Ansi()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.EightBit, width: 80);
+            var console = new TestConsole().EmitAnsiSequences();
             var chart = Fixture.GetChart().Width(60).FullSize();
 
             // When

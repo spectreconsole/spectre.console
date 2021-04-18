@@ -14,7 +14,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Register_Remaining_Parsed_Arguments_With_Context()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -25,7 +25,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, ctx, _) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "animal", "4", "dog", "12", "--",
                     "--foo", "bar", "--foo", "baz",
@@ -34,18 +34,18 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // Then
-                ctx.Remaining.Parsed.Count.ShouldBe(4);
-                ctx.ShouldHaveRemainingArgument("foo", values: new[] { "bar", "baz" });
-                ctx.ShouldHaveRemainingArgument("b", values: new[] { (string)null });
-                ctx.ShouldHaveRemainingArgument("a", values: new[] { (string)null });
-                ctx.ShouldHaveRemainingArgument("r", values: new[] { (string)null });
+                result.Context.Remaining.Parsed.Count.ShouldBe(4);
+                result.Context.ShouldHaveRemainingArgument("foo", values: new[] { "bar", "baz" });
+                result.Context.ShouldHaveRemainingArgument("b", values: new[] { (string)null });
+                result.Context.ShouldHaveRemainingArgument("a", values: new[] { (string)null });
+                result.Context.ShouldHaveRemainingArgument("r", values: new[] { (string)null });
             }
 
             [Fact]
             public void Should_Register_Remaining_Raw_Arguments_With_Context()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -56,7 +56,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, ctx, _) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "animal", "4", "dog", "12", "--",
                     "--foo", "bar", "-bar", "\"baz\"", "qux",
@@ -64,13 +64,13 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // Then
-                ctx.Remaining.Raw.Count.ShouldBe(6);
-                ctx.Remaining.Raw[0].ShouldBe("--foo");
-                ctx.Remaining.Raw[1].ShouldBe("bar");
-                ctx.Remaining.Raw[2].ShouldBe("-bar");
-                ctx.Remaining.Raw[3].ShouldBe("baz");
-                ctx.Remaining.Raw[4].ShouldBe("qux");
-                ctx.Remaining.Raw[5].ShouldBe("foo bar baz qux");
+                result.Context.Remaining.Raw.Count.ShouldBe(6);
+                result.Context.Remaining.Raw[0].ShouldBe("--foo");
+                result.Context.Remaining.Raw[1].ShouldBe("bar");
+                result.Context.Remaining.Raw[2].ShouldBe("-bar");
+                result.Context.Remaining.Raw[3].ShouldBe("baz");
+                result.Context.Remaining.Raw[4].ShouldBe("qux");
+                result.Context.Remaining.Raw[5].ShouldBe("foo bar baz qux");
             }
         }
     }

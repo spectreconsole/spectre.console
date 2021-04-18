@@ -79,7 +79,7 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             public static string Run<TSettings>(params string[] args)
                 where TSettings : CommandSettings
             {
-                using (var writer = new FakeConsole())
+                using (var writer = new TestConsole())
                 {
                     var app = new CommandApp();
                     app.Configure(c => c.ConfigureConsole(writer));

@@ -127,15 +127,15 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Map_Pairs_To_Pair_Deconstructable_Collection_Using_Default_Deconstructort()
             {
                 // Given
-                var app = new CommandAppFixture();
-                app.WithDefaultCommand<GenericCommand<DefaultPairDeconstructorSettings>>();
+                var app = new CommandAppTester();
+                app.SetDefaultCommand<GenericCommand<DefaultPairDeconstructorSettings>>();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "--var", "foo=1",
                     "--var", "foo=3",
@@ -143,8 +143,8 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<DefaultPairDeconstructorSettings>().And(pair =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<DefaultPairDeconstructorSettings>().And(pair =>
                 {
                     pair.Values.ShouldNotBeNull();
                     pair.Values.Count.ShouldBe(2);
@@ -160,41 +160,41 @@ namespace Spectre.Console.Tests.Unit.Cli
                 string input, string expected)
             {
                 // Given
-                var app = new CommandAppFixture();
-                app.WithDefaultCommand<GenericCommand<DefaultPairDeconstructorSettings>>();
+                var app = new CommandAppTester();
+                app.SetDefaultCommand<GenericCommand<DefaultPairDeconstructorSettings>>();
 
                 // When
-                var (result, output, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "--var", input,
                 });
 
                 // Then
-                result.ShouldBe(-1);
-                output.ShouldBe(expected);
+                result.ExitCode.ShouldBe(-1);
+                result.Output.ShouldBe(expected);
             }
 
             [Fact]
             public void Should_Map_Lookup_Values()
             {
                 // Given
-                var app = new CommandAppFixture();
-                app.WithDefaultCommand<GenericCommand<LookupSettings>>();
+                var app = new CommandAppTester();
+                app.SetDefaultCommand<GenericCommand<LookupSettings>>();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "--var", "foo=bar",
                     "--var", "foo=qux",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<LookupSettings>().And(pair =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<LookupSettings>().And(pair =>
                 {
                     pair.Values.ShouldNotBeNull();
                     pair.Values.Count.ShouldBe(1);
@@ -206,23 +206,23 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Map_Dictionary_Values()
             {
                 // Given
-                var app = new CommandAppFixture();
-                app.WithDefaultCommand<GenericCommand<DictionarySettings>>();
+                var app = new CommandAppTester();
+                app.SetDefaultCommand<GenericCommand<DictionarySettings>>();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "--var", "foo=bar",
                     "--var", "baz=qux",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<DictionarySettings>().And(pair =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<DictionarySettings>().And(pair =>
                 {
                     pair.Values.ShouldNotBeNull();
                     pair.Values.Count.ShouldBe(2);
@@ -235,23 +235,23 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Map_Latest_Value_Of_Same_Key_When_Mapping_To_Dictionary()
             {
                 // Given
-                var app = new CommandAppFixture();
-                app.WithDefaultCommand<GenericCommand<DictionarySettings>>();
+                var app = new CommandAppTester();
+                app.SetDefaultCommand<GenericCommand<DictionarySettings>>();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "--var", "foo=bar",
                     "--var", "foo=qux",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<DictionarySettings>().And(pair =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<DictionarySettings>().And(pair =>
                 {
                     pair.Values.ShouldNotBeNull();
                     pair.Values.Count.ShouldBe(1);
@@ -263,23 +263,23 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Map_ReadOnly_Dictionary_Values()
             {
                 // Given
-                var app = new CommandAppFixture();
-                app.WithDefaultCommand<GenericCommand<ReadOnlyDictionarySettings>>();
+                var app = new CommandAppTester();
+                app.SetDefaultCommand<GenericCommand<ReadOnlyDictionarySettings>>();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "--var", "foo=bar",
                     "--var", "baz=qux",
                 });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<ReadOnlyDictionarySettings>().And(pair =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<ReadOnlyDictionarySettings>().And(pair =>
                 {
                     pair.Values.ShouldNotBeNull();
                     pair.Values.Count.ShouldBe(2);

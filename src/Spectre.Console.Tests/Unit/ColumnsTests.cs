@@ -22,7 +22,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Columns_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 61);
+            var console = new TestConsole().Width(61);
             var users = new[]
             {
                 new User { Name = "Savannah Thompson", Country = "Australia" },

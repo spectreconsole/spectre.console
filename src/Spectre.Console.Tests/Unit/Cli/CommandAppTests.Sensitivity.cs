@@ -12,7 +12,7 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Treat_Commands_As_Case_Sensitive_If_Specified()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandApp();
             app.Configure(config =>
             {
                 config.UseStrictParsing();
@@ -39,7 +39,7 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Treat_Long_Options_As_Case_Sensitive_If_Specified()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandApp();
             app.Configure(config =>
             {
                 config.UseStrictParsing();
@@ -66,7 +66,7 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Treat_Short_Options_As_Case_Sensitive()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandApp();
             app.Configure(config =>
             {
                 config.UseStrictParsing();
@@ -92,7 +92,7 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Suppress_Case_Sensitivity_If_Specified()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandAppTester();
             app.Configure(config =>
             {
                 config.UseStrictParsing();
@@ -102,14 +102,14 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (result, _, _, settings) = app.Run(new[]
+            var result = app.Run(new[]
             {
                 "Command", "--Foo", "bar",
             });
 
             // Then
-            result.ShouldBe(0);
-            settings.ShouldBeOfType<StringOptionSettings>().And(vec =>
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<StringOptionSettings>().And(vec =>
             {
                 vec.Foo.ShouldBe("bar");
             });

@@ -66,7 +66,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Set_Flag_And_Value_If_Both_Were_Provided()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -74,14 +74,11 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
-                {
-                    "foo", "--serve", "123",
-                });
+                var result = app.Run(new[] { "foo", "--serve", "123", });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<FlagSettings>().And(flag =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<FlagSettings>().And(flag =>
                 {
                     flag.Serve.IsSet.ShouldBeTrue();
                     flag.Serve.Value.ShouldBe(123);
@@ -92,7 +89,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Only_Set_Flag_If_No_Value_Was_Provided()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -100,14 +97,11 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
-                {
-                    "foo", "--serve",
-                });
+                var result = app.Run(new[] { "foo", "--serve" });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<FlagSettings>().And(flag =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<FlagSettings>().And(flag =>
                 {
                     flag.Serve.IsSet.ShouldBeTrue();
                     flag.Serve.Value.ShouldBe(0);
@@ -118,7 +112,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Set_Value_To_Default_Value_If_None_Was_Explicitly_Set()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -126,14 +120,11 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
-                {
-                    "foo", "--serve",
-                });
+                var result = app.Run(new[] { "foo", "--serve" });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<FlagSettingsWithDefaultValue>().And(flag =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<FlagSettingsWithDefaultValue>().And(flag =>
                 {
                     flag.Serve.IsSet.ShouldBeTrue();
                     flag.Serve.Value.ShouldBe(987);
@@ -144,7 +135,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Create_Unset_Instance_If_Flag_Was_Not_Set()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -152,14 +143,11 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
-                {
-                    "foo",
-                });
+                var result = app.Run(new[] { "foo" });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<FlagSettings>().And(flag =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<FlagSettings>().And(flag =>
                 {
                     flag.Serve.IsSet.ShouldBeFalse();
                     flag.Serve.Value.ShouldBe(0);
@@ -170,7 +158,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Create_Unset_Instance_With_Null_For_Nullable_Value_Type_If_Flag_Was_Not_Set()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -178,14 +166,11 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, settings) = app.Run(new[]
-                {
-                    "foo",
-                });
+                var result = app.Run(new[] { "foo" });
 
                 // Then
-                result.ShouldBe(0);
-                settings.ShouldBeOfType<FlagSettingsWithNullableValueType>().And(flag =>
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<FlagSettingsWithNullableValueType>().And(flag =>
                 {
                     flag.Serve.IsSet.ShouldBeFalse();
                     flag.Serve.Value.ShouldBeNull();
@@ -201,9 +186,11 @@ namespace Spectre.Console.Tests.Unit.Cli
                 string expected)
             {
                 // Given
-                var flag = new FlagValue<string>();
-                flag.Value = value;
-                flag.IsSet = isSet;
+                var flag = new FlagValue<string>
+                {
+                    Value = value,
+                    IsSet = isSet,
+                };
 
                 // When
                 var result = flag.ToString();
@@ -220,8 +207,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 string expected)
             {
                 // Given
-                var flag = new FlagValue<string>();
-                flag.IsSet = isSet;
+                var flag = new FlagValue<string>
+                {
+                    IsSet = isSet,
+                };
 
                 // When
                 var result = flag.ToString();

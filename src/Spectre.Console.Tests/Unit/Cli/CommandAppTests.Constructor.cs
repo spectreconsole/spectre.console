@@ -1,4 +1,4 @@
-﻿using Shouldly;
+using Shouldly;
 using Spectre.Console.Cli;
 using Spectre.Console.Testing;
 using Xunit;
@@ -42,10 +42,10 @@ namespace Spectre.Console.Tests.Unit.Cli
         }
 
         [Fact]
-        public void Nullable_objects_in_settings_are_populated_properly()
+        public void Should_Populate_Nullable_Objects_In_Settings()
         {
             // Given
-            var fixture = new CommandAppFixture();
+            var fixture = new CommandAppTester();
             fixture.Configure(configurator =>
             {
                 configurator.SetApplicationName("myapp");
@@ -53,19 +53,21 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (_, _, _, settings) = fixture.Run("null");
-            var nullableSettings = (NullableSettings)settings;
+            var result = fixture.Run("null");
 
             // Then
-            nullableSettings.Detailed.ShouldBeNull();
-            nullableSettings.Extra.ShouldBeNull();
+            result.Settings.ShouldBeOfType<NullableSettings>().And(settings =>
+            {
+                settings.Detailed.ShouldBeNull();
+                settings.Extra.ShouldBeNull();
+            });
         }
 
         [Fact]
-        public void Nullable_objects_with_init_in_settings_are_populated_properly()
+        public void Should_Populate_Nullable_Objects_With_Init_In_Settings()
         {
             // Given
-            var fixture = new CommandAppFixture();
+            var fixture = new CommandAppTester();
             fixture.Configure(configurator =>
             {
                 configurator.SetApplicationName("myapp");
@@ -73,19 +75,21 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (_, _, _, settings) = fixture.Run("null");
-            var nullableSettings = (NullableWithInitSettings)settings;
+            var result = fixture.Run("null");
 
             // Then
-            nullableSettings.Detailed.ShouldBeNull();
-            nullableSettings.Extra.ShouldBeNull();
+            result.Settings.ShouldBeOfType<NullableWithInitSettings>().And(settings =>
+            {
+                settings.Detailed.ShouldBeNull();
+                settings.Extra.ShouldBeNull();
+            });
         }
 
         [Fact]
-        public void Regular_settings_are_populated_properly()
+        public void Should_Populate_Regular_Settings()
         {
             // Given
-            var fixture = new CommandAppFixture();
+            var fixture = new CommandAppTester();
             fixture.Configure(configurator =>
             {
                 configurator.SetApplicationName("myapp");
@@ -93,12 +97,14 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (_, _, _, settings) = fixture.Run("null", "-d", "true", "first-item");
-            var nullableSettings = (NullableSettings)settings;
+            var result = fixture.Run("null", "-d", "true", "first-item");
 
             // Then
-            nullableSettings.Detailed.ShouldBe(true);
-            nullableSettings.Extra.ShouldBe(new[] { "first-item" });
+            result.Settings.ShouldBeOfType<NullableSettings>().And(settings =>
+            {
+                settings.Detailed.ShouldBe(true);
+                settings.Extra.ShouldBe(new[] { "first-item" });
+            });
         }
     }
 }

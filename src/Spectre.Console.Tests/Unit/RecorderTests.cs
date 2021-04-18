@@ -15,7 +15,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Export_Text_As_Expected()
         {
             // Given
-            var console = new FakeConsole();
+            var console = new TestConsole();
             var recorder = new Recorder(console);
 
             recorder.Write(new Table()
@@ -35,7 +35,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Export_Html_Text_As_Expected()
         {
             // Given
-            var console = new FakeConsole();
+            var console = new TestConsole();
             var recorder = new Recorder(console);
 
             recorder.Write(new Table()

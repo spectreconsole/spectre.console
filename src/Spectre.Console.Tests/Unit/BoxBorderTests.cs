@@ -33,7 +33,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new FakeConsole();
+                var console = new TestConsole();
                 var panel = Fixture.GetPanel().NoBorder();
 
                 // When
@@ -65,7 +65,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new FakeConsole();
+                var console = new TestConsole();
                 var panel = Fixture.GetPanel().AsciiBorder();
 
                 // When
@@ -97,7 +97,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new FakeConsole();
+                var console = new TestConsole();
                 var panel = Fixture.GetPanel().DoubleBorder();
 
                 // When
@@ -129,7 +129,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new FakeConsole();
+                var console = new TestConsole();
                 var panel = Fixture.GetPanel().HeavyBorder();
 
                 // When
@@ -158,7 +158,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new FakeConsole();
+                var console = new TestConsole();
                 var panel = Fixture.GetPanel().RoundedBorder();
 
                 // When
@@ -187,7 +187,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Render_As_Expected()
             {
                 // Given
-                var console = new FakeConsole();
+                var console = new TestConsole();
                 var panel = Fixture.GetPanel().SquareBorder();
 
                 // When

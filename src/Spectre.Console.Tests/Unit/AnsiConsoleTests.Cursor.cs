@@ -18,7 +18,7 @@ namespace Spectre.Console.Tests.Unit
                 public void Should_Return_Correct_Ansi_Code(CursorDirection direction, string expected)
                 {
                     // Given
-                    var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+                    var console = new TestConsole().EmitAnsiSequences();
 
                     // When
                     console.Write("Hello");
@@ -36,7 +36,7 @@ namespace Spectre.Console.Tests.Unit
                 public void Should_Return_Correct_Ansi_Code()
                 {
                     // Given
-                    var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+                    var console = new TestConsole().EmitAnsiSequences();
 
                     // When
                     console.Write("Hello");

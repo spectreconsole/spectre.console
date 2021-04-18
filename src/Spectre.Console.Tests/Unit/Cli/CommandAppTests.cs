@@ -13,7 +13,7 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Pass_Case_1()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandAppTester();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -28,15 +28,15 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (result, _, _, settings) = app.Run(new[]
+            var result = app.Run(new[]
             {
                 "animal", "--alive", "mammal", "--name",
                 "Rufus", "dog", "12", "--good-boy",
             });
 
             // Then
-            result.ShouldBe(0);
-            settings.ShouldBeOfType<DogSettings>().And(dog =>
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
             {
                 dog.Age.ShouldBe(12);
                 dog.GoodBoy.ShouldBe(true);
@@ -49,7 +49,7 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Pass_Case_2()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandAppTester();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -57,15 +57,15 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (result, _, _, settings) = app.Run(new[]
+            var result = app.Run(new[]
             {
                 "dog", "12", "4", "--good-boy",
                 "--name", "Rufus", "--alive",
             });
 
             // Then
-            result.ShouldBe(0);
-            settings.ShouldBeOfType<DogSettings>().And(dog =>
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
             {
                 dog.Legs.ShouldBe(12);
                 dog.Age.ShouldBe(4);
@@ -79,7 +79,7 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Pass_Case_3()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandAppTester();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -91,15 +91,15 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (result, _, _, settings) = app.Run(new[]
+            var result = app.Run(new[]
             {
                 "animal", "dog", "12", "--good-boy",
                 "--name", "Rufus",
             });
 
             // Then
-            result.ShouldBe(0);
-            settings.ShouldBeOfType<DogSettings>().And(dog =>
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
             {
                 dog.Age.ShouldBe(12);
                 dog.GoodBoy.ShouldBe(true);
@@ -112,7 +112,7 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Pass_Case_4()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandAppTester();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -123,15 +123,15 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (result, _, _, settings) = app.Run(new[]
+            var result = app.Run(new[]
             {
                 "animal", "4", "dog", "12", "--good-boy",
                 "--name", "Rufus",
             });
 
             // Then
-            result.ShouldBe(0);
-            settings.ShouldBeOfType<DogSettings>().And(dog =>
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
             {
                 dog.Legs.ShouldBe(4);
                 dog.Age.ShouldBe(12);
@@ -145,7 +145,7 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Pass_Case_5()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandAppTester();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -153,15 +153,15 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (result, _, _, settings) = app.Run(new[]
+            var result = app.Run(new[]
             {
                 "multi", "--foo", "a", "--foo", "b",
                 "--bar", "1", "--foo", "c", "--bar", "2",
             });
 
             // Then
-            result.ShouldBe(0);
-            settings.ShouldBeOfType<OptionVectorSettings>().And(vec =>
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<OptionVectorSettings>().And(vec =>
             {
                 vec.Foo.Length.ShouldBe(3);
                 vec.Foo.ShouldBe(new[] { "a", "b", "c" });
@@ -174,7 +174,7 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Pass_Case_6()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandAppTester();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -182,14 +182,14 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (result, _, _, settings) = app.Run(new[]
+            var result = app.Run(new[]
             {
                 "multi", "a", "b", "c",
             });
 
             // Then
-            result.ShouldBe(0);
-            settings.ShouldBeOfType<ArgumentVectorSettings>().And(vec =>
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<ArgumentVectorSettings>().And(vec =>
             {
                 vec.Foo.Length.ShouldBe(3);
                 vec.Foo.ShouldBe(new[] { "a", "b", "c" });
@@ -200,7 +200,7 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Be_Able_To_Use_Command_Alias()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandAppTester();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -208,14 +208,14 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (result, _, _, settings) = app.Run(new[]
+            var result = app.Run(new[]
             {
                 "multiple", "--foo", "a",
             });
 
             // Then
-            result.ShouldBe(0);
-            settings.ShouldBeOfType<OptionVectorSettings>().And(vec =>
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<OptionVectorSettings>().And(vec =>
             {
                 vec.Foo.Length.ShouldBe(1);
                 vec.Foo.ShouldBe(new[] { "a" });
@@ -226,19 +226,19 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Assign_Default_Value_To_Optional_Argument()
         {
             // Given
-            var app = new CommandAppFixture();
-            app.WithDefaultCommand<GenericCommand<OptionalArgumentWithDefaultValueSettings>>();
+            var app = new CommandAppTester();
+            app.SetDefaultCommand<GenericCommand<OptionalArgumentWithDefaultValueSettings>>();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
             });
 
             // When
-            var (result, _, _, settings) = app.Run(Array.Empty<string>());
+            var result = app.Run(Array.Empty<string>());
 
             // Then
-            result.ShouldBe(0);
-            settings.ShouldBeOfType<OptionalArgumentWithDefaultValueSettings>().And(settings =>
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<OptionalArgumentWithDefaultValueSettings>().And(settings =>
             {
                 settings.Greeting.ShouldBe("Hello World");
             });
@@ -248,19 +248,19 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Assign_Default_Value_To_Optional_Argument_Using_Converter_If_Necessary()
         {
             // Given
-            var app = new CommandAppFixture();
-            app.WithDefaultCommand<GenericCommand<OptionalArgumentWithDefaultValueAndTypeConverterSettings>>();
+            var app = new CommandAppTester();
+            app.SetDefaultCommand<GenericCommand<OptionalArgumentWithDefaultValueAndTypeConverterSettings>>();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
             });
 
             // When
-            var (result, _, _, settings) = app.Run(Array.Empty<string>());
+            var result = app.Run(Array.Empty<string>());
 
             // Then
-            result.ShouldBe(0);
-            settings.ShouldBeOfType<OptionalArgumentWithDefaultValueAndTypeConverterSettings>().And(settings =>
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<OptionalArgumentWithDefaultValueAndTypeConverterSettings>().And(settings =>
             {
                 settings.Greeting.ShouldBe(5);
             });
@@ -270,8 +270,8 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Throw_If_Required_Argument_Have_Default_Value()
         {
             // Given
-            var app = new CommandAppFixture();
-            app.WithDefaultCommand<GenericCommand<RequiredArgumentWithDefaultValueSettings>>();
+            var app = new CommandAppTester();
+            app.SetDefaultCommand<GenericCommand<RequiredArgumentWithDefaultValueSettings>>();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -385,35 +385,6 @@ namespace Spectre.Console.Tests.Unit.Cli
             registrar.Registrations[typeof(DogSettings)].ShouldContain(typeof(DogSettings));
         }
 
-        [Theory]
-        [InlineData("true", true)]
-        [InlineData("True", true)]
-        [InlineData("false", false)]
-        [InlineData("False", false)]
-        public void Should_Accept_Explicit_Boolan_Flag(string value, bool expected)
-        {
-            // Given
-            var app = new CommandAppFixture();
-            app.Configure(config =>
-            {
-                config.PropagateExceptions();
-                config.AddCommand<DogCommand>("dog");
-            });
-
-            // When
-            var (result, _, _, settings) = app.Run(new[]
-            {
-                "dog", "12", "4", "--alive", value,
-            });
-
-            // Then
-            result.ShouldBe(0);
-            settings.ShouldBeOfType<DogSettings>().And(dog =>
-            {
-                dog.IsAlive.ShouldBe(expected);
-            });
-        }
-
         [Fact]
         public void Should_Register_Command_Settings_When_Configuring_Application()
         {
@@ -445,6 +416,35 @@ namespace Spectre.Console.Tests.Unit.Cli
             registrar.Registrations[typeof(MammalSettings)].ShouldContain(typeof(MammalSettings));
         }
 
+        [Theory]
+        [InlineData("true", true)]
+        [InlineData("True", true)]
+        [InlineData("false", false)]
+        [InlineData("False", false)]
+        public void Should_Accept_Explicit_Boolan_Flag(string value, bool expected)
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddCommand<DogCommand>("dog");
+            });
+
+            // When
+            var result = app.Run(new[]
+            {
+                "dog", "12", "4", "--alive", value,
+            });
+
+            // Then
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
+            {
+                dog.IsAlive.ShouldBe(expected);
+            });
+        }
+
         [Fact]
         public void Should_Throw_When_Encountering_Unknown_Option_In_Strict_Mode()
         {
@@ -471,7 +471,7 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Add_Unknown_Option_To_Remaining_Arguments_In_Relaxed_Mode()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandAppTester();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -482,23 +482,23 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (result, _, ctx, _) = app.Run(new[]
+            var result = app.Run(new[]
             {
                 "animal", "4", "dog", "12",
                 "--foo", "bar",
             });
 
             // Then
-            ctx.ShouldNotBeNull();
-            ctx.Remaining.Parsed.Count.ShouldBe(1);
-            ctx.ShouldHaveRemainingArgument("foo", values: new[] { "bar" });
+            result.Context.ShouldNotBeNull();
+            result.Context.Remaining.Parsed.Count.ShouldBe(1);
+            result.Context.ShouldHaveRemainingArgument("foo", values: new[] { "bar" });
         }
 
         [Fact]
         public void Should_Add_Unknown_Boolean_Option_To_Remaining_Arguments_In_Relaxed_Mode()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandAppTester();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -509,33 +509,33 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (result, _, ctx, _) = app.Run(new[]
+            var result = app.Run(new[]
             {
                 "animal", "4", "dog", "12", "--foo",
             });
 
             // Then
-            ctx.ShouldNotBeNull();
-            ctx.Remaining.Parsed.Count.ShouldBe(1);
-            ctx.ShouldHaveRemainingArgument("foo", values: new[] { (string)null });
+            result.Context.ShouldNotBeNull();
+            result.Context.Remaining.Parsed.Count.ShouldBe(1);
+            result.Context.ShouldHaveRemainingArgument("foo", values: new[] { (string)null });
         }
 
         [Fact]
         public void Should_Be_Able_To_Set_The_Default_Command()
         {
             // Given
-            var app = new CommandAppFixture();
-            app.WithDefaultCommand<DogCommand>();
+            var app = new CommandAppTester();
+            app.SetDefaultCommand<DogCommand>();
 
             // When
-            var (result, _, _, settings) = app.Run(new[]
+            var result = app.Run(new[]
             {
                 "4", "12", "--good-boy", "--name", "Rufus",
             });
 
             // Then
-            result.ShouldBe(0);
-            settings.ShouldBeOfType<DogSettings>().And(dog =>
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
             {
                 dog.Legs.ShouldBe(4);
                 dog.Age.ShouldBe(12);
@@ -548,7 +548,7 @@ namespace Spectre.Console.Tests.Unit.Cli
         public void Should_Set_Command_Name_In_Context()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandAppTester();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -559,21 +559,21 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (result, _, ctx, _) = app.Run(new[]
+            var result = app.Run(new[]
             {
                 "animal", "4", "dog", "12",
             });
 
             // Then
-            ctx.ShouldNotBeNull();
-            ctx.Name.ShouldBe("dog");
+            result.Context.ShouldNotBeNull();
+            result.Context.Name.ShouldBe("dog");
         }
 
         [Fact]
         public void Should_Pass_Command_Data_In_Context()
         {
             // Given
-            var app = new CommandAppFixture();
+            var app = new CommandAppTester();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
@@ -584,14 +584,14 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var (result, _, ctx, _) = app.Run(new[]
+            var result = app.Run(new[]
             {
                 "animal", "4", "dog", "12",
             });
 
             // Then
-            ctx.ShouldNotBeNull();
-            ctx.Data.ShouldBe(123);
+            result.Context.ShouldNotBeNull();
+            result.Context.Data.ShouldBe(123);
         }
 
         public sealed class Delegate_Commands
@@ -668,7 +668,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Register_Remaining_Parsed_Arguments_With_Context()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -679,7 +679,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, ctx, _) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "animal", "4", "dog", "12", "--",
                     "--foo", "bar", "--foo", "baz",
@@ -687,18 +687,18 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // Then
-                ctx.Remaining.Parsed.Count.ShouldBe(4);
-                ctx.ShouldHaveRemainingArgument("foo", values: new[] { "bar", "baz" });
-                ctx.ShouldHaveRemainingArgument("b", values: new[] { (string)null });
-                ctx.ShouldHaveRemainingArgument("a", values: new[] { (string)null });
-                ctx.ShouldHaveRemainingArgument("r", values: new[] { (string)null });
+                result.Context.Remaining.Parsed.Count.ShouldBe(4);
+                result.Context.ShouldHaveRemainingArgument("foo", values: new[] { "bar", "baz" });
+                result.Context.ShouldHaveRemainingArgument("b", values: new[] { (string)null });
+                result.Context.ShouldHaveRemainingArgument("a", values: new[] { (string)null });
+                result.Context.ShouldHaveRemainingArgument("r", values: new[] { (string)null });
             }
 
             [Fact]
             public void Should_Register_Remaining_Raw_Arguments_With_Context()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -709,19 +709,19 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, ctx, _) = app.Run(new[]
+                var result = app.Run(new[]
                 {
                     "animal", "4", "dog", "12", "--",
                     "--foo", "bar", "-bar", "\"baz\"", "qux",
                 });
 
                 // Then
-                ctx.Remaining.Raw.Count.ShouldBe(5);
-                ctx.Remaining.Raw[0].ShouldBe("--foo");
-                ctx.Remaining.Raw[1].ShouldBe("bar");
-                ctx.Remaining.Raw[2].ShouldBe("-bar");
-                ctx.Remaining.Raw[3].ShouldBe("baz");
-                ctx.Remaining.Raw[4].ShouldBe("qux");
+                result.Context.Remaining.Raw.Count.ShouldBe(5);
+                result.Context.Remaining.Raw[0].ShouldBe("--foo");
+                result.Context.Remaining.Raw[1].ShouldBe("bar");
+                result.Context.Remaining.Raw[2].ShouldBe("-bar");
+                result.Context.Remaining.Raw[3].ShouldBe("baz");
+                result.Context.Remaining.Raw[4].ShouldBe("qux");
             }
         }
 
@@ -731,7 +731,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public void Should_Not_Propagate_Runtime_Exceptions_If_Not_Explicitly_Told_To_Do_So()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.AddBranch<AnimalSettings>("animal", animal =>
@@ -742,27 +742,27 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (result, _, _, _) = app.Run(new[] { "animal", "4", "dog", "101", "--name", "Rufus" });
+                var result = app.Run(new[] { "animal", "4", "dog", "101", "--name", "Rufus" });
 
                 // Then
-                result.ShouldBe(-1);
+                result.ExitCode.ShouldBe(-1);
             }
 
             [Fact]
             public void Should_Not_Propagate_Exceptions_If_Not_Explicitly_Told_To_Do_So()
             {
                 // Given
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(config =>
                 {
                     config.AddCommand<ThrowingCommand>("throw");
                 });
 
                 // When
-                var (result, _, _, _) = app.Run(new[] { "throw" });
+                var result = app.Run(new[] { "throw" });
 
                 // Then
-                result.ShouldBe(-1);
+                result.ExitCode.ShouldBe(-1);
             }
         }
     }

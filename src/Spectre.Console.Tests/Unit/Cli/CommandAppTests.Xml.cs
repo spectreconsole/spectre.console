@@ -19,7 +19,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Dump_Correct_Model_For_Case_1()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(config =>
                 {
                     config.PropagateExceptions();
@@ -34,10 +34,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run(Constants.XmlDocCommand);
+                var result = fixture.Run(Constants.XmlDocCommand);
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -45,17 +45,17 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Dump_Correct_Model_For_Case_2()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(config =>
                 {
                     config.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run(Constants.XmlDocCommand);
+                var result = fixture.Run(Constants.XmlDocCommand);
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -63,7 +63,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Dump_Correct_Model_For_Case_3()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(config =>
                 {
                     config.AddBranch<AnimalSettings>("animal", animal =>
@@ -74,10 +74,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run(Constants.XmlDocCommand);
+                var result = fixture.Run(Constants.XmlDocCommand);
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -85,7 +85,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Dump_Correct_Model_For_Case_4()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(config =>
                 {
                     config.AddBranch<AnimalSettings>("animal", animal =>
@@ -95,10 +95,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run(Constants.XmlDocCommand);
+                var result = fixture.Run(Constants.XmlDocCommand);
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -106,17 +106,17 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Dump_Correct_Model_For_Case_5()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(config =>
                 {
                     config.AddCommand<OptionVectorCommand>("cmd");
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run(Constants.XmlDocCommand);
+                var result = fixture.Run(Constants.XmlDocCommand);
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -124,17 +124,18 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Dump_Correct_Model_For_Model_With_Default_Command()
             {
                 // Given
-                var fixture = new CommandAppFixture().WithDefaultCommand<DogCommand>();
+                var fixture = new CommandAppTester();
+                fixture.SetDefaultCommand<DogCommand>();
                 fixture.Configure(config =>
                 {
                     config.AddCommand<HorseCommand>("horse");
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run(Constants.XmlDocCommand);
+                var result = fixture.Run(Constants.XmlDocCommand);
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
         }
     }

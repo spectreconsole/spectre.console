@@ -87,7 +87,7 @@ namespace Spectre.Console.Tests.Unit
             public Task Should_Add_Empty_Row()
             {
                 // Given
-                var console = new FakeConsole(width: 80);
+                var console = new TestConsole();
                 var grid = new Grid();
                 grid.AddColumns(2);
                 grid.AddRow("Foo", "Bar");
@@ -108,7 +108,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Grid_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var grid = new Grid();
             grid.AddColumn();
             grid.AddColumn();
@@ -127,7 +127,7 @@ namespace Spectre.Console.Tests.Unit
         [Expectation("Render_2")]
         public Task Should_Render_Grid_Correctly_2()
         {
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var grid = new Grid();
             grid.AddColumn(new GridColumn { NoWrap = true });
             grid.AddColumn(new GridColumn { Padding = new Padding(2, 0, 0, 0) });
@@ -147,7 +147,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Grid_Column_Alignment_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var grid = new Grid();
             grid.AddColumn(new GridColumn { Alignment = Justify.Right });
             grid.AddColumn(new GridColumn { Alignment = Justify.Center });
@@ -168,7 +168,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Use_Default_Padding()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var grid = new Grid();
             grid.AddColumns(3);
             grid.AddRow("Foo", "Bar", "Baz");
@@ -187,7 +187,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Explicit_Grid_Column_Padding_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var grid = new Grid();
             grid.AddColumn(new GridColumn { Padding = new Padding(3, 0, 0, 0) });
             grid.AddColumn(new GridColumn { Padding = new Padding(0, 0, 0, 0) });

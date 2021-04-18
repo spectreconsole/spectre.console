@@ -19,7 +19,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Output_Root_Correctly()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(configurator =>
                 {
                     configurator.SetApplicationName("myapp");
@@ -29,10 +29,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run("--help");
+                var result = fixture.Run("--help");
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -40,7 +40,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Skip_Hidden_Commands()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(configurator =>
                 {
                     configurator.SetApplicationName("myapp");
@@ -52,10 +52,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run("--help");
+                var result = fixture.Run("--help");
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -63,7 +63,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Output_Command_Correctly()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(configurator =>
                 {
                     configurator.SetApplicationName("myapp");
@@ -75,10 +75,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run("cat", "--help");
+                var result = fixture.Run("cat", "--help");
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -86,7 +86,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Output_Leaf_Correctly()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(configurator =>
                 {
                     configurator.SetApplicationName("myapp");
@@ -98,10 +98,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run("cat", "lion", "--help");
+                var result = fixture.Run("cat", "lion", "--help");
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -109,18 +109,18 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Output_Default_Command_Correctly()
             {
                 // Given
-                var fixture = new CommandAppFixture();
-                fixture.WithDefaultCommand<LionCommand>();
+                var fixture = new CommandAppTester();
+                fixture.SetDefaultCommand<LionCommand>();
                 fixture.Configure(configurator =>
                 {
                     configurator.SetApplicationName("myapp");
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run("--help");
+                var result = fixture.Run("--help");
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -128,7 +128,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Output_Root_Examples_Defined_On_Root()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(configurator =>
                 {
                     configurator.SetApplicationName("myapp");
@@ -139,10 +139,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run("--help");
+                var result = fixture.Run("--help");
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -150,7 +150,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Output_Root_Examples_Defined_On_Direct_Children_If_Root_Have_No_Examples()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(configurator =>
                 {
                     configurator.SetApplicationName("myapp");
@@ -161,10 +161,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run("--help");
+                var result = fixture.Run("--help");
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -172,7 +172,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Output_Root_Examples_Defined_On_Leaves_If_No_Other_Examples_Are_Found()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(configurator =>
                 {
                     configurator.SetApplicationName("myapp");
@@ -187,10 +187,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run("--help");
+                var result = fixture.Run("--help");
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -198,7 +198,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Only_Output_Command_Examples_Defined_On_Command()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(configurator =>
                 {
                     configurator.SetApplicationName("myapp");
@@ -215,10 +215,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run("animal", "--help");
+                var result = fixture.Run("animal", "--help");
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -226,8 +226,8 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Output_Root_Examples_If_Default_Command_Is_Specified()
             {
                 // Given
-                var fixture = new CommandAppFixture();
-                fixture.WithDefaultCommand<LionCommand>();
+                var fixture = new CommandAppTester();
+                fixture.SetDefaultCommand<LionCommand>();
                 fixture.Configure(configurator =>
                 {
                     configurator.SetApplicationName("myapp");
@@ -235,10 +235,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run("--help");
+                var result = fixture.Run("--help");
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -246,7 +246,7 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_Not_Show_Truncated_Command_Table_If_Commands_Are_Missing_Description()
             {
                 // Given
-                var fixture = new CommandAppFixture();
+                var fixture = new CommandAppTester();
                 fixture.Configure(configurator =>
                 {
                     configurator.SetApplicationName("myapp");
@@ -254,10 +254,10 @@ namespace Spectre.Console.Tests.Unit.Cli
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run("--help");
+                var result = fixture.Run("--help");
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -265,18 +265,18 @@ namespace Spectre.Console.Tests.Unit.Cli
             public Task Should_List_Arguments_In_Correct_Order()
             {
                 // Given
-                var fixture = new CommandAppFixture();
-                fixture.WithDefaultCommand<GenericCommand<ArgumentOrderSettings>>();
+                var fixture = new CommandAppTester();
+                fixture.SetDefaultCommand<GenericCommand<ArgumentOrderSettings>>();
                 fixture.Configure(configurator =>
                 {
                     configurator.SetApplicationName("myapp");
                 });
 
                 // When
-                var (_, output, _, _) = fixture.Run("--help");
+                var result = fixture.Run("--help");
 
                 // Then
-                return Verifier.Verify(output);
+                return Verifier.Verify(result.Output);
             }
         }
     }

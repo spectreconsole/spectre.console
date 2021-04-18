@@ -15,7 +15,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Load_Font_From_Stream()
         {
             // Given
-            var console = new FakeConsole(width: 180);
+            var console = new TestConsole().Width(180);
             var font = FigletFont.Load(EmbeddedResourceReader.LoadResourceStream("Spectre.Console.Tests/Data/starwars.flf"));
             var text = new FigletText(font, "Patrik was here");
 
@@ -31,7 +31,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Text_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 70);
+            var console = new TestConsole().Width(70);
             var text = new FigletText(FigletFont.Default, "Patrik was here");
 
             // When
@@ -46,7 +46,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Wrapped_Text_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 70);
+            var console = new TestConsole().Width(70);
             var text = new FigletText(FigletFont.Default, "Spectre.Console");
 
             // When
@@ -61,7 +61,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Left_Aligned_Text_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 120);
+            var console = new TestConsole().Width(120);
             var text = new FigletText(FigletFont.Default, "Spectre.Console")
                 .Alignment(Justify.Left);
 
@@ -77,7 +77,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Centered_Text_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 120);
+            var console = new TestConsole().Width(120);
             var text = new FigletText(FigletFont.Default, "Spectre.Console")
                 .Alignment(Justify.Center);
 
@@ -93,7 +93,7 @@ namespace Spectre.Console.Tests.Unit
         public async Task Should_Render_Right_Aligned_Text_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 120);
+            var console = new TestConsole().Width(120);
             var text = new FigletText(FigletFont.Default, "Spectre.Console")
                 .Alignment(Justify.Right);
 

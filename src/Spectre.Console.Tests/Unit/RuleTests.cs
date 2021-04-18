@@ -16,7 +16,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Default_Rule_Without_Title()
         {
             // Given
-            var console = new FakeConsole(width: 40);
+            var console = new TestConsole().Width(40);
 
             // When
             console.Write(new Rule());
@@ -30,7 +30,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Default_Rule_With_Specified_Border()
         {
             // Given
-            var console = new FakeConsole(width: 40);
+            var console = new TestConsole().Width(40);
 
             // When
             console.Write(new Rule().DoubleBorder());
@@ -44,7 +44,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_With_Specified_Box()
         {
             // Given
-            var console = new FakeConsole(width: 40);
+            var console = new TestConsole().Width(40);
 
             // When
             console.Write(new Rule("Hello World").DoubleBorder());
@@ -58,7 +58,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Default_Rule_With_Title_Centered_By_Default()
         {
             // Given
-            var console = new FakeConsole(width: 40);
+            var console = new TestConsole().Width(40);
 
             // When
             console.Write(new Rule("Hello World"));
@@ -72,7 +72,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Default_Rule_With_Title_Left_Aligned()
         {
             // Given
-            var console = new FakeConsole(width: 40);
+            var console = new TestConsole().Width(40);
 
             // When
             console.Write(new Rule("Hello World")
@@ -89,7 +89,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Default_Rule_With_Title_Right_Aligned()
         {
             // Given
-            var console = new FakeConsole(width: 40);
+            var console = new TestConsole().Width(40);
 
             // When
             console.Write(new Rule("Hello World")
@@ -106,7 +106,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Convert_Line_Breaks_In_Title_To_Spaces()
         {
             // Given
-            var console = new FakeConsole(width: 40);
+            var console = new TestConsole().Width(40);
 
             // When
             console.Write(new Rule("Hello\nWorld\r\n!"));
@@ -120,7 +120,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Truncate_Title()
         {
             // Given
-            var console = new FakeConsole(width: 40);
+            var console = new TestConsole().Width(40);
 
             // When
             console.Write(new Rule("          Hello World    "));
@@ -145,7 +145,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Truncate_Too_Long_Title(int width, string input, string expected)
         {
             // Given
-            var console = new FakeConsole(width);
+            var console = new TestConsole().Width(width);
 
             // When
             console.Write(new Rule(input));

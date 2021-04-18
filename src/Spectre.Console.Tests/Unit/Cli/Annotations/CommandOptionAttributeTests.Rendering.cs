@@ -26,11 +26,11 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
-                var (message, result) = Fixture.Run<Settings>();
+                var result = Fixture.Run<Settings>();
 
                 // Then
-                message.ShouldBe("Encountered unexpected character '$'.");
-                return Verifier.Verify(result);
+                result.Exception.Message.ShouldBe("Encountered unexpected character '$'.");
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -48,11 +48,11 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
-                var (message, result) = Fixture.Run<Settings>();
+                var result = Fixture.Run<Settings>();
 
                 // Then
-                message.ShouldBe("Encountered unterminated value name 'BAR'.");
-                return Verifier.Verify(result);
+                result.Exception.Message.ShouldBe("Encountered unterminated value name 'BAR'.");
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -70,11 +70,11 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
-                var (message, result) = Fixture.Run<Settings>();
+                var result = Fixture.Run<Settings>();
 
                 // Then
-                message.ShouldBe("Options without name are not allowed.");
-                return Verifier.Verify(result);
+                result.Exception.Message.ShouldBe("Options without name are not allowed.");
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -92,11 +92,11 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
-                var (message, result) = Fixture.Run<Settings>();
+                var result = Fixture.Run<Settings>();
 
                 // Then
-                message.ShouldBe("Option names cannot start with a digit.");
-                return Verifier.Verify(result);
+                result.Exception.Message.ShouldBe("Option names cannot start with a digit.");
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -114,11 +114,11 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
-                var (message, result) = Fixture.Run<Settings>();
+                var result = Fixture.Run<Settings>();
 
                 // Then
-                message.ShouldBe("Encountered invalid character '$' in option name.");
-                return Verifier.Verify(result);
+                result.Exception.Message.ShouldBe("Encountered invalid character '$' in option name.");
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -136,11 +136,11 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
-                var (message, result) = Fixture.Run<Settings>();
+                var result = Fixture.Run<Settings>();
 
                 // Then
-                message.ShouldBe("Long option names must consist of more than one character.");
-                return Verifier.Verify(result);
+                result.Exception.Message.ShouldBe("Long option names must consist of more than one character.");
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -158,11 +158,11 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
-                var (message, result) = Fixture.Run<Settings>();
+                var result = Fixture.Run<Settings>();
 
                 // Then
-                message.ShouldBe("Short option names can not be longer than one character.");
-                return Verifier.Verify(result);
+                result.Exception.Message.ShouldBe("Short option names can not be longer than one character.");
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -180,11 +180,11 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
-                var (message, result) = Fixture.Run<Settings>();
+                var result = Fixture.Run<Settings>();
 
                 // Then
-                message.ShouldBe("Multiple option values are not supported.");
-                return Verifier.Verify(result);
+                result.Exception.Message.ShouldBe("Multiple option values are not supported.");
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -202,11 +202,11 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
-                var (message, result) = Fixture.Run<Settings>();
+                var result = Fixture.Run<Settings>();
 
                 // Then
-                message.ShouldBe("Encountered invalid character '$' in value name.");
-                return Verifier.Verify(result);
+                result.Exception.Message.ShouldBe("Encountered invalid character '$' in value name.");
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -224,23 +224,22 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             public Task Should_Return_Correct_Text()
             {
                 // Given, When
-                var (message, result) = Fixture.Run<Settings>();
+                var result = Fixture.Run<Settings>();
 
                 // Then
-                message.ShouldBe("No long or short name for option has been specified.");
-                return Verifier.Verify(result);
+                result.Exception.Message.ShouldBe("No long or short name for option has been specified.");
+                return Verifier.Verify(result.Output);
             }
         }
 
         private static class Fixture
         {
-            public static (string Message, string Output) Run<TSettings>(params string[] args)
+            public static CommandAppFailure Run<TSettings>(params string[] args)
                 where TSettings : CommandSettings
             {
-                var app = new CommandAppFixture();
+                var app = new CommandAppTester();
                 app.Configure(c =>
                 {
-                    c.PropagateExceptions();
                     c.AddCommand<GenericCommand<TSettings>>("foo");
                 });
 

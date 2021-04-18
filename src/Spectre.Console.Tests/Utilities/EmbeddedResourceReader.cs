@@ -14,7 +14,7 @@ namespace Spectre.Console.Tests
             }
 
             var assembly = Assembly.GetCallingAssembly();
-            resourceName = resourceName.ReplaceExact("/", ".");
+            resourceName = resourceName.Replace("/", ".");
 
             return assembly.GetManifestResourceStream(resourceName);
         }
@@ -31,7 +31,7 @@ namespace Spectre.Console.Tests
                 throw new ArgumentNullException(nameof(resourceName));
             }
 
-            resourceName = resourceName.ReplaceExact("/", ".");
+            resourceName = resourceName.Replace("/", ".");
             return assembly.GetManifestResourceStream(resourceName);
         }
     }

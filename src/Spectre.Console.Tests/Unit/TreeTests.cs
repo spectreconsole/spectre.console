@@ -17,7 +17,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Tree_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             var tree = new Tree(new Text("Root node")).Guide(TreeGuide.DoubleLine);
 
@@ -48,7 +48,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Render_Tree_With_No_Child_Nodes_Correctly()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
             var tree = new Tree(new Text("Root node"));
 
             // When
@@ -62,7 +62,7 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Throw_If_Tree_Contains_Cycles()
         {
             // Given
-            var console = new FakeConsole(width: 80);
+            var console = new TestConsole();
 
             var child2 = new TreeNode(new Text("child 2"));
             var child3 = new TreeNode(new Text("child 3"));

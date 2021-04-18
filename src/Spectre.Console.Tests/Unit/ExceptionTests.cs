@@ -17,7 +17,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Write_Exception()
         {
             // Given
-            var console = new FakeConsole(width: 1024);
+            var console = new TestConsole().Width(1024);
             var dex = GetException(() => TestExceptions.MethodThatThrows(null));
 
             // When
@@ -32,7 +32,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Write_Exception_With_Shortened_Types()
         {
             // Given
-            var console = new FakeConsole(width: 1024);
+            var console = new TestConsole().Width(1024);
             var dex = GetException(() => TestExceptions.MethodThatThrows(null));
 
             // When
@@ -47,7 +47,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Write_Exception_With_Shortened_Methods()
         {
             // Given
-            var console = new FakeConsole(width: 1024);
+            var console = new TestConsole().Width(1024);
             var dex = GetException(() => TestExceptions.MethodThatThrows(null));
 
             // When
@@ -62,7 +62,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Write_Exception_With_Inner_Exception()
         {
             // Given
-            var console = new FakeConsole(width: 1024);
+            var console = new TestConsole().Width(1024);
             var dex = GetException(() => TestExceptions.ThrowWithInnerException());
 
             // When
@@ -77,7 +77,7 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Write_Exceptions_With_Generic_Type_Parameters_In_Callsite_As_Expected()
         {
             // Given
-            var console = new FakeConsole(width: 1024);
+            var console = new TestConsole().Width(1024);
             var dex = GetException(() => TestExceptions.ThrowWithGenericInnerException());
 
             // When

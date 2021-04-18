@@ -15,7 +15,10 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Render_Task_Correctly()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.TrueColor, width: 10);
+            var console = new TestConsole()
+                .Width(10)
+                .Interactive()
+                .EmitAnsiSequences();
 
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
@@ -40,7 +43,10 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Not_Auto_Clear_If_Specified()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.TrueColor, width: 10);
+            var console = new TestConsole()
+                .Width(10)
+                .Interactive()
+                .EmitAnsiSequences();
 
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
@@ -66,7 +72,9 @@ namespace Spectre.Console.Tests.Unit
         public Task Should_Reduce_Width_If_Needed()
         {
             // Given
-            var console = new FakeConsole(width: 20);
+            var console = new TestConsole()
+                .Width(20)
+                .Interactive();
 
             var progress = new Progress(console)
                 .Columns(new ProgressColumn[]
@@ -96,8 +104,10 @@ namespace Spectre.Console.Tests.Unit
         public void Setting_Max_Value_Should_Set_The_MaxValue_And_Cap_Value()
         {
             // Given
+            var console = new TestConsole()
+                .Interactive();
+
             var task = default(ProgressTask);
-            var console = new FakeConsole();
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
                 .AutoRefresh(false)
@@ -120,8 +130,10 @@ namespace Spectre.Console.Tests.Unit
         public void Setting_Value_Should_Override_Incremented_Value()
         {
             // Given
+            var console = new TestConsole()
+                .Interactive();
+
             var task = default(ProgressTask);
-            var console = new FakeConsole();
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
                 .AutoRefresh(false)
@@ -144,8 +156,10 @@ namespace Spectre.Console.Tests.Unit
         public void Setting_Value_To_MaxValue_Should_Finish_Task()
         {
             // Given
+            var console = new TestConsole()
+                .Interactive();
+
             var task = default(ProgressTask);
-            var console = new FakeConsole();
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
                 .AutoRefresh(false)
@@ -166,8 +180,10 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Increment_Manually_Set_Value()
         {
             // Given
+            var console = new TestConsole()
+                .Interactive();
+
             var task = default(ProgressTask);
-            var console = new FakeConsole();
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })
                 .AutoRefresh(false)
@@ -189,10 +205,14 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Hide_Completed_Tasks()
         {
             // Given
+            var console = new TestConsole()
+                .Width(10)
+                .Interactive()
+                .EmitAnsiSequences();
+
             var taskFinished = default(ProgressTask);
             var taskInProgress1 = default(ProgressTask);
             var taskInProgress2 = default(ProgressTask);
-            var console = new FakeAnsiConsole(ColorSystem.TrueColor, width: 10);
 
             var progress = new Progress(console)
                 .Columns(new[] { new ProgressBarColumn() })

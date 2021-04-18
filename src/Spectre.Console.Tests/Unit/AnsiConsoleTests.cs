@@ -13,7 +13,9 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Clear_Screen(bool home, string expected)
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.Standard);
+            var console = new TestConsole()
+                .Colors(ColorSystem.Standard)
+                .EmitAnsiSequences();
 
             // When
             console.Write("Hello");
@@ -28,7 +30,9 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Combine_Decoration_And_Colors()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.Standard);
+            var console = new TestConsole()
+                .Colors(ColorSystem.Standard)
+                .EmitAnsiSequences();
 
             // When
             console.Write(
@@ -46,7 +50,9 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Not_Include_Foreground_If_Set_To_Default_Color()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.Standard);
+            var console = new TestConsole()
+                .Colors(ColorSystem.Standard)
+                .EmitAnsiSequences();
 
             // When
             console.Write(
@@ -64,7 +70,9 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Not_Include_Background_If_Set_To_Default_Color()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.Standard);
+            var console = new TestConsole()
+                .Colors(ColorSystem.Standard)
+                .EmitAnsiSequences();
 
             // When
             console.Write(
@@ -82,7 +90,9 @@ namespace Spectre.Console.Tests.Unit
         public void Should_Not_Include_Decoration_If_Set_To_None()
         {
             // Given
-            var console = new FakeAnsiConsole(ColorSystem.Standard);
+            var console = new TestConsole()
+                .Colors(ColorSystem.Standard)
+                .EmitAnsiSequences();
 
             // When
             console.Write(
@@ -102,7 +112,9 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Reset_Colors_Correctly_After_Line_Break()
             {
                 // Given
-                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new TestConsole()
+                    .Colors(ColorSystem.Standard)
+                    .EmitAnsiSequences();
 
                 // When
                 console.WriteLine("Hello", new Style().Background(ConsoleColor.Red));
@@ -117,7 +129,9 @@ namespace Spectre.Console.Tests.Unit
             public void Should_Reset_Colors_Correctly_After_Line_Break_In_Text()
             {
                 // Given
-                var console = new FakeAnsiConsole(ColorSystem.Standard, AnsiSupport.Yes);
+                var console = new TestConsole()
+                    .Colors(ColorSystem.Standard)
+                    .EmitAnsiSequences();
 
                 // When
                 console.WriteLine("Hello\nWorld", new Style().Background(ConsoleColor.Red));
