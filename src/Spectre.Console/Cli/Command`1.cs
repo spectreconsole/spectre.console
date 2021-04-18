@@ -8,6 +8,7 @@ namespace Spectre.Console.Cli
     /// Base class for a command.
     /// </summary>
     /// <typeparam name="TSettings">The settings type.</typeparam>
+    /// <seealso cref="AsyncCommand{TSettings}"/>
     public abstract class Command<TSettings> : ICommand<TSettings>
         where TSettings : CommandSettings
     {
