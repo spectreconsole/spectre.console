@@ -16,7 +16,9 @@ After the build is complete, you can navigate to [http://localhost:5080/spectre.
 
 ## Building the CSS
 
-The documentation uses tailwind for the CSS. Committed to the repository is a large 4gb file with all possible styles at `assets/style.css`. This file is generated from the root files tailwind.config.js and tailwind.css. For production, `npm run build:tailwind` should be ran post Statiq build. This process will look at all the styles in the HTML and prune the tailwind file down to a much more manageable 30kb or so file.
+The documentation uses tailwind for the CSS. Committed to the repository is a large 4gb file with all possible styles at `assets/style.css`. This file is generated from the root files tailwind.config.js and tailwind.css. Any changes to the overall design style (e.g. colors, markdown styling, etc) can be made in these two files.
+
+ For production, `npm run build:tailwind` should be ran post Statiq build. This process will look at all the styles in the HTML and prune the tailwind file down to a much more manageable 30kb or so file.
 
 ## Editing Content
 

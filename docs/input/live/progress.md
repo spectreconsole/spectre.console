@@ -5,19 +5,19 @@ RedirectFrom: progress
 
 Spectre.Console can display information about long running tasks in the console. 
 
-<img src="../assets/images/progress.png" style="max-width: 100%;margin-bottom:20px;">
+![Example of progress output](../assets/images/progress.png)
 
-<div class="alert alert-warning" role="alert">
-  <i class="fas fa-exclamation-triangle icon-web"></i> The progress display is not 
+<?# Alert ?>
+  The progress display is not 
   thread safe, and using it together with other interactive components such as 
   prompts, status displays or other progress displays are not supported.
-</div>
+<?#/ Alert ?>
 
 If the current terminal isn't considered "interactive", such as when running 
 in a continuous integration system, or the terminal can't display 
 ANSI control sequence, any progress will be displayed in a simpler way.
 
-<img src="../assets/images/progress_fallback.png" style="max-width: 100%;">
+![Example of fallback progress output](../assets/images/progress_fallback.png)
 
 ## Usage
 

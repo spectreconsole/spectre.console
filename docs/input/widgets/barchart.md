@@ -4,7 +4,7 @@ Order: 20
 
 Use `BarChart` to render bar charts to the console.
 
-<img src="../assets/images/barchart.png" style="width: 100%;" />
+![Example of bar chart output](../assets/images/barchart.png)
 
 ## Usage
 

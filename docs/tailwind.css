@@ -10,7 +10,11 @@ that file will be quite large, but we'll minimize it on production build.
 /* temp styling for alerts */
 
 .alert-warning {
-    @apply p-4 border border-yellow-300 bg-yellow-100 rounded shadow-sm;
+    @apply p-4 border border-yellow-300 bg-yellow-100 rounded shadow-sm  text-sm text-yellow-800;
+}
+
+.alert-warning p {
+    @apply m-0;
 }
 
 /* prism styling */

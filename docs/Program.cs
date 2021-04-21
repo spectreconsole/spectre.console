@@ -19,6 +19,7 @@ namespace Docs
                 .AddShortcode("Children", typeof(ChildrenShortcode))
                 .AddShortcode("ColorTable", typeof(ColorTableShortcode))
                 .AddShortcode("EmojiTable", typeof(EmojiTableShortcode))
+                .AddShortcode("Alert", typeof(AlertShortcode))
                 .AddPipelines()
                 .RunAsync();
 

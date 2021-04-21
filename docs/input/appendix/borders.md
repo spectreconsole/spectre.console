@@ -6,7 +6,7 @@ There is different built-in borders you can use for tables and panels.
 
 ## Table borders
 
-<img src="../assets/images/borders/table.png" style="max-width: 100%;">
+![Examples of table borders](../assets/images/borders/table.png)
 
 ### Example
 
@@ -21,7 +21,7 @@ table.Border = TableBorder.SimpleHeavy;
 
 ## Panel borders
 
-<img src="../assets/images/borders/panel.png" style="max-width: 100%;">
+![Examples of panel borders](../assets/images/borders/panel.png)
 
 ### Example
 

@@ -4,7 +4,7 @@ Order: 10
 
 The `Tree` widget can be used to render hierarchical data.
 
-<img src="../assets/images/tree.png" style="width: 100%;" />
+![Example of true output](../assets/images/tree.png)
 
 ## Usage
 

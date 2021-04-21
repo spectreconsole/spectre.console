@@ -22,5 +22,6 @@ for Python written by Will McGugan.
 
 ## Examples
 
-<img src="./assets/images/example.png" style="max-width: 100%; margin-top: 15px; margin-bottom: 25px;" />
-<img src="./assets/images/table.gif" style="max-width: 100%;" />
+![Sample of Spectre.Console output](./assets/images/example.png)
+
+![Animated example of console output](./assets/images/table.gif){class=mt-4}
