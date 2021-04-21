@@ -17,7 +17,7 @@ If the current terminal isn't considered "interactive", such as when running
 in a continuous integration system, or the terminal can't display 
 ANSI control sequence, any progress will be displayed in a simpler way.
 
-# Usage
+## Usage
 
 ```csharp
 // Synchronous
@@ -52,7 +52,7 @@ await AnsiConsole.Status()
     });
 ```
 
-# Configure
+## Configure
 
 ```csharp
 AnsiConsole.Status()

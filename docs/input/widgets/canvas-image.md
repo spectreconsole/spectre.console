@@ -10,7 +10,7 @@ the [Spectre.Console.ImageSharp](https://www.nuget.org/packages/Spectre.Console.
 > dotnet add package Spectre.Console.ImageSharp
 ```
 
-# Loading images
+## Loading images
 
 Once you've added the `Spectre.Console.ImageSharp` NuGet package, 
 you can create a new instance of `CanvasImage` to draw images to the console.

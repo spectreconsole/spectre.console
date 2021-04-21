@@ -1,256 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link href="@Context.GetLink("/assets/bootstrap/bootstrap.css")" rel="stylesheet" />
-        <link href="@Context.GetLink("/assets/css/styles.css")" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Roboto+Slab:wght@400;700&family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet" data-no-mirror>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/themes/prism.css">
+        <link href="@Context.GetLink("/assets/styles.css")" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet" />
 
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-        <script src="https://kit.fontawesome.com/a1cad7ed9a.js" crossorigin="anonymous" data-no-mirror></script>
-        <script src="https://cdn.jsdelivr.net/npm/mermaid@8.4.8/dist/mermaid.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/components/prism-core.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/plugins/autoloader/prism-autoloader.min.js" data-no-mirror></script>
+        <link rel="apple-touch-icon" sizes="180x180" href="@Context.GetLink("/assets/favicons/apple-touch-icon.png")">
+        <link rel="icon" type="image/png" sizes="32x32" href="@Context.GetLink("/assets/favicons/favicon-32x32.png")">
+        <link rel="icon" type="image/png" sizes="16x16" href="@Context.GetLink("/assets/favicons/favicon-16x16.png")">
 
         @{
             string title = @Document.ContainsKey(Keys.Title) ? $"Spectre.Console - {Document.GetString(Keys.Title)}" : "Spectre.Console";
+            string description = @Document.ContainsKey(Constants.Description) ? Document.GetString(Constants.Description) : "Spectre.Console is a .NET Standard 2.0 library that makes it easier to create beautiful console applications";
         }
         <title>@title</title>
+        <meta name="description" content="@description" />
     </head>
-    <body class="d-flex flex-column">
-        <div class="flex-grow-1 d-flex flex-column">
-
-            <nav id="topnav" class="navbar navbar-expand-lg navbar-light">
-                <div class="container py-3">
-                    <a class="navbar-brand" href="@Context.GetLink("/")"><img id="logo" src="@Context.GetLink("/assets/logo.svg")" alt="Spectre.Console"> Spectre.Console</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarText">
-                        <ul class="navbar-nav mr-auto">
-                        </ul>
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link font-weight-light font-size-lg text-red" href="https://github.com/sponsors/patriksvensson"><i class="far fa-heart"></i> Sponsor</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link font-weight-light font-size-lg" href="https://github.com/spectreconsole/spectre.console"><i class="fab fa-github"></i> GitHub</a>
-                            </li>
-                        </ul>
-                    </div>
+    <body class="antialiased text-gray-600 min-h-full flex flex-col  bg-gray-50">
+        <header class="flex-none text-sm font-medium bg-gray-100 ring-1 ring-gray-900 ring-opacity-5 shadow-sm py-2 md:py-5">
+            <nav class="flex flex-row container mx-auto items-center">
+                <a class="flex flex-row  items-center" href="@Context.GetLink("/")">
+                    <img id="logo" class="w-auto h-12" src="@Context.GetLink("/assets/logo.svg")" alt="Spectre.Console">
+                    <span class="text-xl md:text-2xl ml-4 -mt-1 font-mono tracking-tighter">Spectre.Console</span>
+                </a>
+                <div class="ml-auto">
+                    <ul class="flex flex-row">
+                        <li>
+                            <a class="flex flex-row items-center text-red-700" href="https://github.com/sponsors/patriksvensson">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                                <span class="hidden sm:block">Sponsor</span>
+                            </a>
+                        </li>
+                        <li class="ml-4">
+                            <a class="flex flex-row items-center text-gray-500" href="https://github.com/spectreconsole/spectre.console">
+                                <svg role="img" class="h-6 w-6 mr-2"  stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <title>GitHub icon</title>
+                                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                <span class="hidden sm:block">GitHub</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </nav>
-
-            @if (IsSectionDefined(Constants.Sections.Splash))
-            {
-                @RenderSection(Constants.Sections.Splash, false)
-            }
+        </header>
+        <main class="container mx-auto flex flex-col-reverse md:flex-row pt-8">
+            <nav class="flex-none font-light text-sm md:text-base sm:mr-16 mt-8 pt-6  md:mt-0 md:pt-0 border-t border-gray-300 md:border-t-0">
             @{
-                string section = "docs";
-            }
+                IDocument root = OutputPages["index.html"].First();
+                <div class="text-xl @(Document.IdEquals(root) ? "font-bold" : null)">
+                        @if(root.ShowLink())
+                        {
+                            @Html.DocumentLink(root)
+                        }
+                        else
+                        {
+                            @root.GetTitle()
+                        }
+                </div>
 
-            <div class="flex-grow-1 d-flex  bg-body flex-column @(section != null ? "section-" + section : null)">
-                @if(section != null)
+                @foreach (IDocument document in OutputPages.GetChildrenOf(root).OnlyVisible())
                 {
-                    <div id="titlebar" class="py-4">
-                        <div class="container">
-                            <div class="row">
-                                @{
-                                    string titleBarClasses = Document.GetBool(Constants.NoSidebar) ? string.Empty : "offset-md-3 offset-lg-2";
-                                }
-                                <div class="@titleBarClasses px-3 px-md-0">
-                                    <div class="section text-uppercase">Spectre.Console</div>
-                                    <div class="text-white m-0 title">@(Document.GetString(Keys.Title) ?? Document.GetTitle())</div>
-                                    @if (IsSectionDefined(Constants.Sections.Subtitle))
-                                    {
-                                        @RenderSection(Constants.Sections.Subtitle, false)
-                                    }
-                                </div>
-                            </div>
-                        </div>
+                    if(string.IsNullOrWhiteSpace(document.GetTitle()))
+                    {
+                        continue;
+                    }
+
+                    DocumentList<IDocument> documentChildren = OutputPages.GetChildrenOf(document);
+                    <div class="text-blue-700 mt-4">
+                        @if(document.ShowLink())
+                        {
+                            @Html.DocumentLink(document)
+                        }
+                        else
+                        {
+                            @document.GetTitle()
+                        }
                     </div>
-                    <div id="undertitle">
-                        <div class="container bg-body">
-                            <div class="row">
-                                @if (Document.GetBool(Constants.NoSidebar))
-                                {
-                                    <div class="col">
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="col-md-3 col-lg-2 bg-body">
-                                    </div>
-                                    <div class="col-md-9 col-lg-8 bg-white">
-                                    </div>
-                                }
-                                <div class="col-lg-2 d-none d-lg-block bg-section">
+
+                    @if (documentChildren.OnlyVisible().Any())
+                    {
+                        <div class="ml-2 flex flex-row flex-wrap md:flex-col md:space-x-0 border-separate">
+                            @foreach (IDocument child in documentChildren.OnlyVisible())
+                            {
+                                <div class="mt-2 mr-4 @(Document.IdEquals(child) ? "font-bold" : null)">
+                                    @Html.DocumentLink(child)
                                 </div>
-                            </div>
+                            }
                         </div>
-                    </div>
+                    }
                 }
-
-                <div class="flex-grow-1 d-flex flex-column bg-body">
-                    @if (Document.GetBool(Constants.NoContainer))
-                    {
-                        <div class="bg-white">
-                            @RenderBody()
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="container flex-grow-1 d-flex flex-column bg-white">
-                            <div class="row flex-grow-1 align-items-stretch">
-                                @if (Document.GetBool(Constants.NoSidebar))
-                                {
-                                    IgnoreSection(Constants.Sections.Sidebar);
-
-                                    <div class="col">
-                                        @RenderBody()
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="sidebar col-md-3 col-lg-2 pt-2 bg-body">
-                                        @if (IsSectionDefined(Constants.Sections.Sidebar))
-                                        {
-                                            @RenderSection(Constants.Sections.Sidebar, false)
-                                        }
-                                        else
-                                        {
-                                            IDocument root = OutputPages["index.html"].First();
-                                            <div class="sidebar-nav-item @(Document.IdEquals(root) ? "active" : null)">
-                                                    @if(root.ShowLink())
-                                                    {
-                                                       @Html.DocumentLink(root)
-                                                    }
-                                                    else
-                                                    {
-                                                        @root.GetTitle()
-                                                    }
-                                            </div>
-
-                                            @foreach (IDocument document in OutputPages.GetChildrenOf(root).OnlyVisible())
-                                            {
-                                                if(string.IsNullOrWhiteSpace(document.GetTitle()))
-                                                {
-                                                    continue;
-                                                }
-
-                                                DocumentList<IDocument> documentChildren = OutputPages.GetChildrenOf(document);
-                                                <div class="sidebar-nav-item @(Document.IdEquals(document) ? "active" : null) @(documentChildren.Any() ? "has-children" : null)">
-                                                    @if(document.ShowLink())
-                                                    {
-                                                        @Html.DocumentLink(document)
-                                                    }
-                                                    else
-                                                    {
-                                                        @document.GetTitle()
-                                                    }
-                                                </div>
-
-                                                @if (documentChildren.OnlyVisible().Any())
-                                                {
-                                                    <div class="sidebar-nav-children @(Document.IdEquals(document) || documentChildren.Any(x => Document.IdEquals(x)) ? "active" : null)">
-                                                        @foreach (IDocument child in documentChildren.OnlyVisible())
-                                                        {
-                                                            <div class="sidebar-nav-child @(Document.IdEquals(child) ? "active" : null)">
-                                                                @Html.DocumentLink(child)
-                                                            </div>
-                                                        }
-                                                    </div>
-                                                }
-                                            }
-                                        }
-                                    </div>
-                                    <div class="col-md-9 col-lg-8 pt-4 pt-md-0 pb-4 px-4">
-                                        @RenderBody()
-                                    </div>
-                                }
-                                <div class="col-lg-2 d-none d-lg-block bg-body pl-3 pt-3">
-                                    @{
-                                        IReadOnlyList<IDocument> headings = Document.GetDocumentList(Statiq.Html.HtmlKeys.Headings);
-                                        if (headings.Count > 0)
-                                        {
-                                            <div class="border-bottom mb-3">
-                                                <p class="small font-weight-bold">On This Page</p>
-                                                @foreach (IDocument heading in headings)
-                                                {
-                                                    <p class="small"><a href="#@(heading.GetString(Statiq.Html.HtmlKeys.HeadingId))">@(await heading.GetContentStringAsync())</a></p>
-                                                }
-                                            </div>
-                                        }
-                                    }
-                                    @if (Document.ContainsKey("EditLink"))
-                                    {
-                                        <p class="small font-weight-bold"><a href="@Document.GetString("EditLink")"><i class="fad fa-pencil"></i> Edit This Page</a></p>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    }
+            }
+            </nav>
+            <article class="flex-auto">
+                <h1 class="text-gray-800 text-4xl mb-4 font-extrabold">@(Document.GetString(Keys.Title) ?? Document.GetTitle())</h1>
+                <div class="prose text-gray-700 font-light  text-sm md:text-base max-w-full">
+                    @RenderBody()
                 </div>
-            </div>
-        </div>
-        <div id="footer" class="p-3 text-white font-size-sm">
+            </article>
+        </main>
+        <footer class="py-4 md:py-8 mt-8 bg-gray-100 text-sm border-t border-gray-200">
             <div class="container">
-                <div>
+                <div class="flex flex-row">
                     <span>© @DateTime.Today.Year Patrik Svensson, Phil Scott</span>
-                    <span class="float-right" style="color: #888888;">@VersionUtilities.GetVersion()</span>
+                    <span class="ml-auto">@VersionUtilities.GetVersion()</span>
                 </div>
             </div>
-        </div>
-        <script>
-            $(document).ready(function() {
-                mermaid.initialize(
-                {
-                    flowchart:
-                    {
-                        useMaxWidth: false
-                    },
-					startOnLoad: false,
-					cloneCssStyles: false
-                });
-                mermaid.init(undefined, ".mermaid");
+        </footer>
 
-                // Remove the max-width setting that Mermaid sets
-                var mermaidSvg = $('.mermaid svg');
-                mermaidSvg.addClass('img-responsive');
-                mermaidSvg.css('max-width', '');
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js" integrity="sha512-9+422Bs3A87UkWfp+qV80Nfv9arhbCXKY1rxrF2seorI36mIIstMiuBfyKLF1yH1nnzQkEWq2xrzT4XU3Z+vrA==" crossorigin="anonymous"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-Q3qGP1uJL/B0sEmu57PKXjCirgPKMbg73OLRbTJ6lfHCVU5zkHqmcTI5EV2fSoPV1MHdKsCBE7m/aS6q0pPjRQ==" crossorigin="anonymous"></script>
 
-                // Make it scrollable
-				var target = document.querySelector(".mermaid svg");
-				if(target !== null)
-				{
-					var panZoom = window.panZoom = svgPanZoom(target, {
-						zoomEnabled: true,
-						controlIconsEnabled: true,
-						fit: true,
-						center: true,
-                        maxZoom: 20,
-                        zoomScaleSensitivity: 0.6
-					});
-
-                    // Do the reset once right away to fit the diagram
-                    panZoom.resize();
-                    panZoom.fit();
-                    panZoom.center();
-
-                    $(window).resize(function(){
-                        panZoom.resize();
-                        panZoom.fit();
-                        panZoom.center();
-                    });
-				}
-            });
-        </script>
     </body>
 </html>

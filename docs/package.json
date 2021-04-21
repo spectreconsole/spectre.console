@@ -1,0 +1,22 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "Docs for Spectre.Console",
+  "main": "index.js",
+  "scripts": {
+    "build:tailwind": "tailwindcss build ./tailwind.css -o ./input/assets/styles.css",
+    "build": "cross-env NODE_ENV=production tailwind build tailwind.css -o ./output/assets/styles.css"
+  },
+  "repository": {
+    "url": "https://github.com/spectreconsole/spectre.console"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.4.0",
+    "autoprefixer": "^10.2.5",
+    "cross-env": "^7.0.3",
+    "postcss": "^8.2.10",
+    "postcss-cli": "^8.3.1",
+    "tailwindcss": "^2.1.1"
+  }
+}

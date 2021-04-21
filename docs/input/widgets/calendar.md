@@ -5,7 +5,7 @@ RedirectFrom: calendar
 
 The `Calendar` is used to render a calendar to the terminal.
 
-# Usage
+## Usage
 
 To render a calendar, create a `Calendar` instance with a target date.
 
@@ -109,7 +109,7 @@ AnsiConsole.Render(calendar);
 └─────┴─────┴─────┴─────┴─────┴─────┴─────┘
 ```
 
-### Highlight style
+## Highlight style
 
 You can set the highlight style for a calendar event via `SetHighlightStyle`.
 

@@ -19,7 +19,7 @@ ANSI control sequence, any progress will be displayed in a simpler way.
 
 <img src="../assets/images/progress_fallback.png" style="max-width: 100%;">
 
-# Usage
+## Usage
 
 ```csharp
 // Synchronous
@@ -63,7 +63,7 @@ await AnsiConsole.Progress()
     });
 ```
 
-# Configure
+## Configure
 
 ```csharp
 // Asynchronous

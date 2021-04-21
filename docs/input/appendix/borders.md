@@ -4,11 +4,11 @@ Order: 2
 
 There is different built-in borders you can use for tables and panels.
 
-# Table borders
+## Table borders
 
 <img src="../assets/images/borders/table.png" style="max-width: 100%;">
 
-## Example
+### Example
 
 To set a table border to `SimpleHeavy`:
 
@@ -19,11 +19,11 @@ table.Border = TableBorder.SimpleHeavy;
 
 ---
 
-# Panel borders
+## Panel borders
 
 <img src="../assets/images/borders/panel.png" style="max-width: 100%;">
 
-## Example
+### Example
 
 To set a panel border to `Rounded`:
 

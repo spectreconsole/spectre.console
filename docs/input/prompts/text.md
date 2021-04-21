@@ -11,7 +11,7 @@ you can use the `Prompt<TResult>`.
   insides status or progress displays is not supported.
 </div>
 
-# Confirmation
+## Confirmation
 
 ```csharp
 if (!AnsiConsole.Confirm("Run example?"))
@@ -24,7 +24,7 @@ if (!AnsiConsole.Confirm("Run example?"))
 Run example? [y/n] (y): _
 ```
 
-# Simple
+## Simple
 
 ```csharp
 // Ask for the user's name
@@ -39,7 +39,7 @@ What's your name? Patrik
 What's your age? 37
 ```
 
-# Choices
+## Choices
 
 ```csharp
 var fruit = AnsiConsole.Prompt(
@@ -55,7 +55,7 @@ var fruit = AnsiConsole.Prompt(
 What's your favorite fruit? [Apple/Banana/Orange] (Orange): _
 ```
 
-# Validation
+## Validation
 
 ```csharp
 var age = AnsiConsole.Prompt(
@@ -79,7 +79,7 @@ Too high
 What's the secret number? _
 ```
 
-# Secrets
+## Secrets
 
 ```csharp
 var password = AnsiConsole.Prompt(
@@ -92,7 +92,7 @@ var password = AnsiConsole.Prompt(
 Enter password: ************_
 ```
 
-# Optional
+## Optional
 
 ```csharp
 var color = AnsiConsole.Prompt(

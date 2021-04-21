@@ -7,7 +7,7 @@ The `Rule` class is used to render a horizontal rule (line) to the terminal.
 
 <img src="../assets/images/rule.png" style="width: 100%;" />
 
-# Usage
+## Usage
 
 To render a rule without a title:
 
@@ -29,7 +29,7 @@ AnsiConsole.Render(rule);
 ───────────────────────────────── Hello ─────────────────────────────────
 ```
 
-### Title alignment
+## Title alignment
 
 You can set the rule's title alignment.
 

@@ -13,7 +13,7 @@ before Unicode 13.0 that belongs in the `Emoji_Presentation` category
 in the official emoji list at 
 https://www.unicode.org/Public/UCD/latest/ucd/emoji/emoji-data.txt
 
-# Usage
+## Usage
 
 ```csharp
 // Markup
@@ -23,14 +23,14 @@ AnsiConsole.MarkupLine("Hello :globe_showing_europe_africa:!");
 var hello = "Hello " + Emoji.Known.GlobeShowingEuropeAfrica;
 ```
 
-# Replacing emojis in text
+## Replacing emojis in text
 
 ```csharp
 var phrase = "Mmmm :birthday_cake:";
 var rendered = Emoji.Replace(phrase);
 ```
 
-# Remapping or adding an emoji
+## Remapping or adding an emoji
 
 Sometimes you want to remap an existing emoji, or 
 add a completely new one. For this you can use the 
@@ -49,7 +49,7 @@ var phrase = "Hello :globe_showing_europe_africa:!";
 var rendered = Emoji.Replace(phrase);
 ```
 
-# Emojis
+## Emojis
 
 _The images in the table below might not render correctly in your 
 browser for the same reasons mentioned in the `Compatibility` section._

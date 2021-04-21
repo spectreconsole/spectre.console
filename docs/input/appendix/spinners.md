@@ -4,7 +4,7 @@ Order: 4
 
 For all available spinners, see https://jsfiddle.net/sindresorhus/2eLtsbey/embedded/result/
 
-# Usage
+## Usage
 
 Spinners can be used with [Progress](xref:progress) and [Status](xref:status).
 
@@ -16,7 +16,7 @@ AnsiConsole.Status()
     });
 ```
 
-# Implementing a spinner
+## Implementing a spinner
 
 To implement your own spinner, all you have to do is 
 inherit from the `Spinner` base class.

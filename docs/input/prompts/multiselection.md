@@ -12,7 +12,7 @@ one or many items from a provided list.
   insides status or progress displays is not supported.
 </div>
 
-# Usage
+## Usage
 
 ```csharp
 // Ask for the user's favorite fruits

@@ -12,7 +12,7 @@ a single item from a provided list.
   status or progress displays, are not supported.
 </div>
 
-# Usage
+## Usage
 
 ```csharp
 // Ask for the user's favorite fruit

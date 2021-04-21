@@ -32,11 +32,11 @@ to `Spectre.Console.CLi`.
 + using Spectre.Console.Cli;
 ```
 
-# Breaking Changes
+## Breaking Changes
 
 In the process of moving `Spectre.Cli`, there have been some minor breaking changes.
 
-## Spectre.Cli.Exceptions namespace moved
+### Spectre.Cli.Exceptions namespace moved
 
 All exceptions have been moved from the `Spectre.Cli.Exceptions` namespace to
   the `Spectre.Console.Cli` namespace.
