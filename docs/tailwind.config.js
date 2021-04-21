@@ -37,6 +37,9 @@ module.exports = {
                                 color: defaultTheme.colors.blue[600],
                             },
                         },
+                        "pre code": {
+                            fontWeight: defaultTheme.fontWeight.light,
+                        },
                         code: {
                             color: defaultTheme.colors.blue[900],
                             fontWeight: defaultTheme.fontWeight.normal,
@@ -51,17 +54,6 @@ module.exports = {
                             marginTop: "1em",
                             marginBottom: ".5em"
                         }
-                    },
-                },
-                lg: {
-                    css: {
-                        pre: {
-                            lineHeight: defaultTheme.lineHeight.snug,
-                        },
-                        "pre code": {
-                            fontSize: defaultTheme.fontSize.sm,
-                            lineHeight: defaultTheme.lineHeight.snug,
-                        },
                     },
                 },
             }),

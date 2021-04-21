@@ -782,7 +782,7 @@ video {
   border-width: 0;
   border-radius: 0;
   padding: 0;
-  font-weight: 400;
+  font-weight: 300;
   color: inherit;
   font-size: inherit;
   font-family: inherit;
@@ -33189,52 +33189,44 @@ pre[class*="language-text"] {
   opacity: .7;
 }
 
-.token.comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
-  color: #6f705e;
+.token.comment, .token.prolog, .token.doctype, .token.cdata {
+  --tw-text-opacity: 1;
+  color: rgba(156, 163, 175, var(--tw-text-opacity));
 }
 
-.token.operator,
-.token.boolean,
-.token.number {
-  color: #a77afe;
+.token.operator, .token.boolean, .token.number {
+  --tw-text-opacity: 1;
+  color: rgba(196, 181, 253, var(--tw-text-opacity));
 }
 
-.token.attr-name,
-.token.string {
-  color: #e6d06c;
+.token.attr-name, .token.string {
+  --tw-text-opacity: 1;
+  color: rgba(110, 231, 183, var(--tw-text-opacity));
 }
 
-.token.entity,
-.token.url,
-.language-css .token.string,
-.style .token.string {
-  color: #e6d06c;
+.token.entity, .token.url, .language-css .token.string, .style .token.string {
+  --tw-text-opacity: 1;
+  color: rgba(110, 231, 183, var(--tw-text-opacity));
 }
 
-.token.selector,
-.token.inserted {
-  color: #a6e22d;
+.token.selector, .token.inserted {
+  --tw-text-opacity: 1;
+  color: rgba(16, 185, 129, var(--tw-text-opacity));
 }
 
-.token.atrule,
-.token.attr-value,
-.token.keyword,
-.token.important,
-.token.deleted {
-  color: #ef3b7d;
+.token.atrule, .token.attr-value, .token.keyword, .token.important, .token.deleted {
+  --tw-text-opacity: 1;
+  color: rgba(165, 180, 252, var(--tw-text-opacity));
 }
 
-.token.regex,
-.token.statement {
-  color: #76d9e6;
+.token.regex, .token.statement {
+  --tw-text-opacity: 1;
+  color: rgba(252, 165, 165, var(--tw-text-opacity));
 }
 
-.token.placeholder,
-.token.variable {
-  color: #fff;
+.token.placeholder, .token.variable {
+  --tw-text-opacity: 1;
+  color: rgba(243, 244, 246, var(--tw-text-opacity));
 }
 
 .token.important,
@@ -33505,7 +33497,7 @@ code.language-markup .token.script .token.keyword {
     border-width: 0;
     border-radius: 0;
     padding: 0;
-    font-weight: 400;
+    font-weight: 300;
     color: inherit;
     font-size: inherit;
     font-family: inherit;
@@ -65935,7 +65927,7 @@ code.language-markup .token.script .token.keyword {
     border-width: 0;
     border-radius: 0;
     padding: 0;
-    font-weight: 400;
+    font-weight: 300;
     color: inherit;
     font-size: inherit;
     font-family: inherit;
@@ -98365,7 +98357,7 @@ code.language-markup .token.script .token.keyword {
     border-width: 0;
     border-radius: 0;
     padding: 0;
-    font-weight: 400;
+    font-weight: 300;
     color: inherit;
     font-size: inherit;
     font-family: inherit;
@@ -130795,7 +130787,7 @@ code.language-markup .token.script .token.keyword {
     border-width: 0;
     border-radius: 0;
     padding: 0;
-    font-weight: 400;
+    font-weight: 300;
     color: inherit;
     font-size: inherit;
     font-family: inherit;
@@ -163225,7 +163217,7 @@ code.language-markup .token.script .token.keyword {
     border-width: 0;
     border-radius: 0;
     padding: 0;
-    font-weight: 400;
+    font-weight: 300;
     color: inherit;
     font-size: inherit;
     font-family: inherit;
