@@ -103,7 +103,7 @@ namespace MyApp
 }
 ```
 
-# So why this way?
+## So why this way?
 
 Now you might wonder, why do things like this? Well, for starters the different parts
 of the application are separated, while still having the option to share things like options,

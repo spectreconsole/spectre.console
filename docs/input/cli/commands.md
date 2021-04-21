@@ -22,7 +22,7 @@ public class HelloCommand : Command<HelloCommand.Settings>
 }
 ```
 
-# Configuring.
+## Configuring
 
 Commands are configured via the [`CommandApp`](commandApp)'s `Configure` method.
 
@@ -42,11 +42,11 @@ app.Configure(config =>
 * `WithDescription` is used by the help renderer to give commands a description when displaying help.
 * `WithExample` is used by the help renderer to provide examples to the user for running the commands. The parameters is a string array that matches the values passed in `Main(string[] args)`.
 
-# Dependency Injection.
+## Dependency Injection
 
 Constructor injection is supported on commands. See the [`CommandApp`](commandApp) documentation for further information on configuring `Spectre.Console` for your container.
 
-# Validation.
+## Validation
 
 While the settings can validate themselves, the command also provides a validation. For example, `IFileSystem` might be injected into the command which we want to use to validate that a path passed in exists.
 

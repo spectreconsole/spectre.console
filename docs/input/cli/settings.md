@@ -19,7 +19,7 @@ public sealed class MyCommandSettings : CommandSettings
 
 This setting file tells `Spectre.Console.Cli` that our command has two parameters. One is marked as a `CommandArgument`, the other is a `CommandOption`.
 
-# `CommandArgument`.
+## CommandArgument
 
 Arguments have a position and a name. The name is not only used for generating help, but it's formatting is used to determine whether or not the argument is optional. The name must either be surrounded by square brackets (e.g. `[name]`) or angle brackets (e.g. `<name>`). Square brackets are required where as angle are optional. If neither are specified an exception will be thrown.
 
@@ -35,7 +35,7 @@ public string FirstName { get; set; }
 public string FirstName { get; set; }
 ```
 
-# `CommandOption`.
+## CommandOption
 
 `CommandOption` is used when you have options that are passed in command line switches. The attribute has one parameter - a pipe delimited string with the list of argument names. The following rules apply:
 
@@ -43,7 +43,7 @@ public string FirstName { get; set; }
 * Options with a single character must be preceded by a single dash (e.g. `-c`).
 * Multi-character options must be preceded by two dashes (e.g. `--count`).
 
-## Flags.
+### Flags
 
 There is a special mode for `CommandOptions` on boolean types. Typically all `CommandOptions` require a value to be included after the switch. For these only the switch needs to be specified to mark the value as true. This example would allow the user to run either `app.exe --debug`, or `app.exe --debug true`.
 
@@ -52,11 +52,11 @@ There is a special mode for `CommandOptions` on boolean types. Typically all `Co
 public bool Debug { get; set; }
 ```
 
-# Description.
+## Description
 
 When rendering help the [`System.ComponentModel.Description`](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.descriptionattribute?view=net-5.0) attribute is supported for specifying the text displayed to the user for both `CommandOption` and `CommandArgument`.
 
-# DefaultValue.
+## DefaultValue
 
 The [`System.ComponentModel.DefaultValue`](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.defaultvalueattribute?view=net-5.0) attribute supported to specify a default value for a command. For example, in the hello example displaying hello for a default count of zero wouldn't make sense. We can change this to a single hello:
 
@@ -66,11 +66,11 @@ The [`System.ComponentModel.DefaultValue`](https://docs.microsoft.com/en-us/dotn
 public int Count { get; set; }
 ```
 
-# TypeConverter.
+## TypeConverter
 
 `System.ComponentModel.TypeConverter` is supported for more complex arguments, such as mapping log levels to an enum via a [`TypeConverter`](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.typeconverter?view=net-5.0).
 
-# Arrays.
+## Arrays
 
 `CommandArgument` can be defined as arrays and any additional parameters will be included in the value. For example
 
@@ -81,7 +81,7 @@ public string[] Name { get; set; }
 
 Would allow the user to run `app.exe Dwayne Elizondo "Mountain Dew" Herbert Camacho`. The settings passed to the command would have a 5 element array consisting of Dwayne, Elizondo, Mountain Dew, Herbert and Camacho.
 
-# Constructors.
+## Constructors
 
 `Spectre.Console.Cli` supports constructor initialization and init only initialization. For constructor initialization, the parameter name of the constructor must match the name of the property name of the settings class. Order does not matter.
 
@@ -110,7 +110,7 @@ public class Settings
 }
 ```
 
-# Validation.
+## Validation
 
 Simple type validation is performed automatically, but for scenarios where more complex validation is required, overriding the `Validate` method is supported. This method must return either `ValidationResult.Error` or `ValidationResult.Success`. 
 

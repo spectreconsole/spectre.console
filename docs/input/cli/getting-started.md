@@ -6,7 +6,7 @@ Order: 1
 opinionated in what it does, it tries to follow established industry conventions, and draws
 its inspiration from applications you use everyday.
 
-# How does it work?
+## How does it work?
 
 A `Spectre.Console.Cli` app will be comprised of Commands and a matching Setting specification. The settings file will be the model for the command parameters. Upon execution, `Spectre.Console.Cli` will parse the `args[]` passed into your application and match them to the appropriate settings file giving you a strongly typed object to work with.
 

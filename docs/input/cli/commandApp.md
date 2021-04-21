@@ -17,7 +17,7 @@ app.Configure(config =>
 });
 ```
 
-# Multiple Commands
+## Multiple Commands
 
 In the previous example we have a single command that is configured. For complex command line applications, it is common for them to have multiple commands (or verbs) defined. Examples of applications like this are `git`, `dotnet` and `gh`. For example, git would have an `commit` command and along with other commits like `add` or `rebase`. Each with their own settings and validation. With `Spectre.Console.Cli` we use the `Configure` method to add these commands.
 
@@ -37,7 +37,7 @@ This configuration would allow users to run `app.exe add`, `app.exe commit`, or 
 
 For more complex command hierarchical configurations, they can also be composed via inheritance and branching. See [Composing Commands](./composing).
 
-# Customizing Command Configurations
+## Customizing Command Configurations
 
 The `Configure` method is also used to change how help for the commands is generated. This configuration will give our command an additional alias of `file-size` and a description to be used when displaying the help. Additional, an example is specified that will be parsed and displayed for users asking for help. Multiple examples can be provided. Commands can also be marked as hidden. With this option they are still executable, but will not be displayed in help screens.
 
@@ -53,7 +53,7 @@ app.Configure(config =>
 });
 ```
 
-# Dependency Injection
+## Dependency Injection
 
 `CommandApp` takes care of instantiating commands upon execution. If given a custom type registrar, it will use that to resolve services defined in the command constructor.
 
@@ -73,7 +73,7 @@ return app.Run(args);
 
 `TypeRegistrar` is a custom class that must be created by the user. This [example using `Microsoft.Extensions.DependencyInjection` as the container](https://github.com/spectreconsole/spectre.console/tree/main/examples/Cli/Injection) provides an example `TypeRegistrar` and `TypeResolver` that can be added to your application with small adjustments for your DI container.
 
-# Interception
+## Interception
 
 `CommandApp` also provides a `SetInterceptor` configuration. An interceptor is ran before all commands are executed. This is typically used for configuring logging or other infrastructure concerns.
 
