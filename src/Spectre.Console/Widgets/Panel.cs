@@ -99,6 +99,7 @@ namespace Spectre.Console
 
             var panelWidth = childWidth + edgeWidth;
             panelWidth = Math.Min(panelWidth, maxWidth);
+            childWidth = panelWidth - edgeWidth;
 
             var result = new List<Segment>();
 
