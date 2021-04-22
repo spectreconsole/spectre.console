@@ -476,5 +476,26 @@ namespace Spectre.Console.Tests.Unit
             // Then
             return Verifier.Verify(console.Output);
         }
+
+        [Fact]
+        [Expectation("Render_Fold")]
+        public Task Should_Render_With_Folded_Text_Table_Correctly()
+        {
+            // Given
+            var console = new TestConsole().Width(30);
+            var table = new Table();
+            table.AddColumns("Foo", "Bar", "Baz");
+            table.AddRow("Qux With A Long Description", "Corgi", "Waldo");
+            table.AddRow("Grault", "Garply", "Fred On A Long Long Walk");
+
+            var panel = new Panel(table);
+            panel.Border = BoxBorder.Double;
+
+            // When
+            console.Write(panel);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
     }
 }
