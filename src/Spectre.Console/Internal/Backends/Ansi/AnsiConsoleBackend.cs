@@ -7,7 +7,6 @@ namespace Spectre.Console
 {
     internal sealed class AnsiConsoleBackend : IAnsiConsoleBackend
     {
-        private readonly AnsiBuilder _builder;
         private readonly IAnsiConsole _console;
 
         public IAnsiConsoleCursor Cursor { get; }
@@ -15,8 +14,6 @@ namespace Spectre.Console
         public AnsiConsoleBackend(IAnsiConsole console)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
-            _builder = new AnsiBuilder(_console.Profile);
-
             Cursor = new AnsiConsoleCursor(this);
         }
 
@@ -33,33 +30,10 @@ namespace Spectre.Console
 
         public void Write(IRenderable renderable)
         {
-            var builder = new StringBuilder();
-            foreach (var segment in renderable.GetSegments(_console))
+            var result = AnsiBuilder.Build(_console, renderable);
+            if (result?.Length > 0)
             {
-                if (segment.IsControlCode)
-                {
-                    builder.Append(segment.Text);
-                    continue;
-                }
-
-                var parts = segment.Text.NormalizeNewLines().Split(new[] { '\n' });
-                foreach (var (_, _, last, part) in parts.Enumerate())
-                {
-                    if (!string.IsNullOrEmpty(part))
-                    {
-                        builder.Append(_builder.GetAnsi(part, segment.Style));
-                    }
-
-                    if (!last)
-                    {
-                        builder.Append(Environment.NewLine);
-                    }
-                }
-            }
-
-            if (builder.Length > 0)
-            {
-                _console.Profile.Out.Writer.Write(builder.ToString());
+                _console.Profile.Out.Writer.Write(result);
                 _console.Profile.Out.Writer.Flush();
             }
         }

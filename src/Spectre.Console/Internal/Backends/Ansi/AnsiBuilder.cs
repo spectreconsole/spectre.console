@@ -1,23 +1,60 @@
 using System;
 using System.Linq;
+using System.Text;
+using Spectre.Console.Rendering;
 using static Spectre.Console.AnsiSequences;
 
 namespace Spectre.Console
 {
-    internal sealed class AnsiBuilder
+    internal static class AnsiBuilder
     {
-        private readonly Profile _profile;
-        private readonly AnsiLinkHasher _linkHasher;
+        private static readonly AnsiLinkHasher _linkHasher;
 
-        public AnsiBuilder(Profile profile)
+        static AnsiBuilder()
         {
-            _profile = profile ?? throw new ArgumentNullException(nameof(profile));
             _linkHasher = new AnsiLinkHasher();
         }
 
-        public string GetAnsi(string text, Style style)
+        public static string Build(IAnsiConsole console, IRenderable renderable)
         {
-            if (style is null)
+            var builder = new StringBuilder();
+            foreach (var segment in renderable.GetSegments(console))
+            {
+                if (segment.IsControlCode)
+                {
+                    builder.Append(segment.Text);
+                    continue;
+                }
+
+                var parts = segment.Text.NormalizeNewLines().Split(new[] { '\n' });
+                foreach (var (_, _, last, part) in parts.Enumerate())
+                {
+                    if (!string.IsNullOrEmpty(part))
+                    {
+                        builder.Append(Build(console.Profile, part, segment.Style));
+                    }
+
+                    if (!last)
+                    {
+                        builder.Append(Environment.NewLine);
+                    }
+                }
+            }
+
+            return builder.ToString();
+        }
+
+        private static string Build(Profile profile, string text, Style style)
+        {
+            if (profile is null)
+            {
+                throw new ArgumentNullException(nameof(profile));
+            }
+            else if (text is null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+            else if (style is null)
             {
                 throw new ArgumentNullException(nameof(style));
             }
@@ -29,7 +66,7 @@ namespace Spectre.Console
             {
                 codes = codes.Concat(
                     AnsiColorBuilder.GetAnsiCodes(
-                        _profile.Capabilities.ColorSystem,
+                        profile.Capabilities.ColorSystem,
                         style.Foreground,
                         true));
             }
@@ -39,7 +76,7 @@ namespace Spectre.Console
             {
                 codes = codes.Concat(
                     AnsiColorBuilder.GetAnsiCodes(
-                        _profile.Capabilities.ColorSystem,
+                        profile.Capabilities.ColorSystem,
                         style.Background,
                         false));
             }
@@ -54,7 +91,7 @@ namespace Spectre.Console
                 ? $"{SGR(result)}{text}{SGR(0)}"
                 : text;
 
-            if (style.Link != null && !_profile.Capabilities.Legacy)
+            if (style.Link != null && !profile.Capabilities.Legacy)
             {
                 var link = style.Link;
 
