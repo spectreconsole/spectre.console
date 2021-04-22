@@ -3,11 +3,11 @@ using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
-    internal sealed class ControlSequence : Renderable
+    internal sealed class ControlCode : Renderable
     {
         private readonly Segment _segment;
 
-        public ControlSequence(string control)
+        public ControlCode(string control)
         {
             _segment = Segment.Control(control);
         }
@@ -19,7 +19,10 @@ namespace Spectre.Console
 
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
-            yield return _segment;
+            if (context.Ansi)
+            {
+                yield return _segment;
+            }
         }
     }
 }

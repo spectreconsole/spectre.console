@@ -25,11 +25,11 @@ namespace Spectre.Console.Rendering
             {
                 if (_shape == null)
                 {
-                    return new ControlSequence(string.Empty);
+                    return new ControlCode(string.Empty);
                 }
 
                 var linesToMoveUp = _shape.Value.Height - 1;
-                return new ControlSequence("\r" + CUU(linesToMoveUp));
+                return new ControlCode("\r" + CUU(linesToMoveUp));
             }
         }
 
@@ -39,11 +39,11 @@ namespace Spectre.Console.Rendering
             {
                 if (_shape == null)
                 {
-                    return new ControlSequence(string.Empty);
+                    return new ControlCode(string.Empty);
                 }
 
                 var linesToClear = _shape.Value.Height - 1;
-                return new ControlSequence("\r" + EL(2) + (CUU(1) + EL(2)).Repeat(linesToClear));
+                return new ControlCode("\r" + EL(2) + (CUU(1) + EL(2)).Repeat(linesToClear));
             }
         }
 

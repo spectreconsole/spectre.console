@@ -15,6 +15,11 @@ namespace Spectre.Console.Rendering
         public ColorSystem ColorSystem => _capabilities.ColorSystem;
 
         /// <summary>
+        /// Gets a value indicating whether or not VT/Ansi codes are supported.
+        /// </summary>
+        public bool Ansi => _capabilities.Ansi;
+
+        /// <summary>
         /// Gets a value indicating whether or not unicode is supported.
         /// </summary>
         public bool Unicode => _capabilities.Unicode;

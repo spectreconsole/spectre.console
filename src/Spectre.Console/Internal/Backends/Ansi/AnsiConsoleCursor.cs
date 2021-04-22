@@ -16,11 +16,11 @@ namespace Spectre.Console
         {
             if (show)
             {
-                _backend.Write(new ControlSequence(SM(DECTCEM)));
+                _backend.Write(new ControlCode(SM(DECTCEM)));
             }
             else
             {
-                _backend.Write(new ControlSequence(RM(DECTCEM)));
+                _backend.Write(new ControlCode(RM(DECTCEM)));
             }
         }
 
@@ -34,23 +34,23 @@ namespace Spectre.Console
             switch (direction)
             {
                 case CursorDirection.Up:
-                    _backend.Write(new ControlSequence(CUU(steps)));
+                    _backend.Write(new ControlCode(CUU(steps)));
                     break;
                 case CursorDirection.Down:
-                    _backend.Write(new ControlSequence(CUD(steps)));
+                    _backend.Write(new ControlCode(CUD(steps)));
                     break;
                 case CursorDirection.Right:
-                    _backend.Write(new ControlSequence(CUF(steps)));
+                    _backend.Write(new ControlCode(CUF(steps)));
                     break;
                 case CursorDirection.Left:
-                    _backend.Write(new ControlSequence(CUB(steps)));
+                    _backend.Write(new ControlCode(CUB(steps)));
                     break;
             }
         }
 
         public void SetPosition(int column, int line)
         {
-            _backend.Write(new ControlSequence(CUP(line, column)));
+            _backend.Write(new ControlCode(CUP(line, column)));
         }
     }
 }
