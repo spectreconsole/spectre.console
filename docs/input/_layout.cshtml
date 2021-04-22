@@ -25,7 +25,7 @@
             <nav class="flex flex-row container mx-auto items-center">
                 <a class="flex flex-row  items-center" href="@Context.GetLink("/")">
                     <img id="logo" class="w-auto h-12" height="48" width="48" src="@Context.GetLink("/assets/logo.svg")" alt="Spectre.Console">
-                    <span class="text-xl md:text-2xl ml-4 -mt-1 font-mono tracking-tighter">Spectre.Console</span>
+                    <span class="text-xl md:text-2xl font-light ml-4 -mt-1 font-mono tracking-tighter">Spectre.Console</span>
                 </a>
                 <div class="ml-auto">
                     <ul class="flex flex-row">
@@ -50,61 +50,64 @@
                 </div>
             </nav>
         </header>
-        <main class="container mx-auto flex flex-col-reverse md:flex-row pt-8">
-            <nav class="flex-none font-light text-sm md:text-base sm:mr-16 mt-8 pt-6  md:mt-0 md:pt-0 border-t border-gray-300 md:border-t-0">
-            @{
-                IDocument root = OutputPages["index.html"].First();
-                <div class="text-xl @(Document.IdEquals(root) ? "font-bold" : null)">
-                        @if(root.ShowLink())
-                        {
-                            @Html.DocumentLink(root)
-                        }
-                        else
-                        {
-                            @root.GetTitle()
-                        }
-                </div>
-
-                @foreach (IDocument document in OutputPages.GetChildrenOf(root).OnlyVisible())
-                {
-                    if(string.IsNullOrWhiteSpace(document.GetTitle()))
-                    {
-                        continue;
-                    }
-
-                    DocumentList<IDocument> documentChildren = OutputPages.GetChildrenOf(document);
-                    <div class="text-blue-700 mt-4">
-                        @if(document.ShowLink())
-                        {
-                            @Html.DocumentLink(document)
-                        }
-                        else
-                        {
-                            @document.GetTitle()
-                        }
+        <main class="container mx-auto pt-8 w-full">
+            <div class="flex flex-col-reverse lg:flex-row">
+                <nav class="flex-none font-light text-sm xl:text-base sm:mr-16 mt-8 pt-6 lg:mt-0 lg:pt-0 border-t border-gray-300 lg:border-t-0">
+                @{
+                    IDocument root = OutputPages["index.html"].First();
+                    <div class="text-xl @(Document.IdEquals(root) ? "font-bold" : null)">
+                            @if(root.ShowLink())
+                            {
+                                @Html.DocumentLink(root)
+                            }
+                            else
+                            {
+                                @root.GetTitle()
+                            }
                     </div>
 
-                    @if (documentChildren.OnlyVisible().Any())
+                    @foreach (IDocument document in OutputPages.GetChildrenOf(root).OnlyVisible())
                     {
-                        <div class="ml-2 flex flex-row flex-wrap md:flex-col md:space-x-0 border-separate">
-                            @foreach (IDocument child in documentChildren.OnlyVisible())
+                        if(string.IsNullOrWhiteSpace(document.GetTitle()))
+                        {
+                            continue;
+                        }
+
+                        DocumentList<IDocument> documentChildren = OutputPages.GetChildrenOf(document);
+                        <div class="text-blue-700 mt-4">
+                            @if(document.ShowLink())
                             {
-                                <div class="mt-2 mr-4 @(Document.IdEquals(child) ? "font-bold" : null)">
-                                    @Html.DocumentLink(child)
-                                </div>
+                                @Html.DocumentLink(document)
+                            }
+                            else
+                            {
+                                @document.GetTitle()
                             }
                         </div>
+
+                        @if (documentChildren.OnlyVisible().Any())
+                        {
+                            <div class="ml-2 flex flex-row flex-wrap lg:flex-col border-separate">
+                                @foreach (IDocument child in documentChildren.OnlyVisible())
+                                {
+                                    <div class="mt-2 mr-4 @(Document.IdEquals(child) ? "font-bold" : null)">
+                                        @Html.DocumentLink(child)
+                                    </div>
+                                }
+                            </div>
+                        }
                     }
                 }
-            }
-            </nav>
-            <article>
-                <h1 class="text-gray-800 text-4xl mb-4 font-extrabold">@(Document.GetString(Keys.Title) ?? Document.GetTitle())</h1>
-                <div class="prose text-gray-700 font-light  text-sm md:text-base max-w-full">
-                    @RenderBody()
-                </div>
-            </article>
+                </nav>
+                <article class="flex-1">
+                    <h1 class="text-gray-800 text-4xl mb-4 font-extrabold">@(Document.GetString(Keys.Title) ?? Document.GetTitle())</h1>
+                    <div class="prose prose-sm xl:prose max-w-none xl:max-w-none 2xl:prose-lg 2xl:max-w-none text-gray-700 font-light">
+                        @RenderBody()
+                    </div>
+                </article>
+            </div>
         </main>
+
         <footer class="py-4 md:py-8 mt-8 bg-gray-100 text-sm border-t border-gray-200">
             <div class="container">
                 <div class="flex flex-row">

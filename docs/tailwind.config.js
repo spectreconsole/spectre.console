@@ -19,12 +19,6 @@ module.exports = {
                     xl: "5rem",
                     "2xl": "6rem",
                 },
-                screens: {
-                    sm: defaultTheme.spacing.full,
-                    md: defaultTheme.spacing.full,
-                    lg: "1024px",
-                    xl: "1280px",
-                },
             },
             typography: (theme) => ({
                 DEFAULT: {
