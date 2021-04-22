@@ -21,7 +21,7 @@
         <meta name="description" content="@description" />
     </head>
     <body class="antialiased text-gray-600 min-h-full flex flex-col  bg-gray-50">
-        <header class="flex-none text-sm font-medium bg-gray-100 ring-1 ring-gray-900 ring-opacity-5 shadow-sm py-2 md:py-5">
+        <header class="flex-none text-sm font-medium bg-gradient-to-b from-gray-200 to-gray-100 ring-1 ring-gray-900 ring-opacity-5 shadow py-2 md:py-5">
             <nav class="flex flex-row container mx-auto items-center">
                 <a class="flex flex-row  items-center" href="@Context.GetLink("/")">
                     <img id="logo" class="w-auto h-12" height="48" width="48" src="@Context.GetLink("/assets/logo.svg")" alt="Spectre.Console">
@@ -99,9 +99,9 @@
                     }
                 }
                 </nav>
-                <article class="flex-1">
+                <article class="flex-1 min-w-0">
                     <h1 class="text-gray-800 text-4xl mb-4 font-extrabold">@(Document.GetString(Keys.Title) ?? Document.GetTitle())</h1>
-                    <div class="prose prose-sm xl:prose max-w-none xl:max-w-none 2xl:prose-lg 2xl:max-w-none text-gray-700 font-light">
+                    <div class="prose max-w-none prose-sm lg:prose lg:max-w-none 2xl:prose-xl 2xl:max-w-none text-gray-700 font-light">
                         @RenderBody()
                     </div>
                 </article>

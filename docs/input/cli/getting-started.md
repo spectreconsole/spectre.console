@@ -13,13 +13,6 @@ A `Spectre.Console.Cli` app will be comprised of Commands and a matching Setting
 The following example demonstrates these concepts coming together.
 
 ```csharp
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
-using Spectre.Console;
-using Spectre.Console.Cli;
-
 var app = new CommandApp<FileSizeCommand>();
 return app.Run(args);
 
@@ -57,7 +50,7 @@ internal sealed class FileSizeCommand : Command<FileSizeCommand.Settings>
             .Sum(fileInfo => fileInfo.Length);
 
         AnsiConsole.MarkupLine(
-            $"Total file size for [green]{searchPattern}[/] files in [green]{searchPath}[/]: [blue]{totalFileSize:N0}[/] bytes");
+            $"Total file size for [green]{searchPattern}[/] files in [green]{searchPath}[/]: [blue]{totalFileSize:N0}[/] bytes");  $"Total file size for [green]{searchPattern}[/] files in [green]{searchPath}[/]: [blue]{totalFileSize:N0}[/] bytes");
 
         return 0;
     }

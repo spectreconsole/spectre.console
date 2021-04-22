@@ -2,7 +2,7 @@ Title: Markup
 Order: 2
 ---
 
-The class `Markup` allows you to output rich text to the console.
+The `Markup` class allows you to output rich text to the console.
 
 ## Syntax
 
