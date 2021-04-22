@@ -1,4 +1,5 @@
 using System;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console.Advanced
 {
@@ -23,6 +24,17 @@ namespace Spectre.Console.Advanced
             {
                 console.Write(new ControlCode(sequence));
             }
+        }
+
+        /// <summary>
+        /// Gets the VT/ANSI control code sequence for a <see cref="IRenderable"/>.
+        /// </summary>
+        /// <param name="console">The console.</param>
+        /// <param name="renderable">The renderable to the VT/ANSI control code sequence for.</param>
+        /// <returns>The VT/ANSI control code sequence.</returns>
+        public static string ToAnsi(this IAnsiConsole console, IRenderable renderable)
+        {
+            return AnsiBuilder.Build(console, renderable);
         }
     }
 }

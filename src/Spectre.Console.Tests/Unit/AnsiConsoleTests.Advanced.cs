@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Spectre.Console.Tests.Unit
 {
-    public partial class AnsiConsoleTests
+    public sealed partial class AnsiConsoleTests
     {
         public sealed class Advanced
         {
@@ -41,6 +41,20 @@ namespace Spectre.Console.Tests.Unit
                 // Then
                 console.Output.NormalizeLineEndings()
                     .ShouldBeEmpty();
+            }
+
+            [Fact]
+            public void Should_Return_Ansi_For_Renderable()
+            {
+                // Given
+                var console = new TestConsole().Colors(ColorSystem.TrueColor);
+                var markup = new Console.Markup("[yellow]Hello [blue]World[/]![/]");
+
+                // When
+                var result = console.ToAnsi(markup);
+
+                // Then
+                result.ShouldBe("[38;5;11mHello [0m[38;5;12mWorld[0m[38;5;11m![0m");
             }
         }
     }
