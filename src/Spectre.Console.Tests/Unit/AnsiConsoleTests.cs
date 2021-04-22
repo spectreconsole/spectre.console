@@ -7,103 +7,109 @@ namespace Spectre.Console.Tests.Unit
 {
     public partial class AnsiConsoleTests
     {
-        [Theory]
-        [InlineData(false, "Hello[2J[3JWorld")]
-        [InlineData(true, "Hello[2J[3J[1;1HWorld")]
-        public void Should_Clear_Screen(bool home, string expected)
+        public sealed class Clear
         {
-            // Given
-            var console = new TestConsole()
-                .Colors(ColorSystem.Standard)
-                .EmitAnsiSequences();
+            [Theory]
+            [InlineData(false, "Hello[2J[3JWorld")]
+            [InlineData(true, "Hello[2J[3J[1;1HWorld")]
+            public void Should_Clear_Screen(bool home, string expected)
+            {
+                // Given
+                var console = new TestConsole()
+                    .Colors(ColorSystem.Standard)
+                    .EmitAnsiSequences();
 
-            // When
-            console.Write("Hello");
-            console.Clear(home);
-            console.Write("World");
+                // When
+                console.Write("Hello");
+                console.Clear(home);
+                console.Write("World");
 
-            // Then
-            console.Output.ShouldBe(expected);
+                // Then
+                console.Output.ShouldBe(expected);
+            }
         }
 
-        [Fact]
-        public void Should_Combine_Decoration_And_Colors()
+        public sealed class Write
         {
-            // Given
-            var console = new TestConsole()
-                .Colors(ColorSystem.Standard)
-                .EmitAnsiSequences();
+            [Fact]
+            public void Should_Combine_Decoration_And_Colors()
+            {
+                // Given
+                var console = new TestConsole()
+                    .Colors(ColorSystem.Standard)
+                    .EmitAnsiSequences();
 
-            // When
-            console.Write(
-                "Hello",
-                new Style()
-                    .Foreground(Color.RoyalBlue1)
-                    .Background(Color.NavajoWhite1)
-                    .Decoration(Decoration.Italic));
+                // When
+                console.Write(
+                    "Hello",
+                    new Style()
+                        .Foreground(Color.RoyalBlue1)
+                        .Background(Color.NavajoWhite1)
+                        .Decoration(Decoration.Italic));
 
-            // Then
-            console.Output.ShouldBe("\u001b[3;90;47mHello\u001b[0m");
-        }
+                // Then
+                console.Output.ShouldBe("\u001b[3;90;47mHello\u001b[0m");
+            }
 
-        [Fact]
-        public void Should_Not_Include_Foreground_If_Set_To_Default_Color()
-        {
-            // Given
-            var console = new TestConsole()
-                .Colors(ColorSystem.Standard)
-                .EmitAnsiSequences();
+            [Fact]
+            public void Should_Not_Include_Foreground_If_Set_To_Default_Color()
+            {
+                // Given
+                var console = new TestConsole()
+                    .Colors(ColorSystem.Standard)
+                    .EmitAnsiSequences();
 
-            // When
-            console.Write(
-                "Hello",
-                new Style()
-                    .Foreground(Color.Default)
-                    .Background(Color.NavajoWhite1)
-                    .Decoration(Decoration.Italic));
+                // When
+                console.Write(
+                    "Hello",
+                    new Style()
+                        .Foreground(Color.Default)
+                        .Background(Color.NavajoWhite1)
+                        .Decoration(Decoration.Italic));
 
-            // Then
-            console.Output.ShouldBe("\u001b[3;47mHello\u001b[0m");
-        }
+                // Then
+                console.Output.ShouldBe("\u001b[3;47mHello\u001b[0m");
+            }
 
-        [Fact]
-        public void Should_Not_Include_Background_If_Set_To_Default_Color()
-        {
-            // Given
-            var console = new TestConsole()
-                .Colors(ColorSystem.Standard)
-                .EmitAnsiSequences();
+            [Fact]
+            public void Should_Not_Include_Background_If_Set_To_Default_Color()
+            {
+                // Given
+                var console = new TestConsole()
+                    .Colors(ColorSystem.Standard)
+                    .EmitAnsiSequences();
 
-            // When
-            console.Write(
-                "Hello",
-                new Style()
-                    .Foreground(Color.RoyalBlue1)
-                    .Background(Color.Default)
-                    .Decoration(Decoration.Italic));
+                // When
+                console.Write(
+                    "Hello",
+                    new Style()
+                        .Foreground(Color.RoyalBlue1)
+                        .Background(Color.Default)
+                        .Decoration(Decoration.Italic));
 
-            // Then
-            console.Output.ShouldBe("\u001b[3;90mHello\u001b[0m");
-        }
+                // Then
+                console.Output.ShouldBe("\u001b[3;90mHello\u001b[0m");
+            }
 
-        [Fact]
-        public void Should_Not_Include_Decoration_If_Set_To_None()
-        {
-            // Given
-            var console = new TestConsole()
-                .Colors(ColorSystem.Standard)
-                .EmitAnsiSequences();
+            [Fact]
+            public void Should_Not_Include_Decoration_If_Set_To_None()
+            {
+                // Given
+                var console = new TestConsole()
+                    .Colors(ColorSystem.Standard)
+                    .EmitAnsiSequences();
 
-            // When
-            console.Write(
-                "Hello",
-                new Style()
-                    .Foreground(Color.RoyalBlue1)
-                    .Background(Color.NavajoWhite1)
-                    .Decoration(Decoration.None));
+                // When
+                console.Write(
+                    "Hello",
+                    new Style()
+                        .Foreground(Color.RoyalBlue1)
+                        .Background(Color.NavajoWhite1)
+                        .Decoration(Decoration.None));
 
-            // Then
-            console.Output.ShouldBe("\u001b[90;47mHello\u001b[0m");
+                // Then
+                console.Output.ShouldBe("\u001b[90;47mHello\u001b[0m");
+            }
         }
 
         public sealed class WriteLine

@@ -38,7 +38,7 @@ namespace Spectre.Console
 
         public void Redraw()
         {
-            _console.Write(new ControlSequence(string.Empty));
+            _console.Write(new ControlCode(string.Empty));
         }
 
         public bool Update(ConsoleKey key)

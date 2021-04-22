@@ -38,6 +38,11 @@ namespace Spectre.Console
         /// <param name="text">The text to write.</param>
         public static void Write(this IAnsiConsole console, string text)
         {
+            if (console is null)
+            {
+                throw new ArgumentNullException(nameof(console));
+            }
+
             console.Write(new Text(text, Style.Plain));
         }
 
@@ -49,6 +54,11 @@ namespace Spectre.Console
         /// <param name="style">The text style.</param>
         public static void Write(this IAnsiConsole console, string text, Style style)
         {
+            if (console is null)
+            {
+                throw new ArgumentNullException(nameof(console));
+            }
+
             console.Write(new Text(text, style));
         }
 

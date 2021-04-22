@@ -18,6 +18,18 @@ namespace Spectre.Console.Testing
         }
 
         /// <summary>
+        /// Sets whether or not ANSI is supported.
+        /// </summary>
+        /// <param name="console">The console.</param>
+        /// <param name="enable">Whether or not VT/ANSI control codes are supported.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static TestConsole SupportsAnsi(this TestConsole console, bool enable)
+        {
+            console.Profile.Capabilities.Ansi = enable;
+            return console;
+        }
+
+        /// <summary>
         /// Makes the console interactive.
         /// </summary>
         /// <param name="console">The console.</param>

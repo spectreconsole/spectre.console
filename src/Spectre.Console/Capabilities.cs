@@ -16,7 +16,7 @@ namespace Spectre.Console
 
         /// <summary>
         /// Gets or sets a value indicating whether or not
-        /// the console supports Ansi.
+        /// the console supports VT/ANSI control codes.
         /// </summary>
         public bool Ansi { get; set; }
 
