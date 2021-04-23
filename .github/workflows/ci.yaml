@@ -45,6 +45,13 @@ jobs:
         dotnet run --configuration Release
         npm run build
 
+    - name: Archive doc generation
+      uses: actions/upload-artifact@v2
+      with:
+        name: documentation-output
+        path: docs/output/
+        retention-days: 5
+
   ###################################################
   # BUILD
   ###################################################
