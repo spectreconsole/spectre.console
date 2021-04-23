@@ -8,7 +8,10 @@ namespace Spectre.Console.Cli
     /// </summary>
     public abstract class CommandAppException : Exception
     {
-        internal IRenderable? Pretty { get; }
+        /// <summary>
+        /// Gets the pretty formatted exception message.
+        /// </summary>
+        public IRenderable? Pretty { get; }
 
         internal virtual bool AlwaysPropagateWhenDebugging => false;
 
