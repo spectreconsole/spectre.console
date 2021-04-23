@@ -21,11 +21,11 @@
         <meta name="description" content="@description" />
     </head>
     <body class="antialiased text-gray-600 min-h-full flex flex-col  bg-gray-50">
-        <header class="flex-none text-sm font-medium bg-gradient-to-b from-gray-200 to-gray-100 ring-1 ring-gray-900 ring-opacity-5 shadow py-2 md:py-5">
+        <header class="flex-none text-sm font-medium bg-gradient-to-b from-gray-200 to-gray-100 ring-1 ring-gray-900 ring-opacity-5 shadow py-2 md:py-4">
             <nav class="flex flex-row container mx-auto items-center">
                 <a class="flex flex-row  items-center" href="@Context.GetLink("/")">
-                    <img id="logo" class="w-auto h-12" height="48" width="48" src="@Context.GetLink("/assets/logo.svg")" alt="Spectre.Console">
-                    <span class="text-xl md:text-2xl font-light ml-4 -mt-1 font-mono tracking-tighter">Spectre.Console</span>
+                    <img id="logo" class="w-auto h-10 md:h-12" height="48" width="48" src="@Context.GetLink("/assets/logo.svg")" alt="Spectre.Console">
+                    <span class="text-lg md:text-2xl font-light ml-2 lg:ml-4 font-mono tracking-tighter">Spectre.Console</span>
                 </a>
                 <div class="ml-auto">
                     <ul class="flex flex-row">
@@ -50,7 +50,7 @@
                 </div>
             </nav>
         </header>
-        <main class="container mx-auto pt-8 w-full">
+        <main class="container mx-auto pt-4 md:pt-8 w-full">
             <div class="flex flex-col-reverse lg:flex-row">
                 <nav class="flex-none font-light text-sm xl:text-base sm:mr-16 mt-8 pt-6 lg:mt-0 lg:pt-0 border-t border-gray-300 lg:border-t-0">
                 @{
