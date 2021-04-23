@@ -23,13 +23,27 @@ jobs:
       with:
         dotnet-version: 5.0.202
 
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: npm-${{ hashFiles('package-lock.json') }}
+        restore-keys: npm-
+
     - name: Build
       shell: bash
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd docs
+        npm i
         dotnet run --configuration Release
+        npm run build
 
   ###################################################
   # BUILD
@@ -76,7 +90,7 @@ jobs:
         run: |
           dotnet tool restore
           dotnet cake
-      
+
       - name: Upload Verify Test Results
         if: failure()
         uses: actions/upload-artifact@v2
