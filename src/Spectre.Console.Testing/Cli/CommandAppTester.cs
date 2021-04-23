@@ -53,6 +53,15 @@ namespace Spectre.Console.Testing
             }
             catch (T ex)
             {
+                if (ex is CommandAppException commandAppException && commandAppException.Pretty != null)
+                {
+                    console.Write(commandAppException.Pretty);
+                }
+                else
+                {
+                    console.WriteLine(ex.Message);
+                }
+
                 return new CommandAppFailure(ex, console.Output);
             }
             catch (Exception ex)
