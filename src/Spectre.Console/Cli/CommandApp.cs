@@ -90,13 +90,6 @@ namespace Spectre.Console.Cli
             }
             catch (Exception ex)
             {
-                // Render the exception.
-                var pretty = GetRenderableErrorMessage(ex);
-                if (pretty != null)
-                {
-                    _configurator.Settings.Console.SafeRender(pretty);
-                }
-
                 // Should we always propagate when debugging?
                 if (Debugger.IsAttached
                     && ex is CommandAppException appException
@@ -108,6 +101,13 @@ namespace Spectre.Console.Cli
                 if (_configurator.Settings.PropagateExceptions)
                 {
                     throw;
+                }
+
+                // Render the exception.
+                var pretty = GetRenderableErrorMessage(ex);
+                if (pretty != null)
+                {
+                    _configurator.Settings.Console.SafeRender(pretty);
                 }
 
                 return -1;
