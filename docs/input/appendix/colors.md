@@ -13,4 +13,11 @@ in markup text such as `AnsiConsole.Markup("[maroon on blue]Hello[/]")`.
 
 ## Standard colors
 
+<input
+    id="colorSearch"
+    type="search"
+    oninput="search(this, 'color-results', 2)"
+    placeholder="Search for colors.."
+    title="Type in a color" />
+
 <?# ColorTable /?>

@@ -54,4 +54,13 @@ var rendered = Emoji.Replace(phrase);
 _The images in the table below might not render correctly in your 
 browser for the same reasons mentioned in the `Compatibility` section._
 
+
+<input
+    id="emojiSearch"
+    type="search"
+    oninput="search(this, 'emoji-results', 2)"
+    placeholder="Search for emojis.."
+    title="Type in an emoji name" />
+
+
 <?# EmojiTable /?>
