@@ -4,11 +4,11 @@ Order: 20
 
 Use `BarChart` to render bar charts to the console.
 
-<img src="../assets/images/barchart.png" style="width: 100%;" />
+![Example of bar chart output](../assets/images/barchart.png)
 
-# Usage
+## Usage
 
-## Basic usage
+### Basic usage
 
 ```csharp
 AnsiConsole.Render(new BarChart()
@@ -20,7 +20,7 @@ AnsiConsole.Render(new BarChart()
     .AddItem("Banana", 33, Color.Red));
 ```
 
-## Add items with converter
+### Add items with converter
 
 ```csharp
 // Create a list of fruits
@@ -40,7 +40,7 @@ AnsiConsole.Render(new BarChart()
         item.Label, item.Value, Color.Yellow)));
 ```
 
-## Add items implementing IBarChartItem
+### Add items implementing IBarChartItem
 
 ```csharp
 public sealed class Fruit : IBarChartItem

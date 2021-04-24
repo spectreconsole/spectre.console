@@ -1,9 +1,14 @@
-Title: Composing Commands
-RedirectFrom: introduction
-Order: 8
+Title: Introduction
+Order: 1
 ---
 
-The underlying philosophy behind `Spectre.Console.Cli` is to rely on the .NET type system to
+`Spectre.Console.Cli` is a modern library for parsing command line arguments. While it's extremely
+opinionated in what it does, it tries to follow established industry conventions, and draws
+its inspiration from applications you use everyday.
+
+## How does it work?
+
+The underlying philosophy behind `Spectre.Console.Cli` is to rely on the .NET type system to 
 declare the commands, but tie everything together via composition.
 
 Imagine the following command structure:
@@ -13,8 +18,8 @@ Imagine the following command structure:
     * package `<PACKAGE_NAME>` --version `<VERSION>`
     * reference `<PROJECT_REFERENCE>`
 
-For this I would like to implement the commands (the different levels in the tree that
-executes something) separately from the settings (the options, flags and arguments),
+For this I would like to implement the commands (the different levels in the tree that 
+executes something) separately from the settings (the options, flags and arguments), 
 which I want to be able to inherit from each other.
 
 ## Specify the settings

@@ -6,20 +6,13 @@ Order: 1
 opinionated in what it does, it tries to follow established industry conventions, and draws
 its inspiration from applications you use everyday.
 
-# How does it work?
+## How does it work?
 
 A `Spectre.Console.Cli` app will be comprised of Commands and a matching Setting specification. The settings file will be the model for the command parameters. Upon execution, `Spectre.Console.Cli` will parse the `args[]` passed into your application and match them to the appropriate settings file giving you a strongly typed object to work with.
 
 The following example demonstrates these concepts coming together.
 
 ```csharp
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
-using Spectre.Console;
-using Spectre.Console.Cli;
-
 var app = new CommandApp<FileSizeCommand>();
 return app.Run(args);
 
@@ -57,7 +50,7 @@ internal sealed class FileSizeCommand : Command<FileSizeCommand.Settings>
             .Sum(fileInfo => fileInfo.Length);
 
         AnsiConsole.MarkupLine(
-            $"Total file size for [green]{searchPattern}[/] files in [green]{searchPath}[/]: [blue]{totalFileSize:N0}[/] bytes");
+            $"Total file size for [green]{searchPattern}[/] files in [green]{searchPath}[/]: [blue]{totalFileSize:N0}[/] bytes");  $"Total file size for [green]{searchPattern}[/] files in [green]{searchPath}[/]: [blue]{totalFileSize:N0}[/] bytes");
 
         return 0;
     }

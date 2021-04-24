@@ -5,14 +5,13 @@ Order: 3
 The `MultiSelectionPrompt` can be used when you want the user to select
 one or many items from a provided list.
 
-<img src="../assets/images/multiselection.gif" style="width: 100%;" />
+![Example of multiselection input](../assets/images/multiselection.gif)
 
-<div class="alert alert-warning" role="alert" style="margin-top:20px;">
-  <i class="fas fa-exclamation-triangle icon-web"></i> The use of prompts 
+<?# Alert ?> The use of prompts 
   insides status or progress displays is not supported.
-</div>
+<?#/ Alert ?>
 
-# Usage
+## Usage
 
 ```csharp
 // Ask for the user's favorite fruits

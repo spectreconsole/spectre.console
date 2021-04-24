@@ -1,4 +1,4 @@
-﻿<div>
+<div>
     @foreach (IDocument post in Document.GetChildren())
     {
         IDocument topicDocument = Outputs[nameof(Archives)][$"blog/topics/{post.GetString("topic")}/index.html"];

@@ -3,24 +3,28 @@ Order: 0
 ---
 
 Spectre.Console is a `.NET Standard 2.0` library that makes it easier 
-to create beautiful console applications. It has been heavily inspired 
+to create beautiful console applications. 
+
+## Spectre.Console.AnsiConsole Features
+
+* Easily output text with different colors and even styles such as bold, italic and blinking with a Rich inspired [markup language](markup).
+* Supports `3`/`4`/`8`/`24`-bit colors in the terminal with auto-detection of the current terminal's capabilities.
+* Render complex [widgets](widgets) such as [tables](widgets/table), [trees](widgets/tree), and even [ASCII images](widgets/canvas-image).
+* Display progress for long running tasks with live displays of [progress](live/progress) and [status](live/status) controls.
+* Prompt user input with strongly typed [text input](prompts/text) or via [single-item select](prompts/selection) and [multiple item select](prompts/multiselection) controls.
+* Format .NET [exceptions](exceptions) with custom color coded themes and styles.
+* Written with unit testing in mind.
+
+Spectre.Console.AnsiConsole  has been heavily inspired 
 by the excellent [Rich](https://github.com/willmcgugan/rich) library 
 for Python written by Will McGugan.
 
-## Features
+## Spectre.Console.Cli
 
-* Written with unit testing in mind.
-* Supports tables, grids, panels, and a [Rich](https://github.com/willmcgugan/rich) 
-  inspired markup language.
-* Supports the most common 
-  [SGR parameters](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_parameters) 
-  when it comes to text styling such as bold, dim, italic, underline, strikethrough, 
-  and blinking text.
-* Supports `3`/`4`/`8`/`24`-bit colors in the terminal.  
-  The library will detect the capabilities of the current terminal 
-  and downgrade colors as needed.
+* Create strongly typed settings and commands for parsing `args[]` to create complex command line applications like `git`, `gh`, or `dotnet`
 
 ## Examples
 
-<img src="./assets/images/example.png" style="max-width: 100%; margin-top: 15px; margin-bottom: 25px;" />
-<img src="./assets/images/table.gif" style="max-width: 100%;" />
+![Sample of Spectre.Console output](./assets/images/example.png)
+
+![Animated example of console output](./assets/images/table.gif){class=mt-4}

@@ -1,0 +1,123 @@
+/*
+use npm run build:tailwind to take this file plus tailwind.config.js and build the one in the assets/styles.css.
+that file will be quite large, but we'll minimize it on production build.
+*/
+
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* temp styling for alerts */
+
+.alert-warning {
+    @apply p-4 border border-yellow-300 bg-yellow-100 rounded shadow-sm  text-sm text-yellow-800;
+}
+
+.alert-warning p {
+    @apply m-0;
+}
+
+[type='search']{
+    @apply shadow-sm focus:ring-indigo-300 focus:border-indigo-300 block w-full sm:text-sm border-gray-300 rounded-md;
+}
+
+/* prism styling */
+pre[class*="language-text"] {
+    line-height:1rem;
+}
+
+.token.namespace {
+	opacity: .7;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    @apply text-gray-400;
+}
+
+.token.operator,
+.token.boolean,
+.token.number {
+    @apply text-purple-300;
+}
+
+.token.attr-name,
+.token.string {
+    @apply text-green-300;
+}
+
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    @apply text-green-300;
+}
+
+.token.selector,
+.token.inserted {
+    @apply text-green-500;
+
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword,
+.token.important,
+.token.deleted {
+    @apply text-indigo-300;
+}
+
+.token.regex,
+.token.statement {
+    @apply text-red-300;
+}
+
+.token.placeholder,
+.token.variable {
+    @apply text-gray-100;
+}
+
+.token.important,
+.token.statement,
+.token.bold {
+	font-weight: bold;
+}
+
+.token.punctuation {
+	color: #bebec5;
+}
+
+.token.entity {
+	cursor: help;
+}
+
+.token.italic {
+	font-style: italic;
+}
+
+code.language-markup {
+	color: #f9f9f9;
+}
+
+code.language-markup .token.tag {
+	color: #ef3b7d;
+}
+
+code.language-markup .token.attr-name {
+	color: #a6e22d;
+}
+
+code.language-markup .token.attr-value {
+	color: #e6d06c;
+}
+
+code.language-markup .token.style,
+code.language-markup .token.script {
+	color: #76d9e6;
+}
+
+code.language-markup .token.script .token.keyword {
+	color: #76d9e6;
+}

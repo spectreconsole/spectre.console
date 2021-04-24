@@ -5,14 +5,14 @@ Order: 1
 The `SelectionPrompt` can be used when you want the user to select
 a single item from a provided list.
 
-<img src="../assets/images/selection.gif" style="width: 100%;" />
+![Example of selection input](../assets/images/selection.gif)
 
-<div class="alert alert-warning" role="alert" style="margin-top:20px;">
-  <i class="fas fa-exclamation-triangle icon-web"></i> Using prompts inside 
+<?# Alert ?>
+ Using prompts inside
   status or progress displays, are not supported.
-</div>
+<?#/ Alert ?>
 
-# Usage
+## Usage
 
 ```csharp
 // Ask for the user's favorite fruit

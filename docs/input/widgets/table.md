@@ -9,7 +9,7 @@ Tables are a perfect way of displaying tabular data in a terminal.
 all columns to fit whatever is inside them. Anything that implements 
 `IRenderable` can be used as a column header or column cell, even another table!
 
-# Usage
+## Usage
 
 <!------------------------->
 <!--- USAGE             --->
@@ -39,13 +39,13 @@ This will render the following output:
 
 ![Table](../assets/images/table.png)
 
-# Table appearance
+## Table appearance
 
 <!------------------------->
 <!--- TABLE APPEARANCE  --->
 <!------------------------->
 
-## Borders
+### Borders
 
 For a list of borders, see the [Borders](xref:borders) appendix section.
 
@@ -57,7 +57,7 @@ table.Border(TableBorder.Square);
 table.Border(TableBorder.Rounded);
 ```
 
-## Expand / Collapse
+### Expand / Collapse
 
 ```csharp
 // Table will take up as much space as it can
@@ -68,21 +68,21 @@ table.Expand();
 table.Collapse();
 ```
 
-## Hide headers
+### Hide headers
 
 ```csharp
 // Hides all column headers
 table.HideHeaders();
 ```
 
-## Set table width
+### Set table width
 
 ```csharp
 // Sets the table width to 50 cells
 table.Width(50);
 ```
 
-## Alignment
+### Alignment
 
 ```csharp
 table.Alignment(Justify.Right);
@@ -91,13 +91,13 @@ table.Centered();
 table.LeftAligned();
 ```
 
-# Column appearance
+## Column appearance
 
 <!------------------------->
 <!--- COLUMN APPEARANCE --->
 <!------------------------->
 
-## Alignment
+### Alignment
 
 ```csharp
 table.Columns[0].Alignment(Justify.Right);
@@ -106,7 +106,7 @@ table.Columns[0].Centered();
 table.Columns[0].RightAligned();
 ```
 
-## Padding
+### Padding
 
 ```csharp
 // Set padding individually
@@ -121,14 +121,14 @@ table.Columns[0].PadLeft(3).PadRight(5);
 table.Columns[0].Padding(4, 0);
 ```
 
-## Disable column wrapping
+### Disable column wrapping
 
 ```csharp
 // Disable column wrapping
 table.Columns[0].NoWrap();
 ```
 
-## Set column width
+### Set column width
 
 ```csharp
 // Set the column width

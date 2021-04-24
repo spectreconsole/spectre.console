@@ -4,9 +4,9 @@ Order: 10
 
 The `Tree` widget can be used to render hierarchical data.
 
-<img src="../assets/images/tree.png" style="width: 100%;" />
+![Example of true output](../assets/images/tree.png)
 
-# Usage
+## Usage
 
 ```csharp
 // Create the tree
@@ -34,22 +34,22 @@ bar.AddNode(new Calendar(2020, 12)
 AnsiConsole.Render(root);
 ```
 
-# Collapsing nodes
+## Collapsing nodes
 
 ```csharp
 root.AddNode("Label").Collapsed();
 ```
 
-# Appearance
+## Appearance
 
-## Style
+### Style
 
 ```csharp
 var root = new Tree("Root")
     .Style("white on red");
 ```
 
-## Guide lines
+### Guide lines
 
 ```csharp
 // ASCII guide lines

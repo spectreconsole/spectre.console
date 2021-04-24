@@ -13,7 +13,7 @@ before Unicode 13.0 that belongs in the `Emoji_Presentation` category
 in the official emoji list at 
 https://www.unicode.org/Public/UCD/latest/ucd/emoji/emoji-data.txt
 
-# Usage
+## Usage
 
 ```csharp
 // Markup
@@ -23,14 +23,14 @@ AnsiConsole.MarkupLine("Hello :globe_showing_europe_africa:!");
 var hello = "Hello " + Emoji.Known.GlobeShowingEuropeAfrica;
 ```
 
-# Replacing emojis in text
+## Replacing emojis in text
 
 ```csharp
 var phrase = "Mmmm :birthday_cake:";
 var rendered = Emoji.Replace(phrase);
 ```
 
-# Remapping or adding an emoji
+## Remapping or adding an emoji
 
 Sometimes you want to remap an existing emoji, or 
 add a completely new one. For this you can use the 
@@ -49,24 +49,18 @@ var phrase = "Hello :globe_showing_europe_africa:!";
 var rendered = Emoji.Replace(phrase);
 ```
 
-# Emojis
+## Emojis
 
 _The images in the table below might not render correctly in your 
 browser for the same reasons mentioned in the `Compatibility` section._
 
-<div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="basic-addon1">
-        <i class="fas fa-search" aria-hidden="true"></i>
-    </span>
-  </div>
-  <input
-    class="form-control w-100 filter"
-    data-table="emoji-results"
-    type="text" placeholder="Search Emojis..." autocomplete="off" 
-    aria-label="Search Emojis">
-</div>
+
+<input
+    id="emojiSearch"
+    type="search"
+    oninput="search(this, 'emoji-results', 2)"
+    placeholder="Search for emojis.."
+    title="Type in an emoji name" />
+
 
 <?# EmojiTable /?>
-
-<script type="text/javascript" src="../assets/js/table-search.js"></script>

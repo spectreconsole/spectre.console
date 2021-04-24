@@ -5,7 +5,7 @@ RedirectFrom: figlet
 
 Spectre.Console can render [FIGlet](http://www.figlet.org/) text by using the `FigletText` class.
 
-# Default font
+## Default font
 
 ```csharp
 AnsiConsole.Render(
@@ -22,7 +22,7 @@ AnsiConsole.Render(
 |_| |_|  \___| |_| |_|  \___/ 
 ```
 
-# Custom font
+## Custom font
 
 ```csharp
 var font = FigletFont.Load("starwars.flf");

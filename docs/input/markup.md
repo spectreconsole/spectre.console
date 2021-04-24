@@ -2,9 +2,9 @@ Title: Markup
 Order: 2
 ---
 
-The class `Markup` allows you to output rich text to the console.
+The `Markup` class allows you to output rich text to the console.
 
-# Syntax
+## Syntax
 
 Console markup uses a syntax inspired by bbcode. If you write the style (see [Styles](xref:styles)) 
 in square brackets, e.g. `[bold red]`, that style will apply until it is closed with a `[/]`.
@@ -24,7 +24,7 @@ table.AddColumn(new TableColumn("[blue]Bar[/]"));
 AnsiConsole.Render(table);
 ```
 
-# Convenience methods
+## Convenience methods
 
 There is also convenience methods on `AnsiConsole` that can be used
 to write markup text to the console without instantiating a new `Markup`
@@ -35,7 +35,7 @@ AnsiConsole.Markup("[underline green]Hello[/] ");
 AnsiConsole.MarkupLine("[bold]World[/]");
 ```
 
-# Escaping format characters
+## Escaping format characters
 
 To output a `[` you use `[[`, and to output a `]` you use `]]`.
 
@@ -54,7 +54,7 @@ You can also use the `Markup.Escape` method.
 ```csharp
 AnsiConsole.Markup("[red]{0}[/]", Markup.Escape("Hello [World]"));
 ```
-# Setting background color
+## Setting background color
 
 You can set the background color in markup by prefixing the color with
 `on`.
@@ -64,7 +64,7 @@ AnsiConsole.Markup("[bold yellow on blue]Hello[/]");
 AnsiConsole.Markup("[default on blue]World[/]");
 ```
 
-# Rendering emojis
+## Rendering emojis
 
 To output an emoji as part of markup, you can use emoji shortcodes.
 
@@ -74,7 +74,7 @@ AnsiConsole.Markup("Hello :globe_showing_europe_africa:!");
 
 For a list of emoji, see the [Emojis](xref:emojis) appendix section.
 
-# Colors
+## Colors
 
 In the examples above, all colors was referenced by their name,
 but you can also use the hex or rgb representation for colors in markdown.
@@ -87,6 +87,6 @@ AnsiConsole.Markup("[rgb(255,0,0)]Baz[/] ");
 
 For a list of colors, see the [Colors](xref:colors) appendix section.
 
-# Styles
+## Styles
 
 For a list of styles, see the [Styles](xref:styles) appendix section.

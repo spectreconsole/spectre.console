@@ -26,10 +26,25 @@ jobs:
       with:
         dotnet-version: 5.0.202
 
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: npm-${{ hashFiles('package-lock.json') }}
+        restore-keys: npm-
+
     - name: Publish
       shell: bash
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd docs
-        dotnet run --configuration Release -- deploy
+        npm i
+        dotnet run --configuration Release
+        npm run build
+        dotnet run -- deploy
