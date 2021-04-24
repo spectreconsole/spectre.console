@@ -21,18 +21,18 @@ This setting file tells `Spectre.Console.Cli` that our command has two parameter
 
 # `CommandArgument`.
 
-Arguments have a position and a name. The name is not only used for generating help, but it's formatting is used to determine whether or not the argument is optional. The name must either be surrounded by square brackets (e.g. `[name]`) or angle brackets (e.g. `<name>`). Square brackets are required where as angle are optional. If neither are specified an exception will be thrown.
+Arguments have a position and a name. The name is not only used for generating help, but it's formatting is used to determine whether or not the argument is optional. The name must either be surrounded by square brackets (e.g. `[name]`) or angle brackets (e.g. `<name>`). Angle brackets denote required whereas square brackets denote optional. If neither are specified an exception will be thrown.
 
 The position is used for scenarios where there could be more than one argument.
 
 For example, we could split the above name argument into two values with an optional last name.
 
 ```csharp
-[CommandArgument(0, "[firstName]")]
+[CommandArgument(0, "<firstName>")]
 public string FirstName { get; set; }
 
-[CommandArgument(1, "<lastName>")]
-public string FirstName { get; set; }
+[CommandArgument(1, "[lastName]")]
+public string LastName { get; set; }
 ```
 
 # `CommandOption`.
@@ -112,7 +112,7 @@ public class Settings
 
 # Validation.
 
-Simple type validation is performed automatically, but for scenarios where more complex validation is required, overriding the `Validate` method is supported. This method must return either `ValidationResult.Error` or `ValidationResult.Success`. 
+Simple type validation is performed automatically, but for scenarios where more complex validation is required, overriding the `Validate` method is supported. This method must return either `ValidationResult.Error` or `ValidationResult.Success`.
 
 ```csharp
 public class Settings
@@ -124,7 +124,7 @@ public class Settings
     public override ValidationResult Validate()
     {
         return Name.Length < 2
-            ? ValidationResult.Error("Names must be at least two characters long") 
+            ? ValidationResult.Error("Names must be at least two characters long")
             : ValidationResult.Success();
     }
 }
