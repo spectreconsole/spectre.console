@@ -19,11 +19,15 @@ namespace Docs.Shortcodes
 
             // Headers
             var table = new XElement("table", new XAttribute("class", "table"), new XAttribute("id", "emoji-results"));
+            var tHead = new XElement("thead");
             var header = new XElement("tr", new XAttribute("class", "emoji-row-header"));
             header.Add(new XElement("th", ""));
             header.Add(new XElement("th", "Markup"));
-            header.Add(new XElement("th", "Constant"));
-            table.Add(header);
+            header.Add(new XElement("th", "Constant", new XAttribute("class", "hidden md:table-cell")));
+            tHead.Add(header);
+            table.Add(tHead);
+
+            var tBody = new XElement("tbody");
 
             foreach (var emoji in emojis)
             {
@@ -33,10 +37,12 @@ namespace Docs.Shortcodes
                 var row = new XElement("tr", new XAttribute("class", "search-row"));
                 row.Add(new XElement("td", icon));
                 row.Add(new XElement("td", new XElement("code", $":{emoji.Id}:")));
-                row.Add(new XElement("td", new XElement("code", emoji.Name)));
+                row.Add(new XElement("td", new XElement("code", emoji.Name), new XAttribute("class", "hidden md:table-cell")));
 
-                table.Add(row);
+                tBody.Add(row);
             }
+
+            table.Add(tBody);
 
             return table.ToString()
                 .Replace("&amp;#x", "&#x");

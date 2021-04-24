@@ -33392,17 +33392,6 @@ select {
   }
 }
 
-.color-representation {
-  --tw-border-opacity: 1;
-  border-color: rgba(0, 0, 0, var(--tw-border-opacity));
-  --tw-border-opacity: 0.75;
-  border-radius: 0.25rem;
-  border-width: 1px;
-  display: inline-block;
-  height: 1rem;
-  width: 4rem;
-}
-
 /* prism styling */
 
 pre[class*="language-text"] {

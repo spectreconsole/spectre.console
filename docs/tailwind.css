@@ -21,10 +21,6 @@ that file will be quite large, but we'll minimize it on production build.
     @apply shadow-sm focus:ring-indigo-300 focus:border-indigo-300 block w-full sm:text-sm border-gray-300 rounded-md;
 }
 
-.color-representation {
-    @apply inline-block w-16 h-4 border border-black border-opacity-75 rounded;
-}
-
 /* prism styling */
 pre[class*="language-text"] {
     line-height:1rem;
