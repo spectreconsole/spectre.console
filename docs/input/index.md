@@ -27,4 +27,11 @@ for Python written by Will McGugan.
 
 ![Sample of Spectre.Console output](./assets/images/example.png)
 
-![Animated example of console output](./assets/images/table.gif){class=mt-4}
+<video autoplay muted loop class="mt-4">
+    <source src="./assets/images/table.webm"
+            type="video/webm">
+    <source src="./assets/images/table.mp4"
+            type="video/mp4">
+    Sorry, your browser doesn't support embedded videos.
+</video>
+
