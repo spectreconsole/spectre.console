@@ -131,9 +131,10 @@ namespace Spectre.Console.Cli
                 var converted = new List<IRenderable?>
                 {
                     new Composer()
-                        .LineBreak()
                         .Text("[red]Error:[/]")
-                        .Space().Text(ex.Message.EscapeMarkup()),
+                        .Space()
+                        .Text(ex.Message.EscapeMarkup())
+                        .LineBreak(),
                 };
 
                 // Got a renderable inner exception?
