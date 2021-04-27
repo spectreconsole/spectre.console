@@ -22,6 +22,11 @@ namespace Docs
                 .AddShortcode("Alert", typeof(AlertShortcode))
                 .AddShortcode("AsciiCast", typeof(AsciiCastShortcode))
                 .AddPipelines()
+                .AddProcess(ProcessTiming.Initialization, _ => new ProcessLauncher("npm", "install")
+                {
+                    LogErrors = false
+                })
+                .AddProcess(ProcessTiming.AfterExecution, "npm", "run", "build:tailwind")
                 .RunAsync();
 
         private static Config<string> ConfigureEditLink()
