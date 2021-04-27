@@ -4,15 +4,16 @@ _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.consol
 
 `Spectre.Console`是一个 .NET 5/.NET Standard 2.0 的库，能让您在终端里更方便地生成精美的界面。
 
-深受 [Rich](https://github.com/willmcgugan/rich) 这个优秀库的启发。
+深受 [Rich](https://github.com/willmcgugan/rich) 这个Python优秀库的启发。
 
 ## 目录
 
-1. [功能](#features)
-2. [安装](#installing)
-3. [文档](#documentation)
-4. [例子](#examples)
-5. [License](#license)
+1. [功能](#功能)
+2. [安装](#安装)
+3. [文档](#文档)
+4. [例子](#例子)
+5. [Sponsors](#Sponsors)
+6. [开源许可](#开源许可)
 
 ## 功能
 
@@ -21,7 +22,7 @@ _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.consol
 * 支持大部分的 SRG 参数，包括粗体、暗淡字、斜体、下划线、删除线和闪烁文本。
 * 支持终端显示 3/4/8/24 位色。自动检测终端类型，自适应颜色范围。
 
-![例子](resources/gfx/screenshots/example.png)
+![例子](docs/input/assets/images/example.png)
 
 ## 安装
 
@@ -56,7 +57,25 @@ https://spectreconsole.net/
 > dotnet example tables
 ```
 
-## License
+## Sponsors
+
+下面这些用户正在[sponsor](https://github.com/sponsors/patriksvensson)上支持着Spectre.Console，确保这个项目的持续维护。
+
+* [Rodney Littles II](https://github.com/RLittlesII)
+* [Martin Björkström](https://github.com/bjorkstromm)
+* [Dave Glick](https://github.com/daveaglick)
+* [Kim Gunanrsson](https://github.com/kimgunnarsson)
+* [Andrew McClenaghan](https://github.com/andymac4182)
+* [C. Augusto Proiete](https://github.com/augustoproiete)
+* [Viktor Elofsson](https://github.com/vktr)
+* [Steven Knox](https://github.com/stevenknox)
+* [David Pendray](https://github.com/dpen2000)
+* [Elmah.io](https://github.com/elmahio)
+
+我对此表示十分感激 
+**非常感谢各位！**
+
+## 开源许可
 
 版权所有 © Patrik Svensson, Phil Scott
 
