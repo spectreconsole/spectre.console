@@ -21,6 +21,11 @@ namespace Docs
                 .AddShortcode("EmojiTable", typeof(EmojiTableShortcode))
                 .AddShortcode("Alert", typeof(AlertShortcode))
                 .AddPipelines()
+                .AddProcess(ProcessTiming.Initialization, _ => new ProcessLauncher("npm", "install")
+                {
+                    LogErrors = false
+                })
+                .AddProcess(ProcessTiming.AfterExecution, "npm", "run", "build:tailwind")
                 .RunAsync();
 
         private static Config<string> ConfigureEditLink()

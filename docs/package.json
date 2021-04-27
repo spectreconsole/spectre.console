@@ -4,7 +4,7 @@
   "description": "Docs for Spectre.Console",
   "main": "index.js",
   "scripts": {
-    "build:tailwind": "tailwindcss build ./tailwind.css -o ./input/assets/styles.css",
+    "build:tailwind": "tailwindcss build ./tailwind.css -o ./output/assets/styles.css",
     "build": "cross-env NODE_ENV=production tailwind build tailwind.css -o ./output/assets/styles.css"
   },
   "repository": {
