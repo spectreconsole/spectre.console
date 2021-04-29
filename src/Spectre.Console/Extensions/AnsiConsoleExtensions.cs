@@ -73,7 +73,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(console));
             }
 
-            console.Write(new Text(Environment.NewLine, Style.Plain));
+            console.Write(new Text("\n", Style.Plain));
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(text));
             }
 
-            console.Write(text + Environment.NewLine, style);
+            console.Write(text + "\n", style);
         }
     }
 }

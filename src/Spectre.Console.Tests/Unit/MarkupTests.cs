@@ -7,6 +7,44 @@ namespace Spectre.Console.Tests.Unit
 {
     public sealed class MarkupTests
     {
+        public sealed class TheLengthProperty
+        {
+            [Theory]
+            [InlineData("Hello", 5)]
+            [InlineData("Hello\nWorld", 11)]
+            [InlineData("[yellow]Hello[/]", 5)]
+            public void Should_Return_The_Number_Of_Characters(string input, int expected)
+            {
+                // Given
+                var markup = new Markup(input);
+
+                // When
+                var result = markup.Length;
+
+                // Then
+                result.ShouldBe(expected);
+            }
+        }
+
+        public sealed class TheLinesProperty
+        {
+            [Theory]
+            [InlineData("Hello", 1)]
+            [InlineData("Hello\nWorld", 2)]
+            [InlineData("[yellow]Hello[/]\nWorld", 2)]
+            public void Should_Return_The_Number_Of_Lines(string input, int expected)
+            {
+                // Given
+                var markup = new Markup(input);
+
+                // When
+                var result = markup.Lines;
+
+                // Then
+                result.ShouldBe(expected);
+            }
+        }
+
         public sealed class TheEscapeMethod
         {
             [Theory]

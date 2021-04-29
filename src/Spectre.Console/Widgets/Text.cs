@@ -47,6 +47,16 @@ namespace Spectre.Console
             set => _paragraph.Overflow = value;
         }
 
+        /// <summary>
+        /// Gets the character count.
+        /// </summary>
+        public int Length => _paragraph.Length;
+
+        /// <summary>
+        /// Gets the number of lines in the text.
+        /// </summary>
+        public int Lines => _paragraph.Lines;
+
         /// <inheritdoc/>
         protected override Measurement Measure(RenderContext context, int maxWidth)
         {

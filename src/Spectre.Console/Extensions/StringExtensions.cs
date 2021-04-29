@@ -11,11 +11,6 @@ namespace Spectre.Console
     /// </summary>
     public static class StringExtensions
     {
-        // Cache whether or not internally normalized line endings
-        // already are normalized. No reason to do yet another replace if it is.
-        private static readonly bool _alreadyNormalized
-            = Environment.NewLine.Equals("\n", StringComparison.OrdinalIgnoreCase);
-
         /// <summary>
         /// Escapes text so that it won’t be interpreted as markup.
         /// </summary>
@@ -91,12 +86,6 @@ namespace Spectre.Console
         {
             text = text?.ReplaceExact("\r\n", "\n");
             text ??= string.Empty;
-
-            if (native && !_alreadyNormalized)
-            {
-                text = text.ReplaceExact("\n", Environment.NewLine);
-            }
-
             return text;
         }
 
