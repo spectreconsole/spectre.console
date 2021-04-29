@@ -28,6 +28,16 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Gets the character count.
+        /// </summary>
+        public int Length => _paragraph.Length;
+
+        /// <summary>
+        /// Gets the number of lines.
+        /// </summary>
+        public int Lines => _paragraph.Lines;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Markup"/> class.
         /// </summary>
         /// <param name="text">The markup text.</param>

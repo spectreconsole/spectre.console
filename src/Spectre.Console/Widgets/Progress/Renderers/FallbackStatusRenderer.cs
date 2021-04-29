@@ -29,7 +29,7 @@ namespace Spectre.Console
                     if (_lastStatus != task.Description)
                     {
                         _lastStatus = task.Description;
-                        _renderable = new Markup(task.Description + Environment.NewLine);
+                        _renderable = new Markup(task.Description + "\n");
                         return;
                     }
                 }

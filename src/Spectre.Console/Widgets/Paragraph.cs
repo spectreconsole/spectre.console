@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -24,6 +25,16 @@ namespace Spectre.Console
         /// Gets or sets the text overflow strategy.
         /// </summary>
         public Overflow? Overflow { get; set; }
+
+        /// <summary>
+        /// Gets the character count of the paragraph.
+        /// </summary>
+        public int Length => _lines.Sum(line => line.Length) + Math.Max(0, Lines - 1);
+
+        /// <summary>
+        /// Gets the number of lines in the paragraph.
+        /// </summary>
+        public int Lines => _lines.Count;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Paragraph"/> class.
