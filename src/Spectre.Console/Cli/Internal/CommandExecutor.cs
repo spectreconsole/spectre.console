@@ -16,7 +16,7 @@ namespace Spectre.Console.Cli
             _registrar.Register(typeof(DefaultPairDeconstructor), typeof(DefaultPairDeconstructor));
         }
 
-        public Task<int> Execute(IConfiguration configuration, IEnumerable<string> args)
+        public async Task<int> Execute(IConfiguration configuration, IEnumerable<string> args)
         {
             if (configuration == null)
             {
@@ -45,7 +45,7 @@ namespace Spectre.Console.Cli
                     {
                         var console = configuration.Settings.Console.GetConsole();
                         console.WriteLine(ResolveApplicationVersion(configuration));
-                        return Task.FromResult(0);
+                        return 0;
                     }
                 }
             }
@@ -60,7 +60,7 @@ namespace Spectre.Console.Cli
             {
                 // Display help.
                 configuration.Settings.Console.SafeRender(HelpWriter.Write(model));
-                return Task.FromResult(0);
+                return 0;
             }
 
             // Get the command to execute.
@@ -69,18 +69,20 @@ namespace Spectre.Console.Cli
             {
                 // Branches can't be executed. Show help.
                 configuration.Settings.Console.SafeRender(HelpWriter.WriteCommand(model, leaf.Command));
-                return Task.FromResult(leaf.ShowHelp ? 0 : 1);
+                return leaf.ShowHelp ? 0 : 1;
             }
 
             // Register the arguments with the container.
             _registrar.RegisterInstance(typeof(IRemainingArguments), parsedResult.Remaining);
 
             // Create the resolver and the context.
-            using var resolver = new TypeResolverAdapter(_registrar.Build());
-            var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data);
+            using (var resolver = new TypeResolverAdapter(_registrar.Build()))
+            {
+                var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data);
 
-            // Execute the command tree.
-            return Execute(leaf, parsedResult.Tree, context, resolver, configuration);
+                // Execute the command tree.
+                return await Execute(leaf, parsedResult.Tree, context, resolver, configuration);
+            }
         }
 
         private static string ResolveApplicationVersion(IConfiguration configuration)
