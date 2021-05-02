@@ -69,6 +69,7 @@ x64/
 *.vspscc
 *.vssscc
 .builds
+*`1.cs
 
 # Visual Studio profiler
 *.psess
