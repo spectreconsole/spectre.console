@@ -286,21 +286,24 @@ namespace Spectre.Console
                 }
 
                 var speed = GetSpeed();
-                if (speed == null)
+                if (speed is null or 0)
                 {
                     return null;
                 }
 
-                // If the speed is zero, the estimate below
-                // will return infinity (since it's a double),
-                // so let's set the speed to 1 in that case.
-                if (speed == 0)
-                {
-                    speed = 1;
-                }
-
+                // If the speed is near zero, the estimate below
+                // will cause the TimeSpan creation to throw an
+                // OverflowException. Just return the maximum
+                // remaining time if it overflows.
                 var estimate = (MaxValue - Value) / speed.Value;
-                return TimeSpan.FromSeconds(estimate);
+                try
+                {
+                    return TimeSpan.FromSeconds(estimate);
+                }
+                catch (OverflowException)
+                {
+                    return TimeSpan.MaxValue;
+                }
             }
         }
 

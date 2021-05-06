@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Testing;
@@ -240,6 +241,31 @@ namespace Spectre.Console.Tests.Unit
                     "[38;5;11m━━[0m[38;5;8m━━━━━━━━[0m\n" + // taskInProgress2
                     "          \n" + // bottom padding
                     "[?25h"); // show cursor
+        }
+
+        [Fact]
+        public void Should_Report_Max_Remaining_Time_For_Extremely_Small_Progress()
+        {
+            // Given
+            var console = new TestConsole()
+                .Interactive();
+
+            var task = default(ProgressTask);
+            var progress = new Progress(console)
+                .Columns(new[] {new RemainingTimeColumn()})
+                .AutoRefresh(false)
+                .AutoClear(false);
+
+            // When
+            progress.Start(ctx =>
+            {
+                task = ctx.AddTask("foo");
+                task.Increment(double.Epsilon);
+                task.Increment(double.Epsilon);
+            });
+
+            // Then
+            task.RemainingTime.ShouldBe(TimeSpan.MaxValue);
         }
     }
 }
