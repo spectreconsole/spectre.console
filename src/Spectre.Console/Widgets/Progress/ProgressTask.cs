@@ -291,19 +291,16 @@ namespace Spectre.Console
                     return null;
                 }
 
-                // If the speed is near zero, the estimate below
-                // will cause the TimeSpan creation to throw an
-                // OverflowException. Just return the maximum
-                // remaining time if it overflows.
+                // If the speed is near zero, the estimate below causes the
+                // TimeSpan creation to throw an OverflowException. Just return
+                // the maximum possible remaining time instead of overflowing.
                 var estimate = (MaxValue - Value) / speed.Value;
-                try
-                {
-                    return TimeSpan.FromSeconds(estimate);
-                }
-                catch (OverflowException)
+                if (estimate > TimeSpan.MaxValue.TotalSeconds)
                 {
                     return TimeSpan.MaxValue;
                 }
+
+                return TimeSpan.FromSeconds(estimate);
             }
         }
 
