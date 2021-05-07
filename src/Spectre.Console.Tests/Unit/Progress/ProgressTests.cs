@@ -252,7 +252,7 @@ namespace Spectre.Console.Tests.Unit
 
             var task = default(ProgressTask);
             var progress = new Progress(console)
-                .Columns(new[] {new RemainingTimeColumn()})
+                .Columns(new[] { new RemainingTimeColumn() })
                 .AutoRefresh(false)
                 .AutoClear(false);
 
