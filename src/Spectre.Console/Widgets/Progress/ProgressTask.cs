@@ -286,7 +286,7 @@ namespace Spectre.Console
                 }
 
                 var speed = GetSpeed();
-                if (speed is null or 0)
+                if (speed == null || speed == 0)
                 {
                     return null;
                 }
