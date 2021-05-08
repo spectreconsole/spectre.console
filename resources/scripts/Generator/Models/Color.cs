@@ -10,6 +10,7 @@ namespace Generator.Models
         public int Number { get; set; }
         public string Hex { get; set; }
         public string Name { get; set; }
+        public List<string> Aliases { get; set; } = new List<string>();
         public Rgb Rgb { get; set; }
 
         public int R => Rgb.R;
@@ -21,7 +22,23 @@ namespace Generator.Models
             var source = JsonConvert.DeserializeObject<List<Color>>(json);
 
             var check = new Dictionary<string, Color>(StringComparer.OrdinalIgnoreCase);
-            foreach (var color in source.OrderBy(c => c.Number))
+
+            var colorAliases = source
+                .SelectMany(c => c.Aliases.Select(a => new { Alias = a, Color = c }))
+                .Select(a => new Color()
+                {
+                    Hex = a.Color.Hex,
+                    Name = a.Alias,
+                    Number = a.Color.Number,
+                    Rgb = a.Color.Rgb
+                })
+                .ToList();
+
+            var colors = source
+                .Union(colorAliases)
+                .OrderBy(c => c.Number);
+
+            foreach (var color in colors)
             {
                 if (!check.ContainsKey(color.Name))
                 {
@@ -49,7 +66,7 @@ namespace Generator.Models
                 }
             }
 
-            return source;
+            return colors;
         }
     }
 
