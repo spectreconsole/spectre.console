@@ -28,10 +28,6 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Cli\" />
-  </ItemGroup>
-
   <PropertyGroup>
     <AnnotatedReferenceAssemblyVersion>3.0.0</AnnotatedReferenceAssemblyVersion>
     <GenerateNullableAttributes>False</GenerateNullableAttributes>

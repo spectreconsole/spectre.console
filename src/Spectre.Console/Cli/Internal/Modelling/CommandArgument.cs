@@ -13,9 +13,10 @@ namespace Spectre.Console.Cli
         public CommandArgument(
             Type parameterType, ParameterKind parameterKind, PropertyInfo property, string? description,
             TypeConverterAttribute? converter, DefaultValueAttribute? defaultValue,
-            CommandArgumentAttribute argument, IEnumerable<ParameterValidationAttribute> validators)
+            CommandArgumentAttribute argument, ParameterValueProviderAttribute? valueProvider,
+            IEnumerable<ParameterValidationAttribute> validators)
                 : base(parameterType, parameterKind, property, description, converter, defaultValue,
-                      null, validators, argument.IsRequired)
+                      null, valueProvider, validators, argument.IsRequired)
         {
             Value = argument.ValueName;
             Position = argument.Position;

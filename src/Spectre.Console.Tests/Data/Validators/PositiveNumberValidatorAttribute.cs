@@ -11,19 +11,19 @@ namespace Spectre.Console.Tests.Data
         {
         }
 
-        public override ValidationResult Validate(ICommandParameterInfo info, object value)
+        public override ValidationResult Validate(CommandParameterContext context)
         {
-            if (value is int integer)
+            if (context.Value is int integer)
             {
                 if (integer > 0)
                 {
                     return ValidationResult.Success();
                 }
 
-                return ValidationResult.Error($"Number is not greater than 0 ({info?.PropertyName}).");
+                return ValidationResult.Error($"Number is not greater than 0 ({context.Parameter.PropertyName}).");
             }
 
-            throw new InvalidOperationException($"Parameter is not a number ({info?.PropertyName}).");
+            throw new InvalidOperationException($"Parameter is not a number ({context.Parameter.PropertyName}).");
         }
     }
 }

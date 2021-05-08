@@ -27,9 +27,8 @@ namespace Spectre.Console.Cli
         /// <summary>
         /// Validates the parameter value.
         /// </summary>
-        /// <param name="info">The parameter info.</param>
-        /// <param name="value">The parameter value.</param>
+        /// <param name="context">The parameter context.</param>
         /// <returns>The validation result.</returns>
-        public abstract ValidationResult Validate(ICommandParameterInfo info, object? value);
+        public abstract ValidationResult Validate(CommandParameterContext context);
     }
 }

@@ -182,6 +182,7 @@ namespace Spectre.Console.Cli
             var description = property.GetCustomAttribute<DescriptionAttribute>();
             var converter = property.GetCustomAttribute<TypeConverterAttribute>();
             var deconstructor = property.GetCustomAttribute<PairDeconstructorAttribute>();
+            var valueProvider = property.GetCustomAttribute<ParameterValueProviderAttribute>();
             var validators = property.GetCustomAttributes<ParameterValidationAttribute>(true);
             var defaultValue = property.GetCustomAttribute<DefaultValueAttribute>();
 
@@ -194,7 +195,8 @@ namespace Spectre.Console.Cli
 
             return new CommandOption(property.PropertyType, kind,
                 property, description?.Description, converter, deconstructor,
-                attribute, validators, defaultValue, attribute.ValueIsOptional);
+                attribute, valueProvider, validators, defaultValue,
+                attribute.ValueIsOptional);
         }
 
         private static CommandArgument BuildArgumentParameter(PropertyInfo property, CommandArgumentAttribute attribute)
@@ -202,6 +204,7 @@ namespace Spectre.Console.Cli
             var description = property.GetCustomAttribute<DescriptionAttribute>();
             var converter = property.GetCustomAttribute<TypeConverterAttribute>();
             var defaultValue = property.GetCustomAttribute<DefaultValueAttribute>();
+            var valueProvider = property.GetCustomAttribute<ParameterValueProviderAttribute>();
             var validators = property.GetCustomAttributes<ParameterValidationAttribute>(true);
 
             var kind = GetParameterKind(property.PropertyType);
@@ -209,7 +212,8 @@ namespace Spectre.Console.Cli
             return new CommandArgument(
                 property.PropertyType, kind, property,
                 description?.Description, converter,
-                defaultValue, attribute, validators);
+                defaultValue, attribute, valueProvider,
+                validators);
         }
 
         private static ParameterKind GetOptionKind(
