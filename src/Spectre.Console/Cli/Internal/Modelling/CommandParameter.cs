@@ -17,6 +17,7 @@ namespace Spectre.Console.Cli
         public TypeConverterAttribute? Converter { get; }
         public PairDeconstructorAttribute? PairDeconstructor { get; }
         public List<ParameterValidationAttribute> Validators { get; }
+        public ParameterValueProviderAttribute? ValueProvider { get; }
         public bool Required { get; set; }
         public string PropertyName => Property.Name;
 
@@ -28,6 +29,7 @@ namespace Spectre.Console.Cli
             string? description, TypeConverterAttribute? converter,
             DefaultValueAttribute? defaultValue,
             PairDeconstructorAttribute? deconstuctor,
+            ParameterValueProviderAttribute? valueProvider,
             IEnumerable<ParameterValidationAttribute> validators, bool required)
         {
             Id = Guid.NewGuid();
@@ -38,6 +40,7 @@ namespace Spectre.Console.Cli
             Converter = converter;
             DefaultValue = defaultValue;
             PairDeconstructor = deconstuctor;
+            ValueProvider = valueProvider;
             Validators = new List<ParameterValidationAttribute>(validators ?? Array.Empty<ParameterValidationAttribute>());
             Required = required;
         }

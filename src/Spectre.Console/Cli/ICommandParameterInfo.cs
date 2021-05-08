@@ -1,3 +1,5 @@
+using System;
+
 namespace Spectre.Console.Cli
 {
     /// <summary>
@@ -9,12 +11,17 @@ namespace Spectre.Console.Cli
         /// Gets the property name.
         /// </summary>
         /// <value>The property name.</value>
-        public abstract string PropertyName { get; }
+        public string PropertyName { get; }
+
+        /// <summary>
+        /// Gets the parameter type.
+        /// </summary>
+        public Type ParameterType { get; }
 
         /// <summary>
         /// Gets the description.
         /// </summary>
         /// <value>The description.</value>
-        public abstract string? Description { get; }
+        public string? Description { get; }
     }
 }

@@ -23,12 +23,13 @@ namespace Spectre.Console.Cli
             }
         }
 
-        public static void ValidateParameter(CommandParameter parameter, CommandValueLookup settings)
+        public static void ValidateParameter(CommandParameter parameter, CommandValueLookup settings, ITypeResolver resolver)
         {
             var assignedValue = settings.GetValue(parameter);
             foreach (var validator in parameter.Validators)
             {
-                var validationResult = validator.Validate(parameter, assignedValue);
+                var context = new CommandParameterContext(parameter, resolver, assignedValue);
+                var validationResult = validator.Validate(context);
                 if (!validationResult.Successful)
                 {
                     // If there is a error message specified in the parameter validator attribute,

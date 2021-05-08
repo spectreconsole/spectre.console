@@ -18,6 +18,18 @@ namespace Spectre.Console.Cli
                 // Process unmapped parameters.
                 foreach (var parameter in tree.Unmapped)
                 {
+                    // Got a value provider?
+                    if (parameter.ValueProvider != null)
+                    {
+                        var context = new CommandParameterContext(parameter, resolver, null);
+                        if (parameter.ValueProvider.TryGetValue(context, out var result))
+                        {
+                            lookup.SetValue(parameter, result);
+                            CommandValidator.ValidateParameter(parameter, lookup, resolver);
+                            continue;
+                        }
+                    }
+
                     if (parameter.IsFlagValue())
                     {
                         // Set the flag value to an empty, not set instance.
@@ -42,7 +54,7 @@ namespace Spectre.Console.Cli
                             }
 
                             binder.Bind(parameter, resolver, value);
-                            CommandValidator.ValidateParameter(parameter, lookup);
+                            CommandValidator.ValidateParameter(parameter, lookup, resolver);
                         }
                         else if (Nullable.GetUnderlyingType(parameter.ParameterType) != null ||
                                  !parameter.ParameterType.IsValueType)
@@ -88,7 +100,17 @@ namespace Spectre.Console.Cli
                         }
                     }
 
-                    CommandValidator.ValidateParameter(mapped.Parameter, lookup);
+                    // Got a value provider?
+                    if (mapped.Parameter.ValueProvider != null)
+                    {
+                        var context = new CommandParameterContext(mapped.Parameter, resolver, mapped.Value);
+                        if (mapped.Parameter.ValueProvider.TryGetValue(context, out var result))
+                        {
+                            lookup.SetValue(mapped.Parameter, result);
+                        }
+                    }
+
+                    CommandValidator.ValidateParameter(mapped.Parameter, lookup, resolver);
                 }
 
                 tree = tree.Next;
