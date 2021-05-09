@@ -1,3 +1,6 @@
+using System;
+using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using Shouldly;
 using Spectre.Console.Cli;
@@ -15,7 +18,8 @@ namespace Spectre.Console.Tests.Unit.Cli
             {
                 [CommandOption("-f|--foo <VALUE>")]
                 [IntegerValueProvider(32)]
-                public int Foo { get; set; }
+                [TypeConverter(typeof(HexConverter))]
+                public string Foo { get; set; }
             }
 
             public sealed class IntegerValueProvider : ParameterValueProviderAttribute
@@ -29,17 +33,29 @@ namespace Spectre.Console.Tests.Unit.Cli
 
                 public override bool TryGetValue(CommandParameterContext context, out object result)
                 {
-                    if (context.Parameter.ParameterType == typeof(int))
+                    if (context.Value == null)
                     {
-                        if (context.Value == null)
-                        {
-                            result = _value;
-                            return true;
-                        }
+                        result = _value;
+                        return true;
                     }
 
                     result = null;
                     return false;
+                }
+            }
+
+            public sealed class HexConverter : TypeConverter
+            {
+                public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+                {
+                    if (value is int integer)
+                    {
+                        return integer.ToString("X");
+                    }
+
+                    return value is string stringValue && int.TryParse(stringValue, out var intValue)
+                        ? intValue.ToString("X")
+                        : base.ConvertFrom(context, culture, value);
                 }
             }
 
@@ -49,10 +65,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 // Given
                 var app = new CommandAppTester();
                 app.SetDefaultCommand<GenericCommand<ValueProviderSettings>>();
-                app.Configure(config =>
-                {
-                    config.PropagateExceptions();
-                });
+                app.Configure(config => config.PropagateExceptions());
 
                 // When
                 var result = app.Run();
@@ -60,7 +73,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 // Then
                 result.Settings.ShouldBeOfType<ValueProviderSettings>().And(settings =>
                 {
-                    settings.Foo.ShouldBe(32);
+                    settings.Foo.ShouldBe("20"); // 32 is 0x20
                 });
             }
 
@@ -70,10 +83,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 // Given
                 var app = new CommandAppTester();
                 app.SetDefaultCommand<GenericCommand<ValueProviderSettings>>();
-                app.Configure(config =>
-                {
-                    config.PropagateExceptions();
-                });
+                app.Configure(config => config.PropagateExceptions());
 
                 // When
                 var result = app.Run("--foo", "12");
@@ -81,7 +91,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 // Then
                 result.Settings.ShouldBeOfType<ValueProviderSettings>().And(settings =>
                 {
-                    settings.Foo.ShouldBe(12);
+                    settings.Foo.ShouldBe("C"); // 12 is 0xC
                 });
             }
         }
