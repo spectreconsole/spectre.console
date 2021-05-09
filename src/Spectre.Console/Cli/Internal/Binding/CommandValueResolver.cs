@@ -24,6 +24,8 @@ namespace Spectre.Console.Cli
                         var context = new CommandParameterContext(parameter, resolver, null);
                         if (parameter.ValueProvider.TryGetValue(context, out var result))
                         {
+                            result = ConvertValue(resolver, lookup, binder, parameter, result);
+
                             lookup.SetValue(parameter, result);
                             CommandValidator.ValidateParameter(parameter, lookup, resolver);
                             continue;
@@ -42,16 +44,7 @@ namespace Spectre.Console.Cli
                         if (parameter.DefaultValue != null)
                         {
                             var value = parameter.DefaultValue?.Value;
-
-                            // Need to convert the default value?
-                            if (value != null && value.GetType() != parameter.ParameterType)
-                            {
-                                var converter = GetConverter(lookup, binder, resolver, parameter);
-                                if (converter != null)
-                                {
-                                    value = converter.ConvertFrom(value);
-                                }
-                            }
+                            value = ConvertValue(resolver, lookup, binder, parameter, value);
 
                             binder.Bind(parameter, resolver, value);
                             CommandValidator.ValidateParameter(parameter, lookup, resolver);
@@ -74,12 +67,6 @@ namespace Spectre.Console.Cli
                     }
                     else
                     {
-                        var converter = GetConverter(lookup, binder, resolver, mapped.Parameter);
-                        if (converter == null)
-                        {
-                            throw CommandRuntimeException.NoConverterFound(mapped.Parameter);
-                        }
-
                         if (mapped.Parameter.IsFlagValue() && mapped.Value == null)
                         {
                             if (mapped.Parameter is CommandOption option && option.DefaultValue != null)
@@ -95,6 +82,12 @@ namespace Spectre.Console.Cli
                         }
                         else
                         {
+                            var converter = GetConverter(lookup, binder, resolver, mapped.Parameter);
+                            if (converter == null)
+                            {
+                                throw CommandRuntimeException.NoConverterFound(mapped.Parameter);
+                            }
+
                             // Assign the value to the parameter.
                             binder.Bind(mapped.Parameter, resolver, converter.ConvertFromInvariantString(mapped.Value));
                         }
@@ -117,6 +110,20 @@ namespace Spectre.Console.Cli
             }
 
             return lookup;
+        }
+
+        private static object? ConvertValue(ITypeResolver resolver, CommandValueLookup lookup, CommandValueBinder binder, CommandParameter parameter, object? result)
+        {
+            if (result != null && result.GetType() != parameter.ParameterType)
+            {
+                var converter = GetConverter(lookup, binder, resolver, parameter);
+                if (converter != null)
+                {
+                    result = converter.ConvertFrom(result);
+                }
+            }
+
+            return result;
         }
 
         [SuppressMessage("Style", "IDE0019:Use pattern matching", Justification = "It's OK")]
