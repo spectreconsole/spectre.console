@@ -155,7 +155,7 @@ namespace Spectre.Console.Cli
             }
 
             composer.Join(" ", parameters);
-            composer.LineBreaks(2);
+            composer.LineBreak();
 
             return new[]
             {
@@ -204,6 +204,7 @@ namespace Spectre.Console.Cli
             if (examples.Count > 0)
             {
                 var composer = new Composer();
+                composer.LineBreak();
                 composer.Style("yellow", "EXAMPLES:").LineBreak();
 
                 for (var index = 0; index < Math.Min(maxExamples, examples.Count); index++)
@@ -213,7 +214,6 @@ namespace Spectre.Console.Cli
                     composer.LineBreak();
                 }
 
-                composer.LineBreak();
                 return new[] { composer };
             }
 
@@ -230,6 +230,7 @@ namespace Spectre.Console.Cli
 
             var result = new List<IRenderable>
             {
+                new Markup("\n"),
                 new Markup("[yellow]ARGUMENTS:[/]"),
                 new Markup("\n"),
             };
@@ -252,7 +253,6 @@ namespace Spectre.Console.Cli
                     argument.Description?.TrimEnd('.') ?? " ");
             }
 
-            grid.AddEmptyRow();
             result.Add(grid);
 
             return result;
@@ -269,6 +269,7 @@ namespace Spectre.Console.Cli
 
             var result = new List<IRenderable>
             {
+                new Markup("\n"),
                 new Markup("[yellow]OPTIONS:[/]"),
                 new Markup("\n"),
             };
@@ -325,7 +326,6 @@ namespace Spectre.Console.Cli
                     option.Description?.TrimEnd('.') ?? " ");
             }
 
-            grid.AddEmptyRow();
             result.Add(grid);
 
             return result;
@@ -346,6 +346,7 @@ namespace Spectre.Console.Cli
 
             var result = new List<IRenderable>
             {
+                new Markup("\n"),
                 new Markup("[yellow]COMMANDS:[/]"),
                 new Markup("\n"),
             };
@@ -371,7 +372,6 @@ namespace Spectre.Console.Cli
                     child.Description?.TrimEnd('.') ?? " ");
             }
 
-            grid.AddEmptyRow();
             result.Add(grid);
 
             return result;
