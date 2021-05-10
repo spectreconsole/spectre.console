@@ -230,9 +230,9 @@ namespace Spectre.Console.Cli
 
             var result = new List<IRenderable>
             {
-                new Markup("\n"),
+                new Markup(Environment.NewLine),
                 new Markup("[yellow]ARGUMENTS:[/]"),
-                new Markup("\n"),
+                new Markup(Environment.NewLine),
             };
 
             var grid = new Grid();
@@ -269,9 +269,9 @@ namespace Spectre.Console.Cli
 
             var result = new List<IRenderable>
             {
-                new Markup("\n"),
+                new Markup(Environment.NewLine),
                 new Markup("[yellow]OPTIONS:[/]"),
-                new Markup("\n"),
+                new Markup(Environment.NewLine),
             };
 
             var grid = new Grid();
@@ -346,9 +346,9 @@ namespace Spectre.Console.Cli
 
             var result = new List<IRenderable>
             {
-                new Markup("\n"),
+                new Markup(Environment.NewLine),
                 new Markup("[yellow]COMMANDS:[/]"),
-                new Markup("\n"),
+                new Markup(Environment.NewLine),
             };
 
             var grid = new Grid();

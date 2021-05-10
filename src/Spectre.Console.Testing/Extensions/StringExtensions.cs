@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace Spectre.Console.Testing
 {
@@ -21,7 +20,7 @@ namespace Spectre.Console.Testing
             }
 
             var result = new List<string>();
-            foreach (var line in value.Split(new[] { '\n' }))
+            foreach (var line in value.NormalizeLineEndings().Split(new[] { '\n' }))
             {
                 result.Add(line.TrimEnd());
             }
