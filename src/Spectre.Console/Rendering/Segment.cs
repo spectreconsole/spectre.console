@@ -44,7 +44,7 @@ namespace Spectre.Console.Rendering
         /// <summary>
         /// Gets a segment representing a line break.
         /// </summary>
-        public static Segment LineBreak { get; } = new Segment("\n", Style.Plain, true, false);
+        public static Segment LineBreak { get; } = new Segment(Environment.NewLine, Style.Plain, true, false);
 
         /// <summary>
         /// Gets an empty segment.

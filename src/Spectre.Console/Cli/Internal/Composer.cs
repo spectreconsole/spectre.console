@@ -71,7 +71,7 @@ namespace Spectre.Console.Cli
         {
             for (var i = 0; i < count; i++)
             {
-                _content.Append('\n');
+                _content.Append(Environment.NewLine);
             }
 
             return this;

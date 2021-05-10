@@ -36,7 +36,7 @@ namespace Spectre.Console
 
                     if (!last)
                     {
-                        builder.Append('\n');
+                        builder.Append(Environment.NewLine);
                     }
                 }
             }

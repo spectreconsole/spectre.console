@@ -55,8 +55,7 @@ namespace Spectre.Console.Tests.Unit
         public sealed class TheSplitLinesMethod
         {
             [Fact]
-            [Expectation("Segment", "Split")]
-            public Task Should_Split_Segment()
+            public void Should_Split_Segment()
             {
                 // Given, When
                 var lines = Segment.SplitLines(
@@ -84,12 +83,41 @@ namespace Spectre.Console.Tests.Unit
 
                 lines[2].Count.ShouldBe(1);
                 lines[2][0].Text.ShouldBe("Corgi");
-                return Verifier.Verify(lines);
             }
 
             [Fact]
-            [Expectation("Segment", "Split_Linebreak")]
-            public Task Should_Split_Segments_With_Linebreak_In_Text()
+            public void Should_Split_Segment_With_Windows_LineBreak()
+            {
+                // Given, When
+                var lines = Segment.SplitLines(
+                    new[]
+                    {
+                        new Segment("Foo"),
+                        new Segment("Bar"),
+                        new Segment("\r\n"),
+                        new Segment("Baz"),
+                        new Segment("Qux"),
+                        new Segment("\r\n"),
+                        new Segment("Corgi"),
+                    });
+
+                // Then
+                lines.Count.ShouldBe(3);
+
+                lines[0].Count.ShouldBe(2);
+                lines[0][0].Text.ShouldBe("Foo");
+                lines[0][1].Text.ShouldBe("Bar");
+
+                lines[1].Count.ShouldBe(2);
+                lines[1][0].Text.ShouldBe("Baz");
+                lines[1][1].Text.ShouldBe("Qux");
+
+                lines[2].Count.ShouldBe(1);
+                lines[2][0].Text.ShouldBe("Corgi");
+            }
+
+            [Fact]
+            public void Should_Split_Segments_With_Linebreak_In_Text()
             {
                 // Given, Given
                 var lines = Segment.SplitLines(
@@ -103,7 +131,20 @@ namespace Spectre.Console.Tests.Unit
                     });
 
                 // Then
-                return Verifier.Verify(lines);
+                lines.Count.ShouldBe(4);
+
+                lines[0].Count.ShouldBe(1);
+                lines[0][0].Text.ShouldBe("Foo");
+
+                lines[1].Count.ShouldBe(1);
+                lines[1][0].Text.ShouldBe("Bar");
+
+                lines[2].Count.ShouldBe(2);
+                lines[2][0].Text.ShouldBe("Baz");
+                lines[2][1].Text.ShouldBe("Qux");
+
+                lines[3].Count.ShouldBe(1);
+                lines[3][0].Text.ShouldBe("Corgi");
             }
         }
     }
