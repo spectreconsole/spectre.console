@@ -1,21 +1,26 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Spectre.Console
 {
     internal static partial class ColorTable
     {
-        private static readonly Dictionary<int, List<string>> _nameLookup;
+        private static readonly Dictionary<int, string> _nameLookup;
         private static readonly Dictionary<string, int> _numberLookup;
 
         static ColorTable()
         {
             _numberLookup = GenerateTable();
-            _nameLookup = _numberLookup
-                  .Select(kv => new { ColorName = kv.Key, ColorValue = kv.Value })
-                  .GroupBy(x => x.ColorValue, (value, colors) => new { Key = value, Values = colors.Select(n => n.ColorName).ToList() })
-                  .ToDictionary(k => k.Key, v => v.Values);
+            _nameLookup = new Dictionary<int, string>();
+            foreach (var pair in _numberLookup)
+            {
+                if (_nameLookup.ContainsKey(pair.Value))
+                {
+                    continue;
+                }
+
+                _nameLookup.Add(pair.Value, pair.Key);
+            }
         }
 
         public static Color GetColor(int number)
@@ -46,7 +51,7 @@ namespace Spectre.Console
         public static string? GetName(int number)
         {
             _nameLookup.TryGetValue(number, out var name);
-            return name.First();
+            return name;
         }
     }
 }
