@@ -132,7 +132,8 @@
       "s": 0,
       "l": 50
     },
-    "name": "Grey"
+    "name": "Grey",
+    "aliases": [ "Gray" ]
   },
   {
     "number": 9,
@@ -207,7 +208,8 @@
       "s": 100,
       "l": 50
     },
-    "name": "Fuchsia"
+    "name": "Fuchsia",
+    "aliases": [ "Magenta" ]
   },
   {
     "number": 14,
@@ -222,7 +224,8 @@
       "s": 100,
       "l": 50
     },
-    "name": "Aqua"
+    "name": "Aqua",
+    "aliases": [ "Cyan" ]
   },
   {
     "number": 15,
@@ -252,7 +255,8 @@
       "s": 0,
       "l": 0
     },
-    "name": "Grey0"
+    "name": "Grey0",
+    "aliases": [ "Gray0" ]
   },
   {
     "number": 17,
@@ -897,7 +901,8 @@
       "s": 0,
       "l": 37
     },
-    "name": "Grey37"
+    "name": "Grey37",
+    "aliases": [ "Gray37" ]
   },
   {
     "number": 60,
@@ -1542,7 +1547,8 @@
       "s": 0,
       "l": 52
     },
-    "name": "Grey53"
+    "name": "Grey53",
+    "aliases": [ "Gray53" ]
   },
   {
     "number": 103,
@@ -2097,7 +2103,8 @@
       "s": 20,
       "l": 60
     },
-    "name": "Grey63"
+    "name": "Grey63",
+    "aliases": [ "Gray63" ]
   },
   {
     "number": 140,
@@ -2187,7 +2194,8 @@
       "s": 0,
       "l": 68
     },
-    "name": "Grey69"
+    "name": "Grey69",
+    "aliases": [ "Gray69" ]
   },
   {
     "number": 146,
@@ -2832,7 +2840,8 @@
       "s": 0,
       "l": 84
     },
-    "name": "Grey84"
+    "name": "Grey84",
+    "aliases": [ "Gray84" ]
   },
   {
     "number": 189,
@@ -3477,7 +3486,8 @@
       "s": 0,
       "l": 100
     },
-    "name": "Grey100"
+    "name": "Grey100",
+    "aliases": [ "Gray100" ]
   },
   {
     "number": 232,
@@ -3492,7 +3502,8 @@
       "s": 0,
       "l": 3
     },
-    "name": "Grey3"
+    "name": "Grey3",
+    "aliases": [ "Gray3" ]
   },
   {
     "number": 233,
@@ -3507,7 +3518,8 @@
       "s": 0,
       "l": 7
     },
-    "name": "Grey7"
+    "name": "Grey7",
+    "aliases": [ "Gray7" ]
   },
   {
     "number": 234,
@@ -3522,7 +3534,8 @@
       "s": 0,
       "l": 10
     },
-    "name": "Grey11"
+    "name": "Grey11",
+    "aliases": [ "Gray11" ]
   },
   {
     "number": 235,
@@ -3537,7 +3550,8 @@
       "s": 0,
       "l": 14
     },
-    "name": "Grey15"
+    "name": "Grey15",
+    "aliases": [ "Gray15" ]
   },
   {
     "number": 236,
@@ -3552,7 +3566,8 @@
       "s": 0,
       "l": 18
     },
-    "name": "Grey19"
+    "name": "Grey19",
+    "aliases": [ "Gray19" ]
   },
   {
     "number": 237,
@@ -3567,7 +3582,8 @@
       "s": 0,
       "l": 22
     },
-    "name": "Grey23"
+    "name": "Grey23",
+    "aliases": [ "Gray23" ]
   },
   {
     "number": 238,
@@ -3582,7 +3598,8 @@
       "s": 0,
       "l": 26
     },
-    "name": "Grey27"
+    "name": "Grey27",
+    "aliases": [ "Gray27" ]
   },
   {
     "number": 239,
@@ -3597,7 +3614,8 @@
       "s": 0,
       "l": 30
     },
-    "name": "Grey30"
+    "name": "Grey30",
+    "aliases": [ "Gray30" ]
   },
   {
     "number": 240,
@@ -3612,7 +3630,8 @@
       "s": 0,
       "l": 34
     },
-    "name": "Grey35"
+    "name": "Grey35",
+    "aliases": [ "Gray35" ]
   },
   {
     "number": 241,
@@ -3627,7 +3646,8 @@
       "s": 0,
       "l": 37
     },
-    "name": "Grey39"
+    "name": "Grey39",
+    "aliases": [ "Gray39" ]
   },
   {
     "number": 242,
@@ -3642,7 +3662,8 @@
       "s": 0,
       "l": 40
     },
-    "name": "Grey42"
+    "name": "Grey42",
+    "aliases": [ "Gray42" ]
   },
   {
     "number": 243,
@@ -3657,7 +3678,8 @@
       "s": 0,
       "l": 46
     },
-    "name": "Grey46"
+    "name": "Grey46",
+    "aliases": [ "Gray46" ]
   },
   {
     "number": 244,
@@ -3672,7 +3694,8 @@
       "s": 0,
       "l": 50
     },
-    "name": "Grey50"
+    "name": "Grey50",
+    "aliases": [ "Gray50" ]
   },
   {
     "number": 245,
@@ -3687,7 +3710,8 @@
       "s": 0,
       "l": 54
     },
-    "name": "Grey54"
+    "name": "Grey54",
+    "aliases": [ "Gray54" ]
   },
   {
     "number": 246,
@@ -3702,7 +3726,8 @@
       "s": 0,
       "l": 58
     },
-    "name": "Grey58"
+    "name": "Grey58",
+    "aliases": [ "Gray58" ]
   },
   {
     "number": 247,
@@ -3717,7 +3742,8 @@
       "s": 0,
       "l": 61
     },
-    "name": "Grey62"
+    "name": "Grey62",
+    "aliases": [ "Gray62" ]
   },
   {
     "number": 248,
@@ -3732,7 +3758,8 @@
       "s": 0,
       "l": 65
     },
-    "name": "Grey66"
+    "name": "Grey66",
+    "aliases": [ "Gray66" ]
   },
   {
     "number": 249,
@@ -3747,7 +3774,8 @@
       "s": 0,
       "l": 69
     },
-    "name": "Grey70"
+    "name": "Grey70",
+    "aliases": [ "Gray70" ]
   },
   {
     "number": 250,
@@ -3762,7 +3790,8 @@
       "s": 0,
       "l": 73
     },
-    "name": "Grey74"
+    "name": "Grey74",
+    "aliases": [ "Gray74" ]
   },
   {
     "number": 251,
@@ -3777,7 +3806,8 @@
       "s": 0,
       "l": 77
     },
-    "name": "Grey78"
+    "name": "Grey78",
+    "aliases": [ "Gray78" ]
   },
   {
     "number": 252,
@@ -3792,7 +3822,8 @@
       "s": 0,
       "l": 81
     },
-    "name": "Grey82"
+    "name": "Grey82",
+    "aliases": [ "Gray82" ]
   },
   {
     "number": 253,
@@ -3807,7 +3838,8 @@
       "s": 0,
       "l": 85
     },
-    "name": "Grey85"
+    "name": "Grey85",
+    "aliases": [ "Gray85" ]
   },
   {
     "number": 254,
@@ -3822,7 +3854,8 @@
       "s": 0,
       "l": 89
     },
-    "name": "Grey89"
+    "name": "Grey89",
+    "aliases": [ "Gray89" ]
   },
   {
     "number": 255,
@@ -3837,6 +3870,7 @@
       "s": 0,
       "l": 93
     },
-    "name": "Grey93"
+    "name": "Grey93",
+    "aliases": [ "Gray93" ]
   }
 ]

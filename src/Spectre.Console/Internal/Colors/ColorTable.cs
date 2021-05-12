@@ -14,6 +14,11 @@ namespace Spectre.Console
             _nameLookup = new Dictionary<int, string>();
             foreach (var pair in _numberLookup)
             {
+                if (_nameLookup.ContainsKey(pair.Value))
+                {
+                    continue;
+                }
+
                 _nameLookup.Add(pair.Value, pair.Key);
             }
         }
