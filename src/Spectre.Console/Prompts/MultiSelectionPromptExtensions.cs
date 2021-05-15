@@ -51,9 +51,9 @@ namespace Spectre.Console
         /// </summary>
         /// <typeparam name="T">The prompt result type.</typeparam>
         /// <param name="obj">The prompt.</param>
-        /// <param name="index">The index of the item to select.</param>
+        /// <param name="item">The item to select.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, int index)
+        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, T item)
             where T : notnull
         {
             if (obj is null)
@@ -61,12 +61,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            if (index < 0)
-            {
-                throw new ArgumentException("Index must be greater than zero", nameof(index));
-            }
-
-            obj.Selected.Add(index);
+            obj.Selected.Add(item);
             return obj;
         }
 
@@ -75,9 +70,9 @@ namespace Spectre.Console
         /// </summary>
         /// <typeparam name="T">The prompt result type.</typeparam>
         /// <param name="obj">The prompt.</param>
-        /// <param name="indices">The indices of the items to select.</param>
+        /// <param name="items">The items to select.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, params int[] indices)
+        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, params T[] items)
             where T : notnull
         {
             if (obj is null)
@@ -85,9 +80,9 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            foreach (var index in indices)
+            foreach (var item in items)
             {
-                Select(obj, index);
+                Select(obj, item);
             }
 
             return obj;
@@ -98,9 +93,9 @@ namespace Spectre.Console
         /// </summary>
         /// <typeparam name="T">The prompt result type.</typeparam>
         /// <param name="obj">The prompt.</param>
-        /// <param name="indices">The indices of the items to select.</param>
+        /// <param name="items">The items to select.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, IEnumerable<int> indices)
+        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, IEnumerable<T> items)
             where T : notnull
         {
             if (obj is null)
@@ -108,9 +103,9 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            foreach (var index in indices)
+            foreach (var item in items)
             {
-                Select(obj, index);
+                Select(obj, item);
             }
 
             return obj;

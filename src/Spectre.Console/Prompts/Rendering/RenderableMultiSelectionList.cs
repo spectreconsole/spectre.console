@@ -16,6 +16,7 @@ namespace Spectre.Console
         private readonly IAnsiConsole _console;
         private readonly string? _title;
         private readonly Func<T, string> _converter;
+        private readonly IEqualityComparer<T> _comparer;
         private readonly Markup _moreChoices;
         private readonly Markup _instructions;
         private readonly Style _highlightStyle;
@@ -24,14 +25,15 @@ namespace Spectre.Console
 
         public RenderableMultiSelectionList(
             IAnsiConsole console, string? title, int pageSize,
-            IEnumerable<RenderableListItem<T>> choices, HashSet<int> selections,
-            Func<T, string> converter,
+            IEnumerable<RenderableListItem<T>> choices, HashSet<T> selections,
+            Func<T, string> converter, IEqualityComparer<T> comparer,
             Style? highlightStyle, string? moreChoicesText, string? instructionsText)
             : base(console, pageSize, choices)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
             _title = title;
             _converter = converter ?? throw new ArgumentNullException(nameof(converter));
+            _comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
             _highlightStyle = highlightStyle ?? new Style(foreground: Color.Blue);
             _moreChoices = new Markup(moreChoicesText ?? MoreChoicesText);
             _instructions = new Markup(instructionsText ?? InstructionsText);
@@ -41,15 +43,15 @@ namespace Spectre.Console
                 new RenderableListItemComparer<T>());
         }
 
-        public void Select()
+        public void Select(RenderableListItem<T> item)
         {
-            if (Selections.Contains(Current))
+            if (Selections.Contains(item))
             {
-                Selections.Remove(Current);
+                Selections.Remove(item);
             }
             else
             {
-                Selections.Add(Current);
+                Selections.Add(item);
             }
 
             Build();
@@ -118,11 +120,11 @@ namespace Spectre.Console
             return new Rows(list);
         }
 
-        private IEnumerable<RenderableListItem<T>> GetSelectedChoices(HashSet<int> selections)
+        private IEnumerable<RenderableListItem<T>> GetSelectedChoices(HashSet<T> selections)
         {
             foreach (var selection in selections)
             {
-                var item = Choices.FirstOrDefault(x => x.Index == selection);
+                var item = Choices.FirstOrDefault(x => _comparer.Equals(x.Data, selection));
                 if (item != null)
                 {
                     yield return item;

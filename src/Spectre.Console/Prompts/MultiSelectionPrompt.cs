@@ -13,6 +13,8 @@ namespace Spectre.Console
     public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>
         where T : notnull
     {
+        private readonly IEqualityComparer<T> _comparer;
+
         /// <summary>
         /// Gets or sets the title.
         /// </summary>
@@ -26,7 +28,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets the initially selected choices.
         /// </summary>
-        public HashSet<int> Selected { get; }
+        public HashSet<T> Selected { get; }
 
         /// <summary>
         /// Gets or sets the converter to get the display string for a choice. By default
@@ -64,10 +66,13 @@ namespace Spectre.Console
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiSelectionPrompt{T}"/> class.
         /// </summary>
-        public MultiSelectionPrompt()
+        /// <param name="comparer">The comparer to use.</param>
+        public MultiSelectionPrompt(IEqualityComparer<T>? comparer = null)
         {
+            _comparer = comparer ?? EqualityComparer<T>.Default;
+
             Choices = new List<T>();
-            Selected = new HashSet<int>();
+            Selected = new HashSet<T>(_comparer);
         }
 
         /// <inheritdoc/>
@@ -101,8 +106,8 @@ namespace Spectre.Console
             var list = new RenderableMultiSelectionList<T>(
                 console, Title, PageSize,
                 Choices.Select((item, index) => new RenderableListItem<T>(item, index)),
-                Selected, converter, HighlightStyle,
-                MoreChoicesText, InstructionsText);
+                Selected, converter, _comparer,
+                HighlightStyle, MoreChoicesText, InstructionsText);
 
             using (new RenderHookScope(console, list))
             {
@@ -124,7 +129,7 @@ namespace Spectre.Console
 
                     if (key.Key == ConsoleKey.Spacebar)
                     {
-                        list.Select();
+                        list.Select(list.Current);
                         list.Redraw();
                         continue;
                     }

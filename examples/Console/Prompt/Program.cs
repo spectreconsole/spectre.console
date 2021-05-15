@@ -59,6 +59,7 @@ namespace Spectre.Console.Examples
                     .Title("What are your [green]favorite fruits[/]?")
                     .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
                     .InstructionsText("[grey](Press [blue]<space>[/] to toggle a fruit, [green]<enter>[/] to accept)[/]")
+                    .Select("Kiwifruit")
                     .AddChoices(new[]
                     {
                         "Apple", "Apricot", "Avocado", "Banana", "Blackcurrant", "Blueberry",
