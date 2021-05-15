@@ -5,23 +5,27 @@ using Spectre.Console.Rendering;
 namespace Spectre.Console
 {
     internal sealed class RenderableSelectionList<T> : RenderableList<T>
+        where T : notnull
     {
         private const string Prompt = ">";
         private const string MoreChoicesText = "[grey](Move up and down to reveal more choices)[/]";
 
         private readonly IAnsiConsole _console;
         private readonly string? _title;
+        private readonly Func<T, string> _converter;
         private readonly Markup _moreChoices;
         private readonly Style _highlightStyle;
 
         public RenderableSelectionList(
             IAnsiConsole console, string? title, int requestedPageSize,
-            List<T> choices, Func<T, string>? converter, Style? highlightStyle,
-            string? moreChoices)
-            : base(console, requestedPageSize, choices, converter)
+            IEnumerable<RenderableListItem<T>> choices,
+            Func<T, string> converter,
+            Style? highlightStyle, string? moreChoices)
+            : base(console, requestedPageSize, choices)
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
             _title = title;
+            _converter = converter ?? throw new ArgumentNullException(nameof(converter));
             _highlightStyle = highlightStyle ?? new Style(foreground: Color.Blue);
             _moreChoices = new Markup(moreChoices ?? MoreChoicesText);
         }
@@ -37,7 +41,7 @@ namespace Spectre.Console
             return pageSize;
         }
 
-        protected override IRenderable Build(int pointerIndex, bool scrollable, IEnumerable<(int Original, int Index, string Item)> choices)
+        protected override IRenderable Build(int pointerIndex, bool scrollable, IEnumerable<(int Original, int Index, RenderableListItem<T> Item)> choices)
         {
             var list = new List<IRenderable>();
 
@@ -58,13 +62,14 @@ namespace Spectre.Console
             foreach (var choice in choices)
             {
                 var current = choice.Index == pointerIndex;
-
                 var prompt = choice.Index == pointerIndex ? Prompt : string.Empty;
+
+                var text = _converter?.Invoke(choice.Item.Data) ?? choice.Item.Data.ToString() ?? "?";
                 var style = current ? _highlightStyle : Style.Plain;
 
                 var item = current
-                    ? new Text(choice.Item.RemoveMarkup(), style)
-                    : (IRenderable)new Markup(choice.Item, style);
+                    ? new Text(text.RemoveMarkup(), style)
+                    : (IRenderable)new Markup(text, style);
 
                 grid.AddRow(new Markup(prompt, style), item);
             }

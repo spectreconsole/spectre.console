@@ -10,7 +10,8 @@ namespace Spectre.Console
     /// Represents a list prompt.
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>
-    public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>
+    public sealed class SelectionPrompt<T> : IPrompt<T>
+        where T : notnull
     {
         /// <summary>
         /// Gets or sets the title.
@@ -21,11 +22,6 @@ namespace Spectre.Console
         /// Gets the choices.
         /// </summary>
         public List<T> Choices { get; }
-
-        /// <summary>
-        /// Gets the initially selected choices.
-        /// </summary>
-        public HashSet<int> Selected { get; }
 
         /// <summary>
         /// Gets or sets the converter to get the display string for a choice. By default
@@ -50,54 +46,38 @@ namespace Spectre.Console
         public string? MoreChoicesText { get; set; }
 
         /// <summary>
-        /// Gets or sets the text that instructs the user of how to select items.
+        /// Initializes a new instance of the <see cref="SelectionPrompt{T}"/> class.
         /// </summary>
-        public string? InstructionsText { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not
-        /// at least one selection is required.
-        /// </summary>
-        public bool Required { get; set; } = true;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MultiSelectionPrompt{T}"/> class.
-        /// </summary>
-        public MultiSelectionPrompt()
+        public SelectionPrompt()
         {
             Choices = new List<T>();
-            Selected = new HashSet<int>();
         }
 
         /// <inheritdoc/>
-        public List<T> Show(IAnsiConsole console)
+        T IPrompt<T>.Show(IAnsiConsole console)
         {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
-
             if (!console.Profile.Capabilities.Interactive)
             {
                 throw new NotSupportedException(
-                    "Cannot show multi selection prompt since the current " +
+                    "Cannot show selection prompt since the current " +
                     "terminal isn't interactive.");
             }
 
             if (!console.Profile.Capabilities.Ansi)
             {
                 throw new NotSupportedException(
-                    "Cannot show multi selection prompt since the current " +
+                    "Cannot show selection prompt since the current " +
                     "terminal does not support ANSI escape sequences.");
             }
 
             return console.RunExclusive(() =>
             {
                 var converter = Converter ?? TypeConverterHelper.ConvertToString;
-                var list = new RenderableMultiSelectionList<T>(
-                    console, Title, PageSize, Choices,
-                    Selected, converter, HighlightStyle,
-                    MoreChoicesText, InstructionsText);
+                var list = new RenderableSelectionList<T>(
+                    console, Title, PageSize,
+                    Choices.Select((item, index) => new RenderableListItem<T>(item, index)),
+                    converter,
+                    HighlightStyle, MoreChoicesText);
 
                 using (new RenderHookScope(console, list))
                 {
@@ -107,21 +87,9 @@ namespace Spectre.Console
                     while (true)
                     {
                         var key = console.Input.ReadKey(true);
-                        if (key.Key == ConsoleKey.Enter)
+                        if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.Spacebar)
                         {
-                            if (Required && list.Selections.Count == 0)
-                            {
-                                continue;
-                            }
-
                             break;
-                        }
-
-                        if (key.Key == ConsoleKey.Spacebar)
-                        {
-                            list.Select();
-                            list.Redraw();
-                            continue;
                         }
 
                         if (list.Update(key.Key))
@@ -134,9 +102,7 @@ namespace Spectre.Console
                 list.Clear();
                 console.Cursor.Show();
 
-                return list.Selections
-                    .Select(index => Choices[index])
-                    .ToList();
+                return list.Current.Data;
             });
         }
     }

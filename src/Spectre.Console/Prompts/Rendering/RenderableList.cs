@@ -6,30 +6,30 @@ using Spectre.Console.Rendering;
 namespace Spectre.Console
 {
     internal abstract class RenderableList<T> : IRenderHook
+        where T : notnull
     {
         private readonly LiveRenderable _live;
         private readonly object _lock;
         private readonly IAnsiConsole _console;
         private readonly int _requestedPageSize;
-        private readonly List<T> _choices;
-        private readonly Func<T, string> _converter;
+        private readonly List<RenderableListItem<T>> _choices;
         private int _index;
 
-        public int Index => _index;
+        public RenderableListItem<T> Current => _choices[_index];
+        public IReadOnlyList<RenderableListItem<T>> Choices => _choices;
 
-        public RenderableList(IAnsiConsole console, int requestedPageSize, List<T> choices, Func<T, string>? converter)
+        public RenderableList(IAnsiConsole console, int requestedPageSize, IEnumerable<RenderableListItem<T>> choices)
         {
             _console = console;
             _requestedPageSize = requestedPageSize;
-            _choices = choices;
-            _converter = converter ?? throw new ArgumentNullException(nameof(converter));
+            _choices = new List<RenderableListItem<T>>(choices ?? throw new ArgumentNullException(nameof(choices)));
             _live = new LiveRenderable();
             _lock = new object();
             _index = 0;
         }
 
         protected abstract int CalculatePageSize(int requestedPageSize);
-        protected abstract IRenderable Build(int pointerIndex, bool scrollable, IEnumerable<(int Original, int Index, string Item)> choices);
+        protected abstract IRenderable Build(int pointerIndex, bool scrollable, IEnumerable<(int Original, int Index, RenderableListItem<T> Item)> choices);
 
         public void Clear()
         {
@@ -121,7 +121,7 @@ namespace Spectre.Console
                 scrollable,
                 _choices.Skip(skip).Take(take)
                 .Enumerate()
-                .Select(x => (skip + x.Index, x.Index, _converter(x.Item)))));
+                .Select(x => (skip + x.Index, x.Index, x.Item))));
         }
     }
 }
