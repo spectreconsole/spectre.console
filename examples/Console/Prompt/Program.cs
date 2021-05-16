@@ -59,13 +59,18 @@ namespace Spectre.Console.Examples
                     .Title("What are your [green]favorite fruits[/]?")
                     .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
                     .InstructionsText("[grey](Press [blue]<space>[/] to toggle a fruit, [green]<enter>[/] to accept)[/]")
+                    .AddChoiceGroup("Berries", new[]
+                    {
+                        "Blackcurrant", "Blueberry", "Cloudberry",
+                        "Elderberry", "Honeyberry", "Mulberry"
+                    })
                     .AddChoices(new[]
                     {
-                        "Apple", "Apricot", "Avocado", "Banana", "Blackcurrant", "Blueberry",
-                        "Cherry", "Cloudberry", "Cocunut", "Date", "Dragonfruit", "Durian",
-                        "Egg plant", "Elderberry", "Fig", "Grape", "Guava", "Honeyberry",
+                        "Apple", "Apricot", "Avocado", "Banana", 
+                        "Cherry", "Cocunut", "Date", "Dragonfruit", "Durian",
+                        "Egg plant",  "Fig", "Grape", "Guava", 
                         "Jackfruit", "Jambul", "Kiwano", "Kiwifruit", "Lime", "Lylo",
-                        "Lychee", "Melon", "Mulberry", "Nectarine", "Orange", "Olive"
+                        "Lychee", "Melon", "Nectarine", "Orange", "Olive"
                     }));
 
             var fruit = favorites.Count == 1 ? favorites[0] : null;

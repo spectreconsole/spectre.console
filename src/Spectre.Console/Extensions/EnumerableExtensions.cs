@@ -6,6 +6,23 @@ namespace Spectre.Console
 {
     internal static class EnumerableExtensions
     {
+        // List.Reverse clashes with IEnumerable<T>.Reverse, so this method only exists
+        // so we won't have to cast List<T> to IEnumerable<T>.
+        public static IEnumerable<T> ReverseEnumerable<T>(this IEnumerable<T> source)
+        {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            return source.Reverse();
+        }
+
+        public static bool None<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+        {
+            return !source.Any(predicate);
+        }
+
         public static IEnumerable<T> Repeat<T>(this IEnumerable<T> source, int count)
         {
             while (count-- > 0)
