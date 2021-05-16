@@ -19,6 +19,7 @@ namespace Spectre.Console.Rendering
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
             _hook = hook ?? throw new ArgumentNullException(nameof(hook));
+
             _console.Pipeline.Attach(_hook);
         }
 

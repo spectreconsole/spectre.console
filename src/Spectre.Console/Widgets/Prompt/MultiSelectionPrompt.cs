@@ -7,31 +7,18 @@ using Spectre.Console.Rendering;
 namespace Spectre.Console
 {
     /// <summary>
-    /// Represents a list prompt.
+    /// Represents a multi selection list prompt.
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>
-    public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>
+    public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrategy<T>
+        where T : notnull
     {
+        private readonly ListPromptTree<T> _tree;
+
         /// <summary>
         /// Gets or sets the title.
         /// </summary>
         public string? Title { get; set; }
-
-        /// <summary>
-        /// Gets the choices.
-        /// </summary>
-        public List<T> Choices { get; }
-
-        /// <summary>
-        /// Gets the initially selected choices.
-        /// </summary>
-        public HashSet<int> Selected { get; }
-
-        /// <summary>
-        /// Gets or sets the converter to get the display string for a choice. By default
-        /// the corresponding <see cref="TypeConverter"/> is used.
-        /// </summary>
-        public Func<T, string>? Converter { get; set; } = TypeConverterHelper.ConvertToString;
 
         /// <summary>
         /// Gets or sets the page size.
@@ -45,6 +32,18 @@ namespace Spectre.Console
         public Style? HighlightStyle { get; set; }
 
         /// <summary>
+        /// Gets or sets the converter to get the display string for a choice. By default
+        /// the corresponding <see cref="TypeConverter"/> is used.
+        /// </summary>
+        public Func<T, string>? Converter { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not
+        /// at least one selection is required.
+        /// </summary>
+        public bool Required { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets the text that will be displayed if there are more choices to show.
         /// </summary>
         public string? MoreChoicesText { get; set; }
@@ -55,89 +54,183 @@ namespace Spectre.Console
         public string? InstructionsText { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not
-        /// at least one selection is required.
+        /// Gets or sets the selection mode.
+        /// Defaults to <see cref="SelectionMode.Leaf"/>.
         /// </summary>
-        public bool Required { get; set; } = true;
+        public SelectionMode Mode { get; set; } = SelectionMode.Leaf;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiSelectionPrompt{T}"/> class.
         /// </summary>
         public MultiSelectionPrompt()
         {
-            Choices = new List<T>();
-            Selected = new HashSet<int>();
+            _tree = new ListPromptTree<T>();
+        }
+
+        /// <summary>
+        /// Adds a choice.
+        /// </summary>
+        /// <param name="item">The item to add.</param>
+        /// <returns>A <see cref="IMultiSelectionItem{T}"/> so that multiple calls can be chained.</returns>
+        public IMultiSelectionItem<T> AddChoice(T item)
+        {
+            var node = new ListPromptItem<T>(item);
+            _tree.Add(node);
+            return node;
         }
 
         /// <inheritdoc/>
         public List<T> Show(IAnsiConsole console)
         {
-            if (console is null)
+            // Create the list prompt
+            var prompt = new ListPrompt<T>(console, this);
+            var result = prompt.Show(_tree, PageSize);
+
+            if (Mode == SelectionMode.Leaf)
             {
-                throw new ArgumentNullException(nameof(console));
+                return result.Items
+                    .Where(x => x.Selected && x.Children.Count == 0)
+                    .Select(x => x.Data)
+                    .ToList();
             }
 
-            if (!console.Profile.Capabilities.Interactive)
-            {
-                throw new NotSupportedException(
-                    "Cannot show multi selection prompt since the current " +
-                    "terminal isn't interactive.");
-            }
+            return result.Items
+                .Where(x => x.Selected)
+                .Select(x => x.Data)
+                .ToList();
+        }
 
-            if (!console.Profile.Capabilities.Ansi)
+        /// <inheritdoc/>
+        ListPromptInputResult IListPromptStrategy<T>.HandleInput(ConsoleKeyInfo key, ListPromptState<T> state)
+        {
+            if (key.Key == ConsoleKey.Enter)
             {
-                throw new NotSupportedException(
-                    "Cannot show multi selection prompt since the current " +
-                    "terminal does not support ANSI escape sequences.");
-            }
-
-            return console.RunExclusive(() =>
-            {
-                var converter = Converter ?? TypeConverterHelper.ConvertToString;
-                var list = new RenderableMultiSelectionList<T>(
-                    console, Title, PageSize, Choices,
-                    Selected, converter, HighlightStyle,
-                    MoreChoicesText, InstructionsText);
-
-                using (new RenderHookScope(console, list))
+                if (Required && state.Items.None(x => x.Selected))
                 {
-                    console.Cursor.Hide();
-                    list.Redraw();
-
-                    while (true)
-                    {
-                        var key = console.Input.ReadKey(true);
-                        if (key.Key == ConsoleKey.Enter)
-                        {
-                            if (Required && list.Selections.Count == 0)
-                            {
-                                continue;
-                            }
-
-                            break;
-                        }
-
-                        if (key.Key == ConsoleKey.Spacebar)
-                        {
-                            list.Select();
-                            list.Redraw();
-                            continue;
-                        }
-
-                        if (list.Update(key.Key))
-                        {
-                            list.Redraw();
-                        }
-                    }
+                    // Selection not permitted
+                    return ListPromptInputResult.None;
                 }
 
-                list.Clear();
-                console.Cursor.Show();
+                // Submit
+                return ListPromptInputResult.Submit;
+            }
 
-                return list.Selections
-                    .Select(index => Choices[index])
-                    .ToList();
-            });
+            if (key.Key == ConsoleKey.Spacebar)
+            {
+                var current = state.Items[state.Index];
+                var select = !current.Selected;
+
+                if (Mode == SelectionMode.Leaf)
+                {
+                    // Select the node and all it's children
+                    foreach (var item in current.Traverse(includeSelf: true))
+                    {
+                        item.Selected = select;
+                    }
+
+                    // Visit every parent and evaluate if it's selection
+                    // status need to be updated
+                    var parent = current.Parent;
+                    while (parent != null)
+                    {
+                        parent.Selected = parent.Traverse(includeSelf: false).All(x => x.Selected);
+                        parent = parent.Parent;
+                    }
+                }
+                else
+                {
+                    current.Selected = !current.Selected;
+                }
+
+                // Refresh the list
+                return ListPromptInputResult.Refresh;
+            }
+
+            return ListPromptInputResult.None;
+        }
+
+        /// <inheritdoc/>
+        int IListPromptStrategy<T>.CalculatePageSize(IAnsiConsole console, int totalItemCount, int requestedPageSize)
+        {
+            // The instructions take up two rows including a blank line
+            var extra = 2;
+            if (Title != null)
+            {
+                // Title takes up two rows including a blank line
+                extra += 2;
+            }
+
+            // Scrolling?
+            if (totalItemCount > requestedPageSize)
+            {
+                // The scrolling instructions takes up one row
+                extra++;
+            }
+
+            var pageSize = requestedPageSize;
+            if (pageSize > console.Profile.Height - extra)
+            {
+                pageSize = console.Profile.Height - extra;
+            }
+
+            return pageSize;
+        }
+
+        /// <inheritdoc/>
+        IRenderable IListPromptStrategy<T>.Render(IAnsiConsole console, bool scrollable, int cursorIndex, IEnumerable<(int Index, ListPromptItem<T> Node)> items)
+        {
+            var list = new List<IRenderable>();
+            var highlightStyle = HighlightStyle ?? new Style(foreground: Color.Blue);
+
+            if (Title != null)
+            {
+                list.Add(new Markup(Title));
+            }
+
+            var grid = new Grid();
+            grid.AddColumn(new GridColumn().Padding(0, 0, 1, 0).NoWrap());
+
+            if (Title != null)
+            {
+                grid.AddEmptyRow();
+            }
+
+            foreach (var item in items)
+            {
+                var current = item.Index == cursorIndex;
+                var style = current ? highlightStyle : Style.Plain;
+
+                var indent = new string(' ', item.Node.Depth * 2);
+                var prompt = item.Index == cursorIndex ? ListPromptConstants.Arrow : new string(' ', ListPromptConstants.Arrow.Length);
+
+                var text = (Converter ?? TypeConverterHelper.ConvertToString)?.Invoke(item.Node.Data) ?? item.Node.Data.ToString() ?? "?";
+                if (current)
+                {
+                    text = text.RemoveMarkup();
+                }
+
+                var checkbox = item.Node.Selected
+                    ? (item.Node.IsGroup && Mode == SelectionMode.Leaf
+                        ? ListPromptConstants.GroupSelectedCheckbox : ListPromptConstants.SelectedCheckbox)
+                    : ListPromptConstants.Checkbox;
+
+                grid.AddRow(new Markup(indent + prompt + " " + checkbox + " " + text, style));
+            }
+
+            list.Add(grid);
+            list.Add(Text.Empty);
+
+            if (scrollable)
+            {
+                // There are more choices
+                list.Add(new Markup(MoreChoicesText ?? ListPromptConstants.MoreChoicesMarkup));
+            }
+
+            // Instructions
+            list.Add(new Markup(InstructionsText ?? ListPromptConstants.InstructionsMarkup));
+
+            // Combine all items
+            return new Rows(list);
         }
     }
 }

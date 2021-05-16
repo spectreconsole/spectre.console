@@ -9,20 +9,48 @@ namespace Spectre.Console
     public static class MultiSelectionPromptExtensions
     {
         /// <summary>
-        /// Adds a choice.
+        /// Sets the selection mode.
         /// </summary>
         /// <typeparam name="T">The prompt result type.</typeparam>
         /// <param name="obj">The prompt.</param>
-        /// <param name="choice">The choice to add.</param>
+        /// <param name="mode">The selection mode.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static MultiSelectionPrompt<T> AddChoice<T>(this MultiSelectionPrompt<T> obj, T choice)
+        public static MultiSelectionPrompt<T> Mode<T>(this MultiSelectionPrompt<T> obj, SelectionMode mode)
+            where T : notnull
         {
             if (obj is null)
             {
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            obj.Choices.Add(choice);
+            obj.Mode = mode;
+            return obj;
+        }
+
+        /// <summary>
+        /// Adds a choice.
+        /// </summary>
+        /// <typeparam name="T">The prompt result type.</typeparam>
+        /// <param name="obj">The prompt.</param>
+        /// <param name="choice">The choice to add.</param>
+        /// <param name="configurator">The configurator for the choice.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static MultiSelectionPrompt<T> AddChoices<T>(this MultiSelectionPrompt<T> obj, T choice, Action<IMultiSelectionItem<T>> configurator)
+            where T : notnull
+        {
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            if (configurator is null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
+            var result = obj.AddChoice(choice);
+            configurator(result);
+
             return obj;
         }
 
@@ -34,78 +62,16 @@ namespace Spectre.Console
         /// <param name="choices">The choices to add.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static MultiSelectionPrompt<T> AddChoices<T>(this MultiSelectionPrompt<T> obj, params T[] choices)
+            where T : notnull
         {
             if (obj is null)
             {
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            obj.Choices.AddRange(choices);
-            return obj;
-        }
-
-        /// <summary>
-        /// Marks an item as selected.
-        /// </summary>
-        /// <typeparam name="T">The prompt result type.</typeparam>
-        /// <param name="obj">The prompt.</param>
-        /// <param name="index">The index of the item to select.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, int index)
-        {
-            if (obj is null)
+            foreach (var choice in choices)
             {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
-            if (index < 0)
-            {
-                throw new ArgumentException("Index must be greater than zero", nameof(index));
-            }
-
-            obj.Selected.Add(index);
-            return obj;
-        }
-
-        /// <summary>
-        /// Marks multiple items as selected.
-        /// </summary>
-        /// <typeparam name="T">The prompt result type.</typeparam>
-        /// <param name="obj">The prompt.</param>
-        /// <param name="indices">The indices of the items to select.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, params int[] indices)
-        {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
-            foreach (var index in indices)
-            {
-                Select(obj, index);
-            }
-
-            return obj;
-        }
-
-        /// <summary>
-        /// Marks multiple items as selected.
-        /// </summary>
-        /// <typeparam name="T">The prompt result type.</typeparam>
-        /// <param name="obj">The prompt.</param>
-        /// <param name="indices">The indices of the items to select.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, IEnumerable<int> indices)
-        {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
-            foreach (var index in indices)
-            {
-                Select(obj, index);
+                obj.AddChoice(choice);
             }
 
             return obj;
@@ -119,13 +85,85 @@ namespace Spectre.Console
         /// <param name="choices">The choices to add.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static MultiSelectionPrompt<T> AddChoices<T>(this MultiSelectionPrompt<T> obj, IEnumerable<T> choices)
+            where T : notnull
         {
             if (obj is null)
             {
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            obj.Choices.AddRange(choices);
+            foreach (var choice in choices)
+            {
+                obj.AddChoice(choice);
+            }
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Adds multiple grouped choices.
+        /// </summary>
+        /// <typeparam name="T">The prompt result type.</typeparam>
+        /// <param name="obj">The prompt.</param>
+        /// <param name="group">The group.</param>
+        /// <param name="choices">The choices to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static MultiSelectionPrompt<T> AddChoiceGroup<T>(this MultiSelectionPrompt<T> obj, T group, IEnumerable<T> choices)
+            where T : notnull
+        {
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            var root = obj.AddChoice(group);
+            foreach (var choice in choices)
+            {
+                root.AddChild(choice);
+            }
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Marks an item as selected.
+        /// </summary>
+        /// <typeparam name="T">The prompt result type.</typeparam>
+        /// <param name="obj">The prompt.</param>
+        /// <param name="index">The index of the item to select.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        [Obsolete("Selection by index has been made obsolete", error: true)]
+        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, int index)
+            where T : notnull
+        {
+            return obj;
+        }
+
+        /// <summary>
+        /// Marks multiple items as selected.
+        /// </summary>
+        /// <typeparam name="T">The prompt result type.</typeparam>
+        /// <param name="obj">The prompt.</param>
+        /// <param name="indices">The indices of the items to select.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        [Obsolete("Selection by index has been made obsolete", error: true)]
+        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, params int[] indices)
+            where T : notnull
+        {
+            return obj;
+        }
+
+        /// <summary>
+        /// Marks multiple items as selected.
+        /// </summary>
+        /// <typeparam name="T">The prompt result type.</typeparam>
+        /// <param name="obj">The prompt.</param>
+        /// <param name="indices">The indices of the items to select.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        [Obsolete("Selection by index has been made obsolete", error: true)]
+        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, IEnumerable<int> indices)
+            where T : notnull
+        {
             return obj;
         }
 
@@ -137,6 +175,7 @@ namespace Spectre.Console
         /// <param name="title">The title markup text.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static MultiSelectionPrompt<T> Title<T>(this MultiSelectionPrompt<T> obj, string? title)
+            where T : notnull
         {
             if (obj is null)
             {
@@ -155,6 +194,7 @@ namespace Spectre.Console
         /// <param name="pageSize">The number of choices that are displayed to the user.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static MultiSelectionPrompt<T> PageSize<T>(this MultiSelectionPrompt<T> obj, int pageSize)
+            where T : notnull
         {
             if (obj is null)
             {
@@ -178,6 +218,7 @@ namespace Spectre.Console
         /// <param name="highlightStyle">The highlight style of the selected choice.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static MultiSelectionPrompt<T> HighlightStyle<T>(this MultiSelectionPrompt<T> obj, Style highlightStyle)
+            where T : notnull
         {
             if (obj is null)
             {
@@ -196,6 +237,7 @@ namespace Spectre.Console
         /// <param name="text">The text to display.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static MultiSelectionPrompt<T> MoreChoicesText<T>(this MultiSelectionPrompt<T> obj, string? text)
+            where T : notnull
         {
             if (obj is null)
             {
@@ -214,6 +256,7 @@ namespace Spectre.Console
         /// <param name="text">The text to display.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static MultiSelectionPrompt<T> InstructionsText<T>(this MultiSelectionPrompt<T> obj, string? text)
+            where T : notnull
         {
             if (obj is null)
             {
@@ -231,6 +274,7 @@ namespace Spectre.Console
         /// <param name="obj">The prompt.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static MultiSelectionPrompt<T> NotRequired<T>(this MultiSelectionPrompt<T> obj)
+            where T : notnull
         {
             return Required(obj, false);
         }
@@ -242,6 +286,7 @@ namespace Spectre.Console
         /// <param name="obj">The prompt.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static MultiSelectionPrompt<T> Required<T>(this MultiSelectionPrompt<T> obj)
+            where T : notnull
         {
             return Required(obj, true);
         }
@@ -254,6 +299,7 @@ namespace Spectre.Console
         /// <param name="required">Whether or not at least one choice must be selected.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static MultiSelectionPrompt<T> Required<T>(this MultiSelectionPrompt<T> obj, bool required)
+            where T : notnull
         {
             if (obj is null)
             {
@@ -272,6 +318,7 @@ namespace Spectre.Console
         /// <param name="displaySelector">The function to get a display string for a given choice.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static MultiSelectionPrompt<T> UseConverter<T>(this MultiSelectionPrompt<T> obj, Func<T, string>? displaySelector)
+            where T : notnull
         {
             if (obj is null)
             {
