@@ -58,7 +58,7 @@ You can hide the calendar header.
 
 ```csharp
 var calendar = new Calendar(2020,10);
-calendar.ShowHeader();
+calendar.HideHeader();
 AnsiConsole.Render(calendar);
 ```
 
