@@ -66,7 +66,6 @@ await AnsiConsole.Progress()
 ## Configure
 
 ```csharp
-// Asynchronous
 AnsiConsole.Progress()
     .AutoRefresh(false) // Turn off auto refresh
     .AutoClear(false)   // Do not remove the task list when done

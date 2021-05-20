@@ -13,8 +13,8 @@ namespace Spectre.Console
         private readonly LiveRenderable _live;
         private readonly object _lock;
         private readonly Stopwatch _stopwatch;
+        private readonly bool _hideCompleted;
         private TimeSpan _lastUpdate;
-        private bool _hideCompleted;
 
         public override TimeSpan RefreshRate { get; }
 
@@ -22,7 +22,7 @@ namespace Spectre.Console
         {
             _console = console ?? throw new ArgumentNullException(nameof(console));
             _columns = columns ?? throw new ArgumentNullException(nameof(columns));
-            _live = new LiveRenderable();
+            _live = new LiveRenderable(console);
             _lock = new object();
             _stopwatch = new Stopwatch();
             _lastUpdate = TimeSpan.Zero;
@@ -46,6 +46,14 @@ namespace Spectre.Console
                 }
                 else
                 {
+                    if (_live.HasRenderable && _live.DidOverflow)
+                    {
+                        // Redraw the whole live renderable
+                        _console.Write(_live.RestoreCursor());
+                        _live.Overflow = VerticalOverflow.Visible;
+                        _console.Write(_live.Target);
+                    }
+
                     _console.WriteLine();
                 }
 

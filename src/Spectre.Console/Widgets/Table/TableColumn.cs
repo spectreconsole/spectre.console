@@ -9,9 +9,9 @@ namespace Spectre.Console
     public sealed class TableColumn : IColumn
     {
         /// <summary>
-        /// Gets the column header.
+        /// Gets or sets the column header.
         /// </summary>
-        public IRenderable Header { get; }
+        public IRenderable Header { get; set; }
 
         /// <summary>
         /// Gets or sets the column footer.

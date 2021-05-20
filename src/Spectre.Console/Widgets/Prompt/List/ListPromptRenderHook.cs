@@ -7,20 +7,21 @@ namespace Spectre.Console
     internal sealed class ListPromptRenderHook<T> : IRenderHook
         where T : notnull
     {
-        private readonly LiveRenderable _live;
-        private readonly object _lock;
         private readonly IAnsiConsole _console;
         private readonly Func<IRenderable> _builder;
+        private readonly LiveRenderable _live;
+        private readonly object _lock;
         private bool _dirty;
 
         public ListPromptRenderHook(
             IAnsiConsole console,
             Func<IRenderable> builder)
         {
-            _live = new LiveRenderable();
+            _console = console ?? throw new ArgumentNullException(nameof(console));
+            _builder = builder ?? throw new ArgumentNullException(nameof(builder));
+
+            _live = new LiveRenderable(console);
             _lock = new object();
-            _console = console;
-            _builder = builder;
             _dirty = true;
         }
 

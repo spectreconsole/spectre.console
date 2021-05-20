@@ -14,6 +14,22 @@ namespace Spectre.Console.Rendering
         public int Length => this.Sum(line => line.Text.Length);
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SegmentLine"/> class.
+        /// </summary>
+        public SegmentLine()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SegmentLine"/> class.
+        /// </summary>
+        /// <param name="segments">The segments.</param>
+        public SegmentLine(IEnumerable<Segment> segments)
+            : base(segments)
+        {
+        }
+
+        /// <summary>
         /// Gets the number of cells the segment line occupies.
         /// </summary>
         /// <returns>The cell width of the segment line.</returns>

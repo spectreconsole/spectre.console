@@ -1,5 +1,5 @@
 Title: Status
-Order: 6
+Order: 10
 RedirectFrom: status
 ---
 
