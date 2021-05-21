@@ -6,6 +6,8 @@ RedirectFrom: prompt
 Sometimes you want to get some input from the user, and for this
 you can use the `Prompt<TResult>`.
 
+<?# AsciiCast cast="input" /?>
+
 <?# Alert ?>
   The use of prompts
   insides status or progress displays is not supported.

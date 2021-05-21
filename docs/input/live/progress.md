@@ -5,7 +5,7 @@ RedirectFrom: progress
 
 Spectre.Console can display information about long running tasks in the console. 
 
-![Example of progress output](../assets/images/progress.png)
+<?# AsciiCast cast="progress" /?>
 
 <?# Alert ?>
   The progress display is not 
@@ -17,7 +17,7 @@ If the current terminal isn't considered "interactive", such as when running
 in a continuous integration system, or the terminal can't display 
 ANSI control sequence, any progress will be displayed in a simpler way.
 
-![Example of fallback progress output](../assets/images/progress_fallback.png)
+<?# AsciiCast cast="progress" profile="non-interactive" /?>
 
 ## Usage
 

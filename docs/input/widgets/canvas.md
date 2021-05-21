@@ -27,26 +27,9 @@ for(var i = 0; i < canvas.Width; i++)
 }
 
 // Render the canvas
-AnsiConsole.Render(canvas);
+AnsiConsole.Write(canvas);
 ```
 
 ## Result
 
-<pre style="font-size:100%;font-family:consolas,'Courier New',monospace;line-height: normal; padding: 0px;background-color: #222222; padding: 20px;">
-<span style="background-color: #008000">  </span><span style="background-color: #FF0000">                              </span>
-<span style="background-color: #008000">  </span><span style="background-color: #800080">  </span><span>                        </span><span style="background-color: #800080">  </span><span style="background-color: #FFFF00">  </span>
-<span style="background-color: #008000">  </span><span>  </span><span style="background-color: #800080">  </span><span>                    </span><span style="background-color: #800080">  </span><span>  </span><span style="background-color: #FFFF00">  </span>
-<span style="background-color: #008000">  </span><span>    </span><span style="background-color: #800080">  </span><span>                </span><span style="background-color: #800080">  </span><span>    </span><span style="background-color: #FFFF00">  </span>
-<span style="background-color: #008000">  </span><span>      </span><span style="background-color: #800080">  </span><span>            </span><span style="background-color: #800080">  </span><span>      </span><span style="background-color: #FFFF00">  </span>
-<span style="background-color: #008000">  </span><span>        </span><span style="background-color: #800080">  </span><span>        </span><span style="background-color: #800080">  </span><span>        </span><span style="background-color: #FFFF00">  </span>
-<span style="background-color: #008000">  </span><span>          </span><span style="background-color: #800080">  </span><span>    </span><span style="background-color: #800080">  </span><span>          </span><span style="background-color: #FFFF00">  </span>
-<span style="background-color: #008000">  </span><span>            </span><span style="background-color: #800080">    </span><span>            </span><span style="background-color: #FFFF00">  </span>
-<span style="background-color: #008000">  </span><span>            </span><span style="background-color: #800080">    </span><span>            </span><span style="background-color: #FFFF00">  </span>
-<span style="background-color: #008000">  </span><span>          </span><span style="background-color: #800080">  </span><span>    </span><span style="background-color: #800080">  </span><span>          </span><span style="background-color: #FFFF00">  </span>
-<span style="background-color: #008000">  </span><span>        </span><span style="background-color: #800080">  </span><span>        </span><span style="background-color: #800080">  </span><span>        </span><span style="background-color: #FFFF00">  </span>
-<span style="background-color: #008000">  </span><span>      </span><span style="background-color: #800080">  </span><span>            </span><span style="background-color: #800080">  </span><span>      </span><span style="background-color: #FFFF00">  </span>
-<span style="background-color: #008000">  </span><span>    </span><span style="background-color: #800080">  </span><span>                </span><span style="background-color: #800080">  </span><span>    </span><span style="background-color: #FFFF00">  </span>
-<span style="background-color: #008000">  </span><span>  </span><span style="background-color: #800080">  </span><span>                    </span><span style="background-color: #800080">  </span><span>  </span><span style="background-color: #FFFF00">  </span>
-<span style="background-color: #008000">  </span><span style="background-color: #800080">  </span><span>                        </span><span style="background-color: #800080">  </span><span style="background-color: #FFFF00">  </span>
-<span style="background-color: #008000">  </span><span style="background-color: #0000FF">                            </span><span style="background-color: #FFFF00">  </span>
-</pre>
+<?# AsciiCast cast="canvas" /?>

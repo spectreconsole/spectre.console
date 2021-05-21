@@ -9,6 +9,8 @@ Tables are a perfect way of displaying tabular data in a terminal.
 all columns to fit whatever is inside them. Anything that implements 
 `IRenderable` can be used as a column header or column cell, even another table!
 
+<?# AsciiCast cast="table" /?>
+
 ## Usage
 
 <!------------------------->

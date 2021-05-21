@@ -66,9 +66,9 @@ namespace Spectre.Console.Examples
                     })
                     .AddChoices(new[]
                     {
-                        "Apple", "Apricot", "Avocado", "Banana", 
+                        "Apple", "Apricot", "Avocado", "Banana",
                         "Cherry", "Cocunut", "Date", "Dragonfruit", "Durian",
-                        "Egg plant",  "Fig", "Grape", "Guava", 
+                        "Egg plant",  "Fig", "Grape", "Guava",
                         "Jackfruit", "Jambul", "Kiwano", "Kiwifruit", "Lime", "Lylo",
                         "Lychee", "Melon", "Nectarine", "Orange", "Olive"
                     }));

@@ -5,7 +5,7 @@ Order: 1
 The `SelectionPrompt` can be used when you want the user to select
 a single item from a provided list.
 
-![Example of selection input](../assets/images/selection.gif)
+<?# AsciiCast cast="selection" /?>
 
 <?# Alert ?>
  Using prompts inside

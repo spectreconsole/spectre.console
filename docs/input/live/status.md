@@ -5,7 +5,7 @@ RedirectFrom: status
 
 Spectre.Console can display information about long running tasks in the console. 
 
-![Example of status output](../assets/images/status.gif)
+<?# AsciiCast cast="status" /?>
 
 <?# Alert ?>
   The status display is not 

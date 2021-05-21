@@ -14,13 +14,8 @@ AnsiConsole.Render(
         .Color(Color.Red));
 ```
 
-```text
- _   _          _   _          
-| | | |   ___  | | | |   ___  
-| |_| |  / _ \ | | | |  / _ \ 
-|  _  | |  __/ | | | | | (_) |
-|_| |_|  \___| |_| |_|  \___/ 
-```
+<?# AsciiCast cast="figlet" /?>
+
 
 ## Custom font
 

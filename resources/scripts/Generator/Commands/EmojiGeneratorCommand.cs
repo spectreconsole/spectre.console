@@ -8,7 +8,7 @@ using AngleSharp.Html.Parser;
 using Generator.Models;
 using Scriban;
 using Scriban.Runtime;
-using Spectre.Cli;
+using Spectre.Console.Cli;
 using Spectre.IO;
 using Path = Spectre.IO.Path;
 using SpectreEnvironment = Spectre.IO.Environment;
