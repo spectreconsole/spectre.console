@@ -20,6 +20,7 @@ namespace Docs
                 .AddShortcode("ColorTable", typeof(ColorTableShortcode))
                 .AddShortcode("EmojiTable", typeof(EmojiTableShortcode))
                 .AddShortcode("Alert", typeof(AlertShortcode))
+                .AddShortcode("AsciiCast", typeof(AsciiCastShortcode))
                 .AddPipelines()
                 .RunAsync();
 

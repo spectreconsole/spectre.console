@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -18,6 +19,11 @@ namespace Spectre.Console
         /// Gets an empty <see cref="Text"/> instance.
         /// </summary>
         public static Text Empty { get; } = new Text(string.Empty);
+
+        /// <summary>
+        /// Gets an instance of <see cref="Text"/> containing a new line.
+        /// </summary>
+        public static Text NewLine { get; } = new Text(Environment.NewLine, Style.Plain);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Text"/> class.

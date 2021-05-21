@@ -5,7 +5,7 @@ RedirectFrom: rule
 
 The `Rule` class is used to render a horizontal rule (line) to the terminal.
 
-![Example of rule output](../assets/images/rule.png)
+<?# AsciiCast cast="rule" /?>
 
 ## Usage
 

@@ -9,9 +9,7 @@ You can make exception a bit more readable by using the `WriteException` method.
 AnsiConsole.WriteException(ex);
 ```
 
-![Examples of exception output](assets/images/exception.png)
-
-
+<?# AsciiCast cast="default-exception" /?>
 
 ## Shortening parts
 
@@ -25,7 +23,7 @@ AnsiConsole.WriteException(ex,
     ExceptionFormats.ShortenMethods | ExceptionFormats.ShowLinks);
 ```
 
-![Examples of compact exception output](assets/images/compact_exception.png)
+<?# AsciiCast cast="shortened-exception" /?>
 
 ## Customizing exception output
 
@@ -51,4 +49,4 @@ AnsiConsole.WriteException(ex, new ExceptionSettings
 });
 ```
 
-![Examples of custom exception output](assets/images/custom_exception.png)
+<?# AsciiCast cast="custom-colors-exception" /?>

@@ -1,5 +1,5 @@
 using Generator.Commands;
-using Spectre.Cli;
+using Spectre.Console.Cli;
 
 namespace Generator
 {
@@ -13,6 +13,7 @@ namespace Generator
                 config.AddCommand<ColorGeneratorCommand>("colors");
                 config.AddCommand<EmojiGeneratorCommand>("emoji");
                 config.AddCommand<SpinnerGeneratorCommand>("spinners");
+                config.AddCommand<SampleCommand>("samples");
             });
 
             return app.Run(args);

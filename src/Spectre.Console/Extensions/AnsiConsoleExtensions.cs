@@ -73,7 +73,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(console));
             }
 
-            console.Write(new Text(Environment.NewLine, Style.Plain));
+            console.Write(Text.NewLine);
         }
 
         /// <summary>

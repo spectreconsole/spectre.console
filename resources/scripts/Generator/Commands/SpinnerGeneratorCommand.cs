@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Generator.Models;
 using Scriban;
-using Spectre.Cli;
+using Spectre.Console.Cli;
 using Spectre.IO;
 
 namespace Generator.Commands

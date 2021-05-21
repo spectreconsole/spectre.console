@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <ExampleVisible>false</ExampleVisible>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
