@@ -33,7 +33,7 @@ namespace Spectre.Console
                 {
                     if (!task.IsStarted || task.IsFinished)
                     {
-                        return;
+                        continue;
                     }
 
                     hasStartedTasks = true;
