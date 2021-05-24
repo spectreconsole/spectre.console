@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -45,11 +45,13 @@
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="0.14.0" />
     <PackageReference Include="Humanizer.Core" Version="2.8.26" />
-    <PackageReference Include="InputSimulatorCore" Version="1.0.5" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Scriban" Version="2.1.3" />
-    <PackageReference Include="Spectre.Console" Version="0.39.1-preview.0.27" />
-    <PackageReference Include="Spectre.Console.ImageSharp" Version="0.39.1-preview.0.27" />
     <PackageReference Include="Spectre.IO" Version="0.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Spectre.Console.ImageSharp\Spectre.Console.ImageSharp.csproj" />
+    <ProjectReference Include="..\..\..\src\Spectre.Console\Spectre.Console.csproj" />
   </ItemGroup>
 </Project>

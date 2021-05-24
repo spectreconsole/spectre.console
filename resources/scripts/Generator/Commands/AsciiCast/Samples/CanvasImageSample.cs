@@ -1,4 +1,3 @@
-using DocExampleGenerator;
 using SixLabors.ImageSharp.Processing;
 using Spectre.Console;
 

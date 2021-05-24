@@ -24,8 +24,13 @@ namespace Spectre.Console
 
             while (true)
             {
-                var key = console.Input.ReadKey(true);
+                var rawKey = console.Input.ReadKey(true);
+                if (rawKey == null)
+                {
+                    continue;
+                }
 
+                var key = rawKey.Value;
                 if (key.Key == ConsoleKey.Enter)
                 {
                     return text;
