@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Text.Json;
@@ -11,7 +12,7 @@ namespace Generator.Commands
         private sealed class AsciiCastWriter : TextWriter
         {
             private readonly TextWriter _wrappedTextWriter;
-            private readonly StringBuilder _builder = new();
+            private readonly StringBuilder _builder = new StringBuilder();
             private int? _firstTick;
 
             public AsciiCastWriter(TextWriter wrappedTextWriter)
@@ -47,7 +48,9 @@ namespace Generator.Commands
 
                 tick /= 1000m;
 
-                _builder.Append('[').Append(tick).Append(", \"o\", \"").Append(JsonEncodedText.Encode(value)).AppendLine("\"]");
+                _builder.Append('[')
+                    .AppendFormat(CultureInfo.InvariantCulture, "{0}", tick)
+                    .Append(", \"o\", \"").Append(JsonEncodedText.Encode(value)).AppendLine("\"]");
             }
 
             public string GetJsonAndClearBuffer()
@@ -66,7 +69,7 @@ namespace Generator.Commands
 
         public AsciiCastOut(IAnsiConsoleOutput wrappedAnsiConsole)
         {
-            _wrappedAnsiConsole = wrappedAnsiConsole;
+            _wrappedAnsiConsole = wrappedAnsiConsole ?? throw new ArgumentNullException(nameof(wrappedAnsiConsole));
             _asciiCastWriter = new AsciiCastWriter(_wrappedAnsiConsole.Writer);
         }
 
@@ -85,20 +88,8 @@ namespace Generator.Commands
 
         public string GetCastJson(string title, int? width = null, int? height = null)
         {
-
             var header = $"{{\"version\": 2, \"width\": {width ?? _wrappedAnsiConsole.Width}, \"height\": {height ?? _wrappedAnsiConsole.Height}, \"title\": \"{JsonEncodedText.Encode(title)}\", \"env\": {{\"TERM\": \"Spectre.Console\"}}}}";
             return $"{header}{Environment.NewLine}{_asciiCastWriter.GetJsonAndClearBuffer()}{Environment.NewLine}";
-        }
-    }
-
-    public static class AsciiCastExtensions
-    {
-        public static AsciiCastOut WrapWithAsciiCastRecorder(this IAnsiConsole ansiConsole)
-        {
-            AsciiCastOut castRecorder = new(ansiConsole.Profile.Out);
-            ansiConsole.Profile.Out = castRecorder;
-
-            return castRecorder;
         }
     }
 }

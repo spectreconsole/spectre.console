@@ -14,7 +14,7 @@ namespace Generator.Commands.Samples
 
         private static void AskFruit(IAnsiConsole console)
         {
-            var favorites = AnsiConsole.Prompt(
+            var favorites = console.Prompt(
                 new MultiSelectionPrompt<string>()
                     .PageSize(10)
                     .Title("What are your [green]favorite fruits[/]?")

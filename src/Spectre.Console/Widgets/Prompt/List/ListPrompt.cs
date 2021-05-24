@@ -48,8 +48,13 @@ namespace Spectre.Console
 
                 while (true)
                 {
-                    var key = _console.Input.ReadKey(true);
+                    var rawKey = _console.Input.ReadKey(true);
+                    if (rawKey == null)
+                    {
+                        continue;
+                    }
 
+                    var key = rawKey.Value;
                     var result = _strategy.HandleInput(key, state);
                     if (result == ListPromptInputResult.Submit)
                     {

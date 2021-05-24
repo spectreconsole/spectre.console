@@ -11,7 +11,7 @@ namespace Spectre.Console
             _profile = profile ?? throw new ArgumentNullException(nameof(profile));
         }
 
-        public ConsoleKeyInfo ReadKey(bool intercept)
+        public ConsoleKeyInfo? ReadKey(bool intercept)
         {
             if (!_profile.Capabilities.Interactive)
             {

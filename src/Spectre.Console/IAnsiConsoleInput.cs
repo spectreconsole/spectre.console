@@ -12,6 +12,6 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="intercept">Whether or not to intercept the key.</param>
         /// <returns>The key that was read.</returns>
-        ConsoleKeyInfo ReadKey(bool intercept);
+        ConsoleKeyInfo? ReadKey(bool intercept);
     }
 }

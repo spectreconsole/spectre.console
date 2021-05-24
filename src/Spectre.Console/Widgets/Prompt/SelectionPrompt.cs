@@ -77,7 +77,7 @@ namespace Spectre.Console
         {
             // Create the list prompt
             var prompt = new ListPrompt<T>(console, this);
-            var result = prompt.Show(_tree);
+            var result = prompt.Show(_tree, PageSize);
 
             // Return the selected item
             return result.Items[result.Index].Data;

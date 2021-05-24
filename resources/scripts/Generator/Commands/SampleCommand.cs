@@ -14,10 +14,11 @@ namespace Generator.Commands
     {
         public class Settings : CommandSettings
         {
-            public Settings(string outputPath, string sample)
+            public Settings(string outputPath, string sample, bool list)
             {
                 Sample = sample;
                 OutputPath = outputPath ?? Environment.CurrentDirectory;
+                List = list;
             }
 
             [CommandArgument(0, "[sample]")]
@@ -25,35 +26,46 @@ namespace Generator.Commands
 
             [CommandOption("-o|--output")]
             public string OutputPath { get; }
+
+            [CommandOption("-l|--list")]
+            public bool List { get; }
         }
 
         private readonly IAnsiConsole _console;
 
         public SampleCommand(IAnsiConsole console)
         {
-            this._console = console;
+            _console = new AsciiCastConsole(console);
         }
 
         public override int Execute([NotNull] CommandContext context, [NotNull] Settings settings)
         {
-            _console.Prompt(new ConfirmationPrompt("Some commands will mimic user input. Make sure this window has focus and press y"));
-
             var samples = typeof(BaseSample).Assembly
                 .GetTypes()
                 .Where(i => i.IsClass && i.IsAbstract == false && i.IsSubclassOf(typeof(BaseSample)))
                 .Select(Activator.CreateInstance)
                 .Cast<BaseSample>();
 
-            if (!string.IsNullOrWhiteSpace(settings.Sample))
+            var selectedSample = settings.Sample;
+            if (settings.List)
             {
-                var desiredSample = samples.FirstOrDefault(i => i.Name().Equals(settings.Sample));
+                selectedSample = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("Select an example to record")
+                        .PageSize(25)
+                        .AddChoices(samples.Select(x => x.Name())));
+            }
+
+            if (!string.IsNullOrWhiteSpace(selectedSample))
+            {
+                var desiredSample = samples.FirstOrDefault(i => i.Name().Equals(selectedSample, StringComparison.OrdinalIgnoreCase));
                 if (desiredSample == null)
                 {
-                    _console.MarkupLine($"[red]Error:[/] could not find sample [blue]{settings.Sample}[/]");
+                    _console.MarkupLine($"[red]Error:[/] could not find sample [blue]{selectedSample}[/]");
                     return -1;
                 }
 
-                samples = new List<BaseSample> { desiredSample};
+                samples = new List<BaseSample> { desiredSample };
             }
 
             // from here on out everything we write will be recorded.
