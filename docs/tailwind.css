@@ -257,10 +257,6 @@ code.language-markup .token.script .token.keyword {
     overflow: hidden;
     line-height: 1rem;
   }
-  .asciinema-terminal .line span {
-    padding: 0;
-    display: inline-block;
-  }
   .asciinema-terminal .line {
     display: block;
   }
