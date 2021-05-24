@@ -122,6 +122,10 @@ code.language-markup .token.script .token.keyword {
 	color: #76d9e6;
 }
 
+@font-face {
+    font-family: 'WebCascadiaMonoPL';
+    src: url('CascadiaMonoPL.woff2')
+}
 
 /* asciicast-player styling */
 .asciinema-player-wrapper {
@@ -242,7 +246,7 @@ code.language-markup .token.script .token.keyword {
     border-style: solid;
     cursor: text;
     border-width: 0.5em;
-    font-family: 'Cascadia Code PL', 'Cascadia Code', Consolas, Menlo, 'Bitstream Vera Sans Mono', monospace;
+    font-family: 'Cascadia Mono PL', 'Cascadia Mono', 'Cascadia Code',  Menlo, Consolas, Liberation Mono, Lucida Console,  'WebCascadiaMonoPL', monospace;
     line-height: 1;
   }
   .asciinema-player pre {
