@@ -26,7 +26,10 @@ namespace Docs
                 {
                     LogErrors = false
                 })
-                .AddProcess(ProcessTiming.AfterExecution, "npm", "run", "build:tailwind")
+                .AddProcess(ProcessTiming.AfterExecution, _ => new ProcessLauncher("npm", "run build:tailwind")
+                {
+                    LogErrors = false
+                })
                 .RunAsync();
 
         private static Config<string> ConfigureEditLink()
