@@ -45,7 +45,7 @@ namespace Spectre.Console.Examples
                         }
 
                         // Simulate some delay
-                        Thread.Sleep(100);
+                        ThreadSleeper.Sleep(100);
                     }
 
                     // Now start the "warp" task
@@ -56,7 +56,7 @@ namespace Spectre.Console.Examples
                         warpTask.Increment(12 * random.NextDouble());
 
                         // Simulate some delay
-                        Thread.Sleep(100);
+                        ThreadSleeper.Sleep(100);
                     }
                 });
 

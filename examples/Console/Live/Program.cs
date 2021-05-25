@@ -20,7 +20,7 @@ namespace Spectre.Console.Examples
                     {
                         action();
                         ctx.Refresh();
-                        Thread.Sleep(delay);
+                        ThreadSleeper.Sleep(delay);
                     }
 
                     // Columns
