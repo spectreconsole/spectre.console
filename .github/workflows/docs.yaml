@@ -44,7 +44,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd docs
-        npm i
         dotnet run --configuration Release
-        npm run build
         dotnet run -- deploy
