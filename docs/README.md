@@ -1,6 +1,6 @@
 # Documentation
 
-To start contributing to the [Spectre.Console](https://github.com/spectreconsole/spectre.console) documentation, you will need the [.NET Core SDK](https://dot.net) 5.0.202 or higher (as defined in the repository root `global.json` file).
+To start contributing to the [Spectre.Console](https://github.com/spectreconsole/spectre.console) documentation, you will need the [.NET Core SDK](https://dot.net) 3.1 or higher.
 
 ## Running Preview Site
 
@@ -10,11 +10,15 @@ The documentation site uses [Statiq](https://statiq.dev), a static site generato
 > Preview.ps1
 ```
 
-After the build is complete, you can navigate to [http://localhost:5080](http://localhost:5080).
+After the build is complete, you can navigate to [http://localhost:5080/spectre.console](http://localhost:5080/spectre.console).
 
-## Npm
+**Note that the site runs under a virtual directory.**
 
-The site uses some tools from the JavaScript ecosystem including npm. While Statiq will execute `npm install` and other commands as needed, you need to have [npm installed](https://www.npmjs.com/get-npm) before running a site build.
+## Building the CSS
+
+The documentation uses tailwind for the CSS. Committed to the repository is a large 4gb file with all possible styles at `assets/style.css`. This file is generated from the root files tailwind.config.js and tailwind.css. Any changes to the overall design style (e.g. colors, markdown styling, etc) can be made in these two files.
+
+ For production, `npm run build:tailwind` should be ran post Statiq build. This process will look at all the styles in the HTML and prune the tailwind file down to a much more manageable 30kb or so file.
 
 ## Editing Content
 
@@ -23,7 +27,7 @@ The documentation is written using [Markdown](https://www.markdownguide.org/basi
 Markdown files can be found under the following directories:
 
 - [/input](./input)
-- [/appendix](./input/appendix)
+  - [/appendix](./input/appendix)
     
 ## Editing Layout
 

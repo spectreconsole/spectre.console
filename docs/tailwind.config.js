@@ -3,13 +3,12 @@ const colors = require("tailwindcss/colors");
 
 module.exports = {
     purge: ["./output/**/*.html"],
-    mode: 'jit',
     darkMode: false, // or 'media' or 'class'
     theme: {
         extend: {
             fontFamily: {
                 sans: ["Poppins", ...defaultTheme.fontFamily.sans],
-                mono: ["Cascadia Mono", "Cascadia Code", "Menlo", "Consolas", "Liberation Mono", "Lucida Console", "WebCascadiaMonoPL", "monospace"],
+                mono: ["Cascadia Code", ...defaultTheme.fontFamily.mono],
             },
             container: {
                 center: true,

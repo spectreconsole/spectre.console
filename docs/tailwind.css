@@ -276,12 +276,9 @@ code.language-markup .token.script .token.keyword {
   .asciinema-terminal.font-small {
     font-size: 12px;
   }
-  @media only screen and (min-width: 1080px) {
-    .asciinema-terminal.font-small {
-      font-size: 15px;
-    }
+  .asciinema-terminal.font-medium {
+    font-size: 18px;
   }
-
   .asciinema-terminal.font-big {
     font-size: 24px;
   }
@@ -1920,10 +1917,10 @@ code.language-markup .token.script .token.keyword {
     background-color: #d9d9d9;
   }
   .asciinema-theme-asciinema .fg-8 {
-    color: #808080;
+    color: #4d4d4d;
   }
   .asciinema-theme-asciinema .bg-8 {
-    background-color: #808080;
+    background-color: #4d4d4d;
   }
   .asciinema-theme-asciinema .fg-9 {
     color: #dd3c69;

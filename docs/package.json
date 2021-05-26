@@ -4,8 +4,8 @@
   "description": "Docs for Spectre.Console",
   "main": "index.js",
   "scripts": {
-    "build:tailwind": "tailwind build ./input/tailwind.css  -c ./input/tailwind.config.js  -o ./output/assets/styles.css",
-    "build": "cross-env NODE_ENV=production dotnet run -- -o public"
+    "build:tailwind": "tailwindcss build ./tailwind.css -o ./input/assets/styles.css",
+    "build": "cross-env NODE_ENV=production tailwind build tailwind.css -o ./output/assets/styles.css"
   },
   "repository": {
     "url": "https://github.com/spectreconsole/spectre.console"
