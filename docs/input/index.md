@@ -25,9 +25,6 @@ for Python written by Will McGugan.
 
 ## Examples
 
-<?# AsciiCast cast="all-samples" /?>
-
-
 ![Sample of Spectre.Console output](./assets/images/example.png)
 
 <video autoplay muted loop class="mt-4">
