@@ -40,7 +40,7 @@ namespace Spectre.Console
                     throw new InvalidOperationException("Unknown index for FIGlet character");
                 }
 
-                buffer.Add(line.Replace('$', ' ').ReplaceExact("@", string.Empty));
+                buffer.Add(line.Replace(header.Hardblank, ' ').ReplaceExact("@", string.Empty));
 
                 if (line.EndsWith("@@", StringComparison.Ordinal))
                 {
