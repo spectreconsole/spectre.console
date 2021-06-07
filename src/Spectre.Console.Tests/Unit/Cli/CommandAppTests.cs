@@ -245,6 +245,50 @@ namespace Spectre.Console.Tests.Unit.Cli
         }
 
         [Fact]
+        public void Should_Assign_Property_Initializer_To_Optional_Argument()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.SetDefaultCommand<GenericCommand<OptionalArgumentWithPropertyInitializerSettings>>();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+            });
+
+            // When
+            var result = app.Run(Array.Empty<string>());
+
+            // Then
+            result.ExitCode.ShouldBe(0);
+            result.Settings
+                .ShouldBeOfType<OptionalArgumentWithPropertyInitializerSettings>()
+                .And(settings => settings.Names.ShouldNotBeNull())
+                .And(settings => settings.Names.ShouldBeEmpty());
+        }
+
+        [Fact]
+        public void Should_Overwrite_Property_Initializer_With_Argument_Value()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.SetDefaultCommand<GenericCommand<OptionalArgumentWithPropertyInitializerSettings>>();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+            });
+
+            // When
+            var result = app.Run("ABBA", "Herreys");
+
+            // Then
+            result.ExitCode.ShouldBe(0);
+            result.Settings
+                .ShouldBeOfType<OptionalArgumentWithPropertyInitializerSettings>()
+                .And(settings => settings.Names.ShouldContain("ABBA"))
+                .And(settings => settings.Names.ShouldContain("Herreys"));
+        }
+
+        [Fact]
         public void Should_Assign_Default_Value_To_Optional_Argument_Using_Converter_If_Necessary()
         {
             // Given
