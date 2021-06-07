@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using Spectre.Console.Cli;
 
@@ -8,6 +9,12 @@ namespace Spectre.Console.Tests.Data
         [CommandArgument(0, "[GREETING]")]
         [DefaultValue("Hello World")]
         public string Greeting { get; set; }
+    }
+
+    public sealed class OptionalArgumentWithPropertyInitializerSettings : CommandSettings
+    {
+        [CommandArgument(0, "[NAMES]")]
+        public string[] Names { get; set; } = Array.Empty<string>();
     }
 
     public sealed class OptionalArgumentWithDefaultValueAndTypeConverterSettings : CommandSettings

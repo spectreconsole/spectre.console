@@ -10,7 +10,10 @@ namespace Spectre.Console.Cli
 
             foreach (var (parameter, value) in lookup)
             {
-                parameter.Property.SetValue(settings, value);
+                if (value != default)
+                {
+                    parameter.Property.SetValue(settings, value);
+                }
             }
 
             // Validate the settings.
