@@ -262,6 +262,9 @@ namespace Spectre.Console.Tests.Unit.Cli
             result.ExitCode.ShouldBe(0);
             result.Settings
                 .ShouldBeOfType<OptionalArgumentWithPropertyInitializerSettings>()
+                .And(settings => settings.Count.ShouldBe(1))
+                .And(settings => settings.Value.ShouldBe(0))
+                .And(settings => settings.Names.ShouldNotBeNull())
                 .And(settings => settings.Names.ShouldNotBeNull())
                 .And(settings => settings.Names.ShouldBeEmpty());
         }
@@ -278,12 +281,14 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // When
-            var result = app.Run("ABBA", "Herreys");
+            var result = app.Run("-c", "0", "-v", "50", "ABBA", "Herreys");
 
             // Then
             result.ExitCode.ShouldBe(0);
             result.Settings
                 .ShouldBeOfType<OptionalArgumentWithPropertyInitializerSettings>()
+                .And(settings => settings.Count.ShouldBe(0))
+                .And(settings => settings.Value.ShouldBe(50))
                 .And(settings => settings.Names.ShouldContain("ABBA"))
                 .And(settings => settings.Names.ShouldContain("Herreys"));
         }
