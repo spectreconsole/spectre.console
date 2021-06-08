@@ -15,6 +15,12 @@ namespace Spectre.Console.Tests.Data
     {
         [CommandArgument(0, "[NAMES]")]
         public string[] Names { get; set; } = Array.Empty<string>();
+
+        [CommandOption("-c")]
+        public int Count { get; set; } = 1;
+
+        [CommandOption("-v")]
+        public int Value { get; set; } = 0;
     }
 
     public sealed class OptionalArgumentWithDefaultValueAndTypeConverterSettings : CommandSettings
