@@ -39,7 +39,7 @@ namespace Spectre.Console
         /// Starts a new status display.
         /// </summary>
         /// <param name="status">The status to display.</param>
-        /// <param name="action">he action to execute.</param>
+        /// <param name="action">The action to execute.</param>
         public void Start(string status, Action<StatusContext> action)
         {
             var task = StartAsync(status, ctx =>
@@ -56,7 +56,7 @@ namespace Spectre.Console
         /// </summary>
         /// <typeparam name="T">The result type.</typeparam>
         /// <param name="status">The status to display.</param>
-        /// <param name="func">he action to execute.</param>
+        /// <param name="func">The action to execute.</param>
         /// <returns>The result.</returns>
         public T Start<T>(string status, Func<StatusContext, T> func)
         {
@@ -68,7 +68,7 @@ namespace Spectre.Console
         /// Starts a new status display.
         /// </summary>
         /// <param name="status">The status to display.</param>
-        /// <param name="action">he action to execute.</param>
+        /// <param name="action">The action to execute.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task StartAsync(string status, Func<StatusContext, Task> action)
         {
@@ -89,7 +89,7 @@ namespace Spectre.Console
         /// </summary>
         /// <typeparam name="T">The result type of task.</typeparam>
         /// <param name="status">The status to display.</param>
-        /// <param name="func">he action to execute.</param>
+        /// <param name="func">The action to execute.</param>
         /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation.</returns>
         public async Task<T> StartAsync<T>(string status, Func<StatusContext, Task<T>> func)
         {
