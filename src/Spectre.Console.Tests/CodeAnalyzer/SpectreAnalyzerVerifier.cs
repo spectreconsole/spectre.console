@@ -1,0 +1,87 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp.Testing;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Testing;
+using Microsoft.CodeAnalysis.Testing.Verifiers;
+
+namespace Spectre.Console.Tests.CodeAnalyzers
+{
+    public static class SpectreAnalyzerVerifier<TAnalyzer>
+        where TAnalyzer : DiagnosticAnalyzer, new()
+    {
+        public static Task VerifyCodeFixAsync(string source, DiagnosticResult expected, string fixedSource)
+            => VerifyCodeFixAsync(source, new[] { expected }, fixedSource);
+
+        private static Task VerifyCodeFixAsync(string source, IEnumerable<DiagnosticResult> expected, string fixedSource)
+        {
+            // Roslyn fixers always use \r\n for newlines, regardless of OS environment settings, so we normalize
+            // the source as it typically comes from multi-line strings with varying newlines.
+            if (Environment.NewLine != "\r\n")
+            {
+                source = source.Replace(Environment.NewLine, "\r\n");
+                fixedSource = fixedSource.Replace(Environment.NewLine, "\r\n");
+            }
+
+            var test = new Test
+            {
+                TestCode = source,
+                FixedCode = fixedSource,
+            };
+
+            test.ExpectedDiagnostics.AddRange(expected);
+            return test.RunAsync();
+        }
+
+        public static Task VerifyAnalyzerAsync(string source, params DiagnosticResult[] expected)
+        {
+            var test = new Test
+            {
+                TestCode = source,
+                CompilerDiagnostics = CompilerDiagnostics.All,
+                ReferenceAssemblies = CodeAnalyzerHelper.CurrentSpectre,
+                TestBehaviors = TestBehaviors.SkipGeneratedCodeCheck,
+            };
+
+            test.ExpectedDiagnostics.AddRange(expected);
+            return test.RunAsync();
+        }
+
+        // Code fix tests support both analyzer and code fix testing. This test class is derived from the code fix test
+        // to avoid the need to maintain duplicate copies of the customization work.
+        private class Test : CSharpCodeFixTest<TAnalyzer, EmptyCodeFixProvider, XUnitVerifier>
+        {
+            public Test()
+            {
+                ReferenceAssemblies = CodeAnalyzerHelper.CurrentSpectre;
+                TestBehaviors |= TestBehaviors.SkipGeneratedCodeCheck;
+            }
+
+            protected override IEnumerable<CodeFixProvider> GetCodeFixProviders()
+            {
+                var analyzer = new TAnalyzer();
+                foreach (var provider in CodeFixProviderDiscovery.GetCodeFixProviders(Language))
+                {
+                    if (analyzer.SupportedDiagnostics.Any(diagnostic => provider.FixableDiagnosticIds.Contains(diagnostic.Id)))
+                    {
+                        yield return provider;
+                    }
+                }
+            }
+        }
+    }
+
+    internal static class CodeAnalyzerHelper
+    {
+        internal static ReferenceAssemblies CurrentSpectre { get; }
+
+        static CodeAnalyzerHelper()
+        {
+            CurrentSpectre = ReferenceAssemblies.Net.Net50.AddAssemblies(ImmutableArray.Create(typeof(AnsiConsole).Assembly.Location.Replace(".dll", string.Empty)));
+        }
+    }
+}
