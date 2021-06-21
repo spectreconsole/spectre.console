@@ -12,6 +12,20 @@ namespace Spectre.Console.Testing
         private Action<IConfigurator>? _configuration;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CommandAppTester"/> class.
+        /// </summary>
+        /// <param name="registrar">The registrar.</param>
+        public CommandAppTester(ITypeRegistrar? registrar = null)
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Gets or sets the Registrar to use in the CommandApp.
+        /// </summary>
+        public ITypeRegistrar? Registrar { get; set; }
+
+        /// <summary>
         /// Sets the default command.
         /// </summary>
         /// <typeparam name="T">The default command type.</typeparam>
@@ -88,7 +102,7 @@ namespace Spectre.Console.Testing
             CommandContext? context = null;
             CommandSettings? settings = null;
 
-            var app = new CommandApp();
+            var app = new CommandApp(Registrar);
             _appConfiguration?.Invoke(app);
 
             if (_configuration != null)
