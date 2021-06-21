@@ -8,6 +8,7 @@ namespace Spectre.Console.Testing
     {
         public Dictionary<Type, List<Type>> Registrations { get; }
         public Dictionary<Type, List<object>> Instances { get; }
+        public Func<Dictionary<Type, List<Type>>, Dictionary<Type, List<object>>, ITypeResolver> TypeResolverFactory { get; set; }
 
         public FakeTypeRegistrar()
         {
@@ -50,7 +51,7 @@ namespace Spectre.Console.Testing
 
         public ITypeResolver Build()
         {
-            return null;
+            return TypeResolverFactory?.Invoke(Registrations, Instances);
         }
     }
 }

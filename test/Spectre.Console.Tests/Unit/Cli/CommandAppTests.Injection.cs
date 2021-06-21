@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Shouldly;
 using Spectre.Console.Testing;
 using Spectre.Console.Tests.Data;
@@ -30,7 +32,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                     Name = "Hello " + name;
                 }
             }
-
+            
             [Fact]
             public void Should_Inject_Parameters()
             {
@@ -44,6 +46,36 @@ namespace Spectre.Console.Tests.Unit.Cli
                     config.Settings.Registrar.RegisterInstance(dependency);
                     config.PropagateExceptions();
                 });
+
+                // When
+                var result = app.Run(new[]
+                {
+                    "--name", "foo",
+                    "--age", "35",
+                });
+
+                // Then
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<InjectSettings>().And(injected =>
+                {
+                    injected.ShouldNotBeNull();
+                    injected.Fake.ShouldBeSameAs(dependency);
+                    injected.Name.ShouldBe("Hello foo");
+                    injected.Age.ShouldBe(35);
+                });
+            }
+
+            [Fact]
+            public void Should_Inject_Dependency_Using_A_Given_Registrar()
+            {
+                // Given
+                var dependency = new FakeDependency();
+                var registrar = new FakeTypeRegistrar { TypeResolverFactory = FakeTypeResolver.Factory };
+                registrar.RegisterInstance(typeof(FakeDependency), dependency);
+                var app = new CommandAppTester(registrar);
+
+                app.SetDefaultCommand<GenericCommand<InjectSettings>>();
+                app.Configure(config => config.PropagateExceptions());
 
                 // When
                 var result = app.Run(new[]
