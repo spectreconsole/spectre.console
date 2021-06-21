@@ -1,0 +1,86 @@
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Testing;
+using Spectre.Console.Analyzer;
+using Xunit;
+using AnalyzerVerify =
+    Spectre.Console.Tests.CodeAnalyzers.SpectreAnalyzerVerifier<
+        Spectre.Console.Analyzer.NoConcurrentLiveRenderablesAnalyzer>;
+
+namespace Spectre.Console.Tests.CodeAnalyzers.Analyzers
+{
+    public class NoCurrentLiveRenderablesTests
+    {
+        private static readonly DiagnosticResult _expectedDiagnostics = new(
+            Descriptors.S1020_AvoidConcurrentCallsToMultipleLiveRenderables.Id,
+            DiagnosticSeverity.Warning);
+
+        [Fact]
+        public async void Status_call_within_live_call_warns()
+        {
+            const string Source = @"
+using Spectre.Console;
+
+class TestClass 
+{
+    void Go()
+    {
+        AnsiConsole.Live(new Table()).Start(ctx =>
+        {
+            AnsiConsole.Status().Start(""go"", innerCtx => {});
+        });
+    }
+}";
+
+            await AnalyzerVerify
+                .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(10, 13))
+                .ConfigureAwait(false);
+        }
+
+        [Fact]
+        public async void Status_call_within_live_call_warns_with_instance()
+        {
+            const string Source = @"
+using Spectre.Console;
+
+class Child
+{
+    public readonly IAnsiConsole _console = AnsiConsole.Console;
+
+    public void Go()
+    {
+        _console.Status().Start(""starting"", context =>
+        {
+            _console.Progress().Start(progressContext => { });
+        });
+    }
+}";
+
+            await AnalyzerVerify
+                .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(12, 13))
+                .ConfigureAwait(false);
+        }
+
+        [Fact]
+        public async void Calling_start_on_non_live_renderable_has_no_warning()
+        {
+            const string Source = @"
+using Spectre.Console;
+
+class Program
+{
+    static void Main()
+    {
+        Start();
+    }
+
+    static void Start() =>  AnsiConsole.WriteLine(""Starting..."");
+}";
+
+            await AnalyzerVerify
+                .VerifyAnalyzerAsync(Source)
+                .ConfigureAwait(false);
+        }
+    }
+    
+    
+}

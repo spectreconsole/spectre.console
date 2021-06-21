@@ -16,7 +16,7 @@ namespace Spectre.Console.Tests.CodeAnalyzers.Fixes
             DiagnosticSeverity.Info);
 
         [Fact]
-        public async Task SystemConsole_replaced_with_AnsiConsole()
+        public async Task Static_call_replaced_with_field_call()
         {
             const string Source = @"
 using Spectre.Console;
@@ -43,6 +43,72 @@ class TestClass
     {
         _ansiConsole.Write(""this is fine"");
         _ansiConsole.Write(""Hello, World"");
+    } 
+}";
+
+            await AnalyzerVerify
+                .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource)
+                .ConfigureAwait(false);
+        }
+
+        [Fact]
+        public async Task Static_call_replaced_with_parameter_call()
+        {
+            const string Source = @"
+using Spectre.Console;
+
+class TestClass 
+{
+    void TestMethod(IAnsiConsole ansiConsole) 
+    {
+        AnsiConsole.Write(""Hello, World"");
+    } 
+}";
+
+            const string FixedSource = @"
+using Spectre.Console;
+
+class TestClass 
+{
+    void TestMethod(IAnsiConsole ansiConsole) 
+    {
+        ansiConsole.Write(""Hello, World"");
+    } 
+}";
+
+            await AnalyzerVerify
+                .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(8, 9), FixedSource)
+                .ConfigureAwait(false);
+        }
+        
+        [Fact]
+        public async Task Static_call_replaced_with_static_field_if_valid()
+        {
+            const string Source = @"
+using Spectre.Console;
+
+class TestClass 
+{
+    static IAnsiConsole staticConsole;
+    IAnsiConsole instanceConsole;
+
+    static void TestMethod() 
+    {
+        AnsiConsole.Write(""Hello, World"");
+    } 
+}";
+
+            const string FixedSource = @"
+using Spectre.Console;
+
+class TestClass 
+{
+    static IAnsiConsole staticConsole;
+    IAnsiConsole instanceConsole;
+
+    static void TestMethod() 
+    {
+        staticConsole.Write(""Hello, World"");
     } 
 }";
 

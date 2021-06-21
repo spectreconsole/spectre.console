@@ -15,6 +15,46 @@ namespace Spectre.Console.Tests.CodeAnalyzers.Analyzers
             DiagnosticSeverity.Info);
 
         [Fact]
+        public async void Instance_console_has_no_warnings()
+        {
+            const string Source = @"
+using Spectre.Console;
+
+class TestClass 
+{
+    IAnsiConsole _ansiConsole = AnsiConsole.Console;    
+
+    void TestMethod() 
+    {
+        _ansiConsole.Write(""this is fine"");
+    } 
+}";
+
+            await AnalyzerVerify
+                .VerifyAnalyzerAsync(Source)
+                .ConfigureAwait(false);
+        }
+
+        [Fact]
+        public async void Static_console_with_no_instance_variables_has_no_warnings()
+        {
+            const string Source = @"
+using Spectre.Console;
+
+class TestClass 
+{
+    void TestMethod() 
+    {
+        AnsiConsole.Write(""this is fine"");
+    } 
+}";
+
+            await AnalyzerVerify
+                .VerifyAnalyzerAsync(Source)
+                .ConfigureAwait(false);
+        }
+
+        [Fact]
         public async void Console_Write_Has_Warning()
         {
             const string Source = @"

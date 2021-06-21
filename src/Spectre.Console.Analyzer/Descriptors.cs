@@ -45,5 +45,27 @@ namespace Spectre.Console.Analyzer
                 Usage,
                 Info,
                 "Favor the use of the instance of AnsiConsole over the static helper.");
+
+        /// <summary>
+        /// Gets definitions of diagnostics Spectre1020.
+        /// </summary>
+        public static DiagnosticDescriptor S1020_AvoidConcurrentCallsToMultipleLiveRenderables { get; } =
+            Rule(
+                "Spectre1020",
+                "Avoid calling other live renderables while a current renderable is running.",
+                Usage,
+                Warning,
+                "Avoid calling other live renderables while a current renderable is running.");
+
+        /// <summary>
+        /// Gets definitions of diagnostics Spectre1020.
+        /// </summary>
+        public static DiagnosticDescriptor S1021_AvoidPromptCallsDuringLiveRenderables { get; } =
+            Rule(
+                "Spectre1021",
+                "Avoid prompting for input while a current renderable is running.",
+                Usage,
+                Warning,
+                "Avoid prompting for input while a current renderable is running.");
     }
 }

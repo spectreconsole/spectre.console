@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.VisualStudio.Composition;
-using Spectre.Console.Analyzer;
 using Spectre.Console.Analyzer.FixProviders;
 
 namespace Spectre.Console.Tests.CodeAnalyzers
