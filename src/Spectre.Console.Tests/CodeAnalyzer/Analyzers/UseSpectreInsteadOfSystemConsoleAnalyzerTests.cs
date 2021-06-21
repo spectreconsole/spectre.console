@@ -15,6 +15,24 @@ namespace Spectre.Console.Tests.CodeAnalyzers.Analyzers
             DiagnosticSeverity.Warning);
 
         [Fact]
+        public async void Non_configured_SystemConsole_methods_report_no_warnings()
+        {
+            const string Source = @"
+using System;
+
+class TestClass {
+    void TestMethod() 
+    {
+        var s = Console.ReadLine();
+    } 
+}";
+
+            await AnalyzerVerify
+                .VerifyAnalyzerAsync(Source)
+                .ConfigureAwait(false);
+        }
+        
+        [Fact]
         public async void Console_Write_Has_Warning()
         {
             const string Source = @"

@@ -43,8 +43,6 @@ namespace Spectre.Console.Tests.CodeAnalyzers
             {
                 TestCode = source,
                 CompilerDiagnostics = CompilerDiagnostics.All,
-                ReferenceAssemblies = CodeAnalyzerHelper.CurrentSpectre,
-                TestBehaviors = TestBehaviors.SkipGeneratedCodeCheck,
             };
 
             test.ExpectedDiagnostics.AddRange(expected);
