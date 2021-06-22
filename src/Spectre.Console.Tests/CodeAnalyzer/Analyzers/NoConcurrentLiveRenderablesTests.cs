@@ -81,6 +81,4 @@ class Program
                 .ConfigureAwait(false);
         }
     }
-    
-    
 }
