@@ -80,7 +80,7 @@ class TestClass
                 .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(8, 9), FixedSource)
                 .ConfigureAwait(false);
         }
-        
+
         [Fact]
         public async Task Static_call_replaced_with_static_field_if_valid()
         {

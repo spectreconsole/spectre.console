@@ -31,7 +31,7 @@ class TestClass {
                 .VerifyAnalyzerAsync(Source)
                 .ConfigureAwait(false);
         }
-        
+
         [Fact]
         public async void Console_Write_Has_Warning()
         {
