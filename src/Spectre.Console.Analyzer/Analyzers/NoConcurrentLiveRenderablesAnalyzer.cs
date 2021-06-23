@@ -14,7 +14,7 @@ namespace Spectre.Console.Analyzer
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     [Shared]
-    public class NoConcurrentLiveRenderablesAnalyzer : BaseAnalyzer
+    public class NoConcurrentLiveRenderablesAnalyzer : SpectreAnalyzer
     {
         private static readonly DiagnosticDescriptor _diagnosticDescriptor =
             Descriptors.S1020_AvoidConcurrentCallsToMultipleLiveRenderables;

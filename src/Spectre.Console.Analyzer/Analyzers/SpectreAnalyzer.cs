@@ -5,7 +5,7 @@ namespace Spectre.Console.Analyzer
     /// <summary>
     /// Base class for Spectre analyzers.
     /// </summary>
-    public abstract class BaseAnalyzer : DiagnosticAnalyzer
+    public abstract class SpectreAnalyzer : DiagnosticAnalyzer
     {
         /// <inheritdoc />
         public override void Initialize(AnalysisContext context)
