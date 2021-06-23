@@ -1,7 +1,5 @@
-using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Rendering;
-using Spectre.Verify.Extensions;
 using VerifyXunit;
 using Xunit;
 

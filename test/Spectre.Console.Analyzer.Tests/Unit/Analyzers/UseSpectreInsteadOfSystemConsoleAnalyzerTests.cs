@@ -1,12 +1,8 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Testing;
-using Spectre.Console.Analyzer;
 using Xunit;
-using AnalyzerVerify =
-    Spectre.Console.Tests.CodeAnalyzers.SpectreAnalyzerVerifier<
-        Spectre.Console.Analyzer.UseSpectreInsteadOfSystemConsoleAnalyzer>;
 
-namespace Spectre.Console.Tests.CodeAnalyzers.Analyzers
+namespace Spectre.Console.Analyzer.Tests.Unit.Analyzers
 {
     public class UseSpectreInsteadOfSystemConsoleAnalyzerTests
     {
@@ -27,7 +23,7 @@ class TestClass {
     } 
 }";
 
-            await AnalyzerVerify
+            await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
                 .VerifyAnalyzerAsync(Source)
                 .ConfigureAwait(false);
         }
@@ -45,7 +41,7 @@ class TestClass {
     } 
 }";
 
-            await AnalyzerVerify
+            await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
                 .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(7, 9))
                 .ConfigureAwait(false);
         }
@@ -63,7 +59,7 @@ class TestClass
     }
 }";
 
-            await AnalyzerVerify
+            await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
                 .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(7, 9))
                 .ConfigureAwait(false);
         }

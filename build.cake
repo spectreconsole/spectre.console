@@ -19,7 +19,13 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(context => 
 {
-    DotNetCoreTest("./src/Spectre.Console.Tests/Spectre.Console.Tests.csproj", new DotNetCoreTestSettings {
+    DotNetCoreTest("./test/Spectre.Console.Tests/Spectre.Console.Tests.csproj", new DotNetCoreTestSettings {
+        Configuration = configuration,
+        NoRestore = true,
+        NoBuild = true,
+    });
+
+    DotNetCoreTest("./test/Spectre.Console.Analyzer.Tests/Spectre.Console.Analyzer.Tests.csproj", new DotNetCoreTestSettings {
         Configuration = configuration,
         NoRestore = true,
         NoBuild = true,

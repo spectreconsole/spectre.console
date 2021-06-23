@@ -1,13 +1,9 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Testing;
-using Spectre.Console.Analyzer;
 using Xunit;
-using AnalyzerVerify =
-    Spectre.Console.Tests.CodeAnalyzers.SpectreAnalyzerVerifier<
-        Spectre.Console.Analyzer.NoPromptsDuringLiveRenderablesAnalyzer>;
 
-namespace Spectre.Console.Tests.CodeAnalyzers.Analyzers
+namespace Spectre.Console.Analyzer.Tests.Unit.Analyzers
 {
     public class NoPromptsDuringLiveRenderablesTests
     {
@@ -29,7 +25,7 @@ class TestClass
     }
 }";
 
-            await AnalyzerVerify
+            await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
                 .VerifyAnalyzerAsync(Source)
                 .ConfigureAwait(false);
         }
@@ -53,7 +49,7 @@ class TestClass
     }
 }";
 
-            await AnalyzerVerify
+            await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
                 .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(12, 26))
                 .ConfigureAwait(false);
         }
@@ -75,7 +71,7 @@ class TestClass
     }
 }";
 
-            await AnalyzerVerify
+            await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
                 .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(10, 13))
                 .ConfigureAwait(false);
         }
@@ -100,7 +96,7 @@ class Program
     static string Confirm() => string.Empty;
 }";
 
-            await AnalyzerVerify
+            await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
                 .VerifyAnalyzerAsync(Source)
                 .ConfigureAwait(false);
         }

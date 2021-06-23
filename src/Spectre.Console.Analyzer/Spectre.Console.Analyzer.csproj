@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <Description>Best practice analyzers for Spectre.Console.</Description>
@@ -8,6 +8,7 @@
         <Nullable>enable</Nullable>
         <NoPackageAnalysis>true</NoPackageAnalysis>
     </PropertyGroup>
+  
     <ItemGroup>
         <AdditionalFiles Include="..\stylecop.json" Link="Properties/stylecop.json" />
         <None Include="../../resources/gfx/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
@@ -17,6 +18,10 @@
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.8" PrivateAssets="all" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.6.1" PrivateAssets="all" />
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.6.1" PrivateAssets="all" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Remove="bin\Debug\netstandard2.0\\Spectre.Console.Analyzer.dll" />
     </ItemGroup>
 
     <ItemGroup>

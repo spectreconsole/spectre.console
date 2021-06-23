@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\Spectre.Console\Cli\Internal\Constants.cs" Link="Imported\Constants.cs" />
+    <Compile Include="..\..\src\Spectre.Console\Cli\Internal\Constants.cs" Link="Imported\Constants.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,9 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Spectre.Console.Analyzer\Spectre.Console.Analyzer.csproj" />
-    <ProjectReference Include="..\Spectre.Console.Testing\Spectre.Console.Testing.csproj" />
-    <ProjectReference Include="..\Spectre.Console\Spectre.Console.csproj" />
+    <ProjectReference Include="..\..\src\Spectre.Console.Analyzer\Spectre.Console.Analyzer.csproj" />
+    <ProjectReference Include="..\..\src\Spectre.Console.Testing\Spectre.Console.Testing.csproj" />
+    <ProjectReference Include="..\..\src\Spectre.Console\Spectre.Console.csproj" />
   </ItemGroup>
 
   <ItemGroup>

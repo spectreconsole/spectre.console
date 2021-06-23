@@ -6,7 +6,7 @@ namespace Spectre.Console.Analyzer.Sandbox
     public static class Program
     {
         /// <summary>
-        /// Main.
+        /// The program's entry point.
         /// </summary>
         public static void Main()
         {

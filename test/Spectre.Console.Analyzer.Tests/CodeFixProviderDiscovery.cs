@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.VisualStudio.Composition;
 using Spectre.Console.Analyzer.FixProviders;
 
-namespace Spectre.Console.Tests.CodeAnalyzers
+namespace Spectre.Console.Analyzer.Tests
 {
     internal static class CodeFixProviderDiscovery
     {

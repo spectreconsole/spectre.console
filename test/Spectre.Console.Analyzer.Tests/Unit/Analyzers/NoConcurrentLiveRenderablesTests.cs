@@ -1,12 +1,8 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Testing;
-using Spectre.Console.Analyzer;
 using Xunit;
-using AnalyzerVerify =
-    Spectre.Console.Tests.CodeAnalyzers.SpectreAnalyzerVerifier<
-        Spectre.Console.Analyzer.NoConcurrentLiveRenderablesAnalyzer>;
 
-namespace Spectre.Console.Tests.CodeAnalyzers.Analyzers
+namespace Spectre.Console.Analyzer.Tests.Unit.Analyzers
 {
     public class NoCurrentLiveRenderablesTests
     {
@@ -31,7 +27,7 @@ class TestClass
     }
 }";
 
-            await AnalyzerVerify
+            await SpectreAnalyzerVerifier<NoConcurrentLiveRenderablesAnalyzer>
                 .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(10, 13))
                 .ConfigureAwait(false);
         }
@@ -55,7 +51,7 @@ class Child
     }
 }";
 
-            await AnalyzerVerify
+            await SpectreAnalyzerVerifier<NoConcurrentLiveRenderablesAnalyzer>
                 .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(12, 13))
                 .ConfigureAwait(false);
         }
@@ -76,7 +72,7 @@ class Program
     static void Start() =>  AnsiConsole.WriteLine(""Starting..."");
 }";
 
-            await AnalyzerVerify
+            await SpectreAnalyzerVerifier<NoConcurrentLiveRenderablesAnalyzer>
                 .VerifyAnalyzerAsync(Source)
                 .ConfigureAwait(false);
         }

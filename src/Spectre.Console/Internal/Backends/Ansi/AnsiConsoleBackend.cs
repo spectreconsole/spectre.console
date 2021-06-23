@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using Spectre.Console.Rendering;
 using static Spectre.Console.AnsiSequences;
 

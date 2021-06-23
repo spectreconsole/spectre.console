@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 
-namespace Spectre.Console.Tests.CodeAnalyzers
+namespace Spectre.Console.Analyzer.Tests
 {
     public static class SpectreAnalyzerVerifier<TAnalyzer>
         where TAnalyzer : DiagnosticAnalyzer, new()
@@ -79,7 +79,8 @@ namespace Spectre.Console.Tests.CodeAnalyzers
 
         static CodeAnalyzerHelper()
         {
-            CurrentSpectre = ReferenceAssemblies.Net.Net50.AddAssemblies(ImmutableArray.Create(typeof(AnsiConsole).Assembly.Location.Replace(".dll", string.Empty)));
+            CurrentSpectre = ReferenceAssemblies.Net.Net50.AddAssemblies(
+                ImmutableArray.Create(typeof(AnsiConsole).Assembly.Location.Replace(".dll", string.Empty)));
         }
     }
 }
