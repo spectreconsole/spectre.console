@@ -10,7 +10,7 @@ namespace Spectre.Console.Analyzer
     /// Analyzer to enforce the use of AnsiConsole over System.Console for known methods.
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UseSpectreInsteadOfSystemConsoleAnalyzer : BaseAnalyzer
+    public class UseSpectreInsteadOfSystemConsoleAnalyzer : SpectreAnalyzer
     {
         private static readonly DiagnosticDescriptor _diagnosticDescriptor =
             Descriptors.S1000_UseAnsiConsoleOverSystemConsole;

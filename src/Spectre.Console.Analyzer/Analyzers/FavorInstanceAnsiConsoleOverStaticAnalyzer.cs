@@ -12,7 +12,7 @@ namespace Spectre.Console.Analyzer
     /// Analyzer to suggest using available instances of AnsiConsole over the static methods.
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class FavorInstanceAnsiConsoleOverStaticAnalyzer : BaseAnalyzer
+    public class FavorInstanceAnsiConsoleOverStaticAnalyzer : SpectreAnalyzer
     {
         private static readonly DiagnosticDescriptor _diagnosticDescriptor =
             Descriptors.S1010_FavorInstanceAnsiConsoleOverStatic;
