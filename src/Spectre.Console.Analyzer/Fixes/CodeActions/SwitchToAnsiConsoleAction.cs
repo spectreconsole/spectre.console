@@ -107,8 +107,9 @@ namespace Spectre.Console.Analyzer.CodeActions
                                 SyntaxKind.SimpleMemberAccessExpression,
                                 IdentifierName(ansiConsoleIdentifier),
                                 IdentifierName(originalCaller)))
-                        .WithArgumentList(
-                        _originalInvocation.ArgumentList))
+                        .WithArgumentList(_originalInvocation.ArgumentList)
+                        .WithTrailingTrivia(_originalInvocation.GetTrailingTrivia())
+                        .WithLeadingTrivia(_originalInvocation.GetLeadingTrivia()))
             .Expression;
         }
     }

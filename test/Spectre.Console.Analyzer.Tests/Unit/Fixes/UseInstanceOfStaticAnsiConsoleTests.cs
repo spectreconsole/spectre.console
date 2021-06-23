@@ -48,6 +48,46 @@ class TestClass
         }
 
         [Fact]
+        public async Task Static_call_replaced_with_field_call_Should_Preserve_Trivia()
+        {
+            const string Source = @"
+using Spectre.Console;
+
+class TestClass 
+{
+    IAnsiConsole _ansiConsole = AnsiConsole.Console;    
+
+    void TestMethod() 
+    {
+        var foo = 1;
+
+        AnsiConsole.Write(""this is fine"");
+        _ansiConsole.Write(""Hello, World"");
+    } 
+}";
+
+            const string FixedSource = @"
+using Spectre.Console;
+
+class TestClass 
+{
+    IAnsiConsole _ansiConsole = AnsiConsole.Console;    
+
+    void TestMethod() 
+    {
+        var foo = 1;
+
+        _ansiConsole.Write(""this is fine"");
+        _ansiConsole.Write(""Hello, World"");
+    } 
+}";
+
+            await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
+                .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(12, 9), FixedSource)
+                .ConfigureAwait(false);
+        }
+
+        [Fact]
         public async Task Static_call_replaced_with_parameter_call()
         {
             const string Source = @"
