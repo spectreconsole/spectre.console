@@ -1,7 +1,7 @@
 using System.Threading;
 using Spectre.Console;
 
-namespace AnalyzerTester
+namespace Spectre.Console.Analyzer.Sandbox
 {
     class Program
     {
