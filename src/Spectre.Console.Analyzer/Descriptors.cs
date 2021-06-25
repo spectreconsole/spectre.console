@@ -19,9 +19,17 @@ namespace Spectre.Console.Analyzer
 
         private static DiagnosticDescriptor Rule(string id, string title, Category category, DiagnosticSeverity defaultSeverity, string messageFormat, string? description = null)
         {
-            var helpLink = $"https://spectreconsole.net/spectre.console.analyzers/rules/{id}";
+            var helpLink = $"https://spectreconsole.net/analyzer/rules/{id.ToLowerInvariant()}";
             const bool IsEnabledByDefault = true;
-            return new DiagnosticDescriptor(id, title, messageFormat, _categoryMapping.GetOrAdd(category, c => c.ToString()), defaultSeverity, IsEnabledByDefault, description, helpLink);
+            return new DiagnosticDescriptor(
+                id,
+                title,
+                messageFormat,
+                _categoryMapping.GetOrAdd(category, c => c.ToString()),
+                defaultSeverity,
+                IsEnabledByDefault,
+                description,
+                helpLink);
         }
 
         /// <summary>
