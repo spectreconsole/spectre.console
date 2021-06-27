@@ -8,6 +8,11 @@ namespace Spectre.Console
         where T : notnull
     {
         /// <summary>
+        /// Gets a value indicating whether or not this item is selected.
+        /// </summary>
+        bool IsSelected { get; }
+
+        /// <summary>
         /// Selects the item.
         /// </summary>
         /// <returns>The same instance so that multiple calls can be chained.</returns>

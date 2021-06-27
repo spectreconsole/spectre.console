@@ -9,7 +9,7 @@ namespace Spectre.Console
         public ListPromptItem<T>? Parent { get; }
         public List<ListPromptItem<T>> Children { get; }
         public int Depth { get; }
-        public bool Selected { get; set; }
+        public bool IsSelected { get; set; }
 
         public bool IsGroup => Children.Count > 0;
 
@@ -23,7 +23,7 @@ namespace Spectre.Console
 
         public IMultiSelectionItem<T> Select()
         {
-            Selected = true;
+            IsSelected = true;
             return this;
         }
 

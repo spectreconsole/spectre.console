@@ -130,40 +130,19 @@ namespace Spectre.Console
         /// </summary>
         /// <typeparam name="T">The prompt result type.</typeparam>
         /// <param name="obj">The prompt.</param>
-        /// <param name="index">The index of the item to select.</param>
+        /// <param name="item">The item to select.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        [Obsolete("Selection by index has been made obsolete", error: true)]
-        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, int index)
+        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, T item)
             where T : notnull
         {
-            return obj;
-        }
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
 
-        /// <summary>
-        /// Marks multiple items as selected.
-        /// </summary>
-        /// <typeparam name="T">The prompt result type.</typeparam>
-        /// <param name="obj">The prompt.</param>
-        /// <param name="indices">The indices of the items to select.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        [Obsolete("Selection by index has been made obsolete", error: true)]
-        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, params int[] indices)
-            where T : notnull
-        {
-            return obj;
-        }
+            var node = obj.Tree.Find(item);
+            node?.Select();
 
-        /// <summary>
-        /// Marks multiple items as selected.
-        /// </summary>
-        /// <typeparam name="T">The prompt result type.</typeparam>
-        /// <param name="obj">The prompt.</param>
-        /// <param name="indices">The indices of the items to select.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        [Obsolete("Selection by index has been made obsolete", error: true)]
-        public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, IEnumerable<int> indices)
-            where T : notnull
-        {
             return obj;
         }
 

@@ -13,8 +13,6 @@ namespace Spectre.Console
     public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrategy<T>
         where T : notnull
     {
-        private readonly ListPromptTree<T> _tree;
-
         /// <summary>
         /// Gets or sets the title.
         /// </summary>
@@ -59,12 +57,18 @@ namespace Spectre.Console
         /// </summary>
         public SelectionMode Mode { get; set; } = SelectionMode.Leaf;
 
+        internal ListPromptTree<T> Tree { get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiSelectionPrompt{T}"/> class.
         /// </summary>
-        public MultiSelectionPrompt()
+        /// <param name="comparer">
+        /// The <see cref="IEqualityComparer{T}"/> implementation to use when comparing items,
+        /// or <c>null</c> to use the default <see cref="IEqualityComparer{T}"/> for the type of the item.
+        /// </param>
+        public MultiSelectionPrompt(IEqualityComparer<T>? comparer = null)
         {
-            _tree = new ListPromptTree<T>();
+            Tree = new ListPromptTree<T>(comparer ?? EqualityComparer<T>.Default);
         }
 
         /// <summary>
@@ -75,7 +79,7 @@ namespace Spectre.Console
         public IMultiSelectionItem<T> AddChoice(T item)
         {
             var node = new ListPromptItem<T>(item);
-            _tree.Add(node);
+            Tree.Add(node);
             return node;
         }
 
@@ -84,18 +88,18 @@ namespace Spectre.Console
         {
             // Create the list prompt
             var prompt = new ListPrompt<T>(console, this);
-            var result = prompt.Show(_tree, PageSize);
+            var result = prompt.Show(Tree, PageSize);
 
             if (Mode == SelectionMode.Leaf)
             {
                 return result.Items
-                    .Where(x => x.Selected && x.Children.Count == 0)
+                    .Where(x => x.IsSelected && x.Children.Count == 0)
                     .Select(x => x.Data)
                     .ToList();
             }
 
             return result.Items
-                .Where(x => x.Selected)
+                .Where(x => x.IsSelected)
                 .Select(x => x.Data)
                 .ToList();
         }
@@ -105,7 +109,7 @@ namespace Spectre.Console
         {
             if (key.Key == ConsoleKey.Enter)
             {
-                if (Required && state.Items.None(x => x.Selected))
+                if (Required && state.Items.None(x => x.IsSelected))
                 {
                     // Selection not permitted
                     return ListPromptInputResult.None;
@@ -118,14 +122,14 @@ namespace Spectre.Console
             if (key.Key == ConsoleKey.Spacebar)
             {
                 var current = state.Items[state.Index];
-                var select = !current.Selected;
+                var select = !current.IsSelected;
 
                 if (Mode == SelectionMode.Leaf)
                 {
                     // Select the node and all it's children
                     foreach (var item in current.Traverse(includeSelf: true))
                     {
-                        item.Selected = select;
+                        item.IsSelected = select;
                     }
 
                     // Visit every parent and evaluate if it's selection
@@ -133,13 +137,13 @@ namespace Spectre.Console
                     var parent = current.Parent;
                     while (parent != null)
                     {
-                        parent.Selected = parent.Traverse(includeSelf: false).All(x => x.Selected);
+                        parent.IsSelected = parent.Traverse(includeSelf: false).All(x => x.IsSelected);
                         parent = parent.Parent;
                     }
                 }
                 else
                 {
-                    current.Selected = !current.Selected;
+                    current.IsSelected = !current.IsSelected;
                 }
 
                 // Refresh the list
@@ -209,7 +213,7 @@ namespace Spectre.Console
                     text = text.RemoveMarkup();
                 }
 
-                var checkbox = item.Node.Selected
+                var checkbox = item.Node.IsSelected
                     ? (item.Node.IsGroup && Mode == SelectionMode.Leaf
                         ? ListPromptConstants.GroupSelectedCheckbox : ListPromptConstants.SelectedCheckbox)
                     : ListPromptConstants.Checkbox;
