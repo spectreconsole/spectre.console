@@ -57,7 +57,7 @@ namespace Spectre.Console
         /// </summary>
         public SelectionPrompt()
         {
-            _tree = new ListPromptTree<T>();
+            _tree = new ListPromptTree<T>(EqualityComparer<T>.Default);
         }
 
         /// <summary>
