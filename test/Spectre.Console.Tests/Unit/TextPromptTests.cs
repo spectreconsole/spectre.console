@@ -4,7 +4,7 @@ using Spectre.Console.Testing;
 using Shouldly;
 using VerifyXunit;
 using Xunit;
-using Spectre.Verify.Extensions;
+using VerifyTests;
 
 namespace Spectre.Console.Tests.Unit
 {

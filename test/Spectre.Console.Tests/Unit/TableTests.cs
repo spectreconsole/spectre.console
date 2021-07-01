@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Shouldly;
 using Spectre.Console.Testing;
-using Spectre.Verify.Extensions;
+using VerifyTests;
 using VerifyXunit;
 using Xunit;
 
@@ -247,7 +247,7 @@ namespace Spectre.Console.Tests.Unit
         {
             // A simple table
             var console = new TestConsole();
-            var table = new Table() { Border = TableBorder.Rounded };
+            var table = new Table { Border = TableBorder.Rounded };
             table.AddColumn("Foo");
             table.AddColumn("Bar");
             table.AddColumn(new TableColumn("Baz") { Alignment = Justify.Right });

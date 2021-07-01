@@ -21,4 +21,9 @@
     <Folder Include="Properties\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="MinVer" Version="2.5.0" />
+    <PackageReference Update="Roslynator.Analyzers" Version="3.2.0" />
+  </ItemGroup>
+
 </Project>

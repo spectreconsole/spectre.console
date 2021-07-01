@@ -3,7 +3,7 @@ using Shouldly;
 using Spectre.Console.Cli;
 using Spectre.Console.Testing;
 using Spectre.Console.Tests.Data;
-using Spectre.Verify.Extensions;
+using VerifyTests;
 using VerifyXunit;
 using Xunit;
 

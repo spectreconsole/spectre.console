@@ -11,5 +11,9 @@
     <ProjectReference Include="..\Spectre.Console.Analyzer\Spectre.Console.Analyzer.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="..\Spectre.Console\Spectre.Console.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="MinVer" Version="2.5.0" />
+    <PackageReference Update="Roslynator.Analyzers" Version="3.2.0" />
+  </ItemGroup>
 
 </Project>

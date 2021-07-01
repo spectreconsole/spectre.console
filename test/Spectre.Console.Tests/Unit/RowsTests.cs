@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Spectre.Console.Rendering;
 using Spectre.Console.Testing;
-using Spectre.Verify.Extensions;
+using VerifyTests;
 using VerifyXunit;
 using Xunit;
 

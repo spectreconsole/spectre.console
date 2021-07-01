@@ -1,5 +1,4 @@
 using System.Runtime.CompilerServices;
-using Spectre.Verify.Extensions;
 using VerifyTests;
 
 namespace Spectre.Console.Tests
