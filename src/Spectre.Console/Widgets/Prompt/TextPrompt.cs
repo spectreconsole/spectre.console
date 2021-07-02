@@ -179,8 +179,10 @@ namespace Spectre.Console
             var builder = new StringBuilder();
             builder.Append(_prompt.TrimEnd());
 
+            var appendSuffix = false;
             if (ShowChoices && Choices.Count > 0)
             {
+                appendSuffix = true;
                 var converter = Converter ?? TypeConverterHelper.ConvertToString;
                 var choices = string.Join("/", Choices.Select(choice => converter(choice)));
                 builder.AppendFormat(CultureInfo.InvariantCulture, " [blue][[{0}]][/]", choices);
@@ -188,6 +190,7 @@ namespace Spectre.Console
 
             if (ShowDefaultValue && DefaultValue != null)
             {
+                appendSuffix = true;
                 var converter = Converter ?? TypeConverterHelper.ConvertToString;
                 builder.AppendFormat(
                     CultureInfo.InvariantCulture,
@@ -196,8 +199,7 @@ namespace Spectre.Console
             }
 
             var markup = builder.ToString().Trim();
-            if (!markup.EndsWith("?", StringComparison.OrdinalIgnoreCase) &&
-                !markup.EndsWith(":", StringComparison.OrdinalIgnoreCase))
+            if (appendSuffix)
             {
                 markup += ":";
             }
