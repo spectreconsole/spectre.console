@@ -13,6 +13,20 @@ namespace Spectre.Console.Tests.Unit
     public sealed class TextPromptTests
     {
         [Fact]
+        public void Should_Return_Entered_Text()
+        {
+            // Given
+            var console = new TestConsole();
+            console.Input.PushTextWithEnter("Hello World");
+
+            // When
+            var result = console.Prompt(new TextPrompt<string>("Enter text:"));
+
+            // Then
+            result.ShouldBe("Hello World");
+        }
+
+        [Fact]
         [Expectation("ConversionError")]
         public Task Should_Return_Validation_Error_If_Value_Cannot_Be_Converted()
         {
@@ -214,6 +228,23 @@ namespace Spectre.Console.Tests.Unit
                 new TextPrompt<string>("Favorite fruit?")
                     .Secret()
                     .DefaultValue("Banana"));
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("NoSuffix")]
+        [GitHubIssue(413)]
+        public Task Should_Not_Append_Questionmark_Or_Colon_If_No_Choices_Are_Set()
+        {
+            // Given
+            var console = new TestConsole();
+            console.Input.PushTextWithEnter("Orange");
+
+            // When
+            console.Prompt(
+                new TextPrompt<string>("Enter command$"));
 
             // Then
             return Verifier.Verify(console.Output);
