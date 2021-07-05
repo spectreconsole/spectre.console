@@ -65,7 +65,7 @@ namespace Spectre.Console.Analyzer
                 .Ancestors().OfType<MethodDeclarationSyntax>()
                 .First()
                 .ParameterList.Parameters
-                .Any(i => i.Type.NormalizeWhitespace().ToString() == "IAnsiConsole");
+                .Any(i => i.Type!.NormalizeWhitespace().ToString() == "IAnsiConsole");
         }
 
         private static bool HasFieldAnsiConsole(SyntaxNode syntaxNode)
