@@ -8,9 +8,6 @@ namespace Spectre.Console.Rendering
     public sealed class LineTreeGuide : TreeGuide
     {
         /// <inheritdoc/>
-        public override TreeGuide? SafeTreeGuide => Ascii;
-
-        /// <inheritdoc/>
         public override string GetPart(TreeGuidePart part)
         {
             return part switch
