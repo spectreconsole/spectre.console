@@ -16,7 +16,7 @@ namespace Spectre.Console.Examples
             // Create the tree
             var tree = new Tree("Root")
                 .Style(Style.Parse("red"))
-                .Guide(TreeGuide.BoldLine);
+                .Guide(TreeGuide.Line);
 
             // Add some nodes
             var foo = tree.AddNode("[yellow]Foo[/]");
