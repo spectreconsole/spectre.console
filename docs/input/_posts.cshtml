@@ -1,7 +1,7 @@
 <div>
     @foreach (IDocument post in Document.GetChildren())
     {
-        IDocument topicDocument = Outputs[nameof(Archives)][$"blog/topics/{post.GetString("topic")}/index.html"];
+        Statiq.Common.IDocument topicDocument = Outputs[nameof(Archives)][$"blog/topics/{post.GetString("topic")}/index.html"].First();
         string excerpt = post.GetString(Statiq.Html.HtmlKeys.Excerpt);
         <div>
             <div class="p-3 mb-2 bg-light page-box">

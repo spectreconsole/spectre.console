@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
     <DefaultItemExcludes>$(DefaultItemExcludes);output\**;.gitignore</DefaultItemExcludes>
     <MinVerSkip Condition="'$(Configuration)' == 'Debug'">true</MinVerSkip>
@@ -31,7 +31,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Statiq.Web" Version="1.0.0-beta.27" />
+    <PackageReference Include="Microsoft.Playwright" Version="1.13.0-next-1" />
+
+    <PackageReference Include="Statiq.Web" Version="1.0.0-beta.31" />
     <PackageReference Include="MinVer" PrivateAssets="All" Version="2.3.1" />
   </ItemGroup>
 

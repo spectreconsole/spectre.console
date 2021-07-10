@@ -1,5 +1,9 @@
 Title: Markup
 Order: 2
+Highlights:
+ - Easily add color
+ - Add hyperlinks to text
+ - Emoji parsing
 ---
 
 The `Markup` class allows you to output rich text to the console.

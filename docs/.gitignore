@@ -7,6 +7,7 @@
 [Tt]ools/
 ![Tt]ools/packages.config
 [Oo]utput/
+[Cc]ache/
 ![Ii]nput/
 nuget.exe
 *.com
