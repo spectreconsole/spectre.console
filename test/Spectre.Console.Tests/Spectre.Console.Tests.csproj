@@ -32,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Spectre.Console.Analyzer\Spectre.Console.Analyzer.csproj" />
     <ProjectReference Include="..\..\src\Spectre.Console.Testing\Spectre.Console.Testing.csproj" />
     <ProjectReference Include="..\..\src\Spectre.Console\Spectre.Console.csproj" />
   </ItemGroup>
