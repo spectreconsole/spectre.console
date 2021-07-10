@@ -93,3 +93,9 @@ dotnet_diagnostic.CA1810.severity = none
 
 # IDE0044: Add readonly modifier
 dotnet_diagnostic.IDE0044.severity = warning
+
+# RCS1047: Non-asynchronous method name should not end with 'Async'.
+dotnet_diagnostic.RCS1047.severity = none
+
+# RCS1090: Call 'ConfigureAwait(false)'.
+dotnet_diagnostic.RCS1090.severity = warning

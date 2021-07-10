@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -75,9 +77,15 @@ namespace Spectre.Console
         /// <inheritdoc/>
         public T Show(IAnsiConsole console)
         {
+            return ShowAsync(console, CancellationToken.None).GetAwaiter().GetResult();
+        }
+
+        /// <inheritdoc/>
+        public async Task<T> ShowAsync(IAnsiConsole console, CancellationToken cancellationToken)
+        {
             // Create the list prompt
             var prompt = new ListPrompt<T>(console, this);
-            var result = prompt.Show(_tree, PageSize);
+            var result = await prompt.Show(_tree, cancellationToken, PageSize).ConfigureAwait(false);
 
             // Return the selected item
             return result.Items[result.Index].Data;

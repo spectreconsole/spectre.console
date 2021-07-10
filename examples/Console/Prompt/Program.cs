@@ -25,7 +25,6 @@ namespace Spectre.Console.Examples
             var age = AskAge();
             var password = AskPassword();
             var color = AskColor();
-            var origin = AskOrigin();
 
             // Summary
             AnsiConsole.WriteLine();
@@ -38,8 +37,7 @@ namespace Spectre.Console.Examples
                 .AddRow("[grey]Favorite sport[/]", sport)
                 .AddRow("[grey]Age[/]", age.ToString())
                 .AddRow("[grey]Password[/]", password)
-                .AddRow("[grey]Favorite color[/]", string.IsNullOrEmpty(color) ? "Unknown" : color)
-                .AddRow("[grey]Origin[/]", origin));
+                .AddRow("[grey]Favorite color[/]", string.IsNullOrEmpty(color) ? "Unknown" : color));
         }
 
         private static string AskName()
@@ -143,14 +141,5 @@ namespace Spectre.Console.Examples
                 new TextPrompt<string>("[grey][[Optional]][/] What is your [green]favorite color[/]?")
                     .AllowEmpty());
         }
-
-        private static string AskOrigin()
-        {
-            AnsiConsole.WriteLine();
-            AnsiConsole.Render(new Rule("[yellow]Default answer[/]").RuleStyle("grey").LeftAligned());
-            var name = AnsiConsole.Ask("Where are you [green]from[/]?", "Earth");
-            return name;
-        }
-
     }
 }

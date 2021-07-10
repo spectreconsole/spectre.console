@@ -1,3 +1,6 @@
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace Spectre.Console
 {
     /// <summary>
@@ -12,5 +15,13 @@ namespace Spectre.Console
         /// <param name="console">The console.</param>
         /// <returns>The prompt input result.</returns>
         T Show(IAnsiConsole console);
+
+        /// <summary>
+        /// Shows the prompt asynchronously.
+        /// </summary>
+        /// <param name="console">The console.</param>
+        /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+        /// <returns>The prompt input result.</returns>
+        Task<T> ShowAsync(IAnsiConsole console, CancellationToken cancellationToken);
     }
 }

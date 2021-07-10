@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Spectre.Console
 {
@@ -18,7 +20,32 @@ namespace Spectre.Console
                 throw new InvalidOperationException("Failed to read input in non-interactive mode.");
             }
 
+            if (!System.Console.KeyAvailable)
+            {
+                return null;
+            }
+
             return System.Console.ReadKey(intercept);
+        }
+
+        public async Task<ConsoleKeyInfo?> ReadKeyAsync(bool intercept, CancellationToken cancellationToken)
+        {
+            while (true)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    return null;
+                }
+
+                if (System.Console.KeyAvailable)
+                {
+                    break;
+                }
+
+                await Task.Delay(5, cancellationToken).ConfigureAwait(false);
+            }
+
+            return ReadKey(intercept);
         }
     }
 }

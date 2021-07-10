@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Spectre.Console
 {
@@ -10,7 +12,7 @@ namespace Spectre.Console
     /// </summary>
     public static partial class AnsiConsoleExtensions
     {
-        internal static string ReadLine(this IAnsiConsole console, Style? style, bool secret, IEnumerable<string>? items = null)
+        internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, IEnumerable<string>? items = null, CancellationToken cancellationToken = default)
         {
             if (console is null)
             {
@@ -24,7 +26,7 @@ namespace Spectre.Console
 
             while (true)
             {
-                var rawKey = console.Input.ReadKey(true);
+                var rawKey = await console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
                 if (rawKey == null)
                 {
                     continue;

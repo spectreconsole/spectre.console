@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Spectre.Console.Testing
 {
@@ -73,6 +75,12 @@ namespace Spectre.Console.Testing
             }
 
             return _input.Dequeue();
+        }
+
+        /// <inheritdoc/>
+        public Task<ConsoleKeyInfo?> ReadKeyAsync(bool intercept, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(ReadKey(intercept));
         }
     }
 }
