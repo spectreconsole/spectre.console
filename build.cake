@@ -15,8 +15,20 @@ Task("Build")
     });
 });
 
+Task("Build-Examples")
+    .Does(context => 
+{
+    DotNetCoreBuild("./examples/Examples.sln", new DotNetCoreBuildSettings {
+        Configuration = configuration,
+        NoIncremental = context.HasArgument("rebuild"),
+        MSBuildSettings = new DotNetCoreMSBuildSettings()
+            .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
+    });
+});
+
 Task("Test")
     .IsDependentOn("Build")
+    .IsDependentOn("Build-Examples")
     .Does(context => 
 {
     DotNetCoreTest("./test/Spectre.Console.Tests/Spectre.Console.Tests.csproj", new DotNetCoreTestSettings {
