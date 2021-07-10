@@ -100,10 +100,10 @@ jobs:
         with:
           dotnet-version: 3.1.402
 
-      - name: Setup dotnet 5.0.100
+      - name: Setup dotnet 5.0.301
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.202
+          dotnet-version: 5.0.301
 
       - name: Publish
         shell: bash
