@@ -46,7 +46,7 @@ namespace Spectre.Console.Internal
 
             try
             {
-                return await func();
+                return await func().ConfigureAwait(false);
             }
             finally
             {

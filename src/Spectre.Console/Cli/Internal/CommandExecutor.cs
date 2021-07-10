@@ -81,7 +81,7 @@ namespace Spectre.Console.Cli
                 var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data);
 
                 // Execute the command tree.
-                return await Execute(leaf, parsedResult.Tree, context, resolver, configuration);
+                return await Execute(leaf, parsedResult.Tree, context, resolver, configuration).ConfigureAwait(false);
             }
         }
 

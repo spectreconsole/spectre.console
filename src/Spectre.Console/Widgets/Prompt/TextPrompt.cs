@@ -5,6 +5,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Spectre.Console
 {
@@ -95,12 +97,18 @@ namespace Spectre.Console
         /// <inheritdoc/>
         public T Show(IAnsiConsole console)
         {
+            return ShowAsync(console, CancellationToken.None).GetAwaiter().GetResult();
+        }
+
+        /// <inheritdoc/>
+        public async Task<T> ShowAsync(IAnsiConsole console, CancellationToken cancellationToken)
+        {
             if (console is null)
             {
                 throw new ArgumentNullException(nameof(console));
             }
 
-            return console.RunExclusive(() =>
+            return await console.RunExclusive(async () =>
             {
                 var promptStyle = PromptStyle ?? Style.Plain;
                 var converter = Converter ?? TypeConverterHelper.ConvertToString;
@@ -111,7 +119,7 @@ namespace Spectre.Console
 
                 while (true)
                 {
-                    var input = console.ReadLine(promptStyle, IsSecret, choices);
+                    var input = await console.ReadLine(promptStyle, IsSecret, choices, cancellationToken).ConfigureAwait(false);
 
                     // Nothing entered?
                     if (string.IsNullOrWhiteSpace(input))
@@ -162,7 +170,7 @@ namespace Spectre.Console
 
                     return result;
                 }
-            });
+            }).ConfigureAwait(false);
         }
 
         /// <summary>

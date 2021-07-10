@@ -1,3 +1,6 @@
+using System.Threading;
+using System.Threading.Tasks;
+
 namespace Spectre.Console
 {
     /// <summary>
@@ -51,6 +54,12 @@ namespace Spectre.Console
         /// <inheritdoc/>
         public bool Show(IAnsiConsole console)
         {
+            return ShowAsync(console, CancellationToken.None).GetAwaiter().GetResult();
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> ShowAsync(IAnsiConsole console, CancellationToken cancellationToken)
+        {
             var prompt = new TextPrompt<char>(_prompt)
                 .InvalidChoiceMessage(InvalidChoiceMessage)
                 .ValidationErrorMessage(InvalidChoiceMessage)
@@ -60,7 +69,7 @@ namespace Spectre.Console
                 .AddChoice(Yes)
                 .AddChoice(No);
 
-            var result = prompt.Show(console);
+            var result = await prompt.ShowAsync(console, cancellationToken).ConfigureAwait(false);
             return result == Yes;
         }
     }

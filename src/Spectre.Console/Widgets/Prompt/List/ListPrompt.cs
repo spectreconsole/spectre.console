@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console
@@ -16,7 +18,10 @@ namespace Spectre.Console
             _strategy = strategy ?? throw new ArgumentNullException(nameof(strategy));
         }
 
-        public ListPromptState<T> Show(ListPromptTree<T> tree, int requestedPageSize = 15)
+        public async Task<ListPromptState<T>> Show(
+            ListPromptTree<T> tree,
+            CancellationToken cancellationToken,
+            int requestedPageSize = 15)
         {
             if (tree is null)
             {
@@ -48,7 +53,7 @@ namespace Spectre.Console
 
                 while (true)
                 {
-                    var rawKey = _console.Input.ReadKey(true);
+                    var rawKey = await _console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
                     if (rawKey == null)
                     {
                         continue;
