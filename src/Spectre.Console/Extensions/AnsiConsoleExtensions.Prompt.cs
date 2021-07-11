@@ -41,10 +41,15 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="console">The console.</param>
         /// <param name="prompt">The prompt markup text.</param>
+        /// <param name="defaultValue">Specifies the default answer.</param>
         /// <returns><c>true</c> if the user selected "yes", otherwise <c>false</c>.</returns>
-        public static bool Confirm(this IAnsiConsole console, string prompt)
+        public static bool Confirm(this IAnsiConsole console, string prompt, bool defaultValue = true)
         {
-            return new ConfirmationPrompt(prompt).Show(console);
+            return new ConfirmationPrompt(prompt)
+            {
+                DefaultValue = defaultValue,
+            }
+            .Show(console);
         }
     }
 }
