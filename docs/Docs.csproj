@@ -5,6 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
     <DefaultItemExcludes>$(DefaultItemExcludes);output\**;.gitignore</DefaultItemExcludes>
+    <NoWarn>MVC1000</NoWarn>
     <MinVerSkip Condition="'$(Configuration)' == 'Debug'">true</MinVerSkip>
   </PropertyGroup>
 

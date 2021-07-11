@@ -1,4 +1,5 @@
 @page
+@using Markdig
 @model Docs.SocialCards.SocialCardModel
 
 @{
@@ -7,134 +8,8 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style type="text/css">
-      @Html.Raw("@font-face") {
-          font-family: 'CascadiaCodePL';
-          src: url('CascadiaCodePL.woff2') format('woff2');
-      }
-
-      body {
-          font-family: 'CascadiaCodePL', monospace;
-      }
-
-      html {
-      --height: 340px;
-      --width:680px;
-      --background: #1E2127;
-      --black: #000000;
-      --blue: #61AFEF;
-      --brightBlack: #5C6370;
-      --brightBlue: #61AFEF;
-      --brightCyan: #56B6C2;
-      --brightGreen: #98C379;
-      --brightPurple: #C678DD;
-      --brightRed: #E06C75;
-      --brightWhite: #FFFFFF;
-      --brightYellow: #D19A66;
-      --cyan: #56B6C2;
-      --foreground: #5C6370;
-      --green: #98C379;
-      --purple: #C678DD;
-      --red: #E06C75;
-      --white: #ABB2BF;
-      --yellow: #D19A66;
-      --folder: var(--yellow);
-      --dotnet: var(--blue);
-      --git: var(--green);
-      }
-
-
-      body{
-      font-family:'Cascadia Code PL', 'CaskaydiaCove Nerd Font',monospace;
-      font-weight:400;
-      font-size: 19px;
-      }
-
-      #container {
-      background-color: var(--background);
-      color: #fff;
-      width: calc(var(--width) - 20px);
-      height: calc(var(--height) - 20px);
-      padding:10px;
-      position: relative;
-      }
-
-      #console{
-      position: relative;
-      }
-
-      div.line{
-      height:20px;
-      width:100%;
-      white-space: pre;
-      }
-
-      #title{
-      position: absolute;
-      left: 4ch;
-      top: 60px;
-      background:var(--background);
-      z-index:4;
-      }
-
-      #content{
-      position: absolute;
-      left: 4ch;
-      top: 100px;
-      height:240px;
-      width: 48ch;
-      line-height:20px;
-      overflow-y: hidden;
-      }
-
-      #content ul {
-      list-style: "*";
-      margin: 0 0 0 1ch;
-      padding: 0;
-      }
-
-      #content ul li {
-        padding-left:1ch;
-      }
-
-      #footer{
-      position: absolute;
-      top: 260px;
-      left: 4ch;
-      }
-
-      #logo{
-      height:50px;
-      width:50px;
-      position:absolute;
-      right:50px;
-      top:5px;
-      fill: var(--white);
-      opacity:.4;
-      }
-
-      div.line{
-      height:20px;
-      width:100%;
-      white-space: pre;
-      }
-
-      #container::before {
-      /* fake scan lines */
-      content: " ";
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-      z-index: 200;
-      background-size: 100% 2px, 3px 100%;
-      pointer-events: none;
-      }
-  </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="static/styles.css" />
 </head>
 <body>
 
@@ -143,37 +18,37 @@
         <div class="line"><span style="color:var(--brightBlack)">╭─</span><span style="color:var(--folder)">&#xe0b2;</span><span style="background-color:var(--folder);color:var(--black)"> ~/spectre.console</span><span style="color:var(--folder);background-color:var(--dotnet)">&#xe0b0;</span><span style="background-color:var(--blue)"> .NET 5.0 </span><span style="color:var(--dotnet);background-color:var(--git)">&#xe0b0;</span><span style="background-color:var(--git)"> &#xe0a0; main </span><span style="color:var(--git)">&#xe0b4;</span></div>
         <div class="line"><span style="color:var(--brightBlack)">╰─</span> dotnet run</div>
         <div class="line"></div>
-        <div class="line"> ╭────────────────────────────────────────────────────────╮</div>
-        <div class="line"> │                                                        │</div>
-        <div class="line"> │                                                        │</div>
-        <div class="line"> │                                                        │</div>
-        <div class="line"> │                                                        │</div>
-        <div class="line"> │                                                        │</div>
-        <div class="line"> │                                                        │</div>
-        <div class="line"> │                                                        │</div>
-        <div class="line"> │                                                        │</div>
-        <div class="line"> │                                                        │</div>
-        <div class="line"> │                                                        │</div>
-        <div class="line"> │                                                        │</div>
-        <div class="line"> ╰────────────────────────────────────────────────────────╯</div>
+        <div class="line">╭────────────────────────────────────────────────────────╮</div>
+        <div class="line">│                                                        │</div>
+        <div class="line">│                                                        │</div>
+        <div class="line">│                                                        │</div>
+        <div class="line">│                                                        │</div>
+        <div class="line">│                                                        │</div>
+        <div class="line">│                                                        │</div>
+        <div class="line">│                                                        │</div>
+        <div class="line">│                                                        │</div>
+        <div class="line">│                                                        │</div>
+        <div class="line">│                                                        │</div>
+        <div class="line">╰────────────────────────────────────────────────────────╯</div>
 
         <div id="title"><span style="color:var(--brightPurple)">@Model.Title</span></div>
         <div id="content">
-            @if (string.IsNullOrWhiteSpace(Model.Highlights) == false){
+            @if (string.IsNullOrWhiteSpace(Model.Description) == false)
+            {
+                <p>@Html.Raw(Markdown.ToHtml(Model.Description))</p>
+            }
+            @if (string.IsNullOrWhiteSpace(Model.Highlights) == false)
+            {
                 <ul>
                     @foreach (var highlight in Model.Highlights.Split("||"))
                     {
-                        <li>@highlight</li>
+                        <li>@Html.Raw(Markdown.ToHtml(highlight))</li>
                     }
                 </ul>
             }
-            else
+            @if (string.IsNullOrWhiteSpace(Model.Footer) == false)
             {
-                @Model.Description
-
-            }
-            @if (string.IsNullOrWhiteSpace(Model.Footer) == false) {
-                <div id="footer"><span style="color:var(--brightBlack)">@Model.Footer</span></div>
+                <div id="footer"><span style="color:var(--brightBlack)">@Html.Raw(@Markdown.ToHtml(@Model.Footer))</span></div>
             }
         </div>
 

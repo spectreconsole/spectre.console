@@ -1,0 +1,13 @@
+@inherits StatiqRazorPage<IEnumerable<IDocument>>
+@foreach (var post in Model)
+{
+    <div>
+        <h3><a href="@Context.GetLink(post)">@post.GetString("Title")</a></h3>
+        <time>
+            @post.GetDateTime("Published").ToString("yyyy MMM dd")
+        </time>
+        <article>
+            @Html.Raw(@post.GetString("Excerpt"))
+        </article>
+    </div>
+}

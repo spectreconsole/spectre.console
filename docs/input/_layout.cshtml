@@ -66,7 +66,7 @@
                             }
                     </div>
 
-                    @foreach (IDocument document in OutputPages.GetChildrenOf(root).OnlyVisible())
+                    @foreach (IDocument document in OutputPages.GetChildrenOf(root).OrderBy(i => i.GetInt("Order")).OnlyVisible())
                     {
                         if(string.IsNullOrWhiteSpace(document.GetTitle()))
                         {

@@ -1,0 +1,18 @@
+@{
+    Layout = @"../../_layout.cshtml";
+}
+@inherits StatiqRazorPage<IDocument>
+
+<div class="flex flex-col md:flex-row text-sm md:w-1/2">
+    <div class="flex-grow">
+        @Document.GetDateTime("Published").ToLongDateString()
+    </div>
+    <div class="flex-grow-0">
+        <a href="@Context.GetLink($"blog/{NormalizedPath.OptimizeFileName(@Document.GetString("Category"))}/index.html")">
+            @Document.GetString("Category")
+        </a>
+    </div>
+</div>
+
+
+@RenderBody()

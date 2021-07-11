@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Playwright;
 using Statiq.Common;
@@ -61,7 +63,13 @@ namespace Docs.Pipelines
 
             _app = builder.Build();
             _app.MapRazorPages();
-            _app.UseStaticFiles("/src/SocialCards");
+            _app.UseDirectoryBrowser();
+            _app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(builder.Environment.ContentRootPath, "src/SocialCards")),
+                RequestPath = "/static"
+            });
 
             await _app.StartAsync();
 
