@@ -48,7 +48,6 @@ namespace Docs.Pipelines
 
     class GenerateSocialImage : ParallelModule
     {
-        private IBrowser _browser;
         private WebApplication _app;
         private string _url;
 
@@ -73,23 +72,23 @@ namespace Docs.Pipelines
 
             await _app.StartAsync();
 
-            var playwright = await Playwright.CreateAsync();
-            _browser = await playwright.Chromium.LaunchAsync();
-            _url = _app.Urls.FirstOrDefault(u => u.StartsWith("http://"));
+
         }
 
         protected override async Task FinallyAsync(IExecutionContext context)
         {
             await _app.DisposeAsync().ConfigureAwait(false);
-            await _browser.DisposeAsync().ConfigureAwait(false);
             await base.FinallyAsync(context);
         }
 
         protected override async Task<IEnumerable<IDocument>> ExecuteInputAsync(IDocument input, IExecutionContext context)
         {
-            var page = await _browser.NewPageAsync(new BrowserNewPageOptions
+            var playwright = await Playwright.CreateAsync();
+            var browser = await playwright.Chromium.LaunchAsync();
+            _url = _app.Urls.FirstOrDefault(u => u.StartsWith("http://"));
+            var page = await browser.NewPageAsync(new BrowserNewPageOptions
                 {
-                    ViewportSize = new ViewportSize { Width = 680, Height = 340 }
+                    ViewportSize = new ViewportSize { Width = 680, Height = 340 },
                 }
             );
 
@@ -99,6 +98,7 @@ namespace Docs.Pipelines
             var highlights = input.GetList<string>("Highlights") ?? Array.Empty<string>();
 
             await page.GotoAsync($"{_url}/?title={title}&desc={description}&highlights={string.Join("||", highlights)}");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             var bytes = await page.ScreenshotAsync();
 
             var destination = input.Destination.InsertSuffix("-social").ChangeExtension("png");
