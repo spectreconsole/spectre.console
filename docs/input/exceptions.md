@@ -1,5 +1,5 @@
 Title: Exceptions
-Order: 3
+Order: 40
 ---
 
 Exceptions aren't always readable when viewed in the terminal.  

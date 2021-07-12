@@ -1,5 +1,5 @@
 Title: Sponsors
-Order: 0
+Order: 10
 ---
 
 The following people are [sponsoring](https://github.com/sponsors/patriksvensson)

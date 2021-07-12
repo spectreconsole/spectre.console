@@ -7,4 +7,4 @@ ArchiveOrderKey: Published
 ArchiveOrderDescending: true
 Hidden: >
   =>  doc.GetInt("Index") == 1 ? false : true
-Order: 250
+Order: 25

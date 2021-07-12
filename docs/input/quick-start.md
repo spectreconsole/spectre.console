@@ -1,5 +1,5 @@
 Title: Quick Start
-Order: 1
+Order: 20
 ---
 
 The fastest way of getting started using Spectre.Console is
