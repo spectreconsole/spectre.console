@@ -9,7 +9,7 @@ using Xunit;
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
-    [ExpectationPath("Widgets/Progress")]
+    [ExpectationPath("Live/Progress")]
     public sealed class ProgressTests
     {
         [Fact]

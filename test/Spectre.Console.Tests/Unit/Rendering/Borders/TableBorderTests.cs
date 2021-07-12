@@ -9,7 +9,7 @@ using Xunit;
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
-    [ExpectationPath("Borders/Table")]
+    [ExpectationPath("Rendering/Borders/Table")]
     public sealed class TableBorderTests
     {
         [UsesVerify]

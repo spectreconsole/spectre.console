@@ -9,7 +9,7 @@ using Xunit;
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
-    [ExpectationPath("Borders/Box")]
+    [ExpectationPath("Rendering/Borders/Box")]
     public sealed class BoxBorderTests
     {
         [UsesVerify]
