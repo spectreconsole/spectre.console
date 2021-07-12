@@ -1,6 +1,11 @@
 ﻿Title: Calendar
 Order: 40
 RedirectFrom: calendar
+Description: "The **Calendar** is used to render a calendar to the terminal."
+Highlights:
+    - Include highlighted events.
+    - Culture aware.
+    - Custom headers.
 ---
 
 The `Calendar` is used to render a calendar to the terminal.

@@ -1,5 +1,10 @@
 Title: Multi Selection
 Order: 3
+Description: "The **MultiSelectionPrompt** can be used when you want the user to select one or many items from a provided list."
+Highlights:
+    - Display multiple items for a user to scroll and choose from.
+    - Custom page sizes.
+    - Provide groups of selectable items.
 ---
 
 The `MultiSelectionPrompt` can be used when you want the user to select

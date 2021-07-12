@@ -1,6 +1,7 @@
 Title: Table
 Order: 0
 RedirectFrom: tables
+Description: "Tables are a perfect way of displaying tabular data in a terminal. *Spectre.Console* is super smart about rendering tables and will adjust all columns to fit whatever is inside them."
 ---
 
 Tables are a perfect way of displaying tabular data in a terminal.

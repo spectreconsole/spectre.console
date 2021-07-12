@@ -1,5 +1,6 @@
 Title: Selection
 Order: 1
+Description: "The **SelectionPrompt** can be used when you want the user to select a single item from a provided list."
 ---
 
 The `SelectionPrompt` can be used when you want the user to select

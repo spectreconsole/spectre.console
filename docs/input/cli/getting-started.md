@@ -1,5 +1,6 @@
 Title: Getting Started
 Order: 1
+Description: "How to get started using *Spectre.Console.Cli* to write a modern console application that follows industry conventions for command line parsing."
 ---
 
 `Spectre.Console.Cli` is a modern library for parsing command line arguments. While it's extremely

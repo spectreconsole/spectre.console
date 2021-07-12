@@ -1,5 +1,9 @@
 Title: Spinners
 Order: 4
+Description: "*Spectre.Console* supports over 80 different types of spinners, and allows new ones to be defined. They are used automatically with the controls"
+Highlights:
+    - Status display
+    - Progress display
 ---
 
 For all available spinners, see https://jsfiddle.net/sindresorhus/2eLtsbey/embedded/result/

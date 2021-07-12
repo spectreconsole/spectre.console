@@ -1,5 +1,7 @@
 Title: Tree
 Order: 10
+Description: "The **Tree** widget can be used to render hierarchical data."
+
 ---
 
 The `Tree` widget can be used to render hierarchical data.

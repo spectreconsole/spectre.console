@@ -1,5 +1,6 @@
 Title: CommandApp
 Order: 2
+Description: "**CommandApp** is the entry point for a *Spectre.Console.Cli* command line application. It is used to configure the settings and commands used for execution of the application."
 ---
 
 `CommandApp` is the entry point for a `Spectre.Console.Cli` command line application. It is used to configure the settings and commands used for execution of the application. Most `Spectre.Console.Cli` applications will need to specify a custom configuration using the `Configure` method.

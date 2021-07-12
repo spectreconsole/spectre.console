@@ -1,5 +1,10 @@
 Title: Bar Chart
 Order: 20
+Description: "Use **BarChart** to render bar charts to the console."
+Highlights:
+    - Custom colors
+    - Labels
+    - Use your own data with a converter.
 ---
 
 Use `BarChart` to render bar charts to the console.

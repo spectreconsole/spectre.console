@@ -1,5 +1,6 @@
 Title: Migrate from Spectre.Cli
 Order: 10
+Description: "Migrating from *Specte.Cli* to *Spectre.Console.Cli*"
 ---
 
 The functionality in `Spectre.Cli` has been moved into the `Spectre.Console`

@@ -1,5 +1,6 @@
 Title: Canvas
 Order: 60
+Description: "**Canvas** is a widget that allows you to render arbitrary pixels to the console."
 ---
 
 `Canvas` is a widget that allows you to render arbitrary "pixels" 

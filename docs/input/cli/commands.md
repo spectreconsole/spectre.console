@@ -1,5 +1,6 @@
 Title: Creating Commands
 Order: 6
+Description: "How to create commands for *Spectre.Console.Cli*"
 ---
 
 Commands in `Spectre.Console.Cli` are defined by creating a class that inherits from either `Spectre.Console.Cli.Command<TSettings>` or `Spectre.Console.Cli.AsyncCommand<TSettings>`. `Command<TSettings>` must implement an `Execute` method that returns an int where as `AsyncCommand<TSettings>` must implement `ExecuteAsync`  returning `Task<int>`.

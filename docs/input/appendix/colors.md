@@ -1,5 +1,9 @@
 Title: Colors
 Order: 0
+Description: "*Spectre.Console* allows easy rendering of the standard ANSI colors of your terminal, and also supports rendering up to 24-bit colors depending on the capabilities of your terminal."
+Highlights:
+    - Predefined common colors
+    - Easy syntax for inline styling
 ---
 
 The following is a list of the standard 8-bit colors supported in terminals.

@@ -1,5 +1,11 @@
 Title: Borders
 Order: 2
+Description: "*Spectre.Console* makes it easy to create tables and panels with a variety of different styles of borders."
+Highlights:
+    - Rounded
+    - Square
+    - Heavy
+    - And more...
 ---
 
 There is different built-in borders you can use for tables and panels.
