@@ -9,7 +9,7 @@ using Xunit;
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
-    [ExpectationPath("Widgets/Status")]
+    [ExpectationPath("Live/Status")]
     public sealed class StatusTests
     {
         public sealed class DummySpinner1 : Spinner

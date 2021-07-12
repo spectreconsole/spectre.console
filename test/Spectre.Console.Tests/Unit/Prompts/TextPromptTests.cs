@@ -9,7 +9,7 @@ using Spectre.Verify.Extensions;
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
-    [ExpectationPath("Widgets/Prompt/Text")]
+    [ExpectationPath("Prompts/Text")]
     public sealed class TextPromptTests
     {
         [Fact]
