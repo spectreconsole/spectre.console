@@ -2,9 +2,9 @@ Title: Markup
 Order: 30
 Description: The Markup class allows you to output rich text to the console.
 Highlights:
- - Easily add *color*
- - Add [hyperlinks](http://example.com) to text
- - Emoji 🚀 parsing
+ - Easily add *color*.
+ - Add hyperlinks to for supported terminals.
+ - Emoji 🚀 parsing.
 ---
 
 The `Markup` class allows you to output rich text to the console.

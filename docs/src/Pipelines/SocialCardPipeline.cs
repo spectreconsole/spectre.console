@@ -50,6 +50,7 @@ namespace Docs.Pipelines
     {
         protected override async Task<IEnumerable<IDocument>> ExecuteContextAsync(IExecutionContext context)
         {
+            context.Logger.LogInformation("Starting social image generation");
             var builder = WebApplication.CreateBuilder();
             builder.Logging.ClearProviders();
 
@@ -68,13 +69,17 @@ namespace Docs.Pipelines
 
             await app.StartAsync().ConfigureAwait(false);
 
+            context.Logger.LogInformation("Web application started");
+
             using var playwright = await Playwright.CreateAsync().ConfigureAwait(false);
+            context.Logger.LogInformation("Playwright started");
             var browser = await playwright.Chromium.LaunchAsync().ConfigureAwait(false);
+            context.Logger.LogInformation("Chrome launched");
 
             var url = app.Urls.FirstOrDefault(u => u.StartsWith("http://"));
             var page = await browser.NewPageAsync(new BrowserNewPageOptions
                 {
-                    ViewportSize = new ViewportSize { Width = 680, Height = 340 },
+                    ViewportSize = new ViewportSize { Width = 1200, Height = 618 },
                 }
             );
 
@@ -85,7 +90,9 @@ namespace Docs.Pipelines
                 var description = input.GetString("Description");
                 var highlights = input.GetList<string>("Highlights") ?? Array.Empty<string>();
 
+                context.Logger.LogInformation("Build social card for {Url}", url);
                 await page.GotoAsync($"{url}/?title={title}&desc={description}&highlights={string.Join("||", highlights)}");
+                context.Logger.LogInformation("Finished building social card for {Url}", url);
                 var bytes = await page.ScreenshotAsync();
 
                 var destination = input.Destination.InsertSuffix("-social").ChangeExtension("png");
