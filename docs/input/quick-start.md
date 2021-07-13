@@ -1,5 +1,6 @@
 Title: Quick Start
 Order: 20
+Description: Getting started with *Spectre.Console*
 ---
 
 The fastest way of getting started using Spectre.Console is

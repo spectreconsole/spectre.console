@@ -110,7 +110,10 @@
                 }
                 </nav>
                 <article class="flex-1 min-w-0">
-                    <h1 class="text-gray-800 text-4xl mb-4 font-extrabold">@(Document.GetString(Keys.Title) ?? Document.GetTitle())</h1>
+                    <header class="text-gray-800 mb-4">
+                        <h1 class="text-4xl font-extrabold">@(Document.GetString(Keys.Title) ?? Document.GetTitle())</h1>
+                        @RenderSection("subheading", required: false)
+                    </header>
                     <div class="prose max-w-none prose-sm lg:prose lg:max-w-none 2xl:prose-xl 2xl:max-w-none text-gray-700 font-light">
                         @RenderBody()
                     </div>
