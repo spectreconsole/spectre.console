@@ -11,6 +11,28 @@ namespace Spectre.Console.Analyzer.Tests.Unit.Analyzers
             DiagnosticSeverity.Info);
 
         [Fact]
+        public async void Should_only_warn_within_methods()
+        {
+            const string Source = @"
+using Spectre.Console;
+
+internal sealed class Foo
+{
+    private readonly IAnsiConsole _console;
+
+    public Foo(IAnsiConsole console = null)
+    {
+        _console = console ?? AnsiConsole.Create(new AnsiConsoleSettings());
+    }
+}
+";
+
+            await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
+                .VerifyAnalyzerAsync(Source)
+                .ConfigureAwait(false);
+        }
+        
+        [Fact]
         public async void Instance_console_has_no_warnings()
         {
             const string Source = @"

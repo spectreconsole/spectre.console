@@ -37,6 +37,12 @@ namespace Spectre.Console.Analyzer
                         return;
                     }
 
+                    // if we aren't in a method then it might be too complex for us to handle.
+                    if (!invocationOperation.Syntax.Ancestors().OfType<MethodDeclarationSyntax>().Any())
+                    {
+                        return;
+                    }
+
                     if (!HasFieldAnsiConsole(invocationOperation.Syntax) &&
                         !HasParameterAnsiConsole(invocationOperation.Syntax))
                     {
