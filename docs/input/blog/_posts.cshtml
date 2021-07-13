@@ -10,7 +10,7 @@
         }
         <div class="mt-2 font-light text-xs md:text-sm">
             <span>Posted </span>
-            @if (published != null) {
+            @if (published != default(DateTime)) {
                 <span>@published.ToLongDateString() </span>
             }
             @if (author != null) {
