@@ -7,7 +7,7 @@ Commands in `Spectre.Console.Cli` are defined by creating a class that inherits 
 ```csharp
 public class HelloCommand : Command<HelloCommand.Settings>
 {
-    public class Settings : LogCommandSettings
+    public class Settings : CommandSettings
     {
         [CommandArgument(0, "[Name]")]
         public string Name { get; set; }
