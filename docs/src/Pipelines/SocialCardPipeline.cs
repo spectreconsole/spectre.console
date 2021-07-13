@@ -46,11 +46,14 @@ namespace Docs.Pipelines
         }
     }
 
-    class GenerateSocialImage : Module
+    class GenerateSocialImage : ParallelModule
     {
-        protected override async Task<IEnumerable<IDocument>> ExecuteContextAsync(IExecutionContext context)
+        private IPlaywright _playwright;
+        private IBrowser _browser;
+        private WebApplication _app;
+
+        protected override async Task BeforeExecutionAsync(IExecutionContext context)
         {
-            context.Logger.LogInformation("Starting social image generation");
             var builder = WebApplication.CreateBuilder();
             builder.Logging.ClearProviders();
 
@@ -58,54 +61,53 @@ namespace Docs.Pipelines
                 .AddRazorPages()
                 .WithRazorPagesRoot("/src/SocialCards/");
 
-            await using var app = builder.Build();
-            app.MapRazorPages();
-            app.UseStaticFiles(new StaticFileOptions
+            _app = builder.Build();
+            _app.MapRazorPages();
+            _app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
                     Path.Combine(builder.Environment.ContentRootPath, "src/SocialCards")),
                 RequestPath = "/static"
             });
 
-            await app.StartAsync().ConfigureAwait(false);
+            await _app.StartAsync().ConfigureAwait(false);
 
-            context.Logger.LogInformation("Web application started");
+            _playwright = await Playwright.CreateAsync().ConfigureAwait(false);
+            _browser = await _playwright.Chromium.LaunchAsync().ConfigureAwait(false);
+        }
 
-            using var playwright = await Playwright.CreateAsync().ConfigureAwait(false);
-            context.Logger.LogInformation("Playwright started");
-            var browser = await playwright.Chromium.LaunchAsync().ConfigureAwait(false);
-            context.Logger.LogInformation("Chrome launched");
+        protected override async Task FinallyAsync(IExecutionContext context)
+        {
+            await _browser.DisposeAsync().ConfigureAwait(false);
+            _playwright.Dispose();
+            await _app.DisposeAsync().ConfigureAwait(false);
+            await base.FinallyAsync(context);
+        }
 
-            var url = app.Urls.FirstOrDefault(u => u.StartsWith("http://"));
-            var page = await browser.NewPageAsync(new BrowserNewPageOptions
+        protected override async Task<IEnumerable<IDocument>> ExecuteInputAsync(IDocument input, IExecutionContext context)
+        {
+            var url = _app.Urls.FirstOrDefault(u => u.StartsWith("http://"));
+            var page = await _browser.NewPageAsync(new BrowserNewPageOptions
                 {
                     ViewportSize = new ViewportSize { Width = 1200, Height = 618 },
                 }
             );
 
-            var outputs = new List<IDocument>();
-            foreach (var input in context.Inputs)
-            {
-                var title = input.GetString("Title");
-                var description = input.GetString("Description");
-                var highlights = input.GetList<string>("Highlights") ?? Array.Empty<string>();
+            var title = input.GetString("Title");
+            var description = input.GetString("Description");
+            var highlights = input.GetList<string>("Highlights") ?? Array.Empty<string>();
 
-                context.Logger.LogInformation("Build social card for {Url}", url);
-                await page.GotoAsync($"{url}/?title={title}&desc={description}&highlights={string.Join("||", highlights)}");
-                context.Logger.LogInformation("Finished building social card for {Url}", url);
-                var bytes = await page.ScreenshotAsync();
+            await page.GotoAsync($"{url}/?title={title}&desc={description}&highlights={string.Join("||", highlights)}");
+            var bytes = await page.ScreenshotAsync();
 
-                var destination = input.Destination.InsertSuffix("-social").ChangeExtension("png");
-                var doc = context.CreateDocument(
-                    input.Source,
-                    destination,
-                    new MetadataItems { { "DocId", input.Id }},
-                    context.GetContentProvider(bytes));
+            var destination = input.Destination.InsertSuffix("-social").ChangeExtension("png");
+            var doc = context.CreateDocument(
+                input.Source,
+                destination,
+                new MetadataItems { { "DocId", input.Id }},
+                context.GetContentProvider(bytes));
 
-                outputs.Add(doc);
-            }
-
-            return outputs;
+             return new[] { doc };
         }
     }
 }
