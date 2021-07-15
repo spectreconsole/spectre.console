@@ -1,5 +1,9 @@
 Title: Emojis
 Order: 3
+Description: "For terminals that support Emojis, *Spectre.Console* supports a simple syntax for rendering emojis."
+Highlights:
+    - ":rocket: becomes 🚀"
+    - ":waning_gibbous_moon: becomes 🌖"
 ---
 
 Please note that what emojis that can be used is completely up to 

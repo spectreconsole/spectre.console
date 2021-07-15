@@ -1,0 +1,34 @@
+@{
+    Layout = @"../../_layout.cshtml";
+}
+@inherits StatiqRazorPage<IDocument>
+
+@{
+    var author = Model.GetString("Author");
+    var published = Model.GetDateTime("Published");
+    var category = Model.GetString("Category");
+}
+
+@section subheading{
+<div class="mt-2 font-light text-xs md:text-sm">
+    <span>Posted </span>
+    @if (published != default(DateTime)) {
+        <span>@published.ToLongDateString() </span>
+    }
+    @if (author != null) {
+        <span>by @author </span>
+    }
+    @if (category != null) {
+        <span>
+            to <a class="text-blue-800 underline" href="@Context.GetLink($"blog/{NormalizedPath.OptimizeFileName(@category)}/index.html")">
+                @category
+            </a>
+        </span>
+    }
+
+</div>
+}
+
+
+
+@RenderBody()

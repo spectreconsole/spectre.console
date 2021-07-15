@@ -1,0 +1,148 @@
+﻿@font-face {
+    font-family: 'CascadiaCodePL';
+    src: url('CascadiaCodePL.woff2') format('woff2');
+}
+
+* {
+    padding:0;
+    margin:0;
+  }
+
+  :root {
+    --height: 618px;
+    --width:1200px;
+    --line-height: 39px;
+    --padding: 20px;
+    --rows: calc((--var(--height) - var(--padding) * 2) / var(--line-height));
+    --background: #1E2127;
+    --black: #000000;
+    --blue: #61AFEF;
+    --brightBlack: #5C6370;
+    --brightBlue: #61AFEF;
+    --brightCyan: #56B6C2;
+    --brightGreen: #98C379;
+    --brightPurple: #C678DD;
+    --brightRed: #E06C75;
+    --brightWhite: #FFFFFF;
+    --brightYellow: #D19A66;
+    --cyan: #56B6C2;
+    --foreground: #5C6370;
+    --green: #98C379;
+    --purple: #C678DD;
+    --red: #E06C75;
+    --white: #ABB2BF;
+    --yellow: #D19A66;
+    --folder: var(--yellow);
+    --dotnet: var(--blue);
+    --git: var(--green);
+  }
+
+
+  body{
+    font-family:'CascadiaCodePL',monospace;
+    font-weight:400;
+    font-size: calc(var(--line-height) - 5px);
+  }
+
+  #container {
+    background-color: var(--background);
+    color: #fff;
+    width: calc(var(--width) - var(--padding) * 2);
+    height: calc(var(--height) - var(--padding) * 2);
+    padding:var(--padding);
+    position: relative;
+  }
+
+  #console{
+    position: relative;
+  }
+
+  .line{
+      height:var(--line-height);
+      width:100%;
+      white-space: pre;
+  }
+
+  #title{
+    position: absolute;
+    left: 3ch;
+    top: calc(3 * var(--line-height));
+    margin: 0 -3px;
+    padding: 0 3px;
+    background:var(--background);
+    z-index:4;
+  }
+
+  #content{
+    position: absolute;
+    left: 3ch;
+    top: calc(5 * var(--line-height));;
+    height:calc(var(--height) - 7 * var(--line-height));
+    width: 53ch;
+    line-height:var(--line-height);
+    overflow-y: hidden;
+  }
+
+  #content p {
+    margin: 0;
+  }
+
+  #content p + ul {
+    margin-top:var(--line-height);
+  }
+
+  #content strong {
+    color: var(--yellow);
+    font-weight: 400;
+  }
+
+  #content em, #content i {
+    color: var(--blue);
+    font-style: normal;
+  }
+
+  #content ul {
+    list-style: "*";
+    margin-left: 1ch;
+  }
+
+  #content ul li {
+    padding-left:1ch;
+  }
+
+
+
+  #footer{
+    position: absolute;
+    top: calc(var(--height) - var(--padding) - var(--line-height) * 3);
+    left  : 3ch;
+    background:var(--background);
+    width:51ch;
+    z-index:4;
+  }
+
+  #logo{
+    height:calc(var(--line-height) * 2.5);
+    width:calc(var(--line-height) * 2.5);
+    position:absolute;
+    right:2ch;
+    top:calc(var(--padding) / 2);
+    fill: var(--white);
+    opacity:.4;
+  }
+
+  #container::before {
+    /* fake scan lines */
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 200;
+    background-size: 100% 4px, 5px 100%;
+    pointer-events: none;
+  }
+

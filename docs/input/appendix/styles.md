@@ -1,5 +1,10 @@
 Title: Styles
 Order: 1
+Description: "*Spectre.Console* makes it easy to write text with different styles beyond colors. Depending on your terminal, it can make it easy to use styles such as"
+Highlights:
+    - Bold, Italic, Underline, strikethrough
+    - Dim, Invert
+    - Conceal, slowblink, rapidblink
 ---
 
 Note that what styles that can be used is defined by the system or your terminal software, and may not appear as they should.

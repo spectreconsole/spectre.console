@@ -22,7 +22,7 @@ namespace Docs
                 .AddShortcode("Alert", typeof(AlertShortcode))
                 .AddShortcode("AsciiCast", typeof(AsciiCastShortcode))
                 .AddPipelines()
-                .AddProcess(ProcessTiming.Initialization, _ => new ProcessLauncher("npm", "install")
+                .AddProcess(ProcessTiming.Initialization, _ => new ProcessLauncher("npm", "install", "--audit", "false", "--fund", "false")
                 {
                     LogErrors = false
                 })

@@ -1,5 +1,9 @@
 Title: Exceptions
-Order: 3
+Order: 40
+Description: "Exceptions aren't always readable when viewed in the terminal. You can make exception a bit more readable by using the **WriteException** method."
+Highlights:
+    - Color coded output.
+    - Shorten long identifiers and paths.
 ---
 
 Exceptions aren't always readable when viewed in the terminal.  

@@ -1,5 +1,6 @@
 Title: Sponsors
-Order: 0
+Order: 10
+Description: The longevity of *Spectre.Console* is thanks to the support of our sponsors.
 ---
 
 The following people are [sponsoring](https://github.com/sponsors/patriksvensson)

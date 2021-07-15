@@ -1,6 +1,12 @@
 Title: Text prompt
 Order: 0
 RedirectFrom: prompt
+Description: "*Spectre.Console* has multiple input functions for helping receive strongly typed input from a user."
+Highlights:
+    - Confirmation.
+    - Strongly typed input.
+    - Input restricted to specific items.
+    - Secrets such as passwords or keys.
 ---
 
 Sometimes you want to get some input from the user, and for this
