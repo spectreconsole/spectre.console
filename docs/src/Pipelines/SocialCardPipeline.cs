@@ -51,6 +51,7 @@ namespace Docs.Pipelines
         private IPlaywright _playwright;
         private IBrowser _browser;
         private WebApplication _app;
+        private IBrowserContext _context;
 
         protected override async Task BeforeExecutionAsync(IExecutionContext context)
         {
@@ -74,10 +75,14 @@ namespace Docs.Pipelines
 
             _playwright = await Playwright.CreateAsync().ConfigureAwait(false);
             _browser = await _playwright.Chromium.LaunchAsync().ConfigureAwait(false);
+            _context = await _browser.NewContextAsync(new BrowserNewContextOptions {
+                ViewportSize = new ViewportSize { Width = 1200, Height = 618 },
+            }).ConfigureAwait(false);
         }
 
         protected override async Task FinallyAsync(IExecutionContext context)
         {
+            await _context.DisposeAsync().ConfigureAwait(false);
             await _browser.DisposeAsync().ConfigureAwait(false);
             _playwright.Dispose();
             await _app.DisposeAsync().ConfigureAwait(false);
@@ -87,18 +92,19 @@ namespace Docs.Pipelines
         protected override async Task<IEnumerable<IDocument>> ExecuteInputAsync(IDocument input, IExecutionContext context)
         {
             var url = _app.Urls.FirstOrDefault(u => u.StartsWith("http://"));
-            var page = await _browser.NewPageAsync(new BrowserNewPageOptions
-                {
-                    ViewportSize = new ViewportSize { Width = 1200, Height = 618 },
-                }
-            );
+            var page = await _context.NewPageAsync().ConfigureAwait(false);
 
             var title = input.GetString("Title");
             var description = input.GetString("Description");
             var highlights = input.GetList<string>("Highlights") ?? Array.Empty<string>();
 
             await page.GotoAsync($"{url}/?title={title}&desc={description}&highlights={string.Join("||", highlights)}");
-            var bytes = await page.ScreenshotAsync();
+
+            // This will not just wait for the  page to load over the network, but it'll also give
+            // chrome a chance to complete rendering of the fonts while the wait timeout completes.
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle).ConfigureAwait(false);
+            var bytes = await page.ScreenshotAsync().ConfigureAwait(false);
+            await page.CloseAsync().ConfigureAwait(false);
 
             var destination = input.Destination.InsertSuffix("-social").ChangeExtension("png");
             var doc = context.CreateDocument(
@@ -107,7 +113,7 @@ namespace Docs.Pipelines
                 new MetadataItems { { "DocId", input.Id }},
                 context.GetContentProvider(bytes));
 
-             return new[] { doc };
+            return new[] { doc };
         }
     }
 }
