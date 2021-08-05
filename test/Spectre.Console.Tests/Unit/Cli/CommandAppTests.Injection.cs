@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Shouldly;
 using Spectre.Console.Testing;
 using Spectre.Console.Tests.Data;
