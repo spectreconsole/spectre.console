@@ -3,8 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <ExampleTitle>Live</ExampleTitle>
-    <ExampleDescription>Demonstrates how to do live updates.</ExampleDescription>
+    <ExampleTitle>LiveTable</ExampleTitle>
+    <ExampleDescription>Demonstrates how to do live updates in a table.</ExampleDescription>
     <ExampleGroup>Live</ExampleGroup>
   </PropertyGroup>
 

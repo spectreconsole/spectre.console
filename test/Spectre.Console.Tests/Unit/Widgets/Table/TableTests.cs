@@ -79,20 +79,6 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Fact]
-            public void Should_Throw_If_Renderable_Rows_Are_Null()
-            {
-                // Given
-                var table = new Table();
-
-                // When
-                var result = Record.Exception(() => table.AddRow(null));
-
-                // Then
-                result.ShouldBeOfType<ArgumentNullException>()
-                    .ParamName.ShouldBe("columns");
-            }
-
-            [Fact]
             public void Should_Add_Empty_Items_If_User_Provides_Less_Row_Items_Than_Columns()
             {
                 // Given

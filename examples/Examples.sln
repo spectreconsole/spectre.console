@@ -63,6 +63,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tables", "Console\Tables\Ta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trees", "Console\Trees\Trees.csproj", "{2BD88288-E05D-4978-B045-17937078E63C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveTable", "Console\LiveTable\LiveTable.csproj", "{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -409,6 +411,18 @@ Global
 		{2BD88288-E05D-4978-B045-17937078E63C}.Release|x64.Build.0 = Release|Any CPU
 		{2BD88288-E05D-4978-B045-17937078E63C}.Release|x86.ActiveCfg = Release|Any CPU
 		{2BD88288-E05D-4978-B045-17937078E63C}.Release|x86.Build.0 = Release|Any CPU
+		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Debug|x64.Build.0 = Debug|Any CPU
+		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Debug|x86.Build.0 = Debug|Any CPU
+		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Release|x64.ActiveCfg = Release|Any CPU
+		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Release|x64.Build.0 = Release|Any CPU
+		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Release|x86.ActiveCfg = Release|Any CPU
+		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

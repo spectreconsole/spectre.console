@@ -11,7 +11,6 @@ namespace Spectre.Console
     public sealed class Table : Renderable, IHasTableBorder, IExpandable, IAlignable
     {
         private readonly List<TableColumn> _columns;
-        private readonly List<TableRow> _rows;
 
         /// <summary>
         /// Gets the table columns.
@@ -21,7 +20,7 @@ namespace Spectre.Console
         /// <summary>
         /// Gets the table rows.
         /// </summary>
-        public IReadOnlyList<TableRow> Rows => _rows;
+        public TableRowCollection Rows { get; }
 
         /// <inheritdoc/>
         public TableBorder Border { get; set; } = TableBorder.Square;
@@ -81,7 +80,7 @@ namespace Spectre.Console
         public Table()
         {
             _columns = new List<TableColumn>();
-            _rows = new List<TableRow>();
+            Rows = new TableRowCollection(this);
         }
 
         /// <summary>
@@ -96,42 +95,12 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(column));
             }
 
-            if (_rows.Count > 0)
+            if (Rows.Count > 0)
             {
                 throw new InvalidOperationException("Cannot add new columns to table with existing rows.");
             }
 
             _columns.Add(column);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a row to the table.
-        /// </summary>
-        /// <param name="columns">The row columns to add.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Table AddRow(IEnumerable<IRenderable> columns)
-        {
-            if (columns is null)
-            {
-                throw new ArgumentNullException(nameof(columns));
-            }
-
-            var rowColumnCount = columns.GetCount();
-            if (rowColumnCount > _columns.Count)
-            {
-                throw new InvalidOperationException("The number of row columns are greater than the number of table columns.");
-            }
-
-            _rows.Add(new TableRow(columns));
-
-            // Need to add missing columns?
-            if (rowColumnCount < _columns.Count)
-            {
-                var diff = _columns.Count - rowColumnCount;
-                Enumerable.Range(0, diff).ForEach(_ => _rows.Last().Add(Text.Empty));
-            }
-
             return this;
         }
 
@@ -190,7 +159,7 @@ namespace Spectre.Console
             }
 
             // Add rows
-            rows.AddRange(_rows);
+            rows.AddRange(Rows);
 
             // Show footers?
             if (ShowFooters && _columns.Any(c => c.Footer != null))

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Spectre.Console.Rendering;
 
@@ -41,6 +42,28 @@ namespace Spectre.Console
         /// <param name="table">The table to add the row to.</param>
         /// <param name="columns">The row columns to add.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table AddRow(this Table table, IEnumerable<IRenderable> columns)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            if (columns is null)
+            {
+                throw new ArgumentNullException(nameof(columns));
+            }
+
+            table.Rows.Add(new TableRow(columns));
+            return table;
+        }
+
+        /// <summary>
+        /// Adds a row to the table.
+        /// </summary>
+        /// <param name="table">The table to add the row to.</param>
+        /// <param name="columns">The row columns to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static Table AddRow(this Table table, params IRenderable[] columns)
         {
             if (table is null)
@@ -48,7 +71,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(table));
             }
 
-            return table.AddRow(columns);
+            return table.AddRow((IEnumerable<IRenderable>)columns);
         }
 
         /// <summary>
@@ -140,6 +163,80 @@ namespace Spectre.Console
             }
 
             table.AddRow(columns.Select(column => new Markup(column)).ToArray());
+            return table;
+        }
+
+        /// <summary>
+        /// Inserts a row in the table at the specified index.
+        /// </summary>
+        /// <param name="table">The table to add the row to.</param>
+        /// <param name="index">The index to insert the row at.</param>
+        /// <param name="columns">The row columns to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table InsertRow(this Table table, int index, IEnumerable<IRenderable> columns)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            if (columns is null)
+            {
+                throw new ArgumentNullException(nameof(columns));
+            }
+
+            table.Rows.Insert(index, new TableRow(columns));
+            return table;
+        }
+
+        /// <summary>
+        /// Inserts a row in the table at the specified index.
+        /// </summary>
+        /// <param name="table">The table to add the row to.</param>
+        /// <param name="index">The index to insert the row at.</param>
+        /// <param name="columns">The row columns to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table InsertRow(this Table table, int index, params IRenderable[] columns)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            return InsertRow(table, index, (IEnumerable<IRenderable>)columns);
+        }
+
+        /// <summary>
+        /// Inserts a row in the table at the specified index.
+        /// </summary>
+        /// <param name="table">The table to add the row to.</param>
+        /// <param name="index">The index to insert the row at.</param>
+        /// <param name="columns">The row columns to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table InsertRow(this Table table, int index, params string[] columns)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            return InsertRow(table, index, columns.Select(column => new Markup(column)));
+        }
+
+        /// <summary>
+        /// Removes a row from the table with the specified index.
+        /// </summary>
+        /// <param name="table">The table to add the row to.</param>
+        /// <param name="index">The index to remove the row at.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table RemoveRow(this Table table, int index)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            table.Rows.RemoveAt(index);
             return table;
         }
 

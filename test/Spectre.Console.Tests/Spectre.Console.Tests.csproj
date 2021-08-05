@@ -37,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Expectations\Widgets\Table\Rows\Extensions\" />
     <Folder Include="Expectations\Widgets\Tree\" />
   </ItemGroup>
 

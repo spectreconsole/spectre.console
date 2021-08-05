@@ -12,6 +12,11 @@ namespace Spectre.Console
     {
         private readonly List<IRenderable> _items;
 
+        /// <summary>
+        /// Gets the number of columns in the row.
+        /// </summary>
+        public int Count => _items.Count;
+
         internal bool IsHeader { get; }
         internal bool IsFooter { get; }
 

@@ -89,7 +89,7 @@ jobs:
         shell: bash
         run: |
           dotnet tool restore
-          dotnet example --all
+          dotnet example --all --skip live --skip livetable --skip prompt
 
       - name: Build
         shell: bash
