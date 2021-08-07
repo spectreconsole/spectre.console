@@ -6,9 +6,9 @@ namespace Spectre.Console.Internal
 {
     internal sealed class DefaultExclusivityMode : IExclusivityMode
     {
-        private static readonly SemaphoreSlim _semaphore;
+        private readonly SemaphoreSlim _semaphore;
 
-        static DefaultExclusivityMode()
+        public DefaultExclusivityMode()
         {
             _semaphore = new SemaphoreSlim(1, 1);
         }
