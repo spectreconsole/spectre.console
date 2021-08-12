@@ -151,6 +151,24 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_EA_Character")]
+        public Task Should_Render_Table_With_EA_Character_Correctly()
+        {
+            // Given
+            var console = new TestConsole().Width(48);
+            var table = new Table();
+            table.AddColumns("Foo", "Bar", "Baz");
+            table.AddRow("中文", "日本語", "한국어");
+            table.AddRow("这是中文测试字符串", "これは日本語のテスト文字列です", "이것은한국어테스트문자열입니다");
+
+            // When
+            console.Write(table);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
         [Expectation("Render_Footers")]
         public Task Should_Render_Table_With_Footers_Correctly()
         {
