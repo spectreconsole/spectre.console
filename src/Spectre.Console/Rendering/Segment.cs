@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Wcwidth;
 
 namespace Spectre.Console.Rendering
 {
@@ -329,23 +330,10 @@ namespace Spectre.Console.Rendering
 
             if (overflow == Overflow.Fold)
             {
-                var totalLength = segment.Text.CellLength();
-                var lengthLeft = totalLength;
-                while (lengthLeft > 0)
+                var splitted = SplitSegment(segment.Text, maxWidth);
+                foreach (var str in splitted)
                 {
-                    var index = totalLength - lengthLeft;
-
-                    // How many characters should we take?
-                    var take = Math.Min(maxWidth, totalLength - index);
-                    if (take <= 0)
-                    {
-                        // This shouldn't really occur, but I don't like
-                        // never ending loops if it does...
-                        return new List<Segment>();
-                    }
-
-                    result.Add(new Segment(segment.Text.Substring(index, take), segment.Style));
-                    lengthLeft -= take;
+                    result.Add(new Segment(str, segment.Style));
                 }
             }
             else if (overflow == Overflow.Crop)
@@ -566,6 +554,30 @@ namespace Spectre.Console.Rendering
             }
 
             return cells;
+        }
+
+        internal static List<string> SplitSegment(string text, int maxCellLength)
+        {
+            var list = new List<string>();
+
+            var length = 0;
+            var sb = new StringBuilder();
+            foreach (var ch in text)
+            {
+                if (length + UnicodeCalculator.GetWidth(ch) > maxCellLength)
+                {
+                    list.Add(sb.ToString());
+                    sb.Clear();
+                    length = 0;
+                }
+
+                length += UnicodeCalculator.GetWidth(ch);
+                sb.Append(ch);
+            }
+
+            list.Add(sb.ToString());
+
+            return list;
         }
     }
 }
