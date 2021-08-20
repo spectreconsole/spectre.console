@@ -14,11 +14,7 @@ namespace Spectre.Console
                 throw new ArgumentNullException(nameof(exception));
             }
 
-            var info = ExceptionParser.Parse(exception.ToString());
-            if (info == null)
-            {
-                return new Text(exception.ToString());
-            }
+            var info = ExceptionParser.Parse(exception);
 
             return GetException(info, settings);
         }
