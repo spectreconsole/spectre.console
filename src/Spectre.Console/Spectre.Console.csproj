@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
@@ -9,6 +9,11 @@
   <ItemGroup>
     <PackageReference Include="Wcwidth" Version="0.2.0" />
     <PackageReference Include="System.Memory" Version="4.5.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Spectre.Console.props" Pack="true" PackagePath="build\net5.0\Spectre.Console.props" />
+    <None Include="Spectre.Console.props" Pack="true" PackagePath="build\netstandard2.0\Spectre.Console.props" />
   </ItemGroup>
 
   <ItemGroup>

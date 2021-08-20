@@ -1,0 +1,7 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ItemGroup>
+    <Import Include="Spectre.Console" />
+  </ItemGroup>
+
+</Project>
