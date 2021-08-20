@@ -13,3 +13,13 @@ namespace Spectre.Console.Tests
         }
     }
 }
+
+#if !NET5_0_OR_GREATER
+namespace System.Runtime.CompilerServices
+{
+    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
+    public sealed class ModuleInitializerAttribute : Attribute
+    {
+    }
+}
+#endif
