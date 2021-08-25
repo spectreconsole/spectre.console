@@ -35,7 +35,7 @@ namespace Spectre.Console
         public static (bool SupportsAnsi, bool LegacyConsole) Detect(bool stdError, bool upgrade)
         {
             // Running on Windows?
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (OperatingSystem.IsWindows())
             {
                 // Running under ConEmu?
                 var conEmu = Environment.GetEnvironmentVariable("ConEmuANSI");

@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.InteropServices;
 using Spectre.Console.Enrichment;
 using Spectre.Console.Internal;
 
@@ -89,7 +88,7 @@ namespace Spectre.Console
                 if (buffer.IsStandardOut() || buffer.IsStandardError())
                 {
                     // Are we running on Windows?
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    if (OperatingSystem.IsWindows())
                     {
                         // Not the first console we're creating?
                         if (AnsiConsole.Created)

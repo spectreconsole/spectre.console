@@ -4,6 +4,8 @@
     <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
+    <!--Needed by the OperatingSystem .NET Standard shim.-->
+    <AllowUnsafeBlocks Condition="'$(TargetFramework)' == 'netstandard2.0'">true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
