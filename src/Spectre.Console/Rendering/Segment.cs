@@ -423,7 +423,7 @@ namespace Spectre.Console.Rendering
             var builder = new StringBuilder();
             foreach (var character in segment.Text)
             {
-                var accumulatedCellWidth = builder.ToString().CellLength();
+                var accumulatedCellWidth = builder.ToString().GetCellWidth();
                 if (accumulatedCellWidth >= maxWidth)
                 {
                     break;

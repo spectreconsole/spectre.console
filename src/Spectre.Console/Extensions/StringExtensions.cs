@@ -59,7 +59,12 @@ namespace Spectre.Console
             return result.ToString();
         }
 
-        internal static int CellLength(this string text)
+        /// <summary>
+        /// Gets the cell width of the specified text.
+        /// </summary>
+        /// <param name="text">The text to get the cell width of.</param>
+        /// <returns>The cell width of the text.</returns>
+        public static int GetCellWidth(this string text)
         {
             return Cell.GetCellLength(text);
         }
