@@ -51,8 +51,8 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="console">The console to write to.</param>
         /// <param name="text">The text to write.</param>
-        /// <param name="style">The text style.</param>
-        public static void Write(this IAnsiConsole console, string text, Style style)
+        /// <param name="style">The text style or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
+        public static void Write(this IAnsiConsole console, string text, Style? style)
         {
             if (console is null)
             {
@@ -91,8 +91,8 @@ namespace Spectre.Console
         /// </summary>
         /// <param name="console">The console to write to.</param>
         /// <param name="text">The text to write.</param>
-        /// <param name="style">The text style.</param>
-        public static void WriteLine(this IAnsiConsole console, string text, Style style)
+        /// <param name="style">The text style or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
+        public static void WriteLine(this IAnsiConsole console, string text, Style? style)
         {
             if (console is null)
             {

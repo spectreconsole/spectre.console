@@ -29,7 +29,7 @@ namespace Spectre.Console
         /// Initializes a new instance of the <see cref="Text"/> class.
         /// </summary>
         /// <param name="text">The text.</param>
-        /// <param name="style">The style of the text.</param>
+        /// <param name="style">The style of the text or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
         public Text(string text, Style? style = null)
         {
             _paragraph = new Paragraph(text, style);
