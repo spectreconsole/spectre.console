@@ -47,7 +47,7 @@ namespace Spectre.Console
         /// Initializes a new instance of the <see cref="Paragraph"/> class.
         /// </summary>
         /// <param name="text">The text.</param>
-        /// <param name="style">The style of the text.</param>
+        /// <param name="style">The style of the text or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
         public Paragraph(string text, Style? style = null)
             : this()
         {
@@ -63,7 +63,7 @@ namespace Spectre.Console
         /// Appends some text to this paragraph.
         /// </summary>
         /// <param name="text">The text to append.</param>
-        /// <param name="style">The style of the appended text.</param>
+        /// <param name="style">The style of the appended text or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Paragraph Append(string text, Style? style = null)
         {
