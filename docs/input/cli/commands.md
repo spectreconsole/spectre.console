@@ -25,7 +25,7 @@ public class HelloCommand : Command<HelloCommand.Settings>
 
 ## Configuring
 
-Commands are configured via the [`CommandApp`](commandApp)'s `Configure` method.
+Commands are configured via the [`CommandApp`](commandapp)'s `Configure` method.
 
 ```csharp
 var app = new CommandApp();
@@ -45,7 +45,7 @@ app.Configure(config =>
 
 ## Dependency Injection
 
-Constructor injection is supported on commands. See the [`CommandApp`](commandApp) documentation for further information on configuring `Spectre.Console` for your container.
+Constructor injection is supported on commands. See the [`CommandApp`](commandapp) documentation for further information on configuring `Spectre.Console` for your container.
 
 ## Validation
 

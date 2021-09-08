@@ -78,6 +78,6 @@ app.exe c:\windows --hidden --pattern *.dll
 
 Much more is possible. You can have multiple commands per application, settings can be customized and extended and the default behavior of the `CommandApp` can be extended and customized.
 
-* See [CommandApp](./commandApp) for customizing how Spectre.Console.Cli builds the settings.
+* See [CommandApp](./commandapp) for customizing how Spectre.Console.Cli builds the settings.
 * See [Create Commands](./commands) for information about different command types and their configurations.
 * See [Specifying Settings](./settings) for information about defining the settings.
