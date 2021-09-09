@@ -382,10 +382,12 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // Then
-            registrar.Registrations.ContainsKey(typeof(ICommand)).ShouldBeTrue();
-            registrar.Registrations[typeof(ICommand)].ShouldContain(typeof(GenericCommand<FooCommandSettings>));
-            registrar.Registrations[typeof(ICommand)].ShouldContain(typeof(DogCommand));
-            registrar.Registrations[typeof(ICommand)].ShouldContain(typeof(HorseCommand));
+            registrar.Registrations.ContainsKey(typeof(GenericCommand<FooCommandSettings>)).ShouldBeTrue();
+            registrar.Registrations.ContainsKey(typeof(DogCommand)).ShouldBeTrue();
+            registrar.Registrations.ContainsKey(typeof(HorseCommand)).ShouldBeTrue();
+            registrar.Registrations[typeof(GenericCommand<FooCommandSettings>)].ShouldContain(typeof(GenericCommand<FooCommandSettings>));
+            registrar.Registrations[typeof(DogCommand)].ShouldContain(typeof(DogCommand));
+            registrar.Registrations[typeof(HorseCommand)].ShouldContain(typeof(HorseCommand));
         }
 
         [Fact]
@@ -406,8 +408,8 @@ namespace Spectre.Console.Tests.Unit.Cli
             });
 
             // Then
-            registrar.Registrations.ContainsKey(typeof(ICommand)).ShouldBeTrue();
-            registrar.Registrations[typeof(ICommand)].ShouldContain(typeof(DogCommand));
+            registrar.Registrations.ContainsKey(typeof(DogCommand)).ShouldBeTrue();
+            registrar.Registrations[typeof(DogCommand)].ShouldContain(typeof(DogCommand));
         }
 
         [Fact]
