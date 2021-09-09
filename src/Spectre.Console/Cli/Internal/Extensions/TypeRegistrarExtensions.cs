@@ -27,7 +27,6 @@ namespace Spectre.Console.Cli
 
                 if (command.CommandType != null)
                 {
-                    registrar?.Register(typeof(ICommand), command.CommandType);
                     registrar?.Register(command.CommandType, command.CommandType);
                 }
 
