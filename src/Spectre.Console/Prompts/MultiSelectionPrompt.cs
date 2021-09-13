@@ -134,13 +134,13 @@ namespace Spectre.Console
 
                 if (Mode == SelectionMode.Leaf)
                 {
-                    // Select the node and all it's children
+                    // Select the node and all its children
                     foreach (var item in current.Traverse(includeSelf: true))
                     {
                         item.IsSelected = select;
                     }
 
-                    // Visit every parent and evaluate if it's selection
+                    // Visit every parent and evaluate if its selection
                     // status need to be updated
                     var parent = current.Parent;
                     while (parent != null)

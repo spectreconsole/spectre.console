@@ -8,7 +8,7 @@ using Spectre.Console.Cli;
  * This works around the chicken and egg situation with configuring serilog via the command line.
  * The logger needs to be configured prior to executing the parser, but the logger needs the parsed values
  * to be configured. By using serilog.sinks.map we can defer configuration. We use a LogLevelSwitch to control the
- * logging levels dynamically, and then we use a serilog enricher that has it's state populated via a
+ * logging levels dynamically, and then we use a serilog enricher that has its state populated via a
  * Spectre.Console CommandInterceptor
  */
 

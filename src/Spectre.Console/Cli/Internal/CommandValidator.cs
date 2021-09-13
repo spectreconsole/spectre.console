@@ -32,7 +32,7 @@ namespace Spectre.Console.Cli
                 var validationResult = validator.Validate(context);
                 if (!validationResult.Successful)
                 {
-                    // If there is a error message specified in the parameter validator attribute,
+                    // If there is an error message specified in the parameter validator attribute,
                     // then use that one, otherwise use the validation result.
                     var result = string.IsNullOrWhiteSpace(validator.ErrorMessage)
                         ? validationResult

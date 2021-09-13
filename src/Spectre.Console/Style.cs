@@ -29,7 +29,7 @@ namespace Spectre.Console
         public string? Link { get; }
 
         /// <summary>
-        /// Gets an <see cref="Style"/> with the
+        /// Gets a <see cref="Style"/> with the
         /// default colors and without text decoration.
         /// </summary>
         public static Style Plain { get; } = new Style();

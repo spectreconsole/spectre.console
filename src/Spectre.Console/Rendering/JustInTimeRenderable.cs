@@ -5,7 +5,7 @@ namespace Spectre.Console.Rendering
 {
     /// <summary>
     /// Represents something renderable that's reconstructed
-    /// when it's state change in any way.
+    /// when its state change in any way.
     /// </summary>
     public abstract class JustInTimeRenderable : Renderable
     {

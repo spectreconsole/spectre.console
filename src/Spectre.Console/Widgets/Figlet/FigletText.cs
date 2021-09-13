@@ -107,7 +107,7 @@ namespace Spectre.Console
                 }
                 else
                 {
-                    // Does it fit on it's own line?
+                    // Does it fit on its own line?
                     if (width < maxWidth)
                     {
                         // Flush the line
