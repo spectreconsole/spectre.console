@@ -3,7 +3,7 @@ using System;
 namespace Spectre.Console.Cli
 {
     /// <summary>
-    /// An base class attribute used for parameter completion.
+    /// A base class attribute used for parameter completion.
     /// </summary>
     /// <seealso cref="Attribute" />
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]

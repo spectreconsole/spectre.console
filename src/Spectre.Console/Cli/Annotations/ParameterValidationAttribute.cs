@@ -3,7 +3,7 @@ using System;
 namespace Spectre.Console.Cli
 {
     /// <summary>
-    /// An base class attribute used for parameter validation.
+    /// A base class attribute used for parameter validation.
     /// </summary>
     /// <seealso cref="Attribute" />
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]

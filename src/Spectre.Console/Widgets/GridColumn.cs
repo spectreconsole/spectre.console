@@ -19,7 +19,7 @@ namespace Spectre.Console
 
         /// <summary>
         /// Gets or sets the width of the column.
-        /// If <c>null</c>, the column will adapt to it's contents.
+        /// If <c>null</c>, the column will adapt to its contents.
         /// </summary>
         public int? Width
         {
