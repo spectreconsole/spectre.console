@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -7,16 +9,40 @@ namespace Spectre.Console
 {
     internal static class TypeConverterHelper
     {
-        public static string ConvertToString<T>(T input)
+        public static string ConvertToString<T>(T input) =>
+          ConvertToString(input, typeof(T));
+
+        public static string ConvertToString(object input)
         {
-            return GetTypeConverter<T>().ConvertToInvariantString(input);
+            _ = input ?? throw new ArgumentException(nameof(input));
+            return ConvertToString(input, input.GetType());
         }
+
+        private static string ConvertToString(object? input, Type type) =>
+          GetTypeConverter(type).ConvertToInvariantString(input);
 
         public static bool TryConvertFromString<T>(string input, [MaybeNull] out T result)
         {
+            if (TryConvertFromString(input, typeof(T), out object? resultObject))
+            {
+                if (!(resultObject is T))
+                {
+                    throw new InvalidCastException();
+                }
+
+                result = (T)resultObject;
+                return true;
+            }
+
+            result = default;
+            return false;
+        }
+
+        public static bool TryConvertFromString(string input, Type type, [MaybeNull] out object? result)
+        {
             try
             {
-                result = (T)GetTypeConverter<T>().ConvertFromInvariantString(input);
+                result = GetTypeConverter(type).ConvertFromInvariantString(input);
                 return true;
             }
             catch
@@ -26,21 +52,24 @@ namespace Spectre.Console
             }
         }
 
-        public static TypeConverter GetTypeConverter<T>()
+        public static TypeConverter GetTypeConverter<T>() =>
+          GetTypeConverter(typeof(T));
+
+        public static TypeConverter GetTypeConverter(Type type)
         {
-            var converter = TypeDescriptor.GetConverter(typeof(T));
+            var converter = TypeDescriptor.GetConverter(type);
             if (converter != null)
             {
                 return converter;
             }
 
-            var attribute = typeof(T).GetCustomAttribute<TypeConverterAttribute>();
+            var attribute = type.GetCustomAttribute<TypeConverterAttribute>();
             if (attribute != null)
             {
-                var type = Type.GetType(attribute.ConverterTypeName, false, false);
-                if (type != null)
+                var converterType = Type.GetType(attribute.ConverterTypeName, false, false);
+                if (converterType != null)
                 {
-                    converter = Activator.CreateInstance(type) as TypeConverter;
+                    converter = Activator.CreateInstance(converterType) as TypeConverter;
                     if (converter != null)
                     {
                         return converter;
