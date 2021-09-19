@@ -8,7 +8,7 @@ Highlights:
     - And more...
 ---
 
-There is different built-in borders you can use for tables and panels.
+There are different built-in borders you can use for tables and panels.
 
 ## Table borders
 

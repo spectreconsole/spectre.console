@@ -111,7 +111,7 @@ Now you might wonder, why do things like this? Well, for starters the different 
 of the application are separated, while still having the option to share things like options,
 flags and arguments between them.
 
-This make the resulting code very clean and easy to navigate, not to mention to unit test.
+This makes the resulting code very clean and easy to navigate, not to mention to unit test.
 And most importantly at all, the type system guides me to do the right thing. I can't configure 
 commands in non-compatible ways, and if I want to add a new top-level `add-package` command 
 (or move the command completely), it's just a single line to change. This makes it easy to 

@@ -25,7 +25,7 @@ AnsiConsole.Status()
 To implement your own spinner, all you have to do is 
 inherit from the `Spinner` base class.
 
-In the example below, the spinner will alterate between
+In the example below, the spinner will alternate between
 the characters `A`, `B` and `C` every 100 ms.
 
 ```csharp

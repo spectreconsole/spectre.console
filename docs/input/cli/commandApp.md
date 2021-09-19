@@ -20,7 +20,7 @@ app.Configure(config =>
 
 ## Multiple Commands
 
-In the previous example we have a single command that is configured. For complex command line applications, it is common for them to have multiple commands (or verbs) defined. Examples of applications like this are `git`, `dotnet` and `gh`. For example, git would have an `commit` command and along with other commits like `add` or `rebase`. Each with their own settings and validation. With `Spectre.Console.Cli` we use the `Configure` method to add these commands.
+In the previous example we have a single command that is configured. For complex command line applications, it is common for them to have multiple commands (or verbs) defined. Examples of applications like this are `git`, `dotnet` and `gh`. For example, git would have a `commit` command and along with other commits like `add` or `rebase`. Each with their own settings and validation. With `Spectre.Console.Cli` we use the `Configure` method to add these commands.
 
 For example, to add three different commands to the application:
 
@@ -34,7 +34,7 @@ app.Configure(config =>
 });
 ```
 
-This configuration would allow users to run `app.exe add`, `app.exe commit`, or `app.exe rebase` and have the settings routed the appropriate command.
+This configuration would allow users to run `app.exe add`, `app.exe commit`, or `app.exe rebase` and have the settings routed to the appropriate command.
 
 For more complex command hierarchical configurations, they can also be composed via inheritance and branching. See [Composing Commands](./composing).
 
@@ -76,7 +76,7 @@ return app.Run(args);
 
 ## Interception
 
-`CommandApp` also provides a `SetInterceptor` configuration. An interceptor is ran before all commands are executed. This is typically used for configuring logging or other infrastructure concerns.
+`CommandApp` also provides a `SetInterceptor` configuration. An interceptor is run before all commands are executed. This is typically used for configuring logging or other infrastructure concerns.
 
 All interceptors must implement `ICommandInterceptor`. Upon execution of a command, an instance of your interceptor will be called with the parsed settings. This provides an opportunity for configuring any infrastructure or modifying the settings.
 

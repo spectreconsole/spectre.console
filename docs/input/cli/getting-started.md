@@ -67,7 +67,7 @@ This command will have three parameters.
 
 When `args` is passed into the `CommandApp`'s run method, `Spectre.Console.Cli` will parse those arguments and populate an instance of your settings. Upon success, it will then pass those settings into an instance of the specified command's `Execute` method.
 
-With this in place, we can the following commands will all work
+With this in place, the following commands will all work
 
 ```text
 app.exe

@@ -81,7 +81,7 @@ For a list of emoji, see the [Emojis](xref:emojis) appendix section.
 
 ## Colors
 
-In the examples above, all colors was referenced by their name,
+In the examples above, all colors were referenced by their name,
 but you can also use the hex or rgb representation for colors in markdown.
 
 ```csharp

@@ -1,6 +1,6 @@
 Title: Migrate from Spectre.Cli
 Order: 10
-Description: "Migrating from *Specte.Cli* to *Spectre.Console.Cli*"
+Description: "Migrating from *Spectre.Cli* to *Spectre.Console.Cli*"
 ---
 
 The functionality in `Spectre.Cli` has been moved into the `Spectre.Console`
@@ -26,7 +26,7 @@ Add the [Spectre.Console](https://www.nuget.org/packages/spectre.console) NuGet 
 ## 3. Change using statements
 
 Change all using statements from `Spectre.Cli` 
-to `Spectre.Console.CLi`.
+to `Spectre.Console.Cli`.
 
 ```diff
 - using Spectre.Cli;
