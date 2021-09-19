@@ -22,7 +22,7 @@ This setting file tells `Spectre.Console.Cli` that our command has two parameter
 
 ## CommandArgument
 
-Arguments have a position and a name. The name is not only used for generating help, but it's formatting is used to determine whether or not the argument is optional. The name must either be surrounded by square brackets (e.g. `[name]`) or angle brackets (e.g. `<name>`). Angle brackets denote required whereas square brackets denote optional. If neither are specified an exception will be thrown.
+Arguments have a position and a name. The name is not only used for generating help, but its formatting is used to determine whether or not the argument is optional. The name must either be surrounded by square brackets (e.g. `[name]`) or angle brackets (e.g. `<name>`). Angle brackets denote required whereas square brackets denote optional. If neither are specified an exception will be thrown.
 
 The position is used for scenarios where there could be more than one argument.
 
