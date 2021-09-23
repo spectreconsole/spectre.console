@@ -222,5 +222,145 @@ namespace Spectre.Console.Tests.Unit
                 result.ShouldBe(0);
             }
         }
+
+        [UsesVerify]
+        public sealed class TheUpdateMethod
+        {
+            [Fact]
+            public Task Should_Update_Row_With_String()
+            {
+                // Given
+                var console = new TestConsole();
+                var table = new Table();
+                table.AddColumn("Column #1");
+                table.AddColumn("Column #2");
+                table.AddColumn("Column #3");
+                table.Rows.Add(new[] { new Text("1") });
+                table.Rows.Add(new[] { new Text("2") });
+                table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
+
+                table.UpdateCell(2, 2, "5");
+
+                // When
+                console.Write(table);
+
+                // Then
+                return Verifier.Verify(console.Output);
+            }
+
+            [Fact]
+            public Task Should_Update_Row_With_Renderable()
+            {
+                // Given
+                var console = new TestConsole();
+                var table = new Table();
+                table.AddColumn("Column #1");
+                table.AddColumn("Column #2");
+                table.AddColumn("Column #3");
+                table.Rows.Add(new[] { new Text("1") });
+                table.Rows.Add(new[] { new Text("2") });
+                table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
+
+                table.UpdateCell(2, 2, new Markup("5"));
+
+                // When
+                console.Write(table);
+
+                // Then
+                return Verifier.Verify(console.Output);
+            }
+
+            [Fact]
+            public void Should_Throw_If_Index_Is_Larger_Than_Number_Of_Rows()
+            {
+                // Given
+                var console = new TestConsole();
+                var table = new Table();
+                table.AddColumn("Column #1");
+                table.AddColumn("Column #2");
+                table.AddColumn("Column #3");
+                table.Rows.Add(new[] { new Text("1") });
+                table.Rows.Add(new[] { new Text("2") });
+                table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
+                table.UpdateCell(2, 2, "5");
+
+
+                // When
+                var result = Record.Exception(() => table.UpdateCell(5, 2, "5"));
+
+                // Then
+                result.ShouldBeOfType<IndexOutOfRangeException>()
+                    .Message.ShouldBe("Table row index cannot exceed the number of rows in the table.");
+            }
+
+            [Fact]
+            public void Should_Throw_If_Index_Is_Larger_Than_Number_Of_Columns()
+            {
+                // Given
+                var console = new TestConsole();
+                var table = new Table();
+                table.AddColumn("Column #1");
+                table.AddColumn("Column #2");
+                table.AddColumn("Column #3");
+                table.Rows.Add(new[] { new Text("1") });
+                table.Rows.Add(new[] { new Text("2") });
+                table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
+                table.UpdateCell(2, 2, "5");
+
+
+                // When
+                var result = Record.Exception(() => table.UpdateCell(2, 5, "5"));
+
+                // Then
+                result.ShouldBeOfType<IndexOutOfRangeException>()
+                    .Message.ShouldBe("Table column index cannot exceed the number of rows in the table.");
+            }
+
+            [Fact]
+            public void Should_Throw_If_Index_Row_Is_Negative()
+            {
+                // Given
+                var console = new TestConsole();
+                var table = new Table();
+                table.AddColumn("Column #1");
+                table.AddColumn("Column #2");
+                table.AddColumn("Column #3");
+                table.Rows.Add(new[] { new Text("1") });
+                table.Rows.Add(new[] { new Text("2") });
+                table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
+                table.UpdateCell(2, 2, "5");
+
+
+                // When
+                var result = Record.Exception(() => table.UpdateCell(-1, 2, "5"));
+
+                // Then
+                result.ShouldBeOfType<IndexOutOfRangeException>()
+                    .Message.ShouldBe("Table row index cannot be negative.");
+            }
+
+            [Fact]
+            public void Should_Throw_If_Index_Column_Is_Negative()
+            {
+                // Given
+                var console = new TestConsole();
+                var table = new Table();
+                table.AddColumn("Column #1");
+                table.AddColumn("Column #2");
+                table.AddColumn("Column #3");
+                table.Rows.Add(new[] { new Text("1") });
+                table.Rows.Add(new[] { new Text("2") });
+                table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
+                table.UpdateCell(2, 2, "5");
+
+
+                // When
+                var result = Record.Exception(() => table.UpdateCell(2, -1, "5"));
+
+                // Then
+                result.ShouldBeOfType<IndexOutOfRangeException>()
+                    .Message.ShouldBe("Table column index cannot be negative.");
+            }
+        }
     }
 }

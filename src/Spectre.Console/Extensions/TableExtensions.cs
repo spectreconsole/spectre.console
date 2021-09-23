@@ -190,6 +190,56 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Updates a tables cell.
+        /// </summary>
+        /// <param name="table">The table to update.</param>
+        /// <param name="rowIndex">The index of row to update.</param>
+        /// <param name="columnIndex">The index of column to update.</param>
+        /// <param name="cellData">The row columns to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table UpdateCell(this Table table, int rowIndex, int columnIndex, IRenderable cellData)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            if (cellData is null)
+            {
+                throw new ArgumentNullException(nameof(cellData));
+            }
+
+            table.Rows.Update(rowIndex, columnIndex, cellData);
+
+            return table;
+        }
+
+        /// <summary>
+        /// Updates a tables cell.
+        /// </summary>
+        /// <param name="table">The table to update.</param>
+        /// <param name="rowIndex">The index of row to update.</param>
+        /// <param name="columnIndex">The index of column to update.</param>
+        /// <param name="cellData">The row columns to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static Table UpdateCell(this Table table, int rowIndex, int columnIndex, string cellData)
+        {
+            if (table is null)
+            {
+                throw new ArgumentNullException(nameof(table));
+            }
+
+            if (cellData is null)
+            {
+                throw new ArgumentNullException(nameof(cellData));
+            }
+
+            table.Rows.Update(rowIndex, columnIndex, new Markup(cellData));
+
+            return table;
+        }
+
+        /// <summary>
         /// Inserts a row in the table at the specified index.
         /// </summary>
         /// <param name="table">The table to add the row to.</param>
