@@ -195,7 +195,7 @@ namespace Spectre.Console
         /// <param name="table">The table to update.</param>
         /// <param name="rowIndex">The index of row to update.</param>
         /// <param name="columnIndex">The index of column to update.</param>
-        /// <param name="cellData">The row columns to add.</param>
+        /// <param name="cellData">New cell data.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static Table UpdateCell(this Table table, int rowIndex, int columnIndex, IRenderable cellData)
         {
@@ -220,7 +220,7 @@ namespace Spectre.Console
         /// <param name="table">The table to update.</param>
         /// <param name="rowIndex">The index of row to update.</param>
         /// <param name="columnIndex">The index of column to update.</param>
-        /// <param name="cellData">The row columns to add.</param>
+        /// <param name="cellData">New cell data.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static Table UpdateCell(this Table table, int rowIndex, int columnIndex, string cellData)
         {
