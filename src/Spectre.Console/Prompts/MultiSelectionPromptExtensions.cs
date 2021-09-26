@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Spectre.Console.Rendering;
 
 namespace Spectre.Console
 {
@@ -297,6 +298,25 @@ namespace Spectre.Console
         /// <param name="displaySelector">The function to get a display string for a given choice.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public static MultiSelectionPrompt<T> UseConverter<T>(this MultiSelectionPrompt<T> obj, Func<T, string>? displaySelector)
+            where T : notnull
+        {
+            SimpleMarkupPromptItemRenderer<T>? renderer = null;
+            if (displaySelector != null)
+            {
+                renderer = new SimpleMarkupPromptItemRenderer<T>(displaySelector);
+            }
+
+            return obj.UseConverter(renderer);
+        }
+
+        /// <summary>
+        /// Sets the function to create a renderable for a given choice.
+        /// </summary>
+        /// <typeparam name="T">The prompt type.</typeparam>
+        /// <param name="obj">The prompt.</param>
+        /// <param name="displaySelector">The <see cref="IPromptItemRenderer{T}"/> to generate an <see cref="IRenderable"/> for a given choice.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static MultiSelectionPrompt<T> UseConverter<T>(this MultiSelectionPrompt<T> obj, IPromptItemRenderer<T>? displaySelector)
             where T : notnull
         {
             if (obj is null)

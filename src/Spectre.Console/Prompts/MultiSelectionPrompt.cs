@@ -32,10 +32,10 @@ namespace Spectre.Console
         public Style? HighlightStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the converter to get the display string for a choice. By default
+        /// Gets or sets the converter to get the renderable for a choice. By default
         /// the corresponding <see cref="TypeConverter"/> is used.
         /// </summary>
-        public Func<T, string>? Converter { get; set; }
+        public IPromptItemRenderer<T>? Converter { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not
@@ -201,6 +201,7 @@ namespace Spectre.Console
 
             var grid = new Grid();
             grid.AddColumn(new GridColumn().Padding(0, 0, 1, 0).NoWrap());
+            grid.AddColumn(new GridColumn().Padding(0, 0, 1, 0).NoWrap());
 
             if (Title != null)
             {
@@ -210,23 +211,65 @@ namespace Spectre.Console
             foreach (var item in items)
             {
                 var current = item.Index == cursorIndex;
-                var style = current ? highlightStyle : Style.Plain;
+                var state = current ? PromptItemState.Current : PromptItemState.Normal;
+                var style = state switch
+                {
+                    PromptItemState.Current => highlightStyle,
+                    _ => Style.Plain,
+                };
 
                 var indent = new string(' ', item.Node.Depth * 2);
                 var prompt = item.Index == cursorIndex ? ListPromptConstants.Arrow : new string(' ', ListPromptConstants.Arrow.Length);
 
-                var text = (Converter ?? TypeConverterHelper.ConvertToString)?.Invoke(item.Node.Data) ?? item.Node.Data.ToString() ?? "?";
-                if (current)
+                IRenderable? renderable = null;
+                if (Converter != null)
                 {
-                    text = text.RemoveMarkup();
+                    renderable = Converter.Render(item.Node.Data, new PromptItemContext
+                    {
+                        State = state,
+                        PromptStyle = style,
+                    });
+                }
+                else if (item.Node.Data is IRenderable dataRenderable)
+                {
+                    renderable = dataRenderable;
+                }
+                else
+                {
+                    var converter = TypeConverterHelper.GetTypeConverter<T>();
+                    var possibleTargets = new[] { typeof(IRenderable), typeof(Renderable) };
+                    foreach (var target in possibleTargets)
+                    {
+                        if (converter.CanConvertTo(target))
+                        {
+                            renderable = (IRenderable)converter.ConvertTo(item.Node.Data, target);
+                            break;
+                        }
+                    }
+
+                    if (renderable == null)
+                    {
+                        var text = converter.ConvertToInvariantString(item.Node.Data);
+                        if (string.IsNullOrEmpty(text))
+                        {
+                            text = item.Node.Data.ToString() ?? "?";
+                        }
+
+                        if (current)
+                        {
+                            text = text.RemoveMarkup();
+                        }
+
+                        renderable = new Markup(text, style);
+                    }
                 }
 
                 var checkbox = item.Node.IsSelected
-                    ? (item.Node.IsGroup && Mode == SelectionMode.Leaf
-                        ? ListPromptConstants.GroupSelectedCheckbox : ListPromptConstants.SelectedCheckbox)
+                    ? item.Node.IsGroup && Mode == SelectionMode.Leaf
+                        ? ListPromptConstants.GroupSelectedCheckbox : ListPromptConstants.SelectedCheckbox
                     : ListPromptConstants.Checkbox;
 
-                grid.AddRow(new Markup(indent + prompt + " " + checkbox + " " + text, style));
+                grid.AddRow(new Markup(indent + prompt + " " + checkbox, style), renderable);
             }
 
             list.Add(grid);

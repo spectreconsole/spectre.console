@@ -1,3 +1,7 @@
+using System;
+using System.Linq;
+using Spectre.Console.Rendering;
+
 namespace Spectre.Console.Examples
 {
     public static class Program
@@ -25,6 +29,7 @@ namespace Spectre.Console.Examples
             var age = AskAge();
             var password = AskPassword();
             var color = AskColor();
+            var renderable = AskRenderable();
 
             // Summary
             AnsiConsole.WriteLine();
@@ -37,7 +42,8 @@ namespace Spectre.Console.Examples
                 .AddRow("[grey]Favorite sport[/]", sport)
                 .AddRow("[grey]Age[/]", age.ToString())
                 .AddRow("[grey]Password[/]", password)
-                .AddRow("[grey]Favorite color[/]", string.IsNullOrEmpty(color) ? "Unknown" : color));
+                .AddRow("[grey]Favorite color[/]", string.IsNullOrEmpty(color) ? "Unknown" : color)
+                .AddRow("[grey]Favorite Renderable[/]", renderable));
         }
 
         private static string AskName()
@@ -140,6 +146,78 @@ namespace Spectre.Console.Examples
             return AnsiConsole.Prompt(
                 new TextPrompt<string>("[grey][[Optional]][/] What is your [green]favorite color[/]?")
                     .AllowEmpty());
+        }
+
+        private static string AskRenderable()
+        {
+            AnsiConsole.WriteLine();
+            AnsiConsole.Render(new Rule("[yellow]Optional[/]").RuleStyle("grey").LeftAligned());
+
+            var markup = new Markup("[red]Simple[/] [yellow]markup[/]");
+
+            // don't use a tree, trees are so wide, the whole layout breaks.
+
+            var bar = new BarChart
+            {
+                Label = "Bar chart",
+                Width = 45 // don't use all space, or the prompt will break.
+            };
+            bar.Data.AddRange(new[]
+                {
+                    new BarChartItem("short sticks", 20, Color.Aqua),
+                    new BarChartItem("long sticks", 65, Color.Blue),
+                    new BarChartItem("medium sticks", 34.5, Color.Red),
+                });
+
+            var table = new Table();
+            table.AddColumns("or");
+            table.AddRow("rather");
+            table.AddRow("a");
+            table.AddRow("table");
+
+            var calendar = new Calendar(DateTime.Now);
+
+            var selected = AnsiConsole.Prompt(
+                new MultiSelectionPrompt<IRenderable>()
+                    .Title("Which renderable do you like best?")
+                    .UseConverter(new DirectRenderablePromptRenderer())
+                    .PageSize(3) // beware the size of the renderables!
+                    .AddChoiceGroup(new Markup("[yellow]first[/] group"), new IRenderable[]{ markup, bar })
+                    .AddChoiceGroup(new Markup("[yellow]second[/] group"), new IRenderable[]{ table, calendar } ));
+
+            var widget = selected.Count == 1 ? selected[0] : null;
+            if (widget == null)
+            {
+                widget = AnsiConsole.Prompt(
+                    new SelectionPrompt<IRenderable>()
+                        .Title("Ok, but if you could only choose [green]one[/]?")
+                        .UseConverter(new DirectRenderablePromptRenderer())
+                        .AddChoices(selected));
+            }
+
+
+            return widget.GetType().Name;
+        }
+
+        private class DirectRenderablePromptRenderer : IPromptItemRenderer<IRenderable>
+        {
+            public IRenderable Render(IRenderable item, PromptItemContext context)
+            {
+                // use a table to add a border around each renderable.
+                var table = new Table();
+                table.AddColumn("");
+                table.ShowHeaders = false;
+
+                if (context.State == PromptItemState.Current)
+                {
+                    table.Border = TableBorder.Double;
+                }
+
+                table.BorderStyle = context.PromptStyle;
+                table.AddRow(item);
+
+                return table;
+            }
         }
     }
 }
