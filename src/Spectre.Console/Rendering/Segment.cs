@@ -449,36 +449,36 @@ namespace Spectre.Console.Rendering
 
             var result = new List<Segment>();
 
-            var previous = (Segment?)null;
+            var segmentBuilder = (SegmentBuilder?)null;
             foreach (var segment in segments)
             {
-                if (previous == null)
+                if (segmentBuilder == null)
                 {
-                    previous = segment;
+                    segmentBuilder = new SegmentBuilder(segment);
                     continue;
                 }
 
                 // Both control codes?
-                if (segment.IsControlCode && previous.IsControlCode)
+                if (segment.IsControlCode && segmentBuilder.IsControlCode())
                 {
-                    previous = Control(previous.Text + segment.Text);
+                    segmentBuilder.Append(segment.Text);
                     continue;
                 }
 
                 // Same style?
-                if (previous.Style.Equals(segment.Style) && !previous.IsLineBreak && !previous.IsControlCode)
+                if (segmentBuilder.StyleEquals(segment.Style) && !segmentBuilder.IsLineBreak() && !segmentBuilder.IsControlCode())
                 {
-                    previous = new Segment(previous.Text + segment.Text, previous.Style);
+                    segmentBuilder.Append(segment.Text);
                     continue;
                 }
 
-                result.Add(previous);
-                previous = segment;
+                result.Add(segmentBuilder.Build());
+                segmentBuilder.Reset(segment);
             }
 
-            if (previous != null)
+            if (segmentBuilder != null)
             {
-                result.Add(previous);
+                result.Add(segmentBuilder.Build());
             }
 
             return result;
@@ -578,6 +578,40 @@ namespace Spectre.Console.Rendering
             list.Add(sb.ToString());
 
             return list;
+        }
+
+        private class SegmentBuilder
+        {
+            private readonly StringBuilder _textBuilder = new();
+            private Segment _originalSegment;
+
+            public SegmentBuilder(Segment originalSegment)
+            {
+                _originalSegment = originalSegment;
+                Reset(originalSegment);
+            }
+
+            public bool IsControlCode() => _originalSegment.IsControlCode;
+            public bool IsLineBreak() => _originalSegment.IsLineBreak;
+            public bool StyleEquals(Style segmentStyle) => segmentStyle.Equals(_originalSegment.Style);
+
+            public void Append(string text)
+            {
+                _textBuilder.Append(text);
+            }
+
+            public Segment Build()
+            {
+                return new Segment(_textBuilder.ToString(), _originalSegment.Style, _originalSegment.IsLineBreak,
+                    _originalSegment.IsControlCode);
+            }
+
+            public void Reset(Segment segment)
+            {
+                _textBuilder.Clear();
+                _textBuilder.Append(segment.Text);
+                _originalSegment = segment;
+            }
         }
     }
 }
