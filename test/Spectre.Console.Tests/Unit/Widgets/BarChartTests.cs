@@ -58,7 +58,7 @@ namespace Spectre.Console.Tests.Unit
             // When
             console.Write(new BarChart()
                 .Width(60)
-                .WithFixedMaxValue(100)
+                .WithMaxValue(100)
                 .Label("Number of fruits")
                 .AddItem("Apple", 12)
                 .AddItem("Orange", 54)
