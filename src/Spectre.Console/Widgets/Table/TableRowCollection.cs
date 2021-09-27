@@ -90,6 +90,55 @@ namespace Spectre.Console
         }
 
         /// <summary>
+        /// Update a table cell at the specified index.
+        /// </summary>
+        /// <param name="row">Index of cell row.</param>
+        /// <param name="column">index of cell column.</param>
+        /// <param name="cellData">The new cells details.</param>
+        public void Update(int row, int column, IRenderable cellData)
+        {
+            if (cellData is null)
+            {
+                throw new ArgumentNullException(nameof(cellData));
+            }
+
+            lock (_lock)
+            {
+                if (row < 0)
+                {
+                    throw new IndexOutOfRangeException("Table row index cannot be negative.");
+                }
+                else if (row >= _list.Count)
+                {
+                    throw new IndexOutOfRangeException("Table row index cannot exceed the number of rows in the table.");
+                }
+
+                var tableRow = _list.ElementAtOrDefault(row);
+
+                var currentRenderables = tableRow.ToList();
+
+                if (column < 0)
+                {
+                    throw new IndexOutOfRangeException("Table column index cannot be negative.");
+                }
+                else if (column >= currentRenderables.Count)
+                {
+                    throw new IndexOutOfRangeException("Table column index cannot exceed the number of rows in the table.");
+                }
+
+                currentRenderables.RemoveAt(column);
+
+                currentRenderables.Insert(column, cellData);
+
+                var newTableRow = new TableRow(currentRenderables);
+
+                _list.RemoveAt(row);
+
+                _list.Insert(row, newTableRow);
+            }
+        }
+
+        /// <summary>
         /// Removes a row at the specified index.
         /// </summary>
         /// <param name="index">The index to remove a row at.</param>
