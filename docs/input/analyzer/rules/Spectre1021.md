@@ -7,7 +7,7 @@ Severity: Warning
 
 ## Cause
 
-A violation of this rule occurs when a AnsiConsole prompt is called within the context of an executing renderable e.g. `Progress`, `Status` and `Live`. Concurrent LiveRenderable are not supported and will cause issues when running simultaneously.
+A violation of this rule occurs when an AnsiConsole prompt is called within the context of an executing renderable e.g. `Progress`, `Status` and `Live`. Concurrent LiveRenderable are not supported and will cause issues when running simultaneously.
 
 ## Reason for rule
 
