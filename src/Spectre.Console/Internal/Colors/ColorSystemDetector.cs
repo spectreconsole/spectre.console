@@ -1,10 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
 
-#if !NET5_0
-using System.Text.RegularExpressions;
-#endif
-
 namespace Spectre.Console
 {
     internal static class ColorSystemDetector
@@ -61,7 +57,6 @@ namespace Spectre.Console
             return ColorSystem.EightBit;
         }
 
-        // See https://docs.microsoft.com/en-us/dotnet/core/compatibility/core-libraries/5.0/environment-osversion-returns-correct-version
         private static bool GetWindowsVersionInformation(out int major, out int build)
         {
             major = 0;
@@ -72,15 +67,15 @@ namespace Spectre.Console
                 return false;
             }
 
-#if NET5_0
-            // The reason we're not always using this, is because it
-            // will return wrong values on other runtimes than net5.0
+#if NET5_0_OR_GREATER
+            // The reason we're not always using this, is because it will return wrong values on other runtimes than .NET 5+
+            // See https://docs.microsoft.com/en-us/dotnet/core/compatibility/core-libraries/5.0/environment-osversion-returns-correct-version
             var version = Environment.OSVersion.Version;
             major = version.Major;
             build = version.Build;
             return true;
 #else
-            var regex = new Regex("Microsoft Windows (?'major'[0-9]*).(?'minor'[0-9]*).(?'build'[0-9]*)\\s*$");
+            var regex = new System.Text.RegularExpressions.Regex("Microsoft Windows (?'major'[0-9]*).(?'minor'[0-9]*).(?'build'[0-9]*)\\s*$");
             var match = regex.Match(RuntimeInformation.OSDescription);
             if (match.Success && int.TryParse(match.Groups["major"].Value, out major))
             {

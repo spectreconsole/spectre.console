@@ -165,10 +165,10 @@ namespace Spectre.Console
         {
             int? GetLinkHashCode()
             {
-#if NET5_0
-                return Link?.GetHashCode(StringComparison.Ordinal);
-#else
+#if NETSTANDARD2_0
                 return Link?.GetHashCode();
+#else
+                return Link?.GetHashCode(StringComparison.Ordinal);
 #endif
             }
 

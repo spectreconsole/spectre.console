@@ -177,19 +177,19 @@ namespace Spectre.Console
 
         internal static string ReplaceExact(this string text, string oldValue, string? newValue)
         {
-#if NET5_0
-            return text.Replace(oldValue, newValue, StringComparison.Ordinal);
-#else
+#if NETSTANDARD2_0
             return text.Replace(oldValue, newValue);
+#else
+            return text.Replace(oldValue, newValue, StringComparison.Ordinal);
 #endif
         }
 
         internal static bool ContainsExact(this string text, string value)
         {
-#if NET5_0
-            return text.Contains(value, StringComparison.Ordinal);
-#else
+#if NETSTANDARD2_0
             return text.Contains(value);
+#else
+            return text.Contains(value, StringComparison.Ordinal);
 #endif
         }
     }
