@@ -32,10 +32,10 @@ namespace Spectre.Console
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static int GetLinkHashCode(string link)
         {
-#if NET5_0
-            return link.GetHashCode(StringComparison.Ordinal);
-#else
+#if NETSTANDARD2_0
             return link.GetHashCode();
+#else
+            return link.GetHashCode(StringComparison.Ordinal);
 #endif
         }
     }
