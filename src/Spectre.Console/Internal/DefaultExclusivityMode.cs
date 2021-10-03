@@ -15,13 +15,10 @@ namespace Spectre.Console.Internal
 
         public T Run<T>(Func<T> func)
         {
-            // Try aquiring the exclusivity semaphore
+            // Try acquiring the exclusivity semaphore
             if (!_semaphore.Wait(0))
             {
-                throw new InvalidOperationException(
-                    "Trying to run one or more interactive functions concurrently. " +
-                    "Operations with dynamic displays (e.g. a prompt and a progress display) " +
-                    "cannot be running at the same time.");
+                throw CreateExclusivityException();
             }
 
             try
@@ -36,12 +33,10 @@ namespace Spectre.Console.Internal
 
         public async Task<T> Run<T>(Func<Task<T>> func)
         {
-            // Try aquiring the exclusivity semaphore
+            // Try acquiring the exclusivity semaphore
             if (!await _semaphore.WaitAsync(0).ConfigureAwait(false))
             {
-                // TODO: Need a better message here
-                throw new InvalidOperationException(
-                    "Could not aquire the interactive semaphore");
+                throw CreateExclusivityException();
             }
 
             try
@@ -53,5 +48,10 @@ namespace Spectre.Console.Internal
                 _semaphore.Release(1);
             }
         }
+
+        private static Exception CreateExclusivityException() => new InvalidOperationException(
+            "Trying to run one or more interactive functions concurrently. " +
+            "Operations with dynamic displays (e.g. a prompt and a progress display) " +
+            "cannot be running at the same time.");
     }
 }
