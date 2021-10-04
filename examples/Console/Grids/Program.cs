@@ -16,7 +16,7 @@ namespace Spectre.Console.Examples
             grid.AddRow("  [blue]-c[/], [blue]--configuration[/] <CONFIGURATION>", "The configuration to run for.");
             grid.AddRow("  [blue]-v[/], [blue]--verbosity[/] <LEVEL>", "Set the [grey]MSBuild[/] verbosity level.");
 
-            AnsiConsole.Render(grid);
+            AnsiConsole.Write(grid);
         }
     }
 }

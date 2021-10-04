@@ -16,7 +16,7 @@ namespace Spectre.Console.Examples
             }
 
             // Render all cards in columns
-            AnsiConsole.Render(new Columns(cards));
+            AnsiConsole.Write(new Columns(cards));
         }
 
         private static string GetCardContent(User user)

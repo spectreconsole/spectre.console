@@ -23,7 +23,7 @@ namespace Demo.Utilities
                     value ?? "[grey]null[/]");
             }
 
-            AnsiConsole.Render(table);
+            AnsiConsole.Write(table);
         }
     }
 }

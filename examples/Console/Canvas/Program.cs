@@ -39,9 +39,9 @@ namespace Spectre.Console.Examples
         private static void Render(IRenderable canvas, string title)
         {
             AnsiConsole.WriteLine();
-            AnsiConsole.Render(new Rule($"[yellow]{title}[/]").LeftAligned().RuleStyle("grey"));
+            AnsiConsole.Write(new Rule($"[yellow]{title}[/]").LeftAligned().RuleStyle("grey"));
             AnsiConsole.WriteLine();
-            AnsiConsole.Render(canvas);
+            AnsiConsole.Write(canvas);
         }
     }
 }

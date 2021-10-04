@@ -4,7 +4,7 @@ namespace Spectre.Console.Examples
     {
         public static void Main()
         {
-            AnsiConsole.Render(CreateTable());
+            AnsiConsole.Write(CreateTable());
         }
 
         private static Table CreateTable()

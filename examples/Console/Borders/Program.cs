@@ -35,7 +35,7 @@ namespace Spectre.Console.Examples
                 CreatePanel("None", BoxBorder.None),
             };
 
-            AnsiConsole.Render(
+            AnsiConsole.Write(
                 new Padder(
                     new Columns(items).PadRight(2),
                     new Padding(2,0,0,0)));
@@ -77,13 +77,13 @@ namespace Spectre.Console.Examples
                 CreateTable("Markdown", TableBorder.Markdown),
             };
 
-            AnsiConsole.Render(new Columns(items).Collapse());
+            AnsiConsole.Write(new Columns(items).Collapse());
         }
 
         private static void HorizontalRule(string title)
         {
             AnsiConsole.WriteLine();
-            AnsiConsole.Render(new Rule($"[white bold]{title}[/]").RuleStyle("grey").LeftAligned());
+            AnsiConsole.Write(new Rule($"[white bold]{title}[/]").RuleStyle("grey").LeftAligned());
             AnsiConsole.WriteLine();
         }
     }

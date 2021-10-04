@@ -14,17 +14,17 @@ namespace Spectre.Console.Examples
             catch (Exception ex)
             {
                 AnsiConsole.WriteLine();
-                AnsiConsole.Render(new Rule("Default").LeftAligned());
+                AnsiConsole.Write(new Rule("Default").LeftAligned());
                 AnsiConsole.WriteLine();
                 AnsiConsole.WriteException(ex);
 
                 AnsiConsole.WriteLine();
-                AnsiConsole.Render(new Rule("Compact").LeftAligned());
+                AnsiConsole.Write(new Rule("Compact").LeftAligned());
                 AnsiConsole.WriteLine();
                 AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything | ExceptionFormats.ShowLinks);
 
                 AnsiConsole.WriteLine();
-                AnsiConsole.Render(new Rule("Compact + Custom colors").LeftAligned());
+                AnsiConsole.Write(new Rule("Compact + Custom colors").LeftAligned());
                 AnsiConsole.WriteLine();
                 AnsiConsole.WriteException(ex, new ExceptionSettings
                 {

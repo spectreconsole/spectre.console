@@ -83,7 +83,7 @@ namespace Spectre.Console.Examples
 
             // Render the table
             AnsiConsole.WriteLine();
-            AnsiConsole.Render(table);
+            AnsiConsole.Write(table);
         }
 
         private static IRenderable GetColorTable()

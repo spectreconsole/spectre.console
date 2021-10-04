@@ -19,7 +19,7 @@ namespace Spectre.Console.Examples
                 .AddRow("[b]Buffer height[/]", $"{AnsiConsole.Console.Profile.Height}")
                 .AddRow("[b]Encoding[/]", $"{AnsiConsole.Console.Profile.Encoding.EncodingName}");
 
-            AnsiConsole.Render(
+            AnsiConsole.Write(
                 new Panel(grid)
                     .Header("Information"));
         }

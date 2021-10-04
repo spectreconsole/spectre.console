@@ -14,7 +14,7 @@ namespace Spectre.Console.Examples
 
         private static void RenderEmoji()
         {
-            AnsiConsole.Render(
+            AnsiConsole.Write(
                 new Panel("[yellow]Hello :globe_showing_europe_africa:![/]")
                     .RoundedBorder());
         }
