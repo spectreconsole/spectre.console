@@ -44,6 +44,12 @@ namespace Spectre.Console
         public CultureInfo? Culture { get; set; }
 
         /// <summary>
+        /// Gets or sets the fixed max value for a bar chart.
+        /// </summary>
+        /// <remarks>Defaults to null, which corresponds to largest value in chart.</remarks>
+        public double? MaxValue { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BarChart"/> class.
         /// </summary>
         public BarChart()
@@ -62,7 +68,7 @@ namespace Spectre.Console
         protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
         {
             var width = Math.Min(Width ?? maxWidth, maxWidth);
-            var maxValue = Data.Max(item => item.Value);
+            var maxValue = Math.Max(MaxValue ?? 0d, Data.Max(item => item.Value));
 
             var grid = new Grid();
             grid.Collapse();

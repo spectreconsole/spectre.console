@@ -238,5 +238,22 @@ namespace Spectre.Console
             chart.LabelAlignment = Justify.Right;
             return chart;
         }
+
+        /// <summary>
+        /// Sets the max fixed value for the chart.
+        /// </summary>
+        /// <param name="chart">The bar chart.</param>
+        /// <param name="maxValue">Max value for the chart.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public static BarChart WithMaxValue(this BarChart chart, double maxValue)
+        {
+            if (chart is null)
+            {
+                throw new ArgumentNullException(nameof(chart));
+            }
+
+            chart.MaxValue = maxValue;
+            return chart;
+        }
     }
 }
