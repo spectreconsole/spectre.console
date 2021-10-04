@@ -32,7 +32,7 @@ namespace Spectre.Console.Examples
 
         private static void Render(string title, IRenderable chart)
         {
-            AnsiConsole.Render(
+            AnsiConsole.Write(
                 new Panel(chart)
                     .Padding(1, 1)
                     .Header(title));

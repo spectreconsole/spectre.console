@@ -8,7 +8,7 @@ namespace Spectre.Console.Examples
 
             // Render the tree
             var tree = BuildTree();
-            AnsiConsole.Render(tree);
+            AnsiConsole.Write(tree);
         }
 
         private static Tree BuildTree()

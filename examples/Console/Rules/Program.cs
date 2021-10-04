@@ -34,7 +34,7 @@ namespace Spectre.Console.Examples
 
         private static void Render(Rule rule)
         {
-            AnsiConsole.Render(rule);
+            AnsiConsole.Write(rule);
             AnsiConsole.WriteLine();
         }
     }
