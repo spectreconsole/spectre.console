@@ -6,11 +6,6 @@ on:
       - '*'
     branches:
       - main
-    paths:
-      - 'src/**'
-      - 'test/**'
-      - 'examples/**'
-      - '.github/**'
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
