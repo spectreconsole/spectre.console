@@ -8,6 +8,8 @@ on:
       - main
     paths:
       - 'src/**'
+      - 'test/**'
+      - 'examples/**'
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true

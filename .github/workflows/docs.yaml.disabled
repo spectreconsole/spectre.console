@@ -5,6 +5,8 @@ on:
         paths:
         - 'docs/**'
         - 'src/**'
+        - 'test/**'
+        - 'examples/**'
 
 jobs:
 
