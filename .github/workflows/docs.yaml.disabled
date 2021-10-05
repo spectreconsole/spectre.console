@@ -7,7 +7,7 @@ on:
         - 'src/**'
         - 'test/**'
         - 'examples/**'
-        - '.github/workflows/**'
+        - '.github/**'
 
 jobs:
 

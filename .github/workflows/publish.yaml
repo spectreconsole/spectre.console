@@ -10,7 +10,7 @@ on:
       - 'src/**'
       - 'test/**'
       - 'examples/**'
-      - '.github/workflows/**'
+      - '.github/**'
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
