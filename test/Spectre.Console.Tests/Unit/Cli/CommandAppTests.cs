@@ -548,6 +548,45 @@ namespace Spectre.Console.Tests.Unit.Cli
         }
 
         [Fact]
+        public void Should_Add_Unknown_Option_To_Remaining_Arguments_In_Strict_Mode()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.UseStrictParsing();
+                config.PropagateExceptions();
+                config.AddBranch<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<DogCommand>("dog");
+                });
+            });
+
+            // When
+            var result = app.Run(new[]
+            {
+                "animal", "4", "dog", "12",
+                "--",
+                "--foo", "bar",
+                "-f", "baz",
+                "qux"
+            });
+
+            // Then
+            result.Context.ShouldNotBeNull();
+            result.Context.Remaining.Parsed.Count.ShouldBe(2);
+            result.Context.ShouldHaveRemainingArgument("foo", values: new[] { "bar" });
+            result.Context.ShouldHaveRemainingArgument("f", values: new[] { "baz" });
+            result.Context.Remaining.Raw.Count.ShouldBe(5);
+            result.Context.Remaining.Raw.ShouldBe(new[]
+            {
+                "--foo", "bar",
+                "-f", "baz",
+                "qux",
+            });
+        }
+
+        [Fact]
         public void Should_Add_Unknown_Boolean_Option_To_Remaining_Arguments_In_Relaxed_Mode()
         {
             // Given
