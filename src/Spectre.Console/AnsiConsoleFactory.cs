@@ -3,6 +3,7 @@ namespace Spectre.Console;
 /// <summary>
 /// Factory for creating an ANSI console.
 /// </summary>
+[Obsolete("Consider using AnsiConsole.Create instead.")]
 public sealed class AnsiConsoleFactory
 {
     /// <summary>
