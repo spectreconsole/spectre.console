@@ -29,9 +29,8 @@ var fruits = AnsiConsole.Prompt(
         .InstructionsText(
             "[grey](Press [blue]<space>[/] to toggle a fruit, " + 
             "[green]<enter>[/] to accept)[/]")
-        .AddChoice("Apple")
         .AddChoices(new[] {
-            "Apricot", "Avocado", 
+            "Apple", "Apricot", "Avocado", 
             "Banana", "Blackcurrant", "Blueberry",
             "Cherry", "Cloudberry", "Cocunut",
         }));
