@@ -112,6 +112,41 @@ namespace Spectre.Console
                 .ToList();
         }
 
+        /// <summary>
+        /// Returns all parent items of the given <paramref name="item"/>.
+        /// </summary>
+        /// <param name="item">The item for which to find the parents.</param>
+        /// <returns>The parent items, or an empty list, if the given item has no parents.</returns>
+        public IEnumerable<T> GetParents(T item)
+        {
+            var promptItem = Tree.Find(item);
+            if (promptItem == null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(item), "item not found in tree.");
+            }
+
+            var parents = new List<ListPromptItem<T>>();
+            while (promptItem.Parent != null)
+            {
+                promptItem = promptItem.Parent;
+                parents.Add(promptItem);
+            }
+
+            return parents
+                .ReverseEnumerable()
+                .Select(x => x.Data);
+        }
+
+        /// <summary>
+        /// Returns the parent item of the given <paramref name="item"/>.
+        /// </summary>
+        /// <param name="item">The item for which to find the parent.</param>
+        /// <returns>The parent item, or <c>null</c> if the given item has no parent.</returns>
+        public T? GetParent(T item)
+        {
+            return GetParents(item).LastOrDefault();
+        }
+
         /// <inheritdoc/>
         ListPromptInputResult IListPromptStrategy<T>.HandleInput(ConsoleKeyInfo key, ListPromptState<T> state)
         {
