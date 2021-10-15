@@ -13,7 +13,6 @@ jobs:
 
   docs:
     name: Documentation
-    if: false # Disable for now
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
