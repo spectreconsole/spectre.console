@@ -61,8 +61,8 @@ In our `Main()` method, an instance of `Spectre.Console.Cli`'s  `CommandApp` is 
 
 This command will have three parameters.
 
-* The main parameter for the command will be the path. This is to be passed in as the first argument without needing to specify any command line flags. To configure that setting, use the `CommandArgument` attribute. The `[searchPath]` parameters of `CommandArgument` drives not only how the built in help display will render the help text, but the square brackets tells `Spectre.Console.Cli` that this argument is optional through convention.
-* The second will be specified as a parameter option. The `CommandOption` attribute is used to specify this action along with the option command line flag. In the case of `SearchPattern` both `-p` and `--path` are valid.
+* The main parameter for the command will be the path. This is to be passed in as the first argument without needing to specify any command line flags. To configure that setting, use the `CommandArgument` attribute. The `[searchPath]` parameter of `CommandArgument` drives not only how the built in help display will render the help text, but the square brackets tells `Spectre.Console.Cli` that this argument is optional through convention.
+* The second will be specified as a parameter option. The `CommandOption` attribute is used to specify this action along with the option command line flag. In the case of `SearchPattern` both `-p` and `--pattern` are valid.
 * The third will also be a parameter option. Here `DefaultValue` is used to indicate the default value will be `true`. For boolean parameters these will be interpreted as flags which means the user can just specify `--hidden` rather than `-hidden true`.
 
 When `args` is passed into the `CommandApp`'s run method, `Spectre.Console.Cli` will parse those arguments and populate an instance of your settings. Upon success, it will then pass those settings into an instance of the specified command's `Execute` method.
