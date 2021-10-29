@@ -275,7 +275,7 @@ namespace Spectre.Console
         }
 
         /// <summary>
-        /// Replaces prompt user input with asterixes in the console.
+        /// Replaces prompt user input with asterisks in the console.
         /// </summary>
         /// <typeparam name="T">The prompt type.</typeparam>
         /// <param name="obj">The prompt.</param>
