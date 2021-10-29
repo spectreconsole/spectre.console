@@ -122,7 +122,7 @@ namespace Spectre.Console
             var promptItem = Tree.Find(item);
             if (promptItem == null)
             {
-                throw new ArgumentOutOfRangeException(nameof(item), "item not found in tree.");
+                throw new ArgumentOutOfRangeException(nameof(item), "Item not found in tree.");
             }
 
             var parents = new List<ListPromptItem<T>>();
