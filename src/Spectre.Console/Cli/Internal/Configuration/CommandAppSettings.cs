@@ -17,6 +17,8 @@ namespace Spectre.Console.Cli
         public ParsingMode ParsingMode =>
             StrictParsing ? ParsingMode.Strict : ParsingMode.Relaxed;
 
+        public Func<Exception, int>? ExceptionHandler { get; set; }
+
         public CommandAppSettings(ITypeRegistrar registrar)
         {
             Registrar = new TypeRegistrar(registrar);

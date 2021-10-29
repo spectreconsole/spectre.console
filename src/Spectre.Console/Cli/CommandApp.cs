@@ -103,6 +103,11 @@ namespace Spectre.Console.Cli
                     throw;
                 }
 
+                if (_configurator.Settings.ExceptionHandler != null)
+                {
+                    return _configurator.Settings.ExceptionHandler(ex);
+                }
+
                 // Render the exception.
                 var pretty = GetRenderableErrorMessage(ex);
                 if (pretty != null)

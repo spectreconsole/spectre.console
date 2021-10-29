@@ -1,3 +1,5 @@
+using System;
+
 namespace Spectre.Console.Cli
 {
     /// <summary>
@@ -43,6 +45,8 @@ namespace Spectre.Console.Cli
 
         /// <summary>
         /// Gets or sets a value indicating whether or not exceptions should be propagated.
+        /// <para>Setting this to <c>true</c> will disable default Exception handling and
+        /// any <see cref="ExceptionHandler"/>, if set.</para>
         /// </summary>
         bool PropagateExceptions { get; set; }
 
@@ -50,5 +54,11 @@ namespace Spectre.Console.Cli
         /// Gets or sets a value indicating whether or not examples should be validated.
         /// </summary>
         bool ValidateExamples { get; set; }
+
+        /// <summary>
+        /// Gets or sets a handler for Exceptions.
+        /// <para>This handler will not be called, if <see cref="PropagateExceptions"/> is set to <c>true</c>.</para>
+        /// </summary>
+        public Func<Exception, int>? ExceptionHandler { get; set; }
     }
 }
