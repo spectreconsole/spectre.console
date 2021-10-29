@@ -73,6 +73,12 @@ jobs:
         with:
           dotnet-version: 5.0.301
 
+    - name: Setup dotnet 6.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+        include-prerelease: true
+
       - name: Build
         shell: bash
         run: |
@@ -103,6 +109,12 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.301
+
+      - name: Setup dotnet 6.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+          include-prerelease: true
 
       - name: Publish
         shell: bash
