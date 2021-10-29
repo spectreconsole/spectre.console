@@ -224,5 +224,39 @@ namespace Spectre.Console.Cli
 
             return configurator.AddDelegate<TSettings>(name, (c, _) => func(c));
         }
+
+        /// <summary>
+        /// Sets the ExceptionsHandler.
+        /// <para>Setting <see cref="ICommandAppSettings.ExceptionHandler"/> this way will use the
+        /// default exit code of -1.</para>
+        /// </summary>
+        /// <param name="configurator">The configurator.</param>
+        /// <param name="exceptionHandler">The Action that handles the exception.</param>
+        /// <returns>A configurator that can be used to configure the application further.</returns>
+        public static IConfigurator SetExceptionHandler(this IConfigurator configurator, Action<Exception> exceptionHandler)
+        {
+            return configurator.SetExceptionHandler(ex =>
+            {
+                exceptionHandler(ex);
+                return -1;
+            });
+        }
+
+        /// <summary>
+        /// Sets the ExceptionsHandler.
+        /// </summary>
+        /// <param name="configurator">The configurator.</param>
+        /// <param name="exceptionHandler">The Action that handles the exception.</param>
+        /// <returns>A configurator that can be used to configure the application further.</returns>
+        public static IConfigurator SetExceptionHandler(this IConfigurator configurator, Func<Exception, int>? exceptionHandler)
+        {
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator));
+            }
+
+            configurator.Settings.ExceptionHandler = exceptionHandler;
+            return configurator;
+        }
     }
 }
