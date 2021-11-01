@@ -167,7 +167,7 @@ namespace Spectre.Console
                 var text = (Converter ?? TypeConverterHelper.ConvertToString)?.Invoke(item.Node.Data) ?? item.Node.Data.ToString() ?? "?";
                 if (current)
                 {
-                    text = text.RemoveMarkup();
+                    text = text.RemoveMarkup().EscapeMarkup();
                 }
 
                 grid.AddRow(new Markup(indent + prompt + " " + text, style));
