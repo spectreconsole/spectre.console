@@ -28,7 +28,7 @@ for(var i = 0; i < canvas.Width; i++)
 }
 
 // Render the canvas
-AnsiConsole.Render(canvas);
+AnsiConsole.Write(canvas);
 ```
 
 ## Result

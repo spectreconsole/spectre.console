@@ -9,7 +9,7 @@ Spectre.Console can render [FIGlet](http://www.figlet.org/) text by using the `F
 ## Default font
 
 ```csharp
-AnsiConsole.Render(
+AnsiConsole.Write(
     new FigletText("Hello")
         .LeftAligned()
         .Color(Color.Red));
@@ -23,7 +23,7 @@ AnsiConsole.Render(
 ```csharp
 var font = FigletFont.Load("starwars.flf");
 
-AnsiConsole.Render(
+AnsiConsole.Write(
     new FigletText(font, "Hello")
         .LeftAligned()
         .Color(Color.Red));

@@ -35,7 +35,7 @@ table.AddRow("Baz", "[green]Qux[/]");
 table.AddRow(new Markup("[blue]Corgi[/]"), new Panel("Waldo"));
 
 // Render the table to the console
-AnsiConsole.Render(table);
+AnsiConsole.Write(table);
 ```
 
 This will render the following output:
