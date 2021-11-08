@@ -4,6 +4,14 @@ namespace Prompt
 {
     public static class Program
     {
+        private class City
+        {
+            public string Name { get; set; }
+            public string Country { get; set; }
+            public float Area { get; set; }
+            public int Population { get; set; }
+        }
+
         public static void Main(string[] args)
         {
             // Check if we can accept key strokes
@@ -27,6 +35,7 @@ namespace Prompt
             var fruit = AskFruit();
 
             WriteDivider("Choices");
+            var city = AskCity();
             var sport = AskSport();
 
             WriteDivider("Integers");
@@ -52,6 +61,7 @@ namespace Prompt
                 .BorderColor(Color.Grey)
                 .AddRow("[grey]Name[/]", name)
                 .AddRow("[grey]Favorite fruit[/]", fruit)
+                .AddRow("[grey]Favorite city[/]", city.Name)
                 .AddRow("[grey]Favorite sport[/]", sport)
                 .AddRow("[grey]Age[/]", age.ToString())
                 .AddRow("[grey]Password[/]", password)
@@ -118,6 +128,34 @@ namespace Prompt
 
             AnsiConsole.MarkupLine("You selected: [yellow]{0}[/]", fruit);
             return fruit;
+        }
+
+        private static City AskCity()
+        {
+            var city = AnsiConsole.Prompt(
+                new TablePrompt<City>()
+                    .Title("What is your [green]favorite city[/]?")
+                    .AddColumns("Name", "Country", "Area", "Population")
+                    .UseConverter((item, index) =>
+                    {
+                        return index switch
+                        {
+                            0 => item.Name,
+                            1 => item.Country,
+                            2 => $"{item.Area} km2",
+                            3 => item.Population.ToString("N0"),
+                            _ => string.Empty,
+                        };
+                    })
+                    .AddChoices(
+                        new City { Name = "Paris", Country = "France", Area = 105.4F, Population = 2175601 },
+                        new City { Name = "London", Country = "England", Area = 1572F, Population = 8961989 },
+                        new City { Name = "Los Angeles", Country = "United States", Area = 1299.01F, Population = 3898747 },
+                        new City { Name = "Shanghai", Country = "China", Area = 6341F, Population = 24870895 }
+                    ));
+
+            AnsiConsole.MarkupLine("Your selected: [yellow]{0}[/]", city.Name);
+            return city;
         }
 
         public static string AskSport()
