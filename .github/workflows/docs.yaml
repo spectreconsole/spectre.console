@@ -24,11 +24,10 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Setup dotnet
+    - name: Setup dotnet 6.0.100
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
-        include-prerelease: true
+        dotnet-version: 6.0.100
 
     - name: Setup Node.js
       uses: actions/setup-node@v2
