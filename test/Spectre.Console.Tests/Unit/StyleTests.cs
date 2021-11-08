@@ -276,6 +276,31 @@ namespace Spectre.Console.Tests.Unit
             }
 
             [Theory]
+            [InlineData("12 on 24")]
+            public void Should_Parse_Colors_Numbers_Correctly(string style)
+            {
+                // Given, When
+                var result = Style.Parse(style);
+
+                // Then
+                result.Foreground.ShouldBe(Color.Blue);
+                result.Background.ShouldBe(Color.DeepSkyBlue4_1);
+            }
+
+            [Theory]
+            [InlineData("-12", "Color number must be greater than or equal to 0 (was -12)")]
+            [InlineData("256", "Color number must be less than or equal to 255 (was 256)")]
+            public void Should_Return_Error_If_Color_Number_Is_Invalid(string style, string expected)
+            {
+                // Given, When
+                var result = Record.Exception(() => Style.Parse(style));
+
+                // Then
+                result.ShouldNotBeNull();
+                result.Message.ShouldBe(expected);
+            }
+
+            [Theory]
             [InlineData("rgb()", "Invalid RGB color 'rgb()'.")]
             [InlineData("rgb(", "Invalid RGB color 'rgb('.")]
             [InlineData("rgb(255)", "Invalid RGB color 'rgb(255)'.")]

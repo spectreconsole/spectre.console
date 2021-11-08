@@ -96,6 +96,21 @@ namespace Spectre.Console
                                 return null;
                             }
                         }
+                        else if (int.TryParse(part, out var number))
+                        {
+                            if (number < 0)
+                            {
+                                error = $"Color number must be greater than or equal to 0 (was {number})";
+                                return null;
+                            }
+                            else if (number > 255)
+                            {
+                                error = $"Color number must be less than or equal to 255 (was {number})";
+                                return null;
+                            }
+
+                            color = number;
+                        }
                         else
                         {
                             error = !foreground
