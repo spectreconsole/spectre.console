@@ -14,7 +14,7 @@ Task("Build")
     .IsDependentOn("Clean")
     .Does(context => 
 {
-    DotNetCoreBuild("./src/Spectre.Console.sln", new DotNetCoreBuildSettings {
+    DotNetBuild("./src/Spectre.Console.sln", new DotNetBuildSettings {
         Configuration = configuration,
         NoIncremental = context.HasArgument("rebuild"),
         MSBuildSettings = new DotNetCoreMSBuildSettings()
@@ -26,7 +26,7 @@ Task("Build-Analyzer")
     .IsDependentOn("Build")
     .Does(context => 
 {
-    DotNetCoreBuild("./src/Spectre.Console.Analyzer.sln", new DotNetCoreBuildSettings {
+    DotNetBuild("./src/Spectre.Console.Analyzer.sln", new DotNetBuildSettings {
         Configuration = configuration,
         NoIncremental = context.HasArgument("rebuild"),
         MSBuildSettings = new DotNetCoreMSBuildSettings()
@@ -38,7 +38,7 @@ Task("Build-Examples")
     .IsDependentOn("Build")
     .Does(context => 
 {
-    DotNetCoreBuild("./examples/Examples.sln", new DotNetCoreBuildSettings {
+    DotNetBuild("./examples/Examples.sln", new DotNetBuildSettings {
         Configuration = configuration,
         NoIncremental = context.HasArgument("rebuild"),
         MSBuildSettings = new DotNetCoreMSBuildSettings()
@@ -52,13 +52,13 @@ Task("Test")
     .IsDependentOn("Build-Examples")
     .Does(context => 
 {
-    DotNetCoreTest("./test/Spectre.Console.Tests/Spectre.Console.Tests.csproj", new DotNetCoreTestSettings {
+    DotNetTest("./test/Spectre.Console.Tests/Spectre.Console.Tests.csproj", new DotNetTestSettings {
         Configuration = configuration,
         NoRestore = true,
         NoBuild = true,
     });
 
-    DotNetCoreTest("./test/Spectre.Console.Analyzer.Tests/Spectre.Console.Analyzer.Tests.csproj", new DotNetCoreTestSettings {
+    DotNetTest("./test/Spectre.Console.Analyzer.Tests/Spectre.Console.Analyzer.Tests.csproj", new DotNetTestSettings {
         Configuration = configuration,
         NoRestore = true,
         NoBuild = true,
@@ -69,7 +69,7 @@ Task("Package")
     .IsDependentOn("Test")
     .Does(context => 
 {
-    context.DotNetCorePack($"./src/Spectre.Console.sln", new DotNetCorePackSettings {
+    context.DotNetPack($"./src/Spectre.Console.sln", new DotNetPackSettings {
         Configuration = configuration,
         NoRestore = true,
         NoBuild = true,
@@ -78,7 +78,7 @@ Task("Package")
             .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
     });
 
-    context.DotNetCorePack($"./src/Spectre.Console.Analyzer.sln", new DotNetCorePackSettings {
+    context.DotNetPack($"./src/Spectre.Console.Analyzer.sln", new DotNetPackSettings {
         Configuration = configuration,
         NoRestore = true,
         NoBuild = true,
@@ -134,7 +134,7 @@ Task("Publish-NuGet")
     foreach(var file in context.GetFiles("./.artifacts/*.nupkg")) 
     {
         context.Information("Publishing {0}...", file.GetFilename().FullPath);
-        DotNetCoreNuGetPush(file.FullPath, new DotNetCoreNuGetPushSettings
+        DotNetNuGetPush(file.FullPath, new DotNetNuGetPushSettings
         {
             Source = "https://api.nuget.org/v3/index.json",
             ApiKey = apiKey,
