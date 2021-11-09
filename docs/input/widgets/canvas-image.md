@@ -26,7 +26,7 @@ var image = new CanvasImage("cake.png");
 image.MaxWidth(16);
 
 // Render the image to the console
-AnsiConsole.Render(image);
+AnsiConsole.Write(image);
 ```
 
 ## Result
@@ -50,7 +50,7 @@ image.BilinearResampler();
 image.Mutate(ctx => ctx.Grayscale().Rotate(-45).EntropyCrop());
 
 // Render the image to the console
-AnsiConsole.Render(image);
+AnsiConsole.Write(image);
 ```
 
 ## Result

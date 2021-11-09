@@ -35,7 +35,7 @@ bar.AddNode(new Calendar(2020, 12)
     .HideHeader());
 
 // Render the tree
-AnsiConsole.Render(root);
+AnsiConsole.Write(root);
 ```
 
 ## Collapsing nodes
