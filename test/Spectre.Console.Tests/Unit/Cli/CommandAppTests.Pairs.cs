@@ -56,7 +56,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 public IReadOnlyDictionary<string, string> Values { get; set; }
             }
 
-            public sealed class StringIntDeconstructor : PairDeconstuctor<string, string>
+            public sealed class StringIntDeconstructor : PairDeconstructor<string, string>
             {
                 protected override (string Key, string Value) Deconstruct(string value)
                 {
