@@ -28,7 +28,7 @@ namespace Spectre.Console.Cli
             Type parameterType, ParameterKind parameterKind, PropertyInfo property,
             string? description, TypeConverterAttribute? converter,
             DefaultValueAttribute? defaultValue,
-            PairDeconstructorAttribute? deconstuctor,
+            PairDeconstructorAttribute? deconstructor,
             ParameterValueProviderAttribute? valueProvider,
             IEnumerable<ParameterValidationAttribute> validators, bool required)
         {
@@ -39,7 +39,7 @@ namespace Spectre.Console.Cli
             Description = description;
             Converter = converter;
             DefaultValue = defaultValue;
-            PairDeconstructor = deconstuctor;
+            PairDeconstructor = deconstructor;
             ValueProvider = valueProvider;
             Validators = new List<ParameterValidationAttribute>(validators ?? Array.Empty<ParameterValidationAttribute>());
             Required = required;

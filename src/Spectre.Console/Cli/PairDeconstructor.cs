@@ -7,7 +7,7 @@ namespace Spectre.Console.Cli
     /// </summary>
     /// <typeparam name="TKey">The key type.</typeparam>
     /// <typeparam name="TValue">The value type.</typeparam>
-    public abstract class PairDeconstuctor<TKey, TValue> : IPairDeconstructor
+    public abstract class PairDeconstructor<TKey, TValue> : IPairDeconstructor
     {
         /// <summary>
         /// Deconstructs the provided <see cref="string"/> into a pair.
@@ -26,5 +26,16 @@ namespace Spectre.Console.Cli
 
             return Deconstruct(value);
         }
+    }
+
+    /// <summary>
+    /// Base class for a pair deconstructor.
+    /// </summary>
+    /// <typeparam name="TKey">The key type.</typeparam>
+    /// <typeparam name="TValue">The value type.</typeparam>
+    /// <remarks>This class is misspelled, use <see cref="PairDeconstructor{TKey,TValue}"/> instead.</remarks>
+    [Obsolete("Use PairDeconstructor instead")]
+    public abstract class PairDeconstuctor<TKey, TValue> : PairDeconstructor<TKey, TValue>
+    {
     }
 }
