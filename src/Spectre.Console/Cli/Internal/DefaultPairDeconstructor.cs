@@ -19,9 +19,6 @@ namespace Spectre.Console.Cli
                 throw new ArgumentNullException(nameof(value));
             }
 
-            var keyConverter = GetConverter(keyType);
-            var valueConverter = GetConverter(valueType);
-
             var parts = value.Split(new[] { '=' }, StringSplitOptions.None);
             if (parts.Length < 1 || parts.Length > 2)
             {
@@ -47,15 +44,16 @@ namespace Spectre.Console.Cli
                 }
             }
 
-            return (Parse(keyConverter, keyType, stringkey),
-                Parse(valueConverter, valueType, stringValue));
+            return (Parse(stringkey, keyType),
+                Parse(stringValue, valueType));
         }
 
-        private static object Parse(TypeConverter converter, Type type, string value)
+        private static object? Parse(string value, Type targetType)
         {
             try
             {
-                return converter.ConvertTo(value, type);
+                var converter = GetConverter(targetType);
+                return converter.ConvertFrom(value);
             }
             catch
             {
