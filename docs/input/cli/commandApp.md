@@ -74,6 +74,9 @@ return app.Run(args);
 
 `TypeRegistrar` is a custom class that must be created by the user. This [example using `Microsoft.Extensions.DependencyInjection` as the container](https://github.com/spectreconsole/spectre.console/tree/main/examples/Cli/Injection) provides an example `TypeRegistrar` and `TypeResolver` that can be added to your application with small adjustments for your DI container.
 
+Hint: If you do write your own implementation of `TypeRegistrar` and `TypeResolver` and you have some form of unit tests in place for your project,
+there is a utility `TypeRegistrarBaseTests` available that can be used to ensure your implementations adhere to the required implementation. Simply call `TypeRegistrarBaseTests.RunAllTests()` and expect no `TypeRegistrarBaseTests.TestFailedException` to be thrown.
+
 ## Interception
 
 `CommandApp` also provides a `SetInterceptor` configuration. An interceptor is run before all commands are executed. This is typically used for configuring logging or other infrastructure concerns.
