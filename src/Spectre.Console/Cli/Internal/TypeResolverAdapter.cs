@@ -20,14 +20,9 @@ namespace Spectre.Console.Cli
 
             try
             {
-                if (_resolver != null)
+                var obj = _resolver?.Resolve(type);
+                if (obj != null)
                 {
-                    var obj = _resolver.Resolve(type);
-                    if (obj == null)
-                    {
-                        throw CommandRuntimeException.CouldNotResolveType(type);
-                    }
-
                     return obj;
                 }
 
