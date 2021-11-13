@@ -28,16 +28,9 @@ namespace Spectre.Console.Cli
 
         private static CommandSettings CreateSettings(ITypeResolver resolver, Type settingsType)
         {
-            try
+            if (resolver.Resolve(settingsType) is CommandSettings settings)
             {
-                if (resolver.Resolve(settingsType) is CommandSettings settings)
-                {
-                    return settings;
-                }
-            }
-            catch
-            {
-                // ignored
+                return settings;
             }
 
             if (Activator.CreateInstance(settingsType) is CommandSettings instance)
