@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{2571F1BD-6556-4F96-B27B-B6190E1BF13A}"
 EndProject
@@ -64,6 +64,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trees", "Console\Trees\Trees.csproj", "{2BD88288-E05D-4978-B045-17937078E63C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveTable", "Console\LiveTable\LiveTable.csproj", "{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minimal", "Console\Minimal\Minimal.csproj", "{1780A30A-397A-4CC3-B2A0-A385D9081FA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -423,6 +425,18 @@ Global
 		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Release|x64.Build.0 = Release|Any CPU
 		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Release|x86.ActiveCfg = Release|Any CPU
 		{E5FAAFB4-1D0F-4E29-A94F-A647D64AE64E}.Release|x86.Build.0 = Release|Any CPU
+		{1780A30A-397A-4CC3-B2A0-A385D9081FA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1780A30A-397A-4CC3-B2A0-A385D9081FA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1780A30A-397A-4CC3-B2A0-A385D9081FA2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1780A30A-397A-4CC3-B2A0-A385D9081FA2}.Debug|x64.Build.0 = Debug|Any CPU
+		{1780A30A-397A-4CC3-B2A0-A385D9081FA2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1780A30A-397A-4CC3-B2A0-A385D9081FA2}.Debug|x86.Build.0 = Debug|Any CPU
+		{1780A30A-397A-4CC3-B2A0-A385D9081FA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1780A30A-397A-4CC3-B2A0-A385D9081FA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1780A30A-397A-4CC3-B2A0-A385D9081FA2}.Release|x64.ActiveCfg = Release|Any CPU
+		{1780A30A-397A-4CC3-B2A0-A385D9081FA2}.Release|x64.Build.0 = Release|Any CPU
+		{1780A30A-397A-4CC3-B2A0-A385D9081FA2}.Release|x86.ActiveCfg = Release|Any CPU
+		{1780A30A-397A-4CC3-B2A0-A385D9081FA2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
