@@ -26,6 +26,7 @@ namespace Spectre.Console
 
             var autocomplete = new List<string>(items ?? Enumerable.Empty<string>());
             var isOsxPlatform = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+            var isWinOrLinuxPlatform = !isOsxPlatform;
 
             int Advance(int direction)
             {
@@ -104,13 +105,15 @@ namespace Spectre.Console
                     }
                 }
 
+                var isControlPressed = key.Modifiers.HasFlag(ConsoleModifiers.Control);
+                var isAltPressed = key.Modifiers.HasFlag(ConsoleModifiers.Alt);
                 switch (key.Key)
                 {
                     // Backspace
                     case ConsoleKey.Backspace:
 
-                        if ((!isOsxPlatform && key.Modifiers.HasFlag(ConsoleModifiers.Control)) ||
-                            (isOsxPlatform && key.Modifiers.HasFlag(ConsoleModifiers.Alt)))
+                        if ((isWinOrLinuxPlatform && isControlPressed) ||
+                            (isOsxPlatform && isAltPressed))
                         {
                             Backspace(secret ? position : Advance(-1));
                         }
@@ -124,8 +127,8 @@ namespace Spectre.Console
                     // Delete
                     case ConsoleKey.Delete:
 
-                        if ((!isOsxPlatform && key.Modifiers.HasFlag(ConsoleModifiers.Control)) ||
-                            (isOsxPlatform && key.Modifiers.HasFlag(ConsoleModifiers.Alt)))
+                        if ((isWinOrLinuxPlatform && isControlPressed) ||
+                            (isOsxPlatform && isAltPressed))
                         {
                             Delete(secret ? position : Advance(1));
                         }
@@ -137,7 +140,7 @@ namespace Spectre.Console
                         continue;
 
                     // Left Arrow
-                    case ConsoleKey.LeftArrow:
+                    case ConsoleKey.LeftArrow when isOsxPlatform || !isControlPressed:
 
                         if (position > 0)
                         {
@@ -148,7 +151,7 @@ namespace Spectre.Console
                         continue;
 
                     // Right Arrow
-                    case ConsoleKey.RightArrow:
+                    case ConsoleKey.RightArrow when isOsxPlatform || !isControlPressed:
 
                         if (position < text.Count)
                         {
@@ -173,9 +176,8 @@ namespace Spectre.Console
                         continue;
 
                     // Ctrl + Left Arrow
-                    case ConsoleKey.B when
-                        (!isOsxPlatform && key.Modifiers.HasFlag(ConsoleModifiers.Control)) ||
-                        (isOsxPlatform && key.Modifiers.HasFlag(ConsoleModifiers.Alt)):
+                    case ConsoleKey.LeftArrow when isWinOrLinuxPlatform && isControlPressed:
+                    case ConsoleKey.B when isOsxPlatform && isAltPressed:
 
                         var leftMoveChars = secret ? position : Advance(-1);
                         position -= leftMoveChars;
@@ -184,9 +186,8 @@ namespace Spectre.Console
                         continue;
 
                     // Ctrl + Right Arrow
-                    case ConsoleKey.F when
-                        (!isOsxPlatform && key.Modifiers.HasFlag(ConsoleModifiers.Control)) ||
-                        (isOsxPlatform && key.Modifiers.HasFlag(ConsoleModifiers.Alt)):
+                    case ConsoleKey.F when isOsxPlatform && isAltPressed:
+                    case ConsoleKey.RightArrow when isWinOrLinuxPlatform && isControlPressed:
 
                         var rightMoveChars = secret ? text.Count - position : Advance(1);
                         position += rightMoveChars;
