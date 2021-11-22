@@ -35,6 +35,12 @@ namespace Spectre.Console.Tests.Unit.Cli
                 public IDictionary<string, int> Values { get; set; }
             }
 
+            public sealed class DefaultPairDeconstructorEnumValueSettings : CommandSettings
+            {
+                [CommandOption("--var <VALUE>")]
+                public IDictionary<string, DayOfWeek> Values { get; set; }
+            }
+
             public sealed class LookupSettings : CommandSettings
             {
                 [CommandOption("--var <VALUE>")]
@@ -150,6 +156,35 @@ namespace Spectre.Console.Tests.Unit.Cli
                     pair.Values.Count.ShouldBe(2);
                     pair.Values["foo"].ShouldBe(3);
                     pair.Values["bar"].ShouldBe(4);
+                });
+            }
+
+            [Fact]
+            public void Should_Map_Pairs_With_Enum_Value_To_Pair_Deconstructable_Collection_Using_Default_Deconstructor()
+            {
+                // Given
+                var app = new CommandAppTester();
+                app.SetDefaultCommand<GenericCommand<DefaultPairDeconstructorEnumValueSettings>>();
+                app.Configure(config =>
+                {
+                    config.PropagateExceptions();
+                });
+
+                // When
+                var result = app.Run(new[]
+                {
+                    "--var", "foo=Monday",
+                    "--var", "bar=Tuesday",
+                });
+
+                // Then
+                result.ExitCode.ShouldBe(0);
+                result.Settings.ShouldBeOfType<DefaultPairDeconstructorEnumValueSettings>().And(pair =>
+                {
+                    pair.Values.ShouldNotBeNull();
+                    pair.Values.Count.ShouldBe(2);
+                    pair.Values["foo"].ShouldBe(DayOfWeek.Monday);
+                    pair.Values["bar"].ShouldBe(DayOfWeek.Tuesday);
                 });
             }
 
