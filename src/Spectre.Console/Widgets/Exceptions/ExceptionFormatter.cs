@@ -149,12 +149,12 @@ namespace Spectre.Console
                 {
                     builder.AppendWithStyle(
                         settings.Style.NonEmphasized,
-                        type.Substring(0, index + 1).EscapeMarkup());
+                        type.Substring(0, index + 1));
                 }
 
                 builder.AppendWithStyle(
                     color,
-                    type.Substring(index + 1, type.Length - index - 1).EscapeMarkup());
+                    type.Substring(index + 1, type.Length - index - 1));
             }
             else
             {
