@@ -36,7 +36,7 @@ namespace Spectre.Console.Cli
             [CommandOption("-d|--detailed")]
             public bool? Detailed { get; }
 
-            [Description("Include hidden commands.")]
+            [Description("Include hidden commands and options.")]
             [CommandOption("--hidden")]
             public bool IncludeHidden { get; }
         }
@@ -166,7 +166,7 @@ namespace Spectre.Console.Cli
                     var parametersNode = commandNode.AddNode(ParentMarkup("Parameters"));
                     foreach (var parameter in command.Parameters)
                     {
-                        AddParameter(parametersNode, parameter, detailed);
+                        AddParameter(parametersNode, parameter, detailed, includeHidden);
                     }
                 }
 
@@ -181,8 +181,13 @@ namespace Spectre.Console.Cli
             }
         }
 
-        private void AddParameter(TreeNode parametersNode, CommandParameter parameter, bool detailed)
+        private void AddParameter(TreeNode parametersNode, CommandParameter parameter, bool detailed, bool includeHidden)
         {
+            if (!includeHidden && parameter.IsHidden)
+            {
+                return;
+            }
+
             if (!detailed)
             {
                 parametersNode.AddNode(

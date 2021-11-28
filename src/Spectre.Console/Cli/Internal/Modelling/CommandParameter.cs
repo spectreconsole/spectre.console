@@ -19,6 +19,7 @@ namespace Spectre.Console.Cli
         public List<ParameterValidationAttribute> Validators { get; }
         public ParameterValueProviderAttribute? ValueProvider { get; }
         public bool Required { get; set; }
+        public bool IsHidden { get; }
         public string PropertyName => Property.Name;
 
         public virtual bool WantRawValue => ParameterType.IsPairDeconstructable()
@@ -30,7 +31,7 @@ namespace Spectre.Console.Cli
             DefaultValueAttribute? defaultValue,
             PairDeconstructorAttribute? deconstructor,
             ParameterValueProviderAttribute? valueProvider,
-            IEnumerable<ParameterValidationAttribute> validators, bool required)
+            IEnumerable<ParameterValidationAttribute> validators, bool required, bool isHidden)
         {
             Id = Guid.NewGuid();
             ParameterType = parameterType;
@@ -43,6 +44,7 @@ namespace Spectre.Console.Cli
             ValueProvider = valueProvider;
             Validators = new List<ParameterValidationAttribute>(validators ?? Array.Empty<ParameterValidationAttribute>());
             Required = required;
+            IsHidden = isHidden;
         }
 
         public bool IsFlagValue()

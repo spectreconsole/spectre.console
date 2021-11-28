@@ -137,6 +137,21 @@ namespace Spectre.Console.Tests.Unit.Cli
                 // Then
                 return Verifier.Verify(result.Output);
             }
+
+            [Fact]
+            [Expectation("Hidden_Command_Options")]
+            public Task Should_Not_Dump_Hidden_Options_On_A_Command()
+            {
+                // Given
+                var fixture = new CommandAppTester();
+                fixture.SetDefaultCommand<HiddenOptionsCommand>();
+
+                // When
+                var result = fixture.Run(Constants.XmlDocCommand);
+
+                // Then
+                return Verifier.Verify(result.Output);
+            }
         }
     }
 }
