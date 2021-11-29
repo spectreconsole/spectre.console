@@ -278,6 +278,25 @@ namespace Spectre.Console.Tests.Unit.Cli
                 // Then
                 return Verifier.Verify(result.Output);
             }
+
+            [Fact]
+            [Expectation("Hidden_Command_Options")]
+            public Task Should_Not_Show_Hidden_Command_Options()
+            {
+                // Given
+                var fixture = new CommandAppTester();
+                fixture.SetDefaultCommand<GenericCommand<HiddenOptionSettings>>();
+                fixture.Configure(configurator =>
+                {
+                    configurator.SetApplicationName("myapp");
+                });
+
+                // When
+                var result = fixture.Run("--help");
+
+                // Then
+                return Verifier.Verify(result.Output);
+            }
         }
     }
 }

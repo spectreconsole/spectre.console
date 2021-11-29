@@ -193,5 +193,25 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations
             result.ShortNames.ShouldContain("f");
             result.ValueName.ShouldBe("BAR");
         }
+
+        [Fact]
+        public void Is_Not_Hidden_From_Help_By_Default()
+        {
+            // Given, When
+            var result = new CommandOptionAttribute("--foo");
+
+            // Then
+            result.IsHidden.ShouldBeFalse();
+        }
+
+        [Fact]
+        public void Can_Indicate_That_It_Must_Be_Hidden_From_Help_Text()
+        {
+            // Given, When
+            var result = new CommandOptionAttribute("--foo") { IsHidden = true };
+
+            // Then
+            result.IsHidden.ShouldBeTrue();
+        }
     }
 }

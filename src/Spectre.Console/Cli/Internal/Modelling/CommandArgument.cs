@@ -16,7 +16,7 @@ namespace Spectre.Console.Cli
             CommandArgumentAttribute argument, ParameterValueProviderAttribute? valueProvider,
             IEnumerable<ParameterValidationAttribute> validators)
                 : base(parameterType, parameterKind, property, description, converter, defaultValue,
-                      null, valueProvider, validators, argument.IsRequired)
+                      null, valueProvider, validators, argument.IsRequired, false)
         {
             Value = argument.ValueName;
             Position = argument.Position;

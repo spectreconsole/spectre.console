@@ -35,6 +35,11 @@ namespace Spectre.Console.Cli
         public bool ValueIsOptional { get; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this option is hidden from the help text.
+        /// </summary>
+        public bool IsHidden { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CommandOptionAttribute"/> class.
         /// </summary>
         /// <param name="template">The option template.</param>

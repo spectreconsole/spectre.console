@@ -153,6 +153,7 @@ namespace Spectre.Console.Cli
 
             // Options
             foreach (var option in command.Parameters.OfType<CommandOption>()
+                .Where(x => !x.IsHidden)
                 .OrderBy(x => string.Join(",", x.LongNames))
                 .ThenBy(x => string.Join(",", x.ShortNames)))
             {

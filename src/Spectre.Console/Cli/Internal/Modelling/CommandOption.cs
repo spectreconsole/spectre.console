@@ -20,7 +20,7 @@ namespace Spectre.Console.Cli
             IEnumerable<ParameterValidationAttribute> validators,
             DefaultValueAttribute? defaultValue, bool valueIsOptional)
                 : base(parameterType, parameterKind, property, description, converter,
-                      defaultValue, deconstructor, valueProvider, validators, false)
+                      defaultValue, deconstructor, valueProvider, validators, false, optionAttribute.IsHidden)
         {
             LongNames = optionAttribute.LongNames;
             ShortNames = optionAttribute.ShortNames;

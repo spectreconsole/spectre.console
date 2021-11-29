@@ -61,7 +61,7 @@ namespace Spectre.Console.Cli
                     parameters.Add(new HelpOption("v", "version", null, null, "Prints version information"));
                 }
 
-                parameters.AddRange(command?.Parameters?.OfType<CommandOption>()?.Select(o =>
+                parameters.AddRange(command?.Parameters.OfType<CommandOption>().Where(o => !o.IsHidden).Select(o =>
                     new HelpOption(
                         o.ShortNames.FirstOrDefault(), o.LongNames.FirstOrDefault(),
                         o.ValueName, o.ValueIsOptional, o.Description))

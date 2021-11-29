@@ -53,6 +53,15 @@ There is a special mode for `CommandOptions` on boolean types. Typically all `Co
 public bool Debug { get; set; }
 ```
 
+### Hidden options
+
+`CommandOptions` can be hidden from being rendered in help by setting `IsHidden` to `true`.
+
+```csharp
+[CommandOption("--hidden-opt", IsHidden = true)]
+public bool HiddenOpt { get; set; }
+```
+
 ## Description
 
 When rendering help the [`System.ComponentModel.Description`](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.descriptionattribute?view=net-5.0) attribute is supported for specifying the text displayed to the user for both `CommandOption` and `CommandArgument`.
