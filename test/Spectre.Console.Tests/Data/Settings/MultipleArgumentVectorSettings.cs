@@ -13,10 +13,10 @@ namespace Spectre.Console.Tests.Data
 
     public class MultipleArgumentVectorSpecifiedFirstSettings : CommandSettings
     {
+        [CommandArgument(1, "[Bar]")]
+        public string Bar { get; set; }
+
         [CommandArgument(0, "<Foos>")]
         public string[] Foo { get; set; }
-
-        [CommandArgument(1, "<Bar>")]
-        public string Bar { get; set; }
     }
 }
