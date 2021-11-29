@@ -67,8 +67,12 @@ namespace Spectre.Console.Cli
                 throw CommandConfigurationException.BranchHasNoChildren(command);
             }
 
-            // Multiple vector arguments?
-            var arguments = command.Parameters.OfType<CommandArgument>();
+            var arguments = command.Parameters
+                .OfType<CommandArgument>()
+                .OrderBy(x => x.Position)
+                .ToList();
+
+            // vector arguments?
             if (arguments.Any(x => x.ParameterKind == ParameterKind.Vector))
             {
                 // Multiple vector arguments for command?
@@ -77,7 +81,7 @@ namespace Spectre.Console.Cli
                     throw CommandConfigurationException.TooManyVectorArguments(command);
                 }
 
-                // Make sure that vector arguments are specified last.
+                // Make sure that the vector argument is specified last.
                 if (arguments.Last().ParameterKind != ParameterKind.Vector)
                 {
                     throw CommandConfigurationException.VectorArgumentNotSpecifiedLast(command);
@@ -85,7 +89,6 @@ namespace Spectre.Console.Cli
             }
 
             // Arguments
-            var argumnets = command.Parameters.OfType<CommandArgument>();
             foreach (var argument in arguments)
             {
                 if (argument.Required && argument.DefaultValue != null)
