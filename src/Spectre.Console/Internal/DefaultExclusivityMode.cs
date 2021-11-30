@@ -31,7 +31,7 @@ namespace Spectre.Console.Internal
             }
         }
 
-        public async Task<T> Run<T>(Func<Task<T>> func)
+        public async Task<T> RunAsync<T>(Func<Task<T>> func)
         {
             // Try acquiring the exclusivity semaphore
             if (!await _semaphore.WaitAsync(0).ConfigureAwait(false))

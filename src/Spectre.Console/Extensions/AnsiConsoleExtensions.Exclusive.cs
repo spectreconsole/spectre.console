@@ -29,7 +29,7 @@ namespace Spectre.Console
         /// <returns>The result of the function.</returns>
         public static Task<T> RunExclusive<T>(this IAnsiConsole console, Func<Task<T>> func)
         {
-            return console.ExclusivityMode.Run(func);
+            return console.ExclusivityMode.RunAsync(func);
         }
     }
 }
