@@ -67,6 +67,12 @@ namespace Spectre.Console.Testing
         }
 
         /// <inheritdoc/>
+        public bool IsKeyAvailable()
+        {
+            return _input.Count > 0;
+        }
+
+        /// <inheritdoc/>
         public ConsoleKeyInfo? ReadKey(bool intercept)
         {
             if (_input.Count == 0)

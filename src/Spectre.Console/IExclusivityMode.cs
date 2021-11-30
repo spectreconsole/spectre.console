@@ -22,6 +22,6 @@ namespace Spectre.Console
         /// <typeparam name="T">The result type.</typeparam>
         /// <param name="func">The func to run in exclusive mode.</param>
         /// <returns>The result of the function.</returns>
-        Task<T> Run<T>(Func<Task<T>> func);
+        Task<T> RunAsync<T>(Func<Task<T>> func);
     }
 }

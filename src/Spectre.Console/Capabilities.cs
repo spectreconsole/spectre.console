@@ -56,6 +56,12 @@ namespace Spectre.Console
         public bool Unicode { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether
+        /// or not the console supports alternate buffers.
+        /// </summary>
+        public bool AlternateBuffer { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the
         /// <see cref="Capabilities"/> class.
         /// </summary>

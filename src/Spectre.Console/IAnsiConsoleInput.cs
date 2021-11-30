@@ -10,6 +10,13 @@ namespace Spectre.Console
     public interface IAnsiConsoleInput
     {
         /// <summary>
+        /// Gets a value indicating whether or not
+        /// there is a key available.
+        /// </summary>
+        /// <returns><c>true</c> if there's a key available, otherwise <c>false</c>.</returns>
+        bool IsKeyAvailable();
+
+        /// <summary>
         /// Reads a key from the console.
         /// </summary>
         /// <param name="intercept">Whether or not to intercept the key.</param>

@@ -55,6 +55,7 @@ namespace Spectre.Console
             profile.Capabilities.Legacy = legacyConsole;
             profile.Capabilities.Interactive = interactive;
             profile.Capabilities.Unicode = encoding.EncodingName.ContainsExact("Unicode");
+            profile.Capabilities.AlternateBuffer = supportsAnsi && !legacyConsole;
 
             // Enrich the profile
             ProfileEnricher.Enrich(

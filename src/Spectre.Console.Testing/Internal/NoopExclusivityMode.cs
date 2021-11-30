@@ -10,7 +10,7 @@ namespace Spectre.Console.Testing
             return func();
         }
 
-        public async Task<T> Run<T>(Func<Task<T>> func)
+        public async Task<T> RunAsync<T>(Func<Task<T>> func)
         {
             return await func().ConfigureAwait(false);
         }
