@@ -135,6 +135,8 @@ code.language-markup .token.script .token.keyword {
     position: relative;
     outline: none;
     margin-bottom: 1rem;
+    font-size: 15px;
+    line-height: 1.1em;
   }
 
   .asciinema-player-wrapper:fullscreen {
@@ -231,7 +233,6 @@ code.language-markup .token.script .token.keyword {
     -webkit-box-sizing: content-box;
     overflow: hidden;
     max-width: 100%;
-
   }
   .asciinema-terminal {
     box-sizing: content-box;
@@ -257,12 +258,30 @@ code.language-markup .token.script .token.keyword {
     transition: width .25s ease-out, height .25s ease-out;
     font-variant-ligatures: none;
     font-feature-settings: "liga" 0;
+    line-height: 1.2em !important;
   }
-
+  .asciinema-terminal .line .cursor-a {
+    display: inline-block;
+  }
+  .asciinema-terminal .line .cursor-b {
+    display: none;
+    border-radius: 0.05em;
+  }
+  .asciinema-terminal .line .blink {
+    visibility: hidden;
+  }
+  .asciinema-terminal.cursor .line .cursor-a {
+    display: none;
+  }
+  .asciinema-terminal.cursor .line .cursor-b {
+    display: inline-block;
+  }
+  .asciinema-terminal.blink .line .blink {
+    visibility: visible;
+  }
   .asciinema-terminal .line {
     letter-spacing: normal;
     overflow: hidden;
-    line-height: 1rem;
   }
   .asciinema-terminal .line {
     display: block;
