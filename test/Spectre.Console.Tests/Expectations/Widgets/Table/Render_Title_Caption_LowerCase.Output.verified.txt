@@ -1,0 +1,8 @@
+        hello world        
+╭────────┬────────┬───────╮
+│ Foo    │ Bar    │ Baz   │
+├────────┼────────┼───────┤
+│ Qux    │ Corgi  │ Waldo │
+│ Grault │ Garply │ Fred  │
+╰────────┴────────┴───────╯
+       goodbye world       

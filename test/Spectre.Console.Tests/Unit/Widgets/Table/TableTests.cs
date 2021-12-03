@@ -482,6 +482,26 @@ namespace Spectre.Console.Tests.Unit
         }
 
         [Fact]
+        [Expectation("Render_Title_Caption_LowerCase")]
+        public Task Should_Render_Table_Without_Capitalizing_First_Letter()
+        {
+            // Given
+            var console = new TestConsole();
+            var table = new Table { Border = TableBorder.Rounded };
+            table.Title = new TableTitle("hello world");
+            table.Caption = new TableTitle("goodbye world");
+            table.AddColumns("Foo", "Bar", "Baz");
+            table.AddRow("Qux", "Corgi", "Waldo");
+            table.AddRow("Grault", "Garply", "Fred");
+
+            // When
+            console.Write(table);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
         [Expectation("Render_Fold")]
         public Task Should_Render_With_Folded_Text_Table_Correctly()
         {
