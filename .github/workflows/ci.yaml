@@ -18,11 +18,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: Setup dotnet 5 and 6.0.100
+    - name: Setup .NET SDK
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: | 
-          5.0.x
+          5.0.301
           6.0.100
 
     - name: Setup Node.js
@@ -76,20 +76,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup dotnet 3.1.402
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.402
-
-      - name: Setup dotnet 5.0.301
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 5.0.301
-
-      - name: Setup dotnet 6.0.100
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 6.0.100
+          dotnet-version: | 
+            3.1.402
+            5.0.301
+            6.0.100
 
       - name: Integration Tests
         shell: bash
