@@ -35,7 +35,6 @@ namespace Docs
                 {
                     LogErrors = false
                 })
-                .AddProcess(ProcessTiming.Initialization, _ => new ProcessLauncher("dotnet", "tool install Microsoft.Playwright.CLI"))
                 .AddProcess(ProcessTiming.Initialization, _ => new ProcessLauncher("dotnet", "playwright install chromium"))
                 .AddProcess(ProcessTiming.BeforeDeployment, _ => new ProcessLauncher("npm", "run build:tailwind")
                 {
