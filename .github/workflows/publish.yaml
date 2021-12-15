@@ -24,6 +24,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
+    - name: Setup dotnet 5.0.301
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.301
+
     - name: Setup dotnet 6.0.100
       uses: actions/setup-dotnet@v1
       with:
