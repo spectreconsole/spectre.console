@@ -18,7 +18,7 @@ public sealed class MyCommandSettings : CommandSettings
     public string? Name { get; set; }
 
     [CommandOption("-c|--count")]
-    public int Count { get; set; }
+    public int? Count { get; set; }
 }
 ```
 
@@ -54,7 +54,7 @@ There is a special mode for `CommandOptions` on boolean types. Typically all `Co
 
 ```csharp
 [CommandOption("--debug")]
-public bool Debug { get; set; }
+public bool? Debug { get; set; }
 ```
 
 ### Hidden options
@@ -63,7 +63,7 @@ public bool Debug { get; set; }
 
 ```csharp
 [CommandOption("--hidden-opt", IsHidden = true)]
-public bool HiddenOpt { get; set; }
+public bool? HiddenOpt { get; set; }
 ```
 
 ## Description
@@ -109,7 +109,7 @@ public class Settings : CommandSettings
 
     [Description("The name to display")]
     [CommandArgument(0, "[Name]")]
-    public string Name { get; }
+    public string? Name { get; }
 }
 ```
 
@@ -120,7 +120,7 @@ public class Settings : CommandSettings
 {
     [Description("The name to display")]
     [CommandArgument(0, "[Name]")]
-    public string Name { get; init; }
+    public string? Name { get; init; }
 }
 ```
 
@@ -133,7 +133,7 @@ public class Settings : CommandSettings
 {
     [Description("The name to display")]
     [CommandArgument(0, "[Name]")]
-    public string Name { get; init; }
+    public string? Name { get; init; }
 
     public override ValidationResult Validate()
     {
