@@ -43,6 +43,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd docs
+        dotnet tool restore
         dotnet run --configuration Release
 
     - name: Archive doc generation
