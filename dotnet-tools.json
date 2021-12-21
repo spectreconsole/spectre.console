@@ -19,12 +19,6 @@
       "commands": [
         "dotnet-example"
       ]
-    },
-    "microsoft.playwright.cli": {
-      "version": "1.2.0",
-      "commands": [
-        "playwright"
-      ]
     }
   }
 }
