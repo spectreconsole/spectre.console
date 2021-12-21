@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Shouldly;
+using Spectre.Console.Cli;
 using Spectre.Console.Testing;
 using Spectre.Console.Tests.Data;
 using Xunit;
-using Spectre.Console.Cli;
 
 namespace Spectre.Console.Tests.Unit.Cli
 {

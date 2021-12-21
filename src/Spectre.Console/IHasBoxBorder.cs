@@ -1,13 +1,12 @@
-namespace Spectre.Console
+namespace Spectre.Console;
+
+/// <summary>
+/// Represents something that has a box border.
+/// </summary>
+public interface IHasBoxBorder
 {
     /// <summary>
-    /// Represents something that has a box border.
+    /// Gets or sets the box.
     /// </summary>
-    public interface IHasBoxBorder
-    {
-        /// <summary>
-        /// Gets or sets the box.
-        /// </summary>
-        public BoxBorder Border { get; set; }
-    }
+    public BoxBorder Border { get; set; }
 }

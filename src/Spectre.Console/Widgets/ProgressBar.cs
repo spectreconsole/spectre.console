@@ -4,46 +4,119 @@ using System.Globalization;
 using System.Linq;
 using Spectre.Console.Rendering;
 
-namespace Spectre.Console
+namespace Spectre.Console;
+
+internal sealed class ProgressBar : Renderable, IHasCulture
 {
-    internal sealed class ProgressBar : Renderable, IHasCulture
+    private const int PULSESIZE = 20;
+    private const int PULSESPEED = 15;
+
+    public double Value { get; set; }
+    public double MaxValue { get; set; } = 100;
+
+    public int? Width { get; set; }
+    public bool ShowRemaining { get; set; } = true;
+    public char UnicodeBar { get; set; } = '━';
+    public char AsciiBar { get; set; } = '-';
+    public bool ShowValue { get; set; }
+    public bool IsIndeterminate { get; set; }
+    public CultureInfo? Culture { get; set; }
+
+    public Style CompletedStyle { get; set; } = new Style(foreground: Color.Yellow);
+    public Style FinishedStyle { get; set; } = new Style(foreground: Color.Green);
+    public Style RemainingStyle { get; set; } = new Style(foreground: Color.Grey);
+    public Style IndeterminateStyle { get; set; } = DefaultPulseStyle;
+
+    internal static Style DefaultPulseStyle { get; } = new Style(foreground: Color.DodgerBlue1, background: Color.Grey23);
+
+    protected override Measurement Measure(RenderContext context, int maxWidth)
     {
-        private const int PULSESIZE = 20;
-        private const int PULSESPEED = 15;
+        var width = Math.Min(Width ?? maxWidth, maxWidth);
+        return new Measurement(4, width);
+    }
 
-        public double Value { get; set; }
-        public double MaxValue { get; set; } = 100;
+    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    {
+        var width = Math.Min(Width ?? maxWidth, maxWidth);
+        var completedBarCount = Math.Min(MaxValue, Math.Max(0, Value));
+        var isCompleted = completedBarCount >= MaxValue;
 
-        public int? Width { get; set; }
-        public bool ShowRemaining { get; set; } = true;
-        public char UnicodeBar { get; set; } = '━';
-        public char AsciiBar { get; set; } = '-';
-        public bool ShowValue { get; set; }
-        public bool IsIndeterminate { get; set; }
-        public CultureInfo? Culture { get; set; }
-
-        public Style CompletedStyle { get; set; } = new Style(foreground: Color.Yellow);
-        public Style FinishedStyle { get; set; } = new Style(foreground: Color.Green);
-        public Style RemainingStyle { get; set; } = new Style(foreground: Color.Grey);
-        public Style IndeterminateStyle { get; set; } = DefaultPulseStyle;
-
-        internal static Style DefaultPulseStyle { get; } = new Style(foreground: Color.DodgerBlue1, background: Color.Grey23);
-
-        protected override Measurement Measure(RenderContext context, int maxWidth)
+        if (IsIndeterminate && !isCompleted)
         {
-            var width = Math.Min(Width ?? maxWidth, maxWidth);
-            return new Measurement(4, width);
+            foreach (var segment in RenderIndeterminate(context, width))
+            {
+                yield return segment;
+            }
+
+            yield break;
         }
 
-        protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
-        {
-            var width = Math.Min(Width ?? maxWidth, maxWidth);
-            var completedBarCount = Math.Min(MaxValue, Math.Max(0, Value));
-            var isCompleted = completedBarCount >= MaxValue;
+        var bar = !context.Unicode ? AsciiBar : UnicodeBar;
+        var style = isCompleted ? FinishedStyle : CompletedStyle;
+        var barCount = Math.Max(0, (int)(width * (completedBarCount / MaxValue)));
 
-            if (IsIndeterminate && !isCompleted)
+        // Show value?
+        var value = completedBarCount.ToString(Culture ?? CultureInfo.InvariantCulture);
+        if (ShowValue)
+        {
+            barCount = barCount - value.Length - 1;
+            barCount = Math.Max(0, barCount);
+        }
+
+        if (barCount < 0)
+        {
+            yield break;
+        }
+
+        yield return new Segment(new string(bar, barCount), style);
+
+        if (ShowValue)
+        {
+            yield return barCount == 0
+                ? new Segment(value, style)
+                : new Segment(" " + value, style);
+        }
+
+        // More space available?
+        if (barCount < width)
+        {
+            var diff = width - barCount;
+            if (ShowValue)
             {
-                foreach (var segment in RenderIndeterminate(context, width))
+                diff = diff - value.Length - 1;
+                if (diff <= 0)
+                {
+                    yield break;
+                }
+            }
+
+            var legacy = context.ColorSystem == ColorSystem.NoColors || context.ColorSystem == ColorSystem.Legacy;
+            var remainingToken = ShowRemaining && !legacy ? bar : ' ';
+            yield return new Segment(new string(remainingToken, diff), RemainingStyle);
+        }
+    }
+
+    private IEnumerable<Segment> RenderIndeterminate(RenderContext context, int width)
+    {
+        var bar = context.Unicode ? UnicodeBar.ToString() : AsciiBar.ToString();
+        var style = IndeterminateStyle ?? DefaultPulseStyle;
+
+        IEnumerable<Segment> GetPulseSegments()
+        {
+            // For 1-bit and 3-bit colors, fall back to
+            // a simpler versions with only two colors.
+            if (context.ColorSystem == ColorSystem.NoColors ||
+                context.ColorSystem == ColorSystem.Legacy)
+            {
+                // First half of the pulse
+                var segments = Enumerable.Repeat(new Segment(bar, new Style(style.Foreground)), PULSESIZE / 2);
+
+                // Second half of the pulse
+                var legacy = context.ColorSystem == ColorSystem.NoColors || context.ColorSystem == ColorSystem.Legacy;
+                var bar2 = legacy ? " " : bar;
+                segments = segments.Concat(Enumerable.Repeat(new Segment(bar2, new Style(style.Background)), PULSESIZE - (PULSESIZE / 2)));
+
+                foreach (var segment in segments)
                 {
                     yield return segment;
                 }
@@ -51,98 +124,24 @@ namespace Spectre.Console
                 yield break;
             }
 
-            var bar = !context.Unicode ? AsciiBar : UnicodeBar;
-            var style = isCompleted ? FinishedStyle : CompletedStyle;
-            var barCount = Math.Max(0, (int)(width * (completedBarCount / MaxValue)));
-
-            // Show value?
-            var value = completedBarCount.ToString(Culture ?? CultureInfo.InvariantCulture);
-            if (ShowValue)
+            for (var index = 0; index < PULSESIZE; index++)
             {
-                barCount = barCount - value.Length - 1;
-                barCount = Math.Max(0, barCount);
-            }
+                var position = index / (float)PULSESIZE;
+                var fade = 0.5f + ((float)Math.Cos(position * Math.PI * 2) / 2.0f);
+                var color = style.Foreground.Blend(style.Background, fade);
 
-            if (barCount < 0)
-            {
-                yield break;
-            }
-
-            yield return new Segment(new string(bar, barCount), style);
-
-            if (ShowValue)
-            {
-                yield return barCount == 0
-                    ? new Segment(value, style)
-                    : new Segment(" " + value, style);
-            }
-
-            // More space available?
-            if (barCount < width)
-            {
-                var diff = width - barCount;
-                if (ShowValue)
-                {
-                    diff = diff - value.Length - 1;
-                    if (diff <= 0)
-                    {
-                        yield break;
-                    }
-                }
-
-                var legacy = context.ColorSystem == ColorSystem.NoColors || context.ColorSystem == ColorSystem.Legacy;
-                var remainingToken = ShowRemaining && !legacy ? bar : ' ';
-                yield return new Segment(new string(remainingToken, diff), RemainingStyle);
+                yield return new Segment(bar, new Style(foreground: color));
             }
         }
 
-        private IEnumerable<Segment> RenderIndeterminate(RenderContext context, int width)
-        {
-            var bar = context.Unicode ? UnicodeBar.ToString() : AsciiBar.ToString();
-            var style = IndeterminateStyle ?? DefaultPulseStyle;
+        // Get the pulse segments
+        var pulseSegments = GetPulseSegments();
+        pulseSegments = pulseSegments.Repeat((width / PULSESIZE) + 2);
 
-            IEnumerable<Segment> GetPulseSegments()
-            {
-                // For 1-bit and 3-bit colors, fall back to
-                // a simpler versions with only two colors.
-                if (context.ColorSystem == ColorSystem.NoColors ||
-                    context.ColorSystem == ColorSystem.Legacy)
-                {
-                    // First half of the pulse
-                    var segments = Enumerable.Repeat(new Segment(bar, new Style(style.Foreground)), PULSESIZE / 2);
+        // Repeat the pulse segments
+        var currentTime = (DateTime.Now - DateTime.Today).TotalSeconds;
+        var offset = (int)(currentTime * PULSESPEED) % PULSESIZE;
 
-                    // Second half of the pulse
-                    var legacy = context.ColorSystem == ColorSystem.NoColors || context.ColorSystem == ColorSystem.Legacy;
-                    var bar2 = legacy ? " " : bar;
-                    segments = segments.Concat(Enumerable.Repeat(new Segment(bar2, new Style(style.Background)), PULSESIZE - (PULSESIZE / 2)));
-
-                    foreach (var segment in segments)
-                    {
-                        yield return segment;
-                    }
-
-                    yield break;
-                }
-
-                for (var index = 0; index < PULSESIZE; index++)
-                {
-                    var position = index / (float)PULSESIZE;
-                    var fade = 0.5f + ((float)Math.Cos(position * Math.PI * 2) / 2.0f);
-                    var color = style.Foreground.Blend(style.Background, fade);
-
-                    yield return new Segment(bar, new Style(foreground: color));
-                }
-            }
-
-            // Get the pulse segments
-            var pulseSegments = GetPulseSegments();
-            pulseSegments = pulseSegments.Repeat((width / PULSESIZE) + 2);
-
-            // Repeat the pulse segments
-            var currentTime = (DateTime.Now - DateTime.Today).TotalSeconds;
-            var offset = (int)(currentTime * PULSESPEED) % PULSESIZE;
-
-            return pulseSegments.Skip(offset).Take(width);
-        }
+        return pulseSegments.Skip(offset).Take(width);
     }
 }

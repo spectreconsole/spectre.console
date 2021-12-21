@@ -31,7 +31,7 @@ internal sealed class Foo
                 .VerifyAnalyzerAsync(Source)
                 .ConfigureAwait(false);
         }
-        
+
         [Fact]
         public async void Instance_console_has_no_warnings()
         {

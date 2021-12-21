@@ -1,9 +1,8 @@
-namespace Spectre.Console
+namespace Spectre.Console;
+
+internal enum MarkupTokenKind
 {
-    internal enum MarkupTokenKind
-    {
-        Text = 0,
-        Open,
-        Close,
-    }
+    Text = 0,
+    Open,
+    Close,
 }

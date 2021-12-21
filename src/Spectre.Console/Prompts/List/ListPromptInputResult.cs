@@ -1,10 +1,9 @@
-namespace Spectre.Console
+namespace Spectre.Console;
+
+internal enum ListPromptInputResult
 {
-    internal enum ListPromptInputResult
-    {
-        None = 0,
-        Refresh = 1,
-        Submit = 2,
-        Abort = 3,
-    }
+    None = 0,
+    Refresh = 1,
+    Submit = 2,
+    Abort = 3,
 }

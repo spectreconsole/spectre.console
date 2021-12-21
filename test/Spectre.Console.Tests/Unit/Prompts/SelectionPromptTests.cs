@@ -22,9 +22,9 @@ namespace Spectre.Console.Tests.Unit
                     .Title("Select one")
                     .AddChoices(input);
             prompt.Show(console);
-            
+
             // Then
             console.Output.ShouldContain(@"[red]This text will never be red[/]");
-        }    
+        }
     }
 }

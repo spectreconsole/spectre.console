@@ -1,8 +1,7 @@
-namespace Spectre.Console.Cli
+namespace Spectre.Console.Cli;
+
+internal enum CommandPart
 {
-    internal enum CommandPart
-    {
-        CommandName,
-        LongOption,
-    }
+    CommandName,
+    LongOption,
 }

@@ -3,61 +3,60 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Spectre.Console.Cli
+namespace Spectre.Console.Cli;
+
+internal sealed class CommandValueLookup : IEnumerable<(CommandParameter Parameter, object? Value)>
 {
-    internal sealed class CommandValueLookup : IEnumerable<(CommandParameter Parameter, object? Value)>
+    private readonly Dictionary<Guid, (CommandParameter Parameter, object? Value)> _lookup;
+
+    public CommandValueLookup()
     {
-        private readonly Dictionary<Guid, (CommandParameter Parameter, object? Value)> _lookup;
+        _lookup = new Dictionary<Guid, (CommandParameter, object?)>();
+    }
 
-        public CommandValueLookup()
+    public IEnumerator<(CommandParameter Parameter, object? Value)> GetEnumerator()
+    {
+        foreach (var pair in _lookup)
         {
-            _lookup = new Dictionary<Guid, (CommandParameter, object?)>();
+            yield return pair.Value;
         }
+    }
 
-        public IEnumerator<(CommandParameter Parameter, object? Value)> GetEnumerator()
+    public bool HasParameterWithName(string? name)
+    {
+        if (name == null)
         {
-            foreach (var pair in _lookup)
-            {
-                yield return pair.Value;
-            }
-        }
-
-        public bool HasParameterWithName(string? name)
-        {
-            if (name == null)
-            {
-                return false;
-            }
-
-            return _lookup.Values.Any(pair => pair.Parameter.PropertyName.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
-
-        public bool TryGetParameterWithName(string? name, out (CommandParameter Parameter, object? Value) result)
-        {
-            if (HasParameterWithName(name))
-            {
-                result = _lookup.Values.FirstOrDefault(pair => pair.Parameter.PropertyName.Equals(name, StringComparison.OrdinalIgnoreCase));
-                return true;
-            }
-
-            result = default;
             return false;
         }
 
-        public object? GetValue(CommandParameter parameter)
+        return _lookup.Values.Any(pair => pair.Parameter.PropertyName.Equals(name, StringComparison.OrdinalIgnoreCase));
+    }
+
+    public bool TryGetParameterWithName(string? name, out (CommandParameter Parameter, object? Value) result)
+    {
+        if (HasParameterWithName(name))
         {
-            _lookup.TryGetValue(parameter.Id, out var result);
-            return result.Value;
+            result = _lookup.Values.FirstOrDefault(pair => pair.Parameter.PropertyName.Equals(name, StringComparison.OrdinalIgnoreCase));
+            return true;
         }
 
-        public void SetValue(CommandParameter parameter, object? value)
-        {
-            _lookup[parameter.Id] = (parameter, value);
-        }
+        result = default;
+        return false;
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    public object? GetValue(CommandParameter parameter)
+    {
+        _lookup.TryGetValue(parameter.Id, out var result);
+        return result.Value;
+    }
+
+    public void SetValue(CommandParameter parameter, object? value)
+    {
+        _lookup[parameter.Id] = (parameter, value);
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

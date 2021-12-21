@@ -2,55 +2,54 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Spectre.Console.Cli
+namespace Spectre.Console.Cli;
+
+internal static class TypeRegistrarExtensions
 {
-    internal static class TypeRegistrarExtensions
+    public static void RegisterDependencies(this ITypeRegistrar registrar, CommandModel model)
     {
-        public static void RegisterDependencies(this ITypeRegistrar registrar, CommandModel model)
+        var stack = new Stack<CommandInfo>();
+        model.Commands.ForEach(c => stack.Push(c));
+        if (model.DefaultCommand != null)
         {
-            var stack = new Stack<CommandInfo>();
-            model.Commands.ForEach(c => stack.Push(c));
-            if (model.DefaultCommand != null)
+            stack.Push(model.DefaultCommand);
+        }
+
+        while (stack.Count > 0)
+        {
+            var command = stack.Pop();
+
+            if (command.SettingsType == null)
             {
-                stack.Push(model.DefaultCommand);
+                // TODO: Error message
+                throw new InvalidOperationException("Command setting type cannot be null.");
             }
 
-            while (stack.Count > 0)
+            if (command.CommandType != null)
             {
-                var command = stack.Pop();
+                registrar?.Register(command.CommandType, command.CommandType);
+            }
 
-                if (command.SettingsType == null)
+            foreach (var parameter in command.Parameters)
+            {
+                var pairDeconstructor = parameter?.PairDeconstructor?.Type;
+                if (pairDeconstructor != null)
                 {
-                    // TODO: Error message
-                    throw new InvalidOperationException("Command setting type cannot be null.");
+                    registrar?.Register(pairDeconstructor, pairDeconstructor);
                 }
 
-                if (command.CommandType != null)
+                var typeConverterTypeName = parameter?.Converter?.ConverterTypeName;
+                if (!string.IsNullOrWhiteSpace(typeConverterTypeName))
                 {
-                    registrar?.Register(command.CommandType, command.CommandType);
+                    var typeConverterType = Type.GetType(typeConverterTypeName);
+                    Debug.Assert(typeConverterType != null, "Could not create type");
+                    registrar?.Register(typeConverterType, typeConverterType);
                 }
+            }
 
-                foreach (var parameter in command.Parameters)
-                {
-                    var pairDeconstructor = parameter?.PairDeconstructor?.Type;
-                    if (pairDeconstructor != null)
-                    {
-                        registrar?.Register(pairDeconstructor, pairDeconstructor);
-                    }
-
-                    var typeConverterTypeName = parameter?.Converter?.ConverterTypeName;
-                    if (!string.IsNullOrWhiteSpace(typeConverterTypeName))
-                    {
-                        var typeConverterType = Type.GetType(typeConverterTypeName);
-                        Debug.Assert(typeConverterType != null, "Could not create type");
-                        registrar?.Register(typeConverterType, typeConverterType);
-                    }
-                }
-
-                foreach (var child in command.Children)
-                {
-                    stack.Push(child);
-                }
+            foreach (var child in command.Children)
+            {
+                stack.Push(child);
             }
         }
     }

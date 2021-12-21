@@ -1,17 +1,16 @@
-namespace Spectre.Console.Cli
+namespace Spectre.Console.Cli;
+
+/// <summary>
+/// Base class for command settings.
+/// </summary>
+public abstract class CommandSettings
 {
     /// <summary>
-    /// Base class for command settings.
+    /// Performs validation of the settings.
     /// </summary>
-    public abstract class CommandSettings
+    /// <returns>The validation result.</returns>
+    public virtual ValidationResult Validate()
     {
-        /// <summary>
-        /// Performs validation of the settings.
-        /// </summary>
-        /// <returns>The validation result.</returns>
-        public virtual ValidationResult Validate()
-        {
-            return ValidationResult.Success();
-        }
+        return ValidationResult.Success();
     }
 }

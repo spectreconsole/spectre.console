@@ -2,59 +2,58 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Spectre.Console.Cli
+namespace Spectre.Console.Cli;
+
+internal sealed class ComponentRegistry : IDisposable
 {
-    internal sealed class ComponentRegistry : IDisposable
+    private readonly Dictionary<Type, HashSet<ComponentRegistration>> _registrations;
+
+    public ComponentRegistry()
     {
-        private readonly Dictionary<Type, HashSet<ComponentRegistration>> _registrations;
+        _registrations = new Dictionary<Type, HashSet<ComponentRegistration>>();
+    }
 
-        public ComponentRegistry()
+    public ComponentRegistry CreateCopy()
+    {
+        var registry = new ComponentRegistry();
+        foreach (var registration in _registrations.SelectMany(p => p.Value))
         {
-            _registrations = new Dictionary<Type, HashSet<ComponentRegistration>>();
+            registry.Register(registration.CreateCopy());
         }
 
-        public ComponentRegistry CreateCopy()
+        return registry;
+    }
+
+    public void Dispose()
+    {
+        foreach (var registration in _registrations)
         {
-            var registry = new ComponentRegistry();
-            foreach (var registration in _registrations.SelectMany(p => p.Value))
+            registration.Value.Clear();
+        }
+
+        _registrations.Clear();
+    }
+
+    public void Register(ComponentRegistration registration)
+    {
+        foreach (var type in new HashSet<Type>(registration.RegistrationTypes))
+        {
+            if (!_registrations.ContainsKey(type))
             {
-                registry.Register(registration.CreateCopy());
+                _registrations.Add(type, new HashSet<ComponentRegistration>());
             }
 
-            return registry;
+            _registrations[type].Add(registration);
         }
+    }
 
-        public void Dispose()
+    public ICollection<ComponentRegistration> GetRegistrations(Type type)
+    {
+        if (_registrations.ContainsKey(type))
         {
-            foreach (var registration in _registrations)
-            {
-                registration.Value.Clear();
-            }
-
-            _registrations.Clear();
+            return _registrations[type];
         }
 
-        public void Register(ComponentRegistration registration)
-        {
-            foreach (var type in new HashSet<Type>(registration.RegistrationTypes))
-            {
-                if (!_registrations.ContainsKey(type))
-                {
-                    _registrations.Add(type, new HashSet<ComponentRegistration>());
-                }
-
-                _registrations[type].Add(registration);
-            }
-        }
-
-        public ICollection<ComponentRegistration> GetRegistrations(Type type)
-        {
-            if (_registrations.ContainsKey(type))
-            {
-                return _registrations[type];
-            }
-
-            return new List<ComponentRegistration>();
-        }
+        return new List<ComponentRegistration>();
     }
 }

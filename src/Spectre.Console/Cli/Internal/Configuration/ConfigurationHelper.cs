@@ -2,42 +2,41 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Spectre.Console.Cli
-{
-    internal static class ConfigurationHelper
-    {
-        public static Type? GetSettingsType(Type commandType)
-        {
-            if (typeof(ICommand).GetTypeInfo().IsAssignableFrom(commandType) &&
-                GetGenericTypeArguments(commandType, typeof(ICommand<>), out var result))
-            {
-                return result[0];
-            }
+namespace Spectre.Console.Cli;
 
-            return null;
+internal static class ConfigurationHelper
+{
+    public static Type? GetSettingsType(Type commandType)
+    {
+        if (typeof(ICommand).GetTypeInfo().IsAssignableFrom(commandType) &&
+            GetGenericTypeArguments(commandType, typeof(ICommand<>), out var result))
+        {
+            return result[0];
         }
 
-        private static bool GetGenericTypeArguments(Type? type, Type genericType,
-            [NotNullWhen(true)] out Type[]? genericTypeArguments)
-        {
-            while (type != null)
-            {
-                foreach (var @interface in type.GetTypeInfo().GetInterfaces())
-                {
-                    if (!@interface.GetTypeInfo().IsGenericType || @interface.GetGenericTypeDefinition() != genericType)
-                    {
-                        continue;
-                    }
+        return null;
+    }
 
-                    genericTypeArguments = @interface.GenericTypeArguments;
-                    return true;
+    private static bool GetGenericTypeArguments(Type? type, Type genericType,
+        [NotNullWhen(true)] out Type[]? genericTypeArguments)
+    {
+        while (type != null)
+        {
+            foreach (var @interface in type.GetTypeInfo().GetInterfaces())
+            {
+                if (!@interface.GetTypeInfo().IsGenericType || @interface.GetGenericTypeDefinition() != genericType)
+                {
+                    continue;
                 }
 
-                type = type.GetTypeInfo().BaseType;
+                genericTypeArguments = @interface.GenericTypeArguments;
+                return true;
             }
 
-            genericTypeArguments = null;
-            return false;
+            type = type.GetTypeInfo().BaseType;
         }
+
+        genericTypeArguments = null;
+        return false;
     }
 }

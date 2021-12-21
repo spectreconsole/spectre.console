@@ -1,32 +1,32 @@
 using Spectre.Console.Rendering;
 
-namespace Spectre.Console.Examples
-{
-    public static class Program
-    {
-        public static void Main()
-        {
-            // Render panel borders
-            HorizontalRule("PANEL BORDERS");
-            PanelBorders();
+namespace Spectre.Console.Examples;
 
-            // Render table borders
-            HorizontalRule("TABLE BORDERS");
-            TableBorders();
+public static class Program
+{
+    public static void Main()
+    {
+        // Render panel borders
+        HorizontalRule("PANEL BORDERS");
+        PanelBorders();
+
+        // Render table borders
+        HorizontalRule("TABLE BORDERS");
+        TableBorders();
+    }
+
+    private static void PanelBorders()
+    {
+        static IRenderable CreatePanel(string name, BoxBorder border)
+        {
+            return new Panel($"This is a panel with\nthe [yellow]{name}[/] border.")
+                .Header($" [blue]{name}[/] ", Justify.Center)
+                .Border(border)
+                .BorderStyle(Style.Parse("grey"));
         }
 
-        private static void PanelBorders()
+        var items = new[]
         {
-            static IRenderable CreatePanel(string name, BoxBorder border)
-            {
-                return new Panel($"This is a panel with\nthe [yellow]{name}[/] border.")
-                    .Header($" [blue]{name}[/] ", Justify.Center)
-                    .Border(border)
-                    .BorderStyle(Style.Parse("grey"));
-            }
-
-            var items = new[]
-            {
                 CreatePanel("Ascii", BoxBorder.Ascii),
                 CreatePanel("Square", BoxBorder.Square),
                 CreatePanel("Rounded", BoxBorder.Rounded),
@@ -35,29 +35,29 @@ namespace Spectre.Console.Examples
                 CreatePanel("None", BoxBorder.None),
             };
 
-            AnsiConsole.Write(
-                new Padder(
-                    new Columns(items).PadRight(2),
-                    new Padding(2,0,0,0)));
+        AnsiConsole.Write(
+            new Padder(
+                new Columns(items).PadRight(2),
+                new Padding(2, 0, 0, 0)));
+    }
+
+    private static void TableBorders()
+    {
+        static IRenderable CreateTable(string name, TableBorder border)
+        {
+            var table = new Table().Border(border);
+            table.AddColumn("[yellow]Header 1[/]", c => c.Footer("[grey]Footer 1[/]"));
+            table.AddColumn("[yellow]Header 2[/]", col => col.Footer("[grey]Footer 2[/]").RightAligned());
+            table.AddRow("Cell", "Cell");
+            table.AddRow("Cell", "Cell");
+
+            return new Panel(table)
+                .Header($" [blue]{name}[/] ", Justify.Center)
+                .NoBorder();
         }
 
-        private static void TableBorders()
+        var items = new[]
         {
-            static IRenderable CreateTable(string name, TableBorder border)
-            {
-                var table = new Table().Border(border);
-                table.AddColumn("[yellow]Header 1[/]", c => c.Footer("[grey]Footer 1[/]"));
-                table.AddColumn("[yellow]Header 2[/]", col => col.Footer("[grey]Footer 2[/]").RightAligned());
-                table.AddRow("Cell", "Cell");
-                table.AddRow("Cell", "Cell");
-
-                return new Panel(table)
-                    .Header($" [blue]{name}[/] ", Justify.Center)
-                    .NoBorder();
-            }
-
-            var items = new[]
-            {
                 CreateTable("Ascii", TableBorder.Ascii),
                 CreateTable("Ascii2", TableBorder.Ascii2),
                 CreateTable("AsciiDoubleHead", TableBorder.AsciiDoubleHead),
@@ -77,14 +77,13 @@ namespace Spectre.Console.Examples
                 CreateTable("Markdown", TableBorder.Markdown),
             };
 
-            AnsiConsole.Write(new Columns(items).Collapse());
-        }
+        AnsiConsole.Write(new Columns(items).Collapse());
+    }
 
-        private static void HorizontalRule(string title)
-        {
-            AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule($"[white bold]{title}[/]").RuleStyle("grey").LeftAligned());
-            AnsiConsole.WriteLine();
-        }
+    private static void HorizontalRule(string title)
+    {
+        AnsiConsole.WriteLine();
+        AnsiConsole.Write(new Rule($"[white bold]{title}[/]").RuleStyle("grey").LeftAligned());
+        AnsiConsole.WriteLine();
     }
 }

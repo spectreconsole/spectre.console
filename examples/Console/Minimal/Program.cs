@@ -10,4 +10,3 @@ Write(new Table()
     .AddColumns("[red]Greeting[/]", "[red]Subject[/]")
     .AddRow("[yellow]Hello[/]", "World")
     .AddRow("[green]Oh hi[/]", "[blue u]Mark[/]"));
-

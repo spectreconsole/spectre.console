@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Spectre.Console
-{
-    internal static class DecorationTable
-    {
-        private static readonly Dictionary<string, Decoration?> _lookup;
-        private static readonly Dictionary<Decoration, string> _reverseLookup;
+namespace Spectre.Console;
 
-        static DecorationTable()
-        {
-            _lookup = new Dictionary<string, Decoration?>(StringComparer.OrdinalIgnoreCase)
+internal static class DecorationTable
+{
+    private static readonly Dictionary<string, Decoration?> _lookup;
+    private static readonly Dictionary<Decoration, string> _reverseLookup;
+
+    static DecorationTable()
+    {
+        _lookup = new Dictionary<string, Decoration?>(StringComparer.OrdinalIgnoreCase)
             {
                 { "none", Decoration.None },
                 { "bold", Decoration.Bold },
@@ -32,44 +32,43 @@ namespace Spectre.Console
                 { "s", Decoration.Strikethrough },
             };
 
-            _reverseLookup = new Dictionary<Decoration, string>();
-            foreach (var (name, decoration) in _lookup)
+        _reverseLookup = new Dictionary<Decoration, string>();
+        foreach (var (name, decoration) in _lookup)
+        {
+            // Cannot happen, but the compiler thinks so...
+            if (decoration == null)
             {
-                // Cannot happen, but the compiler thinks so...
-                if (decoration == null)
-                {
-                    continue;
-                }
+                continue;
+            }
 
-                if (!_reverseLookup.ContainsKey(decoration.Value))
-                {
-                    _reverseLookup[decoration.Value] = name;
-                }
+            if (!_reverseLookup.ContainsKey(decoration.Value))
+            {
+                _reverseLookup[decoration.Value] = name;
             }
         }
+    }
 
-        public static Decoration? GetDecoration(string name)
-        {
-            _lookup.TryGetValue(name, out var result);
-            return result;
-        }
+    public static Decoration? GetDecoration(string name)
+    {
+        _lookup.TryGetValue(name, out var result);
+        return result;
+    }
 
-        public static List<string> GetMarkupNames(Decoration decoration)
-        {
-            var result = new List<string>();
+    public static List<string> GetMarkupNames(Decoration decoration)
+    {
+        var result = new List<string>();
 
-            Enum.GetValues(typeof(Decoration))
-                .Cast<Decoration>()
-                .Where(flag => (decoration & flag) != 0)
-                .ForEach(flag =>
+        Enum.GetValues(typeof(Decoration))
+            .Cast<Decoration>()
+            .Where(flag => (decoration & flag) != 0)
+            .ForEach(flag =>
+            {
+                if (flag != Decoration.None && _reverseLookup.TryGetValue(flag, out var name))
                 {
-                    if (flag != Decoration.None && _reverseLookup.TryGetValue(flag, out var name))
-                    {
-                        result.Add(name);
-                    }
-                });
+                    result.Add(name);
+                }
+            });
 
-            return result;
-        }
+        return result;
     }
 }

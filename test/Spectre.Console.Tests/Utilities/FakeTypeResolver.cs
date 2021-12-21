@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Spectre.Console.Cli;
@@ -30,8 +30,8 @@ namespace Spectre.Console.Testing
 
             if (_registrations.TryGetValue(type, out var registrations))
             {
-                return registrations.Count == 0 
-                    ? null 
+                return registrations.Count == 0
+                    ? null
                     : Activator.CreateInstance(type);
             }
 

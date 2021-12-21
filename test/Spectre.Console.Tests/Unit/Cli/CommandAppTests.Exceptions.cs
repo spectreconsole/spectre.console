@@ -1,8 +1,8 @@
 using System;
 using Shouldly;
 using Spectre.Console.Cli;
-using Spectre.Console.Tests.Data;
 using Spectre.Console.Testing;
+using Spectre.Console.Tests.Data;
 using Xunit;
 
 namespace Spectre.Console.Tests.Unit.Cli
@@ -48,7 +48,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 // Then
                 result.ExitCode.ShouldBe(-1);
             }
-            
+
             [Fact]
             public void Should_Handle_Exceptions_If_ExceptionHandler_Is_Set_Using_Action()
             {
@@ -71,7 +71,7 @@ namespace Spectre.Console.Tests.Unit.Cli
                 result.ExitCode.ShouldBe(-1);
                 exceptionHandled.ShouldBeTrue();
             }
-            
+
             [Fact]
             public void Should_Handle_Exceptions_If_ExceptionHandler_Is_Set_Using_Function()
             {

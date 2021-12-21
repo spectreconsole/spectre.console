@@ -1,24 +1,23 @@
-namespace Spectre.Console
+namespace Spectre.Console;
+
+/// <summary>
+/// Determines interactivity support.
+/// </summary>
+public enum InteractionSupport
 {
     /// <summary>
-    /// Determines interactivity support.
+    /// Interaction support should be
+    /// detected by the system.
     /// </summary>
-    public enum InteractionSupport
-    {
-        /// <summary>
-        /// Interaction support should be
-        /// detected by the system.
-        /// </summary>
-        Detect = 0,
+    Detect = 0,
 
-        /// <summary>
-        /// Interactivity is supported.
-        /// </summary>
-        Yes = 1,
+    /// <summary>
+    /// Interactivity is supported.
+    /// </summary>
+    Yes = 1,
 
-        /// <summary>
-        /// Interactivity is not supported.
-        /// </summary>
-        No = 2,
-    }
+    /// <summary>
+    /// Interactivity is not supported.
+    /// </summary>
+    No = 2,
 }

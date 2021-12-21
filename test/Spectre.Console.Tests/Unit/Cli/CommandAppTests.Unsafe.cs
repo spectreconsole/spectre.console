@@ -1,9 +1,9 @@
 using Shouldly;
+using Spectre.Console.Cli;
+using Spectre.Console.Cli.Unsafe;
 using Spectre.Console.Testing;
 using Spectre.Console.Tests.Data;
-using Spectre.Console.Cli.Unsafe;
 using Xunit;
-using Spectre.Console.Cli;
 
 namespace Spectre.Console.Tests.Unit.Cli
 {

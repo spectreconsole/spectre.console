@@ -3,58 +3,57 @@ using System.Collections.Generic;
 using System.Linq;
 using Spectre.Console.Rendering;
 
-namespace Spectre.Console
+namespace Spectre.Console;
+
+internal sealed class FallbackStatusRenderer : ProgressRenderer
 {
-    internal sealed class FallbackStatusRenderer : ProgressRenderer
+    private readonly object _lock;
+    private IRenderable? _renderable;
+    private string? _lastStatus;
+
+    public override TimeSpan RefreshRate => TimeSpan.FromMilliseconds(100);
+
+    public FallbackStatusRenderer()
     {
-        private readonly object _lock;
-        private IRenderable? _renderable;
-        private string? _lastStatus;
+        _lock = new object();
+    }
 
-        public override TimeSpan RefreshRate => TimeSpan.FromMilliseconds(100);
-
-        public FallbackStatusRenderer()
+    public override void Update(ProgressContext context)
+    {
+        lock (_lock)
         {
-            _lock = new object();
-        }
-
-        public override void Update(ProgressContext context)
-        {
-            lock (_lock)
+            var task = context.GetTasks().SingleOrDefault();
+            if (task != null)
             {
-                var task = context.GetTasks().SingleOrDefault();
-                if (task != null)
+                // Not same description?
+                if (_lastStatus != task.Description)
                 {
-                    // Not same description?
-                    if (_lastStatus != task.Description)
-                    {
-                        _lastStatus = task.Description;
-                        _renderable = new Markup(task.Description + Environment.NewLine);
-                        return;
-                    }
+                    _lastStatus = task.Description;
+                    _renderable = new Markup(task.Description + Environment.NewLine);
+                    return;
                 }
-
-                _renderable = null;
-                return;
             }
+
+            _renderable = null;
+            return;
         }
+    }
 
-        public override IEnumerable<IRenderable> Process(RenderContext context, IEnumerable<IRenderable> renderables)
+    public override IEnumerable<IRenderable> Process(RenderContext context, IEnumerable<IRenderable> renderables)
+    {
+        lock (_lock)
         {
-            lock (_lock)
+            var result = new List<IRenderable>();
+            result.AddRange(renderables);
+
+            if (_renderable != null)
             {
-                var result = new List<IRenderable>();
-                result.AddRange(renderables);
-
-                if (_renderable != null)
-                {
-                    result.Add(_renderable);
-                }
-
-                _renderable = null;
-
-                return result;
+                result.Add(_renderable);
             }
+
+            _renderable = null;
+
+            return result;
         }
     }
 }

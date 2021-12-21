@@ -1,8 +1,7 @@
-namespace Spectre.Console.Cli
+namespace Spectre.Console.Cli;
+
+internal enum ParsingMode
 {
-    internal enum ParsingMode
-    {
-        Relaxed = 0,
-        Strict = 1,
-    }
+    Relaxed = 0,
+    Strict = 1,
 }

@@ -1,27 +1,26 @@
 using System;
 using System.Globalization;
 
-namespace Spectre.Console
+namespace Spectre.Console;
+
+internal static class DayOfWeekExtensions
 {
-    internal static class DayOfWeekExtensions
+    public static string GetAbbreviatedDayName(this DayOfWeek day, CultureInfo culture)
     {
-        public static string GetAbbreviatedDayName(this DayOfWeek day, CultureInfo culture)
+        culture ??= CultureInfo.InvariantCulture;
+        return culture.DateTimeFormat
+            .GetAbbreviatedDayName(day)
+            .CapitalizeFirstLetter(culture);
+    }
+
+    public static DayOfWeek GetNextWeekDay(this DayOfWeek day)
+    {
+        var next = (int)day + 1;
+        if (next > (int)DayOfWeek.Saturday)
         {
-            culture ??= CultureInfo.InvariantCulture;
-            return culture.DateTimeFormat
-                .GetAbbreviatedDayName(day)
-                .CapitalizeFirstLetter(culture);
+            return DayOfWeek.Sunday;
         }
 
-        public static DayOfWeek GetNextWeekDay(this DayOfWeek day)
-        {
-            var next = (int)day + 1;
-            if (next > (int)DayOfWeek.Saturday)
-            {
-                return DayOfWeek.Sunday;
-            }
-
-            return (DayOfWeek)next;
-        }
+        return (DayOfWeek)next;
     }
 }

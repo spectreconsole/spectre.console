@@ -1,13 +1,12 @@
-namespace Spectre.Console
+namespace Spectre.Console;
+
+/// <summary>
+/// Represents something that has a border.
+/// </summary>
+public interface IHasTableBorder : IHasBorder
 {
     /// <summary>
-    /// Represents something that has a border.
+    /// Gets or sets the border.
     /// </summary>
-    public interface IHasTableBorder : IHasBorder
-    {
-        /// <summary>
-        /// Gets or sets the border.
-        /// </summary>
-        public TableBorder Border { get; set; }
-    }
+    public TableBorder Border { get; set; }
 }

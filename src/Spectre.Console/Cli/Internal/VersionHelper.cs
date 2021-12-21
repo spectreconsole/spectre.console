@@ -1,14 +1,13 @@
 using System.Reflection;
 
-namespace Spectre.Console.Cli
+namespace Spectre.Console.Cli;
+
+internal static class VersionHelper
 {
-    internal static class VersionHelper
+    public static string GetVersion(Assembly? assembly)
     {
-        public static string GetVersion(Assembly? assembly)
-        {
-            return assembly?
-                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
-                .InformationalVersion ?? "?";
-        }
+        return assembly?
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+            .InformationalVersion ?? "?";
     }
 }

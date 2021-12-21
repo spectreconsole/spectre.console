@@ -1,13 +1,12 @@
-namespace Spectre.Console.Rendering
+namespace Spectre.Console.Rendering;
+
+/// <summary>
+/// Represents something that can be dirty.
+/// </summary>
+public interface IHasDirtyState
 {
     /// <summary>
-    /// Represents something that can be dirty.
+    /// Gets a value indicating whether the object is dirty.
     /// </summary>
-    public interface IHasDirtyState
-    {
-        /// <summary>
-        /// Gets a value indicating whether the object is dirty.
-        /// </summary>
-        bool IsDirty { get; }
-    }
+    bool IsDirty { get; }
 }

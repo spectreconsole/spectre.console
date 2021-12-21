@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 
-namespace Spectre.Console.Cli
+namespace Spectre.Console.Cli;
+
+/// <summary>
+/// Represents a command container.
+/// </summary>
+internal interface ICommandContainer
 {
     /// <summary>
-    /// Represents a command container.
+    /// Gets all commands in the container.
     /// </summary>
-    internal interface ICommandContainer
-    {
-        /// <summary>
-        /// Gets all commands in the container.
-        /// </summary>
-        IList<CommandInfo> Commands { get; }
-    }
+    IList<CommandInfo> Commands { get; }
 }

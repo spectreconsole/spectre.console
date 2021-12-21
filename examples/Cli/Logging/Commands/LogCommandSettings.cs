@@ -5,28 +5,28 @@ using System.Globalization;
 using Serilog.Events;
 using Spectre.Console.Cli;
 
-namespace Spectre.Console.Examples
+namespace Spectre.Console.Examples;
+
+public class LogCommandSettings : CommandSettings
 {
-    public class LogCommandSettings : CommandSettings
+    [CommandOption("--logFile")]
+    [Description("Path and file name for logging")]
+    public string LogFile { get; set; }
+
+    [CommandOption("--logLevel")]
+    [Description("Minimum level for logging")]
+    [TypeConverter(typeof(VerbosityConverter))]
+    [DefaultValue(LogEventLevel.Information)]
+    public LogEventLevel LogLevel { get; set; }
+}
+
+public sealed class VerbosityConverter : TypeConverter
+{
+    private readonly Dictionary<string, LogEventLevel> _lookup;
+
+    public VerbosityConverter()
     {
-        [CommandOption("--logFile")]
-        [Description("Path and file name for logging")]
-        public string LogFile { get; set; }
-
-        [CommandOption("--logLevel")]
-        [Description("Minimum level for logging")]
-        [TypeConverter(typeof(VerbosityConverter))]
-        [DefaultValue(LogEventLevel.Information)]
-        public LogEventLevel LogLevel { get; set; }
-    }
-
-    public sealed class VerbosityConverter : TypeConverter
-    {
-        private readonly Dictionary<string, LogEventLevel> _lookup;
-
-        public VerbosityConverter()
-        {
-            _lookup = new Dictionary<string, LogEventLevel>(StringComparer.OrdinalIgnoreCase)
+        _lookup = new Dictionary<string, LogEventLevel>(StringComparer.OrdinalIgnoreCase)
             {
                 {"d", LogEventLevel.Debug},
                 {"v", LogEventLevel.Verbose},
@@ -35,22 +35,21 @@ namespace Spectre.Console.Examples
                 {"e", LogEventLevel.Error},
                 {"f", LogEventLevel.Fatal}
             };
-        }
+    }
 
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+    {
+        if (value is string stringValue)
         {
-            if (value is string stringValue)
+            var result = _lookup.TryGetValue(stringValue, out var verbosity);
+            if (!result)
             {
-                var result = _lookup.TryGetValue(stringValue, out var verbosity);
-                if (!result)
-                {
-                    const string format = "The value '{0}' is not a valid verbosity.";
-                    var message = string.Format(CultureInfo.InvariantCulture, format, value);
-                    throw new InvalidOperationException(message);
-                }
-                return verbosity;
+                const string format = "The value '{0}' is not a valid verbosity.";
+                var message = string.Format(CultureInfo.InvariantCulture, format, value);
+                throw new InvalidOperationException(message);
             }
-            throw new NotSupportedException("Can't convert value to verbosity.");
+            return verbosity;
         }
+        throw new NotSupportedException("Can't convert value to verbosity.");
     }
 }

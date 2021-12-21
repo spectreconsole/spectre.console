@@ -1,230 +1,229 @@
 using System;
 using System.Globalization;
 
-namespace Spectre.Console
+namespace Spectre.Console;
+
+internal static class StyleParser
 {
-    internal static class StyleParser
+    public static Style Parse(string text)
     {
-        public static Style Parse(string text)
+        var style = Parse(text, out var error);
+        if (error != null)
         {
-            var style = Parse(text, out var error);
-            if (error != null)
-            {
-                throw new InvalidOperationException(error);
-            }
-
-            if (style == null)
-            {
-                // This should not happen, but we need to please the compiler
-                // which cannot know that style isn't null here.
-                throw new InvalidOperationException("Could not parse style.");
-            }
-
-            return style;
+            throw new InvalidOperationException(error);
         }
 
-        public static bool TryParse(string text, out Style? style)
+        if (style == null)
         {
-            style = Parse(text, out var error);
-            return error == null;
+            // This should not happen, but we need to please the compiler
+            // which cannot know that style isn't null here.
+            throw new InvalidOperationException("Could not parse style.");
         }
 
-        private static Style? Parse(string text, out string? error)
+        return style;
+    }
+
+    public static bool TryParse(string text, out Style? style)
+    {
+        style = Parse(text, out var error);
+        return error == null;
+    }
+
+    private static Style? Parse(string text, out string? error)
+    {
+        var effectiveDecoration = (Decoration?)null;
+        var effectiveForeground = (Color?)null;
+        var effectiveBackground = (Color?)null;
+        var effectiveLink = (string?)null;
+
+        var parts = text.Split(new[] { ' ' });
+        var foreground = true;
+        foreach (var part in parts)
         {
-            var effectiveDecoration = (Decoration?)null;
-            var effectiveForeground = (Color?)null;
-            var effectiveBackground = (Color?)null;
-            var effectiveLink = (string?)null;
-
-            var parts = text.Split(new[] { ' ' });
-            var foreground = true;
-            foreach (var part in parts)
+            if (part.Equals("default", StringComparison.OrdinalIgnoreCase))
             {
-                if (part.Equals("default", StringComparison.OrdinalIgnoreCase))
+                continue;
+            }
+
+            if (part.Equals("on", StringComparison.OrdinalIgnoreCase))
+            {
+                foreground = false;
+                continue;
+            }
+
+            if (part.StartsWith("link=", StringComparison.OrdinalIgnoreCase))
+            {
+                if (effectiveLink != null)
                 {
-                    continue;
+                    error = "A link has already been set.";
+                    return null;
                 }
 
-                if (part.Equals("on", StringComparison.OrdinalIgnoreCase))
-                {
-                    foreground = false;
-                    continue;
-                }
+                effectiveLink = part.Substring(5);
+                continue;
+            }
+            else if (part.StartsWith("link", StringComparison.OrdinalIgnoreCase))
+            {
+                effectiveLink = Constants.EmptyLink;
+                continue;
+            }
 
-                if (part.StartsWith("link=", StringComparison.OrdinalIgnoreCase))
+            var decoration = DecorationTable.GetDecoration(part);
+            if (decoration != null)
+            {
+                effectiveDecoration ??= Decoration.None;
+
+                effectiveDecoration |= decoration.Value;
+            }
+            else
+            {
+                var color = ColorTable.GetColor(part);
+                if (color == null)
                 {
-                    if (effectiveLink != null)
+                    if (part.StartsWith("#", StringComparison.OrdinalIgnoreCase))
                     {
-                        error = "A link has already been set.";
-                        return null;
-                    }
-
-                    effectiveLink = part.Substring(5);
-                    continue;
-                }
-                else if (part.StartsWith("link", StringComparison.OrdinalIgnoreCase))
-                {
-                    effectiveLink = Constants.EmptyLink;
-                    continue;
-                }
-
-                var decoration = DecorationTable.GetDecoration(part);
-                if (decoration != null)
-                {
-                    effectiveDecoration ??= Decoration.None;
-
-                    effectiveDecoration |= decoration.Value;
-                }
-                else
-                {
-                    var color = ColorTable.GetColor(part);
-                    if (color == null)
-                    {
-                        if (part.StartsWith("#", StringComparison.OrdinalIgnoreCase))
+                        color = ParseHexColor(part, out error);
+                        if (!string.IsNullOrWhiteSpace(error))
                         {
-                            color = ParseHexColor(part, out error);
-                            if (!string.IsNullOrWhiteSpace(error))
-                            {
-                                return null;
-                            }
-                        }
-                        else if (part.StartsWith("rgb", StringComparison.OrdinalIgnoreCase))
-                        {
-                            color = ParseRgbColor(part, out error);
-                            if (!string.IsNullOrWhiteSpace(error))
-                            {
-                                return null;
-                            }
-                        }
-                        else if (int.TryParse(part, out var number))
-                        {
-                            if (number < 0)
-                            {
-                                error = $"Color number must be greater than or equal to 0 (was {number})";
-                                return null;
-                            }
-                            else if (number > 255)
-                            {
-                                error = $"Color number must be less than or equal to 255 (was {number})";
-                                return null;
-                            }
-
-                            color = number;
-                        }
-                        else
-                        {
-                            error = !foreground
-                                ? $"Could not find color '{part}'."
-                                : $"Could not find color or style '{part}'.";
-
                             return null;
                         }
                     }
-
-                    if (foreground)
+                    else if (part.StartsWith("rgb", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (effectiveForeground != null)
+                        color = ParseRgbColor(part, out error);
+                        if (!string.IsNullOrWhiteSpace(error))
                         {
-                            error = "A foreground color has already been set.";
+                            return null;
+                        }
+                    }
+                    else if (int.TryParse(part, out var number))
+                    {
+                        if (number < 0)
+                        {
+                            error = $"Color number must be greater than or equal to 0 (was {number})";
+                            return null;
+                        }
+                        else if (number > 255)
+                        {
+                            error = $"Color number must be less than or equal to 255 (was {number})";
                             return null;
                         }
 
-                        effectiveForeground = color;
+                        color = number;
                     }
                     else
                     {
-                        if (effectiveBackground != null)
-                        {
-                            error = "A background color has already been set.";
-                            return null;
-                        }
+                        error = !foreground
+                            ? $"Could not find color '{part}'."
+                            : $"Could not find color or style '{part}'.";
 
-                        effectiveBackground = color;
+                        return null;
                     }
                 }
-            }
 
-            error = null;
-            return new Style(
-                effectiveForeground,
-                effectiveBackground,
-                effectiveDecoration,
-                effectiveLink);
+                if (foreground)
+                {
+                    if (effectiveForeground != null)
+                    {
+                        error = "A foreground color has already been set.";
+                        return null;
+                    }
+
+                    effectiveForeground = color;
+                }
+                else
+                {
+                    if (effectiveBackground != null)
+                    {
+                        error = "A background color has already been set.";
+                        return null;
+                    }
+
+                    effectiveBackground = color;
+                }
+            }
         }
 
-        private static Color? ParseHexColor(string hex, out string? error)
+        error = null;
+        return new Style(
+            effectiveForeground,
+            effectiveBackground,
+            effectiveDecoration,
+            effectiveLink);
+    }
+
+    private static Color? ParseHexColor(string hex, out string? error)
+    {
+        error = null;
+
+        hex ??= string.Empty;
+        hex = hex.ReplaceExact("#", string.Empty).Trim();
+
+        try
         {
-            error = null;
-
-            hex ??= string.Empty;
-            hex = hex.ReplaceExact("#", string.Empty).Trim();
-
-            try
+            if (!string.IsNullOrWhiteSpace(hex))
             {
-                if (!string.IsNullOrWhiteSpace(hex))
+                if (hex.Length == 6)
                 {
-                    if (hex.Length == 6)
-                    {
-                        return new Color(
-                            (byte)Convert.ToUInt32(hex.Substring(0, 2), 16),
-                            (byte)Convert.ToUInt32(hex.Substring(2, 2), 16),
-                            (byte)Convert.ToUInt32(hex.Substring(4, 2), 16));
-                    }
-                    else if (hex.Length == 3)
-                    {
-                        return new Color(
-                            (byte)Convert.ToUInt32(new string(hex[0], 2), 16),
-                            (byte)Convert.ToUInt32(new string(hex[1], 2), 16),
-                            (byte)Convert.ToUInt32(new string(hex[2], 2), 16));
-                    }
+                    return new Color(
+                        (byte)Convert.ToUInt32(hex.Substring(0, 2), 16),
+                        (byte)Convert.ToUInt32(hex.Substring(2, 2), 16),
+                        (byte)Convert.ToUInt32(hex.Substring(4, 2), 16));
+                }
+                else if (hex.Length == 3)
+                {
+                    return new Color(
+                        (byte)Convert.ToUInt32(new string(hex[0], 2), 16),
+                        (byte)Convert.ToUInt32(new string(hex[1], 2), 16),
+                        (byte)Convert.ToUInt32(new string(hex[2], 2), 16));
                 }
             }
-            catch (Exception ex)
-            {
-                error = $"Invalid hex color '#{hex}'. {ex.Message}";
-                return null;
-            }
-
-            error = $"Invalid hex color '#{hex}'.";
+        }
+        catch (Exception ex)
+        {
+            error = $"Invalid hex color '#{hex}'. {ex.Message}";
             return null;
         }
 
-        private static Color? ParseRgbColor(string rgb, out string? error)
+        error = $"Invalid hex color '#{hex}'.";
+        return null;
+    }
+
+    private static Color? ParseRgbColor(string rgb, out string? error)
+    {
+        try
         {
-            try
+            error = null;
+
+            var normalized = rgb ?? string.Empty;
+            if (normalized.Length >= 3)
             {
-                error = null;
+                // Trim parentheses
+                normalized = normalized.Substring(3).Trim();
 
-                var normalized = rgb ?? string.Empty;
-                if (normalized.Length >= 3)
+                if (normalized.StartsWith("(", StringComparison.OrdinalIgnoreCase) &&
+                   normalized.EndsWith(")", StringComparison.OrdinalIgnoreCase))
                 {
-                    // Trim parentheses
-                    normalized = normalized.Substring(3).Trim();
+                    normalized = normalized.Trim('(').Trim(')');
 
-                    if (normalized.StartsWith("(", StringComparison.OrdinalIgnoreCase) &&
-                       normalized.EndsWith(")", StringComparison.OrdinalIgnoreCase))
+                    var parts = normalized.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length == 3)
                     {
-                        normalized = normalized.Trim('(').Trim(')');
-
-                        var parts = normalized.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                        if (parts.Length == 3)
-                        {
-                            return new Color(
-                                (byte)Convert.ToInt32(parts[0], CultureInfo.InvariantCulture),
-                                (byte)Convert.ToInt32(parts[1], CultureInfo.InvariantCulture),
-                                (byte)Convert.ToInt32(parts[2], CultureInfo.InvariantCulture));
-                        }
+                        return new Color(
+                            (byte)Convert.ToInt32(parts[0], CultureInfo.InvariantCulture),
+                            (byte)Convert.ToInt32(parts[1], CultureInfo.InvariantCulture),
+                            (byte)Convert.ToInt32(parts[2], CultureInfo.InvariantCulture));
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                error = $"Invalid RGB color '{rgb}'. {ex.Message}";
-                return null;
-            }
-
-            error = $"Invalid RGB color '{rgb}'.";
+        }
+        catch (Exception ex)
+        {
+            error = $"Invalid RGB color '{rgb}'. {ex.Message}";
             return null;
         }
+
+        error = $"Invalid RGB color '{rgb}'.";
+        return null;
     }
 }
