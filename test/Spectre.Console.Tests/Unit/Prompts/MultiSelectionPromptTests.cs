@@ -82,70 +82,70 @@ namespace Spectre.Console.Tests.Unit
             // Then
             choice.IsSelected.ShouldBeTrue();
         }
-        
+
         [Fact]
         public void Should_Get_The_Direct_Parent()
         {
             // Given
             var prompt = new MultiSelectionPrompt<string>();
             prompt.AddChoice("root").AddChild("level-1").AddChild("level-2").AddChild("item");
-            
+
             // When
             var actual = prompt.GetParent("item");
 
             // Then
             actual.ShouldBe("level-2");
         }
-        
+
         [Fact]
         public void Should_Get_The_List_Of_All_Parents()
         {
             // Given
             var prompt = new MultiSelectionPrompt<string>();
             prompt.AddChoice("root").AddChild("level-1").AddChild("level-2").AddChild("item");
-            
+
             // When
             var actual = prompt.GetParents("item");
 
             // Then
-            actual.ShouldBe(new []{"root", "level-1", "level-2"});
+            actual.ShouldBe(new[] { "root", "level-1", "level-2" });
         }
-        
+
         [Fact]
         public void Should_Get_An_Empty_List_Of_Parents_For_Root_Node()
         {
             // Given
             var prompt = new MultiSelectionPrompt<string>();
             prompt.AddChoice("root");
-            
+
             // When
             var actual = prompt.GetParents("root");
 
             // Then
             actual.ShouldBeEmpty();
         }
-        
+
         [Fact]
         public void Should_Get_Null_As_Direct_Parent_Of_Root_Node()
         {
             // Given
             var prompt = new MultiSelectionPrompt<string>();
             prompt.AddChoice("root");
-            
+
             // When
             var actual = prompt.GetParent("root");
 
             // Then
             actual.ShouldBeNull();
         }
-        
+
         [Fact]
         public void Should_Throw_When_Getting_Parents_Of_Non_Existing_Node()
         {
             // Given
             var prompt = new MultiSelectionPrompt<string>();
             prompt.AddChoice("root").AddChild("level-1").AddChild("level-2").AddChild("item");
-            
+
             // When
             Action action = () => prompt.GetParents("non-existing");
 

@@ -7,72 +7,71 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
-namespace Spectre.Console.Analyzer
+namespace Spectre.Console.Analyzer;
+
+/// <summary>
+/// Analyzer to detect calls to live renderables within a live renderable context.
+/// </summary>
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+[Shared]
+public class NoConcurrentLiveRenderablesAnalyzer : SpectreAnalyzer
 {
-    /// <summary>
-    /// Analyzer to detect calls to live renderables within a live renderable context.
-    /// </summary>
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    [Shared]
-    public class NoConcurrentLiveRenderablesAnalyzer : SpectreAnalyzer
+    private static readonly DiagnosticDescriptor _diagnosticDescriptor =
+        Descriptors.S1020_AvoidConcurrentCallsToMultipleLiveRenderables;
+
+    /// <inheritdoc />
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+        ImmutableArray.Create(_diagnosticDescriptor);
+
+    /// <inheritdoc />
+    protected override void AnalyzeCompilation(CompilationStartAnalysisContext compilationStartContext)
     {
-        private static readonly DiagnosticDescriptor _diagnosticDescriptor =
-            Descriptors.S1020_AvoidConcurrentCallsToMultipleLiveRenderables;
+        compilationStartContext.RegisterOperationAction(
+            context =>
+            {
+                var invocationOperation = (IInvocationOperation)context.Operation;
+                var methodSymbol = invocationOperation.TargetMethod;
 
-        /// <inheritdoc />
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(_diagnosticDescriptor);
-
-        /// <inheritdoc />
-        protected override void AnalyzeCompilation(CompilationStartAnalysisContext compilationStartContext)
-        {
-            compilationStartContext.RegisterOperationAction(
-                context =>
+                const string StartMethod = "Start";
+                if (methodSymbol.Name != StartMethod)
                 {
-                    var invocationOperation = (IInvocationOperation)context.Operation;
-                    var methodSymbol = invocationOperation.TargetMethod;
+                    return;
+                }
 
-                    const string StartMethod = "Start";
-                    if (methodSymbol.Name != StartMethod)
-                    {
-                        return;
-                    }
+                var liveTypes = Constants.LiveRenderables
+                    .Select(i => context.Compilation.GetTypeByMetadataName(i))
+                    .ToImmutableArray();
 
-                    var liveTypes = Constants.LiveRenderables
-                        .Select(i => context.Compilation.GetTypeByMetadataName(i))
-                        .ToImmutableArray();
+                if (liveTypes.All(i => !Equals(i, methodSymbol.ContainingType)))
+                {
+                    return;
+                }
 
-                    if (liveTypes.All(i => !Equals(i, methodSymbol.ContainingType)))
-                    {
-                        return;
-                    }
+                var model = context.Compilation.GetSemanticModel(context.Operation.Syntax.SyntaxTree);
+                var parentInvocations = invocationOperation
+                    .Syntax.Ancestors()
+                    .OfType<InvocationExpressionSyntax>()
+                    .Select(i => model.GetOperation(i))
+                    .OfType<IInvocationOperation>()
+                    .ToList();
 
-                    var model = context.Compilation.GetSemanticModel(context.Operation.Syntax.SyntaxTree);
-                    var parentInvocations = invocationOperation
-                        .Syntax.Ancestors()
-                        .OfType<InvocationExpressionSyntax>()
-                        .Select(i => model.GetOperation(i))
-                        .OfType<IInvocationOperation>()
-                        .ToList();
+                if (parentInvocations.All(parent =>
+                    parent.TargetMethod.Name != StartMethod || !liveTypes.Contains(parent.TargetMethod.ContainingType)))
+                {
+                    return;
+                }
 
-                    if (parentInvocations.All(parent =>
-                        parent.TargetMethod.Name != StartMethod || !liveTypes.Contains(parent.TargetMethod.ContainingType)))
-                    {
-                        return;
-                    }
+                var displayString = SymbolDisplay.ToDisplayString(
+                    methodSymbol,
+                    SymbolDisplayFormat.CSharpShortErrorMessageFormat
+                        .WithParameterOptions(SymbolDisplayParameterOptions.None)
+                        .WithGenericsOptions(SymbolDisplayGenericsOptions.None));
 
-                    var displayString = SymbolDisplay.ToDisplayString(
-                        methodSymbol,
-                        SymbolDisplayFormat.CSharpShortErrorMessageFormat
-                            .WithParameterOptions(SymbolDisplayParameterOptions.None)
-                            .WithGenericsOptions(SymbolDisplayGenericsOptions.None));
-
-                    context.ReportDiagnostic(
-                        Diagnostic.Create(
-                            _diagnosticDescriptor,
-                            invocationOperation.Syntax.GetLocation(),
-                            displayString));
-                }, OperationKind.Invocation);
-        }
+                context.ReportDiagnostic(
+                    Diagnostic.Create(
+                        _diagnosticDescriptor,
+                        invocationOperation.Syntax.GetLocation(),
+                        displayString));
+            }, OperationKind.Invocation);
     }
 }

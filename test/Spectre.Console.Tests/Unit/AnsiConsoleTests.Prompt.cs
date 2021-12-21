@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Shouldly;
 using Spectre.Console.Testing;
 using Xunit;

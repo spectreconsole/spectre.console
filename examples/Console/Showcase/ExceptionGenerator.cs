@@ -1,30 +1,29 @@
 using System;
 
-namespace Spectre.Console.Examples
+namespace Spectre.Console.Examples;
+
+public static class ExceptionGenerator
 {
-    public static class ExceptionGenerator
+    public static Exception GenerateException()
     {
-        public static Exception GenerateException()
+        try
         {
-            try
-            {
-                SomeOperation();
-                throw new InvalidOperationException();
-            }
-            catch (Exception ex)
-            {
-                return ex;
-            }
+            SomeOperation();
+            throw new InvalidOperationException();
         }
+        catch (Exception ex)
+        {
+            return ex;
+        }
+    }
 
-        private static void SomeOperation()
-        {
-            SomeOperationGoingWrong();
-        }
+    private static void SomeOperation()
+    {
+        SomeOperationGoingWrong();
+    }
 
-        private static void SomeOperationGoingWrong()
-        {
-            throw new InvalidOperationException("Something went very wrong!");
-        }
+    private static void SomeOperationGoingWrong()
+    {
+        throw new InvalidOperationException("Something went very wrong!");
     }
 }

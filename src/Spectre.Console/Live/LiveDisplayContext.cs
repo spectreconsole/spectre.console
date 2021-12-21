@@ -1,54 +1,53 @@
 using System;
 using Spectre.Console.Rendering;
 
-namespace Spectre.Console
+namespace Spectre.Console;
+
+/// <summary>
+/// Represents a context that can be used to interact with a <see cref="LiveDisplay"/>.
+/// </summary>
+public sealed class LiveDisplayContext
 {
-    /// <summary>
-    /// Represents a context that can be used to interact with a <see cref="LiveDisplay"/>.
-    /// </summary>
-    public sealed class LiveDisplayContext
+    private readonly IAnsiConsole _console;
+
+    internal object Lock { get; }
+    internal LiveRenderable Live { get; }
+
+    internal LiveDisplayContext(IAnsiConsole console, IRenderable target)
     {
-        private readonly IAnsiConsole _console;
+        _console = console ?? throw new ArgumentNullException(nameof(console));
 
-        internal object Lock { get; }
-        internal LiveRenderable Live { get; }
+        Live = new LiveRenderable(_console, target);
+        Lock = new object();
+    }
 
-        internal LiveDisplayContext(IAnsiConsole console, IRenderable target)
+    /// <summary>
+    /// Updates the live display target.
+    /// </summary>
+    /// <param name="target">The new live display target.</param>
+    public void UpdateTarget(IRenderable? target)
+    {
+        lock (Lock)
         {
-            _console = console ?? throw new ArgumentNullException(nameof(console));
-
-            Live = new LiveRenderable(_console, target);
-            Lock = new object();
+            Live.SetRenderable(target);
+            Refresh();
         }
+    }
 
-        /// <summary>
-        /// Updates the live display target.
-        /// </summary>
-        /// <param name="target">The new live display target.</param>
-        public void UpdateTarget(IRenderable? target)
+    /// <summary>
+    /// Refreshes the live display.
+    /// </summary>
+    public void Refresh()
+    {
+        lock (Lock)
         {
-            lock (Lock)
-            {
-                Live.SetRenderable(target);
-                Refresh();
-            }
+            _console.Write(new ControlCode(string.Empty));
         }
+    }
 
-        /// <summary>
-        /// Refreshes the live display.
-        /// </summary>
-        public void Refresh()
-        {
-            lock (Lock)
-            {
-                _console.Write(new ControlCode(string.Empty));
-            }
-        }
-
-        internal void SetOverflow(VerticalOverflow overflow, VerticalOverflowCropping cropping)
-        {
-            Live.Overflow = overflow;
-            Live.OverflowCropping = cropping;
-        }
+    internal void SetOverflow(VerticalOverflow overflow, VerticalOverflowCropping cropping)
+    {
+        Live.Overflow = overflow;
+        Live.OverflowCropping = cropping;
     }
 }

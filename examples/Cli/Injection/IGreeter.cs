@@ -1,15 +1,14 @@
-namespace Spectre.Console.Examples
-{
-    public interface IGreeter
-    {
-        void Greet(string name);
-    }
+namespace Spectre.Console.Examples;
 
-    public sealed class HelloWorldGreeter : IGreeter
+public interface IGreeter
+{
+    void Greet(string name);
+}
+
+public sealed class HelloWorldGreeter : IGreeter
+{
+    public void Greet(string name)
     {
-        public void Greet(string name)
-        {
-            AnsiConsole.WriteLine($"Hello {name}!");
-        }
+        AnsiConsole.WriteLine($"Hello {name}!");
     }
 }

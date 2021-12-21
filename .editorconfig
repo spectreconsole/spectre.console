@@ -30,6 +30,9 @@ trim_trailing_whitespace = false
 end_of_line = lf
 
 [*.cs]
+# Prefer file scoped namespace declarations
+csharp_style_namespace_declarations = file_scoped:warning
+
 # Sort using and Import directives with System.* appearing first
 dotnet_sort_system_directives_first = true
 dotnet_separate_import_directive_groups = false

@@ -1,70 +1,69 @@
 using System;
 using System.Linq;
 
-namespace Spectre.Console.Cli
+namespace Spectre.Console.Cli;
+
+internal static class CommandTreeExtensions
 {
-    internal static class CommandTreeExtensions
+    public static CommandTree? GetRootCommand(this CommandTree node)
     {
-        public static CommandTree? GetRootCommand(this CommandTree node)
+        while (node.Parent != null)
         {
-            while (node.Parent != null)
-            {
-                node = node.Parent;
-            }
-
-            return node;
+            node = node.Parent;
         }
 
-        public static CommandTree GetLeafCommand(this CommandTree node)
-        {
-            while (node.Next != null)
-            {
-                node = node.Next;
-            }
+        return node;
+    }
 
-            return node;
+    public static CommandTree GetLeafCommand(this CommandTree node)
+    {
+        while (node.Next != null)
+        {
+            node = node.Next;
         }
 
-        public static bool HasArguments(this CommandTree tree)
-        {
-            return tree.Command.Parameters.OfType<CommandArgument>().Any();
-        }
+        return node;
+    }
 
-        public static CommandArgument? FindArgument(this CommandTree tree, int position)
-        {
-            return tree.Command.Parameters
-                .OfType<CommandArgument>()
-                .FirstOrDefault(c => c.Position == position);
-        }
+    public static bool HasArguments(this CommandTree tree)
+    {
+        return tree.Command.Parameters.OfType<CommandArgument>().Any();
+    }
 
-        public static CommandOption? FindOption(this CommandTree tree, string name, bool longOption, CaseSensitivity sensitivity)
+    public static CommandArgument? FindArgument(this CommandTree tree, int position)
+    {
+        return tree.Command.Parameters
+            .OfType<CommandArgument>()
+            .FirstOrDefault(c => c.Position == position);
+    }
+
+    public static CommandOption? FindOption(this CommandTree tree, string name, bool longOption, CaseSensitivity sensitivity)
+    {
+        return tree.Command.Parameters
+            .OfType<CommandOption>()
+            .FirstOrDefault(o => longOption
+                ? o.LongNames.Contains(name, sensitivity.GetStringComparer(CommandPart.LongOption))
+                : o.ShortNames.Contains(name, StringComparer.Ordinal));
+    }
+
+    public static bool IsOptionMappedWithParent(this CommandTree tree, string name, bool longOption)
+    {
+        var node = tree.Parent;
+        while (node != null)
         {
-            return tree.Command.Parameters
-                .OfType<CommandOption>()
+            var option = node.Command?.Parameters.OfType<CommandOption>()
                 .FirstOrDefault(o => longOption
-                    ? o.LongNames.Contains(name, sensitivity.GetStringComparer(CommandPart.LongOption))
+                    ? o.LongNames.Contains(name, StringComparer.Ordinal)
                     : o.ShortNames.Contains(name, StringComparer.Ordinal));
-        }
 
-        public static bool IsOptionMappedWithParent(this CommandTree tree, string name, bool longOption)
-        {
-            var node = tree.Parent;
-            while (node != null)
+            if (option != null)
             {
-                var option = node.Command?.Parameters.OfType<CommandOption>()
-                    .FirstOrDefault(o => longOption
-                        ? o.LongNames.Contains(name, StringComparer.Ordinal)
-                        : o.ShortNames.Contains(name, StringComparer.Ordinal));
-
-                if (option != null)
-                {
-                    return node.Mapped.Any(p => p.Parameter == option);
-                }
-
-                node = node.Parent;
+                return node.Mapped.Any(p => p.Parameter == option);
             }
 
-            return false;
+            node = node.Parent;
         }
+
+        return false;
     }
 }

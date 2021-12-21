@@ -1,35 +1,34 @@
 using System;
 using Spectre.Console.Rendering;
 
-namespace Spectre.Console
+namespace Spectre.Console;
+
+/// <summary>
+/// A console capable of writing ANSI escape sequences.
+/// </summary>
+public static partial class AnsiConsole
 {
     /// <summary>
-    /// A console capable of writing ANSI escape sequences.
+    /// Renders the specified object to the console.
     /// </summary>
-    public static partial class AnsiConsole
+    /// <param name="renderable">The object to render.</param>
+    [Obsolete("Consider using AnsiConsole.Write instead.")]
+    public static void Render(IRenderable renderable)
     {
-        /// <summary>
-        /// Renders the specified object to the console.
-        /// </summary>
-        /// <param name="renderable">The object to render.</param>
-        [Obsolete("Consider using AnsiConsole.Write instead.")]
-        public static void Render(IRenderable renderable)
+        Write(renderable);
+    }
+
+    /// <summary>
+    /// Renders the specified <see cref="IRenderable"/> to the console.
+    /// </summary>
+    /// <param name="renderable">The object to render.</param>
+    public static void Write(IRenderable renderable)
+    {
+        if (renderable is null)
         {
-            Write(renderable);
+            throw new ArgumentNullException(nameof(renderable));
         }
 
-        /// <summary>
-        /// Renders the specified <see cref="IRenderable"/> to the console.
-        /// </summary>
-        /// <param name="renderable">The object to render.</param>
-        public static void Write(IRenderable renderable)
-        {
-            if (renderable is null)
-            {
-                throw new ArgumentNullException(nameof(renderable));
-            }
-
-            Console.Write(renderable);
-        }
+        Console.Write(renderable);
     }
 }

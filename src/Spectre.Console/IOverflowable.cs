@@ -1,13 +1,12 @@
-namespace Spectre.Console
+namespace Spectre.Console;
+
+/// <summary>
+/// Represents something that can overflow.
+/// </summary>
+public interface IOverflowable
 {
     /// <summary>
-    /// Represents something that can overflow.
+    /// Gets or sets the text overflow strategy.
     /// </summary>
-    public interface IOverflowable
-    {
-        /// <summary>
-        /// Gets or sets the text overflow strategy.
-        /// </summary>
-        Overflow? Overflow { get; set; }
-    }
+    Overflow? Overflow { get; set; }
 }

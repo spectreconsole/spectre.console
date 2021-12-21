@@ -47,7 +47,7 @@ namespace Spectre.Console.Tests.Unit
             // Then
             await Verifier.Verify(console.Output);
         }
-        
+
         [Fact]
         [Expectation("Fixed_Max_Value")]
         public async Task Should_Render_Correctly_3()

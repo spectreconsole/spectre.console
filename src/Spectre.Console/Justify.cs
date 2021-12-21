@@ -1,23 +1,22 @@
-namespace Spectre.Console
+namespace Spectre.Console;
+
+/// <summary>
+/// Represents text justification.
+/// </summary>
+public enum Justify
 {
     /// <summary>
-    /// Represents text justification.
+    /// Left aligned.
     /// </summary>
-    public enum Justify
-    {
-        /// <summary>
-        /// Left aligned.
-        /// </summary>
-        Left = 0,
+    Left = 0,
 
-        /// <summary>
-        /// Right aligned.
-        /// </summary>
-        Right = 1,
+    /// <summary>
+    /// Right aligned.
+    /// </summary>
+    Right = 1,
 
-        /// <summary>
-        /// Centered.
-        /// </summary>
-        Center = 2,
-    }
+    /// <summary>
+    /// Centered.
+    /// </summary>
+    Center = 2,
 }

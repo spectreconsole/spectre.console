@@ -1,43 +1,42 @@
 using System.IO;
 
-namespace Spectre.Console
+namespace Spectre.Console;
+
+internal static class ConsoleHelper
 {
-    internal static class ConsoleHelper
+    public static int GetSafeWidth(int defaultValue = Constants.DefaultTerminalWidth)
     {
-        public static int GetSafeWidth(int defaultValue = Constants.DefaultTerminalWidth)
+        try
         {
-            try
+            var width = System.Console.BufferWidth;
+            if (width == 0)
             {
-                var width = System.Console.BufferWidth;
-                if (width == 0)
-                {
-                    width = defaultValue;
-                }
+                width = defaultValue;
+            }
 
-                return width;
-            }
-            catch (IOException)
-            {
-                return defaultValue;
-            }
+            return width;
         }
-
-        public static int GetSafeHeight(int defaultValue = Constants.DefaultTerminalHeight)
+        catch (IOException)
         {
-            try
-            {
-                var height = System.Console.WindowHeight;
-                if (height == 0)
-                {
-                    height = defaultValue;
-                }
+            return defaultValue;
+        }
+    }
 
-                return height;
-            }
-            catch (IOException)
+    public static int GetSafeHeight(int defaultValue = Constants.DefaultTerminalHeight)
+    {
+        try
+        {
+            var height = System.Console.WindowHeight;
+            if (height == 0)
             {
-                return defaultValue;
+                height = defaultValue;
             }
+
+            return height;
+        }
+        catch (IOException)
+        {
+            return defaultValue;
         }
     }
 }

@@ -1,47 +1,46 @@
 using System;
 
-namespace Spectre.Console
+namespace Spectre.Console;
+
+/// <summary>
+/// Contains extension methods for <see cref="IExpandable"/>.
+/// </summary>
+public static class ExpandableExtensions
 {
     /// <summary>
-    /// Contains extension methods for <see cref="IExpandable"/>.
+    /// Tells the specified object to not expand to the available area
+    /// but take as little space as possible.
     /// </summary>
-    public static class ExpandableExtensions
+    /// <typeparam name="T">The expandable object.</typeparam>
+    /// <param name="obj">The object to collapse.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static T Collapse<T>(this T obj)
+        where T : class, IExpandable
     {
-        /// <summary>
-        /// Tells the specified object to not expand to the available area
-        /// but take as little space as possible.
-        /// </summary>
-        /// <typeparam name="T">The expandable object.</typeparam>
-        /// <param name="obj">The object to collapse.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static T Collapse<T>(this T obj)
-            where T : class, IExpandable
+        if (obj is null)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
-            obj.Expand = false;
-            return obj;
+            throw new ArgumentNullException(nameof(obj));
         }
 
-        /// <summary>
-        /// Tells the specified object to expand to the available area.
-        /// </summary>
-        /// <typeparam name="T">The expandable object.</typeparam>
-        /// <param name="obj">The object to expand.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static T Expand<T>(this T obj)
-            where T : class, IExpandable
-        {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+        obj.Expand = false;
+        return obj;
+    }
 
-            obj.Expand = true;
-            return obj;
+    /// <summary>
+    /// Tells the specified object to expand to the available area.
+    /// </summary>
+    /// <typeparam name="T">The expandable object.</typeparam>
+    /// <param name="obj">The object to expand.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static T Expand<T>(this T obj)
+        where T : class, IExpandable
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
         }
+
+        obj.Expand = true;
+        return obj;
     }
 }

@@ -1,17 +1,16 @@
-namespace Spectre.Console.Testing
+namespace Spectre.Console.Testing;
+
+internal sealed class NoopCursor : IAnsiConsoleCursor
 {
-    internal sealed class NoopCursor : IAnsiConsoleCursor
+    public void Move(CursorDirection direction, int steps)
     {
-        public void Move(CursorDirection direction, int steps)
-        {
-        }
+    }
 
-        public void SetPosition(int column, int line)
-        {
-        }
+    public void SetPosition(int column, int line)
+    {
+    }
 
-        public void Show(bool show)
-        {
-        }
+    public void Show(bool show)
+    {
     }
 }

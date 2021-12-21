@@ -1,46 +1,45 @@
 using System;
 using System.Collections.Generic;
 
-namespace Spectre.Console
+namespace Spectre.Console;
+
+internal sealed class ListPromptState<T>
+    where T : notnull
 {
-    internal sealed class ListPromptState<T>
-        where T : notnull
+    public int Index { get; private set; }
+    public int ItemCount => Items.Count;
+    public int PageSize { get; }
+    public IReadOnlyList<ListPromptItem<T>> Items { get; }
+
+    public ListPromptItem<T> Current => Items[Index];
+
+    public ListPromptState(IReadOnlyList<ListPromptItem<T>> items, int pageSize)
     {
-        public int Index { get; private set; }
-        public int ItemCount => Items.Count;
-        public int PageSize { get; }
-        public IReadOnlyList<ListPromptItem<T>> Items { get; }
+        Index = 0;
+        Items = items;
+        PageSize = pageSize;
+    }
 
-        public ListPromptItem<T> Current => Items[Index];
-
-        public ListPromptState(IReadOnlyList<ListPromptItem<T>> items, int pageSize)
+    public bool Update(ConsoleKey key)
+    {
+        var index = key switch
         {
-            Index = 0;
-            Items = items;
-            PageSize = pageSize;
+            ConsoleKey.UpArrow => Index - 1,
+            ConsoleKey.DownArrow => Index + 1,
+            ConsoleKey.Home => 0,
+            ConsoleKey.End => ItemCount - 1,
+            ConsoleKey.PageUp => Index - PageSize,
+            ConsoleKey.PageDown => Index + PageSize,
+            _ => Index,
+        };
+
+        index = index.Clamp(0, ItemCount - 1);
+        if (index != Index)
+        {
+            Index = index;
+            return true;
         }
 
-        public bool Update(ConsoleKey key)
-        {
-            var index = key switch
-            {
-                ConsoleKey.UpArrow => Index - 1,
-                ConsoleKey.DownArrow => Index + 1,
-                ConsoleKey.Home => 0,
-                ConsoleKey.End => ItemCount - 1,
-                ConsoleKey.PageUp => Index - PageSize,
-                ConsoleKey.PageDown => Index + PageSize,
-                _ => Index,
-            };
-
-            index = index.Clamp(0, ItemCount - 1);
-            if (index != Index)
-            {
-                Index = index;
-                return true;
-            }
-
-            return false;
-        }
+        return false;
     }
 }

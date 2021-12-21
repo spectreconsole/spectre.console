@@ -1,22 +1,21 @@
-namespace Spectre.Console.Examples
+namespace Spectre.Console.Examples;
+
+public static class Program
 {
-    public static class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            // Show a known emoji
-            RenderEmoji();
+        // Show a known emoji
+        RenderEmoji();
 
-            // Show a remapped emoji
-            Emoji.Remap("globe_showing_europe_africa", Emoji.Known.GrinningFaceWithSmilingEyes);
-            RenderEmoji();
-        }
+        // Show a remapped emoji
+        Emoji.Remap("globe_showing_europe_africa", Emoji.Known.GrinningFaceWithSmilingEyes);
+        RenderEmoji();
+    }
 
-        private static void RenderEmoji()
-        {
-            AnsiConsole.Write(
-                new Panel("[yellow]Hello :globe_showing_europe_africa:![/]")
-                    .RoundedBorder());
-        }
+    private static void RenderEmoji()
+    {
+        AnsiConsole.Write(
+            new Panel("[yellow]Hello :globe_showing_europe_africa:![/]")
+                .RoundedBorder());
     }
 }

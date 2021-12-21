@@ -1,28 +1,27 @@
-namespace Spectre.Console.Rendering
+namespace Spectre.Console.Rendering;
+
+/// <summary>
+/// Defines the different rendering parts of a <see cref="Tree"/>.
+/// </summary>
+public enum TreeGuidePart
 {
     /// <summary>
-    /// Defines the different rendering parts of a <see cref="Tree"/>.
+    /// Represents a space.
     /// </summary>
-    public enum TreeGuidePart
-    {
-        /// <summary>
-        /// Represents a space.
-        /// </summary>
-        Space,
+    Space,
 
-        /// <summary>
-        /// Connection between siblings.
-        /// </summary>
-        Continue,
+    /// <summary>
+    /// Connection between siblings.
+    /// </summary>
+    Continue,
 
-        /// <summary>
-        /// Branch from parent to child.
-        /// </summary>
-        Fork,
+    /// <summary>
+    /// Branch from parent to child.
+    /// </summary>
+    Fork,
 
-        /// <summary>
-        /// Branch from parent to child for the last child in a set.
-        /// </summary>
-        End,
-    }
+    /// <summary>
+    /// Branch from parent to child for the last child in a set.
+    /// </summary>
+    End,
 }

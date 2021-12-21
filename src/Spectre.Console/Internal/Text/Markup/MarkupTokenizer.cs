@@ -1,36 +1,53 @@
 using System;
 using System.Text;
 
-namespace Spectre.Console
+namespace Spectre.Console;
+
+internal sealed class MarkupTokenizer : IDisposable
 {
-    internal sealed class MarkupTokenizer : IDisposable
+    private readonly StringBuffer _reader;
+
+    public MarkupToken? Current { get; private set; }
+
+    public MarkupTokenizer(string text)
     {
-        private readonly StringBuffer _reader;
+        _reader = new StringBuffer(text ?? throw new ArgumentNullException(nameof(text)));
+    }
 
-        public MarkupToken? Current { get; private set; }
+    public void Dispose()
+    {
+        _reader.Dispose();
+    }
 
-        public MarkupTokenizer(string text)
+    public bool MoveNext()
+    {
+        if (_reader.Eof)
         {
-            _reader = new StringBuffer(text ?? throw new ArgumentNullException(nameof(text)));
+            return false;
         }
 
-        public void Dispose()
+        var current = _reader.Peek();
+        if (current == '[')
         {
-            _reader.Dispose();
-        }
+            var position = _reader.Position;
 
-        public bool MoveNext()
-        {
+            _reader.Read();
+
             if (_reader.Eof)
             {
-                return false;
+                throw new InvalidOperationException($"Encountered malformed markup tag at position {_reader.Position}.");
             }
 
-            var current = _reader.Peek();
+            current = _reader.Peek();
             if (current == '[')
             {
-                var position = _reader.Position;
+                _reader.Read();
+                Current = new MarkupToken(MarkupTokenKind.Text, "[", position);
+                return true;
+            }
 
+            if (current == '/')
+            {
                 _reader.Read();
 
                 if (_reader.Eof)
@@ -39,98 +56,80 @@ namespace Spectre.Console
                 }
 
                 current = _reader.Peek();
-                if (current == '[')
-                {
-                    _reader.Read();
-                    Current = new MarkupToken(MarkupTokenKind.Text, "[", position);
-                    return true;
-                }
-
-                if (current == '/')
-                {
-                    _reader.Read();
-
-                    if (_reader.Eof)
-                    {
-                        throw new InvalidOperationException($"Encountered malformed markup tag at position {_reader.Position}.");
-                    }
-
-                    current = _reader.Peek();
-                    if (current != ']')
-                    {
-                        throw new InvalidOperationException($"Encountered malformed markup tag at position {_reader.Position}.");
-                    }
-
-                    _reader.Read();
-                    Current = new MarkupToken(MarkupTokenKind.Close, string.Empty, position);
-                    return true;
-                }
-
-                var builder = new StringBuilder();
-                while (!_reader.Eof)
-                {
-                    current = _reader.Peek();
-                    if (current == ']')
-                    {
-                        break;
-                    }
-
-                    builder.Append(_reader.Read());
-                }
-
-                if (_reader.Eof)
+                if (current != ']')
                 {
                     throw new InvalidOperationException($"Encountered malformed markup tag at position {_reader.Position}.");
                 }
 
                 _reader.Read();
-                Current = new MarkupToken(MarkupTokenKind.Open, builder.ToString(), position);
+                Current = new MarkupToken(MarkupTokenKind.Close, string.Empty, position);
                 return true;
             }
-            else
+
+            var builder = new StringBuilder();
+            while (!_reader.Eof)
             {
-                var position = _reader.Position;
-                var builder = new StringBuilder();
-
-                var encounteredClosing = false;
-                while (!_reader.Eof)
+                current = _reader.Peek();
+                if (current == ']')
                 {
-                    current = _reader.Peek();
-                    if (current == '[')
-                    {
-                        break;
-                    }
-                    else if (current == ']')
-                    {
-                        if (encounteredClosing)
-                        {
-                            _reader.Read();
-                            encounteredClosing = false;
-                            continue;
-                        }
-
-                        encounteredClosing = true;
-                    }
-                    else
-                    {
-                        if (encounteredClosing)
-                        {
-                            throw new InvalidOperationException(
-                                $"Encountered unescaped ']' token at position {_reader.Position}");
-                        }
-                    }
-
-                    builder.Append(_reader.Read());
+                    break;
                 }
 
-                if (encounteredClosing)
-                {
-                    throw new InvalidOperationException($"Encountered unescaped ']' token at position {_reader.Position}");
-                }
-
-                Current = new MarkupToken(MarkupTokenKind.Text, builder.ToString(), position);
-                return true;
+                builder.Append(_reader.Read());
             }
+
+            if (_reader.Eof)
+            {
+                throw new InvalidOperationException($"Encountered malformed markup tag at position {_reader.Position}.");
+            }
+
+            _reader.Read();
+            Current = new MarkupToken(MarkupTokenKind.Open, builder.ToString(), position);
+            return true;
+        }
+        else
+        {
+            var position = _reader.Position;
+            var builder = new StringBuilder();
+
+            var encounteredClosing = false;
+            while (!_reader.Eof)
+            {
+                current = _reader.Peek();
+                if (current == '[')
+                {
+                    break;
+                }
+                else if (current == ']')
+                {
+                    if (encounteredClosing)
+                    {
+                        _reader.Read();
+                        encounteredClosing = false;
+                        continue;
+                    }
+
+                    encounteredClosing = true;
+                }
+                else
+                {
+                    if (encounteredClosing)
+                    {
+                        throw new InvalidOperationException(
+                            $"Encountered unescaped ']' token at position {_reader.Position}");
+                    }
+                }
+
+                builder.Append(_reader.Read());
+            }
+
+            if (encounteredClosing)
+            {
+                throw new InvalidOperationException($"Encountered unescaped ']' token at position {_reader.Position}");
+            }
+
+            Current = new MarkupToken(MarkupTokenKind.Text, builder.ToString(), position);
+            return true;
         }
     }
 }

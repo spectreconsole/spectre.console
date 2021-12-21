@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 
-namespace Spectre.Console.Examples
-{
-    public sealed class User
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
+namespace Spectre.Console.Examples;
 
-        public static List<User> LoadUsers()
-        {
-            return new List<User>
+public sealed class User
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string City { get; set; }
+    public string Country { get; set; }
+
+    public static List<User> LoadUsers()
+    {
+        return new List<User>
             {
                 new User
                 {
@@ -84,6 +84,5 @@ namespace Spectre.Console.Examples
                     Country = "Ireland",
                 },
             };
-        }
     }
 }

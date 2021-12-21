@@ -5,103 +5,102 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Spectre.Console
+namespace Spectre.Console;
+
+/// <summary>
+/// Contains extension methods for <see cref="IAnsiConsole"/>.
+/// </summary>
+public static partial class AnsiConsoleExtensions
 {
-    /// <summary>
-    /// Contains extension methods for <see cref="IAnsiConsole"/>.
-    /// </summary>
-    public static partial class AnsiConsoleExtensions
+    internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, IEnumerable<string>? items = null, CancellationToken cancellationToken = default)
     {
-        internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, IEnumerable<string>? items = null, CancellationToken cancellationToken = default)
+        if (console is null)
         {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
-
-            style ??= Style.Plain;
-            var text = string.Empty;
-
-            var autocomplete = new List<string>(items ?? Enumerable.Empty<string>());
-
-            while (true)
-            {
-                var rawKey = await console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
-                if (rawKey == null)
-                {
-                    continue;
-                }
-
-                var key = rawKey.Value;
-                if (key.Key == ConsoleKey.Enter)
-                {
-                    return text;
-                }
-
-                if (key.Key == ConsoleKey.Tab && autocomplete.Count > 0)
-                {
-                    var replace = AutoComplete(autocomplete, text);
-                    if (!string.IsNullOrEmpty(replace))
-                    {
-                        // Render the suggestion
-                        console.Write("\b \b".Repeat(text.Length), style);
-                        console.Write(replace);
-                        text = replace;
-                        continue;
-                    }
-                }
-
-                if (key.Key == ConsoleKey.Backspace)
-                {
-                    if (text.Length > 0)
-                    {
-                        text = text.Substring(0, text.Length - 1);
-                        console.Write("\b \b");
-                    }
-
-                    continue;
-                }
-
-                if (!char.IsControl(key.KeyChar))
-                {
-                    text += key.KeyChar.ToString();
-                    console.Write(secret ? "*" : key.KeyChar.ToString(), style);
-                }
-            }
+            throw new ArgumentNullException(nameof(console));
         }
 
-        private static string AutoComplete(List<string> autocomplete, string text)
+        style ??= Style.Plain;
+        var text = string.Empty;
+
+        var autocomplete = new List<string>(items ?? Enumerable.Empty<string>());
+
+        while (true)
         {
-            var found = autocomplete.Find(i => i == text);
-            var replace = string.Empty;
-
-            if (found == null)
+            var rawKey = await console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
+            if (rawKey == null)
             {
-                // Get the closest match
-                var next = autocomplete.Find(i => i.StartsWith(text, true, CultureInfo.InvariantCulture));
-                if (next != null)
-                {
-                    replace = next;
-                }
-                else if (string.IsNullOrEmpty(text))
-                {
-                    // Use the first item
-                    replace = autocomplete[0];
-                }
-            }
-            else
-            {
-                // Get the next match
-                var index = autocomplete.IndexOf(found) + 1;
-                if (index >= autocomplete.Count)
-                {
-                    index = 0;
-                }
-
-                replace = autocomplete[index];
+                continue;
             }
 
-            return replace;
+            var key = rawKey.Value;
+            if (key.Key == ConsoleKey.Enter)
+            {
+                return text;
+            }
+
+            if (key.Key == ConsoleKey.Tab && autocomplete.Count > 0)
+            {
+                var replace = AutoComplete(autocomplete, text);
+                if (!string.IsNullOrEmpty(replace))
+                {
+                    // Render the suggestion
+                    console.Write("\b \b".Repeat(text.Length), style);
+                    console.Write(replace);
+                    text = replace;
+                    continue;
+                }
+            }
+
+            if (key.Key == ConsoleKey.Backspace)
+            {
+                if (text.Length > 0)
+                {
+                    text = text.Substring(0, text.Length - 1);
+                    console.Write("\b \b");
+                }
+
+                continue;
+            }
+
+            if (!char.IsControl(key.KeyChar))
+            {
+                text += key.KeyChar.ToString();
+                console.Write(secret ? "*" : key.KeyChar.ToString(), style);
+            }
         }
+    }
+
+    private static string AutoComplete(List<string> autocomplete, string text)
+    {
+        var found = autocomplete.Find(i => i == text);
+        var replace = string.Empty;
+
+        if (found == null)
+        {
+            // Get the closest match
+            var next = autocomplete.Find(i => i.StartsWith(text, true, CultureInfo.InvariantCulture));
+            if (next != null)
+            {
+                replace = next;
+            }
+            else if (string.IsNullOrEmpty(text))
+            {
+                // Use the first item
+                replace = autocomplete[0];
+            }
+        }
+        else
+        {
+            // Get the next match
+            var index = autocomplete.IndexOf(found) + 1;
+            if (index >= autocomplete.Count)
+            {
+                index = 0;
+            }
+
+            replace = autocomplete[index];
+        }
+
+        return replace;
     }
 }

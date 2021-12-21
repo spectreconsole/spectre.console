@@ -1,9 +1,8 @@
-namespace Spectre.Console.Cli
+namespace Spectre.Console.Cli;
+
+/// <summary>
+/// Represents empty settings.
+/// </summary>
+public sealed class EmptyCommandSettings : CommandSettings
 {
-    /// <summary>
-    /// Represents empty settings.
-    /// </summary>
-    public sealed class EmptyCommandSettings : CommandSettings
-    {
-    }
 }
