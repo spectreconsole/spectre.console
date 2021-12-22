@@ -1,15 +1,15 @@
-namespace Spectre.Console.Analyzer.Tests.Unit.Analyzers
-{
-    public class FavorInstanceAnsiConsoleOverStaticAnalyzerTests
-    {
-        private static readonly DiagnosticResult _expectedDiagnostics = new(
-            Descriptors.S1010_FavorInstanceAnsiConsoleOverStatic.Id,
-            DiagnosticSeverity.Info);
+namespace Spectre.Console.Analyzer.Tests.Unit.Analyzers;
 
-        [Fact]
-        public async void Should_only_warn_within_methods()
-        {
-            const string Source = @"
+public class FavorInstanceAnsiConsoleOverStaticAnalyzerTests
+{
+    private static readonly DiagnosticResult _expectedDiagnostics = new(
+        Descriptors.S1010_FavorInstanceAnsiConsoleOverStatic.Id,
+        DiagnosticSeverity.Info);
+
+    [Fact]
+    public async void Should_only_warn_within_methods()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 internal sealed class Foo
@@ -23,15 +23,15 @@ internal sealed class Foo
 }
 ";
 
-            await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
-                .VerifyAnalyzerAsync(Source)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
+            .VerifyAnalyzerAsync(Source)
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async void Instance_console_has_no_warnings()
-        {
-            const string Source = @"
+    [Fact]
+    public async void Instance_console_has_no_warnings()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 class TestClass 
@@ -44,15 +44,15 @@ class TestClass
     } 
 }";
 
-            await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
-                .VerifyAnalyzerAsync(Source)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
+            .VerifyAnalyzerAsync(Source)
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async void Static_console_with_no_instance_variables_has_no_warnings()
-        {
-            const string Source = @"
+    [Fact]
+    public async void Static_console_with_no_instance_variables_has_no_warnings()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 class TestClass 
@@ -63,15 +63,15 @@ class TestClass
     } 
 }";
 
-            await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
-                .VerifyAnalyzerAsync(Source)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
+            .VerifyAnalyzerAsync(Source)
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async void Console_Write_Has_Warning()
-        {
-            const string Source = @"
+    [Fact]
+    public async void Console_Write_Has_Warning()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 class TestClass 
@@ -85,9 +85,8 @@ class TestClass
     } 
 }";
 
-            await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
-                .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(11, 9))
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
+            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(11, 9))
+            .ConfigureAwait(false);
     }
 }

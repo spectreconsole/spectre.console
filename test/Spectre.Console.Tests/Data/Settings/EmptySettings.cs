@@ -1,6 +1,5 @@
-namespace Spectre.Console.Tests.Data
+namespace Spectre.Console.Tests.Data;
+
+public sealed class EmptySettings : CommandSettings
 {
-    public sealed class EmptySettings : CommandSettings
-    {
-    }
 }

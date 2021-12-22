@@ -1,15 +1,15 @@
-namespace Spectre.Console.Analyzer.Tests.Unit.Analyzers
-{
-    public class UseSpectreInsteadOfSystemConsoleAnalyzerTests
-    {
-        private static readonly DiagnosticResult _expectedDiagnostics = new(
-            Descriptors.S1000_UseAnsiConsoleOverSystemConsole.Id,
-            DiagnosticSeverity.Warning);
+namespace Spectre.Console.Analyzer.Tests.Unit.Analyzers;
 
-        [Fact]
-        public async void Non_configured_SystemConsole_methods_report_no_warnings()
-        {
-            const string Source = @"
+public class UseSpectreInsteadOfSystemConsoleAnalyzerTests
+{
+    private static readonly DiagnosticResult _expectedDiagnostics = new(
+        Descriptors.S1000_UseAnsiConsoleOverSystemConsole.Id,
+        DiagnosticSeverity.Warning);
+
+    [Fact]
+    public async void Non_configured_SystemConsole_methods_report_no_warnings()
+    {
+        const string Source = @"
 using System;
 
 class TestClass {
@@ -19,15 +19,15 @@ class TestClass {
     } 
 }";
 
-            await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-                .VerifyAnalyzerAsync(Source)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
+            .VerifyAnalyzerAsync(Source)
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async void Console_Write_Has_Warning()
-        {
-            const string Source = @"
+    [Fact]
+    public async void Console_Write_Has_Warning()
+    {
+        const string Source = @"
 using System;
 
 class TestClass {
@@ -37,15 +37,15 @@ class TestClass {
     } 
 }";
 
-            await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-                .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(7, 9))
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
+            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(7, 9))
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async void Console_WriteLine_Has_Warning()
-        {
-            const string Source = @"
+    [Fact]
+    public async void Console_WriteLine_Has_Warning()
+    {
+        const string Source = @"
 using System;
 
 class TestClass 
@@ -55,9 +55,8 @@ class TestClass
     }
 }";
 
-            await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-                .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(7, 9))
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
+            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(7, 9))
+            .ConfigureAwait(false);
     }
 }

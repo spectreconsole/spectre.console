@@ -1,11 +1,10 @@
-namespace Spectre.Console.Tests.Data
-{
-    public class OptionVectorSettings : CommandSettings
-    {
-        [CommandOption("--foo")]
-        public string[] Foo { get; set; }
+namespace Spectre.Console.Tests.Data;
 
-        [CommandOption("--bar")]
-        public int[] Bar { get; set; }
-    }
+public class OptionVectorSettings : CommandSettings
+{
+    [CommandOption("--foo")]
+    public string[] Foo { get; set; }
+
+    [CommandOption("--bar")]
+    public int[] Bar { get; set; }
 }

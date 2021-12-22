@@ -1,11 +1,10 @@
-namespace Spectre.Console.Tests.Data
+namespace Spectre.Console.Tests.Data;
+
+[Description("The lion command.")]
+public class LionCommand : AnimalCommand<LionSettings>
 {
-    [Description("The lion command.")]
-    public class LionCommand : AnimalCommand<LionSettings>
+    public override int Execute(CommandContext context, LionSettings settings)
     {
-        public override int Execute(CommandContext context, LionSettings settings)
-        {
-            return 0;
-        }
+        return 0;
     }
 }

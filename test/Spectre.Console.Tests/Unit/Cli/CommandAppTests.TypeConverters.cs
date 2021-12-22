@@ -1,34 +1,33 @@
-namespace Spectre.Console.Tests.Unit.Cli
+namespace Spectre.Console.Tests.Unit.Cli;
+
+public sealed partial class CommandAppTests
 {
-    public sealed partial class CommandAppTests
+    public sealed class TypeConverters
     {
-        public sealed class TypeConverters
+        [Fact]
+        public void Should_Bind_Using_Custom_Type_Converter_If_Specified()
         {
-            [Fact]
-            public void Should_Bind_Using_Custom_Type_Converter_If_Specified()
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
             {
-                // Given
-                var app = new CommandAppTester();
-                app.Configure(config =>
-                {
-                    config.PropagateExceptions();
-                    config.AddCommand<CatCommand>("cat");
-                });
+                config.PropagateExceptions();
+                config.AddCommand<CatCommand>("cat");
+            });
 
-                // When
-                var result = app.Run(new[]
-                {
-                     "cat", "--name", "Tiger",
-                     "--agility", "FOOBAR",
-                });
+            // When
+            var result = app.Run(new[]
+            {
+                    "cat", "--name", "Tiger",
+                    "--agility", "FOOBAR",
+            });
 
-                // Then
-                result.ExitCode.ShouldBe(0);
-                result.Settings.ShouldBeOfType<CatSettings>().And(cat =>
-                {
-                    cat.Agility.ShouldBe(6);
-                });
-            }
+            // Then
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<CatSettings>().And(cat =>
+            {
+                cat.Agility.ShouldBe(6);
+            });
         }
     }
 }

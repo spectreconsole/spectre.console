@@ -1,39 +1,38 @@
-namespace Spectre.Console.Tests
+namespace Spectre.Console.Tests;
+
+public static class TestConsoleExtensions
 {
-    public static class TestConsoleExtensions
+    private static readonly Regex _lineNumberRegex = new Regex(":\\d+", RegexOptions.Singleline);
+    private static readonly Regex _filenameRegex = new Regex("\\sin\\s.*cs:nn", RegexOptions.Multiline);
+
+    public static string WriteNormalizedException(this TestConsole console, Exception ex, ExceptionFormats formats = ExceptionFormats.Default)
     {
-        private static readonly Regex _lineNumberRegex = new Regex(":\\d+", RegexOptions.Singleline);
-        private static readonly Regex _filenameRegex = new Regex("\\sin\\s.*cs:nn", RegexOptions.Multiline);
-
-        public static string WriteNormalizedException(this TestConsole console, Exception ex, ExceptionFormats formats = ExceptionFormats.Default)
+        if (!string.IsNullOrWhiteSpace(console.Output))
         {
-            if (!string.IsNullOrWhiteSpace(console.Output))
-            {
-                throw new InvalidOperationException("Output buffer is not empty.");
-            }
-
-            console.WriteException(ex, formats);
-            return string.Join("\n", NormalizeStackTrace(console.Output)
-                .NormalizeLineEndings()
-                .Split(new char[] { '\n' })
-                .Select(line => line.TrimEnd()));
+            throw new InvalidOperationException("Output buffer is not empty.");
         }
 
-        public static string NormalizeStackTrace(string text)
+        console.WriteException(ex, formats);
+        return string.Join("\n", NormalizeStackTrace(console.Output)
+            .NormalizeLineEndings()
+            .Split(new char[] { '\n' })
+            .Select(line => line.TrimEnd()));
+    }
+
+    public static string NormalizeStackTrace(string text)
+    {
+        text = _lineNumberRegex.Replace(text, match =>
         {
-            text = _lineNumberRegex.Replace(text, match =>
-            {
-                return ":nn";
-            });
+            return ":nn";
+        });
 
-            return _filenameRegex.Replace(text, match =>
-            {
-                var value = match.Value;
-                var index = value.LastIndexOfAny(new[] { '\\', '/' });
-                var filename = value.Substring(index + 1, value.Length - index - 1);
+        return _filenameRegex.Replace(text, match =>
+        {
+            var value = match.Value;
+            var index = value.LastIndexOfAny(new[] { '\\', '/' });
+            var filename = value.Substring(index + 1, value.Length - index - 1);
 
-                return $" in /xyz/{filename}";
-            });
-        }
+            return $" in /xyz/{filename}";
+        });
     }
 }

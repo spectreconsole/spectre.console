@@ -1,11 +1,10 @@
-namespace Spectre.Console.Tests
+namespace Spectre.Console.Tests;
+
+public static class VerifyConfiguration
 {
-    public static class VerifyConfiguration
+    [ModuleInitializer]
+    public static void Init()
     {
-        [ModuleInitializer]
-        public static void Init()
-        {
-            VerifierSettings.DerivePathInfo(Expectations.Initialize);
-        }
+        VerifierSettings.DerivePathInfo(Expectations.Initialize);
     }
 }

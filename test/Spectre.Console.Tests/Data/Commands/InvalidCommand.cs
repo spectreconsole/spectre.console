@@ -1,10 +1,9 @@
-namespace Spectre.Console.Tests.Data
+namespace Spectre.Console.Tests.Data;
+
+public sealed class InvalidCommand : Command<InvalidSettings>
 {
-    public sealed class InvalidCommand : Command<InvalidSettings>
+    public override int Execute(CommandContext context, InvalidSettings settings)
     {
-        public override int Execute(CommandContext context, InvalidSettings settings)
-        {
-            return 0;
-        }
+        return 0;
     }
 }

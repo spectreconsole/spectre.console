@@ -1,9 +1,8 @@
 #if !NET5_0_OR_GREATER
-namespace System.Runtime.CompilerServices
+namespace System.Runtime.CompilerServices;
+
+[AttributeUsage(AttributeTargets.Method, Inherited = false)]
+public sealed class ModuleInitializerAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
-    public sealed class ModuleInitializerAttribute : Attribute
-    {
-    }
 }
 #endif

@@ -1,53 +1,52 @@
-namespace Spectre.Console.Testing
+namespace Spectre.Console.Testing;
+
+public sealed class FakeTypeRegistrar : ITypeRegistrar
 {
-    public sealed class FakeTypeRegistrar : ITypeRegistrar
+    public Dictionary<Type, List<Type>> Registrations { get; }
+    public Dictionary<Type, List<object>> Instances { get; }
+    public Func<Dictionary<Type, List<Type>>, Dictionary<Type, List<object>>, ITypeResolver> TypeResolverFactory { get; set; }
+
+    public FakeTypeRegistrar()
     {
-        public Dictionary<Type, List<Type>> Registrations { get; }
-        public Dictionary<Type, List<object>> Instances { get; }
-        public Func<Dictionary<Type, List<Type>>, Dictionary<Type, List<object>>, ITypeResolver> TypeResolverFactory { get; set; }
+        Registrations = new Dictionary<Type, List<Type>>();
+        Instances = new Dictionary<Type, List<object>>();
+    }
 
-        public FakeTypeRegistrar()
+    public void Register(Type service, Type implementation)
+    {
+        if (!Registrations.ContainsKey(service))
         {
-            Registrations = new Dictionary<Type, List<Type>>();
-            Instances = new Dictionary<Type, List<object>>();
+            Registrations.Add(service, new List<Type> { implementation });
+        }
+        else
+        {
+            Registrations[service].Add(implementation);
+        }
+    }
+
+    public void RegisterInstance(Type service, object implementation)
+    {
+        if (!Instances.ContainsKey(service))
+        {
+            Instances.Add(service, new List<object> { implementation });
+        }
+    }
+
+    public void RegisterLazy(Type service, Func<object> factory)
+    {
+        if (factory is null)
+        {
+            throw new ArgumentNullException(nameof(factory));
         }
 
-        public void Register(Type service, Type implementation)
+        if (!Instances.ContainsKey(service))
         {
-            if (!Registrations.ContainsKey(service))
-            {
-                Registrations.Add(service, new List<Type> { implementation });
-            }
-            else
-            {
-                Registrations[service].Add(implementation);
-            }
+            Instances.Add(service, new List<object> { factory() });
         }
+    }
 
-        public void RegisterInstance(Type service, object implementation)
-        {
-            if (!Instances.ContainsKey(service))
-            {
-                Instances.Add(service, new List<object> { implementation });
-            }
-        }
-
-        public void RegisterLazy(Type service, Func<object> factory)
-        {
-            if (factory is null)
-            {
-                throw new ArgumentNullException(nameof(factory));
-            }
-
-            if (!Instances.ContainsKey(service))
-            {
-                Instances.Add(service, new List<object> { factory() });
-            }
-        }
-
-        public ITypeResolver Build()
-        {
-            return TypeResolverFactory?.Invoke(Registrations, Instances);
-        }
+    public ITypeResolver Build()
+    {
+        return TypeResolverFactory?.Invoke(Registrations, Instances);
     }
 }

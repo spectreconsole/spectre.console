@@ -1,11 +1,10 @@
-namespace Spectre.Console.Tests.Data
+namespace Spectre.Console.Tests.Data;
+
+public class CatCommand : AnimalCommand<CatSettings>
 {
-    public class CatCommand : AnimalCommand<CatSettings>
+    public override int Execute(CommandContext context, CatSettings settings)
     {
-        public override int Execute(CommandContext context, CatSettings settings)
-        {
-            DumpSettings(context, settings);
-            return 0;
-        }
+        DumpSettings(context, settings);
+        return 0;
     }
 }

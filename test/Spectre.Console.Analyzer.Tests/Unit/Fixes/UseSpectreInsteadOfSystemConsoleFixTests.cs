@@ -1,15 +1,15 @@
-namespace Spectre.Console.Analyzer.Tests.Unit.Fixes
-{
-    public class UseSpectreInsteadOfSystemConsoleFixTests
-    {
-        private static readonly DiagnosticResult _expectedDiagnostic = new(
-            Descriptors.S1000_UseAnsiConsoleOverSystemConsole.Id,
-            DiagnosticSeverity.Warning);
+namespace Spectre.Console.Analyzer.Tests.Unit.Fixes;
 
-        [Fact]
-        public async Task SystemConsole_replaced_with_AnsiConsole()
-        {
-            const string Source = @"
+public class UseSpectreInsteadOfSystemConsoleFixTests
+{
+    private static readonly DiagnosticResult _expectedDiagnostic = new(
+        Descriptors.S1000_UseAnsiConsoleOverSystemConsole.Id,
+        DiagnosticSeverity.Warning);
+
+    [Fact]
+    public async Task SystemConsole_replaced_with_AnsiConsole()
+    {
+        const string Source = @"
 using System;
 
 class TestClass 
@@ -20,7 +20,7 @@ class TestClass
     }
 }";
 
-            const string FixedSource = @"
+        const string FixedSource = @"
 using System;
 using Spectre.Console;
 
@@ -32,15 +32,15 @@ class TestClass
     }
 }";
 
-            await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-                .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(8, 9), FixedSource)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(8, 9), FixedSource)
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task SystemConsole_replaced_with_imported_AnsiConsole()
-        {
-            const string Source = @"
+    [Fact]
+    public async Task SystemConsole_replaced_with_imported_AnsiConsole()
+    {
+        const string Source = @"
 using System;
 
 class TestClass 
@@ -51,7 +51,7 @@ class TestClass
     }
 }";
 
-            const string FixedSource = @"
+        const string FixedSource = @"
 using System;
 using Spectre.Console;
 
@@ -63,15 +63,15 @@ class TestClass
     }
 }";
 
-            await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-                .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(8, 9), FixedSource)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(8, 9), FixedSource)
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task SystemConsole_replaced_with_field_AnsiConsole()
-        {
-            const string Source = @"
+    [Fact]
+    public async Task SystemConsole_replaced_with_field_AnsiConsole()
+    {
+        const string Source = @"
 using System;
 using Spectre.Console;
 
@@ -85,7 +85,7 @@ class TestClass
     }
 }";
 
-            const string FixedSource = @"
+        const string FixedSource = @"
 using System;
 using Spectre.Console;
 
@@ -99,15 +99,15 @@ class TestClass
     }
 }";
 
-            await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-                .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource)
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task SystemConsole_replaced_with_static_field_AnsiConsole()
-        {
-            const string Source = @"
+    [Fact]
+    public async Task SystemConsole_replaced_with_static_field_AnsiConsole()
+    {
+        const string Source = @"
 using System;
 using Spectre.Console;
 
@@ -121,7 +121,7 @@ class TestClass
     }
 }";
 
-            const string FixedSource = @"
+        const string FixedSource = @"
 using System;
 using Spectre.Console;
 
@@ -135,9 +135,8 @@ class TestClass
     }
 }";
 
-            await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-                .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource)
+            .ConfigureAwait(false);
     }
 }

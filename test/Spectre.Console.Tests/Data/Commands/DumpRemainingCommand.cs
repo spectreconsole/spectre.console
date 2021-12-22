@@ -1,35 +1,34 @@
-namespace Spectre.Console.Tests.Data
+namespace Spectre.Console.Tests.Data;
+
+public sealed class DumpRemainingCommand : Command<EmptyCommandSettings>
 {
-    public sealed class DumpRemainingCommand : Command<EmptyCommandSettings>
+    private readonly IAnsiConsole _console;
+
+    public DumpRemainingCommand(IAnsiConsole console)
     {
-        private readonly IAnsiConsole _console;
+        _console = console;
+    }
 
-        public DumpRemainingCommand(IAnsiConsole console)
+    public override int Execute([NotNull] CommandContext context, [NotNull] EmptyCommandSettings settings)
+    {
+        if (context.Remaining.Raw.Count > 0)
         {
-            _console = console;
+            _console.WriteLine("# Raw");
+            foreach (var item in context.Remaining.Raw)
+            {
+                _console.WriteLine(item);
+            }
         }
 
-        public override int Execute([NotNull] CommandContext context, [NotNull] EmptyCommandSettings settings)
+        if (context.Remaining.Parsed.Count > 0)
         {
-            if (context.Remaining.Raw.Count > 0)
+            _console.WriteLine("# Parsed");
+            foreach (var item in context.Remaining.Parsed)
             {
-                _console.WriteLine("# Raw");
-                foreach (var item in context.Remaining.Raw)
-                {
-                    _console.WriteLine(item);
-                }
+                _console.WriteLine(string.Format("{0}={1}", item.Key, string.Join(",", item.Select(x => x))));
             }
-
-            if (context.Remaining.Parsed.Count > 0)
-            {
-                _console.WriteLine("# Parsed");
-                foreach (var item in context.Remaining.Parsed)
-                {
-                    _console.WriteLine(string.Format("{0}={1}", item.Key, string.Join(",", item.Select(x => x))));
-                }
-            }
-
-            return 0;
         }
+
+        return 0;
     }
 }

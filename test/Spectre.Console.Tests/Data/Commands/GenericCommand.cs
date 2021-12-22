@@ -1,11 +1,10 @@
-namespace Spectre.Console.Tests.Data
+namespace Spectre.Console.Tests.Data;
+
+public sealed class GenericCommand<TSettings> : Command<TSettings>
+    where TSettings : CommandSettings
 {
-    public sealed class GenericCommand<TSettings> : Command<TSettings>
-        where TSettings : CommandSettings
+    public override int Execute(CommandContext context, TSettings settings)
     {
-        public override int Execute(CommandContext context, TSettings settings)
-        {
-            return 0;
-        }
+        return 0;
     }
 }

@@ -1,10 +1,9 @@
-namespace Spectre.Console.Tests.Data
+namespace Spectre.Console.Tests.Data;
+
+public sealed class EmptyCommand : Command<EmptyCommandSettings>
 {
-    public sealed class EmptyCommand : Command<EmptyCommandSettings>
+    public override int Execute(CommandContext context, EmptyCommandSettings settings)
     {
-        public override int Execute(CommandContext context, EmptyCommandSettings settings)
-        {
-            return 0;
-        }
+        return 0;
     }
 }

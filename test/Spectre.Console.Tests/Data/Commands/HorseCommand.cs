@@ -1,12 +1,11 @@
-namespace Spectre.Console.Tests.Data
+namespace Spectre.Console.Tests.Data;
+
+[Description("The horse command.")]
+public class HorseCommand : AnimalCommand<MammalSettings>
 {
-    [Description("The horse command.")]
-    public class HorseCommand : AnimalCommand<MammalSettings>
+    public override int Execute(CommandContext context, MammalSettings settings)
     {
-        public override int Execute(CommandContext context, MammalSettings settings)
-        {
-            DumpSettings(context, settings);
-            return 0;
-        }
+        DumpSettings(context, settings);
+        return 0;
     }
 }

@@ -1,8 +1,7 @@
-namespace Spectre.Console.Tests.Data
+namespace Spectre.Console.Tests.Data;
+
+public sealed class StringOptionSettings : CommandSettings
 {
-    public sealed class StringOptionSettings : CommandSettings
-    {
-        [CommandOption("-f|--foo")]
-        public string Foo { get; set; }
-    }
+    [CommandOption("-f|--foo")]
+    public string Foo { get; set; }
 }
