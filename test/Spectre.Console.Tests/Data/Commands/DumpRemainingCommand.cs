@@ -1,7 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Spectre.Console.Cli;
-
 namespace Spectre.Console.Tests.Data
 {
     public sealed class DumpRemainingCommand : Command<EmptyCommandSettings>

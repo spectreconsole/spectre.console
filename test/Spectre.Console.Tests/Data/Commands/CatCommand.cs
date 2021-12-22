@@ -1,5 +1,3 @@
-using Spectre.Console.Cli;
-
 namespace Spectre.Console.Tests.Data
 {
     public class CatCommand : AnimalCommand<CatSettings>

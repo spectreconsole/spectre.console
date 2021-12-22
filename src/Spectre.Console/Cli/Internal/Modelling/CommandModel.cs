@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-
 namespace Spectre.Console.Cli;
 
 internal sealed class CommandModel : ICommandContainer

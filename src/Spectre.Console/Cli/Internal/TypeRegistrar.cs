@@ -1,5 +1,3 @@
-using System;
-
 namespace Spectre.Console.Cli;
 
 internal sealed class TypeRegistrar : ITypeRegistrarFrontend

@@ -1,7 +1,3 @@
-using System;
-using System.Globalization;
-using System.Text;
-
 namespace Spectre.Console;
 
 internal static class StringBuilderExtensions

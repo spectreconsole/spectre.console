@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-using Spectre.Console.Cli;
 using SystemConsole = System.Console;
 
 namespace Spectre.Console.Tests.Data

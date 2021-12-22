@@ -1,8 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using Spectre.Console.Enrichment;
-using Spectre.Console.Internal;
-
 namespace Spectre.Console;
 
 /// <summary>

@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Spectre.Console.Rendering;
-
 namespace Spectre.Console.Cli;
 
 /// <summary>

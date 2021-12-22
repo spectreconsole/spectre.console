@@ -1,5 +1,3 @@
-using Wcwidth;
-
 namespace Spectre.Console;
 
 internal static class Cell

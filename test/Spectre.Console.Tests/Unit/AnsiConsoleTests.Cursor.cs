@@ -1,7 +1,3 @@
-using Shouldly;
-using Spectre.Console.Testing;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit
 {
     public partial class AnsiConsoleTests

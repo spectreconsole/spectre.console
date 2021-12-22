@@ -1,5 +1,3 @@
-using System.Collections.Concurrent;
-using Microsoft.CodeAnalysis;
 using static Microsoft.CodeAnalysis.DiagnosticSeverity;
 using static Spectre.Console.Analyzer.Descriptors.Category;
 

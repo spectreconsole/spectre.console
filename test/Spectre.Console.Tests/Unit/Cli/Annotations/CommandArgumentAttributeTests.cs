@@ -1,7 +1,3 @@
-using Shouldly;
-using Spectre.Console.Cli;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit.Cli.Annotations
 {
     public sealed partial class CommandArgumentAttributeTests

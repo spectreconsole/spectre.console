@@ -1,12 +1,3 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Shouldly;
-using Spectre.Console.Testing;
-using Spectre.Verify.Extensions;
-using VerifyXunit;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
@@ -262,6 +253,7 @@ namespace Spectre.Console.Tests.Unit
             {
                 task = ctx.AddTask("foo");
                 task.Increment(double.Epsilon);
+
                 // Make sure that at least one millisecond has elapsed between the increments else the RemainingTime is null
                 // when the last timestamp is equal to the first timestamp of the samples.
                 Thread.Sleep(1);

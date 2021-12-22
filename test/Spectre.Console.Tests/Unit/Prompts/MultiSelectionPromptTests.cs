@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using Shouldly;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit
 {
     public sealed class MultiSelectionPromptTests
@@ -22,7 +16,7 @@ namespace Spectre.Console.Tests.Unit
 
                 public int GetHashCode([DisallowNull] CustomItem obj)
                 {
-                    throw new NotImplementedException();
+                    throw new NotSupportedException();
                 }
             }
         }

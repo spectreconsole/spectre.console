@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Spectre.Console.Cli;
-
 namespace Spectre.Console.Testing
 {
     public sealed class FakeTypeResolver : ITypeResolver

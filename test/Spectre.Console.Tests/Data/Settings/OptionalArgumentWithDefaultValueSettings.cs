@@ -1,7 +1,3 @@
-using System;
-using System.ComponentModel;
-using Spectre.Console.Cli;
-
 namespace Spectre.Console.Tests.Data
 {
     public sealed class OptionalArgumentWithDefaultValueSettings : CommandSettings

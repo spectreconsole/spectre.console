@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-
 namespace Spectre.Console;
 
 internal sealed class StringBuffer : IDisposable

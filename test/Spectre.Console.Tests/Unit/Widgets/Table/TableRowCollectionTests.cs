@@ -1,11 +1,3 @@
-using System;
-using System.Threading.Tasks;
-using Shouldly;
-using Spectre.Console.Testing;
-using Spectre.Verify.Extensions;
-using VerifyXunit;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit
 {
     [ExpectationPath("Widgets/Table/Rows")]
@@ -284,7 +276,6 @@ namespace Spectre.Console.Tests.Unit
                 table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
                 table.UpdateCell(2, 2, "5");
 
-
                 // When
                 var result = Record.Exception(() => table.UpdateCell(5, 2, "5"));
 
@@ -306,7 +297,6 @@ namespace Spectre.Console.Tests.Unit
                 table.Rows.Add(new[] { new Text("2") });
                 table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
                 table.UpdateCell(2, 2, "5");
-
 
                 // When
                 var result = Record.Exception(() => table.UpdateCell(2, 5, "5"));
@@ -330,7 +320,6 @@ namespace Spectre.Console.Tests.Unit
                 table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
                 table.UpdateCell(2, 2, "5");
 
-
                 // When
                 var result = Record.Exception(() => table.UpdateCell(-1, 2, "5"));
 
@@ -352,7 +341,6 @@ namespace Spectre.Console.Tests.Unit
                 table.Rows.Add(new[] { new Text("2") });
                 table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
                 table.UpdateCell(2, 2, "5");
-
 
                 // When
                 var result = Record.Exception(() => table.UpdateCell(2, -1, "5"));

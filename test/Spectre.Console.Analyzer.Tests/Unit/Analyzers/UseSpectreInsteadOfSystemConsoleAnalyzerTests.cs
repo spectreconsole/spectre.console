@@ -1,7 +1,3 @@
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Testing;
-using Xunit;
-
 namespace Spectre.Console.Analyzer.Tests.Unit.Analyzers
 {
     public class UseSpectreInsteadOfSystemConsoleAnalyzerTests

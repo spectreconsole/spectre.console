@@ -1,7 +1,3 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Spectre.Console;
 
 internal sealed class DefaultInput : IAnsiConsoleInput

@@ -1,8 +1,3 @@
-using System;
-using System.Linq;
-using System.Text;
-using Spectre.Console.Rendering;
-
 namespace Spectre.Console;
 
 internal static class ExceptionFormatter

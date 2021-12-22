@@ -1,5 +1,3 @@
-using System;
-
 namespace Spectre.Console.Tests.Data
 {
     public static class TestExceptions

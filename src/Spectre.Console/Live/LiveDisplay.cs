@@ -1,7 +1,3 @@
-using System;
-using System.Threading.Tasks;
-using Spectre.Console.Rendering;
-
 namespace Spectre.Console;
 
 /// <summary>

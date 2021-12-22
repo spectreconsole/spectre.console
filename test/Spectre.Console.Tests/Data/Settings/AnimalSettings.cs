@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using Spectre.Console.Cli;
-
 namespace Spectre.Console.Tests.Data
 {
     public abstract class AnimalSettings : CommandSettings

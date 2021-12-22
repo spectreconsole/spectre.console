@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Net;
-
 namespace Spectre.Console;
 
 internal sealed class StackFrameInfo

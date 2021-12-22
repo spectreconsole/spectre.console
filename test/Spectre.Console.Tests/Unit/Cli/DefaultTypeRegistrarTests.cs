@@ -1,7 +1,3 @@
-using Spectre.Console.Cli;
-using Spectre.Console.Testing;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit.Cli
 {
     public sealed class DefaultTypeRegistrarTests

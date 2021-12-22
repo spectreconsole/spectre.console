@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Text;
-
 namespace Spectre.Console.Cli;
 
 internal static class TemplateTokenizer

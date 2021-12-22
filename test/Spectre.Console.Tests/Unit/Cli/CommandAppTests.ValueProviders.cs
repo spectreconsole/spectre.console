@@ -1,11 +1,3 @@
-using System.ComponentModel;
-using System.Globalization;
-using Shouldly;
-using Spectre.Console.Cli;
-using Spectre.Console.Testing;
-using Spectre.Console.Tests.Data;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit.Cli
 {
     public sealed partial class CommandAppTests

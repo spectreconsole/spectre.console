@@ -1,6 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-using Spectre.Console.Cli;
-
 namespace Spectre.Console.Tests.Data
 {
     public sealed class NoDescriptionCommand : Command<EmptyCommandSettings>

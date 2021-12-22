@@ -1,7 +1,3 @@
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
-
 namespace Spectre.Console.Cli;
 
 /// <summary>

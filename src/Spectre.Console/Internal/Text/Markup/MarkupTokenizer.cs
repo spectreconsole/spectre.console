@@ -1,6 +1,3 @@
-using System;
-using System.Text;
-
 namespace Spectre.Console;
 
 internal sealed class MarkupTokenizer : IDisposable

@@ -1,13 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Spectre.Console.Testing;
-using Spectre.Verify.Extensions;
-using VerifyXunit;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]
@@ -95,7 +85,6 @@ namespace Spectre.Console.Tests.Unit
 
                 // When
                 table.InsertRow(1, "3", "3-2");
-
 
                 // Then
                 console.Write(table);

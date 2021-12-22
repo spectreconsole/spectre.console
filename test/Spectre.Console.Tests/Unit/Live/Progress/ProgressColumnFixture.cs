@@ -1,7 +1,3 @@
-using System;
-using Spectre.Console.Rendering;
-using Spectre.Console.Testing;
-
 namespace Spectre.Console.Tests.Unit
 {
     public sealed class ProgressColumnFixture<T>

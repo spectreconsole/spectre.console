@@ -1,10 +1,3 @@
-using System.Threading.Tasks;
-using Shouldly;
-using Spectre.Console.Testing;
-using Spectre.Verify.Extensions;
-using VerifyXunit;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit
 {
     [UsesVerify]

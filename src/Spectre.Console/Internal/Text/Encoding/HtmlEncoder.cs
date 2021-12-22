@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Spectre.Console.Rendering;
-
 namespace Spectre.Console.Internal;
 
 internal sealed class HtmlEncoder : IAnsiConsoleEncoder

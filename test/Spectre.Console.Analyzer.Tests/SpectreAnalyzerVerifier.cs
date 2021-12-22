@@ -1,14 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp.Testing;
-using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Testing;
-using Microsoft.CodeAnalysis.Testing.Verifiers;
-
 namespace Spectre.Console.Analyzer.Tests
 {
     public static class SpectreAnalyzerVerifier<TAnalyzer>
@@ -70,17 +59,6 @@ namespace Spectre.Console.Analyzer.Tests
                     }
                 }
             }
-        }
-    }
-
-    internal static class CodeAnalyzerHelper
-    {
-        internal static ReferenceAssemblies CurrentSpectre { get; }
-
-        static CodeAnalyzerHelper()
-        {
-            CurrentSpectre = ReferenceAssemblies.Net.Net50.AddAssemblies(
-                ImmutableArray.Create(typeof(AnsiConsole).Assembly.Location.Replace(".dll", string.Empty)));
         }
     }
 }

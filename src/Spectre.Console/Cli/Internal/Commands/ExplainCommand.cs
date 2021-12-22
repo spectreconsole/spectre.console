@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Spectre.Console.Rendering;
-
 namespace Spectre.Console.Cli;
 
 [Description("Displays diagnostics about CLI configurations")]

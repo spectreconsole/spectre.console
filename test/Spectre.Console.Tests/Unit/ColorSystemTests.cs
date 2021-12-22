@@ -1,6 +1,3 @@
-using Shouldly;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit
 {
     public sealed class ColorSystemTests

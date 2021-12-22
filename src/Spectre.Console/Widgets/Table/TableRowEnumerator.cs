@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 namespace Spectre.Console;
 
 internal sealed class TableRowEnumerator : IEnumerator<TableRow>

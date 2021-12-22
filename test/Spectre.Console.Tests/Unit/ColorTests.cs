@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Shouldly;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit
 {
     public sealed class ColorTests

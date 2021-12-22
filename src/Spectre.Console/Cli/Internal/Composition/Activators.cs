@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-
 namespace Spectre.Console.Cli;
 
 internal abstract class ComponentActivator

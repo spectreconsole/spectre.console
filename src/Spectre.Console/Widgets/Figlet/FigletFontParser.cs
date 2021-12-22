@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-
 namespace Spectre.Console;
 
 internal static class FigletFontParser

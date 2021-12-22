@@ -1,8 +1,3 @@
-using Shouldly;
-using Spectre.Console.Cli;
-using Spectre.Console.Testing;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit.Cli
 {
     public sealed partial class CommandAppTests

@@ -1,12 +1,3 @@
-using System.Threading.Tasks;
-using Shouldly;
-using Spectre.Console.Cli;
-using Spectre.Console.Testing;
-using Spectre.Console.Tests.Data;
-using Spectre.Verify.Extensions;
-using VerifyXunit;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit.Cli.Annotations
 {
     [ExpectationPath("Cli/Arguments")]

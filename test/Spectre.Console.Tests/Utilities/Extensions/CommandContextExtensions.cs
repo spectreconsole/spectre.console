@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using Shouldly;
-
 namespace Spectre.Console.Cli
 {
     public static class CommandContextExtensions

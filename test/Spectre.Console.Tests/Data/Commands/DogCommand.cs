@@ -1,7 +1,3 @@
-using System.ComponentModel;
-using System.Linq;
-using Spectre.Console.Cli;
-
 namespace Spectre.Console.Tests.Data
 {
     [Description("The dog command.")]

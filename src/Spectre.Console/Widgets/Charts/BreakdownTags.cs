@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Spectre.Console.Rendering;
-
 namespace Spectre.Console;
 
 internal sealed class BreakdownTags : Renderable

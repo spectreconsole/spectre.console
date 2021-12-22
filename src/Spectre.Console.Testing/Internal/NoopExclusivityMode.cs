@@ -1,6 +1,3 @@
-using System;
-using System.Threading.Tasks;
-
 namespace Spectre.Console.Testing;
 
 internal sealed class NoopExclusivityMode : IExclusivityMode

@@ -1,5 +1,3 @@
-using System.Reflection;
-
 namespace Spectre.Console.Cli;
 
 internal static class VersionHelper

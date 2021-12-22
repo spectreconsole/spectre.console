@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using System.Globalization;
-
 namespace Spectre.Console.Tests.Data
 {
     public sealed class CatAgilityConverter : TypeConverter

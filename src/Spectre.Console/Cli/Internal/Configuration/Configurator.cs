@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using Spectre.Console.Cli.Unsafe;
-
 namespace Spectre.Console.Cli;
 
 internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfiguration

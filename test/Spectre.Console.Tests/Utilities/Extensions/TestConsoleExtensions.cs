@@ -1,8 +1,3 @@
-using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using Spectre.Console.Testing;
-
 namespace Spectre.Console.Tests
 {
     public static class TestConsoleExtensions

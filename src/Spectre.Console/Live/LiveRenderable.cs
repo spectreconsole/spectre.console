@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using static Spectre.Console.AnsiSequences;
 
 namespace Spectre.Console.Rendering;

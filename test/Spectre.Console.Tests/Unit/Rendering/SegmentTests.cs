@@ -1,8 +1,3 @@
-using Shouldly;
-using Spectre.Console.Rendering;
-using VerifyXunit;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit
 {
     public sealed class SegmentTests

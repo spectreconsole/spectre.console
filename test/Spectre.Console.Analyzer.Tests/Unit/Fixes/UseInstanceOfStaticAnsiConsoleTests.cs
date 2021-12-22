@@ -1,8 +1,3 @@
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Testing;
-using Xunit;
-
 namespace Spectre.Console.Analyzer.Tests.Unit.Fixes
 {
     public class UseInstanceOfStaticAnsiConsoleTests

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Spectre.Console.Rendering;
 
 internal readonly struct SegmentShape

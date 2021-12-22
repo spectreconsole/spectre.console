@@ -1,6 +1,3 @@
-using System;
-using System.ComponentModel;
-
 namespace Spectre.Console;
 
 /// <summary>

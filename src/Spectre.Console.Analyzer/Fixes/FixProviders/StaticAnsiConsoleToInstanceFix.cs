@@ -1,11 +1,3 @@
-using System.Collections.Immutable;
-using System.Composition;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Spectre.Console.Analyzer.CodeActions;
-
 namespace Spectre.Console.Analyzer.FixProviders;
 
 /// <summary>

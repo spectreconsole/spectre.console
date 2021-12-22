@@ -1,6 +1,3 @@
-using System;
-using Spectre.Console.Cli;
-
 namespace Spectre.Console.Tests.Data
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]

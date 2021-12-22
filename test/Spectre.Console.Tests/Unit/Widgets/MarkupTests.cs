@@ -1,8 +1,3 @@
-using System;
-using Shouldly;
-using Spectre.Console.Testing;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit
 {
     public sealed class MarkupTests
