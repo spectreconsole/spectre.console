@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Spectre.Console.Cli;
 
 internal static class CommandInfoExtensions

@@ -1,17 +1,13 @@
-using System;
-using Spectre.Console.Cli;
+namespace Spectre.Console.Tests.Data;
 
-namespace Spectre.Console.Tests.Data
+public sealed class ThrowingCommand : Command<ThrowingCommandSettings>
 {
-    public sealed class ThrowingCommand : Command<ThrowingCommandSettings>
+    public override int Execute(CommandContext context, ThrowingCommandSettings settings)
     {
-        public override int Execute(CommandContext context, ThrowingCommandSettings settings)
-        {
-            throw new InvalidOperationException("W00t?");
-        }
+        throw new InvalidOperationException("W00t?");
     }
+}
 
-    public sealed class ThrowingCommandSettings : CommandSettings
-    {
-    }
+public sealed class ThrowingCommandSettings : CommandSettings
+{
 }

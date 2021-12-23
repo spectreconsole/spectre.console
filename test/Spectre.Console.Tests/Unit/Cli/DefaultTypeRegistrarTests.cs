@@ -1,16 +1,11 @@
-using Spectre.Console.Cli;
-using Spectre.Console.Testing;
-using Xunit;
+namespace Spectre.Console.Tests.Unit.Cli;
 
-namespace Spectre.Console.Tests.Unit.Cli
+public sealed class DefaultTypeRegistrarTests
 {
-    public sealed class DefaultTypeRegistrarTests
+    [Fact]
+    public void Should_Pass_Base_Registrar_Tests()
     {
-        [Fact]
-        public void Should_Pass_Base_Registrar_Tests()
-        {
-            var harness = new TypeRegistrarBaseTests(() => new DefaultTypeRegistrar());
-            harness.RunAllTests();
-        }
+        var harness = new TypeRegistrarBaseTests(() => new DefaultTypeRegistrar());
+        harness.RunAllTests();
     }
 }

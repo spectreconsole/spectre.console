@@ -1,9 +1,3 @@
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Spectre.Console.Rendering;
-
 namespace Spectre.Console;
 
 internal sealed class ListPrompt<T>

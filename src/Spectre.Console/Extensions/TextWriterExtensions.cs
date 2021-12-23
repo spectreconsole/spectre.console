@@ -1,5 +1,3 @@
-using System.IO;
-
 namespace Spectre.Console;
 
 internal static class TextWriterExtensions

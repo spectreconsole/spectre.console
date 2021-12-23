@@ -1,7 +1,3 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-
 namespace Spectre.Console.Cli;
 
 internal static class ConfigurationHelper

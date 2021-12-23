@@ -1,5 +1,3 @@
-using System;
-using Spectre.Console.Rendering;
 using static Spectre.Console.AnsiSequences;
 
 namespace Spectre.Console;

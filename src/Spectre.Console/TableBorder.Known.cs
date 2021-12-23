@@ -1,6 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-using Spectre.Console.Rendering;
-
 namespace Spectre.Console;
 
 /// <summary>

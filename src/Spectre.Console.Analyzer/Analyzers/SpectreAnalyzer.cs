@@ -1,5 +1,3 @@
-using Microsoft.CodeAnalysis.Diagnostics;
-
 namespace Spectre.Console.Analyzer;
 
 /// <summary>

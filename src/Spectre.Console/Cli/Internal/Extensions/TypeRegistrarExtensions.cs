@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-
 namespace Spectre.Console.Cli;
 
 internal static class TypeRegistrarExtensions

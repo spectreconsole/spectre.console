@@ -1,6 +1,3 @@
-using System.Diagnostics;
-using System.Threading.Tasks;
-
 namespace Spectre.Console.Cli;
 
 /// <summary>

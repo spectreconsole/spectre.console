@@ -1,5 +1,3 @@
-using System;
-
 namespace Spectre.Console;
 
 internal readonly struct ProgressSample

@@ -1,9 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-
 namespace Spectre.Console.Cli;
 
 [SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes")]

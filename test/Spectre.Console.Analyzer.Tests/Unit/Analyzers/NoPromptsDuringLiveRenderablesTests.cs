@@ -1,20 +1,15 @@
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Testing;
-using Xunit;
+namespace Spectre.Console.Analyzer.Tests.Unit.Analyzers;
 
-namespace Spectre.Console.Analyzer.Tests.Unit.Analyzers
+public class NoPromptsDuringLiveRenderablesTests
 {
-    public class NoPromptsDuringLiveRenderablesTests
-    {
-        private static readonly DiagnosticResult _expectedDiagnostics = new(
-            Descriptors.S1021_AvoidPromptCallsDuringLiveRenderables.Id,
-            DiagnosticSeverity.Warning);
+    private static readonly DiagnosticResult _expectedDiagnostics = new(
+        Descriptors.S1021_AvoidPromptCallsDuringLiveRenderables.Id,
+        DiagnosticSeverity.Warning);
 
-        [Fact]
-        public async Task Prompt_out_of_progress_does_not_warn()
-        {
-            const string Source = @"
+    [Fact]
+    public async Task Prompt_out_of_progress_does_not_warn()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 class TestClass 
@@ -25,15 +20,15 @@ class TestClass
     }
 }";
 
-            await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
-                .VerifyAnalyzerAsync(Source)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
+            .VerifyAnalyzerAsync(Source)
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task Instance_variables_warn()
-        {
-            const string Source = @"
+    [Fact]
+    public async Task Instance_variables_warn()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 class TestClass 
@@ -49,15 +44,15 @@ class TestClass
     }
 }";
 
-            await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
-                .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(12, 26))
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
+            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(12, 26))
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task Prompt_in_progress_warns()
-        {
-            const string Source = @"
+    [Fact]
+    public async Task Prompt_in_progress_warns()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 class TestClass 
@@ -71,15 +66,15 @@ class TestClass
     }
 }";
 
-            await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
-                .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(10, 13))
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
+            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(10, 13))
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task Can_call_other_methods_from_within_renderables()
-        {
-            const string Source = @"
+    [Fact]
+    public async Task Can_call_other_methods_from_within_renderables()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 class Program
@@ -96,9 +91,8 @@ class Program
     static string Confirm() => string.Empty;
 }";
 
-            await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
-                .VerifyAnalyzerAsync(Source)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
+            .VerifyAnalyzerAsync(Source)
+            .ConfigureAwait(false);
     }
 }

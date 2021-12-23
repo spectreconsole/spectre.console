@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Spectre.Console.Cli.Unsafe;
 
 /// <summary>

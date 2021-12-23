@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace Spectre.Console;
 
 internal static class ColorSystemDetector

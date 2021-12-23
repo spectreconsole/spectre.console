@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using Spectre.Console.Rendering;
-
 namespace Spectre.Console;
 
 /// <summary>

@@ -1,9 +1,3 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Portions of this code was ported from the supports-ansi project by Qingrong Ke
 // https://github.com/keqingrong/supports-ansi/blob/master/index.js

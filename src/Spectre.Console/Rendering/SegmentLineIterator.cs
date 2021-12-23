@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-
 namespace Spectre.Console.Rendering;
 
 /// <summary>

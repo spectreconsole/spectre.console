@@ -1,6 +1,3 @@
-using System;
-using Spectre.Console.Cli;
-
 namespace Spectre.Console.Testing;
 
 /// <summary>

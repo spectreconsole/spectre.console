@@ -1,6 +1,3 @@
-using System.Globalization;
-using Spectre.Console.Rendering;
-
 namespace Spectre.Console.Cli;
 
 /// <summary>

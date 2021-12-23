@@ -1,5 +1,3 @@
-using Spectre.Console.Rendering;
-
 namespace Spectre.Console.Cli;
 
 internal static class CommandLineTemplateExceptionFactory

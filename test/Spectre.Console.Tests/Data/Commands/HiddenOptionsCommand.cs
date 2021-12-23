@@ -1,12 +1,9 @@
-using Spectre.Console.Cli;
+namespace Spectre.Console.Tests.Data;
 
-namespace Spectre.Console.Tests.Data
+public sealed class HiddenOptionsCommand : Command<HiddenOptionSettings>
 {
-    public sealed class HiddenOptionsCommand : Command<HiddenOptionSettings>
+    public override int Execute(CommandContext context, HiddenOptionSettings settings)
     {
-        public override int Execute(CommandContext context, HiddenOptionSettings settings)
-        {
-            return 0;
-        }
+        return 0;
     }
 }

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Spectre.Console.Cli;
 
 internal sealed class DefaultTypeRegistrar : ITypeRegistrar

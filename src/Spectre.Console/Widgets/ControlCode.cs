@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using Spectre.Console.Rendering;
-
 namespace Spectre.Console;
 
 internal sealed class ControlCode : Renderable

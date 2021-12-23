@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Spectre.Console;
 
 internal sealed class ListPromptItem<T> : IMultiSelectionItem<T>

@@ -1,5 +1,3 @@
-using System;
-
 namespace Spectre.Console.Cli;
 
 internal static class CommandPropertyBinder

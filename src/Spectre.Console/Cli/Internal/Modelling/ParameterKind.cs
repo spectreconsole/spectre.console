@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace Spectre.Console.Cli;
 
 internal enum ParameterKind

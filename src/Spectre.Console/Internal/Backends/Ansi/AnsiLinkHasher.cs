@@ -1,6 +1,3 @@
-using System;
-using System.Runtime.CompilerServices;
-
 namespace Spectre.Console;
 
 internal sealed class AnsiLinkHasher

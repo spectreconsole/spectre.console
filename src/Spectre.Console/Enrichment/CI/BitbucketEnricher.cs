@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Spectre.Console.Enrichment;
 
 internal sealed class BitbucketEnricher : IProfileEnricher

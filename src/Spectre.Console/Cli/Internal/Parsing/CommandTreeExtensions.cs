@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-
 namespace Spectre.Console.Cli;
 
 internal static class CommandTreeExtensions

@@ -1,20 +1,15 @@
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Testing;
-using Xunit;
+namespace Spectre.Console.Analyzer.Tests.Unit.Fixes;
 
-namespace Spectre.Console.Analyzer.Tests.Unit.Fixes
+public class UseInstanceOfStaticAnsiConsoleTests
 {
-    public class UseInstanceOfStaticAnsiConsoleTests
-    {
-        private static readonly DiagnosticResult _expectedDiagnostic = new(
-            Descriptors.S1010_FavorInstanceAnsiConsoleOverStatic.Id,
-            DiagnosticSeverity.Info);
+    private static readonly DiagnosticResult _expectedDiagnostic = new(
+        Descriptors.S1010_FavorInstanceAnsiConsoleOverStatic.Id,
+        DiagnosticSeverity.Info);
 
-        [Fact]
-        public async Task Static_call_replaced_with_field_call()
-        {
-            const string Source = @"
+    [Fact]
+    public async Task Static_call_replaced_with_field_call()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 class TestClass 
@@ -28,7 +23,7 @@ class TestClass
     } 
 }";
 
-            const string FixedSource = @"
+        const string FixedSource = @"
 using Spectre.Console;
 
 class TestClass 
@@ -42,15 +37,15 @@ class TestClass
     } 
 }";
 
-            await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
-                .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource)
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task Static_call_replaced_with_field_call_Should_Preserve_Trivia()
-        {
-            const string Source = @"
+    [Fact]
+    public async Task Static_call_replaced_with_field_call_Should_Preserve_Trivia()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 class TestClass 
@@ -66,7 +61,7 @@ class TestClass
     } 
 }";
 
-            const string FixedSource = @"
+        const string FixedSource = @"
 using Spectre.Console;
 
 class TestClass 
@@ -82,15 +77,15 @@ class TestClass
     } 
 }";
 
-            await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
-                .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(12, 9), FixedSource)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(12, 9), FixedSource)
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task Static_call_replaced_with_parameter_call()
-        {
-            const string Source = @"
+    [Fact]
+    public async Task Static_call_replaced_with_parameter_call()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 class TestClass 
@@ -101,7 +96,7 @@ class TestClass
     } 
 }";
 
-            const string FixedSource = @"
+        const string FixedSource = @"
 using Spectre.Console;
 
 class TestClass 
@@ -112,15 +107,15 @@ class TestClass
     } 
 }";
 
-            await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
-                .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(8, 9), FixedSource)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(8, 9), FixedSource)
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async Task Static_call_replaced_with_static_field_if_valid()
-        {
-            const string Source = @"
+    [Fact]
+    public async Task Static_call_replaced_with_static_field_if_valid()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 class TestClass 
@@ -134,7 +129,7 @@ class TestClass
     } 
 }";
 
-            const string FixedSource = @"
+        const string FixedSource = @"
 using Spectre.Console;
 
 class TestClass 
@@ -148,9 +143,8 @@ class TestClass
     } 
 }";
 
-            await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
-                .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource)
+            .ConfigureAwait(false);
     }
 }
