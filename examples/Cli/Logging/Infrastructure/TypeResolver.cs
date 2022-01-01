@@ -15,6 +15,11 @@ public sealed class TypeResolver : ITypeResolver
 
     public object Resolve(Type type)
     {
-        return _provider.GetRequiredService(type);
+        if (type == null)
+        {
+            return null;
+        }
+
+        return _provider.GetService(type);
     }
 }
