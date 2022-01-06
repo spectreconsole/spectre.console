@@ -305,4 +305,27 @@ public static class TextPromptExtensions
         obj.Converter = displaySelector;
         return obj;
     }
+
+    /// <summary>
+    /// Sets the style in which the default value is displayed.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="style">The default value style.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static TextPrompt<T> DefaultValueStyle<T>(this TextPrompt<T> obj, Style style)
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        if (style is null)
+        {
+            throw new ArgumentNullException(nameof(style));
+        }
+
+        obj.DefaultValueStyle = style;
+        return obj;
+    }
 }
