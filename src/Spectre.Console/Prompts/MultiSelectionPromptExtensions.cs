@@ -123,6 +123,31 @@ public static class MultiSelectionPromptExtensions
     }
 
     /// <summary>
+    /// Adds multiple grouped choices.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="group">The group.</param>
+    /// <param name="choices">The choices to add.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static MultiSelectionPrompt<T> AddChoiceGroup<T>(this MultiSelectionPrompt<T> obj, T group, params T[] choices)
+        where T : notnull
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        var root = obj.AddChoice(group);
+        foreach (var choice in choices)
+        {
+            root.AddChild(choice);
+        }
+
+        return obj;
+    }
+
+    /// <summary>
     /// Marks an item as selected.
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>
