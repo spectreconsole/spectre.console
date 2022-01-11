@@ -7,6 +7,8 @@
     <MinVerSkip Condition="'$(Configuration)' == 'Debug'">true</MinVerSkip>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>false</IsPackable>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)/../resources/spectre.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Label="Deterministic Build" Condition="'$(GITHUB_ACTIONS)' == 'true'">

@@ -3,6 +3,8 @@
     <LangVersion>10</LangVersion>
     <IsPackable>false</IsPackable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)/../resources/spectre.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup Label="Package References">
