@@ -50,7 +50,7 @@ app.Configure(config =>
         .IsHidden()
         .WithAlias("file-size")
         .WithDescription("Gets the file size for a directory.")
-        .WithExample(new[] {"c:\\windows", "--pattern", "*.dll"});
+        .WithExample(new[] {"size", "c:\\windows", "--pattern", "*.dll"});
 });
 ```
 
