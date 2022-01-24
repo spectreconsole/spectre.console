@@ -12,18 +12,28 @@ namespace Spectre.Console.Examples
             }
 
             // Confirmation
-            if (!AnsiConsole.Confirm("Run prompt example?"))
+            if (!AskConfirmation())
             {
-                AnsiConsole.MarkupLine("Ok... :(");
                 return;
             }
 
             // Ask the user for some different things
+            WriteDivider("Strings");
             var name = AskName();
+
+            WriteDivider("Lists");
             var fruit = AskFruit();
+
+            WriteDivider("Choices");
             var sport = AskSport();
+
+            WriteDivider("Integers");
             var age = AskAge();
+
+            WriteDivider("Secrets");
             var password = AskPassword();
+
+            WriteDivider("Optional");
             var color = AskColor();
 
             // Summary
@@ -40,19 +50,31 @@ namespace Spectre.Console.Examples
                 .AddRow("[grey]Favorite color[/]", string.IsNullOrEmpty(color) ? "Unknown" : color));
         }
 
-        private static string AskName()
+        private static void WriteDivider(string text)
         {
             AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("[yellow]Strings[/]").RuleStyle("grey").LeftAligned());
+            AnsiConsole.Write(new Rule($"[yellow]{text}[/]").RuleStyle("grey").LeftAligned());
+        }
+
+        private static bool AskConfirmation()
+        {
+            if (!AnsiConsole.Confirm("Run prompt example?"))
+            {
+                AnsiConsole.MarkupLine("Ok... :(");
+                return false;
+            }
+
+            return true;
+        }
+
+        private static string AskName()
+        {
             var name = AnsiConsole.Ask<string>("What's your [green]name[/]?");
             return name;
         }
 
         private static string AskFruit()
         {
-            AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("[yellow]Lists[/]").RuleStyle("grey").LeftAligned());
-
             var favorites = AnsiConsole.Prompt(
                 new MultiSelectionPrompt<string>()
                     .PageSize(10)
@@ -89,9 +111,6 @@ namespace Spectre.Console.Examples
 
         private static string AskSport()
         {
-            AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("[yellow]Choices[/]").RuleStyle("grey").LeftAligned());
-
             return AnsiConsole.Prompt(
                 new TextPrompt<string>("What's your [green]favorite sport[/]?")
                     .InvalidChoiceMessage("[red]That's not a sport![/]")
@@ -103,9 +122,6 @@ namespace Spectre.Console.Examples
 
         private static int AskAge()
         {
-            AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("[yellow]Integers[/]").RuleStyle("grey").LeftAligned());
-
             return AnsiConsole.Prompt(
                 new TextPrompt<int>("How [green]old[/] are you?")
                     .PromptStyle("green")
@@ -123,9 +139,6 @@ namespace Spectre.Console.Examples
 
         private static string AskPassword()
         {
-            AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("[yellow]Secrets[/]").RuleStyle("grey").LeftAligned());
-
             return AnsiConsole.Prompt(
                 new TextPrompt<string>("Enter [green]password[/]?")
                     .PromptStyle("red")
@@ -134,9 +147,6 @@ namespace Spectre.Console.Examples
 
         private static string AskColor()
         {
-            AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("[yellow]Optional[/]").RuleStyle("grey").LeftAligned());
-
             return AnsiConsole.Prompt(
                 new TextPrompt<string>("[grey][[Optional]][/] What is your [green]favorite color[/]?")
                     .AllowEmpty());

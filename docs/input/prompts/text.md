@@ -21,26 +21,15 @@ you can use the `Prompt<TResult>`.
 
 ## Confirmation
 
-```csharp
-if (!AnsiConsole.Confirm("Run example?"))
-{
-    return;
-}
-```
+<?# Example symbol="Prompt.Program.AskConfirmation::body" /?>
 
 ```text
-Run example? [y/n] (y): _
+Run prompt example? [y/n] (y): _
 ```
 
 ## Simple
 
-```csharp
-// Ask for the user's name
-string name = AnsiConsole.Ask<string>("What's your [green]name[/]?");
-
-// Ask for the user's age
-int age = AnsiConsole.Ask<int>("What's your [green]age[/]?");
-```
+<?# Example symbol="Prompt.Program.AskName::body" /?>
 
 ```text
 What's your name? Patrik
@@ -49,15 +38,7 @@ What's your age? 37
 
 ## Choices
 
-```csharp
-var fruit = AnsiConsole.Prompt(
-    new TextPrompt<string>("What's your [green]favorite fruit[/]?")
-        .InvalidChoiceMessage("[red]That's not a valid fruit[/]")
-        .DefaultValue("Orange")
-        .AddChoice("Apple")
-        .AddChoice("Banana")
-        .AddChoice("Orange"));
-```
+<?# Example symbol="Prompt.Program.AskFruit::body" /?>
 
 ```text
 What's your favorite fruit? [Apple/Banana/Orange] (Orange): _
@@ -65,19 +46,7 @@ What's your favorite fruit? [Apple/Banana/Orange] (Orange): _
 
 ## Validation
 
-```csharp
-var age = AnsiConsole.Prompt(
-    new TextPrompt<int>("What's the secret number?")
-        .Validate(age =>
-        {
-            return age switch
-            {
-                < 99 => ValidationResult.Error("[red]Too low[/]"),
-                > 99 => ValidationResult.Error("[red]Too high[/]"),
-                _ => ValidationResult.Success(),
-            };
-        }));
-```
+<?# Example symbol="Prompt.Program.AskAge::body" /?>
 
 ```text
 What's the secret number? 32
@@ -89,12 +58,8 @@ What's the secret number? _
 
 ## Secrets
 
-```csharp
-var password = AnsiConsole.Prompt(
-    new TextPrompt<string>("Enter [green]password[/]")
-        .PromptStyle("red")
-        .Secret());
-```
+<?# Example symbol="Prompt.Program.AskPassword::body" /?>
+
 
 ```text
 Enter password: ************_
@@ -102,11 +67,7 @@ Enter password: ************_
 
 ## Optional
 
-```csharp
-var color = AnsiConsole.Prompt(
-    new TextPrompt<string>("[grey][[Optional]][/] [green]Favorite color[/]?")
-        .AllowEmpty());
-```
+<?# Example symbol="Prompt.Program.AskColor::body" /?>
 
 ```text
 [Optional] Favorite color? _

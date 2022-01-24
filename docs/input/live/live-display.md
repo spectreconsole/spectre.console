@@ -10,7 +10,6 @@ Spectre.Console can update arbitrary widgets in-place.
 
 <?# AsciiCast cast="live" /?>
 
-
 <?# Alert ?>
   The live display is not 
   thread safe, and using it together with other interactive components such as 

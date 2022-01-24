@@ -15,14 +15,15 @@ namespace Docs
                 .AddSetting(Keys.Host, "spectreconsole.net")
                 .AddSetting(Keys.LinksUseHttps, true)
                 .AddSetting(Constants.EditLink, ConfigureEditLink())
+                .AddSetting("ExampleSolution", @"../examples/Examples.sln")
                 .ConfigureSite("spectreconsole", "spectre.console", "main")
                 .ConfigureDeployment(deployBranch: "docs")
-                
                 .AddShortcode("Children", typeof(ChildrenShortcode))
                 .AddShortcode("ColorTable", typeof(ColorTableShortcode))
                 .AddShortcode("EmojiTable", typeof(EmojiTableShortcode))
                 .AddShortcode("Alert", typeof(AlertShortcode))
                 .AddShortcode("AsciiCast", typeof(AsciiCastShortcode))
+                .AddShortcode("Example", typeof(ExampleSnippet))
                 .AddPipelines()
                 .BuildPipeline(
 			        "Bootstrap",

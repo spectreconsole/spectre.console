@@ -21,13 +21,18 @@ namespace Docs
             public const string Root = "COLORS_ROOT";
         }
 
+        public static class Snippets
+        {
+            public const string ExampleProject = @"../examples/Examples.sln";
+        }
+
         public static class Site
         {
             public const string Owner = "SITE_OWNER";
             public const string Repository = "SITE_REPOSITORY";
             public const string Branch = "SITE_BRANCH";
         }
-        
+
         public static class Deployment
         {
             public const string GitHubToken = "GITHUB_TOKEN";
