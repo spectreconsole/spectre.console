@@ -6,7 +6,8 @@ namespace Spectre.Console;
 public sealed class GridColumn : IColumn, IHasDirtyState
 {
     private bool _isDirty;
-    private int? _width;
+    private double? _width;
+    private SizeMode _sizeMode;
     private bool _noWrap;
     private Padding? _padding;
     private Justify? _alignment;
@@ -16,12 +17,41 @@ public sealed class GridColumn : IColumn, IHasDirtyState
 
     /// <summary>
     /// Gets or sets the width of the column.
-    /// If <c>null</c>, the column will adapt to its contents.
+    /// The interpretation of width depends on the value of <see cref="SizeMode"/>.<br/>
+    ///<br/>
+    /// By default it is set to <see langword="null"/>, and the column will size to its contents <see cref="SizeMode.SizeToContent"/>
+    /// is set to <see cref="SizeMode.SizeToContent" />.
     /// </summary>
-    public int? Width
+    public double? Width
     {
         get => _width;
         set => MarkAsDirty(() => _width = value);
+    }
+
+    /// <summary>
+    /// Gets or sets the size mode which defines how the column width will be interpreted:
+    /// <list type="bullet">
+    ///     <item>
+    ///         <term><see cref="SizeMode.SizeToContent">SizeToContent (Auto)</see></term>
+    ///         <description><see cref="Width" /> value is ignored and width will auto-size to content.</description>
+    ///     </item>
+    ///     <item>
+    ///         <term><see cref="SizeMode.Fixed">Fixed</see></term>
+    ///         <description><see cref="Width" /> value is interpreted as integer, fixed size.</description>
+    ///     </item>
+    ///     <item>
+    ///         <term><see cref="SizeMode.Star">Star (*)</see></term>
+    ///         <description><see cref="Width" /> value is interpreted as double and means proportional sizing.</description>
+    ///     </item>
+    /// </list>
+    /// If mixed <see cref="SizeMode.SizeToContent" /> and <see cref="SizeMode.Fixed" /> widths with <see cref="SizeMode.Star" /> (proportional) widths:<br/>
+    /// The <see cref="SizeMode.Star" /> columns are apportioned to the remainder after the <see cref="SizeMode.SizeToContent" /> and
+    /// <see cref="SizeMode.Fixed" /> widths have been calculated.<br/>
+    /// </summary>
+    public SizeMode SizeMode
+    {
+        get => _sizeMode;
+        set => MarkAsDirty(() => _sizeMode = value);
     }
 
     /// <summary>

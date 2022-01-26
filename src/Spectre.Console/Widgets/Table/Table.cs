@@ -113,7 +113,7 @@ public sealed class Table : Renderable, IHasTableBorder, IExpandable, IAlignable
         var totalCellWidth = measurer.CalculateTotalCellWidth(maxWidth);
 
         // Calculate the minimum and maximum table width
-        var measurements = _columns.Select(column => measurer.MeasureColumn(column, totalCellWidth));
+        var measurements = measurer.MeasureColumns(totalCellWidth);
         var minTableWidth = measurements.Sum(x => x.Min) + measurer.GetNonColumnWidth();
         var maxTableWidth = Width ?? measurements.Sum(x => x.Max) + measurer.GetNonColumnWidth();
         return new Measurement(minTableWidth, maxTableWidth);
