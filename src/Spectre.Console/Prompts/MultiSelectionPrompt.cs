@@ -54,6 +54,11 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     internal ListPromptTree<T> Tree { get; }
 
     /// <summary>
+    /// Gets a value indicating whether or not the prompt was aborted.
+    /// </summary>
+    public bool Aborted { get; private set; } = false;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="MultiSelectionPrompt{T}"/> class.
     /// </summary>
     /// <param name="comparer">
@@ -151,6 +156,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             }
 
             // Submit
+            Aborted = false;
             return ListPromptInputResult.Submit;
         }
 
@@ -183,6 +189,12 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
 
             // Refresh the list
             return ListPromptInputResult.Refresh;
+        }
+
+        if (key.Key == ConsoleKey.Escape)
+        {
+            Aborted = true;
+            return ListPromptInputResult.Abort;
         }
 
         return ListPromptInputResult.None;

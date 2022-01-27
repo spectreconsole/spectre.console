@@ -146,4 +146,44 @@ public sealed class MultiSelectionPromptTests
         // Then
         action.ShouldThrow<ArgumentOutOfRangeException>();
     }
+
+    [Fact]
+    public void Should_Set_Property_If_Aborted()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Escape);
+        var input = new string[] { "a", "b", "c" };
+
+        // When
+        var prompt = new MultiSelectionPrompt<string>()
+                .Title("Select some")
+                .AddChoices(input);
+        prompt.Show(console);
+
+        // Then
+        prompt.Aborted.ShouldBe(true);
+    }
+
+    [Fact]
+    public void Should_Set_Property_If_Not_Aborted()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+        var input = new string[] { "a", "b", "c" };
+
+        // When
+        var prompt = new MultiSelectionPrompt<string>()
+                .Title("Select some")
+                .AddChoices(input);
+        prompt.Show(console);
+
+        // Then
+        prompt.Aborted.ShouldBe(false);
+    }
 }
