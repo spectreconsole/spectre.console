@@ -55,7 +55,7 @@ internal sealed class ListPrompt<T>
 
                 var key = rawKey.Value;
                 var result = _strategy.HandleInput(key, state);
-                if (result == ListPromptInputResult.Submit)
+                if (result == ListPromptInputResult.Submit || result == ListPromptInputResult.Abort)
                 {
                     break;
                 }
