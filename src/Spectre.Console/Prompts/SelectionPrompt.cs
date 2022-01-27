@@ -48,7 +48,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     public SelectionMode Mode { get; set; } = SelectionMode.Leaf;
 
     /// <summary>
-    /// Flag indicating whether the prompt was aborted.
+    /// Gets a value indicating whether or not the prompt was aborted.
     /// </summary>
     public bool Aborted { get; private set; } = false;
 
