@@ -28,7 +28,7 @@ public static class ColumnExtensions
     /// </summary>
     /// <typeparam name="T">An object implementing <see cref="IColumn"/>.</typeparam>
     /// <param name="obj">The column.</param>
-    /// <param name="size">The column width.</param>
+    /// <param name="size">The column fixed width.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static T FixWidth<T>(this T obj, int size)
         where T : class, IColumn
@@ -53,7 +53,7 @@ public static class ColumnExtensions
     /// </summary>
     /// <typeparam name="T">An object implementing <see cref="IColumn"/>.</typeparam>
     /// <param name="obj">The column.</param>
-    /// <param name="weight">The column width.</param>
+    /// <param name="weight">The column weighted width.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static T StarWidth<T>(this T obj, double weight = 1.0)
         where T : class, IColumn

@@ -17,7 +17,7 @@ public sealed class TableColumn : IColumn
 
     /// <summary>
     /// Gets or sets the width of the column.
-    /// The interpretation of width depends on the value of <see cref="SizeMode"/>.<br/>
+    /// The interpretation of width depends on the value of <see cref="SizeMode"/>.
     /// <br/>
     /// By default it is set to <see langword="null"/>, and the column will size to its contents <see cref="SizeMode.SizeToContent"/>
     /// is set to <see cref="SizeMode.SizeToContent" />.
@@ -37,12 +37,12 @@ public sealed class TableColumn : IColumn
     ///     </item>
     ///     <item>
     ///         <term><see cref="SizeMode.Star">Star (*)</see></term>
-    ///         <description><see cref="Width" /> value is interpreted as double and means proportional sizing.</description>
+    ///         <description><see cref="Width" /> value is interpreted as double and means proportional sizing. If the width value is <see langword="null"/> 1 is implied</description>
     ///     </item>
     /// </list>
-    /// If mixed <see cref="SizeMode.SizeToContent" /> and <see cref="SizeMode.Fixed" /> widths with <see cref="SizeMode.Star" /> (proportional) widths:<br/>
+    /// If mixed <see cref="SizeMode.SizeToContent" /> and <see cref="SizeMode.Fixed" /> widths with <see cref="SizeMode.Star" /> (proportional) widths:
     /// The <see cref="SizeMode.Star" /> columns are apportioned to the remainder after the <see cref="SizeMode.SizeToContent" /> and
-    /// <see cref="SizeMode.Fixed" /> widths have been calculated.<br/>
+    /// <see cref="SizeMode.Fixed" /> widths have been calculated.
     /// </summary>
     public SizeMode SizeMode { get; set; }
 

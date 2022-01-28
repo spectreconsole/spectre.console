@@ -64,7 +64,7 @@ internal sealed class TableMeasurer : TableAccessor
             widths = CollapseWidths(widths, wrappable, maxWidth);
             tableWidth = widths.Sum();
 
-            // last resort, reduce columns evenly
+            // Last resort, reduce columns evenly
             if (tableWidth > maxWidth)
             {
                 var excessWidth = tableWidth - maxWidth;
@@ -96,19 +96,19 @@ internal sealed class TableMeasurer : TableAccessor
             }
         }
 
-        // index and separate columns
+        // Index and separate columns
         var indexColumns = Columns.Select((column, index) => (column, index)).ToList();
         var fixedColumns = indexColumns.Where(x => x.column.SizeMode != SizeMode.Star);
         var starColumns = indexColumns.Where(x => x.column.SizeMode == SizeMode.Star);
 
-        // first calculate fixed cells
+        // First calculate fixed cells
         var fixedWidth_ranges = fixedColumns.Select(x => (x.index, measurement: MeasureColumn(x.column, maxWidth))).ToList();
 
-        // get remainder
+        // Get remainder
         var consumedWidth = fixedWidth_ranges.Sum(x => x.measurement.Max);
         var totalWidthForStar = Math.Max(0, maxWidth - consumedWidth);
 
-        // and apportioned to the remainder
+        // And apportioned to the remainder
         var starWidth_ranges = MeasureStarColumns(starColumns, totalWidthForStar);
         var width_ranges = fixedWidth_ranges.Concat(starWidth_ranges).OrderBy(x => x.Item1).Select(x => x.Item2);
 
