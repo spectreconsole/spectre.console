@@ -329,4 +329,23 @@ public static class MultiSelectionPromptExtensions
         obj.Converter = displaySelector;
         return obj;
     }
+
+    /// <summary>
+    /// Sets the value indicating whether the prompt can be aborted.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="allowAbort">Value indicating whether the prompt can be aborted.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static MultiSelectionPrompt<T> AllowAbort<T>(this MultiSelectionPrompt<T> obj, bool allowAbort)
+        where T : notnull
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        obj.AllowAbort = allowAbort;
+        return obj;
+    }
 }

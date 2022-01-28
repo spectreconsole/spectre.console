@@ -160,6 +160,7 @@ public sealed class MultiSelectionPromptTests
         // When
         var prompt = new MultiSelectionPrompt<string>()
                 .Title("Select some")
+                .AllowAbort(true)
                 .AddChoices(input);
         prompt.Show(console);
 
