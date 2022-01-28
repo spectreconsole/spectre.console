@@ -68,7 +68,7 @@ internal sealed class TableMeasurer : TableAccessor
             if (tableWidth > maxWidth)
             {
                 var excessWidth = tableWidth - maxWidth;
-                widths = Ratio.Reduce(excessWidth, widths.Select(_ => 1).ToList(), widths, widths);
+                widths = Ratio.Reduce(excessWidth, widths.ConvertAll(_ => 1), widths, widths);
                 tableWidth = widths.Sum();
             }
         }
@@ -86,11 +86,11 @@ internal sealed class TableMeasurer : TableAccessor
     {
         IEnumerable<(int Index, Measurement Measurement)> MeasureStarColumns(IEnumerable<(TableColumn Column, int Index)> starColumns, int totalWidthForStar)
         {
-            var sumStarWeight = starColumns.Sum(x => x.Column.Width.Value);
+            var sumStarWeight = starColumns.Sum(x => x.Column.Width ?? 1);
             var ratio = totalWidthForStar / sumStarWeight;
             foreach (var x in starColumns)
             {
-                var starWidth = (int)Math.Round(x.Column.Width.Value * ratio);
+                var starWidth = (int)Math.Round((x.Column.Width ?? 1) * ratio);
 
                 yield return (x.Index, new Measurement(starWidth, starWidth));
             }

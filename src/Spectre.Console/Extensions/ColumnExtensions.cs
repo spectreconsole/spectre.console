@@ -1,5 +1,3 @@
-using System.Drawing;
-
 namespace Spectre.Console;
 
 /// <summary>
@@ -57,7 +55,7 @@ public static class ColumnExtensions
     /// <param name="obj">The column.</param>
     /// <param name="weight">The column width.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static T StarWidth<T>(this T obj, double weight)
+    public static T StarWidth<T>(this T obj, double weight = 1.0)
         where T : class, IColumn
     {
         if (obj is null)

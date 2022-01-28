@@ -18,7 +18,7 @@ public sealed class TableColumn : IColumn
     /// <summary>
     /// Gets or sets the width of the column.
     /// The interpretation of width depends on the value of <see cref="SizeMode"/>.<br/>
-    ///<br/>
+    /// <br/>
     /// By default it is set to <see langword="null"/>, and the column will size to its contents <see cref="SizeMode.SizeToContent"/>
     /// is set to <see cref="SizeMode.SizeToContent" />.
     /// </summary>
