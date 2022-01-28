@@ -34,6 +34,7 @@ public sealed class SelectionPromptTests
         // When
         var prompt = new SelectionPrompt<string>()
                 .Title("Select one")
+                .AllowAbort(true)
                 .AddChoices(input);
         prompt.Show(console);
 

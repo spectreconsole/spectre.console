@@ -48,6 +48,11 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     public SelectionMode Mode { get; set; } = SelectionMode.Leaf;
 
     /// <summary>
+    /// Gets or sets a value indicating whether the prompt can be aborted.
+    /// </summary>
+    public bool AllowAbort { get; set; } = false;
+
+    /// <summary>
     /// Gets a value indicating whether or not the prompt was aborted.
     /// </summary>
     public bool Aborted { get; private set; } = false;
@@ -104,7 +109,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
             return ListPromptInputResult.Submit;
         }
 
-        if (key.Key == ConsoleKey.Escape)
+        if (key.Key == ConsoleKey.Escape && AllowAbort)
         {
             Aborted = true;
             return ListPromptInputResult.Abort;
