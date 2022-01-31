@@ -8,7 +8,7 @@ public static partial class Program
     {
         var table = new Table().HideHeaders().NoBorder();
         table.Title("[u][yellow]Spectre.Console[/] [b]Features[/][/]");
-        table.AddColumn("Feature", c => c.NoWrap().RightAligned().FixWidth(10).PadRight(3));
+        table.AddColumn("Feature", c => c.NoWrap().RightAligned().Width(10).PadRight(3));
         table.AddColumn("Demonstration", c => c.PadRight(0));
         table.AddEmptyRow();
 

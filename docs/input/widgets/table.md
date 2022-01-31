@@ -82,7 +82,7 @@ table.HideHeaders();
 
 ```csharp
 // Sets the table width to 50 cells
-table.FixWidth(50);
+table.Width(50);
 ```
 
 ### Alignment
@@ -135,5 +135,5 @@ table.Columns[0].NoWrap();
 
 ```csharp
 // Set the column width
-table.Columns[0].FixWidth(15);
+table.Columns[0].Width(15);
 ```

@@ -86,11 +86,11 @@ internal sealed class TableMeasurer : TableAccessor
     {
         IEnumerable<(int Index, Measurement Measurement)> MeasureStarColumns(IEnumerable<(TableColumn Column, int Index)> starColumns, int totalWidthForStar)
         {
-            var sumStarWeight = starColumns.Sum(x => x.Column.Width ?? 1);
+            var sumStarWeight = starColumns.Sum(x => x.Column.Width.Value);
             var ratio = totalWidthForStar / sumStarWeight;
             foreach (var x in starColumns)
             {
-                var starWidth = (int)Math.Round((x.Column.Width ?? 1) * ratio);
+                var starWidth = (int)Math.Round(x.Column.Width.Value * ratio);
 
                 yield return (x.Index, new Measurement(starWidth, starWidth));
             }
@@ -98,8 +98,8 @@ internal sealed class TableMeasurer : TableAccessor
 
         // Index and separate columns
         var indexColumns = Columns.Select((column, index) => (column, index)).ToList();
-        var fixedColumns = indexColumns.Where(x => x.column.SizeMode != SizeMode.Star);
-        var starColumns = indexColumns.Where(x => x.column.SizeMode == SizeMode.Star);
+        var fixedColumns = indexColumns.Where(x => !x.column.IsProportionalWidth());
+        var starColumns = indexColumns.Where(x => x.column.IsProportionalWidth());
 
         // First calculate fixed cells
         var fixedWidth_ranges = fixedColumns.Select(x => (x.index, measurement: MeasureColumn(x.column, maxWidth))).ToList();
@@ -118,7 +118,7 @@ internal sealed class TableMeasurer : TableAccessor
     private Measurement MeasureColumn(TableColumn column, int maxWidth)
     {
         // Predetermined width?
-        if (column.Width != null && column.SizeMode == SizeMode.Fixed)
+        if (column.IsFixedWidth())
         {
             return new Measurement((int)column.Width.Value, (int)column.Width.Value);
         }

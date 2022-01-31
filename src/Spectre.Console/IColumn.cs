@@ -14,11 +14,5 @@ public interface IColumn : IAlignable, IPaddable
     /// <summary>
     /// Gets or sets the width of the column.
     /// </summary>
-    double? Width { get; set; }
-
-    /// <summary>
-    /// Gets or sets the size mode, to define
-    /// how the <see cref="Width"/> value is interpreted.
-    /// </summary>
-    SizeMode SizeMode { get; set; }
+    ColumnWidth Width { get; set; }
 }

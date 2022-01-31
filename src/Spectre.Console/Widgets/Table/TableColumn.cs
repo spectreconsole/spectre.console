@@ -17,34 +17,9 @@ public sealed class TableColumn : IColumn
 
     /// <summary>
     /// Gets or sets the width of the column.
-    /// The interpretation of width depends on the value of <see cref="SizeMode"/>.
-    /// <br/>
-    /// By default it is set to <see langword="null"/>, and the column will size to its contents <see cref="SizeMode.SizeToContent"/>
-    /// is set to <see cref="SizeMode.SizeToContent" />.
+    /// By default it is set to <see cref="ColumnWidth.SizeToContent" />.
     /// </summary>
-    public double? Width { get; set; }
-
-    /// <summary>
-    /// Gets or sets the size mode which defines how the column width will be interpreted:
-    /// <list type="bullet">
-    ///     <item>
-    ///         <term><see cref="SizeMode.SizeToContent">SizeToContent (Auto)</see></term>
-    ///         <description><see cref="Width" /> value is ignored and width will auto-size to content.</description>
-    ///     </item>
-    ///     <item>
-    ///         <term><see cref="SizeMode.Fixed">Fixed</see></term>
-    ///         <description><see cref="Width" /> value is interpreted as integer, fixed size.</description>
-    ///     </item>
-    ///     <item>
-    ///         <term><see cref="SizeMode.Star">Star (*)</see></term>
-    ///         <description><see cref="Width" /> value is interpreted as double and means proportional sizing. If the width value is <see langword="null"/> 1 is implied</description>
-    ///     </item>
-    /// </list>
-    /// If mixed <see cref="SizeMode.SizeToContent" /> and <see cref="SizeMode.Fixed" /> widths with <see cref="SizeMode.Star" /> (proportional) widths:
-    /// The <see cref="SizeMode.Star" /> columns are apportioned to the remainder after the <see cref="SizeMode.SizeToContent" /> and
-    /// <see cref="SizeMode.Fixed" /> widths have been calculated.
-    /// </summary>
-    public SizeMode SizeMode { get; set; }
+    public ColumnWidth Width { get; set; }
 
     /// <summary>
     /// Gets or sets the padding of the column.
@@ -79,7 +54,7 @@ public sealed class TableColumn : IColumn
     public TableColumn(IRenderable header)
     {
         Header = header ?? throw new ArgumentNullException(nameof(header));
-        Width = null;
+        Width = ColumnWidth.SizeToContent();
         Padding = new Padding(1, 0, 1, 0);
         NoWrap = false;
         Alignment = null;
