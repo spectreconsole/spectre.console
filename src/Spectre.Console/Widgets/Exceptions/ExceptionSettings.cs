@@ -16,6 +16,16 @@ public sealed class ExceptionSettings
     public ExceptionStyle Style { get; set; }
 
     /// <summary>
+    /// Gets or sets a StackTrace converter.
+    /// </summary>
+    public Func<StackTrace, StackTrace>? StackTraceConverter { get; set; } = null;
+
+    /// <summary>
+    /// Gets or sets a custom method name resolver.
+    /// </summary>
+    public Func<StackFrame, string>? MethodNameResolver { get; set; } = null;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="ExceptionSettings"/> class.
     /// </summary>
     public ExceptionSettings()

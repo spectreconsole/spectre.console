@@ -9,7 +9,7 @@ internal static class ExceptionFormatter
             throw new ArgumentNullException(nameof(exception));
         }
 
-        var info = ExceptionConverter.Convert(exception);
+        var info = ExceptionConverter.Convert(exception, settings.StackTraceConverter, settings.MethodNameResolver);
 
         return GetException(info, settings);
     }

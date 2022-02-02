@@ -2,7 +2,8 @@ namespace Spectre.Console;
 
 internal static class ExceptionConverter
 {
-    public static ExceptionInfo Convert(Exception exception)
+    public static ExceptionInfo Convert(Exception exception, Func<StackTrace, StackTrace>? stackTraceConverter,
+        Func<StackFrame, string>? methodNameResolver)
     {
         if (exception is null)
         {
@@ -10,13 +11,21 @@ internal static class ExceptionConverter
         }
 
         var exceptionType = exception.GetType();
-        var stackTrace = new StackTrace(exception, true);
-        var frames = stackTrace.GetFrames().Where(f => f != null).Cast<StackFrame>().Select(Convert).ToList();
-        var inner = exception.InnerException is null ? null : Convert(exception.InnerException);
+        var stackTrace = stackTraceConverter == null ? new StackTrace(exception, true) : stackTraceConverter(new StackTrace(exception, true));
+
+        var frames = stackTrace.GetFrames()
+            .Where(f => f != null)
+            .Cast<StackFrame>()
+            .Select(i => Convert(i, methodNameResolver))
+            .ToList();
+
+        var inner = exception.InnerException is null
+            ? null
+            : Convert(exception.InnerException, stackTraceConverter, methodNameResolver);
         return new ExceptionInfo(exceptionType.FullName ?? exceptionType.Name, exception.Message, frames, inner);
     }
 
-    private static StackFrameInfo Convert(StackFrame frame)
+    private static StackFrameInfo Convert(StackFrame frame, Func<StackFrame, string>? methodNameResolver)
     {
         var method = frame.GetMethod();
         if (method is null)
@@ -24,7 +33,7 @@ internal static class ExceptionConverter
             return new StackFrameInfo("<unknown method>", new List<(string Type, string Name)>(), null, null);
         }
 
-        var methodName = GetMethodName(method);
+        var methodName = methodNameResolver == null ? GetMethodName(method) : methodNameResolver(frame);
         var parameters = method.GetParameters().Select(e => (e.ParameterType.Name, e.Name ?? string.Empty)).ToList();
         var path = frame.GetFileName();
         var lineNumber = frame.GetFileLineNumber();
