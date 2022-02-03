@@ -29,4 +29,10 @@ public static class TestExceptions
             throw new InvalidOperationException("Something threw!", ex);
         }
     }
+
+    public static List<T> GenericMethodWithOutThatThrows<T>(out List<T> firstFewItems)
+    {
+        firstFewItems = new List<T>();
+        throw new InvalidOperationException("Throwing!");
+    }
 }

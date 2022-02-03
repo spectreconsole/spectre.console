@@ -79,6 +79,21 @@ public sealed class ExceptionTests
         return Verifier.Verify(result);
     }
 
+    [Fact]
+    [Expectation("OutParam")]
+    public Task Should_Write_Exception_With_Output_Param()
+    {
+        // Given
+        var console = new TestConsole().Width(1024);
+        var dex = GetException(() => TestExceptions.GenericMethodWithOutThatThrows<int>(out _));
+
+        // When
+        var result = console.WriteNormalizedException(dex, ExceptionFormats.ShortenTypes);
+
+        // Then
+        return Verifier.Verify(result);
+    }
+
     public static Exception GetException(Action action)
     {
         try

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 
@@ -10,7 +12,8 @@ public static class Program
     {
         try
         {
-            DoMagic(42, null);
+            var foo = new List<string>();
+            DoMagic(42, null, ref foo);
         }
         catch (Exception ex)
         {
@@ -47,22 +50,23 @@ public static class Program
 
         try
         {
-            await DoMagicAsync(42, null);
+            await DoMagicAsync<int>(42, null);
         }
         catch (Exception ex)
         {
             AnsiConsole.WriteLine();
             AnsiConsole.Write(new Rule("Async").LeftAligned());
             AnsiConsole.WriteLine();
-            AnsiConsole.WriteException(ex);
+            AnsiConsole.WriteException(ex, ExceptionFormats.ShortenPaths);
         }
     }
 
-    private static void DoMagic(int foo, string[,] bar)
+    private static void DoMagic(int foo, string[,] bar, ref List<string> result)
     {
         try
         {
             CheckCredentials(foo, bar);
+            result = new List<string>();
         }
         catch (Exception ex)
         {
@@ -70,16 +74,16 @@ public static class Program
         }
     }
 
-    private static void CheckCredentials(int qux, string[,] corgi)
+    private static bool CheckCredentials(int? qux, string[,] corgi)
     {
         throw new InvalidCredentialException("The credentials are invalid.");
     }
 
-    private static async Task DoMagicAsync(int foo, string[,] bar)
+    private static async Task DoMagicAsync<T>(T foo, string[,] bar)
     {
         try
         {
-            await CheckCredentialsAsync(foo, bar);
+            await CheckCredentialsAsync(new[] { foo }.ToList(), new []{ foo },  bar);
         }
         catch (Exception ex)
         {
@@ -87,7 +91,7 @@ public static class Program
         }
     }
 
-    private static async Task CheckCredentialsAsync(int qux, string[,] corgi)
+    private static async Task<bool> CheckCredentialsAsync<T>(List<T> qux, T[] otherArray, string[,] corgi)
     {
         await Task.Delay(0);
         throw new InvalidCredentialException("The credentials are invalid.");

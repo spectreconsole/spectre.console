@@ -1,0 +1,4 @@
+InvalidOperationException: Throwing!
+  at List<T> Spectre.Console.Tests.Data.TestExceptions.GenericMethodWithOutThatThrows<T>(out List<T> firstFewItems) in /xyz/Exceptions.cs:nn
+  at void Spectre.Console.Tests.Unit.ExceptionTests.<>c.<Should_Write_Exception_With_Output_Param>b__5_0() in /xyz/ExceptionTests.cs:nn
+  at Exception Spectre.Console.Tests.Unit.ExceptionTests.GetException(Action action) in /xyz/ExceptionTests.cs:nn
