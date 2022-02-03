@@ -1,11 +1,12 @@
 using System;
 using System.Security.Authentication;
+using System.Threading.Tasks;
 
 namespace Spectre.Console.Examples;
 
 public static class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         try
         {
@@ -43,6 +44,18 @@ public static class Program
                 }
             });
         }
+
+        try
+        {
+            await DoMagicAsync(42, null);
+        }
+        catch (Exception ex)
+        {
+            AnsiConsole.WriteLine();
+            AnsiConsole.Write(new Rule("Async").LeftAligned());
+            AnsiConsole.WriteLine();
+            AnsiConsole.WriteException(ex);
+        }
     }
 
     private static void DoMagic(int foo, string[,] bar)
@@ -61,4 +74,23 @@ public static class Program
     {
         throw new InvalidCredentialException("The credentials are invalid.");
     }
+
+    private static async Task DoMagicAsync(int foo, string[,] bar)
+    {
+        try
+        {
+            await CheckCredentialsAsync(foo, bar);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Whaaat?", ex);
+        }
+    }
+
+    private static async Task CheckCredentialsAsync(int qux, string[,] corgi)
+    {
+        await Task.Delay(0);
+        throw new InvalidCredentialException("The credentials are invalid.");
+    }
 }
+
