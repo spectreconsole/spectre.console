@@ -55,14 +55,29 @@ internal static class ExceptionFormatter
 
         // Stack frames
         var stackTrace = new StackTrace(ex, fNeedFileInfo: true);
-        foreach (var frame in stackTrace.GetFrames().Where(f => f != null).Cast<StackFrame>())
+        var frames = stackTrace
+            .GetFrames()
+            .FilterStackFrames()
+            .ToList();
+
+        foreach (var frame in frames)
         {
             var builder = new StringBuilder();
 
             // Method
             var shortenMethods = (settings.Format & ExceptionFormats.ShortenMethods) != 0;
             var method = frame.GetMethod();
-            var methodName = method.GetName();
+            if (method == null)
+            {
+                continue;
+            }
+
+            var methodName = GetMethodName(ref method, out var isAsync);
+            if (isAsync)
+            {
+                builder.Append("async ");
+            }
+
             builder.Append(Emphasize(methodName, new[] { '.' }, styles.Method, shortenMethods, settings));
             builder.AppendWithStyle(styles.Parenthesis, "(");
             AppendParameters(builder, method, settings);
@@ -160,5 +175,159 @@ internal static class ExceptionFormatter
         }
 
         return builder.ToString();
+    }
+
+    private static bool ShowInStackTrace(StackFrame frame)
+    {
+        // NET 6 has an attribute of StackTraceHiddenAttribute that we can use to clean up the stack trace
+        // cleanly. If the user is on an older version we'll fall back to all the stack frames being included.
+#if NET6_0_OR_GREATER
+        var mb = frame.GetMethod();
+        if (mb == null)
+        {
+            return false;
+        }
+
+        if ((mb.MethodImplementationFlags & MethodImplAttributes.AggressiveInlining) != 0)
+        {
+            return false;
+        }
+
+        try
+        {
+            if (mb.IsDefined(typeof(StackTraceHiddenAttribute), false))
+            {
+                return false;
+            }
+
+            var declaringType = mb.DeclaringType;
+            if (declaringType?.IsDefined(typeof(StackTraceHiddenAttribute), false) == true)
+            {
+                return false;
+            }
+        }
+        catch
+        {
+            // if we can't get the attributes then fall back to including it.
+        }
+#endif
+
+        return true;
+    }
+
+    private static IEnumerable<StackFrame> FilterStackFrames(this IEnumerable<StackFrame?> frames)
+    {
+        var allFrames = frames.ToArray();
+        var numberOfFrames = allFrames.Length;
+
+        for (var i = 0; i < numberOfFrames; i++)
+        {
+            var thisFrame = allFrames[i];
+            if (thisFrame == null)
+            {
+                continue;
+            }
+
+            // always include the last frame
+            if (i == numberOfFrames - 1)
+            {
+                yield return thisFrame;
+            }
+            else if (ShowInStackTrace(thisFrame))
+            {
+                yield return thisFrame;
+            }
+        }
+    }
+
+    private static string GetMethodName(ref MethodBase method, out bool isAsync)
+    {
+        var declaringType = method.DeclaringType;
+
+        if (declaringType?.IsDefined(typeof(CompilerGeneratedAttribute), false) == true)
+        {
+            isAsync = typeof(IAsyncStateMachine).IsAssignableFrom(declaringType);
+            if (isAsync || typeof(IEnumerator).IsAssignableFrom(declaringType))
+            {
+                TryResolveStateMachineMethod(ref method, out declaringType);
+            }
+        }
+        else
+        {
+            isAsync = false;
+        }
+
+        var builder = new StringBuilder(256);
+
+        var fullName = method.DeclaringType?.FullName;
+        if (fullName != null)
+        {
+            // See https://github.com/dotnet/runtime/blob/v6.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L247-L253
+            builder.Append(fullName.Replace('+', '.'));
+            builder.Append('.');
+        }
+
+        builder.Append(method.Name);
+        if (method.IsGenericMethod)
+        {
+            builder.Append('[');
+            builder.Append(string.Join(",", method.GetGenericArguments().Select(t => t.Name)));
+            builder.Append(']');
+        }
+
+        return builder.ToString();
+    }
+
+    private static bool TryResolveStateMachineMethod(ref MethodBase method, out Type declaringType)
+    {
+        // https://github.com/dotnet/runtime/blob/v6.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L400-L455
+        declaringType = method.DeclaringType ?? throw new ArgumentException("Method must have a declaring type.", nameof(method));
+
+        var parentType = declaringType.DeclaringType;
+        if (parentType == null)
+        {
+            return false;
+        }
+
+        static IEnumerable<MethodInfo> GetDeclaredMethods(IReflect type) => type.GetMethods(
+            BindingFlags.Public |
+            BindingFlags.NonPublic |
+            BindingFlags.Static |
+            BindingFlags.Instance |
+            BindingFlags.DeclaredOnly);
+
+        var methods = GetDeclaredMethods(parentType);
+
+        foreach (var candidateMethod in methods)
+        {
+            var attributes = candidateMethod.GetCustomAttributes<StateMachineAttribute>(false);
+
+            bool foundAttribute = false, foundIteratorAttribute = false;
+            foreach (var asma in attributes)
+            {
+                if (asma.StateMachineType != declaringType)
+                {
+                    continue;
+                }
+
+                foundAttribute = true;
+#if NET6_0_OR_GREATER
+                foundIteratorAttribute |= asma is IteratorStateMachineAttribute or AsyncIteratorStateMachineAttribute;
+#else
+                foundIteratorAttribute |= asma is IteratorStateMachineAttribute;
+#endif
+            }
+
+            if (!foundAttribute)
+            {
+                continue;
+            }
+
+            method = candidateMethod;
+            declaringType = candidateMethod.DeclaringType!;
+            return foundIteratorAttribute;
+        }
+
+        return false;
     }
 }
