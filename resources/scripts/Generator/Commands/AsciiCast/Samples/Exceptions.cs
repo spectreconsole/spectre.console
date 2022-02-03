@@ -8,7 +8,7 @@ namespace Generator.Commands.Samples
     {
         internal abstract class BaseExceptionSample : BaseSample
         {
-            public override (int Cols, int Rows) ConsoleSize => (base.ConsoleSize.Cols, 12);
+            public override (int Cols, int Rows) ConsoleSize => (120, 12);
 
             protected readonly Exception Exception = null!;
 
@@ -27,7 +27,7 @@ namespace Generator.Commands.Samples
 
         internal class DefaultExceptionSample : BaseExceptionSample
         {
-            public override void Run(IAnsiConsole console) => console.WriteException(Exception);
+            public override void Run(IAnsiConsole console) => console.WriteException(Exception, ExceptionFormats.ShortenPaths);
         }
 
         internal class ShortenedExceptionSample : BaseExceptionSample

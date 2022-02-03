@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Spectre.Console;
 
 namespace Generator.Commands
@@ -65,6 +66,11 @@ namespace Generator.Commands
             _input.Enqueue((new ConsoleKeyInfo((char)input, input, false, false, false), delay));
         }
 
+        public bool IsKeyAvailable()
+        {
+            return _input.Count > 0;
+        }
+
         public ConsoleKeyInfo? ReadKey(bool intercept)
         {
             if (_input.Count == 0)
@@ -76,6 +82,11 @@ namespace Generator.Commands
 
             Thread.Sleep(result.Item2);
             return result.Item1;
+        }
+
+        public Task<ConsoleKeyInfo?> ReadKeyAsync(bool intercept, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(ReadKey(intercept));
         }
     }
 }
