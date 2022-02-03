@@ -19,8 +19,8 @@ namespace Generator.Commands.Samples
             console.DisplayThenType(c => password = AskPassword(c), "hunter2↲");
             console.DisplayThenType(c => color = AskColor(c), "↲");
 
-            AnsiConsole.Render(new Rule("[yellow]Results[/]").RuleStyle("grey").LeftAligned());
-            AnsiConsole.Render(new Table().AddColumns("[grey]Question[/]", "[grey]Answer[/]")
+            AnsiConsole.Write(new Rule("[yellow]Results[/]").RuleStyle("grey").LeftAligned());
+            AnsiConsole.Write(new Table().AddColumns("[grey]Question[/]", "[grey]Answer[/]")
                 .RoundedBorder()
                 .BorderColor(Color.Grey)
                 .AddRow("[grey]Name[/]", name)
