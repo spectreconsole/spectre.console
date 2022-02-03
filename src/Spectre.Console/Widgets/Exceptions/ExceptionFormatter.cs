@@ -19,11 +19,7 @@ internal static class ExceptionFormatter
             throw new ArgumentNullException(nameof(exception));
         }
 
-        return new Rows(new IRenderable[]
-        {
-                GetMessage(exception, settings),
-                GetStackFrames(exception, settings),
-        }).Expand();
+        return new Rows(GetMessage(exception, settings), GetStackFrames(exception, settings)).Expand();
     }
 
     private static Markup GetMessage(Exception ex, ExceptionSettings settings)
@@ -78,6 +74,13 @@ internal static class ExceptionFormatter
                 builder.Append("async ");
             }
 
+            if (method is MethodInfo mi)
+            {
+                var returnParameter = mi.ReturnParameter;
+                builder.AppendWithStyle(styles.ParameterType, GetParameterName(returnParameter).EscapeMarkup());
+                builder.Append(' ');
+            }
+
             builder.Append(Emphasize(methodName, new[] { '.' }, styles.Method, shortenMethods, settings));
             builder.AppendWithStyle(styles.Parenthesis, "(");
             AppendParameters(builder, method, settings);
@@ -114,7 +117,9 @@ internal static class ExceptionFormatter
     {
         var typeColor = settings.Style.ParameterType.ToMarkup();
         var nameColor = settings.Style.ParameterName.ToMarkup();
-        var parameters = method?.GetParameters().Select(x => $"[{typeColor}]{x.ParameterType.Name.EscapeMarkup()}[/] [{nameColor}]{x.Name?.EscapeMarkup()}[/]");
+        var parameters = method?.GetParameters()
+            .Select(x => $"[{typeColor}]{GetParameterName(x).EscapeMarkup()}[/] [{nameColor}]{x.Name?.EscapeMarkup()}[/]");
+
         if (parameters != null)
         {
             builder.Append(string.Join(", ", parameters));
@@ -150,7 +155,8 @@ internal static class ExceptionFormatter
         }
     }
 
-    private static string Emphasize(string input, char[] separators, Style color, bool compact, ExceptionSettings settings)
+    private static string Emphasize(string input, char[] separators, Style color, bool compact,
+        ExceptionSettings settings)
     {
         var builder = new StringBuilder();
 
@@ -240,6 +246,46 @@ internal static class ExceptionFormatter
         }
     }
 
+    private static string GetPrefix(ParameterInfo parameter)
+    {
+        if (Attribute.IsDefined(parameter, typeof(ParamArrayAttribute), false))
+        {
+            return "params";
+        }
+
+        if (parameter.IsOut)
+        {
+            return "out";
+        }
+
+        if (parameter.IsIn)
+        {
+            return "in";
+        }
+
+        if (parameter.ParameterType.IsByRef)
+        {
+            return "ref";
+        }
+
+        return string.Empty;
+    }
+
+    private static string GetParameterName(ParameterInfo parameter)
+    {
+        var prefix = GetPrefix(parameter);
+        var parameterType = parameter.ParameterType;
+
+        if (parameterType.IsByRef && parameterType.GetElementType() is { } elementType)
+        {
+            parameterType = elementType;
+        }
+
+        var typeName = TypeNameHelper.GetTypeDisplayName(parameterType, false, true);
+
+        return string.IsNullOrWhiteSpace(prefix) ? typeName : $"{prefix} {typeName}";
+    }
+
     private static string GetMethodName(ref MethodBase method, out bool isAsync)
     {
         var declaringType = method.DeclaringType;
@@ -270,9 +316,9 @@ internal static class ExceptionFormatter
         builder.Append(method.Name);
         if (method.IsGenericMethod)
         {
-            builder.Append('[');
+            builder.Append('<');
             builder.Append(string.Join(",", method.GetGenericArguments().Select(t => t.Name)));
-            builder.Append(']');
+            builder.Append('>');
         }
 
         return builder.ToString();
@@ -281,7 +327,8 @@ internal static class ExceptionFormatter
     private static bool TryResolveStateMachineMethod(ref MethodBase method, out Type declaringType)
     {
         // https://github.com/dotnet/runtime/blob/v6.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L400-L455
-        declaringType = method.DeclaringType ?? throw new ArgumentException("Method must have a declaring type.", nameof(method));
+        declaringType = method.DeclaringType ??
+                        throw new ArgumentException("Method must have a declaring type.", nameof(method));
 
         var parentType = declaringType.DeclaringType;
         if (parentType == null)
