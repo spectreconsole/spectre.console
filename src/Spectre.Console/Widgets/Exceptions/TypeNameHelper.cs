@@ -40,33 +40,11 @@ internal static class TypeNameHelper
     /// <param name="fullName"><c>true</c> to print a fully qualified name.</param>
     /// <param name="includeGenericParameterNames"><c>true</c> to include generic parameter names.</param>
     /// <returns>The pretty printed type name.</returns>
-    public static string GetTypeDisplayName(Type type, bool fullName = true, bool includeGenericParameterNames = false)
+    public static string GetTypeDisplayName(Type type, bool fullName = false, bool includeGenericParameterNames = true)
     {
         var builder = new StringBuilder();
         ProcessType(builder, type, new DisplayNameOptions(fullName, includeGenericParameterNames));
         return builder.ToString();
-    }
-
-    public static StringBuilder AppendTypeDisplayName(this StringBuilder builder, Type type, bool fullName = true,
-        bool includeGenericParameterNames = false)
-    {
-        ProcessType(builder, type, new DisplayNameOptions(fullName, includeGenericParameterNames));
-        return builder;
-    }
-
-    /// <summary>
-    /// Returns a name of given generic type without '`'.
-    /// </summary>
-    public static string GetTypeNameForGenericType(Type type)
-    {
-        if (!type.IsGenericType)
-        {
-            throw new ArgumentException("The given type should be generic", nameof(type));
-        }
-
-        var genericPartIndex = type.Name.IndexOf('`');
-
-        return (genericPartIndex >= 0) ? type.Name.Substring(0, genericPartIndex) : type.Name;
     }
 
     private static void ProcessType(StringBuilder builder, Type type, DisplayNameOptions options)
