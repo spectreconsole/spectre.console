@@ -48,7 +48,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     public SelectionMode Mode { get; set; } = SelectionMode.Leaf;
 
     /// <summary>
-    /// Gets or sets a value indicating whether the prompt can be aborted.
+    /// Gets or sets a value indicating whether the prompt can be aborted by pressing the <c>ESC</c> key.
     /// </summary>
     public bool AllowAbort { get; set; } = false;
 

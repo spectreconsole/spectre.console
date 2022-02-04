@@ -331,7 +331,7 @@ public static class MultiSelectionPromptExtensions
     }
 
     /// <summary>
-    /// Sets the value indicating whether the prompt can be aborted.
+    /// Sets a value indicating whether the prompt can be aborted by pressing the <c>ESC</c> key.
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>
     /// <param name="obj">The prompt.</param>

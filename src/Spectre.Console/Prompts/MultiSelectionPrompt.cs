@@ -54,7 +54,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     internal ListPromptTree<T> Tree { get; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether the prompt can be aborted.
+    /// Gets or sets a value indicating whether the prompt can be aborted by pressing the <c>ESC</c> key.
     /// </summary>
     public bool AllowAbort { get; set; } = false;
 
