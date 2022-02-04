@@ -276,14 +276,83 @@ internal static class ExceptionFormatter
         var prefix = GetPrefix(parameter);
         var parameterType = parameter.ParameterType;
 
-        if (parameterType.IsByRef && parameterType.GetElementType() is { } elementType)
+        string typeName;
+        if (parameterType.IsGenericType && TryGetTupleName(parameter, parameterType, out var s))
         {
-            parameterType = elementType;
+            typeName = s;
+        }
+        else
+        {
+            if (parameterType.IsByRef && parameterType.GetElementType() is { } elementType)
+            {
+                parameterType = elementType;
+            }
+
+            typeName = TypeNameHelper.GetTypeDisplayName(parameterType);
         }
 
-        var typeName = TypeNameHelper.GetTypeDisplayName(parameterType, false, true);
-
         return string.IsNullOrWhiteSpace(prefix) ? typeName : $"{prefix} {typeName}";
+    }
+
+    private static bool TryGetTupleName(ParameterInfo parameter, Type parameterType, [NotNullWhen(true)] out string? tupleName)
+    {
+        var customAttribs = parameter.GetCustomAttributes(inherit: false);
+
+        var tupleNameAttribute = customAttribs
+            .OfType<Attribute>()
+            .FirstOrDefault(a =>
+            {
+                var attributeType = a.GetType();
+                return attributeType.Namespace == "System.Runtime.CompilerServices" &&
+                       attributeType.Name == "TupleElementNamesAttribute";
+            });
+
+        if (tupleNameAttribute != null)
+        {
+            var propertyInfo = tupleNameAttribute.GetType()
+                .GetProperty("TransformNames", BindingFlags.Instance | BindingFlags.Public)!;
+            var tupleNames = propertyInfo.GetValue(tupleNameAttribute) as IList<string>;
+            if (tupleNames?.Count > 0)
+            {
+                var args = parameterType.GetGenericArguments();
+                var sb = new StringBuilder();
+
+                sb.Append('(');
+                for (var i = 0; i < args.Length; i++)
+                {
+                    if (i > 0)
+                    {
+                        sb.Append(", ");
+                    }
+
+                    sb.Append(TypeNameHelper.GetTypeDisplayName(args[i]));
+
+                    if (i >= tupleNames.Count)
+                    {
+                        continue;
+                    }
+
+                    var argName = tupleNames[i];
+
+                    sb.Append(' ');
+                    sb.Append(argName);
+                }
+
+                sb.Append(')');
+
+                tupleName = sb.ToString();
+                return true;
+            }
+        }
+        else if (parameterType.Namespace == "System" && parameterType.Name.Contains("ValueTuple`"))
+        {
+            var args = parameterType.GetGenericArguments().Select(i => TypeNameHelper.GetTypeDisplayName(i));
+            tupleName = $"({string.Join(", ", args)})";
+            return true;
+        }
+
+        tupleName = null;
+        return false;
     }
 
     private static string GetMethodName(ref MethodBase method, out bool isAsync)

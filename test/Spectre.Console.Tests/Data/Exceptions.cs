@@ -35,4 +35,10 @@ public static class TestExceptions
         firstFewItems = new List<T>();
         throw new InvalidOperationException("Throwing!");
     }
+
+    public static (string Key, List<T> Values) GetTuplesWithInnerException<T>((int First, string Second) myValue)
+    {
+        MethodThatThrows(0);
+        return ("key", new List<T>());
+    }
 }
