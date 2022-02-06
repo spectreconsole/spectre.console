@@ -20,8 +20,7 @@ public sealed partial class CommandAppTests
             });
             var commandToRun = Constants.CompleteCommand
                    .ToList()
-                   .Append("myapp")
-                   .Append("li");
+                   .Append("myapp li");
 
             // When
             var result = fixture.Run(commandToRun.ToArray());
