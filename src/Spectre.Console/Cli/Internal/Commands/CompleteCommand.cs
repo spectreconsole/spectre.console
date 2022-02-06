@@ -26,12 +26,31 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
 
     public override int Execute([NotNull] CommandContext context, [NotNull] Settings settings)
     {
-        _writer.Write(GetCompletions(_model, settings), Style.Plain);
+        foreach (var completion in GetCompletions(_model, settings))
+        {
+            _writer.WriteLine(completion, Style.Plain);
+        }
+
         return 0;
     }
 
-    public static string GetCompletions(CommandModel model, Settings settings)
-    { 
-        throw new NotImplementedException();
+    public static string[] GetCompletions(CommandModel model, Settings settings)
+    {
+        var completions = new string[] { };
+
+        if (string.IsNullOrEmpty(settings.CommandToComplete))
+        {
+            return completions;
+        }
+
+        // We should actually follow the branches of the command and handle parameters, but for a first very naive implementation this is ok.
+        string lastSegment = settings.CommandToComplete.Split(" ").LastOrDefault();
+
+        completions = model.Commands
+            .TakeWhile(c => c.Name.StartsWith(lastSegment))
+                .Select(c => c.Name)
+                .ToArray();
+
+        return completions;
     }
 }
