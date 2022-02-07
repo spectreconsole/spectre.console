@@ -20,7 +20,7 @@
     }
     @if (category != null) {
         <span>
-            to <a class="text-blue-800 underline" href="@Context.GetLink($"blog/{NormalizedPath.OptimizeFileName(@category)}/index.html")">
+            to <a href="@Context.GetLink($"blog/{NormalizedPath.OptimizeFileName(@category)}/index.html")">
                 @category
             </a>
         </span>

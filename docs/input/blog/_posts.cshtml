@@ -19,7 +19,7 @@
             @if (category != null) {
                 var categoryUrl = @Context.GetLink($"blog/{NormalizedPath.OptimizeFileName(category)}/index.html");
                 <span>
-                    to <a class="text-blue-800 underline" href="@categoryUrl">
+                    to <a href="@categoryUrl">
                         @category
                     </a>
                 </span>

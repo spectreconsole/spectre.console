@@ -4,7 +4,7 @@
   "description": "Docs for Spectre.Console",
   "main": "index.js",
   "scripts": {
-    "build:tailwind": "tailwind build ./input/tailwind.css  -c ./input/tailwind.config.js  -o ./output/assets/styles.css",
+    "build:tailwind": "tailwind build -i ./input/tailwind.css  -c ./input/tailwind.config.js  -o ./output/assets/styles.css",
     "build": "cross-env NODE_ENV=production dotnet run -- -o public"
   },
   "repository": {
@@ -14,12 +14,12 @@
   "devDependencies": {
     "@tailwindcss/forms": "^0.3.4",
     "@tailwindcss/typography": "^0.4.1",
-    "asciinema-player": "^3.0.0-rc.1",
+    "asciinema-player": "^3.0.0-beta.4",
     "autoprefixer": "^10.4.0",
     "cross-env": "^7.0.3",
-    "playwright": "^1.16.3",
+    "playwright": "^1.18.1",
     "postcss": "^8.4.4",
     "postcss-cli": "^8.3.1",
-    "tailwindcss": "^2.2.19"
+    "tailwindcss": "^3.0.18"
   }
 }

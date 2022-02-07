@@ -58,7 +58,6 @@ public class ExampleSnippet : Shortcode
 
         foreach (var analyzerResult in  manager.Projects.Values)
         {
-            analyzerResult.
             analyzerResult.AddToWorkspace(workspace, false);
         }
 

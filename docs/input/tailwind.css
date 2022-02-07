@@ -10,6 +10,10 @@ and the ascii terminal player.
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+.dark {
+    color-scheme: dark;
+}
+
 /* temp styling for alerts */
 
 .alert-warning {
