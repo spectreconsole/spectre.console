@@ -38,16 +38,18 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
 
     private string[] GetCompletions(CommandModel model, Settings settings)
     {
+        // Get all command elements and skip the application name at the start.
+        var commandElements = settings.CommandToComplete?.Split(' ').Skip(1);
+
         // Return early if the only thing we got was "".
-        if (string.IsNullOrEmpty(settings.CommandToComplete))
+        if (commandElements == null ||
+           (commandElements.Count() == 1 &&
+            string.IsNullOrEmpty(commandElements.First())))
         {
             return model.Commands.Where(cmd => !cmd.IsHidden)
                                  .Select(c => c.Name)
                                  .ToArray();
         }
-
-        // Get all command elements and skip the application name at the start.
-        var commandElements = settings.CommandToComplete.Split(' ').Skip(1);
 
         // Parse the command elements to get an abstract syntax tree and some context
         CommandTreeParserResult? parsedResult = null;
@@ -66,7 +68,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
                 context = commandElements.ToArray()[commandElements.Count() - 2];
             }
         }
-        catch
+        catch (CommandParseException)
         {
             // Assume that it's because the last commandElement was not complete, and omit that one.
             var strippedCommandElements = commandElements.Take(commandElements.Count() - 1);

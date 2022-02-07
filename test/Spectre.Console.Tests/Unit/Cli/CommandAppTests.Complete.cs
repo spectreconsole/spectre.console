@@ -106,6 +106,5 @@ public sealed partial class CommandAppTests
             // Then
             return Verifier.Verify(result.Output);
         }
-
     }
 }
