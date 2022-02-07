@@ -18,11 +18,41 @@ using Document = Microsoft.CodeAnalysis.Document;
 
 namespace Docs.Shortcodes;
 
+public class SolutionWorkspaceProvider
+{
+    private static readonly ConcurrentDictionary<string, AdhocWorkspace> _workspaceCache = new();
+
+    public AdhocWorkspace Get(string solutionFile)
+    {
+        return _workspaceCache.GetOrAdd(solutionFile, s =>
+        {
+            var analyzerManager = new AnalyzerManager(s, new AnalyzerManagerOptions());
+
+            var workspace = new AdhocWorkspace();
+            if (!string.IsNullOrEmpty(analyzerManager.SolutionFilePath))
+            {
+                var solutionInfo = SolutionInfo.Create(
+                    SolutionId.CreateNewId(),
+                    VersionStamp.Default,
+                    analyzerManager.SolutionFilePath);
+
+                workspace.AddSolution(solutionInfo);
+            }
+
+            foreach (var analyzerResult in analyzerManager.Projects.Values)
+            {
+                analyzerResult.AddToWorkspace(workspace, false);
+            }
+
+            return workspace;
+        });
+    }
+}
+
 public class ExampleSnippet : Shortcode
 {
-    private static readonly ConcurrentDictionary<string,
-            Lazy<Task<Dictionary<string, (Document Document, int Indent, TextSpan TextSpan)>>>>
-        _solutionSyntaxTrees = new();
+
+    private static readonly ConcurrentDictionary<string, Lazy<Task<Dictionary<string, (Document Document, int Indent, TextSpan TextSpan)>>>> _solutionSyntaxTrees = new();
 
     public override async Task<ShortcodeResult> ExecuteAsync(KeyValuePair<string, string>[] args, string content,
         IDocument document, IExecutionContext context)
@@ -47,35 +77,14 @@ public class ExampleSnippet : Shortcode
         return shortcodeResult;
     }
 
-    public static AdhocWorkspace GetWorkspace(IAnalyzerManager manager)
+    private async Task<Dictionary<string, (Document Document, int Indent, TextSpan SourceSpan)>> GetSyntaxTrees(string solutionFile, IExecutionContext context)
     {
-        var workspace = new AdhocWorkspace();
-        if (!string.IsNullOrEmpty(manager.SolutionFilePath))
-        {
-            var solutionInfo = SolutionInfo.Create(SolutionId.CreateNewId(), VersionStamp.Default, manager.SolutionFilePath);
-            workspace.AddSolution(solutionInfo);
-        }
-
-        foreach (var analyzerResult in  manager.Projects.Values)
-        {
-            analyzerResult.AddToWorkspace(workspace, false);
-        }
-
-        return workspace;
-    }
-
-    private static async
-        Task<Dictionary<string, (Document Document, int Indent, TextSpan SourceSpan)>> GetSyntaxTrees(
-            string solutionFile, IExecutionContext context)
-    {
+        var workspaceProvider = context.GetRequiredService<SolutionWorkspaceProvider>();
         context.LogInformation("Parsing {solutionFile}", solutionFile);
         var syntaxTreeDictionary =
             new Dictionary<string, (Document Document, int Indent, TextSpan SourceSpan)>();
-        var analyzerManager = new AnalyzerManager(solutionFile,
-            new AnalyzerManagerOptions { LoggerFactory = context.GetRequiredService<ILoggerFactory>() });
 
-        using var workspace = GetWorkspace(analyzerManager);
-        foreach (var project in workspace.CurrentSolution.Projects)
+        foreach (var project in workspaceProvider.Get(solutionFile).CurrentSolution.Projects)
         {
             context.LogInformation("Parsing {project}", project.Name);
             if (project.Name.StartsWith("Spectre.Console")) continue;
@@ -101,6 +110,17 @@ public class ExampleSnippet : Shortcode
                     var classKey = $"{project.Name}.{className}".ToLowerInvariant();
                     if (syntaxTreeDictionary.ContainsKey(classKey) == false)
                     {
+
+                        var xmlTrivia = classDeclarationSyntax.GetLeadingTrivia()
+                            .Select(i => i.GetStructure())
+                            .OfType<DocumentationCommentTriviaSyntax>()
+                            .FirstOrDefault();
+
+                        if (xmlTrivia != null)
+                        {
+                            Console.WriteLine(xmlTrivia.Content);
+                        }
+
                         syntaxTreeDictionary.Add(classKey,
                             (
                                 document,

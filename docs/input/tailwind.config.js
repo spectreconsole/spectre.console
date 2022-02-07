@@ -9,7 +9,7 @@ module.exports = {
                 sans: ["Poppins", ...defaultTheme.fontFamily.sans],
                 mono: ["ui-monospace", "Cascadia Mono", "Cascadia Code", "Menlo", "Consolas", "Liberation Mono", "Lucida Console", "WebCascadiaMonoPL", "monospace"],
             },
-            container: ({ theme }) => ({
+            container: ({theme}) => ({
                 center: true,
                 padding: {
                     DEFAULT: "2rem",
@@ -21,16 +21,16 @@ module.exports = {
                 screens: {
                     sm: theme("spacing.full"),
                     md: theme("spacing.full"),
-                    lg: "1024px",
-                    xl: "1280px",
+                    lg: "1280px",
+                    xl: "1400px",
                 },
             }),
             typography: (theme) => ({
                 DEFAULT: {
                     css: {
-                       h2: {
-                           marginTop: '1.4em',
-                           marginBottom: `.2em`,
+                        h2: {
+                            marginTop: '1.4em',
+                            marginBottom: `.2em`,
                         },
                         h3: {
                             marginTop: '2.4em',
@@ -38,12 +38,24 @@ module.exports = {
                         },
                         pre: {
                             fontWeight: theme("fontWeight.light"),
-                            boxShadow: theme("boxShadow.md"),
-
+                            borderRadius: theme('borderRadius.xl'),
+                            borderWidth: '1px',
+                            borderColor: theme('colors.slate.700'),
+                            color: theme('colors.slate.50'),
+                            boxShadow: theme('boxShadow.md'),
+                            lineHeight: '1.3',
+                        },
+                        'p + pre, p + asciinema-player pre': {
+                            marginTop: `${-4 / 14}em`,
+                        },
+                        'pre + pre': {
+                            marginTop: `${-16 / 14}em`,
                         },
                         code: {
                             fontWeight: theme("fontWeight.normal"),
+                            fontSize: 'inherit',
                         },
+
                         "code::before": {
                             content: "&nbsp;",
                         },
@@ -54,9 +66,9 @@ module.exports = {
                             overflowWrap: "anywhere",
                         },
                         a: {
-                            fontWeight: theme('fontWeight.medium'),
+                            fontWeight: theme('fontWeight.normal'),
                             textDecoration: 'none',
-                            borderBottom: `1px solid ${theme('colors.teal.300')}`,
+                            borderBottom: `1px solid ${theme('colors.teal.600')}`,
                         },
                         'a:hover': {
                             borderBottomWidth: '2px',

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Docs.Shortcodes;
+using Microsoft.Extensions.DependencyInjection;
 using Statiq.App;
 using Statiq.Common;
 using Statiq.Core;
@@ -18,6 +19,7 @@ namespace Docs
                 .AddSetting("ExampleSolution", @"../examples/Examples.sln")
                 .ConfigureSite("spectreconsole", "spectre.console", "main")
                 .ConfigureDeployment(deployBranch: "docs")
+                .ConfigureServices(i => i.AddTransient<SolutionWorkspaceProvider>())
                 .AddShortcode("Children", typeof(ChildrenShortcode))
                 .AddShortcode("ColorTable", typeof(ColorTableShortcode))
                 .AddShortcode("EmojiTable", typeof(EmojiTableShortcode))

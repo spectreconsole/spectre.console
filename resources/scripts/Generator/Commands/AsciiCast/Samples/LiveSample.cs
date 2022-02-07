@@ -6,7 +6,7 @@ namespace Generator.Commands.Samples
 {
     internal class LiveSample : BaseSample
     {
-        public override (int Cols, int Rows) ConsoleSize => (120, 20);
+        public override (int Cols, int Rows) ConsoleSize => (100, 20);
 
         public override void Run(IAnsiConsole console)
         {
