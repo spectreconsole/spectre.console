@@ -21,7 +21,7 @@ you can use the `Prompt<TResult>`.
 
 ## Confirmation
 
-<?# Example symbol="Prompt.Program.AskConfirmation::body" /?>
+<?# Example symbol="M:Spectre.Console.Examples.Program.AskConfirmation" project="Prompt" /?>
 
 ```text
 Run prompt example? [y/n] (y): _
@@ -29,7 +29,7 @@ Run prompt example? [y/n] (y): _
 
 ## Simple
 
-<?# Example symbol="Prompt.Program.AskName::body" /?>
+<?# Example symbol="M:Spectre.Console.Examples.Program.AskName" project="Prompt" /?>
 
 ```text
 What's your name? Patrik
@@ -38,7 +38,7 @@ What's your age? 37
 
 ## Choices
 
-<?# Example symbol="Prompt.Program.AskFruit::body" /?>
+<?# Example symbol="M:Spectre.Console.Examples.Program.AskFruit" project="Prompt" /?>
 
 ```text
 What's your favorite fruit? [Apple/Banana/Orange] (Orange): _
@@ -46,7 +46,7 @@ What's your favorite fruit? [Apple/Banana/Orange] (Orange): _
 
 ## Validation
 
-<?# Example symbol="Prompt.Program.AskAge::body" /?>
+<?# Example symbol="M:Prompt.Program.AskAge" project="Prompt" /?>
 
 ```text
 What's the secret number? 32
@@ -58,7 +58,7 @@ What's the secret number? _
 
 ## Secrets
 
-<?# Example symbol="Prompt.Program.AskPassword::body" /?>
+<?# Example symbol="M:Spectre.Console.Examples.Program.AskPassword" project="Prompt" /?>
 
 
 ```text
@@ -67,7 +67,7 @@ Enter password: ************_
 
 ## Optional
 
-<?# Example symbol="Prompt.Program.AskColor::body" /?>
+<?# Example symbol="M:Spectre.Console.Examples.Program.AskColor" project="Prompt" /?>
 
 ```text
 [Optional] Favorite color? _

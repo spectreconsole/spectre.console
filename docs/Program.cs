@@ -1,10 +1,14 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Docs.Pipelines;
 using Docs.Shortcodes;
+using Docs.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Statiq.App;
 using Statiq.Common;
 using Statiq.Core;
 using Statiq.Web;
+using Statiq.Web.Pipelines;
 
 namespace Docs
 {
@@ -16,7 +20,12 @@ namespace Docs
                 .AddSetting(Keys.Host, "spectreconsole.net")
                 .AddSetting(Keys.LinksUseHttps, true)
                 .AddSetting(Constants.EditLink, ConfigureEditLink())
-                .AddSetting("ExampleSolution", @"../examples/Examples.sln")
+                .AddSetting(Constants.SourceFiles, new List<string>
+                {
+                    "../../examples/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
+                    "../../src/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs" }
+                )
+                .AddSetting(Constants.SolutionFiles, new List<string> { @"../examples/Examples.sln" } )
                 .ConfigureSite("spectreconsole", "spectre.console", "main")
                 .ConfigureDeployment(deployBranch: "docs")
                 .ConfigureServices(i => i.AddTransient<SolutionWorkspaceProvider>())

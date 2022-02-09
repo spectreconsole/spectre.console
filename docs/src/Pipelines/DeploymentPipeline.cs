@@ -4,7 +4,7 @@ using Statiq.Web.GitHub;
 
 namespace Docs.Pipelines
 {
-    public class DeploymentPipeline : Pipeline
+    public class DeploymentPipeline : Statiq.Core.Pipeline
     {
         public DeploymentPipeline()
         {

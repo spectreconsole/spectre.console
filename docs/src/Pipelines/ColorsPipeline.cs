@@ -7,7 +7,7 @@ using Statiq.Core;
 
 namespace Docs.Pipelines
 {
-    public class ColorsPipeline : Pipeline
+    public class ColorsPipeline : Statiq.Core.Pipeline
     {
         public ColorsPipeline()
         {
@@ -24,7 +24,7 @@ namespace Docs.Pipelines
                 new ExecuteConfig(
                     Config.FromDocument(async (doc, ctx) =>
                     {
-                        var data = Color.Parse(await doc.GetContentStringAsync()).ToList(); 
+                        var data = Color.Parse(await doc.GetContentStringAsync()).ToList();
                         return data.ToDocument(Constants.Colors.Root);
                     }))
             };

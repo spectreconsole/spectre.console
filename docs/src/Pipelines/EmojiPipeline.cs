@@ -6,7 +6,7 @@ using Statiq.Core;
 
 namespace Docs.Pipelines
 {
-    public class EmojiPipeline : Pipeline
+    public class EmojiPipeline : Statiq.Core.Pipeline
     {
         public EmojiPipeline()
         {

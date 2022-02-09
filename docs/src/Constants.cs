@@ -9,6 +9,25 @@ namespace Docs
         public const string EditLink = nameof(EditLink);
         public const string Description = nameof(Description);
         public const string Hidden = nameof(Hidden);
+        public const string XmlDocs = "XmlDocs";
+        public const string XmlDocsType = "XmlDocsType";
+
+        /// <summary>
+        /// Indicates where to locate source files for the API documentation.
+        /// By default the globbing pattern "src/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs"
+        /// is used which searches for all "*.cs" files at any depth under a "src" folder
+        /// but not under "bin", "obj", "packages" or "Tests" folders. You can specify
+        /// your own globbing pattern (or more than one globbing pattern) if your source
+        /// files are found elsewhere.
+        /// </summary>
+        /// <type><see cref="string"/> or <c>IEnumerable&lt;string&gt;</c></type>
+        public const string SourceFiles = nameof(SourceFiles);
+
+        /// <summary>
+        /// Indicates where to locate solution files for the API documentation.
+        /// </summary>
+        /// <type><see cref="string"/> or <c>IEnumerable&lt;string&gt;</c></type>
+        public const string SolutionFiles = nameof(SolutionFiles);
 
         public static class Emojis
         {
@@ -21,9 +40,9 @@ namespace Docs
             public const string Root = "COLORS_ROOT";
         }
 
-        public static class Snippets
+        public static class CodeProvider
         {
-            public const string ExampleProject = @"../examples/Examples.sln";
+            public const string Solution = @"../examples/Examples.sln";
         }
 
         public static class Site
