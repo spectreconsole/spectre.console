@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using Spectre.Console.Cli;
 
-namespace Demo.Commands;
+namespace Demo.Commands.Add;
 
 public abstract class AddSettings : CommandSettings
 {

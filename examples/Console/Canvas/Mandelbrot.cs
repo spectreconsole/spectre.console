@@ -4,8 +4,9 @@ Licensed under GNU Free Documentation License 1.2
 */
 
 using System;
+using Spectre.Console;
 
-namespace Spectre.Console.Examples;
+namespace Canvas;
 
 public static class Mandelbrot
 {
@@ -39,9 +40,9 @@ public static class Mandelbrot
         }
     }
 
-    public static Canvas Generate(int width, int height)
+    public static Spectre.Console.Canvas Generate(int width, int height)
     {
-        var canvas = new Canvas(width, height);
+        var canvas = new Spectre.Console.Canvas(width, height);
 
         var scale = 2 * MaxValueExtent / Math.Min(canvas.Width, canvas.Height);
         for (var i = 0; i < canvas.Height; i++)

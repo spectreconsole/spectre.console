@@ -1,4 +1,6 @@
-namespace Spectre.Console.Examples;
+using Spectre.Console;
+
+namespace Calendars;
 
 public static class Program
 {

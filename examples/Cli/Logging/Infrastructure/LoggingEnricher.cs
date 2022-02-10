@@ -1,7 +1,7 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Spectre.Console.Examples;
+namespace Logging.Infrastructure;
 
 internal class LoggingEnricher : ILogEventEnricher
 {

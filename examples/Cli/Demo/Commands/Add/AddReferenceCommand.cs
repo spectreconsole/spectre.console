@@ -2,7 +2,7 @@ using System.ComponentModel;
 using Demo.Utilities;
 using Spectre.Console.Cli;
 
-namespace Demo.Commands;
+namespace Demo.Commands.Add;
 
 public sealed class AddReferenceCommand : Command<AddReferenceCommand.Settings>
 {

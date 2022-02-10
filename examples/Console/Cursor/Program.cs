@@ -1,4 +1,6 @@
-namespace Spectre.Console.Examples;
+using Spectre.Console;
+
+namespace Cursor;
 
 public static class Program
 {

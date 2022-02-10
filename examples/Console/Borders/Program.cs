@@ -1,6 +1,7 @@
+using Spectre.Console;
 using Spectre.Console.Rendering;
 
-namespace Spectre.Console.Examples;
+namespace Borders;
 
 public static class Program
 {

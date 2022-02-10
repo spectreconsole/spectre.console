@@ -1,4 +1,6 @@
-namespace Spectre.Console.Examples
+using Spectre.Console;
+
+namespace Prompt
 {
     public static class Program
     {
@@ -56,7 +58,7 @@ namespace Spectre.Console.Examples
             AnsiConsole.Write(new Rule($"[yellow]{text}[/]").RuleStyle("grey").LeftAligned());
         }
 
-        private static bool AskConfirmation()
+        public static bool AskConfirmation()
         {
             if (!AnsiConsole.Confirm("Run prompt example?"))
             {
@@ -67,13 +69,13 @@ namespace Spectre.Console.Examples
             return true;
         }
 
-        private static string AskName()
+        public static string AskName()
         {
             var name = AnsiConsole.Ask<string>("What's your [green]name[/]?");
             return name;
         }
 
-        private static string AskFruit()
+        public static string AskFruit()
         {
             var favorites = AnsiConsole.Prompt(
                 new MultiSelectionPrompt<string>()
@@ -109,7 +111,7 @@ namespace Spectre.Console.Examples
             return fruit;
         }
 
-        private static string AskSport()
+        public static string AskSport()
         {
             return AnsiConsole.Prompt(
                 new TextPrompt<string>("What's your [green]favorite sport[/]?")
@@ -120,7 +122,7 @@ namespace Spectre.Console.Examples
                     .AddChoice("Basketball"));
         }
 
-        private static int AskAge()
+        public static int AskAge()
         {
             return AnsiConsole.Prompt(
                 new TextPrompt<int>("How [green]old[/] are you?")
@@ -137,7 +139,7 @@ namespace Spectre.Console.Examples
                     }));
         }
 
-        private static string AskPassword()
+        public static string AskPassword()
         {
             return AnsiConsole.Prompt(
                 new TextPrompt<string>("Enter [green]password[/]?")
@@ -145,7 +147,7 @@ namespace Spectre.Console.Examples
                     .Secret());
         }
 
-        private static string AskColor()
+        public static string AskColor()
         {
             return AnsiConsole.Prompt(
                 new TextPrompt<string>("[grey][[Optional]][/] What is your [green]favorite color[/]?")

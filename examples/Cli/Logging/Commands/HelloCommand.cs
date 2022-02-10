@@ -1,7 +1,8 @@
 using Microsoft.Extensions.Logging;
+using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace Spectre.Console.Examples;
+namespace Logging.Commands;
 
 public class HelloCommand : Command<HelloCommand.Settings>
 {

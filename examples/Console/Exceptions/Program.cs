@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
+using Spectre.Console;
 
-namespace Spectre.Console.Examples;
+namespace Exceptions;
 
 public static class Program
 {

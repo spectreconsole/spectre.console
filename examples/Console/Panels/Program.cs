@@ -1,4 +1,6 @@
-namespace Spectre.Console.Examples;
+using Spectre.Console;
+
+namespace Panels;
 
 public static class Program
 {

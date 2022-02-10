@@ -1,8 +1,7 @@
 using System;
-using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
-namespace Spectre.Console.Examples;
+namespace Logging.Infrastructure;
 
 public sealed class TypeResolver : ITypeResolver
 {

@@ -1,4 +1,6 @@
-namespace Spectre.Console.Examples;
+using Spectre.Console;
+
+namespace Grids;
 
 public static class Program
 {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Spectre.Console;
 
-namespace Spectre.Console.Examples;
+namespace Columns;
 
 public static class Program
 {
@@ -16,7 +17,7 @@ public static class Program
         }
 
         // Render all cards in columns
-        AnsiConsole.Write(new Columns(cards));
+        AnsiConsole.Write(new Spectre.Console.Columns(cards));
     }
 
     private static string GetCardContent(User user)

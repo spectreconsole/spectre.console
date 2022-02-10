@@ -1,4 +1,7 @@
 using Demo.Commands;
+using Demo.Commands.Add;
+using Demo.Commands.Run;
+using Demo.Commands.Serve;
 using Spectre.Console.Cli;
 
 namespace Demo;

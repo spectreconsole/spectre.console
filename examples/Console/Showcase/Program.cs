@@ -1,6 +1,8 @@
+using Spectre.Console;
+using Spectre.Console.Examples;
 using Spectre.Console.Rendering;
 
-namespace Spectre.Console.Examples;
+namespace Showcase;
 
 public static partial class Program
 {

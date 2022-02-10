@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Spectre.Console.Examples;
+namespace Columns;
 
 public sealed class User
 {
