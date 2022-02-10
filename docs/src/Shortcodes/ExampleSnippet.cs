@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
-using Docs.Pipeline;
-using Docs.Pipelines;
 using Docs.Utilities;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Statiq.CodeAnalysis;
 using Statiq.Common;
-using Document = Microsoft.CodeAnalysis.Document;
 
 namespace Docs.Shortcodes;
 
@@ -34,11 +29,16 @@ public class ExampleSnippet : Shortcode
             return string.Empty;
         }
 
-        var doc = apiDocument.Get<IDocument>(CodeAnalysisKeys.Type);
-        return string.Empty;
+        var options = HighlightService.HighlightOption.All;
+        if (bodyOnly)
+        {
+            options = HighlightService.HighlightOption.Body;
+        }
 
-        // var highlightElement = await HighlightService.Highlight(symbol, workspace, bodyOnly);
-        // ShortcodeResult shortcodeResult = $"<pre><code>{highlightElement}</code></pre>";
-        // return shortcodeResult;
+        var comp =  apiDocument.Get<Compilation>(CodeAnalysisKeys.Compilation);
+        var symbol = apiDocument.Get<ISymbol>(CodeAnalysisKeys.Symbol);
+        var highlightElement = await HighlightService.Highlight(comp, symbol, options);
+        ShortcodeResult shortcodeResult = $"<pre><code>{highlightElement}</code></pre>";
+        return shortcodeResult;
     }
 }

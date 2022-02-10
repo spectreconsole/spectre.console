@@ -25,10 +25,8 @@ namespace Docs
                     "../../examples/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
                     "../../src/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs" }
                 )
-                .AddSetting(Constants.SolutionFiles, new List<string> { @"../examples/Examples.sln" } )
                 .ConfigureSite("spectreconsole", "spectre.console", "main")
                 .ConfigureDeployment(deployBranch: "docs")
-                .ConfigureServices(i => i.AddTransient<SolutionWorkspaceProvider>())
                 .AddShortcode("Children", typeof(ChildrenShortcode))
                 .AddShortcode("ColorTable", typeof(ColorTableShortcode))
                 .AddShortcode("EmojiTable", typeof(EmojiTableShortcode))

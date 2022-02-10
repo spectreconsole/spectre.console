@@ -13,7 +13,16 @@ namespace Docs.Utilities;
 
 internal static class HighlightService
 {
-    public static async Task<string> Highlight(ISymbol symbol, Document document, bool bodyOnly = false)
+    internal enum HighlightOption
+    {
+        All,
+        Body,
+        Declaration
+    }
+
+    private static readonly AdhocWorkspace _emptyWorkspace = new();
+
+    public static async Task<string> Highlight(Compilation compilation, ISymbol symbol, HighlightOption option = HighlightOption.All)
     {
         var syntaxReference = symbol.DeclaringSyntaxReferences.FirstOrDefault();
         if (syntaxReference == null)
@@ -21,16 +30,38 @@ internal static class HighlightService
             return null;
         }
 
+        int? overrideEndLocation = null;
         var syntax = await syntaxReference.GetSyntaxAsync();
-        if (bodyOnly && syntax is MethodDeclarationSyntax { Body: { } } methodDeclarationSyntax)
+        if (syntax is BaseMethodDeclarationSyntax { Body: { } } methodDeclarationSyntax)
         {
-            syntax = methodDeclarationSyntax.Body;
+            if (option == HighlightOption.Body)
+            {
+                syntax = methodDeclarationSyntax.Body;
+            }
+            else if (option == HighlightOption.Declaration)
+            {
+                if (methodDeclarationSyntax.Body != null)
+                {
+                    overrideEndLocation = methodDeclarationSyntax.Body.SpanStart;
+                }
+                else if (methodDeclarationSyntax.ExpressionBody != null)
+                {
+                    overrideEndLocation = methodDeclarationSyntax.ExpressionBody.SpanStart;
+                }
+            }
         }
 
+        var model = compilation.GetSemanticModel(syntaxReference.SyntaxTree);
         var textSpan = syntaxReference.Span;
-        return await HighlightElement(document, GetIndent(syntax.GetLeadingTrivia()), textSpan);
-    }
+        if (overrideEndLocation != null)
+        {
+            textSpan = new TextSpan(textSpan.Start, overrideEndLocation.Value - textSpan.Start);
+        }
 
+        var text = await syntaxReference.SyntaxTree.GetTextAsync();
+        // we need a workspace, but it seems it is only used to resolve a few services and nothing else so an empty one will suffice
+        return HighlightElement(_emptyWorkspace, model, text, textSpan, GetIndent(syntax.GetLeadingTrivia()));
+    }
 
     private static int GetIndent(SyntaxTriviaList leadingTrivia)
     {
@@ -38,10 +69,17 @@ internal static class HighlightService
         return whitespace == default ? 0 : whitespace.Span.Length;
     }
 
-    private static async Task<string> HighlightElement(Document document, int indent, TextSpan textSpan)
+    private static string HighlightElement(Workspace workspace, SemanticModel semanticModel, SourceText fullSourceText,
+        TextSpan textSpan, int indent)
     {
-        var classifiedSpans = await Classifier.GetClassifiedSpansAsync(document, textSpan);
-        var fullSourceText = await document.GetTextAsync();
+
+        var classifiedSpans = Classifier.GetClassifiedSpans(semanticModel, textSpan, workspace);
+        return HighlightElement(classifiedSpans, fullSourceText, indent);
+    }
+
+    private static string HighlightElement(IEnumerable<ClassifiedSpan> classifiedSpans, SourceText fullSourceText, int indent)
+    {
+
         var ranges = classifiedSpans.Select(classifiedSpan =>
             new Range(classifiedSpan.ClassificationType, classifiedSpan.TextSpan, fullSourceText)).ToList();
 
@@ -184,7 +222,7 @@ internal static class HighlightService
         {
         }
 
-        public Range(ClassifiedSpan classifiedSpan, string text)
+        private Range(ClassifiedSpan classifiedSpan, string text)
         {
             ClassifiedSpan = classifiedSpan;
             Text = text;

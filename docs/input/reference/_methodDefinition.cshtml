@@ -1,0 +1,16 @@
+@using Statiq.CodeAnalysis
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    var methodName = Model.GetString(CodeAnalysisKeys.DisplayName);
+    var methodSummary = Model.GetString(CodeAnalysisKeys.Summary);
+}
+
+<div class="doc-summary">
+    <header>
+        <h3>@methodName</h3>
+        <p>@Html.Raw(methodSummary.RemoveAnchorTags())</p>
+    </header>
+    @await Html.PartialAsync("Sections/_ReturnValue.cshtml", Model)
+    @await Html.PartialAsync("Sections/_TypeParameters.cshtml", Model)
+    @await Html.PartialAsync("Sections/_Parameters.cshtml", Model)
+</div>

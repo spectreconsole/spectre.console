@@ -1,0 +1,21 @@
+@using Statiq.CodeAnalysis
+@{
+    var parameters = Model.GetDocumentList(CodeAnalysisKeys.Parameters);
+    var paramComments = Model.GetList<ReferenceComment>(CodeAnalysisKeys.Params);
+    if (parameters?.Count > 0)
+    {
+        <div>
+            <dl>
+                <div>
+                    @foreach (var parameter in parameters)
+                    {
+                        <dt>
+                            <code><span class="type">@parameter.GetString(CodeAnalysisKeys.FullName)</span> <span class="name">@parameter.GetString(CodeAnalysisKeys.Name)</span></code>
+                        </dt>
+                        <dd>@Html.Raw(paramComments?.Where(x => x.Name.Equals(parameter.GetString(CodeAnalysisKeys.Name))).Select(x => x.Html).FirstOrDefault().RemoveAnchorTags()) </dd>
+                    }
+                </div>
+            </dl>
+        </div>
+    }
+}

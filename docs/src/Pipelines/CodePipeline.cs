@@ -43,25 +43,24 @@ public class Api : Statiq.Core.Pipeline
                     .WhereNamespaces(true)
                     .WherePublic()
                     .WithCssClasses("code", "cs")
-                    .WithSolutions(Config.FromContext<IEnumerable<string>>(ctx =>
-                        ctx.GetList<string>(Constants.SolutionFiles)))
+                    .WithDestinationPrefix("api")
                     .WithAssemblySymbols()
-                    .WithImplicitInheritDoc(false)),
-            new ExecuteConfig(Config.FromDocument((doc, ctx) =>
-            {
-                // Add metadata
-                var metadataItems = new MetadataItems
+                    .WithImplicitInheritDoc(false),
+                new ExecuteConfig(Config.FromDocument((doc, ctx) =>
                 {
-                    // Calculate an xref that includes a "api-" prefix to avoid collisions
-                    { WebKeys.Xref, "api-" + doc.GetString(CodeAnalysisKeys.QualifiedName) },
-                    { Constants.Hidden, true }
-                };
+                    // make sure all these types we are reading in have a unique xref that doesn't conflict
+                    // with the rest of the content, and also make sure to mark them as hidden so they don't
+                    // show in the sidebar.
+                    var metadataItems = new MetadataItems
+                    {
+                        // Calculate an xref that includes a "api-" prefix to avoid collisions
+                        { WebKeys.Xref, "api-" + doc.GetString(CodeAnalysisKeys.QualifiedName) },
+                        { Constants.Hidden, true }
+                    };
 
-
-                // Change the content provider if needed
-                var contentProvider = doc.ContentProvider;
-                return doc.Clone(metadataItems, contentProvider);
-            }))
+                    var contentProvider = doc.ContentProvider;
+                    return doc.Clone(metadataItems, contentProvider);
+                }))).WithoutSourceMapping()
         };
     }
 }

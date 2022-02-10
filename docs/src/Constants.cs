@@ -23,12 +23,6 @@ namespace Docs
         /// <type><see cref="string"/> or <c>IEnumerable&lt;string&gt;</c></type>
         public const string SourceFiles = nameof(SourceFiles);
 
-        /// <summary>
-        /// Indicates where to locate solution files for the API documentation.
-        /// </summary>
-        /// <type><see cref="string"/> or <c>IEnumerable&lt;string&gt;</c></type>
-        public const string SolutionFiles = nameof(SolutionFiles);
-
         public static class Emojis
         {
             public const string Root = "EMOJIS_ROOT";

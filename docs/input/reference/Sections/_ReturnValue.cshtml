@@ -1,0 +1,20 @@
+@using Statiq.CodeAnalysis
+@using Microsoft.AspNetCore.Html
+@{
+    var returnType = Model.GetDocument(CodeAnalysisKeys.ReturnType);
+    var returns = Model.GetString(CodeAnalysisKeys.Returns);
+    if ((returnType != null && returnType.GetString(CodeAnalysisKeys.DisplayName) != "void") || !string.IsNullOrWhiteSpace(returns))
+    {
+        <div>
+            <dl>
+                <div>
+
+                    <dt>
+                        <code>@returnType.GetString(CodeAnalysisKeys.DisplayName)</code>
+                    </dt>
+                    <dd>(returns)</dd>
+                </div>
+            </dl>
+        </div>
+    }
+}

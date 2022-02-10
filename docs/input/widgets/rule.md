@@ -2,6 +2,7 @@ Title: Rule
 Order: 30
 RedirectFrom: rule
 Description: "The **Rule** class is used to render a horizontal rule (line) to the terminal."
+XmlDocsType: T:Spectre.Console.Rule
 Highlights:
     - Custom colors for line and title.
     - Specify left, center or right aligned title.

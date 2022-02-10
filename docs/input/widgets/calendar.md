@@ -2,6 +2,7 @@
 Order: 40
 RedirectFrom: calendar
 Description: "The **Calendar** is used to render a calendar to the terminal."
+XmlDocsType: T:Spectre.Console.Calendar
 Highlights:
     - Include highlighted events.
     - Culture aware.

@@ -2,6 +2,7 @@ Title: Progress
 Order: 5
 RedirectFrom: progress
 Description: "*Spectre.Console* can display information about long running tasks in the console using progress bars."
+XmlDocsType: T:Spectre.Console.Progress
 Highlights:
     - Custom styling of progress bars.
     - Multiple predefined columns such as Throughput, Estimated Time Remaining, and more.

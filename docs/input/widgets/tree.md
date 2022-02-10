@@ -1,6 +1,7 @@
 Title: Tree
 Order: 10
 Description: "The **Tree** widget can be used to render hierarchical data."
+XmlDocsType: T:Spectre.Console.Tree
 Highlights:
     - Custom colors and styles for guidelines.
     - Include any *Spectre.Console* widgets as child nodes.

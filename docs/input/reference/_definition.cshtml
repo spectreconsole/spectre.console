@@ -1,0 +1,18 @@
+@using Statiq.CodeAnalysis
+@inherits StatiqRazorPage<string>
+
+@if (Context.TryGetCommentIdDocument(Model, out var doc, out var error))
+{
+    var kind = doc.GetString(CodeAnalysisKeys.Kind);
+    if (kind == "NamedType")
+    {
+        @await Html.PartialAsync("_typeDefinition.cshtml", doc)
+        ;
+    }
+    else if (kind == "Method")
+    {
+        @await Html.PartialAsync("_typeDefinition.cshtml", doc)
+        ;
+    }
+
+}

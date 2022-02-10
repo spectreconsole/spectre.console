@@ -1,0 +1,33 @@
+@using Statiq.CodeAnalysis
+@{
+    IReadOnlyList<IDocument> properties = Model.GetDocumentList(CodeAnalysisKeys.Members)
+        ?.Where(x => x.GetBool(CodeAnalysisKeys.IsResult) && x.GetString(CodeAnalysisKeys.Kind) == "Property")
+        .OrderBy(x => x.GetString(CodeAnalysisKeys.DisplayName))
+        .ToList();
+
+    if (properties?.Count > 0)
+    {
+        <h3>Properties</h3>
+
+        <div class="doc-summary">
+
+            <div>
+                <dl>
+                    <div>
+                        @foreach (var property in properties)
+                        {
+                            var type = property.GetDocument(CodeAnalysisKeys.Type);
+                            var typename = type.GetString(CodeAnalysisKeys.DisplayName);
+                            <dt>
+                                <code>
+                                    <span class="type">@typename</span> <span class="name">@property.GetString(CodeAnalysisKeys.Name)</span>
+                                </code>
+                            </dt>
+                            <dd>@Html.Raw(property.GetString(CodeAnalysisKeys.Summary).RemoveAnchorTags())</dd>
+                        }
+                    </div>
+                </dl>
+            </div>
+        </div>
+    }
+}

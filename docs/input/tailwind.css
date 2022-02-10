@@ -28,7 +28,51 @@ and the ascii terminal player.
     @apply shadow-sm focus:ring-indigo-300 focus:border-indigo-300 block w-full sm:text-sm border-gray-300 rounded-md;
 }
 
-/* prism styling */
+div.doc-summary{
+    @apply border border-slate-300 dark:border-slate-200 dark:border-slate-800 bg-slate-200/50 dark:bg-slate-700 shadow overflow-hidden sm:rounded-lg mb-4;
+}
+
+div.doc-summary header{
+    @apply px-4 py-5 sm:px-6;
+}
+
+div.doc-summary header h3{
+    @apply mt-5 text-lg leading-6 font-medium;
+}
+
+div.doc-summary header p{
+    @apply mt-1 max-w-2xl text-sm;
+}
+
+div.doc-summary > div {
+    @apply border-t border-slate-300 dark:border-slate-800/50 px-4 py-5 sm:p-0;
+}
+
+div.doc-summary > div dl {
+    @apply sm:divide-y sm:divide-slate-300 dark:sm:divide-slate-700;
+}
+
+div.doc-summary > div dl > div {
+    @apply py-4 sm:py-5 sm:grid sm:grid-cols-5 sm:gap-4 sm:px-6;
+}
+
+div.doc-summary > div dl > div dt {
+    @apply text-sm sm:col-span-2;
+}
+
+div.doc-summary > div dl > div dt code .type {
+    @apply font-light dark:font-extralight;
+}
+
+div.doc-summary > div dl > div dt code .name {
+    @apply text-sky-400;
+}
+
+div.doc-summary > div dl > div dd {
+    @apply mt-1 text-sm sm:mt-0 sm:col-span-3;
+}
+
+    /* prism styling */
 pre[class*="language-text"] {
     line-height: 1rem;
 }
