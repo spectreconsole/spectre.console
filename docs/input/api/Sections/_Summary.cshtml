@@ -1,0 +1,7 @@
+@{
+    var summary = Document.GetString("Summary");
+    if (!summary.IsNullOrWhiteSpace())
+    {
+        <div class="my-4 md:my-8">@Html.Raw(summary)</div>
+    }
+}

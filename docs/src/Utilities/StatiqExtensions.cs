@@ -35,7 +35,14 @@ public static class StatiqExtensions
     {
         context.ThrowIfNull(nameof(context));
 
-        var documents = context.Outputs.FromPipeline(nameof(Api)).Flatten();
+        if (string.IsNullOrWhiteSpace(commentId))
+        {
+            document = default;
+            error = default;
+            return false;
+        }
+
+        var documents = context.Outputs.FromPipeline(nameof(ExampleSyntax)).Flatten();
         var matches = documents
             .Where(x =>
                 x.GetString(CodeAnalysisKeys.CommentId)?.Equals(commentId, StringComparison.OrdinalIgnoreCase) == true)

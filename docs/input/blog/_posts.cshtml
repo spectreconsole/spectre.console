@@ -1,5 +1,5 @@
 @inherits StatiqRazorPage<IEnumerable<IDocument>>
-@foreach (var post in Model)
+@foreach (var post in Model ?? Array.Empty<IDocument>())
 {
     <div>
         <h3 class="mb-0"><a href="@Context.GetLink(post)">@post.GetString("Title")</a></h3>

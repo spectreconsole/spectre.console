@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
+using Docs.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Statiq.CodeAnalysis;
 using Statiq.Common;
 using Statiq.Core;
@@ -12,7 +13,7 @@ namespace Docs.Pipelines;
 /// <summary>
 /// Loads source files.
 /// </summary>
-public class Code : Statiq.Core.Pipeline
+public class Code : Pipeline
 {
     public Code()
     {
@@ -28,9 +29,9 @@ public class Code : Statiq.Core.Pipeline
 /// pipeline along with any specified assemblies. This pipeline
 /// results in documents that represent Roslyn symbols.
 /// </summary>
-public class Api : Statiq.Core.Pipeline
+public class ExampleSyntax : Pipeline
 {
-    public Api()
+    public ExampleSyntax()
     {
         Dependencies.Add(nameof(Code));
         DependencyOf.Add(nameof(Content));
@@ -43,22 +44,86 @@ public class Api : Statiq.Core.Pipeline
                     .WhereNamespaces(true)
                     .WherePublic()
                     .WithCssClasses("code", "cs")
+                    .WithDestinationPrefix("syntax")
+                    .WithAssemblySymbols()
+                    .WithImplicitInheritDoc(false),
+                new ExecuteConfig(Config.FromDocument((doc, _) =>
+                {
+                    // Add metadata
+                    var metadataItems = new MetadataItems
+                    {
+                        // Calculate an xref that includes a "api-" prefix to avoid collisions
+                        { WebKeys.Xref, "syntax-" + doc.GetString(CodeAnalysisKeys.QualifiedName) },
+                    };
+
+                    var contentProvider = doc.ContentProvider;
+                    return doc.Clone(metadataItems, contentProvider);
+                }))).WithoutSourceMapping()
+        };
+    }
+}
+
+/// <summary>
+/// Generates API documentation pipeline.
+/// </summary>
+public class Api : Pipeline
+{
+    public Api()
+    {
+        Dependencies.Add(nameof(Code));
+        DependencyOf.Add(nameof(Content));
+
+        ProcessModules = new ModuleList
+        {
+            new ConcatDocuments(nameof(Code)),
+            new CacheDocuments(
+                new AnalyzeCSharp()
+                    .WhereNamespaces(ns => ns.StartsWith("Spectre.Console") && !ns.Contains("Analyzer") &&
+                                           !ns.Contains("Testing") && !ns.Contains("Examples"))
+                    .WherePublic()
+                    .WithCssClasses("code", "cs")
                     .WithDestinationPrefix("api")
                     .WithAssemblySymbols()
                     .WithImplicitInheritDoc(false),
                 new ExecuteConfig(Config.FromDocument((doc, ctx) =>
                 {
-                    // make sure all these types we are reading in have a unique xref that doesn't conflict
-                    // with the rest of the content, and also make sure to mark them as hidden so they don't
-                    // show in the sidebar.
+                    // Calculate a type name to link lookup for auto linking
+                    string name = null;
+
+                    var kind = doc.GetString(CodeAnalysisKeys.Kind);
+                    switch (kind)
+                    {
+                        case "NamedType":
+                            name = doc.GetString(CodeAnalysisKeys.DisplayName);
+                            break;
+                        case "Method" or "Property":
+                            var containingType = doc.GetDocument(CodeAnalysisKeys.ContainingType);
+                            if (containingType != null)
+                            {
+                                name =
+                                    $"{containingType.GetString(CodeAnalysisKeys.DisplayName)}.{doc.GetString(CodeAnalysisKeys.DisplayName)}";
+                            }
+                            break;
+                    }
+
+                    if (name != null)
+                    {
+                        var typeNameLinks = ctx.GetRequiredService<TypeNameLinks>();
+                        typeNameLinks.Links.AddOrUpdate(WebUtility.HtmlEncode(name), ctx.GetLink(doc),
+                            (_, _) => string.Empty);
+                    }
+
+                    // Add metadata
                     var metadataItems = new MetadataItems
                     {
                         // Calculate an xref that includes a "api-" prefix to avoid collisions
                         { WebKeys.Xref, "api-" + doc.GetString(CodeAnalysisKeys.QualifiedName) },
+                        { WebKeys.Layout, "api/_layout.cshtml" },
                         { Constants.Hidden, true }
                     };
 
-                    var contentProvider = doc.ContentProvider;
+                    var contentProvider = doc.ContentProvider.CloneWithMediaType(MediaTypes.Html);
+                    metadataItems.Add(WebKeys.ContentType, ContentType.Content);
                     return doc.Clone(metadataItems, contentProvider);
                 }))).WithoutSourceMapping()
         };

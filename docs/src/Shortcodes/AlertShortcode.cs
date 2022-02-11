@@ -1,8 +1,5 @@
 using System.Collections.Generic;
 using Statiq.Common;
-using System.Xml.Linq;
-using Microsoft.Extensions.DependencyInjection;
-using Statiq.Razor;
 
 namespace Docs.Shortcodes
 {

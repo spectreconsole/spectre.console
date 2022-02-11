@@ -33,7 +33,7 @@ div.doc-summary{
 }
 
 div.doc-summary header{
-    @apply px-4 py-5 sm:px-6;
+    @apply px-4 py-2 sm:px-6 sm:px-5;
 }
 
 div.doc-summary header h3{
@@ -45,11 +45,11 @@ div.doc-summary header p{
 }
 
 div.doc-summary > div {
-    @apply border-t border-slate-300 dark:border-slate-800/50 px-4 py-5 sm:p-0;
+    @apply border-t border-slate-300 dark:border-slate-800/50 px-4 py-0;
 }
 
 div.doc-summary > div dl {
-    @apply sm:divide-y sm:divide-slate-300 dark:sm:divide-slate-700;
+    @apply divide-y divide-slate-300 dark:divide-slate-800/50;
 }
 
 div.doc-summary > div dl > div {
@@ -60,16 +60,16 @@ div.doc-summary > div dl > div dt {
     @apply text-sm sm:col-span-2;
 }
 
-div.doc-summary > div dl > div dt code .type {
-    @apply font-light dark:font-extralight;
-}
-
-div.doc-summary > div dl > div dt code .name {
-    @apply text-sky-400;
+div.doc-summary > div dl > div dt .identifier {
+    @apply font-normal text-sky-600 dark:text-sky-400;
 }
 
 div.doc-summary > div dl > div dd {
     @apply mt-1 text-sm sm:mt-0 sm:col-span-3;
+}
+
+div.doc-summary > div dl > div dd ul li:first-of-type {
+    @apply mt-0;
 }
 
     /* prism styling */

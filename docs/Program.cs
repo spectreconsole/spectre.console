@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Docs.Pipelines;
+using Docs.Extensions;
 using Docs.Shortcodes;
 using Docs.Utilities;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +8,6 @@ using Statiq.App;
 using Statiq.Common;
 using Statiq.Core;
 using Statiq.Web;
-using Statiq.Web.Pipelines;
 
 namespace Docs
 {
@@ -25,6 +24,10 @@ namespace Docs
                     "../../examples/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
                     "../../src/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs" }
                 )
+                .ConfigureServices(i =>
+                {
+                    i.AddSingleton(new TypeNameLinks());
+                })
                 .ConfigureSite("spectreconsole", "spectre.console", "main")
                 .ConfigureDeployment(deployBranch: "docs")
                 .AddShortcode("Children", typeof(ChildrenShortcode))

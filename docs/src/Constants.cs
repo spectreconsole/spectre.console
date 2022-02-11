@@ -23,6 +23,7 @@ namespace Docs
         /// <type><see cref="string"/> or <c>IEnumerable&lt;string&gt;</c></type>
         public const string SourceFiles = nameof(SourceFiles);
 
+
         public static class Emojis
         {
             public const string Root = "EMOJIS_ROOT";

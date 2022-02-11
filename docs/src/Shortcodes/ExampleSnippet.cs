@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using System.Threading.Tasks;
 using Docs.Utilities;
 using Microsoft.CodeAnalysis;
@@ -24,7 +22,7 @@ public class ExampleSnippet : Shortcode
         var symbolName = props.GetString(Symbol);
         var bodyOnly = props.Get<bool?>(BodyOnly) ?? symbolName.StartsWith("m:", StringComparison.InvariantCultureIgnoreCase);
 
-        if (!context.TryGetCommentIdDocument(symbolName, out var apiDocument, out var error))
+        if (!context.TryGetCommentIdDocument(symbolName, out var apiDocument, out _))
         {
             return string.Empty;
         }

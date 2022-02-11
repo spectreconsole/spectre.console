@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Statiq.Common;
 using System.Xml.Linq;
+using Docs.Extensions;
 
 namespace Docs.Shortcodes
 {

@@ -16,7 +16,7 @@ using Statiq.Web.Pipelines;
 
 namespace Docs.Pipelines
 {
-    public class SocialImages : Statiq.Core.Pipeline
+    public class SocialImages : Pipeline
     {
         public SocialImages()
         {

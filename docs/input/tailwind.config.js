@@ -66,7 +66,7 @@ module.exports = {
                             overflowWrap: "anywhere",
                         },
                         a: {
-                            fontWeight: theme('fontWeight.normal'),
+                            fontWeight: theme('fontWeight.light'),
                             textDecoration: 'none',
                             borderBottom: `1px solid ${theme('colors.teal.600')}`,
                         },

@@ -1,5 +1,4 @@
 ﻿using Statiq.Common;
-using Statiq.Core;
 using Statiq.Web.GitHub;
 
 namespace Docs.Pipelines
