@@ -80,7 +80,7 @@ public class Api : Pipeline
                 new AnalyzeCSharp()
                     .WhereNamespaces(ns => ns.StartsWith("Spectre.Console") && !ns.Contains("Analyzer") &&
                                            !ns.Contains("Testing") && !ns.Contains("Examples"))
-                    .WherePublic()
+                    .WherePublic(true)
                     .WithCssClasses("code", "cs")
                     .WithDestinationPrefix("api")
                     .WithAssemblySymbols()

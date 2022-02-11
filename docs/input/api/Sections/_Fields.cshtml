@@ -1,5 +1,6 @@
 @using Statiq.CodeAnalysis
 @using Microsoft.AspNetCore.Html
+@using Docs.Extensions
 @{
     var isEnum = Document.GetString(CodeAnalysisKeys.SpecificKind) == "Enum";
     IReadOnlyList<IDocument> fields;
@@ -36,7 +37,7 @@
                                         }
                                         else
                                         {
-                                            @Context.GetTypeLink(field.GetDocument(CodeAnalysisKeys.Type))
+                                            @field.GetModifiers() @Context.GetTypeLink(field.GetDocument(CodeAnalysisKeys.Type))
                                             @Context.GetTypeLink(field, false)
                                         }
                                     </div>

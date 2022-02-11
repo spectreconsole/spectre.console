@@ -45,7 +45,7 @@ div.doc-summary header p{
 }
 
 div.doc-summary > div {
-    @apply border-t border-slate-300 dark:border-slate-800/50 px-4 py-0;
+    @apply border-t border-slate-300 dark:border-slate-800/50 px-4 sm:px-0 py-0;
 }
 
 div.doc-summary > div dl {
@@ -57,15 +57,31 @@ div.doc-summary > div dl > div {
 }
 
 div.doc-summary > div dl > div dt {
-    @apply text-sm sm:col-span-2;
+    @apply text-sm sm:col-span-3;
+}
+
+div.doc-summary > div dl > div dd {
+    @apply mt-4 text-sm sm:mt-0 sm:col-span-2;
+}
+
+div.doc-summary.short-term > div dl > div dt {
+    @apply sm:col-span-2;
+}
+
+div.doc-summary.short-term > div dl > div dd {
+    @apply sm:col-span-3;
+}
+
+div.doc-summary.tiny-term > div dl > div dt {
+    @apply sm:col-span-1;
+}
+
+div.doc-summary.tiny-term > div dl > div dd {
+    @apply sm:col-span-4;
 }
 
 div.doc-summary > div dl > div dt .identifier {
     @apply font-normal text-sky-600 dark:text-sky-400;
-}
-
-div.doc-summary > div dl > div dd {
-    @apply mt-1 text-sm sm:mt-0 sm:col-span-3;
 }
 
 div.doc-summary > div dl > div dd ul li:first-of-type {
