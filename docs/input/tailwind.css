@@ -29,7 +29,7 @@ and the ascii terminal player.
 }
 
 div.doc-summary{
-    @apply border border-slate-300 dark:border-slate-200 dark:border-slate-800 bg-slate-200/50 dark:bg-slate-700 shadow overflow-hidden sm:rounded-lg mb-4;
+    @apply border border-slate-300 dark:border-slate-200 dark:border-slate-800 bg-slate-200/50 dark:bg-slate-700/50 shadow overflow-hidden sm:rounded-lg mb-4;
 }
 
 div.doc-summary header{

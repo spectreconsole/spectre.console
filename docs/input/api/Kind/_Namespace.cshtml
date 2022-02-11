@@ -7,7 +7,7 @@
             .GroupBy(x => x.GetString(CodeAnalysisKeys.SpecificKind)))
     {
         <h3>@typeGroup.Key</h3>
-        <div class="doc-summary">
+        <div class="doc-summary short-term">
             <div>
                 <dl>
                     @foreach (var type in typeGroup.OrderBy(x => x.GetString(CodeAnalysisKeys.DisplayName)).ToList())

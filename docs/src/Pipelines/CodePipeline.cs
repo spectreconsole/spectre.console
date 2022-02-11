@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
 using Docs.Utilities;
+using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Statiq.CodeAnalysis;
 using Statiq.Common;
@@ -9,6 +10,8 @@ using Statiq.Web;
 using Statiq.Web.Pipelines;
 
 namespace Docs.Pipelines;
+
+
 
 /// <summary>
 /// Loads source files.
@@ -25,6 +28,22 @@ public class Code : Pipeline
 }
 
 /// <summary>
+/// Loads source files.
+/// </summary>
+public class ExampleCode : Pipeline
+{
+    public ExampleCode()
+    {
+        Dependencies.Add(nameof(Code));
+
+        InputModules = new ModuleList(
+            new ReadFiles(
+                Config.FromSettings(settings
+                    => settings.GetList<string>(Constants.ExampleSourceFiles).AsEnumerable())));
+    }
+}
+
+/// <summary>
 /// Uses Roslyn to analyze any source files loaded in the previous
 /// pipeline along with any specified assemblies. This pipeline
 /// results in documents that represent Roslyn symbols.
@@ -33,12 +52,13 @@ public class ExampleSyntax : Pipeline
 {
     public ExampleSyntax()
     {
-        Dependencies.Add(nameof(Code));
+        Dependencies.Add(nameof(ExampleCode));
         DependencyOf.Add(nameof(Content));
 
         ProcessModules = new ModuleList
         {
             new ConcatDocuments(nameof(Code)),
+            new ConcatDocuments(nameof(ExampleCode)),
             new CacheDocuments(
                 new AnalyzeCSharp()
                     .WhereNamespaces(true)
@@ -46,6 +66,8 @@ public class ExampleSyntax : Pipeline
                     .WithCssClasses("code", "cs")
                     .WithDestinationPrefix("syntax")
                     .WithAssemblySymbols()
+                    // we need to load Spectre.Console for compiling, but we don't need to process it in Statiq
+                    .WhereNamespaces(i => !i.StartsWith("Spectre.Console"))
                     .WithImplicitInheritDoc(false),
                 new ExecuteConfig(Config.FromDocument((doc, _) =>
                 {
@@ -96,7 +118,7 @@ public class Api : Pipeline
                         case "NamedType":
                             name = doc.GetString(CodeAnalysisKeys.DisplayName);
                             break;
-                        case "Method" or "Property":
+                        case "Method":
                             var containingType = doc.GetDocument(CodeAnalysisKeys.ContainingType);
                             if (containingType != null)
                             {

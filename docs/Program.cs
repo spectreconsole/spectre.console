@@ -21,8 +21,14 @@ namespace Docs
                 .AddSetting(Constants.EditLink, ConfigureEditLink())
                 .AddSetting(Constants.SourceFiles, new List<string>
                 {
-                    "../../examples/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
-                    "../../src/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs" }
+                    "../../src/Spectre.Console/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
+                    "../../src/Spectre.Console.ImageSharp/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs"
+                })
+                .AddSetting(Constants.ExampleSourceFiles, new List<string>
+                    {
+                        "../../examples/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
+                    }
+
                 )
                 .ConfigureServices(i =>
                 {
