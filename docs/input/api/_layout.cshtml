@@ -16,7 +16,7 @@
             @{
                 var isFirst = true;
             }
-            @foreach (var parent in OutputPages.Cached().GetAncestorsOf(Document, Document.IdEquals(Model)).Reverse().Skip(1))
+            @foreach (var parent in Context.GetExecutionCache("sidebar", ctx => ctx.OutputPages).GetAncestorsOf(Document, Document.IdEquals(Model)).Reverse().Skip(1))
             {
                 <li>
                     <div class="flex items-center">

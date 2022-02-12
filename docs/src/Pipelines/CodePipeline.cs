@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
 using Docs.Utilities;
-using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Statiq.CodeAnalysis;
 using Statiq.Common;

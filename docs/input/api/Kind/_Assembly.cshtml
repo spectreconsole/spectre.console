@@ -1,5 +1,6 @@
 @using Statiq.CodeAnalysis
 @using Docs.Pipelines
+@using Docs.Extensions
 @foreach (IGrouping<string, IDocument> typeGroup
     in Outputs.FromPipeline(nameof(Api))
         .Where(x => x.GetBool(CodeAnalysisKeys.IsResult)

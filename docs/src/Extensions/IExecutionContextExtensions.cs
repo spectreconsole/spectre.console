@@ -1,56 +1,55 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
-using Docs.Extensions;
 using Microsoft.AspNetCore.Html;
 using Statiq.CodeAnalysis;
 using Statiq.Common;
 
-namespace Docs.Utilities;
+namespace Docs.Extensions;
 
 public static class IExecutionContextExtensions
 {
-    private static readonly object _sidebarLock = new();
-    private static readonly object _cardLookupLock = new();
-
-    private static SidebarItem _sidebarItem;
-    private static Dictionary<string, NormalizedPath> _cardLookup;
+    private static readonly object _executionCacheLock = new();
+    private static readonly ConcurrentDictionary<string, object> _executionCache = new();
+    private static Guid _lastExecutionId = Guid.Empty;
 
     public record SidebarItem(IDocument Node, string Title, bool ShowLink, ImmutableList<SidebarItem> Leafs);
 
-    public static NormalizedPath FindCard(this IExecutionContext context, Guid docId)
+    public static T GetExecutionCache<T>(this IExecutionContext context, string key, Func<IExecutionContext, T> getter)
     {
-        lock (_cardLookupLock)
+        lock (_executionCacheLock)
         {
-            if (_cardLookup == null)
+            if (_lastExecutionId != context.ExecutionId)
             {
-                 _cardLookup = context.Outputs
-                     .Select(i => new {DocId = i.GetString("DocId"), Destination = i.Destination})
-                     .Where(i => i.DocId != null)
-                     .ToDictionary(i => i.DocId, i => i.Destination);
+                _executionCache.Clear();
+                _lastExecutionId = context.ExecutionId;
             }
 
-            return !_cardLookup.ContainsKey(docId.ToString()) ? null : _cardLookup[docId.ToString()];
+            return (T)_executionCache.GetOrAdd(key, valueFactory: _ => getter.Invoke(context));
         }
+    }
+
+    public static NormalizedPath FindCard(this IExecutionContext context, Guid docId)
+    {
+        var cardLookups = context.GetExecutionCache(nameof(FindCard), ctx =>
+        {
+            return ctx.Outputs
+                .Select(i => new { DocId = i.GetString("DocId"), Destination = i.Destination })
+                .Where(i => i.DocId != null)
+                .ToDictionary(i => i.DocId, i => i.Destination);
+        });
+
+        return !cardLookups.ContainsKey(docId.ToString()) ? null : cardLookups[docId.ToString()];
     }
 
     public static SidebarItem GetSidebar(this IExecutionContext context)
     {
-        if (_sidebarItem != null)
+        return context.GetExecutionCache(nameof(GetSidebar), ctx =>
         {
-            return _sidebarItem;
-        }
-
-        lock (_sidebarLock)
-        {
-            if (_sidebarItem != null)
-            {
-                return _sidebarItem;
-            }
-
-            var outputPages = context.OutputPages.Cached();
+            var outputPages = ctx.OutputPages;
             var root = outputPages["index.html"][0];
             var children = outputPages
                 .GetChildrenOf(root)
@@ -61,26 +60,28 @@ public static class IExecutionContextExtensions
                     var children = outputPages
                         .GetChildrenOf(child)
                         .OnlyVisible()
-                        .Select(subChild => new SidebarItem(subChild, subChild.GetTitle(), true, ImmutableList<SidebarItem>.Empty))
+                        .Select(subChild =>
+                            new SidebarItem(subChild, subChild.GetTitle(), true, ImmutableList<SidebarItem>.Empty))
                         .ToImmutableList();
 
                     return new SidebarItem(child, child.GetTitle(), showLink, children);
                 }).ToImmutableList();
 
-            _sidebarItem = new SidebarItem(root, root.GetTitle(), false, children);
-
-        }
-
-        return _sidebarItem;
+            return new SidebarItem(root, root.GetTitle(), false, children);
+        });
     }
 
-    public static HtmlString GetTypeLink(this IExecutionContext context, IDocument document) => context.GetTypeLink(document, null, true);
+    public static HtmlString GetTypeLink(this IExecutionContext context, IDocument document) =>
+        context.GetTypeLink(document, null, true);
 
-    public static HtmlString GetTypeLink(this IExecutionContext context, IDocument document, bool linkTypeArguments) => context.GetTypeLink(document, null, linkTypeArguments);
+    public static HtmlString GetTypeLink(this IExecutionContext context, IDocument document, bool linkTypeArguments) =>
+        context.GetTypeLink(document, null, linkTypeArguments);
 
-    public static HtmlString GetTypeLink(this IExecutionContext context, IDocument document, string name) => context.GetTypeLink(document, name, true);
+    public static HtmlString GetTypeLink(this IExecutionContext context, IDocument document, string name) =>
+        context.GetTypeLink(document, name, true);
 
-    public static HtmlString GetTypeLink(this IExecutionContext context, IDocument document, string name, bool linkTypeArguments)
+    public static HtmlString GetTypeLink(this IExecutionContext context, IDocument document, string name,
+        bool linkTypeArguments)
     {
         name ??= document.GetString(CodeAnalysisKeys.DisplayName);
 
@@ -109,7 +110,8 @@ public static class IExecutionContextExtensions
                 // Get the type argument positions
                 var begin = name.IndexOf("<wbr>&lt;", StringComparison.Ordinal) + 9;
                 var openParen = name.IndexOf("&gt;<wbr>(", StringComparison.Ordinal);
-                var end = name.LastIndexOf("&gt;<wbr>", openParen == -1 ? name.Length : openParen, StringComparison.Ordinal);  // Don't look past the opening paren if there is one
+                var end = name.LastIndexOf("&gt;<wbr>", openParen == -1 ? name.Length : openParen,
+                    StringComparison.Ordinal); // Don't look past the opening paren if there is one
 
                 if (begin == -1 || end == -1)
                 {
@@ -119,7 +121,8 @@ public static class IExecutionContextExtensions
                 // Remove existing type arguments and insert linked type arguments (do this first to preserve original indexes)
                 name = name
                     .Remove(begin, end - begin)
-                    .Insert(begin, string.Join(", <wbr>", typeArguments.Select(x => context.GetTypeLink(x, true).Value)));
+                    .Insert(begin,
+                        string.Join(", <wbr>", typeArguments.Select(x => context.GetTypeLink(x, true).Value)));
 
                 // Insert the link for the type
                 if (!document.Destination.IsNullOrEmpty)
@@ -134,7 +137,8 @@ public static class IExecutionContextExtensions
         // If it's a type parameter, create an anchor link to the declaring type's original definition
         if (document.GetString(CodeAnalysisKeys.Kind) == "TypeParameter")
         {
-            var declaringType = document.GetDocument(CodeAnalysisKeys.DeclaringType)?.GetDocument(CodeAnalysisKeys.OriginalDefinition);
+            var declaringType = document.GetDocument(CodeAnalysisKeys.DeclaringType)
+                ?.GetDocument(CodeAnalysisKeys.OriginalDefinition);
             if (declaringType != null)
             {
                 return new HtmlString(declaringType.Destination.IsNullOrEmpty
@@ -179,7 +183,8 @@ public static class IExecutionContextExtensions
             if (segments[c].Length > 20)
             {
                 segments[c] = new string(segments[c]
-                    .SelectMany((x, i) => char.IsUpper(x) && i != 0 ? new[] { '<', 'w', 'b', 'r', '>', x } : new[] { x })
+                    .SelectMany(
+                        (x, i) => char.IsUpper(x) && i != 0 ? new[] { '<', 'w', 'b', 'r', '>', x } : new[] { x })
                     .ToArray());
                 replaced = true;
             }

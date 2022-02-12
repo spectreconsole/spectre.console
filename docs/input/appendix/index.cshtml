@@ -1,11 +1,10 @@
 Title: Appendix
 Order: 100
 ---
-@using Docs.Extensions
 <h1>Sections</h1>
 
 <ul>
-@foreach (IDocument child in OutputPages.Cached().GetChildrenOf(Document))
+@foreach (IDocument child in OutputPages.GetChildrenOf(Document))
 {
   <li>@Html.DocumentLink(child)</li>
 }
