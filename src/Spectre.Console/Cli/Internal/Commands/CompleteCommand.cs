@@ -76,7 +76,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
             {
                 parsedResult = parser.Parse(strippedCommandElements);
                 context = strippedCommandElements.Last();
-                partialElement = commandElements.Last();
+                partialElement = commandElements.Last().ToLowerInvariant();
             }
         }
 
@@ -96,10 +96,44 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
             parent = FindContextInTree(parsedResult.Tree, context);
         }
 
-        return parent.Children.Where(cmd => !cmd.IsHidden)
+        var childCommands = parent.Children.Where(cmd => !cmd.IsHidden)
                               .Select(c => c.Name)
                               .Where(n => n.StartsWith(partialElement))
                               .ToArray();
+
+        var parameters = GetParameters(parent, partialElement);
+
+        return childCommands.Union(parameters).ToArray();
+    }
+
+    private static string[]? GetParameters(CommandInfo parent, string partialElement)
+    {
+        var parameters = new List<string>();
+        Debugger.Break();
+        foreach (var parameter in parent.Parameters)
+        {
+            if (parameter is CommandOption commandOptionParameter)
+            {
+                // It doesn't actually make much sense to autocomplete one-char parameters
+                // parameters.AddRangeIfNotNull(
+                //     commandOptionParameter.ShortNames
+                //                           .Select(s => "-" + s.ToLowerInvariant())
+                //                           .Where(p => p.StartsWith(partialElement)));
+                // Add all matching long parameter names
+                parameters.AddRange(
+                    commandOptionParameter.LongNames
+                                          .Select(l => "--" + l.ToLowerInvariant())
+                                          .Where(p => p.StartsWith(partialElement)));
+            }
+            else if (parameter is CommandArgument commandArgumentParameter)
+            {
+                Debugger.Break();
+
+                // get valid values for the argument?
+            }
+        }
+
+        return parameters.ToArray();
     }
 
     private static CommandInfo FindContextInTree(CommandTree tree, string context)

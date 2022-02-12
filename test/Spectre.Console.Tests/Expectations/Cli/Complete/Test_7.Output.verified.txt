@@ -1,0 +1,5 @@
+--alive
+--not-dead
+--name
+--pet-name
+--agility
