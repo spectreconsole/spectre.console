@@ -2,11 +2,12 @@ Title: Live
 Order: 50
 Description: Live displays continue to redraw their contents until an action is complete.
 ---
+@using Docs.Extensions
 
 Live displays continue to redraw their contents until an action is complete.
 
 <ul>
-@foreach (IDocument child in OutputPages.GetChildrenOf(Document))
+@foreach (IDocument child in OutputPages.Cached().GetChildrenOf(Document))
 {
   <li>@Html.DocumentLink(child)</li>
 }

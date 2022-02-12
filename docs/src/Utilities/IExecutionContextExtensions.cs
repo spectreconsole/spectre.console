@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
+using Docs.Extensions;
 using Microsoft.AspNetCore.Html;
 using Statiq.CodeAnalysis;
 using Statiq.Common;
@@ -10,6 +12,68 @@ namespace Docs.Utilities;
 
 public static class IExecutionContextExtensions
 {
+    private static readonly object _sidebarLock = new();
+    private static readonly object _cardLookupLock = new();
+
+    private static SidebarItem _sidebarItem;
+    private static Dictionary<string, NormalizedPath> _cardLookup;
+
+    public record SidebarItem(IDocument Node, string Title, bool ShowLink, ImmutableList<SidebarItem> Leafs);
+
+    public static NormalizedPath FindCard(this IExecutionContext context, Guid docId)
+    {
+        lock (_cardLookupLock)
+        {
+            if (_cardLookup == null)
+            {
+                 _cardLookup = context.Outputs
+                     .Select(i => new {DocId = i.GetString("DocId"), Destination = i.Destination})
+                     .Where(i => i.DocId != null)
+                     .ToDictionary(i => i.DocId, i => i.Destination);
+            }
+
+            return !_cardLookup.ContainsKey(docId.ToString()) ? null : _cardLookup[docId.ToString()];
+        }
+    }
+
+    public static SidebarItem GetSidebar(this IExecutionContext context)
+    {
+        if (_sidebarItem != null)
+        {
+            return _sidebarItem;
+        }
+
+        lock (_sidebarLock)
+        {
+            if (_sidebarItem != null)
+            {
+                return _sidebarItem;
+            }
+
+            var outputPages = context.OutputPages.Cached();
+            var root = outputPages["index.html"][0];
+            var children = outputPages
+                .GetChildrenOf(root)
+                .OrderBy(i => i.GetInt("Order"))
+                .OnlyVisible().Select(child =>
+                {
+                    var showLink = child.ShowLink();
+                    var children = outputPages
+                        .GetChildrenOf(child)
+                        .OnlyVisible()
+                        .Select(subChild => new SidebarItem(subChild, subChild.GetTitle(), true, ImmutableList<SidebarItem>.Empty))
+                        .ToImmutableList();
+
+                    return new SidebarItem(child, child.GetTitle(), showLink, children);
+                }).ToImmutableList();
+
+            _sidebarItem = new SidebarItem(root, root.GetTitle(), false, children);
+
+        }
+
+        return _sidebarItem;
+    }
+
     public static HtmlString GetTypeLink(this IExecutionContext context, IDocument document) => context.GetTypeLink(document, null, true);
 
     public static HtmlString GetTypeLink(this IExecutionContext context, IDocument document, bool linkTypeArguments) => context.GetTypeLink(document, null, linkTypeArguments);

@@ -17,7 +17,7 @@
     @{
         string title = Document.ContainsKey(Keys.Title) ? $"Spectre.Console - {Document.GetString(Keys.Title)}" : "Spectre.Console";
         string description = Document.ContainsKey(Constants.Description) ? Document.GetString(Constants.Description) : "Spectre.Console is a .NET Standard 2.0 library that makes it easier to create beautiful console applications";
-        var card = Outputs.FirstOrDefault(i => i.GetString("DocId") == Model.Id.ToString());
+        var card = Context.FindCard(Model.Id);
         var urlBase = $"https://{Document.GetString(Keys.Host)}/";
     }
     <title>@title</title>
@@ -28,7 +28,7 @@
         <meta name="twitter:card" content="summary_large_image"/>
         <meta name="og:title" content="@title"/>
         <meta name="og:description" content="@description"/>
-        <meta name="og:image" content="@(urlBase + card.Destination)"/>
+        <meta name="og:image" content="@(urlBase + card)"/>
     }
 
     <script>
@@ -149,42 +149,45 @@ c-9 -4 -271 61 -315 78 -29 11 -28 12 79 55 59 24 111 46 114 49 3 3 33 -36
     <div class="flex flex-col-reverse lg:flex-row">
         <nav class="flex-none font-light text-sm xl:text-base sm:mr-16 mt-8 pt-6 lg:mt-0 lg:pt-0 lg:pb-10  border-t border-gray-300 lg:border-t-0">
             @{
-                IDocument root = OutputPages["index.html"].First();
+                var sidebar = Context.GetSidebar();
+                var root = sidebar.Node;
                 <div class="text-xl @(Document.IdEquals(root) ? "font-bold" : null)">
-                    @if (root.ShowLink())
+                    @if (sidebar.ShowLink)
                     {
                         @Html.DocumentLink(root)
                     }
                     else
                     {
-                        @root.GetTitle()
+                        @sidebar.Title;
                     }
                 </div>
 
-                @foreach (IDocument document in OutputPages.GetChildrenOf(root).OrderBy(i => i.GetInt("Order")).OnlyVisible())
+                @foreach (var sidebarItem in sidebar.Leafs)
                 {
-                    if (string.IsNullOrWhiteSpace(document.GetTitle()))
+                    var document = sidebarItem.Node;
+                    if (string.IsNullOrWhiteSpace(sidebarItem.Title))
                     {
                         continue;
                     }
 
-                    DocumentList<IDocument> documentChildren = OutputPages.GetChildrenOf(document);
+                    var documentChildren = sidebarItem.Leafs;
                     <div class="text-teal-800 font-medium dark:text-teal-400 mt-4">
-                        @if (document.ShowLink())
+                        @if (sidebarItem.ShowLink)
                         {
                             @Html.DocumentLink(document)
                         }
                         else
                         {
-                            @document.GetTitle()
+                            @sidebarItem.Title;
                         }
                     </div>
 
-                    @if (documentChildren.OnlyVisible().Any())
+                    @if (documentChildren.Any())
                     {
                         <div class="ml-2 flex flex-row flex-wrap lg:flex-col border-separate">
-                            @foreach (IDocument child in documentChildren.OnlyVisible())
+                            @foreach (var childItem in documentChildren)
                             {
+                                var child = childItem.Node;
                                 <div class="mt-2 mr-4 @(Document.IdEquals(child) ? "font-bold" : null)">
                                     @Html.DocumentLink(child)
                                 </div>

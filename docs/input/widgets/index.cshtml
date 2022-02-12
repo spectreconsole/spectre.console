@@ -2,9 +2,10 @@ Title: Widgets
 Order: 70
 Description: "*Spectre.Console* supports many built-in widgets to help render beautiful output."
 ---
+@using Docs.Extensions
 
 <ul>
-@foreach (IDocument child in OutputPages.GetChildrenOf(Document))
+@foreach (IDocument child in OutputPages.Cached().GetChildrenOf(Document))
 {
   <li>@Html.DocumentLink(child)</li>
 }

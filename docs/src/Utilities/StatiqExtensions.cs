@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using AngleSharp.Dom;
@@ -30,6 +31,9 @@ public static class StatiqExtensions
         return document.Body?.InnerHtml ?? original;
     }
 
+    private static object _exampleSyntaxLock = new();
+    private static DocumentList<IDocument> _exampleSyntaxDocuments;
+
     public static bool TryGetCommentIdDocument(this IExecutionContext context, string commentId, out IDocument document,
         out string error)
     {
@@ -42,7 +46,17 @@ public static class StatiqExtensions
             return false;
         }
 
-        var documents = context.Outputs.FromPipeline(nameof(ExampleSyntax)).Flatten();
+        DocumentList<IDocument> documents;
+        lock (_exampleSyntaxLock)
+        {
+            if (_exampleSyntaxDocuments == null)
+            {
+                _exampleSyntaxDocuments = context.Outputs.FromPipeline(nameof(ExampleSyntax)).Flatten();
+            }
+
+            documents = _exampleSyntaxDocuments;
+        }
+
         var matches = documents
             .Where(x =>
                 x.GetString(CodeAnalysisKeys.CommentId)?.Equals(commentId, StringComparison.OrdinalIgnoreCase) == true)

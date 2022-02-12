@@ -2,9 +2,10 @@ Title: Prompts
 Order: 60
 Description: "*Spectre.Console* has multiple controls to assist in user input."
 ---
+@using Docs.Extensions
 
 <ul>
-@foreach (IDocument child in OutputPages.GetChildrenOf(Document))
+@foreach (IDocument child in OutputPages.Cached().GetChildrenOf(Document))
 {
   <li>@Html.DocumentLink(child)</li>
 }

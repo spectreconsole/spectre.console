@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Statiq.CodeAnalysis;
@@ -7,6 +8,13 @@ namespace Docs.Extensions
 {
     public static class DocumentExtensions
     {
+        private static readonly ConcurrentDictionary<string, FilteredDocumentList<IDocument>> _filteredDocumentsCache = new();
+
+        public static FilteredDocumentList<IDocument> Cached(this FilteredDocumentList<IDocument> documents, string key = "default")
+        {
+            return _filteredDocumentsCache.GetOrAdd(key, _ => documents);
+        }
+
         public static string GetDescription(this IDocument document)
         {
             return document?.GetString(Constants.Description, string.Empty) ?? string.Empty;
