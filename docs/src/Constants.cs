@@ -20,6 +20,7 @@ namespace Docs
 
         public const string ExampleSourceFiles = nameof(ExampleSourceFiles);
 
+        public const string ApiReference = "Reference";
 
         public static class Emojis
         {

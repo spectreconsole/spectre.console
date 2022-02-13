@@ -16,8 +16,7 @@ internal static class HighlightService
     internal enum HighlightOption
     {
         All,
-        Body,
-        Declaration
+        Body
     }
 
     private static readonly AdhocWorkspace _emptyWorkspace = new();
@@ -30,37 +29,37 @@ internal static class HighlightService
             return null;
         }
 
-        int? overrideEndLocation = null;
         var syntax = await syntaxReference.GetSyntaxAsync();
-        if (syntax is BaseMethodDeclarationSyntax { Body: { } } methodDeclarationSyntax)
-        {
-            if (option == HighlightOption.Body)
-            {
-                syntax = methodDeclarationSyntax.Body;
-            }
-            else if (option == HighlightOption.Declaration)
-            {
-                if (methodDeclarationSyntax.Body != null)
-                {
-                    overrideEndLocation = methodDeclarationSyntax.Body.SpanStart;
-                }
-                else if (methodDeclarationSyntax.ExpressionBody != null)
-                {
-                    overrideEndLocation = methodDeclarationSyntax.ExpressionBody.SpanStart;
-                }
-            }
-        }
-
+        var indent = GetIndent(syntax.GetLeadingTrivia());
         var model = compilation.GetSemanticModel(syntaxReference.SyntaxTree);
-        var textSpan = syntaxReference.Span;
-        if (overrideEndLocation != null)
+
+        var methodWithBodySyntax = syntax as BaseMethodDeclarationSyntax;
+
+        TextSpan textSpan;
+        switch (option)
         {
-            textSpan = new TextSpan(textSpan.Start, overrideEndLocation.Value - textSpan.Start);
+            case HighlightOption.Body when methodWithBodySyntax is { Body: { } }:
+                {
+                    syntax = methodWithBodySyntax.Body;
+                    indent = GetIndent(methodWithBodySyntax.Body.Statements.First().GetLeadingTrivia());
+                    textSpan = TextSpan.FromBounds(syntax.Span.Start + 1, syntax.Span.End - 1);
+                    break;
+                }
+            case HighlightOption.Body when methodWithBodySyntax is { ExpressionBody: { } }:
+                {
+                    syntax = methodWithBodySyntax.ExpressionBody;
+                    textSpan = syntax.Span;
+                    break;
+                }
+            case HighlightOption.All:
+            default:
+                textSpan = syntax.Span;
+                break;
         }
 
         var text = await syntaxReference.SyntaxTree.GetTextAsync();
         // we need a workspace, but it seems it is only used to resolve a few services and nothing else so an empty one will suffice
-        return HighlightElement(_emptyWorkspace, model, text, textSpan, GetIndent(syntax.GetLeadingTrivia()));
+        return HighlightElement(_emptyWorkspace, model, text, textSpan, indent);
     }
 
     private static int GetIndent(SyntaxTriviaList leadingTrivia)

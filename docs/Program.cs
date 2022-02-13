@@ -28,7 +28,6 @@ namespace Docs
                     {
                         "../../examples/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
                     }
-
                 )
                 .ConfigureServices(i =>
                 {

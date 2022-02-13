@@ -5,7 +5,7 @@
     string value = Document.GetString(CodeAnalysisKeys.Value);
 }
 
-@if (type is object || !string.IsNullOrWhiteSpace(value))
+@if (type is object && !string.IsNullOrWhiteSpace(value))
 {
     <p>@Context.GetTypeLink(type)</p>
     <p>@Html.Raw(value)</p>

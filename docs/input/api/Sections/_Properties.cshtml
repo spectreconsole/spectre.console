@@ -18,7 +18,7 @@
                     {
                         <div>
                             <dt>
-                                @property.GetModifiers() @Context.GetTypeLink(property.GetDocument(CodeAnalysisKeys.Type)) <span class="identifier">@property.GetString(CodeAnalysisKeys.Name)</span>
+                                @property.GetModifiers() @property.GetDocument(CodeAnalysisKeys.Type).GetString(CodeAnalysisKeys.DisplayName) @Context.GetTypeLink(property, false)
                             </dt>
                             <dd>@Html.Raw(property.GetString(CodeAnalysisKeys.Summary))</dd>
                         </div>

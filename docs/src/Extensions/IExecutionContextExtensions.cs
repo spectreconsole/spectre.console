@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
+using Docs.Pipelines;
 using Microsoft.AspNetCore.Html;
 using Statiq.CodeAnalysis;
 using Statiq.Common;
@@ -17,6 +18,38 @@ public static class IExecutionContextExtensions
     private static Guid _lastExecutionId = Guid.Empty;
 
     public record SidebarItem(IDocument Node, string Title, bool ShowLink, ImmutableList<SidebarItem> Leafs);
+
+    public static bool TryGetCommentIdDocument(this IExecutionContext context, string commentId, out IDocument document,
+        out string error)
+    {
+        context.ThrowIfNull(nameof(context));
+
+        if (string.IsNullOrWhiteSpace(commentId))
+        {
+            document = default;
+            error = default;
+            return false;
+        }
+
+        var documents = context.GetExecutionCache(nameof(TryGetCommentIdDocument), ctx => ctx.Outputs.FromPipeline(nameof(ExampleSyntax)).Flatten());
+
+        var matches = documents
+            .Where(x => x.GetString(CodeAnalysisKeys.CommentId)?.Equals(commentId, StringComparison.OrdinalIgnoreCase) == true)
+            .ToImmutableDocumentArray();
+
+        if (matches.Length == 1)
+        {
+            document = matches[0];
+            error = default;
+            return true;
+        }
+
+        document = default;
+        error = matches.Length > 1
+            ? $"Multiple ambiguous matching documents found for commentId \"{commentId}\""
+            : $"Couldn't find document with xref \"{commentId}\"";
+        return false;
+    }
 
     public static T GetExecutionCache<T>(this IExecutionContext context, string key, Func<IExecutionContext, T> getter)
     {

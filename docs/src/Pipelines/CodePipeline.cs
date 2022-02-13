@@ -74,7 +74,7 @@ public class ExampleSyntax : Pipeline
                     var metadataItems = new MetadataItems
                     {
                         // Calculate an xref that includes a "api-" prefix to avoid collisions
-                        { WebKeys.Xref, "syntax-" + doc.GetString(CodeAnalysisKeys.QualifiedName) },
+                        { WebKeys.Xref, "syntax-" + doc.GetString(CodeAnalysisKeys.CommentId) },
                     };
 
                     var contentProvider = doc.ContentProvider;
@@ -137,8 +137,7 @@ public class Api : Pipeline
                     // Add metadata
                     var metadataItems = new MetadataItems
                     {
-                        // Calculate an xref that includes a "api-" prefix to avoid collisions
-                        { WebKeys.Xref, "api-" + doc.GetString(CodeAnalysisKeys.QualifiedName) },
+                        { WebKeys.Xref, doc.GetString(CodeAnalysisKeys.CommentId) },
                         { WebKeys.Layout, "api/_layout.cshtml" },
                         { Constants.Hidden, true }
                     };

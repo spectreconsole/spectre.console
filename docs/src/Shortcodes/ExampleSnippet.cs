@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Docs.Extensions;
 using Docs.Utilities;
 using Microsoft.CodeAnalysis;
 using Statiq.CodeAnalysis;
