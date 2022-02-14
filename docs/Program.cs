@@ -34,7 +34,6 @@ namespace Docs
                     i.AddSingleton(new TypeNameLinks());
                 })
                 .ConfigureSite("spectreconsole", "spectre.console", "main")
-                .ConfigureDeployment(deployBranch: "docs")
                 .AddShortcode("Children", typeof(ChildrenShortcode))
                 .AddShortcode("ColorTable", typeof(ColorTableShortcode))
                 .AddShortcode("EmojiTable", typeof(EmojiTableShortcode))

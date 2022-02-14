@@ -1,5 +1,6 @@
 ﻿using Statiq.App;
 using Statiq.Common;
+using Statiq.Web;
 
 namespace Docs.Extensions
 {
@@ -13,12 +14,6 @@ namespace Docs.Extensions
                 bootstrapper.AddSetting(Constants.Site.Repository, repo);
                 bootstrapper.AddSetting(Constants.Site.Branch, branch);
             }
-            return bootstrapper;
-        }
-
-        public static Bootstrapper ConfigureDeployment(this Bootstrapper bootstrapper, string deployBranch)
-        {
-            bootstrapper?.AddSetting(Constants.Deployment.TargetBranch, deployBranch);
             return bootstrapper;
         }
     }
