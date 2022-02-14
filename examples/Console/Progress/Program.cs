@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Spectre.Console;
 
-namespace Spectre.Console.Examples;
+namespace Progress;
 
 public static class Program
 {

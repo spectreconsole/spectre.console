@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Statiq.Common;
@@ -10,8 +9,6 @@ namespace Docs.Shortcodes
 {
     public class ColorTableShortcode : SyncShortcode
     {
-        private const string ColorStyle = "display: inline-block;width: 60px; height: 15px;";
-
         public override ShortcodeResult Execute(KeyValuePair<string, string>[] args, string content, IDocument document, IExecutionContext context)
         {
             // Get the definition.

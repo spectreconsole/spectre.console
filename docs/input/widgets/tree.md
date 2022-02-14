@@ -4,6 +4,8 @@ Description: "The **Tree** widget can be used to render hierarchical data."
 Highlights:
     - Custom colors and styles for guidelines.
     - Include any *Spectre.Console* widgets as child nodes.
+Reference: T:Spectre.Console.Tree
+
 ---
 
 The `Tree` widget can be used to render hierarchical data.

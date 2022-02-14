@@ -2,6 +2,7 @@ Title: Figlet
 Order: 50
 RedirectFrom: figlet
 Description: "*Spectre.Console* can render FIGlet text by using the **FigletText** class."
+Reference: T:Spectre.Console.FigletText
 ---
 
 Spectre.Console can render [FIGlet](http://www.figlet.org/) text by using the `FigletText` class.

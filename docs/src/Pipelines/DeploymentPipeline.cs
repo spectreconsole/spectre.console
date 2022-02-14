@@ -1,10 +1,9 @@
 ﻿using Statiq.Common;
-using Statiq.Core;
 using Statiq.Web.GitHub;
 
 namespace Docs.Pipelines
 {
-    public class DeploymentPipeline : Pipeline
+    public class DeploymentPipeline : Statiq.Core.Pipeline
     {
         public DeploymentPipeline()
         {

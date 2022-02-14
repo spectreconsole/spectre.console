@@ -1,7 +1,8 @@
 using System;
+using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace Spectre.Console.Examples;
+namespace Dynamic;
 
 public sealed class MyCommand : Command
 {

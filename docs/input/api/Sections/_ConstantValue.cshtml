@@ -1,0 +1,22 @@
+@using Statiq.CodeAnalysis
+@using Microsoft.AspNetCore.Html
+@if(Document.GetBool(CodeAnalysisKeys.HasConstantValue))
+{
+    var constantValue = Document.Get(CodeAnalysisKeys.ConstantValue);
+
+    <h3>Constant Value</h3>
+    <div class="doc-summary">
+        <div>
+            <dl>
+
+                <div>
+
+                    <dt>
+                        @(new HtmlString(constantValue?.ToString() ?? "null"))
+                    </dt>
+                    <dd>@(new HtmlString(constantValue?.GetType().Name ?? string.Empty))</dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+}

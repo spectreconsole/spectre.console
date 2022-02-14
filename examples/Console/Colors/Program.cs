@@ -1,4 +1,7 @@
-namespace Spectre.Console.Examples;
+using Spectre.Console;
+using Spectre.Console.Examples;
+
+namespace Colors;
 
 public static class Program
 {

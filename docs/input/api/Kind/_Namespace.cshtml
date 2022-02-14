@@ -1,0 +1,25 @@
+@using Statiq.CodeAnalysis
+@using Docs.Extensions
+@await Html.PartialAsync("../Sections/_Summary.cshtml")
+@{
+    foreach (IGrouping<string, IDocument> typeGroup
+        in Document.GetDocuments(CodeAnalysisKeys.MemberTypes)
+            .Where(x => x.GetBool(CodeAnalysisKeys.IsResult) && x.GetString(CodeAnalysisKeys.Kind) == "NamedType")
+            .GroupBy(x => x.GetString(CodeAnalysisKeys.SpecificKind)))
+    {
+        <h3>@typeGroup.Key</h3>
+        <div class="doc-summary short-term">
+            <div>
+                <dl>
+                    @foreach (var type in typeGroup.OrderBy(x => x.GetString(CodeAnalysisKeys.DisplayName)).ToList())
+                    {
+                        <div>
+                            <dt>@Context.GetTypeLink(type)</dt>
+                            <dd>@Html.Raw(type.GetString(CodeAnalysisKeys.Summary))</dd>
+                        </div>
+                    }
+                </dl>
+            </div>
+        </div>
+    }
+}

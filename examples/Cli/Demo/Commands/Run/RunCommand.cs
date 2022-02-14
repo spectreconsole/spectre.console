@@ -2,7 +2,7 @@ using System.ComponentModel;
 using Demo.Utilities;
 using Spectre.Console.Cli;
 
-namespace Demo.Commands;
+namespace Demo.Commands.Run;
 
 [Description("Build and run a .NET project output.")]
 public sealed class RunCommand : Command<RunCommand.Settings>

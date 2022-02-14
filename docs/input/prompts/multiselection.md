@@ -12,8 +12,7 @@ one or many items from a provided list.
 
 <?# AsciiCast cast="multi-selection" /?>
 
-<?# Alert ?> The use of prompts 
-  insides status or progress displays is not supported.
+<?# Alert ?> The use of prompts inside status or progress displays is not supported.
 <?#/ Alert ?>
 
 ## Usage

@@ -6,12 +6,13 @@
     <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
     <DefaultItemExcludes>$(DefaultItemExcludes);output\**;.gitignore</DefaultItemExcludes>
     <NoWarn>MVC1000</NoWarn>
-    <MinVerSkip Condition="'$(Configuration)' == 'Debug'">true</MinVerSkip>
+    <MinVerSkip>true</MinVerSkip>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="input\**" />
     <Compile Remove="sass\**" />
+    <Compile Include="input\api\Sections\_ConstantValue.cshtml.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,8 +34,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Playwright" Version="1.13.0-next-1" />
-
-    <PackageReference Include="Statiq.Web" Version="1.0.0-beta.34" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Statiq.CodeAnalysis" Version="1.0.0-beta.56" />
+    <PackageReference Include="Statiq.Common" Version="1.0.0-beta.56" />
+    <PackageReference Include="Statiq.Web" Version="1.0.0-beta.42" />
     <PackageReference Include="MinVer" PrivateAssets="All" Version="2.3.1" />
   </ItemGroup>
 

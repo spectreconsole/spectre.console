@@ -1,8 +1,9 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Spectre.Console;
 
-namespace Spectre.Console.Examples;
+namespace LiveTable;
 
 public static class Program
 {

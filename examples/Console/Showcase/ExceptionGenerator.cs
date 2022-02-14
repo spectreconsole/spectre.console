@@ -1,6 +1,6 @@
 using System;
 
-namespace Spectre.Console.Examples;
+namespace Showcase;
 
 public static class ExceptionGenerator
 {

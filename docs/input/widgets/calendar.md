@@ -6,6 +6,8 @@ Highlights:
     - Include highlighted events.
     - Culture aware.
     - Custom headers.
+Reference: T:Spectre.Console.Calendar
+
 ---
 
 The `Calendar` is used to render a calendar to the terminal.

@@ -1,3 +1,5 @@
+using Logging.Commands;
+using Logging.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Spectre.Console.Cli;
@@ -12,7 +14,7 @@ using Spectre.Console.Cli;
  * Spectre.Console CommandInterceptor
  */
 
-namespace Spectre.Console.Examples;
+namespace Logging;
 
 public class Program
 {

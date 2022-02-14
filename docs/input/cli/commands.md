@@ -1,9 +1,12 @@
 Title: Creating Commands
 Order: 6
 Description: "How to create commands for *Spectre.Console.Cli*"
+Reference:
+    - T:Spectre.Console.Cli.AsyncCommand`1
+    - T:Spectre.Console.Cli.Command`1
 ---
 
-Commands in `Spectre.Console.Cli` are defined by creating a class that inherits from either `Spectre.Console.Cli.Command<TSettings>` or `Spectre.Console.Cli.AsyncCommand<TSettings>`. `Command<TSettings>` must implement an `Execute` method that returns an int where as `AsyncCommand<TSettings>` must implement `ExecuteAsync`  returning `Task<int>`.
+Commands in `Spectre.Console.Cli` are defined by creating a class that inherits from either `Command<TSettings>` or `AsyncCommand<TSettings>`. `Command<TSettings>` must implement an `Execute` method that returns an int where as `AsyncCommand<TSettings>` must implement `ExecuteAsync`  returning `Task<int>`.
 
 ```csharp
 public class HelloCommand : Command<HelloCommand.Settings>

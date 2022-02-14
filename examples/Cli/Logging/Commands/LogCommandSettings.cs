@@ -5,7 +5,7 @@ using System.Globalization;
 using Serilog.Events;
 using Spectre.Console.Cli;
 
-namespace Spectre.Console.Examples;
+namespace Logging.Commands;
 
 public class LogCommandSettings : CommandSettings
 {

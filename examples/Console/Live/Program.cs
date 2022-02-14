@@ -1,7 +1,8 @@
 using System;
 using System.Threading;
+using Spectre.Console;
 
-namespace Spectre.Console.Examples;
+namespace Live;
 
 public static class Program
 {

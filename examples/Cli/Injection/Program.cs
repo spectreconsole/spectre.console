@@ -1,7 +1,9 @@
+using Injection.Commands;
+using Injection.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
-namespace Spectre.Console.Examples;
+namespace Injection;
 
 public class Program
 {

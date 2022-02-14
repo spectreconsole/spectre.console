@@ -2,7 +2,7 @@ using System.ComponentModel;
 using Demo.Utilities;
 using Spectre.Console.Cli;
 
-namespace Demo.Commands;
+namespace Demo.Commands.Add;
 
 [Description("Add a NuGet package reference to the project.")]
 public sealed class AddPackageCommand : Command<AddPackageCommand.Settings>

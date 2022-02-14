@@ -1,6 +1,7 @@
 using System.Threading;
+using Spectre.Console;
 
-namespace Spectre.Console.Examples;
+namespace Status;
 
 public static class Program
 {

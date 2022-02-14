@@ -1,9 +1,7 @@
 ﻿using Statiq.App;
 using Statiq.Common;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Docs
+namespace Docs.Extensions
 {
     public static class BootstrapperExtensions
     {

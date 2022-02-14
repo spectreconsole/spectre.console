@@ -1,5 +1,9 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Docs.Extensions;
 using Docs.Shortcodes;
+using Docs.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Statiq.App;
 using Statiq.Common;
 using Statiq.Core;
@@ -15,14 +19,28 @@ namespace Docs
                 .AddSetting(Keys.Host, "spectreconsole.net")
                 .AddSetting(Keys.LinksUseHttps, true)
                 .AddSetting(Constants.EditLink, ConfigureEditLink())
+                .AddSetting(Constants.SourceFiles, new List<string>
+                {
+                    "../../src/Spectre.Console/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
+                    "../../src/Spectre.Console.ImageSharp/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs"
+                })
+                .AddSetting(Constants.ExampleSourceFiles, new List<string>
+                    {
+                        "../../examples/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
+                    }
+                )
+                .ConfigureServices(i =>
+                {
+                    i.AddSingleton(new TypeNameLinks());
+                })
                 .ConfigureSite("spectreconsole", "spectre.console", "main")
                 .ConfigureDeployment(deployBranch: "docs")
-                
                 .AddShortcode("Children", typeof(ChildrenShortcode))
                 .AddShortcode("ColorTable", typeof(ColorTableShortcode))
                 .AddShortcode("EmojiTable", typeof(EmojiTableShortcode))
                 .AddShortcode("Alert", typeof(AlertShortcode))
                 .AddShortcode("AsciiCast", typeof(AsciiCastShortcode))
+                .AddShortcode("Example", typeof(ExampleSnippet))
                 .AddPipelines()
                 .BuildPipeline(
 			        "Bootstrap",

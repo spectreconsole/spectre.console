@@ -4,12 +4,14 @@ Description: "*Spectre.Console* can update arbitrary widgets in-place."
 Highlights:
     - Update tables or graphs with new updates.
     - Create a custom progress bar that extends the existing control.
+Reference: 
+    - T:Spectre.Console.LiveDisplay
+    - M:Spectre.Console.AnsiConsole.Live(Spectre.Console.Rendering.IRenderable)
 ---
 
-Spectre.Console can update arbitrary widgets in-place.
+Spectre.Console can update arbitrary widgets in-place using the [Live Display](xref:T:Spectre.Console.LiveDisplay) widget.
 
 <?# AsciiCast cast="live" /?>
-
 
 <?# Alert ?>
   The live display is not 

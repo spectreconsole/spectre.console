@@ -5,6 +5,8 @@ Highlights:
     - Custom colors
     - Labels
     - Use your own data with a converter.
+Reference: T:Spectre.Console.BarChart
+    
 ---
 
 Use `BarChart` to render bar charts to the console.

@@ -1,0 +1,30 @@
+@using Statiq.CodeAnalysis
+@using Docs.Extensions
+
+@{
+    IReadOnlyList<IDocument> methods = Model.GetDocumentList(CodeAnalysisKeys.Members)
+        ?.Where(x => x.GetBool(CodeAnalysisKeys.IsResult) && x.GetString(CodeAnalysisKeys.Kind) == "Method")
+        .OrderBy(x => x.GetString(CodeAnalysisKeys.DisplayName))
+        .ToList();
+
+    if (methods?.Count > 0)
+    {
+        <h3>Methods</h3>
+        <div class="doc-summary">
+            <div>
+                <dl>
+                    @foreach (var method in methods)
+                    {
+                        <div>
+                            <dt>
+                                @method.GetModifiers() @method.GetDocument(CodeAnalysisKeys.ReturnType).GetString(CodeAnalysisKeys.DisplayName) @Context.GetTypeLink(method, false)
+                            </dt>
+                            <dd>@Html.Raw(method.GetString(CodeAnalysisKeys.Summary))</dd>
+                        </div>
+                    }
+
+                </dl>
+            </div>
+        </div>
+    }
+}

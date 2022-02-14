@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Demo.Utilities;
 using Spectre.Console.Cli;
 
-namespace Demo.Commands;
+namespace Demo.Commands.Serve;
 
 [Description("Launches a web server in the current working directory and serves all files in it.")]
 public sealed class ServeCommand : Command<ServeCommand.Settings>
