@@ -2,10 +2,12 @@ Title: Status
 Order: 10
 RedirectFrom: status
 Description: "*Spectre.Console* can display information about long running tasks in the console with the Status control."
-XmlDocsType: T:Spectre.Console.Status
 Highlights: 
     - Custom spinner control for running tasks.
     - Fallback for non-interactive consoles such as CI runners.
+Reference:
+    - T:Spectre.Console.Status
+    - M:Spectre.Console.AnsiConsole.Status
 ---
 
 Spectre.Console can display information about long running tasks in the console. 

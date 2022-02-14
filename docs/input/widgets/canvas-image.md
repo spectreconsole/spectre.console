@@ -1,7 +1,7 @@
 Title: Canvas Image
 Order: 70
 Description: "Use *ImageSharp* to parse images and render them as Ascii art to the console."
-XmlDocsType: T:Spectre.Console.CanvasImage
+Reference: T:Spectre.Console.CanvasImage
 ---
 
 To add [ImageSharp](https://github.com/SixLabors/ImageSharp) superpowers to 

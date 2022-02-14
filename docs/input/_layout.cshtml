@@ -222,11 +222,23 @@ c-9 -4 -271 61 -315 78 -29 11 -28 12 79 55 59 24 111 46 114 49 3 3 33 -36
                             {
                                 if (Context.TryGetXrefDocument(link, out var refDoc, out string error))
                                 {
-                                    <li>@Html.DocumentLink(refDoc, refDoc.GetString(CodeAnalysisKeys.QualifiedName) ?? refDoc.GetTitle())</li>
+                                    <li>
+                                        @{
+                                            var kind = refDoc.GetString(CodeAnalysisKeys.SpecificKind);
+                                            var prefix = string.Empty;
+                                            var containingType = @refDoc.GetDocument(CodeAnalysisKeys.ContainingType);
+                                            if (containingType != null)
+                                            {
+                                                prefix = containingType.GetString(CodeAnalysisKeys.DisplayName) + ".";
+                                            }
+                                        }
+
+                                        @if (!string.IsNullOrWhiteSpace(prefix)){ <span class="text-slate-600 dark:text-slate-400">@prefix</span>}@Html.DocumentLink(refDoc, refDoc.GetString(CodeAnalysisKeys.DisplayName) ?? refDoc.GetTitle()) <span class="ml-4 uppercase text-xs text-slate-700 dark:text-slate-400">@kind</span>
+                                    </li>
                                 }
                                 else
                                 {
-                                    <li>@error</li>
+                                    Context.LogWarning(Model, $"Error finding xref for {link} - {error}");
                                 }
                             }
                         </ul>

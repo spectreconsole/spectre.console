@@ -5,6 +5,10 @@ Highlights:
  - Easily add *color*.
  - Add hyperlinks to for supported terminals.
  - Emoji 🚀 parsing.
+Reference:
+ - M:Spectre.Console.AnsiConsole.Markup(System.String)
+ - M:Spectre.Console.AnsiConsole.MarkupLine(System.String)
+ - T:Spectre.Console.Markup
 ---
 
 The `Markup` class allows you to output rich text to the console.

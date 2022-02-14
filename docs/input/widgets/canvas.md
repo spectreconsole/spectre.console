@@ -1,7 +1,7 @@
 Title: Canvas
 Order: 60
 Description: "**Canvas** is a widget that allows you to render arbitrary pixels to the console."
-XmlDocsType: T:Spectre.Console.Canvas
+Reference: T:Spectre.Console.Canvas
 ---
 
 `Canvas` is a widget that allows you to render arbitrary "pixels" 
