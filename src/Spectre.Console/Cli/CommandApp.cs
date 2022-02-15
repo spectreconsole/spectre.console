@@ -73,6 +73,7 @@ public sealed class CommandApp : ICommandApp
                     cli.AddCommand<VersionCommand>(CliConstants.Commands.Version);
                     cli.AddCommand<XmlDocCommand>(CliConstants.Commands.XmlDoc);
                     cli.AddCommand<ExplainCommand>(CliConstants.Commands.Explain);
+                    cli.AddCommand<CompleteCommand>(CliConstants.Commands.Complete);
                 });
 
                 _executed = true;
