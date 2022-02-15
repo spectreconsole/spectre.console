@@ -135,6 +135,39 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
+    public void Should_Pass_Case_4_With_Negative_Integer_Argument()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddBranch<AnimalSettings>("animal", animal =>
+            {
+                animal.AddCommand<DogCommand>("dog");
+            });
+        });
+
+        // When
+        var result = app.Run(new[]
+        {
+            "animal", "4", "dog", "-12", "--good-boy",
+            "--name", "Rufus",
+        });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
+        {
+            dog.Legs.ShouldBe(4);
+            dog.Age.ShouldBe(-12);
+            dog.GoodBoy.ShouldBe(true);
+            dog.IsAlive.ShouldBe(false);
+            dog.Name.ShouldBe("Rufus");
+        });
+    }
+
+    [Fact]
     public void Should_Pass_Case_5()
     {
         // Given
