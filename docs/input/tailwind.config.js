@@ -37,13 +37,11 @@ module.exports = {
                             lineHeight: '1.4',
                         },
                         pre: {
-                            fontWeight: theme("fontWeight.light"),
                             borderRadius: theme('borderRadius.xl'),
                             borderWidth: '1px',
                             borderColor: theme('colors.slate.700'),
                             color: theme('colors.slate.50'),
                             boxShadow: theme('boxShadow.md'),
-                            lineHeight: '1.3',
                         },
                         'p + pre, p + asciinema-player pre': {
                             marginTop: `${-4 / 14}em`,
@@ -53,9 +51,7 @@ module.exports = {
                         },
                         code: {
                             fontWeight: theme("fontWeight.normal"),
-                            fontSize: 'inherit',
                         },
-
                         "code::before": {
                             content: "&nbsp;",
                         },
@@ -75,6 +71,29 @@ module.exports = {
                         },
                     },
                 },
+                base: {
+                    css: {
+                        pre: {
+                            fontWeight: theme("fontWeight.light"),
+                            fontSize:'.9rem',
+                            lineHeight: '1.35'
+                        },
+                        code: {
+                            fontSize:'inherit'
+                        },
+                    }
+                },
+                sm: {
+                    css: {
+                        pre: {
+                            fontSize:'.8rem',
+                            lineHeight: '1.4',
+                        },
+                        code:{
+                            fontSize:'inherit'
+                        },
+                    }
+                }
             }),
         },
     },

@@ -61,7 +61,7 @@ div.doc-summary > div dl > div dt {
 }
 
 div.doc-summary > div dl > div dd {
-    @apply mt-4 text-sm sm:mt-0 sm:col-span-2;
+    @apply empty:hidden sm:block mt-4 text-sm sm:mt-0 sm:col-span-2;
 }
 
 div.doc-summary.short-term > div dl > div dt {

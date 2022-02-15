@@ -204,12 +204,12 @@ c-9 -4 -271 61 -315 78 -29 11 -28 12 79 55 59 24 111 46 114 49 3 3 33 -36
                 @RenderSection("header", required: false)
                 @if (!IsSectionDefined("header"))
                 {
-                    <h1 class="text-4xl font-extrabold">@(Document.GetString(Keys.Title) ?? Document.GetTitle())</h1>
+                    <h1 class="text-2xl md:text-4xl font-extrabold">@(Document.GetString(Keys.Title) ?? Document.GetTitle())</h1>
                 }
 
                 @RenderSection("subheading", required: false)
             </header>
-            <div class="prose prose-slate dark:prose-invert max-w-full font-light lg:leading-loose">
+            <div class="prose prose-sm md:prose-base prose-slate dark:prose-invert max-w-full font-light lg:leading-loose">
                 @RenderBody()
 
                 @{
