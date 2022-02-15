@@ -47,8 +47,9 @@ jobs:
       shell: bash
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NETLIFY_ACCESS_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
       run: |
         cd docs
         dotnet tool restore
-        dotnet run --configuration Release
-        dotnet run -- deploy
+        dotnet run --configuration Release -- deploy
