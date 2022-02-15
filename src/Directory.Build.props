@@ -15,8 +15,8 @@
 
   <PropertyGroup Label="Package Information">
     <Description>A library that makes it easier to create beautiful console applications.</Description>
-    <Copyright>Patrik Svensson, Phil Scott</Copyright>
-    <Authors>Patrik Svensson, Phil Scott</Authors>
+    <Copyright>Patrik Svensson, Phil Scott, Nils Andresen</Copyright>
+    <Authors>Patrik Svensson, Phil Scott, Nils Andresen</Authors>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/spectreconsole/spectre.console</RepositoryUrl>
     <PackageIcon>small-logo.png</PackageIcon>
