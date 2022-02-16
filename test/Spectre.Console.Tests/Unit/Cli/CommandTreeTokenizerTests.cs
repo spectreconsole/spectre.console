@@ -77,7 +77,7 @@ public static class CommandTreeTokenizerTests
         [Fact]
         public void With_Negative_Numeric_Prefixed_String_Value()
         {
-            var result = CommandTreeTokenizer.Tokenize(new [] { "-6..2 "});
+            var result = CommandTreeTokenizer.Tokenize(new[] { "-6..2 " });
             Assert.Empty(result.Remaining);
             var t = Assert.Single(result.Tokens);
             t.TokenKind.ShouldBe(CommandTreeToken.Kind.String);
