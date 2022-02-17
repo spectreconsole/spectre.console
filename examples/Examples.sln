@@ -67,11 +67,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveTable", "Console\LiveTa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minimal", "Console\Minimal\Minimal.csproj", "{1780A30A-397A-4CC3-B2A0-A385D9081FA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlternateScreen", "Console\AlternateScreen\AlternateScreen.csproj", "{8A3B636E-5828-438B-A8F4-83811D2704CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlternateScreen", "Console\AlternateScreen\AlternateScreen.csproj", "{8A3B636E-5828-438B-A8F4-83811D2704CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spectre.Console", "..\src\Spectre.Console\Spectre.Console.csproj", "{0C58FB17-F60A-47AB-84BF-961EC8C06AE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Console", "..\src\Spectre.Console\Spectre.Console.csproj", "{0C58FB17-F60A-47AB-84BF-961EC8C06AE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spectre.Console.ImageSharp", "..\src\Spectre.Console.ImageSharp\Spectre.Console.ImageSharp.csproj", "{A127CE7D-A5A7-4745-9809-EBD7CB12CEE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Console.ImageSharp", "..\src\Spectre.Console.ImageSharp\Spectre.Console.ImageSharp.csproj", "{A127CE7D-A5A7-4745-9809-EBD7CB12CEE7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paths", "Console\Paths\Paths.csproj", "{65CB00B0-A3AE-4E8F-A990-4C8C1A232FE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -479,6 +481,18 @@ Global
 		{A127CE7D-A5A7-4745-9809-EBD7CB12CEE7}.Release|x64.Build.0 = Release|Any CPU
 		{A127CE7D-A5A7-4745-9809-EBD7CB12CEE7}.Release|x86.ActiveCfg = Release|Any CPU
 		{A127CE7D-A5A7-4745-9809-EBD7CB12CEE7}.Release|x86.Build.0 = Release|Any CPU
+		{65CB00B0-A3AE-4E8F-A990-4C8C1A232FE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65CB00B0-A3AE-4E8F-A990-4C8C1A232FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65CB00B0-A3AE-4E8F-A990-4C8C1A232FE2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{65CB00B0-A3AE-4E8F-A990-4C8C1A232FE2}.Debug|x64.Build.0 = Debug|Any CPU
+		{65CB00B0-A3AE-4E8F-A990-4C8C1A232FE2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{65CB00B0-A3AE-4E8F-A990-4C8C1A232FE2}.Debug|x86.Build.0 = Debug|Any CPU
+		{65CB00B0-A3AE-4E8F-A990-4C8C1A232FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65CB00B0-A3AE-4E8F-A990-4C8C1A232FE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65CB00B0-A3AE-4E8F-A990-4C8C1A232FE2}.Release|x64.ActiveCfg = Release|Any CPU
+		{65CB00B0-A3AE-4E8F-A990-4C8C1A232FE2}.Release|x64.Build.0 = Release|Any CPU
+		{65CB00B0-A3AE-4E8F-A990-4C8C1A232FE2}.Release|x86.ActiveCfg = Release|Any CPU
+		{65CB00B0-A3AE-4E8F-A990-4C8C1A232FE2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
