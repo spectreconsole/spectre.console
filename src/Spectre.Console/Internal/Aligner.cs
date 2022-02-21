@@ -45,7 +45,7 @@ internal static class Aligner
         }
     }
 
-    public static void Align<T>(RenderContext context, T segments, Justify? alignment, int maxWidth)
+    public static void Align<T>(T segments, Justify? alignment, int maxWidth)
         where T : List<Segment>
     {
         if (alignment == null || alignment == Justify.Left)

@@ -151,7 +151,7 @@ public sealed class Paragraph : Renderable, IAlignable, IOverflowable
         {
             foreach (var line in lines)
             {
-                Aligner.Align(context, line, justification, maxWidth);
+                Aligner.Align(line, justification, maxWidth);
             }
         }
 

@@ -115,7 +115,7 @@ internal static class TableRenderer
                 }
 
                 // Align the row result.
-                Aligner.Align(context.Options, rowResult, context.Alignment, context.MaxWidth);
+                Aligner.Align(rowResult, context.Alignment, context.MaxWidth);
 
                 // Is the row larger than the allowed max width?
                 if (Segment.CellCount(rowResult) > context.MaxWidth)
@@ -167,7 +167,7 @@ internal static class TableRenderer
         segments.AddRange(((IRenderable)paragraph).Render(context.Options, context.TableWidth));
 
         // Align over the whole buffer area
-        Aligner.Align(context.Options, segments, context.Alignment, context.MaxWidth);
+        Aligner.Align(segments, context.Alignment, context.MaxWidth);
 
         segments.Add(Segment.LineBreak);
         return segments;
