@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using Spectre.Console;
 
-namespace Live;
+namespace Paths;
 
 public static class Program
 {
@@ -11,11 +11,37 @@ public static class Program
         var windowsPath = @"C:\This is\A\Super Long\Windows\Path\That\Goes\On And On\And\Never\Seems\To\Stop\But\At\Some\Point\It\Must\I\Guess.txt";
         var unixPath = @"//This is/A/Super Long/Unix/Path/That/Goes/On And On/And/Never/Seems/To/Stop/But/At/Some/Point/It/Must/I/Guess.txt";
 
-        var table = new Table().BorderColor(Color.Grey);
+        AnsiConsole.WriteLine();
+        WritePlain(windowsPath, unixPath);
+
+        AnsiConsole.WriteLine();
+        WriteColorized(windowsPath, unixPath);
+
+        AnsiConsole.WriteLine();
+        WriteAligned(windowsPath);
+    }
+
+    private static void WritePlain(string windowsPath, string unixPath)
+    {
+        var table = new Table().BorderColor(Color.Grey).Title("Plain").RoundedBorder();
+        table.AddColumns("[grey]OS[/]", "[grey]Path[/]");
+        table.AddRow(new Text("Windows"), new TextPath(windowsPath));
+        table.AddRow(new Text("Unix"), new TextPath(unixPath));
+
+        AnsiConsole.Write(table);
+    }
+
+    private static void WriteColorized(string windowsPath, string unixPath)
+    {
+        var table = new Table().BorderColor(Color.Grey).Title("Colorized").RoundedBorder();
         table.AddColumns("[grey]OS[/]", "[grey]Path[/]");
 
         table.AddRow(new Text("Windows"),
-            new TextPath(windowsPath));
+            new TextPath(windowsPath)
+                .RootColor(Color.Blue)
+                .SeparatorColor(Color.Yellow)
+                .StemStyle(Color.Red)
+                .LeafStyle(Color.Green));
 
         table.AddRow(new Text("Unix"),
             new TextPath(unixPath)
@@ -23,6 +49,18 @@ public static class Program
                 .SeparatorColor(Color.Yellow)
                 .StemStyle(Color.Red)
                 .LeafStyle(Color.Green));
+
+        AnsiConsole.Write(table);
+    }
+
+    private static void WriteAligned(string path)
+    {
+        var table = new Table().BorderColor(Color.Grey).Title("Aligned").RoundedBorder();
+        table.AddColumns("[grey]Alignment[/]", "[grey]Path[/]");
+
+        table.AddRow(new Text("Left"), new TextPath(path).LeftAligned());
+        table.AddRow(new Text("Center"), new TextPath(path).Centered());
+        table.AddRow(new Text("Right"), new TextPath(path).RightAligned());
 
         AnsiConsole.Write(table);
     }
