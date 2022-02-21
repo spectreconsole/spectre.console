@@ -14,7 +14,8 @@ public sealed class TextPathTests
         console.Write(new TextPath(input));
 
         // Then
-        console.Output.TrimEnd().ShouldBe(expected);
+        console.Output.TrimEnd()
+            .ShouldBe(expected);
     }
 
     [Theory]
@@ -30,7 +31,8 @@ public sealed class TextPathTests
         console.Write(new TextPath(input));
 
         // Then
-        console.Output.TrimEnd().ShouldBe(expected);
+        console.Output.TrimEnd()
+            .ShouldBe(expected);
     }
 
     [Theory]
@@ -46,7 +48,8 @@ public sealed class TextPathTests
         console.Write(new TextPath(input));
 
         // Then
-        console.Output.TrimEnd().ShouldBe(expected);
+        console.Output.TrimEnd()
+            .ShouldBe(expected);
     }
 
     [Theory]
@@ -65,5 +68,33 @@ public sealed class TextPathTests
 
         // Then
         console.Output.ShouldEndWith("\n");
+    }
+
+    [Fact]
+    public void Should_Right_Align_Correctly()
+    {
+        // Given
+        var console = new TestConsole().Width(40);
+
+        // When
+        console.Write(new TextPath("C:/My documents/Bar/Baz.txt").RightAligned());
+
+        // Then
+        console.Output.TrimEnd('\n')
+            .ShouldBe("             C:/My documents/Bar/Baz.txt");
+    }
+
+    [Fact]
+    public void Should_Center_Align_Correctly()
+    {
+        // Given
+        var console = new TestConsole().Width(40);
+
+        // When
+        console.Write(new TextPath("C:/My documents/Bar/Baz.txt").Centered());
+
+        // Then
+        console.Output.TrimEnd('\n')
+            .ShouldBe("      C:/My documents/Bar/Baz.txt       ");
     }
 }

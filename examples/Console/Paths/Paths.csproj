@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ExampleTitle>Paths</ExampleTitle>
-    <ExampleDescription>Demonstrates how to write paths.</ExampleDescription>
+    <ExampleDescription>Demonstrates how to render paths.</ExampleDescription>
     <ExampleGroup>Widgets</ExampleGroup>
   </PropertyGroup>
 

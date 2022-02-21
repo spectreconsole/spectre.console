@@ -3,7 +3,7 @@ namespace Spectre.Console;
 /// <summary>
 /// Representation of a file system path.
 /// </summary>
-public sealed class TextPath : IRenderable
+public sealed class TextPath : IRenderable, IAlignable
 {
     private const string Ellipsis = "...";
     private const string UnicodeEllipsis = "…";
@@ -31,6 +31,11 @@ public sealed class TextPath : IRenderable
     /// Gets or sets the leaf style.
     /// </summary>
     public Style? LeafStyle { get; set; }
+
+    /// <summary>
+    /// Gets or sets the alignment.
+    /// </summary>
+    public Justify? Alignment { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TextPath"/> class.
@@ -75,6 +80,8 @@ public sealed class TextPath : IRenderable
     /// <inheritdoc/>
     public IEnumerable<Segment> Render(RenderContext context, int maxWidth)
     {
+        var alignment = Alignment ?? Justify.Left;
+
         var rootStyle = RootStyle ?? Style.Plain;
         var separatorStyle = SeparatorStyle ?? Style.Plain;
         var stemStyle = StemStyle ?? Style.Plain;
@@ -111,6 +118,10 @@ public sealed class TextPath : IRenderable
             }
         }
 
+        // Align the result
+        Aligner.Align(parts, Alignment, maxWidth);
+
+        // Insert a line break
         parts.Add(Segment.LineBreak);
 
         return parts;
