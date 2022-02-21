@@ -5,7 +5,32 @@ namespace Spectre.Console;
 /// </summary>
 public sealed class TextPath : IRenderable
 {
+    private const string Ellipsis = "...";
+    private const string UnicodeEllipsis = "…";
+
     private readonly string[] _parts;
+    private readonly bool _rooted;
+    private readonly bool _windows;
+
+    /// <summary>
+    /// Gets or sets the root style.
+    /// </summary>
+    public Style? RootStyle { get; set; }
+
+    /// <summary>
+    /// Gets or sets the separator style.
+    /// </summary>
+    public Style? SeparatorStyle { get; set; }
+
+    /// <summary>
+    /// Gets or sets the stem style.
+    /// </summary>
+    public Style? StemStyle { get; set; }
+
+    /// <summary>
+    /// Gets or sets the leaf style.
+    /// </summary>
+    public Style? LeafStyle { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TextPath"/> class.
@@ -20,13 +45,27 @@ public sealed class TextPath : IRenderable
 
         // Get the distinct parts
         _parts = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+        // Rooted Unix path?
+        if (path.StartsWith("/"))
+        {
+            _rooted = true;
+            _parts = new[] { "/" }.Concat(_parts).ToArray();
+        }
+        else if (_parts.Length > 0 && _parts[0].EndsWith(":"))
+        {
+            // Rooted Windows path
+            _rooted = true;
+            _windows = true;
+        }
     }
 
     /// <inheritdoc/>
     public Measurement Measure(RenderContext context, int maxWidth)
     {
         var fitted = Fit(context, maxWidth);
-        var length = fitted.Sum(f => f.Length) + fitted.Length - 1;
+        var separatorCount = fitted.Length - 1;
+        var length = fitted.Sum(f => f.Length) + separatorCount;
 
         return new Measurement(
             Math.Min(length, maxWidth),
@@ -36,18 +75,43 @@ public sealed class TextPath : IRenderable
     /// <inheritdoc/>
     public IEnumerable<Segment> Render(RenderContext context, int maxWidth)
     {
+        var rootStyle = RootStyle ?? Style.Plain;
+        var separatorStyle = SeparatorStyle ?? Style.Plain;
+        var stemStyle = StemStyle ?? Style.Plain;
+        var leafStyle = LeafStyle ?? Style.Plain;
+
         var fitted = Fit(context, maxWidth);
-
         var parts = new List<Segment>();
-        foreach (var (_, _, last, item) in fitted.Enumerate())
+        foreach (var (_, first, last, item) in fitted.Enumerate())
         {
-            parts.Add(new Segment(item));
-
-            if (!last)
+            // Leaf?
+            if (last)
             {
-                parts.Add(new Segment("/", new Style(Color.Grey)));
+                parts.Add(new Segment(item, leafStyle));
+            }
+            else
+            {
+                if (first && _rooted)
+                {
+                    // Root
+                    parts.Add(new Segment(item, rootStyle));
+
+                    if (_windows)
+                    {
+                        // Windows root has a slash
+                        parts.Add(new Segment("/", separatorStyle));
+                    }
+                }
+                else
+                {
+                    // Normal path segment
+                    parts.Add(new Segment(item, stemStyle));
+                    parts.Add(new Segment("/", separatorStyle));
+                }
             }
         }
+
+        parts.Add(Segment.LineBreak);
 
         return parts;
     }
@@ -66,13 +130,17 @@ public sealed class TextPath : IRenderable
             return _parts;
         }
 
-        var ellipsis = context.Unicode ? "…" : "...";
+        var ellipsis = context.Unicode ? UnicodeEllipsis : Ellipsis;
         var ellipsisLength = Cell.GetCellLength(ellipsis);
 
         if (_parts.Length >= 2)
         {
+            var skip = _rooted ? 1 : 0;
+            var separatorCount = _rooted ? 2 : 1;
+            var rootLength = _rooted ? Cell.GetCellLength(_parts[0]) : 0;
+
             // Try popping parts until it fits
-            var queue = new Queue<string>(_parts.Skip(1).Take(_parts.Length - 2));
+            var queue = new Queue<string>(_parts.Skip(skip).Take(_parts.Length - separatorCount));
             while (queue.Count > 0)
             {
                 // Remove the first item
@@ -80,20 +148,27 @@ public sealed class TextPath : IRenderable
 
                 // Get the current queue width in cells
                 var queueWidth =
-                        Cell.GetCellLength(_parts[0]) // First
+                        rootLength // Root (if rooted)
                         + ellipsisLength // Ellipsis
                         + queue.Sum(p => Cell.GetCellLength(p)) // Middle
                         + Cell.GetCellLength(_parts.Last()) // Last
-                        + queue.Count + 2; // Separators
+                        + queue.Count + separatorCount; // Separators
 
                 // Will it fit?
                 if (maxWidth >= queueWidth)
                 {
                     var result = new List<string>();
-                    result.Add(_parts[0]);
+
+                    if (_rooted)
+                    {
+                        // Add the root
+                        result.Add(_parts[0]);
+                    }
+
                     result.Add(ellipsis);
                     result.AddRange(queue);
                     result.Add(_parts.Last());
+
                     return result.ToArray();
                 }
             }
@@ -101,7 +176,9 @@ public sealed class TextPath : IRenderable
 
         // Just trim the last part so it fits
         var last = _parts.Last();
-        var take = Math.Max(0, maxWidth - ellipsisLength);
-        return new[] { string.Concat(ellipsis, last.Substring(last.Length - take, take)) };
+        var take = Math.Min(last.Length, Math.Max(0, maxWidth - ellipsisLength));
+        var start = Math.Max(0, last.Length - take);
+
+        return new[] { string.Concat(ellipsis, last.Substring(start, take)) };
     }
 }
