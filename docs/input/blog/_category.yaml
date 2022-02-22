@@ -1,9 +1,9 @@
-ArchiveSources: => $"blog/posts/**/*"
+ArchiveSources: blog/posts/**/*
 ArchiveKey: Category
 ArchiveKeyComparer: => StringComparer.OrdinalIgnoreCase.ToConvertingEqualityComparer()
 ArchiveDestination: >
   => GetInt("Index") <= 1 ? $"blog/{NormalizedPath.OptimizeFileName(GetString("GroupKey"))}/index.html" : $"blog/{NormalizedPath.OptimizeFileName(GetString("GroupKey"))}/{GetInt("Index")}.html"
-ArchivePageSize: => 5
+ArchivePageSize: 5
 ArchiveOrderKey: published
 ArchiveOrderDescending: true
 Title: Categories
