@@ -1,7 +1,17 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
-    content: ["./output/**/*.html"],
+    /*
+     we don't need to scan all the doc files because they all share the same layout. so we can exclude all but one of the namespace (Spectre.Console.Advanced) from the scan 
+     we'll get all the css classes that we need to build up the styles for the rest.
+     */
+    content: [
+        "./output/**/*.html", 
+        "!./output/api/Spectre.Console/**/*.html", 
+        "!./output/api/Spectre.Console.Cli/**/*.html", 
+        "!./output/api/Spectre.Console/Spectre.Console.Cli.Unsafe/**/*.html", 
+        "!./output/api/Spectre.Console/Spectre.Console.Rendering/**/*.html"
+    ],
     darkMode: "class",
     theme: {
         extend: {
