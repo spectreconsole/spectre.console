@@ -84,7 +84,7 @@ public static class TextPathExtensions
     /// <param name="obj">The path.</param>
     /// <param name="color">The stem color.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPath StemStyle(this TextPath obj, Color color)
+    public static TextPath StemColor(this TextPath obj, Color color)
     {
         return StemStyle(obj, new Style(foreground: color));
     }
@@ -112,7 +112,7 @@ public static class TextPathExtensions
     /// <param name="obj">The path.</param>
     /// <param name="color">The leaf color.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPath LeafStyle(this TextPath obj, Color color)
+    public static TextPath LeafColor(this TextPath obj, Color color)
     {
         return LeafStyle(obj, new Style(foreground: color));
     }

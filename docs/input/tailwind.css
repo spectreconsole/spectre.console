@@ -24,6 +24,14 @@ and the ascii terminal player.
     @apply m-0;
 }
 
+.alert-info {
+    @apply p-4 border border-green-300 bg-green-100 text-green-800 dark:border-green-700/50 dark:bg-green-800/50 dark:text-gray-300/90 rounded shadow-sm  text-sm;
+}
+
+.alert-info p {
+    @apply m-0;
+}
+
 [type='search'] {
     @apply shadow-sm focus:ring-indigo-300 focus:border-indigo-300 block w-full sm:text-sm border-gray-300 rounded-md;
 }
