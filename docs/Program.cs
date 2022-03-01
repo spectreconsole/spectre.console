@@ -38,6 +38,7 @@ namespace Docs
                 .AddShortcode("ColorTable", typeof(ColorTableShortcode))
                 .AddShortcode("EmojiTable", typeof(EmojiTableShortcode))
                 .AddShortcode("Alert", typeof(AlertShortcode))
+                .AddShortcode("Info", typeof(InfoShortcode))
                 .AddShortcode("AsciiCast", typeof(AsciiCastShortcode))
                 .AddShortcode("Example", typeof(ExampleSnippet))
                 .AddPipelines()
