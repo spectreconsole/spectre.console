@@ -1,57 +1,52 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+namespace Spectre.Console.Internal;
 
-namespace Spectre.Console.Internal
+internal sealed class DefaultExclusivityMode : IExclusivityMode
 {
-    internal sealed class DefaultExclusivityMode : IExclusivityMode
+    private readonly SemaphoreSlim _semaphore;
+
+    public DefaultExclusivityMode()
     {
-        private readonly SemaphoreSlim _semaphore;
+        _semaphore = new SemaphoreSlim(1, 1);
+    }
 
-        public DefaultExclusivityMode()
+    public T Run<T>(Func<T> func)
+    {
+        // Try acquiring the exclusivity semaphore
+        if (!_semaphore.Wait(0))
         {
-            _semaphore = new SemaphoreSlim(1, 1);
+            throw CreateExclusivityException();
         }
 
-        public T Run<T>(Func<T> func)
+        try
         {
-            // Try aquiring the exclusivity semaphore
-            if (!_semaphore.Wait(0))
-            {
-                throw new InvalidOperationException(
-                    "Trying to run one or more interactive functions concurrently. " +
-                    "Operations with dynamic displays (e.g. a prompt and a progress display) " +
-                    "cannot be running at the same time.");
-            }
-
-            try
-            {
-                return func();
-            }
-            finally
-            {
-                _semaphore.Release(1);
-            }
+            return func();
         }
-
-        public async Task<T> Run<T>(Func<Task<T>> func)
+        finally
         {
-            // Try aquiring the exclusivity semaphore
-            if (!await _semaphore.WaitAsync(0).ConfigureAwait(false))
-            {
-                // TODO: Need a better message here
-                throw new InvalidOperationException(
-                    "Could not aquire the interactive semaphore");
-            }
-
-            try
-            {
-                return await func().ConfigureAwait(false);
-            }
-            finally
-            {
-                _semaphore.Release(1);
-            }
+            _semaphore.Release(1);
         }
     }
+
+    public async Task<T> RunAsync<T>(Func<Task<T>> func)
+    {
+        // Try acquiring the exclusivity semaphore
+        if (!await _semaphore.WaitAsync(0).ConfigureAwait(false))
+        {
+            throw CreateExclusivityException();
+        }
+
+        try
+        {
+            return await func().ConfigureAwait(false);
+        }
+        finally
+        {
+            _semaphore.Release(1);
+        }
+    }
+
+    private static Exception CreateExclusivityException() => new InvalidOperationException(
+        "Trying to run one or more interactive functions concurrently. " +
+        "Operations with dynamic displays (e.g. a prompt and a progress display) " +
+        "cannot be running at the same time.");
 }

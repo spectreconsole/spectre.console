@@ -1,28 +1,27 @@
-namespace Spectre.Console
+namespace Spectre.Console;
+
+/// <summary>
+/// Represents cursor direction.
+/// </summary>
+public enum CursorDirection
 {
     /// <summary>
-    /// Represents cursor direction.
+    /// Moves cursor up.
     /// </summary>
-    public enum CursorDirection
-    {
-        /// <summary>
-        /// Moves cursor up.
-        /// </summary>
-        Up,
+    Up,
 
-        /// <summary>
-        /// Moves cursor down.
-        /// </summary>
-        Down,
+    /// <summary>
+    /// Moves cursor down.
+    /// </summary>
+    Down,
 
-        /// <summary>
-        /// Moves cursor left.
-        /// </summary>
-        Left,
+    /// <summary>
+    /// Moves cursor left.
+    /// </summary>
+    Left,
 
-        /// <summary>
-        /// Moves cursor right.
-        /// </summary>
-        Right,
-    }
+    /// <summary>
+    /// Moves cursor right.
+    /// </summary>
+    Right,
 }

@@ -1,6 +1,9 @@
 Title: CommandApp
 Order: 2
 Description: "**CommandApp** is the entry point for a *Spectre.Console.Cli* command line application. It is used to configure the settings and commands used for execution of the application."
+Reference:
+    - T:Spectre.Console.Cli.CommandApp
+    - T:Spectre.Console.Cli.CommandApp`1
 ---
 
 `CommandApp` is the entry point for a `Spectre.Console.Cli` command line application. It is used to configure the settings and commands used for execution of the application. Most `Spectre.Console.Cli` applications will need to specify a custom configuration using the `Configure` method.
@@ -50,7 +53,7 @@ app.Configure(config =>
         .IsHidden()
         .WithAlias("file-size")
         .WithDescription("Gets the file size for a directory.")
-        .WithExample(new[] {"c:\\windows", "--pattern", "*.dll"});
+        .WithExample(new[] {"size", "c:\\windows", "--pattern", "*.dll"});
 });
 ```
 
@@ -73,6 +76,9 @@ return app.Run(args);
 ```
 
 `TypeRegistrar` is a custom class that must be created by the user. This [example using `Microsoft.Extensions.DependencyInjection` as the container](https://github.com/spectreconsole/spectre.console/tree/main/examples/Cli/Injection) provides an example `TypeRegistrar` and `TypeResolver` that can be added to your application with small adjustments for your DI container.
+
+Hint: If you do write your own implementation of `TypeRegistrar` and `TypeResolver` and you have some form of unit tests in place for your project,
+there is a utility `TypeRegistrarBaseTests` available that can be used to ensure your implementations adhere to the required implementation. Simply call `TypeRegistrarBaseTests.RunAllTests()` and expect no `TypeRegistrarBaseTests.TestFailedException` to be thrown.
 
 ## Interception
 

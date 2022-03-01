@@ -1,0 +1,48 @@
+@using Statiq.CodeAnalysis
+@using Docs.Extensions
+@inherits StatiqRazorPage<IDocument>
+
+@{
+    Layout = @"../_layout.cshtml";
+}
+
+@section header{
+    <h1 class="text-2xl md:text-4xl align-baseline font-extrabold">
+        @Document.GetString(CodeAnalysisKeys.DisplayName) <span class="text-lg md:text-2xl text-uppercase text-sky-600 dark:text-sky-400">@Document.GetString(CodeAnalysisKeys.SpecificKind)</span>
+    </h1>
+
+    <nav class="flex mt-2" aria-label="Breadcrumb">
+        <ol class="flex flex-col sm:flex-row sm:items-center space-x-2 lg:space-x-3">
+            @{
+                var isFirst = true;
+            }
+            @foreach (var parent in Context.GetExecutionCache("sidebar", ctx => ctx.OutputPages).GetAncestorsOf(Document, Document.IdEquals(Model)).Reverse().Skip(1))
+            {
+                <li>
+                    <div class="flex items-center">
+                        @if (isFirst)
+                        {
+                            isFirst = false;
+                        }
+                        else
+                        {
+                            <svg class="flex-shrink-0 h-5 w-5 mr-2 lg:mr-3 text-slate-400 dark:text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                        }
+
+                        <span class="font-light text-sm text-slate-600 dark:text-slate-300" >@Html.DocumentLink(parent, parent.GetString(WebKeys.Title, parent.GetTitle()))</span>
+                    </div>
+                </li>
+            }
+        </ol>
+    </nav>
+
+
+}
+
+@await Html.PartialAsync($"Kind/_{Model.GetString(CodeAnalysisKeys.Kind)}.cshtml", Model)
+
+@{
+    IgnoreBody();
+}

@@ -1,14 +1,17 @@
 using System;
 using System.Security.Authentication;
+using Generator.Commands.Samples;
 using Spectre.Console;
 
-namespace Generator.Commands.Samples
+// keep the namespace here short because it'll be used in the display of the exceptions
+// and we want to keep that below 100 characters wide.
+namespace Samples
 {
     public class Exceptions
     {
         internal abstract class BaseExceptionSample : BaseSample
         {
-            public override (int Cols, int Rows) ConsoleSize => (base.ConsoleSize.Cols, 12);
+            public override (int Cols, int Rows) ConsoleSize => (100, 12);
 
             protected readonly Exception Exception = null!;
 
@@ -27,7 +30,7 @@ namespace Generator.Commands.Samples
 
         internal class DefaultExceptionSample : BaseExceptionSample
         {
-            public override void Run(IAnsiConsole console) => console.WriteException(Exception);
+            public override void Run(IAnsiConsole console) => console.WriteException(Exception, ExceptionFormats.ShortenPaths);
         }
 
         internal class ShortenedExceptionSample : BaseExceptionSample

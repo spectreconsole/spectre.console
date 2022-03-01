@@ -2,6 +2,7 @@ Title: Table
 Order: 0
 RedirectFrom: tables
 Description: "Tables are a perfect way of displaying tabular data in a terminal. *Spectre.Console* is super smart about rendering tables and will adjust all columns to fit whatever is inside them."
+Reference: T:Spectre.Console.Table
 ---
 
 Tables are a perfect way of displaying tabular data in a terminal.
@@ -35,7 +36,7 @@ table.AddRow("Baz", "[green]Qux[/]");
 table.AddRow(new Markup("[blue]Corgi[/]"), new Panel("Waldo"));
 
 // Render the table to the console
-AnsiConsole.Render(table);
+AnsiConsole.Write(table);
 ```
 
 This will render the following output:

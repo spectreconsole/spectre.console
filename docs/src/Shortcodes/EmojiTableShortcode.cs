@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Statiq.Common;
@@ -31,7 +30,6 @@ namespace Docs.Shortcodes
 
             foreach (var emoji in emojis)
             {
-                var code = emoji.Code.Replace("U+0000", "U+").Replace("U+000", "U+");
                 var icon = $"&#x{emoji.Code.Replace("U+", string.Empty)};";
 
                 var row = new XElement("tr", new XAttribute("class", "search-row"));

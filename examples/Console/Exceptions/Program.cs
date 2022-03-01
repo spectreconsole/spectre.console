@@ -1,65 +1,101 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Authentication;
+using System.Threading.Tasks;
+using Spectre.Console;
 
-namespace Spectre.Console.Examples
+namespace Exceptions;
+
+public static class Program
 {
-    public static class Program
+    public static async Task Main(string[] args)
     {
-        public static void Main(string[] args)
+        try
         {
-            try
-            {
-                DoMagic(42, null);
-            }
-            catch (Exception ex)
-            {
-                AnsiConsole.WriteLine();
-                AnsiConsole.Render(new Rule("Default").LeftAligned());
-                AnsiConsole.WriteLine();
-                AnsiConsole.WriteException(ex);
+            var foo = new List<string>();
+            DoMagic(42, null, ref foo);
+        }
+        catch (Exception ex)
+        {
+            AnsiConsole.WriteLine();
+            AnsiConsole.Write(new Rule("Default").LeftAligned());
+            AnsiConsole.WriteLine();
+            AnsiConsole.WriteException(ex);
 
-                AnsiConsole.WriteLine();
-                AnsiConsole.Render(new Rule("Compact").LeftAligned());
-                AnsiConsole.WriteLine();
-                AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything | ExceptionFormats.ShowLinks);
+            AnsiConsole.WriteLine();
+            AnsiConsole.Write(new Rule("Compact").LeftAligned());
+            AnsiConsole.WriteLine();
+            AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything | ExceptionFormats.ShowLinks);
 
-                AnsiConsole.WriteLine();
-                AnsiConsole.Render(new Rule("Compact + Custom colors").LeftAligned());
-                AnsiConsole.WriteLine();
-                AnsiConsole.WriteException(ex, new ExceptionSettings
+            AnsiConsole.WriteLine();
+            AnsiConsole.Write(new Rule("Compact + Custom colors").LeftAligned());
+            AnsiConsole.WriteLine();
+            AnsiConsole.WriteException(ex, new ExceptionSettings
+            {
+                Format = ExceptionFormats.ShortenEverything | ExceptionFormats.ShowLinks,
+                Style = new ExceptionStyle
                 {
-                    Format = ExceptionFormats.ShortenEverything | ExceptionFormats.ShowLinks,
-                    Style = new ExceptionStyle
-                    {
-                        Exception = new Style().Foreground(Color.Grey),
-                        Message = new Style().Foreground(Color.White),
-                        NonEmphasized = new Style().Foreground(Color.Cornsilk1),
-                        Parenthesis = new Style().Foreground(Color.Cornsilk1),
-                        Method = new Style().Foreground(Color.Red),
-                        ParameterName = new Style().Foreground(Color.Cornsilk1),
-                        ParameterType = new Style().Foreground(Color.Red),
-                        Path = new Style().Foreground(Color.Red),
-                        LineNumber = new Style().Foreground(Color.Cornsilk1),
-                    }
-                });
-            }
+                    Exception = new Style().Foreground(Color.Grey),
+                    Message = new Style().Foreground(Color.White),
+                    NonEmphasized = new Style().Foreground(Color.Cornsilk1),
+                    Parenthesis = new Style().Foreground(Color.Cornsilk1),
+                    Method = new Style().Foreground(Color.Red),
+                    ParameterName = new Style().Foreground(Color.Cornsilk1),
+                    ParameterType = new Style().Foreground(Color.Red),
+                    Path = new Style().Foreground(Color.Red),
+                    LineNumber = new Style().Foreground(Color.Cornsilk1),
+                }
+            });
         }
 
-        private static void DoMagic(int foo, string[,] bar)
+        try
         {
-            try
-            {
-                CheckCredentials(foo, bar);
-            }
-            catch(Exception ex)
-            {
-                throw new InvalidOperationException("Whaaat?", ex);
-            }
+            await DoMagicAsync<int>(42, null);
         }
-
-        private static void CheckCredentials(int qux, string[,] corgi)
+        catch (Exception ex)
         {
-            throw new InvalidCredentialException("The credentials are invalid.");
+            AnsiConsole.WriteLine();
+            AnsiConsole.Write(new Rule("Async").LeftAligned());
+            AnsiConsole.WriteLine();
+            AnsiConsole.WriteException(ex, ExceptionFormats.ShortenPaths);
         }
     }
+
+    private static void DoMagic(int foo, string[,] bar, ref List<string> result)
+    {
+        try
+        {
+            CheckCredentials(foo, bar);
+            result = new List<string>();
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Whaaat?", ex);
+        }
+    }
+
+    private static bool CheckCredentials(int? qux, string[,] corgi)
+    {
+        throw new InvalidCredentialException("The credentials are invalid.");
+    }
+
+    private static async Task DoMagicAsync<T>(T foo, string[,] bar)
+    {
+        try
+        {
+            await CheckCredentialsAsync(new[] { foo }.ToList(), new []{ foo },  bar);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Whaaat?", ex);
+        }
+    }
+
+    private static async Task<bool> CheckCredentialsAsync<T>(List<T> qux, T[] otherArray, string[,] corgi)
+    {
+        await Task.Delay(0);
+        throw new InvalidCredentialException("The credentials are invalid.");
+    }
 }
+

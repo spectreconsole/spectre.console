@@ -1,132 +1,127 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+namespace Spectre.Console;
 
-namespace Spectre.Console
+internal static class EnumerableExtensions
 {
-    internal static class EnumerableExtensions
+    // List.Reverse clashes with IEnumerable<T>.Reverse, so this method only exists
+    // so we won't have to cast List<T> to IEnumerable<T>.
+    public static IEnumerable<T> ReverseEnumerable<T>(this IEnumerable<T> source)
     {
-        // List.Reverse clashes with IEnumerable<T>.Reverse, so this method only exists
-        // so we won't have to cast List<T> to IEnumerable<T>.
-        public static IEnumerable<T> ReverseEnumerable<T>(this IEnumerable<T> source)
+        if (source is null)
         {
-            if (source is null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            return source.Reverse();
+            throw new ArgumentNullException(nameof(source));
         }
 
-        public static bool None<T>(this IEnumerable<T> source, Func<T, bool> predicate)
-        {
-            return !source.Any(predicate);
-        }
+        return source.Reverse();
+    }
 
-        public static IEnumerable<T> Repeat<T>(this IEnumerable<T> source, int count)
-        {
-            while (count-- > 0)
-            {
-                foreach (var item in source)
-                {
-                    yield return item;
-                }
-            }
-        }
+    public static bool None<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+    {
+        return !source.Any(predicate);
+    }
 
-        public static int IndexOf<T>(this IEnumerable<T> source, T item)
-            where T : class
-        {
-            var index = 0;
-            foreach (var candidate in source)
-            {
-                if (candidate == item)
-                {
-                    return index;
-                }
-
-                index++;
-            }
-
-            return -1;
-        }
-
-        public static int GetCount<T>(this IEnumerable<T> source)
-        {
-            if (source is IList<T> list)
-            {
-                return list.Count;
-            }
-
-            if (source is T[] array)
-            {
-                return array.Length;
-            }
-
-            return source.Count();
-        }
-
-        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+    public static IEnumerable<T> Repeat<T>(this IEnumerable<T> source, int count)
+    {
+        while (count-- > 0)
         {
             foreach (var item in source)
             {
-                action(item);
+                yield return item;
             }
         }
+    }
 
-        public static bool AnyTrue(this IEnumerable<bool> source)
+    public static int IndexOf<T>(this IEnumerable<T> source, T item)
+        where T : class
+    {
+        var index = 0;
+        foreach (var candidate in source)
         {
-            return source.Any(b => b);
-        }
-
-        public static IEnumerable<(int Index, bool First, bool Last, T Item)> Enumerate<T>(this IEnumerable<T> source)
-        {
-            if (source is null)
+            if (candidate == item)
             {
-                throw new ArgumentNullException(nameof(source));
+                return index;
             }
 
-            return Enumerate(source.GetEnumerator());
+            index++;
         }
 
-        public static IEnumerable<(int Index, bool First, bool Last, T Item)> Enumerate<T>(this IEnumerator<T> source)
+        return -1;
+    }
+
+    public static int GetCount<T>(this IEnumerable<T> source)
+    {
+        if (source is IList<T> list)
         {
-            if (source is null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            var first = true;
-            var last = !source.MoveNext();
-            T current;
-
-            for (var index = 0; !last; index++)
-            {
-                current = source.Current;
-                last = !source.MoveNext();
-                yield return (index, first, last, current);
-                first = false;
-            }
+            return list.Count;
         }
 
-        public static IEnumerable<TResult> SelectIndex<T, TResult>(this IEnumerable<T> source, Func<T, int, TResult> func)
+        if (source is T[] array)
         {
-            return source.Select((value, index) => func(value, index));
+            return array.Length;
         }
 
-#if !NET5_0
-        public static IEnumerable<(TFirst First, TSecond Second)> Zip<TFirst, TSecond>(
-            this IEnumerable<TFirst> source, IEnumerable<TSecond> first)
+        return source.Count();
+    }
+
+    public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
+    {
+        foreach (var item in source)
         {
-            return source.Zip(first, (first, second) => (first, second));
+            action(item);
         }
+    }
+
+    public static bool AnyTrue(this IEnumerable<bool> source)
+    {
+        return source.Any(b => b);
+    }
+
+    public static IEnumerable<(int Index, bool First, bool Last, T Item)> Enumerate<T>(this IEnumerable<T> source)
+    {
+        if (source is null)
+        {
+            throw new ArgumentNullException(nameof(source));
+        }
+
+        return Enumerate(source.GetEnumerator());
+    }
+
+    public static IEnumerable<(int Index, bool First, bool Last, T Item)> Enumerate<T>(this IEnumerator<T> source)
+    {
+        if (source is null)
+        {
+            throw new ArgumentNullException(nameof(source));
+        }
+
+        var first = true;
+        var last = !source.MoveNext();
+        T current;
+
+        for (var index = 0; !last; index++)
+        {
+            current = source.Current;
+            last = !source.MoveNext();
+            yield return (index, first, last, current);
+            first = false;
+        }
+    }
+
+    public static IEnumerable<TResult> SelectIndex<T, TResult>(this IEnumerable<T> source, Func<T, int, TResult> func)
+    {
+        return source.Select((value, index) => func(value, index));
+    }
+
+#if !NET5_0_OR_GREATER
+    public static IEnumerable<(TFirst First, TSecond Second)> Zip<TFirst, TSecond>(
+        this IEnumerable<TFirst> source, IEnumerable<TSecond> first)
+    {
+        return source.Zip(first, (first, second) => (first, second));
+    }
 #endif
 
-        public static IEnumerable<(TFirst First, TSecond Second, TThird Third)> Zip<TFirst, TSecond, TThird>(
-            this IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third)
-        {
-            return first.Zip(second, (a, b) => (a, b))
-                .Zip(third, (a, b) => (a.a, a.b, b));
-        }
+    public static IEnumerable<(TFirst First, TSecond Second, TThird Third)> Zip<TFirst, TSecond, TThird>(
+        this IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third)
+    {
+        return first.Zip(second, (a, b) => (a, b))
+            .Zip(third, (a, b) => (a.a, a.b, b));
     }
 }

@@ -1,31 +1,27 @@
-using System;
-using System.IO;
+namespace Spectre.Console;
 
-namespace Spectre.Console
+internal static class ResourceReader
 {
-    internal static class ResourceReader
+    public static string ReadManifestData(string resourceName)
     {
-        public static string ReadManifestData(string resourceName)
+        if (resourceName is null)
         {
-            if (resourceName is null)
+            throw new ArgumentNullException(nameof(resourceName));
+        }
+
+        var assembly = typeof(ResourceReader).Assembly;
+        resourceName = resourceName.ReplaceExact("/", ".");
+
+        using (var stream = assembly.GetManifestResourceStream(resourceName))
+        {
+            if (stream == null)
             {
-                throw new ArgumentNullException(nameof(resourceName));
+                throw new InvalidOperationException("Could not load manifest resource stream.");
             }
 
-            var assembly = typeof(ResourceReader).Assembly;
-            resourceName = resourceName.ReplaceExact("/", ".");
-
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            using (var reader = new StreamReader(stream))
             {
-                if (stream == null)
-                {
-                    throw new InvalidOperationException("Could not load manifest resource stream.");
-                }
-
-                using (var reader = new StreamReader(stream))
-                {
-                    return reader.ReadToEnd().NormalizeNewLines();
-                }
+                return reader.ReadToEnd().NormalizeNewLines();
             }
         }
     }

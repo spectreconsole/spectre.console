@@ -1,6 +1,7 @@
 Title: Canvas Image
 Order: 70
 Description: "Use *ImageSharp* to parse images and render them as Ascii art to the console."
+Reference: T:Spectre.Console.CanvasImage
 ---
 
 To add [ImageSharp](https://github.com/SixLabors/ImageSharp) superpowers to 
@@ -26,7 +27,7 @@ var image = new CanvasImage("cake.png");
 image.MaxWidth(16);
 
 // Render the image to the console
-AnsiConsole.Render(image);
+AnsiConsole.Write(image);
 ```
 
 ## Result
@@ -50,7 +51,7 @@ image.BilinearResampler();
 image.Mutate(ctx => ctx.Grayscale().Rotate(-45).EntropyCrop());
 
 // Render the image to the console
-AnsiConsole.Render(image);
+AnsiConsole.Write(image);
 ```
 
 ## Result

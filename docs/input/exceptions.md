@@ -4,6 +4,10 @@ Description: "Exceptions aren't always readable when viewed in the terminal. You
 Highlights:
     - Color coded output.
     - Shorten long identifiers and paths.
+Reference:
+    - M:Spectre.Console.AnsiConsole.WriteException(System.Exception,Spectre.Console.ExceptionFormats)
+    - M:Spectre.Console.AnsiConsole.WriteException(System.Exception,Spectre.Console.ExceptionSettings)
+
 ---
 
 Exceptions aren't always readable when viewed in the terminal.  

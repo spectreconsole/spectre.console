@@ -1,133 +1,128 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
+namespace Spectre.Console.Cli;
 
-namespace Spectre.Console.Cli
+internal abstract class ComponentActivator
 {
-    internal abstract class ComponentActivator
-    {
-        public abstract object Activate(DefaultTypeResolver container);
+    public abstract object Activate(DefaultTypeResolver container);
 
-        public abstract ComponentActivator CreateCopy();
+    public abstract ComponentActivator CreateCopy();
+}
+
+internal class CachingActivator : ComponentActivator
+{
+    private readonly ComponentActivator _activator;
+    private object? _result;
+
+    public CachingActivator(ComponentActivator activator)
+    {
+        _activator = activator ?? throw new ArgumentNullException(nameof(activator));
+        _result = null;
     }
 
-    internal class CachingActivator : ComponentActivator
+    public override object Activate(DefaultTypeResolver container)
     {
-        private readonly ComponentActivator _activator;
-        private object? _result;
+        return _result ??= _activator.Activate(container);
+    }
 
-        public CachingActivator(ComponentActivator activator)
-        {
-            _activator = activator ?? throw new ArgumentNullException(nameof(activator));
-            _result = null;
-        }
+    public override ComponentActivator CreateCopy()
+    {
+        return new CachingActivator(_activator.CreateCopy());
+    }
+}
 
-        public override object Activate(DefaultTypeResolver container)
-        {
-            return _result ??= _activator.Activate(container);
-        }
+internal sealed class InstanceActivator : ComponentActivator
+{
+    private readonly object _instance;
 
-        public override ComponentActivator CreateCopy()
+    public InstanceActivator(object instance)
+    {
+        _instance = instance;
+    }
+
+    public override object Activate(DefaultTypeResolver container)
+    {
+        return _instance;
+    }
+
+    public override ComponentActivator CreateCopy()
+    {
+        return new InstanceActivator(_instance);
+    }
+}
+
+internal sealed class ReflectionActivator : ComponentActivator
+{
+    private readonly Type _type;
+    private readonly ConstructorInfo _constructor;
+    private readonly List<ParameterInfo> _parameters;
+
+    public ReflectionActivator(Type type)
+    {
+        _type = type;
+        _constructor = GetGreediestConstructor(type);
+        _parameters = new List<ParameterInfo>();
+
+        foreach (var parameter in _constructor.GetParameters())
         {
-            return new CachingActivator(_activator.CreateCopy());
+            _parameters.Add(parameter);
         }
     }
 
-    internal sealed class InstanceActivator : ComponentActivator
+    public override object Activate(DefaultTypeResolver container)
     {
-        private readonly object _instance;
-
-        public InstanceActivator(object instance)
+        var parameters = new object?[_parameters.Count];
+        for (var i = 0; i < _parameters.Count; i++)
         {
-            _instance = instance;
-        }
-
-        public override object Activate(DefaultTypeResolver container)
-        {
-            return _instance;
-        }
-
-        public override ComponentActivator CreateCopy()
-        {
-            return new InstanceActivator(_instance);
-        }
-    }
-
-    internal sealed class ReflectionActivator : ComponentActivator
-    {
-        private readonly Type _type;
-        private readonly ConstructorInfo _constructor;
-        private readonly List<ParameterInfo> _parameters;
-
-        public ReflectionActivator(Type type)
-        {
-            _type = type;
-            _constructor = GetGreediestConstructor(type);
-            _parameters = new List<ParameterInfo>();
-
-            foreach (var parameter in _constructor.GetParameters())
+            var parameter = _parameters[i];
+            if (parameter.ParameterType == typeof(DefaultTypeResolver))
             {
-                _parameters.Add(parameter);
+                parameters[i] = container;
             }
-        }
-
-        public override object Activate(DefaultTypeResolver container)
-        {
-            var parameters = new object?[_parameters.Count];
-            for (var i = 0; i < _parameters.Count; i++)
+            else
             {
-                var parameter = _parameters[i];
-                if (parameter.ParameterType == typeof(DefaultTypeResolver))
+                var resolved = container.Resolve(parameter.ParameterType);
+                if (resolved == null)
                 {
-                    parameters[i] = container;
+                    if (!parameter.IsOptional)
+                    {
+                        throw new InvalidOperationException($"Could not find registration for '{parameter.ParameterType.FullName}'.");
+                    }
+
+                    parameters[i] = null;
                 }
                 else
                 {
-                    var resolved = container.Resolve(parameter.ParameterType);
-                    if (resolved == null)
-                    {
-                        if (!parameter.IsOptional)
-                        {
-                            throw new InvalidOperationException($"Could not find registration for '{parameter.ParameterType.FullName}'.");
-                        }
-
-                        parameters[i] = null;
-                    }
-                    else
-                    {
-                        parameters[i] = resolved;
-                    }
+                    parameters[i] = resolved;
                 }
             }
-
-            return _constructor.Invoke(parameters);
         }
 
-        public override ComponentActivator CreateCopy()
+        return _constructor.Invoke(parameters);
+    }
+
+    public override ComponentActivator CreateCopy()
+    {
+        return new ReflectionActivator(_type);
+    }
+
+    private static ConstructorInfo GetGreediestConstructor(Type type)
+    {
+        ConstructorInfo? current = null;
+        var count = -1;
+        foreach (var constructor in type.GetTypeInfo().GetConstructors())
         {
-            return new ReflectionActivator(_type);
+            var parameters = constructor.GetParameters();
+            if (parameters.Length > count)
+            {
+                count = parameters.Length;
+                current = constructor;
+            }
         }
 
-        private static ConstructorInfo GetGreediestConstructor(Type type)
+        if (current == null)
         {
-            ConstructorInfo? current = null;
-            var count = -1;
-            foreach (var constructor in type.GetTypeInfo().GetConstructors())
-            {
-                var parameters = constructor.GetParameters();
-                if (parameters.Length > count)
-                {
-                    count = parameters.Length;
-                    current = constructor;
-                }
-            }
-
-            if (current == null)
-            {
-                throw new InvalidOperationException($"Could not find a constructor for '{type.FullName}'.");
-            }
-
-            return current;
+            throw new InvalidOperationException($"Could not find a constructor for '{type.FullName}'.");
         }
+
+        return current;
     }
 }

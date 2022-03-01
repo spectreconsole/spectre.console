@@ -1,80 +1,77 @@
-using System.Collections.Generic;
+namespace Spectre.Console;
 
-namespace Spectre.Console
+internal sealed class ListPromptItem<T> : IMultiSelectionItem<T>
+    where T : notnull
 {
-    internal sealed class ListPromptItem<T> : IMultiSelectionItem<T>
-        where T : notnull
+    public T Data { get; }
+    public ListPromptItem<T>? Parent { get; }
+    public List<ListPromptItem<T>> Children { get; }
+    public int Depth { get; }
+    public bool IsSelected { get; set; }
+
+    public bool IsGroup => Children.Count > 0;
+
+    public ListPromptItem(T data, ListPromptItem<T>? parent = null)
     {
-        public T Data { get; }
-        public ListPromptItem<T>? Parent { get; }
-        public List<ListPromptItem<T>> Children { get; }
-        public int Depth { get; }
-        public bool IsSelected { get; set; }
+        Data = data;
+        Parent = parent;
+        Children = new List<ListPromptItem<T>>();
+        Depth = CalculateDepth(parent);
+    }
 
-        public bool IsGroup => Children.Count > 0;
+    public IMultiSelectionItem<T> Select()
+    {
+        IsSelected = true;
+        return this;
+    }
 
-        public ListPromptItem(T data, ListPromptItem<T>? parent = null)
+    public ISelectionItem<T> AddChild(T item)
+    {
+        var node = new ListPromptItem<T>(item, this);
+        Children.Add(node);
+        return node;
+    }
+
+    public IEnumerable<ListPromptItem<T>> Traverse(bool includeSelf)
+    {
+        var stack = new Stack<ListPromptItem<T>>();
+
+        if (includeSelf)
         {
-            Data = data;
-            Parent = parent;
-            Children = new List<ListPromptItem<T>>();
-            Depth = CalculateDepth(parent);
+            stack.Push(this);
         }
-
-        public IMultiSelectionItem<T> Select()
+        else
         {
-            IsSelected = true;
-            return this;
-        }
-
-        public ISelectionItem<T> AddChild(T item)
-        {
-            var node = new ListPromptItem<T>(item, this);
-            Children.Add(node);
-            return node;
-        }
-
-        public IEnumerable<ListPromptItem<T>> Traverse(bool includeSelf)
-        {
-            var stack = new Stack<ListPromptItem<T>>();
-
-            if (includeSelf)
+            foreach (var child in Children)
             {
-                stack.Push(this);
+                stack.Push(child);
             }
-            else
+        }
+
+        while (stack.Count > 0)
+        {
+            var current = stack.Pop();
+            yield return current;
+
+            if (current.Children.Count > 0)
             {
-                foreach (var child in Children)
+                foreach (var child in current.Children.ReverseEnumerable())
                 {
                     stack.Push(child);
                 }
             }
-
-            while (stack.Count > 0)
-            {
-                var current = stack.Pop();
-                yield return current;
-
-                if (current.Children.Count > 0)
-                {
-                    foreach (var child in current.Children.ReverseEnumerable())
-                    {
-                        stack.Push(child);
-                    }
-                }
-            }
         }
+    }
 
-        private static int CalculateDepth(ListPromptItem<T>? parent)
+    private static int CalculateDepth(ListPromptItem<T>? parent)
+    {
+        var level = 0;
+        while (parent != null)
         {
-            var level = 0;
-            while (parent != null)
-            {
-                level++;
-                parent = parent.Parent;
-            }
-
-            return level;
+            level++;
+            parent = parent.Parent;
         }
+
+        return level;
     }
 }

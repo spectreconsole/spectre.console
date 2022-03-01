@@ -6,6 +6,8 @@ Highlights:
     - Include highlighted events.
     - Culture aware.
     - Custom headers.
+Reference: T:Spectre.Console.Calendar
+
 ---
 
 The `Calendar` is used to render a calendar to the terminal.
@@ -16,7 +18,7 @@ To render a calendar, create a `Calendar` instance with a target date.
 
 ```csharp
 var calendar = new Calendar(2020,10);
-AnsiConsole.Render(calendar);
+AnsiConsole.Write(calendar);
 ```
 
 <?# AsciiCast cast="calendar" /?>
@@ -27,8 +29,8 @@ You can set the calendar's culture to show localized weekdays.
 
 ```csharp
 var calendar = new Calendar(2020,10);
-calendar.Culture("ja-JP");
-AnsiConsole.Render(calendar);
+calendar.Culture("sv-SE");
+AnsiConsole.Write(calendar);
 ```
 
 <?# AsciiCast cast="calendar-culture" /?>
@@ -40,7 +42,7 @@ You can hide the calendar header.
 ```csharp
 var calendar = new Calendar(2020,10);
 calendar.HideHeader();
-AnsiConsole.Render(calendar);
+AnsiConsole.Write(calendar);
 ```
 
 You can set the header style of the calendar.
@@ -48,7 +50,7 @@ You can set the header style of the calendar.
 ```csharp
 var calendar = new Calendar(2020, 10);
 calendar.HeaderStyle(Style.Parse("blue bold"));
-AnsiConsole.Render(calendar);
+AnsiConsole.Write(calendar);
 ```
 
 <?# AsciiCast cast="calendar-header" /?>

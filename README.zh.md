@@ -77,7 +77,7 @@ https://spectreconsole.net/
 
 ## 开源许可
 
-版权所有 © Patrik Svensson, Phil Scott
+版权所有 © Patrik Svensson, Phil Scott, Nils Andresen
 
 Spectre.Console 基于 MIT 协议提供。查看 LICENSE 文件了解更多信息。
 

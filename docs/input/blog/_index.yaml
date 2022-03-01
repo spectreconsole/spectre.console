@@ -1,8 +1,8 @@
 Title: Recent Blog Posts
-ArchiveSources: => $"blog/posts/**/*"
+ArchiveSources: blog/posts/**/*
 ArchiveDestination: >
   => GetInt("Index") <= 1 ? $"blog/index.html" : $"blog/{GetInt("Index")}.html"
-ArchivePageSize: => 5
+ArchivePageSize: 5
 ArchiveOrderKey: Published
 ArchiveOrderDescending: true
 Hidden: >

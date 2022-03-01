@@ -1,42 +1,36 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Spectre.Console.Rendering;
+namespace Spectre.Console;
 
-namespace Spectre.Console
+internal sealed class BreakdownBar : Renderable
 {
-    internal sealed class BreakdownBar : Renderable
+    private readonly List<IBreakdownChartItem> _data;
+
+    public int? Width { get; set; }
+
+    public BreakdownBar(List<IBreakdownChartItem> data)
     {
-        private readonly List<IBreakdownChartItem> _data;
+        _data = data ?? throw new ArgumentNullException(nameof(data));
+    }
 
-        public int? Width { get; set; }
+    protected override Measurement Measure(RenderContext context, int maxWidth)
+    {
+        var width = Math.Min(Width ?? maxWidth, maxWidth);
+        return new Measurement(width, width);
+    }
 
-        public BreakdownBar(List<IBreakdownChartItem> data)
+    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    {
+        var width = Math.Min(Width ?? maxWidth, maxWidth);
+
+        // Chart
+        var maxValue = _data.Sum(i => i.Value);
+        var items = _data.ToArray();
+        var bars = Ratio.Distribute(width, items.Select(i => Math.Max(0, (int)(width * (i.Value / maxValue)))).ToArray());
+
+        for (var index = 0; index < items.Length; index++)
         {
-            _data = data ?? throw new ArgumentNullException(nameof(data));
+            yield return new Segment(new string('█', bars[index]), new Style(items[index].Color));
         }
 
-        protected override Measurement Measure(RenderContext context, int maxWidth)
-        {
-            var width = Math.Min(Width ?? maxWidth, maxWidth);
-            return new Measurement(width, width);
-        }
-
-        protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
-        {
-            var width = Math.Min(Width ?? maxWidth, maxWidth);
-
-            // Chart
-            var maxValue = _data.Sum(i => i.Value);
-            var items = _data.ToArray();
-            var bars = Ratio.Distribute(width, items.Select(i => Math.Max(0, (int)(width * (i.Value / maxValue)))).ToArray());
-
-            for (var index = 0; index < items.Length; index++)
-            {
-                yield return new Segment(new string('█', bars[index]), new Style(items[index].Color));
-            }
-
-            yield return Segment.LineBreak;
-        }
+        yield return Segment.LineBreak;
     }
 }

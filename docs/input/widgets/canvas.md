@@ -1,6 +1,7 @@
 Title: Canvas
 Order: 60
 Description: "**Canvas** is a widget that allows you to render arbitrary pixels to the console."
+Reference: T:Spectre.Console.Canvas
 ---
 
 `Canvas` is a widget that allows you to render arbitrary "pixels" 
@@ -28,7 +29,7 @@ for(var i = 0; i < canvas.Width; i++)
 }
 
 // Render the canvas
-AnsiConsole.Render(canvas);
+AnsiConsole.Write(canvas);
 ```
 
 ## Result

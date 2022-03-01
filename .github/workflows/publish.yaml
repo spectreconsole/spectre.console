@@ -6,8 +6,6 @@ on:
       - '*'
     branches:
       - main
-    paths:
-      - 'src/**'
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -21,17 +19,17 @@ jobs:
 
   docs:
     name: Documentation
-    if: false # Disable for now
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: Setup dotnet
+    - name: Setup .NET SDK
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
-        include-prerelease: true
+        dotnet-version: | 
+          5.0.301
+          6.0.100
 
     - name: Build
       shell: bash
@@ -39,6 +37,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd docs
+        dotnet tool restore
         dotnet run --configuration Release
 
   ###################################################
@@ -47,7 +46,7 @@ jobs:
 
   build:
     name: Build
-    # needs: [docs]
+    needs: [docs]
     if: "!contains(github.event.head_commit.message, 'skip-ci') || startsWith(github.ref, 'refs/tags/')"
     strategy:
       matrix:
@@ -66,15 +65,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup dotnet 3.1.402
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.402
-
-      - name: Setup dotnet 5.0.301
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 5.0.301
+          dotnet-version: | 
+            3.1.402
+            5.0.301
+            6.0.100
 
       - name: Build
         shell: bash
@@ -97,15 +94,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup dotnet 3.1.402
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.402
-
-      - name: Setup dotnet 5.0.301
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 5.0.301
+          dotnet-version: | 
+            3.1.402
+            5.0.301
+            6.0.100
 
       - name: Publish
         shell: bash

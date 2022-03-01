@@ -1,19 +1,15 @@
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Testing;
-using Xunit;
+namespace Spectre.Console.Analyzer.Tests.Unit.Analyzers;
 
-namespace Spectre.Console.Analyzer.Tests.Unit.Analyzers
+public class NoCurrentLiveRenderablesTests
 {
-    public class NoCurrentLiveRenderablesTests
-    {
-        private static readonly DiagnosticResult _expectedDiagnostics = new(
-            Descriptors.S1020_AvoidConcurrentCallsToMultipleLiveRenderables.Id,
-            DiagnosticSeverity.Warning);
+    private static readonly DiagnosticResult _expectedDiagnostics = new(
+        Descriptors.S1020_AvoidConcurrentCallsToMultipleLiveRenderables.Id,
+        DiagnosticSeverity.Warning);
 
-        [Fact]
-        public async void Status_call_within_live_call_warns()
-        {
-            const string Source = @"
+    [Fact]
+    public async void Status_call_within_live_call_warns()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 class TestClass 
@@ -27,15 +23,15 @@ class TestClass
     }
 }";
 
-            await SpectreAnalyzerVerifier<NoConcurrentLiveRenderablesAnalyzer>
-                .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(10, 13))
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<NoConcurrentLiveRenderablesAnalyzer>
+            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(10, 13))
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async void Status_call_within_live_call_warns_with_instance()
-        {
-            const string Source = @"
+    [Fact]
+    public async void Status_call_within_live_call_warns_with_instance()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 class Child
@@ -51,15 +47,15 @@ class Child
     }
 }";
 
-            await SpectreAnalyzerVerifier<NoConcurrentLiveRenderablesAnalyzer>
-                .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(12, 13))
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<NoConcurrentLiveRenderablesAnalyzer>
+            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(12, 13))
+            .ConfigureAwait(false);
+    }
 
-        [Fact]
-        public async void Calling_start_on_non_live_renderable_has_no_warning()
-        {
-            const string Source = @"
+    [Fact]
+    public async void Calling_start_on_non_live_renderable_has_no_warning()
+    {
+        const string Source = @"
 using Spectre.Console;
 
 class Program
@@ -72,9 +68,8 @@ class Program
     static void Start() =>  AnsiConsole.WriteLine(""Starting..."");
 }";
 
-            await SpectreAnalyzerVerifier<NoConcurrentLiveRenderablesAnalyzer>
-                .VerifyAnalyzerAsync(Source)
-                .ConfigureAwait(false);
-        }
+        await SpectreAnalyzerVerifier<NoConcurrentLiveRenderablesAnalyzer>
+            .VerifyAnalyzerAsync(Source)
+            .ConfigureAwait(false);
     }
 }

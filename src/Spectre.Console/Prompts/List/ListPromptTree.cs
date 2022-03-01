@@ -1,58 +1,54 @@
-using System;
-using System.Collections.Generic;
+namespace Spectre.Console;
 
-namespace Spectre.Console
+internal sealed class ListPromptTree<T>
+    where T : notnull
 {
-    internal sealed class ListPromptTree<T>
-        where T : notnull
-    {
-        private readonly List<ListPromptItem<T>> _roots;
-        private readonly IEqualityComparer<T> _comparer;
+    private readonly List<ListPromptItem<T>> _roots;
+    private readonly IEqualityComparer<T> _comparer;
 
-        public ListPromptTree(IEqualityComparer<T> comparer)
+    public ListPromptTree(IEqualityComparer<T> comparer)
+    {
+        _roots = new List<ListPromptItem<T>>();
+        _comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+    }
+
+    public ListPromptItem<T>? Find(T item)
+    {
+        var stack = new Stack<ListPromptItem<T>>(_roots);
+        while (stack.Count > 0)
         {
-            _roots = new List<ListPromptItem<T>>();
-            _comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+            var current = stack.Pop();
+            if (_comparer.Equals(item, current.Data))
+            {
+                return current;
+            }
+
+            stack.PushRange(current.Children);
         }
 
-        public ListPromptItem<T>? Find(T item)
+        return null;
+    }
+
+    public void Add(ListPromptItem<T> node)
+    {
+        _roots.Add(node);
+    }
+
+    public IEnumerable<ListPromptItem<T>> Traverse()
+    {
+        foreach (var root in _roots)
         {
-            var stack = new Stack<ListPromptItem<T>>(_roots);
+            var stack = new Stack<ListPromptItem<T>>();
+            stack.Push(root);
+
             while (stack.Count > 0)
             {
                 var current = stack.Pop();
-                if (_comparer.Equals(item, current.Data))
+                yield return current;
+
+                foreach (var child in current.Children.ReverseEnumerable())
                 {
-                    return current;
-                }
-
-                stack.PushRange(current.Children);
-            }
-
-            return null;
-        }
-
-        public void Add(ListPromptItem<T> node)
-        {
-            _roots.Add(node);
-        }
-
-        public IEnumerable<ListPromptItem<T>> Traverse()
-        {
-            foreach (var root in _roots)
-            {
-                var stack = new Stack<ListPromptItem<T>>();
-                stack.Push(root);
-
-                while (stack.Count > 0)
-                {
-                    var current = stack.Pop();
-                    yield return current;
-
-                    foreach (var child in current.Children.ReverseEnumerable())
-                    {
-                        stack.Push(child);
-                    }
+                    stack.Push(child);
                 }
             }
         }

@@ -1,6 +1,6 @@
 # `Spectre.Console`
 
-_[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.console.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_
+_[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.console.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_ [![Netlify Status](https://api.netlify.com/api/v1/badges/1eaf215a-eb9c-45e4-8c64-c90b62963149/deploy-status)](https://app.netlify.com/sites/spectreconsole/deploys)
 
 A .NET 5/.NET Standard 2.0 library that makes it easier to create beautiful, cross platform, console applications.  
 It is heavily inspired by the excellent [Rich library](https://github.com/willmcgugan/rich) 
@@ -85,7 +85,7 @@ I really appreciate it.
 
 ## License
 
-Copyright © Patrik Svensson, Phil Scott
+Copyright © Patrik Svensson, Phil Scott, Nils Andresen
 
 Spectre.Console is provided as-is under the MIT license. For more information see LICENSE.
 

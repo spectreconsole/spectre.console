@@ -1,31 +1,28 @@
-using System.IO;
+namespace Spectre.Console;
 
-namespace Spectre.Console
+internal static class TextWriterExtensions
 {
-    internal static class TextWriterExtensions
+    public static bool IsStandardOut(this TextWriter writer)
     {
-        public static bool IsStandardOut(this TextWriter writer)
+        try
         {
-            try
-            {
-                return writer == System.Console.Out;
-            }
-            catch
-            {
-                return false;
-            }
+            return writer == System.Console.Out;
         }
-
-        public static bool IsStandardError(this TextWriter writer)
+        catch
         {
-            try
-            {
-                return writer == System.Console.Error;
-            }
-            catch
-            {
-                return false;
-            }
+            return false;
+        }
+    }
+
+    public static bool IsStandardError(this TextWriter writer)
+    {
+        try
+        {
+            return writer == System.Console.Error;
+        }
+        catch
+        {
+            return false;
         }
     }
 }

@@ -1,110 +1,107 @@
-using System;
+namespace Spectre.Console;
 
-namespace Spectre.Console
+/// <summary>
+/// Contains extension methods for <see cref="IAnsiConsole"/>.
+/// </summary>
+public static partial class AnsiConsoleExtensions
 {
     /// <summary>
-    /// Contains extension methods for <see cref="IAnsiConsole"/>.
+    /// Creates a recorder for the specified console.
     /// </summary>
-    public static partial class AnsiConsoleExtensions
+    /// <param name="console">The console to record.</param>
+    /// <returns>A recorder for the specified console.</returns>
+    public static Recorder CreateRecorder(this IAnsiConsole console)
     {
-        /// <summary>
-        /// Creates a recorder for the specified console.
-        /// </summary>
-        /// <param name="console">The console to record.</param>
-        /// <returns>A recorder for the specified console.</returns>
-        public static Recorder CreateRecorder(this IAnsiConsole console)
+        return new Recorder(console);
+    }
+
+    /// <summary>
+    /// Clears the console.
+    /// </summary>
+    /// <param name="console">The console to clear.</param>
+    public static void Clear(this IAnsiConsole console)
+    {
+        if (console is null)
         {
-            return new Recorder(console);
+            throw new ArgumentNullException(nameof(console));
         }
 
-        /// <summary>
-        /// Clears the console.
-        /// </summary>
-        /// <param name="console">The console to clear.</param>
-        public static void Clear(this IAnsiConsole console)
-        {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
+        console.Clear(true);
+    }
 
-            console.Clear(true);
+    /// <summary>
+    /// Writes the specified string value to the console.
+    /// </summary>
+    /// <param name="console">The console to write to.</param>
+    /// <param name="text">The text to write.</param>
+    public static void Write(this IAnsiConsole console, string text)
+    {
+        if (console is null)
+        {
+            throw new ArgumentNullException(nameof(console));
         }
 
-        /// <summary>
-        /// Writes the specified string value to the console.
-        /// </summary>
-        /// <param name="console">The console to write to.</param>
-        /// <param name="text">The text to write.</param>
-        public static void Write(this IAnsiConsole console, string text)
-        {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
+        console.Write(new Text(text, Style.Plain));
+    }
 
-            console.Write(new Text(text, Style.Plain));
+    /// <summary>
+    /// Writes the specified string value to the console.
+    /// </summary>
+    /// <param name="console">The console to write to.</param>
+    /// <param name="text">The text to write.</param>
+    /// <param name="style">The text style or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
+    public static void Write(this IAnsiConsole console, string text, Style? style)
+    {
+        if (console is null)
+        {
+            throw new ArgumentNullException(nameof(console));
         }
 
-        /// <summary>
-        /// Writes the specified string value to the console.
-        /// </summary>
-        /// <param name="console">The console to write to.</param>
-        /// <param name="text">The text to write.</param>
-        /// <param name="style">The text style or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
-        public static void Write(this IAnsiConsole console, string text, Style? style)
-        {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
+        console.Write(new Text(text, style));
+    }
 
-            console.Write(new Text(text, style));
+    /// <summary>
+    /// Writes an empty line to the console.
+    /// </summary>
+    /// <param name="console">The console to write to.</param>
+    public static void WriteLine(this IAnsiConsole console)
+    {
+        if (console is null)
+        {
+            throw new ArgumentNullException(nameof(console));
         }
 
-        /// <summary>
-        /// Writes an empty line to the console.
-        /// </summary>
-        /// <param name="console">The console to write to.</param>
-        public static void WriteLine(this IAnsiConsole console)
-        {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
+        console.Write(Text.NewLine);
+    }
 
-            console.Write(Text.NewLine);
+    /// <summary>
+    /// Writes the specified string value, followed by the current line terminator, to the console.
+    /// </summary>
+    /// <param name="console">The console to write to.</param>
+    /// <param name="text">The text to write.</param>
+    public static void WriteLine(this IAnsiConsole console, string text)
+    {
+        WriteLine(console, text, Style.Plain);
+    }
+
+    /// <summary>
+    /// Writes the specified string value, followed by the current line terminator, to the console.
+    /// </summary>
+    /// <param name="console">The console to write to.</param>
+    /// <param name="text">The text to write.</param>
+    /// <param name="style">The text style or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
+    public static void WriteLine(this IAnsiConsole console, string text, Style? style)
+    {
+        if (console is null)
+        {
+            throw new ArgumentNullException(nameof(console));
         }
 
-        /// <summary>
-        /// Writes the specified string value, followed by the current line terminator, to the console.
-        /// </summary>
-        /// <param name="console">The console to write to.</param>
-        /// <param name="text">The text to write.</param>
-        public static void WriteLine(this IAnsiConsole console, string text)
+        if (text is null)
         {
-            WriteLine(console, text, Style.Plain);
+            throw new ArgumentNullException(nameof(text));
         }
 
-        /// <summary>
-        /// Writes the specified string value, followed by the current line terminator, to the console.
-        /// </summary>
-        /// <param name="console">The console to write to.</param>
-        /// <param name="text">The text to write.</param>
-        /// <param name="style">The text style or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
-        public static void WriteLine(this IAnsiConsole console, string text, Style? style)
-        {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
-
-            if (text is null)
-            {
-                throw new ArgumentNullException(nameof(text));
-            }
-
-            console.Write(text + Environment.NewLine, style);
-        }
+        console.Write(text + Environment.NewLine, style);
     }
 }

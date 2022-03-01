@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2020 Patrik Svensson, Phil Scott
+Copyright (c) 2020 Patrik Svensson, Phil Scott, Nils Andresen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

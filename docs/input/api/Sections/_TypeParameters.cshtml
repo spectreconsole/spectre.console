@@ -1,0 +1,26 @@
+@using Statiq.CodeAnalysis
+
+@{
+    var typeParameters = Model.GetDocumentList(CodeAnalysisKeys.TypeParameters);
+    var typeParams = Model.GetList<ReferenceComment>(CodeAnalysisKeys.TypeParams);
+
+    if (typeParameters?.Count > 0)
+    {
+        <h3>Parameters</h3>
+        <div class="doc-summary">
+            <div>
+                <dl>
+                    @foreach (var typeParam in typeParameters)
+                    {
+                        <div>
+                            <dt>
+                                <code>@typeParam.GetString(CodeAnalysisKeys.Name)</code>
+                            </dt>
+                            <dd>@Html.Raw(typeParams?.Where(x => x.Name.Equals(typeParam.GetString(CodeAnalysisKeys.Name))).Select(x => x.Html).FirstOrDefault()) </dd>
+                        </div>
+                    }
+                </dl>
+            </div>
+        </div>
+    }
+}

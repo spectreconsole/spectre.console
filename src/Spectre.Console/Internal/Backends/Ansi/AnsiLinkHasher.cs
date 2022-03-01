@@ -1,42 +1,38 @@
-using System;
-using System.Runtime.CompilerServices;
+namespace Spectre.Console;
 
-namespace Spectre.Console
+internal sealed class AnsiLinkHasher
 {
-    internal sealed class AnsiLinkHasher
+    private readonly Random _random;
+
+    public AnsiLinkHasher()
     {
-        private readonly Random _random;
+        _random = new Random(Environment.TickCount);
+    }
 
-        public AnsiLinkHasher()
+    public int GenerateId(string link, string text)
+    {
+        if (link is null)
         {
-            _random = new Random(Environment.TickCount);
+            throw new ArgumentNullException(nameof(link));
         }
 
-        public int GenerateId(string link, string text)
+        link += text ?? string.Empty;
+
+        unchecked
         {
-            if (link is null)
-            {
-                throw new ArgumentNullException(nameof(link));
-            }
-
-            link += text ?? string.Empty;
-
-            unchecked
-            {
-                return Math.Abs(
-                    GetLinkHashCode(link) +
-                    _random.Next(0, int.MaxValue));
-            }
+            return Math.Abs(
+                GetLinkHashCode(link) +
+                _random.Next(0, int.MaxValue));
         }
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int GetLinkHashCode(string link)
-        {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static int GetLinkHashCode(string link)
+    {
 #if NETSTANDARD2_0
-            return link.GetHashCode();
+        return link.GetHashCode();
 #else
-            return link.GetHashCode(StringComparison.Ordinal);
+        return link.GetHashCode(StringComparison.Ordinal);
 #endif
-        }
     }
 }

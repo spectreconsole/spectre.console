@@ -1,99 +1,98 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Spectre.Console.Rendering;
+namespace Spectre.Console;
 
-namespace Spectre.Console
+/// <summary>
+/// A renderable (horizontal) bar chart.
+/// </summary>
+public sealed class BarChart : Renderable, IHasCulture
 {
     /// <summary>
-    /// A renderable (horizontal) bar chart.
+    /// Gets the bar chart data.
     /// </summary>
-    public sealed class BarChart : Renderable, IHasCulture
+    public List<IBarChartItem> Data { get; }
+
+    /// <summary>
+    /// Gets or sets the width of the bar chart.
+    /// </summary>
+    public int? Width { get; set; }
+
+    /// <summary>
+    /// Gets or sets the bar chart label.
+    /// </summary>
+    public string? Label { get; set; }
+
+    /// <summary>
+    /// Gets or sets the bar chart label alignment.
+    /// </summary>
+    public Justify? LabelAlignment { get; set; } = Justify.Center;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not
+    /// values should be shown next to each bar.
+    /// </summary>
+    public bool ShowValues { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the culture that's used to format values.
+    /// </summary>
+    /// <remarks>Defaults to invariant culture.</remarks>
+    public CultureInfo? Culture { get; set; }
+
+    /// <summary>
+    /// Gets or sets the fixed max value for a bar chart.
+    /// </summary>
+    /// <remarks>Defaults to null, which corresponds to largest value in chart.</remarks>
+    public double? MaxValue { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BarChart"/> class.
+    /// </summary>
+    public BarChart()
     {
-        /// <summary>
-        /// Gets the bar chart data.
-        /// </summary>
-        public List<IBarChartItem> Data { get; }
+        Data = new List<IBarChartItem>();
+    }
 
-        /// <summary>
-        /// Gets or sets the width of the bar chart.
-        /// </summary>
-        public int? Width { get; set; }
+    /// <inheritdoc/>
+    protected override Measurement Measure(RenderContext context, int maxWidth)
+    {
+        var width = Math.Min(Width ?? maxWidth, maxWidth);
+        return new Measurement(width, width);
+    }
 
-        /// <summary>
-        /// Gets or sets the bar chart label.
-        /// </summary>
-        public string? Label { get; set; }
+    /// <inheritdoc/>
+    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    {
+        var width = Math.Min(Width ?? maxWidth, maxWidth);
+        var maxValue = Math.Max(MaxValue ?? 0d, Data.Max(item => item.Value));
 
-        /// <summary>
-        /// Gets or sets the bar chart label alignment.
-        /// </summary>
-        public Justify? LabelAlignment { get; set; } = Justify.Center;
+        var grid = new Grid();
+        grid.Collapse();
+        grid.AddColumn(new GridColumn().PadRight(2).RightAligned());
+        grid.AddColumn(new GridColumn().PadLeft(0));
+        grid.Width = width;
 
-        /// <summary>
-        /// Gets or sets a value indicating whether or not
-        /// values should be shown next to each bar.
-        /// </summary>
-        public bool ShowValues { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets the culture that's used to format values.
-        /// </summary>
-        /// <remarks>Defaults to invariant culture.</remarks>
-        public CultureInfo? Culture { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BarChart"/> class.
-        /// </summary>
-        public BarChart()
+        if (!string.IsNullOrWhiteSpace(Label))
         {
-            Data = new List<IBarChartItem>();
+            grid.AddRow(Text.Empty, new Markup(Label).Alignment(LabelAlignment));
         }
 
-        /// <inheritdoc/>
-        protected override Measurement Measure(RenderContext context, int maxWidth)
+        foreach (var item in Data)
         {
-            var width = Math.Min(Width ?? maxWidth, maxWidth);
-            return new Measurement(width, width);
+            grid.AddRow(
+                new Markup(item.Label),
+                new ProgressBar()
+                {
+                    Value = item.Value,
+                    MaxValue = maxValue,
+                    ShowRemaining = false,
+                    CompletedStyle = new Style().Foreground(item.Color ?? Color.Default),
+                    FinishedStyle = new Style().Foreground(item.Color ?? Color.Default),
+                    UnicodeBar = '█',
+                    AsciiBar = '█',
+                    ShowValue = ShowValues,
+                    Culture = Culture,
+                });
         }
 
-        /// <inheritdoc/>
-        protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
-        {
-            var width = Math.Min(Width ?? maxWidth, maxWidth);
-            var maxValue = Data.Max(item => item.Value);
-
-            var grid = new Grid();
-            grid.Collapse();
-            grid.AddColumn(new GridColumn().PadRight(2).RightAligned());
-            grid.AddColumn(new GridColumn().PadLeft(0));
-            grid.Width = width;
-
-            if (!string.IsNullOrWhiteSpace(Label))
-            {
-                grid.AddRow(Text.Empty, new Markup(Label).Alignment(LabelAlignment));
-            }
-
-            foreach (var item in Data)
-            {
-                grid.AddRow(
-                    new Markup(item.Label),
-                    new ProgressBar()
-                    {
-                        Value = item.Value,
-                        MaxValue = maxValue,
-                        ShowRemaining = false,
-                        CompletedStyle = new Style().Foreground(item.Color ?? Color.Default),
-                        FinishedStyle = new Style().Foreground(item.Color ?? Color.Default),
-                        UnicodeBar = '█',
-                        AsciiBar = '█',
-                        ShowValue = ShowValues,
-                        Culture = Culture,
-                    });
-            }
-
-            return ((IRenderable)grid).Render(context, width);
-        }
+        return ((IRenderable)grid).Render(context, width);
     }
 }

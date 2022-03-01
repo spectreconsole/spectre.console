@@ -1,76 +1,70 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Spectre.Console.Rendering;
+namespace Spectre.Console;
 
-namespace Spectre.Console
+internal sealed class BreakdownTags : Renderable
 {
-    internal sealed class BreakdownTags : Renderable
+    private readonly List<IBreakdownChartItem> _data;
+
+    public int? Width { get; set; }
+    public CultureInfo? Culture { get; set; }
+    public bool ShowTagValues { get; set; } = true;
+    public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
+
+    public BreakdownTags(List<IBreakdownChartItem> data)
     {
-        private readonly List<IBreakdownChartItem> _data;
+        _data = data ?? throw new ArgumentNullException(nameof(data));
+    }
 
-        public int? Width { get; set; }
-        public CultureInfo? Culture { get; set; }
-        public bool ShowTagValues { get; set; } = true;
-        public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
+    protected override Measurement Measure(RenderContext context, int maxWidth)
+    {
+        var width = Math.Min(Width ?? maxWidth, maxWidth);
+        return new Measurement(width, width);
+    }
 
-        public BreakdownTags(List<IBreakdownChartItem> data)
+    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    {
+        var culture = Culture ?? CultureInfo.InvariantCulture;
+
+        var panels = new List<Panel>();
+        foreach (var item in _data)
         {
-            _data = data ?? throw new ArgumentNullException(nameof(data));
+            var panel = new Panel(GetTag(item, culture));
+            panel.Inline = true;
+            panel.Padding = new Padding(0, 0);
+            panel.NoBorder();
+
+            panels.Add(panel);
         }
 
-        protected override Measurement Measure(RenderContext context, int maxWidth)
+        foreach (var segment in ((IRenderable)new Columns(panels).Padding(0, 0)).Render(context, maxWidth))
         {
-            var width = Math.Min(Width ?? maxWidth, maxWidth);
-            return new Measurement(width, width);
+            yield return segment;
+        }
+    }
+
+    private string GetTag(IBreakdownChartItem item, CultureInfo culture)
+    {
+        return string.Format(
+            culture, "[{0}]■[/] {1}",
+            item.Color.ToMarkup() ?? "default",
+            FormatValue(item, culture)).Trim();
+    }
+
+    private string FormatValue(IBreakdownChartItem item, CultureInfo culture)
+    {
+        var formatter = ValueFormatter ?? DefaultFormatter;
+
+        if (ShowTagValues)
+        {
+            return string.Format(culture, "{0} [grey]{1}[/]",
+                item.Label.EscapeMarkup(),
+                formatter(item.Value, culture));
         }
 
-        protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
-        {
-            var culture = Culture ?? CultureInfo.InvariantCulture;
+        return item.Label.EscapeMarkup();
+    }
 
-            var panels = new List<Panel>();
-            foreach (var item in _data)
-            {
-                var panel = new Panel(GetTag(item, culture));
-                panel.Inline = true;
-                panel.Padding = new Padding(0, 0);
-                panel.NoBorder();
-
-                panels.Add(panel);
-            }
-
-            foreach (var segment in ((IRenderable)new Columns(panels).Padding(0, 0)).Render(context, maxWidth))
-            {
-                yield return segment;
-            }
-        }
-
-        private string GetTag(IBreakdownChartItem item, CultureInfo culture)
-        {
-            return string.Format(
-                culture, "[{0}]■[/] {1}",
-                item.Color.ToMarkup() ?? "default",
-                FormatValue(item, culture)).Trim();
-        }
-
-        private string FormatValue(IBreakdownChartItem item, CultureInfo culture)
-        {
-            var formatter = ValueFormatter ?? DefaultFormatter;
-
-            if (ShowTagValues)
-            {
-                return string.Format(culture, "{0} [grey]{1}[/]",
-                    item.Label.EscapeMarkup(),
-                    formatter(item.Value, culture));
-            }
-
-            return item.Label.EscapeMarkup();
-        }
-
-        private static string DefaultFormatter(double value, CultureInfo culture)
-        {
-            return value.ToString(culture);
-        }
+    private static string DefaultFormatter(double value, CultureInfo culture)
+    {
+        return value.ToString(culture);
     }
 }

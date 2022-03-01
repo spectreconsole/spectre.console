@@ -1,4 +1,4 @@
-﻿namespace Docs
+﻿namespace Docs.Extensions
 {
     public static class StringExtensions
     {

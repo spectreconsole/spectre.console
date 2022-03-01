@@ -5,6 +5,8 @@ Highlights:
     - Custom colors
     - Labels
     - Use your own data with a converter.
+Reference: T:Spectre.Console.BarChart
+    
 ---
 
 Use `BarChart` to render bar charts to the console.
@@ -17,7 +19,7 @@ Use `BarChart` to render bar charts to the console.
 ### Basic usage
 
 ```csharp
-AnsiConsole.Render(new BarChart()
+AnsiConsole.Write(new BarChart()
     .Width(60)
     .Label("[green bold underline]Number of fruits[/]")
     .CenterLabel()
@@ -38,7 +40,7 @@ var items = new List<(string Label, double Value)>
 };
 
 // Render bar chart
-AnsiConsole.Render(new BarChart()
+AnsiConsole.Write(new BarChart()
     .Width(60)
     .Label("[green bold underline]Number of fruits[/]")
     .CenterLabel()
@@ -72,7 +74,7 @@ var items = new List<Fruit>
 };
 
 // Render bar chart
-AnsiConsole.Render(new BarChart()
+AnsiConsole.Write(new BarChart()
     .Width(60)
     .Label("[green bold underline]Number of fruits[/]")
     .CenterLabel()

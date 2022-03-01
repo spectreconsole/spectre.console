@@ -1,80 +1,77 @@
-using System;
+namespace Spectre.Console;
 
-namespace Spectre.Console
+/// <summary>
+/// Contains extension methods for <see cref="IOverflowable"/>.
+/// </summary>
+public static class OverflowableExtensions
 {
     /// <summary>
-    /// Contains extension methods for <see cref="IOverflowable"/>.
+    /// Folds any overflowing text.
     /// </summary>
-    public static class OverflowableExtensions
+    /// <typeparam name="T">An object implementing <see cref="IOverflowable"/>.</typeparam>
+    /// <param name="obj">The overflowable object instance.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static T Fold<T>(this T obj)
+        where T : class, IOverflowable
     {
-        /// <summary>
-        /// Folds any overflowing text.
-        /// </summary>
-        /// <typeparam name="T">An object implementing <see cref="IOverflowable"/>.</typeparam>
-        /// <param name="obj">The overflowable object instance.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static T Fold<T>(this T obj)
-            where T : class, IOverflowable
+        if (obj is null)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
-            return Overflow(obj, Console.Overflow.Fold);
+            throw new ArgumentNullException(nameof(obj));
         }
 
-        /// <summary>
-        /// Crops any overflowing text.
-        /// </summary>
-        /// <typeparam name="T">An object implementing <see cref="IOverflowable"/>.</typeparam>
-        /// <param name="obj">The overflowable object instance.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static T Crop<T>(this T obj)
-            where T : class, IOverflowable
-        {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+        return Overflow(obj, Console.Overflow.Fold);
+    }
 
-            return Overflow(obj, Console.Overflow.Crop);
+    /// <summary>
+    /// Crops any overflowing text.
+    /// </summary>
+    /// <typeparam name="T">An object implementing <see cref="IOverflowable"/>.</typeparam>
+    /// <param name="obj">The overflowable object instance.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static T Crop<T>(this T obj)
+        where T : class, IOverflowable
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
         }
 
-        /// <summary>
-        /// Crops any overflowing text and adds an ellipsis to the end.
-        /// </summary>
-        /// <typeparam name="T">An object implementing <see cref="IOverflowable"/>.</typeparam>
-        /// <param name="obj">The overflowable object instance.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static T Ellipsis<T>(this T obj)
-            where T : class, IOverflowable
-        {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+        return Overflow(obj, Console.Overflow.Crop);
+    }
 
-            return Overflow(obj, Console.Overflow.Ellipsis);
+    /// <summary>
+    /// Crops any overflowing text and adds an ellipsis to the end.
+    /// </summary>
+    /// <typeparam name="T">An object implementing <see cref="IOverflowable"/>.</typeparam>
+    /// <param name="obj">The overflowable object instance.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static T Ellipsis<T>(this T obj)
+        where T : class, IOverflowable
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
         }
 
-        /// <summary>
-        /// Sets the overflow strategy.
-        /// </summary>
-        /// <typeparam name="T">An object implementing <see cref="IOverflowable"/>.</typeparam>
-        /// <param name="obj">The overflowable object instance.</param>
-        /// <param name="overflow">The overflow strategy to use.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public static T Overflow<T>(this T obj, Overflow overflow)
-            where T : class, IOverflowable
-        {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+        return Overflow(obj, Console.Overflow.Ellipsis);
+    }
 
-            obj.Overflow = overflow;
-            return obj;
+    /// <summary>
+    /// Sets the overflow strategy.
+    /// </summary>
+    /// <typeparam name="T">An object implementing <see cref="IOverflowable"/>.</typeparam>
+    /// <param name="obj">The overflowable object instance.</param>
+    /// <param name="overflow">The overflow strategy to use.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static T Overflow<T>(this T obj, Overflow overflow)
+        where T : class, IOverflowable
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
         }
+
+        obj.Overflow = overflow;
+        return obj;
     }
 }

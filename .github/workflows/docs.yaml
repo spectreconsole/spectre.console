@@ -5,6 +5,9 @@ on:
         paths:
         - 'docs/**'
         - 'src/**'
+        - 'test/**'
+        - 'examples/**'
+        - '.github/**'
 
 jobs:
 
@@ -14,7 +17,6 @@ jobs:
 
   build:
     name: Deploy
-    if: false # Disable for now
     runs-on: windows-latest
     steps:
     - name: Checkout
@@ -22,16 +24,17 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Setup dotnet
+    - name: Setup .NET SDK
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
-        include-prerelease: true
+        dotnet-version: | 
+          5.0.301
+          6.0.100
 
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '16'
 
     - name: Cache dependencies
       uses: actions/cache@v2
@@ -44,7 +47,9 @@ jobs:
       shell: bash
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NETLIFY_ACCESS_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
       run: |
         cd docs
-        dotnet run --configuration Release
-        dotnet run -- deploy
+        dotnet tool restore
+        dotnet run --configuration Release -- deploy

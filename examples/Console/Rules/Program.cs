@@ -1,41 +1,42 @@
-namespace Spectre.Console.Examples
+using Spectre.Console;
+
+namespace Rules;
+
+public static class Program
 {
-    public static class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            // No title
-            Render(
-                new Rule()
-                    .RuleStyle(Style.Parse("yellow"))
-                    .AsciiBorder()
-                    .LeftAligned());
+        // No title
+        Render(
+            new Rule()
+                .RuleStyle(Style.Parse("yellow"))
+                .AsciiBorder()
+                .LeftAligned());
 
-            // Left aligned title
-            Render(
-                new Rule("[blue]Left aligned[/]")
-                    .RuleStyle(Style.Parse("red"))
-                    .DoubleBorder()
-                    .LeftAligned());
+        // Left aligned title
+        Render(
+            new Rule("[blue]Left aligned[/]")
+                .RuleStyle(Style.Parse("red"))
+                .DoubleBorder()
+                .LeftAligned());
 
-            // Centered title
-            Render(
-                new Rule("[green]Centered[/]")
-                    .RuleStyle(Style.Parse("green"))
-                    .HeavyBorder()
-                    .Centered());
+        // Centered title
+        Render(
+            new Rule("[green]Centered[/]")
+                .RuleStyle(Style.Parse("green"))
+                .HeavyBorder()
+                .Centered());
 
-            // Right aligned title
-            Render(
-                new Rule("[red]Right aligned[/]")
-                    .RuleStyle(Style.Parse("blue"))
-                    .RightAligned());
-        }
+        // Right aligned title
+        Render(
+            new Rule("[red]Right aligned[/]")
+                .RuleStyle(Style.Parse("blue"))
+                .RightAligned());
+    }
 
-        private static void Render(Rule rule)
-        {
-            AnsiConsole.Render(rule);
-            AnsiConsole.WriteLine();
-        }
+    private static void Render(Rule rule)
+    {
+        AnsiConsole.Write(rule);
+        AnsiConsole.WriteLine();
     }
 }

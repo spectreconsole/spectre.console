@@ -1,66 +1,63 @@
-using System.Collections.Generic;
+namespace Spectre.Console.Rendering;
 
-namespace Spectre.Console.Rendering
+/// <summary>
+/// Represents the render pipeline.
+/// </summary>
+public sealed class RenderPipeline
 {
+    private readonly List<IRenderHook> _hooks;
+    private readonly object _lock;
+
     /// <summary>
-    /// Represents the render pipeline.
+    /// Initializes a new instance of the <see cref="RenderPipeline"/> class.
     /// </summary>
-    public sealed class RenderPipeline
+    public RenderPipeline()
     {
-        private readonly List<IRenderHook> _hooks;
-        private readonly object _lock;
+        _hooks = new List<IRenderHook>();
+        _lock = new object();
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RenderPipeline"/> class.
-        /// </summary>
-        public RenderPipeline()
+    /// <summary>
+    /// Attaches a new render hook onto the pipeline.
+    /// </summary>
+    /// <param name="hook">The render hook to attach.</param>
+    public void Attach(IRenderHook hook)
+    {
+        lock (_lock)
         {
-            _hooks = new List<IRenderHook>();
-            _lock = new object();
+            _hooks.Add(hook);
         }
+    }
 
-        /// <summary>
-        /// Attaches a new render hook onto the pipeline.
-        /// </summary>
-        /// <param name="hook">The render hook to attach.</param>
-        public void Attach(IRenderHook hook)
+    /// <summary>
+    /// Detaches a render hook from the pipeline.
+    /// </summary>
+    /// <param name="hook">The render hook to detach.</param>
+    public void Detach(IRenderHook hook)
+    {
+        lock (_lock)
         {
-            lock (_lock)
-            {
-                _hooks.Add(hook);
-            }
+            _hooks.Remove(hook);
         }
+    }
 
-        /// <summary>
-        /// Detaches a render hook from the pipeline.
-        /// </summary>
-        /// <param name="hook">The render hook to detach.</param>
-        public void Detach(IRenderHook hook)
+    /// <summary>
+    /// Processes the specified renderables.
+    /// </summary>
+    /// <param name="context">The render context.</param>
+    /// <param name="renderables">The renderables to process.</param>
+    /// <returns>The processed renderables.</returns>
+    public IEnumerable<IRenderable> Process(RenderContext context, IEnumerable<IRenderable> renderables)
+    {
+        lock (_lock)
         {
-            lock (_lock)
+            var current = renderables;
+            for (var index = _hooks.Count - 1; index >= 0; index--)
             {
-                _hooks.Remove(hook);
+                current = _hooks[index].Process(context, current);
             }
-        }
 
-        /// <summary>
-        /// Processes the specified renderables.
-        /// </summary>
-        /// <param name="context">The render context.</param>
-        /// <param name="renderables">The renderables to process.</param>
-        /// <returns>The processed renderables.</returns>
-        public IEnumerable<IRenderable> Process(RenderContext context, IEnumerable<IRenderable> renderables)
-        {
-            lock (_lock)
-            {
-                var current = renderables;
-                for (var index = _hooks.Count - 1; index >= 0; index--)
-                {
-                    current = _hooks[index].Process(context, current);
-                }
-
-                return current;
-            }
+            return current;
         }
     }
 }

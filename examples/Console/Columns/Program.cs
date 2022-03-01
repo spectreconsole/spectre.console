@@ -1,30 +1,30 @@
 using System.Collections.Generic;
+using Spectre.Console;
 
-namespace Spectre.Console.Examples
+namespace Columns;
+
+public static class Program
 {
-    public static class Program
+    public static void Main()
     {
-        public static void Main()
+        var cards = new List<Panel>();
+        foreach (var user in User.LoadUsers())
         {
-            var cards = new List<Panel>();
-            foreach(var user in User.LoadUsers())
-            {
-                cards.Add(
-                    new Panel(GetCardContent(user))
-                        .Header($"{user.Country}")
-                        .RoundedBorder().Expand());
-            }
-
-            // Render all cards in columns
-            AnsiConsole.Render(new Columns(cards));
+            cards.Add(
+                new Panel(GetCardContent(user))
+                    .Header($"{user.Country}")
+                    .RoundedBorder().Expand());
         }
 
-        private static string GetCardContent(User user)
-        {
-            var name = $"{user.FirstName} {user.LastName}";
-            var city = $"{user.City}";
+        // Render all cards in columns
+        AnsiConsole.Write(new Spectre.Console.Columns(cards));
+    }
 
-            return $"[b]{name}[/]\n[yellow]{city}[/]";
-        }
+    private static string GetCardContent(User user)
+    {
+        var name = $"{user.FirstName} {user.LastName}";
+        var city = $"{user.City}";
+
+        return $"[b]{name}[/]\n[yellow]{city}[/]";
     }
 }

@@ -12,8 +12,7 @@ one or many items from a provided list.
 
 <?# AsciiCast cast="multi-selection" /?>
 
-<?# Alert ?> The use of prompts 
-  insides status or progress displays is not supported.
+<?# Alert ?> The use of prompts inside status or progress displays is not supported.
 <?#/ Alert ?>
 
 ## Usage
@@ -29,9 +28,8 @@ var fruits = AnsiConsole.Prompt(
         .InstructionsText(
             "[grey](Press [blue]<space>[/] to toggle a fruit, " + 
             "[green]<enter>[/] to accept)[/]")
-        .AddChoice("Apple")
         .AddChoices(new[] {
-            "Apricot", "Avocado", 
+            "Apple", "Apricot", "Avocado", 
             "Banana", "Blackcurrant", "Blueberry",
             "Cherry", "Cloudberry", "Cocunut",
         }));

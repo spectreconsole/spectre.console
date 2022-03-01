@@ -1,30 +1,26 @@
-using System;
-using Spectre.Console.Rendering;
+namespace Spectre.Console.Cli;
 
-namespace Spectre.Console.Cli
+/// <summary>
+/// Represents errors that occur during application execution.
+/// </summary>
+public abstract class CommandAppException : Exception
 {
     /// <summary>
-    /// Represents errors that occur during application execution.
+    /// Gets the pretty formatted exception message.
     /// </summary>
-    public abstract class CommandAppException : Exception
+    public IRenderable? Pretty { get; }
+
+    internal virtual bool AlwaysPropagateWhenDebugging => false;
+
+    internal CommandAppException(string message, IRenderable? pretty = null)
+        : base(message)
     {
-        /// <summary>
-        /// Gets the pretty formatted exception message.
-        /// </summary>
-        public IRenderable? Pretty { get; }
+        Pretty = pretty;
+    }
 
-        internal virtual bool AlwaysPropagateWhenDebugging => false;
-
-        internal CommandAppException(string message, IRenderable? pretty = null)
-            : base(message)
-        {
-            Pretty = pretty;
-        }
-
-        internal CommandAppException(string message, Exception ex, IRenderable? pretty = null)
-            : base(message, ex)
-        {
-            Pretty = pretty;
-        }
+    internal CommandAppException(string message, Exception ex, IRenderable? pretty = null)
+        : base(message, ex)
+    {
+        Pretty = pretty;
     }
 }

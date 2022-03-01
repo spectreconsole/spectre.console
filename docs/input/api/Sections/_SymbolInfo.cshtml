@@ -1,0 +1,131 @@
+@using Statiq.CodeAnalysis
+@using Docs.Extensions
+@{
+    var containingAssembly = Document.GetDocument(CodeAnalysisKeys.ContainingAssembly);
+    var containingNamespace = Document.GetDocument(CodeAnalysisKeys.ContainingNamespace);
+    var containingType = Document.GetDocument(CodeAnalysisKeys.ContainingType);
+    var type = Document.GetDocument(CodeAnalysisKeys.Type);
+    var overridden = Document.GetDocument(CodeAnalysisKeys.Overridden);
+    IReadOnlyList<IDocument> allInterfaces = Document.GetDocumentList(CodeAnalysisKeys.AllInterfaces);
+    IReadOnlyList<IDocument> baseTypes = Document.GetDocumentList(CodeAnalysisKeys.BaseTypes)?
+        .Where(i => !i.GetString(CodeAnalysisKeys.QualifiedName).Equals("System.Object"))
+        .Reverse()
+        .ToList();
+    IReadOnlyList<IDocument> derivedTypes = Document.GetDocumentList(CodeAnalysisKeys.DerivedTypes);
+    IReadOnlyList<IDocument> implementingTypes = Document.GetDocumentList(CodeAnalysisKeys.ImplementingTypes);
+    if (containingAssembly is object
+        || containingNamespace is object
+        || allInterfaces?.Count > 0
+        || baseTypes?.Count > 0
+        || derivedTypes?.Count > 0
+        || implementingTypes?.Count > 0)
+    {
+        <div class="doc-summary tiny-term">
+            <div>
+                <dl>
+
+                    @if (containingAssembly != null)
+                    {
+                        <div>
+                            <dt>Assembly</dt>
+                            <dd>containingAssembly</dd>
+                        </div>
+                    }
+
+                    @if (containingNamespace != null)
+                    {
+                        <div>
+                            <dt>Namespace</dt>
+                            <dd>@Context.GetTypeLink(containingNamespace)</dd>
+                        </div>
+                    }
+
+                    @if (containingType != null)
+                    {
+                        <div>
+                            <dt>Containing Type</dt>
+                            <dd>@Context.GetTypeLink(containingType)</dd>
+                        </div>
+                    }
+
+                    @if (overridden != null)
+                    {
+                        <div>
+                            <dt>Overridden</dt>
+                            <dd>@Context.GetTypeLink(overridden)</dd>
+                        </div>
+                    }
+
+                    @if (allInterfaces?.Count > 0)
+                    {
+                        <div>
+                            <dt>Interfaces</dt>
+                            <dd>
+                                <ul class="list-unstyled">
+                                    @foreach (var interfaceDocument in allInterfaces)
+                                    {
+                                        <li>@Context.GetTypeLink(interfaceDocument)</li>
+                                    }
+                                </ul>
+                            </dd>
+                        </div>
+                    }
+
+                    @if (baseTypes?.Count > 0)
+                    {
+                        <div>
+                            <dt>Base Types</dt>
+                            <dd>
+                                <ul class="list-unstyled">
+                                    @foreach (var baseType in baseTypes)
+                                    {
+                                        <li>@Context.GetTypeLink(baseType)</li>
+                                    }
+                                </ul>
+                            </dd>
+                        </div>
+                    }
+
+                    @if (derivedTypes?.Count > 0)
+                    {
+                        <div>
+                            <dt>Derived Types</dt>
+                            <dd>
+                                <ul class="list-unstyled">
+                                    @foreach (var derivedType in derivedTypes)
+                                    {
+                                        <li>@Context.GetTypeLink(derivedType)</li>
+                                    }
+                                </ul>
+                            </dd>
+                        </div>
+                    }
+
+                    @if (implementingTypes?.Count > 0)
+
+                    {
+                        <div>
+                            <dt>Implementing Types</dt>
+                            <dd>
+                                <ul class="list-unstyled">
+                                    @foreach (var implementingType in implementingTypes)
+                                    {
+                                        <li>@Context.GetTypeLink(implementingType)</li>
+                                    }
+                                </ul>
+                            </dd>
+                        </div>
+                    }
+
+                    @if (type != null)
+                    {
+                        <div>
+                            <dt>@Document.GetString(CodeAnalysisKeys.Kind) Type</dt>
+                            <dd>@Context.GetTypeLink(type)</dd>
+                        </div>
+                    }
+                </dl>
+            </div>
+        </div>
+    }
+}

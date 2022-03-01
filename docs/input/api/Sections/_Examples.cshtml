@@ -1,0 +1,9 @@
+@using Statiq.CodeAnalysis
+@{
+    var examples = Document.GetString(CodeAnalysisKeys.Example);
+    if (!examples.IsNullOrWhiteSpace())
+    {
+        <h3>Examples</h3>
+        <div>@Html.Raw(examples)</div>
+    }
+}

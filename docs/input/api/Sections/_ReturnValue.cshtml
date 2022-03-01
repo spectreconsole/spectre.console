@@ -1,0 +1,23 @@
+@using Statiq.CodeAnalysis
+@using Docs.Extensions
+@{
+    var returnType = Model.GetDocument(CodeAnalysisKeys.ReturnType);
+    var returns = Model.GetString(CodeAnalysisKeys.Returns);
+    if ((returnType != null && returnType.GetString(CodeAnalysisKeys.DisplayName) != "void") || !string.IsNullOrWhiteSpace(returns))
+    {
+        <h3>Returns</h3>
+        <div class="doc-summary">
+            <div>
+                <dl>
+                    <div>
+
+                        <dt>
+                            @Context.GetTypeLink(returnType, false)
+                        </dt>
+                        <dd></dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    }
+}

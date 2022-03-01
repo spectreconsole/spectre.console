@@ -1,38 +1,34 @@
-using System;
-using System.Collections.Generic;
+namespace Spectre.Console;
 
-namespace Spectre.Console
+internal static class ListExtensions
 {
-    internal static class ListExtensions
+    public static void RemoveLast<T>(this List<T> list)
     {
-        public static void RemoveLast<T>(this List<T> list)
+        if (list is null)
         {
-            if (list is null)
-            {
-                throw new ArgumentNullException(nameof(list));
-            }
-
-            if (list.Count > 0)
-            {
-                list.RemoveAt(list.Count - 1);
-            }
+            throw new ArgumentNullException(nameof(list));
         }
 
-        public static void AddOrReplaceLast<T>(this List<T> list, T item)
+        if (list.Count > 0)
         {
-            if (list is null)
-            {
-                throw new ArgumentNullException(nameof(list));
-            }
+            list.RemoveAt(list.Count - 1);
+        }
+    }
 
-            if (list.Count == 0)
-            {
-                list.Add(item);
-            }
-            else
-            {
-                list[list.Count - 1] = item;
-            }
+    public static void AddOrReplaceLast<T>(this List<T> list, T item)
+    {
+        if (list is null)
+        {
+            throw new ArgumentNullException(nameof(list));
+        }
+
+        if (list.Count == 0)
+        {
+            list.Add(item);
+        }
+        else
+        {
+            list[list.Count - 1] = item;
         }
     }
 }

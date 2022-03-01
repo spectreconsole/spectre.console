@@ -83,7 +83,7 @@ Eu estou muito agradecido.
 
 ## Licença
 
-Copyright © Patrik Svensson, Phil Scott
+Copyright © Patrik Svensson, Phil Scott, Nils Andresen
 
 Spectre.Console é fornecido no estado em que se encontra sob a licença do MIT. Para obter mais informações, consulte o arquivo [LICENSE](LICENSE.md).
 

@@ -1,82 +1,76 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Spectre.Console.Rendering;
+namespace Spectre.Console;
 
-namespace Spectre.Console
+/// <summary>
+/// Represents a table row.
+/// </summary>
+public sealed class TableRow : IEnumerable<IRenderable>
 {
+    private readonly List<IRenderable> _items;
+
     /// <summary>
-    /// Represents a table row.
+    /// Gets the number of columns in the row.
     /// </summary>
-    public sealed class TableRow : IEnumerable<IRenderable>
+    public int Count => _items.Count;
+
+    internal bool IsHeader { get; }
+    internal bool IsFooter { get; }
+
+    /// <summary>
+    /// Gets a row item at the specified table column index.
+    /// </summary>
+    /// <param name="index">The table column index.</param>
+    /// <returns>The row item at the specified table column index.</returns>
+    public IRenderable this[int index]
     {
-        private readonly List<IRenderable> _items;
+        get => _items[index];
+    }
 
-        /// <summary>
-        /// Gets the number of columns in the row.
-        /// </summary>
-        public int Count => _items.Count;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TableRow"/> class.
+    /// </summary>
+    /// <param name="items">The row items.</param>
+    public TableRow(IEnumerable<IRenderable> items)
+        : this(items, false, false)
+    {
+    }
 
-        internal bool IsHeader { get; }
-        internal bool IsFooter { get; }
+    private TableRow(IEnumerable<IRenderable> items, bool isHeader, bool isFooter)
+    {
+        _items = new List<IRenderable>(items ?? Array.Empty<IRenderable>());
 
-        /// <summary>
-        /// Gets a row item at the specified table column index.
-        /// </summary>
-        /// <param name="index">The table column index.</param>
-        /// <returns>The row item at the specified table column index.</returns>
-        public IRenderable this[int index]
+        IsHeader = isHeader;
+        IsFooter = isFooter;
+    }
+
+    internal static TableRow Header(IEnumerable<IRenderable> items)
+    {
+        return new TableRow(items, true, false);
+    }
+
+    internal static TableRow Footer(IEnumerable<IRenderable> items)
+    {
+        return new TableRow(items, false, true);
+    }
+
+    internal void Add(IRenderable item)
+    {
+        if (item is null)
         {
-            get => _items[index];
+            throw new ArgumentNullException(nameof(item));
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TableRow"/> class.
-        /// </summary>
-        /// <param name="items">The row items.</param>
-        public TableRow(IEnumerable<IRenderable> items)
-            : this(items, false, false)
-        {
-        }
+        _items.Add(item);
+    }
 
-        private TableRow(IEnumerable<IRenderable> items, bool isHeader, bool isFooter)
-        {
-            _items = new List<IRenderable>(items ?? Array.Empty<IRenderable>());
+    /// <inheritdoc/>
+    public IEnumerator<IRenderable> GetEnumerator()
+    {
+        return _items.GetEnumerator();
+    }
 
-            IsHeader = isHeader;
-            IsFooter = isFooter;
-        }
-
-        internal static TableRow Header(IEnumerable<IRenderable> items)
-        {
-            return new TableRow(items, true, false);
-        }
-
-        internal static TableRow Footer(IEnumerable<IRenderable> items)
-        {
-            return new TableRow(items, false, true);
-        }
-
-        internal void Add(IRenderable item)
-        {
-            if (item is null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-
-            _items.Add(item);
-        }
-
-        /// <inheritdoc/>
-        public IEnumerator<IRenderable> GetEnumerator()
-        {
-            return _items.GetEnumerator();
-        }
-
-        /// <inheritdoc/>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    /// <inheritdoc/>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

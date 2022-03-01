@@ -6,6 +6,9 @@ Highlights:
     - Custom styling of progress bars.
     - Multiple predefined columns such as Throughput, Estimated Time Remaining, and more.
     - Fallback for non-interactive consoles such as CI runners.
+Reference: 
+    - T:Spectre.Console.Progress
+    - M:Spectre.Console.AnsiConsole.Progress
 ---
 
 Spectre.Console can display information about long running tasks in the console. 

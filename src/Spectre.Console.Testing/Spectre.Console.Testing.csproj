@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net5.0;netstandard2.0</TargetFrameworks>
     <IsTestProject>false</IsTestProject>
     <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
@@ -15,10 +15,6 @@
 
   <ItemGroup Label="Project References">
     <ProjectReference Include="..\Spectre.Console\Spectre.Console.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

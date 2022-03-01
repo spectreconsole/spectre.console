@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "microsoft.playwright.cli": {
+      "version": "1.2.2",
+      "commands": [
+        "playwright"
+      ]
+    }
+  }
+}

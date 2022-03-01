@@ -13,22 +13,22 @@ jobs:
 
   docs:
     name: Documentation
-    if: false # Disable for now
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: Setup dotnet
+    - name: Setup .NET SDK
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
-        include-prerelease: true
+        dotnet-version: | 
+          5.0.301
+          6.0.100
 
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '16'
 
     - name: Cache dependencies
       uses: actions/cache@v2
@@ -43,6 +43,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cd docs
+        dotnet tool restore
         dotnet run --configuration Release
 
     - name: Archive doc generation
@@ -76,21 +77,19 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup dotnet 3.1.402
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.402
-
-      - name: Setup dotnet 5.0.301
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 5.0.301
+          dotnet-version: | 
+            3.1.402
+            5.0.301
+            6.0.100
 
       - name: Integration Tests
         shell: bash
         run: |
           dotnet tool restore
-          dotnet example --all --skip live --skip livetable --skip prompt
+          dotnet example --all --skip live --skip livetable --skip prompt --skip screens
 
       - name: Build
         shell: bash

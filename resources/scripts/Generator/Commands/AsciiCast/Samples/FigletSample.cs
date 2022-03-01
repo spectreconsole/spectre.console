@@ -4,7 +4,7 @@ namespace Generator.Commands.Samples
 {
     public class FigletSample : BaseSample
     {
-        public override (int Cols, int Rows) ConsoleSize => (120, 24);
+        public override (int Cols, int Rows) ConsoleSize => (100, 24);
 
         public override void Run(IAnsiConsole console)
         {

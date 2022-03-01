@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net5.0;netstandard2.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
+    <NoWarn>SA1633</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Wcwidth" Version="0.2.0" />
     <PackageReference Include="System.Memory" Version="4.5.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
   </ItemGroup>
 
@@ -17,6 +17,7 @@
     <None Remove="Widgets\Figlet\Fonts\Standard.flf" />
     <None Include="../../resources/gfx/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
     <None Include="..\.editorconfig" Link="Cli\.editorconfig" />
+    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,11 +27,18 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Wcwidth.Sources" Version="0.6.0">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <PropertyGroup>
     <AnnotatedReferenceAssemblyVersion>3.0.0</AnnotatedReferenceAssemblyVersion>
     <GenerateNullableAttributes>False</GenerateNullableAttributes>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants)TRACE;WCWIDTH_VISIBILITY_INTERNAL</DefineConstants>
   </PropertyGroup>
 
 </Project>

@@ -1,6 +1,10 @@
 Title: Specifying Settings
 Order: 5
 Description: "How to define command line argument settings for your *Spectre.Console.Cli* Commands"
+Reference: 
+    - T:Spectre.Console.Cli.CommandSettings
+    - T:Spectre.Console.Cli.CommandArgumentAttribute
+    - T:Spectre.Console.Cli.CommandOptionAttribute
 ---
 
 Settings for `Spectre.Console.Cli` commands are defined via classes that inherit from `CommandSettings`. Attributes are used to indicate how the parser interprets the command line arguments and create a runtime instance of the settings to be used.
@@ -11,10 +15,10 @@ Example:
 public sealed class MyCommandSettings : CommandSettings
 {
     [CommandArgument(0, "[name]")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     [CommandOption("-c|--count")]
-    public int Count { get; set; }
+    public int? Count { get; set; }
 }
 ```
 
@@ -33,7 +37,7 @@ For example, we could split the above name argument into two values with an opti
 public string FirstName { get; set; }
 
 [CommandArgument(1, "[lastName]")]
-public string LastName { get; set; }
+public string? LastName { get; set; }
 ```
 
 ## CommandOption
@@ -50,7 +54,16 @@ There is a special mode for `CommandOptions` on boolean types. Typically all `Co
 
 ```csharp
 [CommandOption("--debug")]
-public bool Debug { get; set; }
+public bool? Debug { get; set; }
+```
+
+### Hidden options
+
+`CommandOptions` can be hidden from being rendered in help by setting `IsHidden` to `true`.
+
+```csharp
+[CommandOption("--hidden-opt", IsHidden = true)]
+public bool? HiddenOpt { get; set; }
 ```
 
 ## Description
@@ -87,7 +100,7 @@ Would allow the user to run `app.exe Dwayne Elizondo "Mountain Dew" Herbert Cama
 `Spectre.Console.Cli` supports constructor initialization and init only initialization. For constructor initialization, the parameter name of the constructor must match the name of the property name of the settings class. Order does not matter.
 
 ```csharp
-public class Settings
+public class Settings : CommandSettings
 {
     public Settings(string[] name)
     {
@@ -96,18 +109,18 @@ public class Settings
 
     [Description("The name to display")]
     [CommandArgument(0, "[Name]")]
-    public string Name { get; }
+    public string? Name { get; }
 }
 ```
 
 Also supported are init only properties.
 
 ```csharp
-public class Settings
+public class Settings : CommandSettings
 {
     [Description("The name to display")]
     [CommandArgument(0, "[Name]")]
-    public string Name { get; init; }
+    public string? Name { get; init; }
 }
 ```
 
@@ -116,11 +129,11 @@ public class Settings
 Simple type validation is performed automatically, but for scenarios where more complex validation is required, overriding the `Validate` method is supported. This method must return either `ValidationResult.Error` or `ValidationResult.Success`.
 
 ```csharp
-public class Settings
+public class Settings : CommandSettings
 {
     [Description("The name to display")]
     [CommandArgument(0, "[Name]")]
-    public string Name { get; init; }
+    public string? Name { get; init; }
 
     public override ValidationResult Validate()
     {

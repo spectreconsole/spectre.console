@@ -1,56 +1,54 @@
-using System;
 using static Spectre.Console.AnsiSequences;
 
-namespace Spectre.Console
+namespace Spectre.Console;
+
+internal sealed class AnsiConsoleCursor : IAnsiConsoleCursor
 {
-    internal sealed class AnsiConsoleCursor : IAnsiConsoleCursor
+    private readonly AnsiConsoleBackend _backend;
+
+    public AnsiConsoleCursor(AnsiConsoleBackend backend)
     {
-        private readonly AnsiConsoleBackend _backend;
+        _backend = backend ?? throw new ArgumentNullException(nameof(backend));
+    }
 
-        public AnsiConsoleCursor(AnsiConsoleBackend backend)
+    public void Show(bool show)
+    {
+        if (show)
         {
-            _backend = backend ?? throw new ArgumentNullException(nameof(backend));
+            _backend.Write(new ControlCode(SM(DECTCEM)));
+        }
+        else
+        {
+            _backend.Write(new ControlCode(RM(DECTCEM)));
+        }
+    }
+
+    public void Move(CursorDirection direction, int steps)
+    {
+        if (steps == 0)
+        {
+            return;
         }
 
-        public void Show(bool show)
+        switch (direction)
         {
-            if (show)
-            {
-                _backend.Write(new ControlCode(SM(DECTCEM)));
-            }
-            else
-            {
-                _backend.Write(new ControlCode(RM(DECTCEM)));
-            }
+            case CursorDirection.Up:
+                _backend.Write(new ControlCode(CUU(steps)));
+                break;
+            case CursorDirection.Down:
+                _backend.Write(new ControlCode(CUD(steps)));
+                break;
+            case CursorDirection.Right:
+                _backend.Write(new ControlCode(CUF(steps)));
+                break;
+            case CursorDirection.Left:
+                _backend.Write(new ControlCode(CUB(steps)));
+                break;
         }
+    }
 
-        public void Move(CursorDirection direction, int steps)
-        {
-            if (steps == 0)
-            {
-                return;
-            }
-
-            switch (direction)
-            {
-                case CursorDirection.Up:
-                    _backend.Write(new ControlCode(CUU(steps)));
-                    break;
-                case CursorDirection.Down:
-                    _backend.Write(new ControlCode(CUD(steps)));
-                    break;
-                case CursorDirection.Right:
-                    _backend.Write(new ControlCode(CUF(steps)));
-                    break;
-                case CursorDirection.Left:
-                    _backend.Write(new ControlCode(CUB(steps)));
-                    break;
-            }
-        }
-
-        public void SetPosition(int column, int line)
-        {
-            _backend.Write(new ControlCode(CUP(line, column)));
-        }
+    public void SetPosition(int column, int line)
+    {
+        _backend.Write(new ControlCode(CUP(line, column)));
     }
 }

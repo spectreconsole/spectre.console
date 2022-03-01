@@ -1,12 +1,13 @@
-namespace Spectre.Console.Examples
+using Spectre.Console;
+
+namespace Figlet;
+
+public static class Program
 {
-    public static class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            AnsiConsole.Render(new FigletText("Left aligned").LeftAligned().Color(Color.Red));
-            AnsiConsole.Render(new FigletText("Centered").Centered().Color(Color.Green));
-            AnsiConsole.Render(new FigletText("Right aligned").RightAligned().Color(Color.Blue));
-        }
+        AnsiConsole.Write(new FigletText("Left aligned").LeftAligned().Color(Color.Red));
+        AnsiConsole.Write(new FigletText("Centered").Centered().Color(Color.Green));
+        AnsiConsole.Write(new FigletText("Right aligned").RightAligned().Color(Color.Blue));
     }
 }

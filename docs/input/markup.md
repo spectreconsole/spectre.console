@@ -5,6 +5,10 @@ Highlights:
  - Easily add *color*.
  - Add hyperlinks to for supported terminals.
  - Emoji 🚀 parsing.
+Reference:
+ - M:Spectre.Console.AnsiConsole.Markup(System.String)
+ - M:Spectre.Console.AnsiConsole.MarkupLine(System.String)
+ - T:Spectre.Console.Markup
 ---
 
 The `Markup` class allows you to output rich text to the console.
@@ -15,7 +19,7 @@ Console markup uses a syntax inspired by bbcode. If you write the style (see [St
 in square brackets, e.g. `[bold red]`, that style will apply until it is closed with a `[/]`.
 
 ```csharp
-AnsiConsole.Render(new Markup("[bold yellow]Hello[/] [red]World![/]"));
+AnsiConsole.Write(new Markup("[bold yellow]Hello[/] [red]World![/]"));
 ```
 
 The `Markup` class implements `IRenderable` which means that you 
@@ -26,7 +30,7 @@ rendering of `IRenderable` also have overloads for rendering rich text.
 var table = new Table();
 table.AddColumn(new TableColumn(new Markup("[yellow]Foo[/]")));
 table.AddColumn(new TableColumn("[blue]Bar[/]"));
-AnsiConsole.Render(table);
+AnsiConsole.Write(table);
 ```
 
 ## Convenience methods

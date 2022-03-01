@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+namespace Spectre.Console.Enrichment;
 
-namespace Spectre.Console.Enrichment
+internal static class ProfileEnricher
 {
-    internal static class ProfileEnricher
-    {
-        private static readonly List<IProfileEnricher> _defaultEnrichers = new List<IProfileEnricher>
+    private static readonly List<IProfileEnricher> _defaultEnrichers = new List<IProfileEnricher>
         {
             new AppVeyorEnricher(),
             new BambooEnricher(),
@@ -23,73 +19,72 @@ namespace Spectre.Console.Enrichment
             new TravisEnricher(),
         };
 
-        public static void Enrich(
-            Profile profile,
-            ProfileEnrichment settings,
-            IDictionary<string, string>? environmentVariables)
+    public static void Enrich(
+        Profile profile,
+        ProfileEnrichment settings,
+        IDictionary<string, string>? environmentVariables)
+    {
+        if (profile is null)
         {
-            if (profile is null)
-            {
-                throw new ArgumentNullException(nameof(profile));
-            }
-
-            settings ??= new ProfileEnrichment();
-
-            var variables = GetEnvironmentVariables(environmentVariables);
-            foreach (var enricher in GetEnrichers(settings))
-            {
-                if (string.IsNullOrWhiteSpace(enricher.Name))
-                {
-                    throw new InvalidOperationException($"Profile enricher of type '{enricher.GetType().FullName}' does not have a name.");
-                }
-
-                if (enricher.Enabled(variables))
-                {
-                    enricher.Enrich(profile);
-                    profile.AddEnricher(enricher.Name);
-                }
-            }
+            throw new ArgumentNullException(nameof(profile));
         }
 
-        private static List<IProfileEnricher> GetEnrichers(ProfileEnrichment settings)
+        settings ??= new ProfileEnrichment();
+
+        var variables = GetEnvironmentVariables(environmentVariables);
+        foreach (var enricher in GetEnrichers(settings))
         {
-            var enrichers = new List<IProfileEnricher>();
-
-            if (settings.UseDefaultEnrichers)
+            if (string.IsNullOrWhiteSpace(enricher.Name))
             {
-                enrichers.AddRange(_defaultEnrichers);
+                throw new InvalidOperationException($"Profile enricher of type '{enricher.GetType().FullName}' does not have a name.");
             }
 
-            if (settings.Enrichers?.Count > 0)
+            if (enricher.Enabled(variables))
             {
-                enrichers.AddRange(settings.Enrichers);
+                enricher.Enrich(profile);
+                profile.AddEnricher(enricher.Name);
             }
+        }
+    }
 
-            return enrichers;
+    private static List<IProfileEnricher> GetEnrichers(ProfileEnrichment settings)
+    {
+        var enrichers = new List<IProfileEnricher>();
+
+        if (settings.UseDefaultEnrichers)
+        {
+            enrichers.AddRange(_defaultEnrichers);
         }
 
-        private static IDictionary<string, string> GetEnvironmentVariables(IDictionary<string, string>? variables)
+        if (settings.Enrichers?.Count > 0)
         {
-            if (variables != null)
-            {
-                return new Dictionary<string, string>(variables, StringComparer.OrdinalIgnoreCase);
-            }
+            enrichers.AddRange(settings.Enrichers);
+        }
 
-            return Environment.GetEnvironmentVariables()
-                .Cast<System.Collections.DictionaryEntry>()
-                .Aggregate(
-                    new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase),
-                    (dictionary, entry) =>
+        return enrichers;
+    }
+
+    private static IDictionary<string, string> GetEnvironmentVariables(IDictionary<string, string>? variables)
+    {
+        if (variables != null)
+        {
+            return new Dictionary<string, string>(variables, StringComparer.OrdinalIgnoreCase);
+        }
+
+        return Environment.GetEnvironmentVariables()
+            .Cast<System.Collections.DictionaryEntry>()
+            .Aggregate(
+                new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase),
+                (dictionary, entry) =>
+                {
+                    var key = (string)entry.Key;
+                    if (!dictionary.TryGetValue(key, out _))
                     {
-                        var key = (string)entry.Key;
-                        if (!dictionary.TryGetValue(key, out _))
-                        {
-                            dictionary.Add(key, entry.Value as string ?? string.Empty);
-                        }
+                        dictionary.Add(key, entry.Value as string ?? string.Empty);
+                    }
 
-                        return dictionary;
-                    },
-                    dictionary => dictionary);
-        }
+                    return dictionary;
+                },
+                dictionary => dictionary);
     }
 }

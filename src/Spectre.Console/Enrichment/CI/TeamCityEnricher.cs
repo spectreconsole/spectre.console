@@ -1,19 +1,16 @@
-using System.Collections.Generic;
+namespace Spectre.Console.Enrichment;
 
-namespace Spectre.Console.Enrichment
+internal sealed class TeamCityEnricher : IProfileEnricher
 {
-    internal sealed class TeamCityEnricher : IProfileEnricher
+    public string Name => "TeamCity";
+
+    public bool Enabled(IDictionary<string, string> environmentVariables)
     {
-        public string Name => "TeamCity";
+        return environmentVariables.ContainsKey("TEAMCITY_VERSION");
+    }
 
-        public bool Enabled(IDictionary<string, string> environmentVariables)
-        {
-            return environmentVariables.ContainsKey("TEAMCITY_VERSION");
-        }
-
-        public void Enrich(Profile profile)
-        {
-            profile.Capabilities.Interactive = false;
-        }
+    public void Enrich(Profile profile)
+    {
+        profile.Capabilities.Interactive = false;
     }
 }

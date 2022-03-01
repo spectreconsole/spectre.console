@@ -1,21 +1,24 @@
 using System;
-using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
-namespace Spectre.Console.Examples
+namespace Logging.Infrastructure;
+
+public sealed class TypeResolver : ITypeResolver
 {
-    public sealed class TypeResolver : ITypeResolver
+    private readonly IServiceProvider _provider;
+
+    public TypeResolver(IServiceProvider provider)
     {
-        private readonly IServiceProvider _provider;
+        _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+    }
 
-        public TypeResolver(IServiceProvider provider)
+    public object Resolve(Type type)
+    {
+        if (type == null)
         {
-            _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+            return null;
         }
 
-        public object Resolve(Type type)
-        {
-            return _provider.GetRequiredService(type);
-        }
+        return _provider.GetService(type);
     }
 }

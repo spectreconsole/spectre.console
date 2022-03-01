@@ -1,14 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('Windows'))">net5.0;net48</TargetFrameworks>
-    <TargetFramework Condition="!$([MSBuild]::IsOSPlatform('Windows'))">net5.0</TargetFramework>
-    <LangVersion>9.0</LangVersion>
-  </PropertyGroup>
-
   <ItemGroup>
-    <Compile Include="..\..\src\Spectre.Console\Cli\Internal\Constants.cs" Link="Imported\Constants.cs" />
+    <AdditionalFiles Include="..\..\src\stylecop.json" Link="Properties/stylecop.json" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('Windows'))">net6.0;net5.0;net48</TargetFrameworks>
+    <TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('Windows'))">net6.0;net5.0</TargetFrameworks>
+  </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Data\starwars.flf" />
@@ -24,7 +23,6 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.XUnit" Version="1.1.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.6.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
-    <PackageReference Include="Nullable" Version="1.3.0" PrivateAssets="all" />
     <PackageReference Include="Shouldly" Version="4.0.3" />
     <PackageReference Include="Spectre.Verify.Extensions" Version="0.3.0" />
     <PackageReference Include="Verify.Xunit" Version="9.0.0-beta.1" />
