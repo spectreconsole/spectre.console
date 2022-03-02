@@ -153,4 +153,25 @@ public sealed class MarkupTests
         console.Output.NormalizeLineEndings()
             .ShouldBe("{\n");
     }
+
+    [Fact]
+    public void Can_Use_Interpolated_Markup_As_IRenderable()
+    {
+        // Given
+        var console = new TestConsole();
+        const string Num = "[value[";
+        var table = new Table().AddColumns("First Column");
+        table.AddRow(Markup.FromInterpolated($"Result: {Num}"));
+
+        // When
+        console.Write(table);
+
+        // Then
+        console.Output.NormalizeLineEndings().ShouldBe(@"┌─────────────────┐
+│ First Column    │
+├─────────────────┤
+│ Result: [value[ │
+└─────────────────┘
+".NormalizeLineEndings());
+    }
 }

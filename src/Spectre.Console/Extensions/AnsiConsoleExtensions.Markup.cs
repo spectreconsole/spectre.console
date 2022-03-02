@@ -64,7 +64,7 @@ public static partial class AnsiConsoleExtensions
     /// <param name="value">The interpolated string value to write.</param>
     public static void MarkupInterpolated(this IAnsiConsole console, IFormatProvider provider, FormattableString value)
     {
-        MarkupInterpolated(console, provider, value, appendNewLine: false);
+        Markup(console, Console.Markup.EscapeInterpolated(provider, value));
     }
 
     /// <summary>
@@ -146,13 +146,6 @@ public static partial class AnsiConsoleExtensions
     /// <param name="value">The interpolated string value to write.</param>
     public static void MarkupLineInterpolated(this IAnsiConsole console, IFormatProvider provider, FormattableString value)
     {
-        MarkupInterpolated(console, provider, value, appendNewLine: true);
-    }
-
-    private static void MarkupInterpolated(this IAnsiConsole console, IFormatProvider provider, FormattableString value, bool appendNewLine)
-    {
-        object?[] args = value.GetArguments().Select(arg => arg is string s ? s.EscapeMarkup() : arg).ToArray();
-        var format = appendNewLine ? value.Format + Environment.NewLine : value.Format;
-        Markup(console, string.Format(provider, format, args));
+        MarkupLine(console, Console.Markup.EscapeInterpolated(provider, value));
     }
 }
