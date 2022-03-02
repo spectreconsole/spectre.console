@@ -1,6 +1,6 @@
 Title: Text Path
 Order: 80
-Description: "The **TextPath** class is used to render a horizontal rule (line) to the terminal."
+Description: "The **TextPath** class is used to render a Windows or Unix path."
 Highlights:
     - Automatically shrinks paths to fit.
     - Custom colors for segments of the path.
@@ -9,7 +9,7 @@ Reference: T:Spectre.Console.TextPath
 
 ---
 
-The `TextPath` class is used to render a Windows or Unix disk path.
+The `TextPath` class is used to render a Windows or Unix path.
 
 <?# AsciiCast cast="text-path" /?>
 
