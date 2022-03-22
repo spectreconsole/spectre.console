@@ -56,8 +56,7 @@ public sealed class TestConsole : IAnsiConsole, IDisposable
         Input = new TestConsoleInput();
         EmitAnsiSequences = false;
 
-        var factory = new AnsiConsoleFactory();
-        _console = factory.Create(new AnsiConsoleSettings
+        _console = AnsiConsole.Create(new AnsiConsoleSettings
         {
             Ansi = AnsiSupport.Yes,
             ColorSystem = (ColorSystemSupport)ColorSystem.TrueColor,
