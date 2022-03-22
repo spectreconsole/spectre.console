@@ -55,6 +55,29 @@ public sealed class Markup : Renderable, IAlignable, IOverflowable
     }
 
     /// <summary>
+    /// Returns a new instance of a Markup widget from an interpolated string.
+    /// </summary>
+    /// <param name="value">The interpolated string value to write.</param>
+    /// <param name="style">The style of the text.</param>
+    /// <returns>A new markup instance.</returns>
+    public static Markup FromInterpolated(FormattableString value, Style? style = null)
+    {
+        return FromInterpolated(CultureInfo.CurrentCulture, value, style);
+    }
+
+    /// <summary>
+    /// Returns a new instance of a Markup widget from an interpolated string.
+    /// </summary>
+    /// <param name="provider">The format provider to use.</param>
+    /// <param name="value">The interpolated string value to write.</param>
+    /// <param name="style">The style of the text.</param>
+    /// <returns>A new markup instance.</returns>
+    public static Markup FromInterpolated(IFormatProvider provider, FormattableString value, Style? style = null)
+    {
+        return new Markup(EscapeInterpolated(provider, value), style);
+    }
+
+    /// <summary>
     /// Escapes text so that it won’t be interpreted as markup.
     /// </summary>
     /// <param name="text">The text to escape.</param>
@@ -82,5 +105,11 @@ public sealed class Markup : Renderable, IAlignable, IOverflowable
         }
 
         return text.RemoveMarkup();
+    }
+
+    internal static string EscapeInterpolated(IFormatProvider provider, FormattableString value)
+    {
+        object?[] args = value.GetArguments().Select(arg => arg is string s ? s.EscapeMarkup() : arg).ToArray();
+        return string.Format(provider, value.Format, args);
     }
 }

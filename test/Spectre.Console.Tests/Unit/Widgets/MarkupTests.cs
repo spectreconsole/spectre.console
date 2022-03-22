@@ -72,6 +72,25 @@ public sealed class MarkupTests
             // Then
             result.ShouldBe(expected);
         }
+
+        [Theory]
+        [InlineData("Hello", "World", "\x1B[38;5;11mHello\x1B[0m \x1B[38;5;9mWorld\x1B[0m 2021-02-03")]
+        [InlineData("Hello", "World [", "\x1B[38;5;11mHello\x1B[0m \x1B[38;5;9mWorld [\x1B[0m 2021-02-03")]
+        [InlineData("Hello", "World ]", "\x1B[38;5;11mHello\x1B[0m \x1B[38;5;9mWorld ]\x1B[0m 2021-02-03")]
+        [InlineData("[Hello]", "World", "\x1B[38;5;11m[Hello]\x1B[0m \x1B[38;5;9mWorld\x1B[0m 2021-02-03")]
+        [InlineData("[[Hello]]", "[World]", "\x1B[38;5;11m[[Hello]]\x1B[0m \x1B[38;5;9m[World]\x1B[0m 2021-02-03")]
+        public void Should_Escape_Markup_When_Using_MarkupInterpolated(string input1, string input2, string expected)
+        {
+            // Given
+            var console = new TestConsole().EmitAnsiSequences();
+            var date = new DateTime(2021, 2, 3);
+
+            // When
+            console.MarkupInterpolated($"[yellow]{input1}[/] [red]{input2}[/] {date:yyyy-MM-dd}");
+
+            // Then
+            console.Output.ShouldBe(expected);
+        }
     }
 
     [Theory]
@@ -133,5 +152,26 @@ public sealed class MarkupTests
         // Then
         console.Output.NormalizeLineEndings()
             .ShouldBe("{\n");
+    }
+
+    [Fact]
+    public void Can_Use_Interpolated_Markup_As_IRenderable()
+    {
+        // Given
+        var console = new TestConsole();
+        const string Num = "[value[";
+        var table = new Table().AddColumns("First Column");
+        table.AddRow(Markup.FromInterpolated($"Result: {Num}"));
+
+        // When
+        console.Write(table);
+
+        // Then
+        console.Output.NormalizeLineEndings().ShouldBe(@"┌─────────────────┐
+│ First Column    │
+├─────────────────┤
+│ Result: [value[ │
+└─────────────────┘
+".NormalizeLineEndings());
     }
 }

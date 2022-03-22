@@ -60,6 +60,10 @@ Spectre.Console will tell your terminal to use the color that is configured in t
 If you are using an 8 or 24-bit color for the foreground text, it is recommended that you also set an appropriate
 background color to match.
 
+**Do** escape data when outputting any user input or any external data via Markup using the [`EscapeMarkup`](xref:M:Spectre.Console.Markup.Escape(System.String)) method on the data. Any user input containing `[` or `]` will likely cause a runtime error while rendering otherwise.
+
+**Consider** replacing `Markup` and `MarkupLine` with [`MarkupInterpolated`](xref:M:Spectre.Console.AnsiConsole.MarkupInterpolated(System.FormattableString)) and [`MarkupLineInterpolated`](xref:M:Spectre.Console.AnsiConsole.MarkupLineInterpolated(System.FormattableString)). Both these methods will automatically escape all data in the interpolated string holes. When working with widgets such as the Table and Tree, consider using [`Markup.FromInterpolated`](xref:M:Spectre.Console.Markup.FromInterpolated(System.FormattableString,Spectre.Console.Style)) to generate an `IRenderable` from an interpolated string.
+
 ### Live-Rendering Best Practices
 
 Spectre.Console has a variety of [live-rendering capabilities](live) widgets. These widgets can be used to display data

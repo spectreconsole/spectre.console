@@ -63,6 +63,15 @@ You can also use the `Markup.Escape` method.
 ```csharp
 AnsiConsole.Markup("[red]{0}[/]", Markup.Escape("Hello [World]"));
 ```
+
+## Escaping Interpolated Strings
+
+When working with interpolated string, you can use the `MarkupInterpolated` and `MarkupInterpolatedLine` methods to automatically escape the values in the interpolated string holes.
+
+```csharp
+AnsiConsole.MarkupInterpolated("[red]{0}[/]", "Hello [World]");
+```
+
 ## Setting background color
 
 You can set the background color in markup by prefixing the color with
