@@ -13,7 +13,9 @@
 
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="Properties/stylecop.json" />
+    <EmbeddedResource Include="Internal\Text\Encoding\Svg\Templates\Simple.svg" />
     <EmbeddedResource Include="Widgets\Figlet\Fonts\Standard.flf" />
+    <None Remove="Internal\Text\Encoding\Svg\Templates\Simple.svg" />
     <None Remove="Widgets\Figlet\Fonts\Standard.flf" />
     <None Include="../../resources/gfx/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
     <None Include="..\.editorconfig" Link="Cli\.editorconfig" />

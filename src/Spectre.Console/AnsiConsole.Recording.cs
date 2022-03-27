@@ -45,6 +45,20 @@ public static partial class AnsiConsole
     }
 
     /// <summary>
+    /// Exports all recorded console output as SVG text.
+    /// </summary>
+    /// <returns>The recorded output as SVG text.</returns>
+    public static string ExportSvg()
+    {
+        if (_recorder == null)
+        {
+            throw new InvalidOperationException("Cannot export SVG since a recording hasn't been started.");
+        }
+
+        return _recorder.ExportSvg();
+    }
+
+    /// <summary>
     /// Exports all recorded console output using a custom encoder.
     /// </summary>
     /// <param name="encoder">The encoder to use.</param>
@@ -53,7 +67,7 @@ public static partial class AnsiConsole
     {
         if (_recorder == null)
         {
-            throw new InvalidOperationException("Cannot export HTML since a recording hasn't been started.");
+            throw new InvalidOperationException("Cannot export since a recording hasn't been started.");
         }
 
         if (encoder is null)

@@ -243,6 +243,23 @@ public partial struct Color : IEquatable<Color>
     }
 
     /// <summary>
+    /// Converts a hexadecimal format string to a <see cref="Color"/>.
+    /// </summary>
+    /// <param name="hex">The hexadecimal format string to parse.</param>
+    /// <returns>A <see cref="Color"/> representing the hexadecimal format string.</returns>
+    public static Color FromHex(string hex)
+    {
+        var color = StyleParser.ParseHexColor(hex, out var error);
+        if (color == null || error != null)
+        {
+            error ??= "Could not parse hex color";
+            throw new InvalidOperationException(error);
+        }
+
+        return color.Value;
+    }
+
+    /// <summary>
     /// Converts the color to a markup string.
     /// </summary>
     /// <returns>A <see cref="string"/> representing the color as markup.</returns>

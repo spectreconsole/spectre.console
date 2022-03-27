@@ -149,7 +149,7 @@ internal static class StyleParser
             effectiveLink);
     }
 
-    private static Color? ParseHexColor(string hex, out string? error)
+    public static Color? ParseHexColor(string hex, out string? error)
     {
         error = null;
 

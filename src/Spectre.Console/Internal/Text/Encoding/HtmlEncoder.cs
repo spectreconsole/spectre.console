@@ -1,3 +1,5 @@
+using System.Web;
+
 namespace Spectre.Console.Internal;
 
 internal sealed class HtmlEncoder : IAnsiConsoleEncoder
@@ -42,7 +44,7 @@ internal sealed class HtmlEncoder : IAnsiConsoleEncoder
                     }
 
                     builder.Append('>');
-                    builder.Append(line);
+                    builder.Append(HttpUtility.HtmlEncode(line));
                     builder.Append("</span>");
 
                     if (parts.Length > 1 && !last)

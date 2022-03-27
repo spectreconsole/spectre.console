@@ -37,4 +37,21 @@ public static class RecorderExtensions
 
         return recorder.Export(_htmlEncoder);
     }
+
+    /// <summary>
+    /// Exports the recorded content as SVG.
+    /// </summary>
+    /// <param name="recorder">The recorder.</param>
+    /// <returns>The recorded content as HTML.</returns>
+    public static string ExportSvg(this Recorder recorder)
+    {
+        if (recorder is null)
+        {
+            throw new ArgumentNullException(nameof(recorder));
+        }
+
+        return recorder.Export(
+            new SvgEncoder(
+                new SvgEncoderSettings()));
+    }
 }

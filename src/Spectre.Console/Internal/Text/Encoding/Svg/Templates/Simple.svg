@@ -1,0 +1,44 @@
+<svg width="@(total_width)" height="@(total_height)" viewBox="0 0 @(total_width) @(total_height)" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        span {
+            display: inline-block;
+            white-space: pre;
+            vertical-align: top;
+            margin: 0;
+            font-size: @(font_size)px;
+            font-family:'Fira Code','Cascadia Code',Monaco,Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        #wrapper {
+            padding: 0px;
+        }
+        #terminal {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: @(theme_background_color);
+            border-radius: 14px;
+            outline: 1px solid #484848;
+        }
+        #terminal-body {
+            line-height: @(line_height)px;
+            padding: 14px;
+            padding-bottom: 35px;
+        }
+    </style>
+    <foreignObject x="0" y="0" width="100%" height="100%">
+        <body xmlns="http://www.w3.org/1999/xhtml">
+            <div id="wrapper">
+                <div id="terminal">
+                    <div id='terminal-body'>
+                        @(code)
+                    </div>
+                </div>
+            </div>
+        </body>
+    </foreignObject>
+</svg>

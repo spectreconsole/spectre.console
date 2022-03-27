@@ -1,19 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
   <ItemGroup>
     <AdditionalFiles Include="..\..\src\stylecop.json" Link="Properties/stylecop.json" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('Windows'))">net6.0;net5.0;net48</TargetFrameworks>
-    <TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('Windows'))">net6.0;net5.0</TargetFrameworks>
-  </PropertyGroup>
-
   <ItemGroup>
     <None Remove="Data\starwars.flf" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="Data\starwars.flf" />
   </ItemGroup>
 
