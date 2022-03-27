@@ -64,6 +64,16 @@ public sealed class TextPrompt<T> : IPrompt<T>
     public Func<T, ValidationResult>? Validator { get; set; }
 
     /// <summary>
+    /// Gets or sets the style in which the default value is displayed.
+    /// </summary>
+    public Style? DefaultValueStyle { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style in which the list of choices is displayed.
+    /// </summary>
+    public Style? ChoicesStyle { get; set; }
+
+    /// <summary>
     /// Gets or sets the default value.
     /// </summary>
     internal DefaultPromptValue<T>? DefaultValue { get; set; }
@@ -183,16 +193,20 @@ public sealed class TextPrompt<T> : IPrompt<T>
             appendSuffix = true;
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
             var choices = string.Join("/", Choices.Select(choice => converter(choice)));
-            builder.AppendFormat(CultureInfo.InvariantCulture, " [blue][[{0}]][/]", choices);
+            var choicesStyle = ChoicesStyle?.ToMarkup() ?? "blue";
+            builder.AppendFormat(CultureInfo.InvariantCulture, " [{0}][[{1}]][/]", choicesStyle, choices);
         }
 
         if (ShowDefaultValue && DefaultValue != null)
         {
             appendSuffix = true;
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
+            var defaultValueStyle = DefaultValueStyle?.ToMarkup() ?? "green";
+
             builder.AppendFormat(
                 CultureInfo.InvariantCulture,
-                " [green]({0})[/]",
+                " [{0}]({1})[/]",
+                defaultValueStyle,
                 IsSecret ? "******" : converter(DefaultValue.Value));
         }
 

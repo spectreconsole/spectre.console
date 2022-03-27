@@ -1,0 +1,1 @@
+Enter Value: [38;5;9m(default)[0m: Input
