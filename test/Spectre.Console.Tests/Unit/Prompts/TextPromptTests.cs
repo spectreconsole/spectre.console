@@ -241,4 +241,49 @@ public sealed class TextPromptTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    [Expectation("DefaultValueStyleNotSet")]
+    public Task Uses_default_style_for_default_value_if_no_style_is_set()
+    {
+        // Given
+        var console = new TestConsole
+        {
+            EmitAnsiSequences = true,
+        };
+        console.Input.PushTextWithEnter("Input");
+
+        var prompt = new TextPrompt<string>("Enter Value:")
+                .ShowDefaultValue()
+                .DefaultValue("default");
+
+        // When
+        console.Prompt(prompt);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("DefaultValueStyleSet")]
+    public Task Uses_specified_default_value_style()
+    {
+        // Given
+        var console = new TestConsole
+        {
+            EmitAnsiSequences = true,
+        };
+        console.Input.PushTextWithEnter("Input");
+
+        var prompt = new TextPrompt<string>("Enter Value:")
+                .ShowDefaultValue()
+                .DefaultValue("default")
+                .DefaultValueStyle(new Style(foreground: Color.Red));
+
+        // When
+        console.Prompt(prompt);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
 }
