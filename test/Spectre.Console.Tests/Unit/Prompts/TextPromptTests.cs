@@ -286,4 +286,51 @@ public sealed class TextPromptTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    [Expectation("ChoicesStyleNotSet")]
+    public Task Uses_default_style_for_choices_if_no_style_is_set()
+    {
+        // Given
+        var console = new TestConsole
+        {
+            EmitAnsiSequences = true,
+        };
+        console.Input.PushTextWithEnter("Choice 2");
+
+        var prompt = new TextPrompt<string>("Enter Value:")
+                .ShowChoices()
+                .AddChoice("Choice 1")
+                .AddChoice("Choice 2");
+
+        // When
+        console.Prompt(prompt);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("ChoicesStyleSet")]
+    public Task Uses_the_specified_choices_style()
+    {
+        // Given
+        var console = new TestConsole
+        {
+            EmitAnsiSequences = true,
+        };
+        console.Input.PushTextWithEnter("Choice 2");
+
+        var prompt = new TextPrompt<string>("Enter Value:")
+                .ShowChoices()
+                .AddChoice("Choice 1")
+                .AddChoice("Choice 2")
+                .ChoicesStyle(new Style(foreground: Color.Red));
+
+        // When
+        console.Prompt(prompt);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
 }

@@ -1,0 +1,1 @@
+Enter Value: [38;5;12m[Choice 1/Choice 2][0m: Choice 2
