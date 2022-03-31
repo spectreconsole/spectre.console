@@ -46,7 +46,7 @@ AnsiConsole.Status()
     });
 ```
 
-## Asynchronous progress
+## Asynchronous status
 
 If you prefer to use async/await, you can use `StartAsync` instead of `Start`.
 
