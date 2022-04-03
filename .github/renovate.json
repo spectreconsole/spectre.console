@@ -5,5 +5,12 @@
   ],
   "dependencyDashboard": false,
   "commitMessagePrefix": "chore:",
-  "labels": ["dependencies"]
+  "labels": ["dependencies"],
+  "npm": {
+    "ignorePaths": [
+      "**/node_modules/**",
+      "**/bower_components/**",
+      "docs/**"
+    ]
+  }
 }
