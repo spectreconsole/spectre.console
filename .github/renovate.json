@@ -12,5 +12,8 @@
       "**/bower_components/**",
       "docs/**"
     ]
-  }
+  },
+  "ignorePaths": [
+    "resources/scripts/**"
+  ]
 }
