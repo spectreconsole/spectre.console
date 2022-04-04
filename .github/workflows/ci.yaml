@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Continuous Integration
 on: pull_request
 
@@ -23,7 +24,7 @@ jobs:
       with:
         dotnet-version: | 
           5.0.301
-          6.0.100
+          6.0.101
 
     - name: Setup Node.js
       uses: actions/setup-node@v2
@@ -81,9 +82,8 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: | 
-            3.1.402
             5.0.301
-            6.0.100
+            6.0.101
 
       - name: Integration Tests
         shell: bash
