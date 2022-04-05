@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Publish
 
 on:
@@ -14,39 +15,11 @@ env:
 jobs:
 
   ###################################################
-  # DOCS
-  ###################################################
-
-  docs:
-    name: Documentation
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@master
-
-    - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: | 
-          5.0.301
-          6.0.100
-
-    - name: Build
-      shell: bash
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        cd docs
-        dotnet tool restore
-        dotnet run --configuration Release
-
-  ###################################################
   # BUILD
   ###################################################
 
   build:
     name: Build
-    needs: [docs]
     if: "!contains(github.event.head_commit.message, 'skip-ci') || startsWith(github.ref, 'refs/tags/')"
     strategy:
       matrix:
@@ -69,15 +42,58 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: | 
-            3.1.402
             5.0.301
-            6.0.100
+            6.0.101
 
       - name: Build
         shell: bash
         run: |
           dotnet tool restore
           dotnet cake
+
+  ###################################################
+  # DOCS
+  ###################################################
+
+  documentation:
+    name: Deploy
+    needs: [build]
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: | 
+          5.0.301
+          6.0.100
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: npm-${{ hashFiles('package-lock.json') }}
+        restore-keys: npm-
+
+    - name: Publish Documentation
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NETLIFY_ACCESS_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      run: |
+        cd docs
+        dotnet tool restore
+        dotnet run --configuration Release -- deploy
 
   ###################################################
   # PUBLISH
@@ -98,9 +114,8 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: | 
-            3.1.402
             5.0.301
-            6.0.100
+            6.0.101
 
       - name: Publish
         shell: bash
