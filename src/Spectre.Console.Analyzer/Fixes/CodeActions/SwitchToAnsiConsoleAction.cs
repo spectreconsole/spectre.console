@@ -35,7 +35,7 @@ public class SwitchToAnsiConsoleAction : CodeAction
         var originalCaller = ((MemberAccessExpressionSyntax)_originalInvocation.Expression).Name.ToString();
 
         var syntaxTree = await _document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
-        var root = (CompilationUnitSyntax)await syntaxTree.GetRootAsync(cancellationToken).ConfigureAwait(false);
+        var root = (CompilationUnitSyntax)await syntaxTree!.GetRootAsync(cancellationToken).ConfigureAwait(false);
 
         // If there is an ansiConsole passed into the method then we'll use it.
         // otherwise we'll check for a field level instance.
@@ -66,7 +66,7 @@ public class SwitchToAnsiConsoleAction : CodeAction
             .Ancestors().OfType<MethodDeclarationSyntax>()
             .First()
             .ParameterList.Parameters
-            .FirstOrDefault(i => i.Type.NormalizeWhitespace().ToString() == "IAnsiConsole")
+            .FirstOrDefault(i => i.Type?.NormalizeWhitespace().ToString() == "IAnsiConsole")
             ?.Identifier.Text;
     }
 
@@ -79,7 +79,7 @@ public class SwitchToAnsiConsoleAction : CodeAction
             .Ancestors()
             .OfType<MethodDeclarationSyntax>()
             .First()
-            .Modifiers.Any(i => i.Kind() == SyntaxKind.StaticKeyword);
+            .Modifiers.Any(i => i.IsKind(SyntaxKind.StaticKeyword));
 
         return _originalInvocation
             .Ancestors().OfType<ClassDeclarationSyntax>()
@@ -88,7 +88,7 @@ public class SwitchToAnsiConsoleAction : CodeAction
             .OfType<FieldDeclarationSyntax>()
             .FirstOrDefault(i =>
                 i.Declaration.Type.NormalizeWhitespace().ToString() == "IAnsiConsole" &&
-                (!isStatic ^ i.Modifiers.Any(modifier => modifier.Kind() == SyntaxKind.StaticKeyword)))
+                (!isStatic ^ i.Modifiers.Any(modifier => modifier.IsKind(SyntaxKind.StaticKeyword))))
             ?.Declaration.Variables.First().Identifier.Text;
     }
 

@@ -18,9 +18,9 @@ public class StaticAnsiConsoleToInstanceFix : CodeFixProvider
     public override async Task RegisterCodeFixesAsync(CodeFixContext context)
     {
         var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-        var methodDeclaration = root.FindNode(context.Span).FirstAncestorOrSelf<InvocationExpressionSyntax>();
+        var methodDeclaration = root!.FindNode(context.Span).FirstAncestorOrSelf<InvocationExpressionSyntax>();
         context.RegisterCodeFix(
-            new SwitchToAnsiConsoleAction(context.Document, methodDeclaration, "Convert static AnsiConsole calls to local instance."),
+            new SwitchToAnsiConsoleAction(context.Document, methodDeclaration!, "Convert static AnsiConsole calls to local instance."),
             context.Diagnostics);
     }
 }
