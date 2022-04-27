@@ -2,7 +2,7 @@
 
 _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.console.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_
 
-`Spectre.Console`是一个 .NET 5/.NET Standard 2.0 的库，能让您在终端里更方便地生成精美的界面。
+`Spectre.Console`是一个 .NET 5/.NET Standard 2.0 的库，可以更轻松地创建美观的跨平台控制台应用程序。
 
 深受 [Rich](https://github.com/willmcgugan/rich) 这个Python优秀库的启发。
 
@@ -26,7 +26,7 @@ _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.consol
 
 ## 安装
 
-最快的安装方式，就是用NuGet包管理直接安装Spectre.Console。
+最快的安装方式，就是用NuGet包管理直接安装`Spectre.Console`。
 
 ```csharp
 dotnet add package Spectre.Console
