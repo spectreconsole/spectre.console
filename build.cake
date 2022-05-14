@@ -58,6 +58,12 @@ Task("Test")
         NoBuild = true,
     });
 
+    DotNetTest("./test/Spectre.Console.Cli.Tests/Spectre.Console.Cli.Tests.csproj", new DotNetTestSettings {
+        Configuration = configuration,
+        NoRestore = true,
+        NoBuild = true,
+    });
+
     DotNetTest("./test/Spectre.Console.Analyzer.Tests/Spectre.Console.Analyzer.Tests.csproj", new DotNetTestSettings {
         Configuration = configuration,
         NoRestore = true,
