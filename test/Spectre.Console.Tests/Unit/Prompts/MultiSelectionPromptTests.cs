@@ -14,7 +14,7 @@ public sealed class MultiSelectionPromptTests
                 return x.X == y.X && x.Y == y.Y;
             }
 
-            public int GetHashCode([DisallowNull] CustomItem obj)
+            public int GetHashCode(CustomItem obj)
             {
                 throw new NotSupportedException();
             }

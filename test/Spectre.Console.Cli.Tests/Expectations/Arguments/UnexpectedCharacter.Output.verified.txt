@@ -1,0 +1,5 @@
+Error: An error occured when parsing template.
+       Encountered unexpected character '$'.
+
+       <FOO> $ <BAR>
+             ^ Unexpected character

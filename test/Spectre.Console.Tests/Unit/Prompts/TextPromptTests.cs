@@ -227,7 +227,6 @@ public sealed class TextPromptTests
 
     [Fact]
     [Expectation("NoSuffix")]
-    [GitHubIssue(413)]
     public Task Should_Not_Append_Questionmark_Or_Colon_If_No_Choices_Are_Set()
     {
         // Given

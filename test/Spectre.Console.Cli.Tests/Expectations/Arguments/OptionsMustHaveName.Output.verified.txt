@@ -1,0 +1,5 @@
+Error: An error occured when parsing template.
+       Options without name are not allowed.
+
+       --foo|-
+             ^ Missing option name

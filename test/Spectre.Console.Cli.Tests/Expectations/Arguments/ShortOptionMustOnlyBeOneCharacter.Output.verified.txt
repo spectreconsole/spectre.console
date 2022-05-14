@@ -1,0 +1,5 @@
+Error: An error occured when parsing template.
+       Short option names can not be longer than one character.
+
+       --foo|-bar
+              ^^^ Invalid option name

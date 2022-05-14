@@ -3,7 +3,6 @@ namespace Spectre.Console.Tests.Unit;
 public sealed class SelectionPromptTests
 {
     [Fact]
-    [GitHubIssue(608)]
     public void Should_Not_Throw_When_Selecting_An_Item_With_Escaped_Markup()
     {
         // Given

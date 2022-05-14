@@ -1,8 +1,5 @@
 global using System;
 global using System.Collections.Generic;
-global using System.ComponentModel;
-global using System.Diagnostics;
-global using System.Diagnostics.CodeAnalysis;
 global using System.Globalization;
 global using System.IO;
 global using System.Linq;
@@ -13,8 +10,6 @@ global using System.Threading;
 global using System.Threading.Tasks;
 global using Shouldly;
 global using Spectre.Console.Advanced;
-global using Spectre.Console.Cli;
-global using Spectre.Console.Cli.Unsafe;
 global using Spectre.Console.Rendering;
 global using Spectre.Console.Testing;
 global using Spectre.Console.Tests.Data;

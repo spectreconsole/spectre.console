@@ -1,19 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
-    <AdditionalFiles Include="..\..\src\stylecop.json" Link="Properties/stylecop.json" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('Windows'))">net6.0;net5.0;net48</TargetFrameworks>
     <TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('Windows'))">net6.0;net5.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
+    <AdditionalFiles Include="..\..\src\stylecop.json" Link="Properties/stylecop.json" />
     <None Remove="Data\starwars.flf" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="Data\starwars.flf" />
   </ItemGroup>
 
@@ -34,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Spectre.Console.Cli\Spectre.Console.Cli.csproj" />
     <ProjectReference Include="..\..\src\Spectre.Console.Testing\Spectre.Console.Testing.csproj" />
     <ProjectReference Include="..\..\src\Spectre.Console\Spectre.Console.csproj" />
   </ItemGroup>
