@@ -1,0 +1,5 @@
+Error: An error occured when parsing template.
+       Arguments can not contain options.
+
+       --foo <BAR>
+       ^^^^^ Not permitted

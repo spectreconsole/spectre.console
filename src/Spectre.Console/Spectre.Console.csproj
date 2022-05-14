@@ -16,7 +16,6 @@
     <EmbeddedResource Include="Widgets\Figlet\Fonts\Standard.flf" />
     <None Remove="Widgets\Figlet\Fonts\Standard.flf" />
     <None Include="../../resources/gfx/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
-    <None Include="..\.editorconfig" Link="Cli\.editorconfig" />
     <InternalsVisibleTo Include="$(AssemblyName).Tests" />
   </ItemGroup>
 

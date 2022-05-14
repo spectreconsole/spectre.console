@@ -1,0 +1,16 @@
+USAGE:
+    myapp animal [LEGS] [OPTIONS] <COMMAND>
+
+EXAMPLES:
+    myapp animal --help
+
+ARGUMENTS:
+    [LEGS]    The number of legs
+
+OPTIONS:
+    -h, --help     Prints help information
+    -a, --alive    Indicates whether or not the animal is alive
+
+COMMANDS:
+    dog <AGE>    The dog command
+    horse        The horse command

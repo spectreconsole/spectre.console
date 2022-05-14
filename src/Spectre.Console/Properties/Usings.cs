@@ -16,7 +16,6 @@ global using System.Text.RegularExpressions;
 global using System.Threading;
 global using System.Threading.Tasks;
 global using System.Xml;
-global using Spectre.Console.Cli.Unsafe;
 global using Spectre.Console.Enrichment;
 global using Spectre.Console.Internal;
 global using Spectre.Console.Rendering;

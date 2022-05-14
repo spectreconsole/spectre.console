@@ -1,0 +1,4 @@
+Error: Unknown command 'bat'.
+
+       bat 14
+       ^^^ Did you mean 'cat'?

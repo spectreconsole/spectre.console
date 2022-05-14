@@ -1,0 +1,4 @@
+Error: Unknown command 'bat'.
+
+       dog bat
+           ^^^ Did you mean 'cat'?

@@ -9,11 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Spectre.Console.Tests" />
+    <InternalsVisibleTo Include="Spectre.Console.Cli.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="Properties/stylecop.json" />
     <None Include="../../resources/gfx/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
   </ItemGroup>
 
   <ItemGroup Label="Project References">
+    <ProjectReference Include="..\Spectre.Console.Cli\Spectre.Console.Cli.csproj" />
     <ProjectReference Include="..\Spectre.Console\Spectre.Console.csproj" />
   </ItemGroup>
 
