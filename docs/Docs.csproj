@@ -39,7 +39,7 @@
     <PackageReference Include="Statiq.Common" Version="1.0.0-beta.58" />
     <PackageReference Include="Statiq.Web" Version="1.0.0-beta.44" />
     <PackageReference Include="MinVer" PrivateAssets="All" Version="2.5.0" />
-    <PackageReference Include="Statiq.Web.Netlify" Version="1.0.0-beta.44" />
+    <PackageReference Include="Statiq.Web.Netlify" Version="1.0.0-beta.47" />
   </ItemGroup>
 
   <ItemGroup>
