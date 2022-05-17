@@ -22,6 +22,7 @@ namespace Docs
                 .AddSetting(Constants.SourceFiles, new List<string>
                 {
                     "../../src/Spectre.Console/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
+                    "../../src/Spectre.Console.Cli/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
                     "../../src/Spectre.Console.ImageSharp/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs"
                 })
                 .AddSetting(Constants.ExampleSourceFiles, new List<string>
