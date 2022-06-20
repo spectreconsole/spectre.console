@@ -24,7 +24,7 @@ public sealed class DownloadedColumn : ProgressColumn
         }
         else
         {
-            var downloaded = new FileSize(task.Value, total.Unit);
+            var downloaded = new FileSize(task.Value, total.Prefix);
 
             return new Markup(string.Format(
                 "{0}[grey]/[/]{1} [grey]{2}[/]",

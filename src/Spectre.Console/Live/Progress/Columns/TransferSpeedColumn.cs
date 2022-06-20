@@ -10,6 +10,16 @@ public sealed class TransferSpeedColumn : ProgressColumn
     /// </summary>
     public CultureInfo? Culture { get; set; }
 
+    /// <summary>
+    /// Gets or sets the <see cref="FileSizeBase"/> to use.
+    /// </summary>
+    public FileSizeBase Base { get; set; } = FileSizeBase.Binary;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not to display the transfer speed in bits.
+    /// </summary>
+    public bool DisplayBits { get; set; }
+
     /// <inheritdoc/>
     public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
     {
@@ -18,7 +28,7 @@ public sealed class TransferSpeedColumn : ProgressColumn
             return new Text("?/s");
         }
 
-        var size = new FileSize(task.Speed.Value);
+        var size = new FileSize(task.Speed.Value, Base, DisplayBits);
         return new Markup(string.Format("{0}/s", size.ToString(suffix: true, Culture)));
     }
 }
