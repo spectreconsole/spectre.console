@@ -85,7 +85,7 @@ public sealed class TextPrompt<T> : IPrompt<T>
     /// <param name="comparer">The comparer used for choices.</param>
     public TextPrompt(string prompt, StringComparer? comparer = null)
     {
-        _prompt = prompt;
+        _prompt = prompt ?? throw new System.ArgumentNullException(nameof(prompt));
         _comparer = comparer;
     }
 
