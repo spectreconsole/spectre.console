@@ -20,7 +20,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v2
       with:
         dotnet-version: | 
           5.0.301
@@ -79,7 +79,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v2
         with:
           dotnet-version: | 
             5.0.301
