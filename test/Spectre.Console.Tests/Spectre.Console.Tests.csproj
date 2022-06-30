@@ -21,7 +21,7 @@
     <PackageReference Include="Spectre.Verify.Extensions" Version="0.3.0" />
     <PackageReference Include="Verify.Xunit" Version="9.0.0-beta.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
