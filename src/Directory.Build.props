@@ -34,7 +34,7 @@
   <ItemGroup Label="Package References">
     <PackageReference Include="MinVer" PrivateAssets="All" Version="2.5.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="1.1.1" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.312">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Roslynator.Analyzers" Version="3.3.0">
