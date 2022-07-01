@@ -20,7 +20,10 @@ jobs:
 
   build:
     name: Build
-    if: "!contains(github.event.head_commit.message, 'skip-ci') || startsWith(github.ref, 'refs/tags/')"
+    if: |
+      (!contains(github.event.head_commit.message, 'skip-ci') 
+      && !contains(github.event.head_commit.message, 'chore'))
+      || startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
         kind: ['linux', 'windows', 'macOS']
