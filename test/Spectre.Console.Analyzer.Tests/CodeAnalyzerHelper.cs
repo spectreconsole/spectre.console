@@ -6,7 +6,7 @@ internal static class CodeAnalyzerHelper
 
     static CodeAnalyzerHelper()
     {
-        CurrentSpectre = ReferenceAssemblies.Net.Net50.AddAssemblies(
+        CurrentSpectre = ReferenceAssemblies.Net.Net60.AddAssemblies(
             ImmutableArray.Create(typeof(AnsiConsole).Assembly.Location.Replace(".dll", string.Empty)));
     }
 }

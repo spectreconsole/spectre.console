@@ -8,14 +8,6 @@ public static class SpectreAnalyzerVerifier<TAnalyzer>
 
     private static Task VerifyCodeFixAsync(string source, IEnumerable<DiagnosticResult> expected, string fixedSource)
     {
-        // Roslyn fixers always use \r\n for newlines, regardless of OS environment settings, so we normalize
-        // the source as it typically comes from multi-line strings with varying newlines.
-        if (Environment.NewLine != "\r\n")
-        {
-            source = source.Replace(Environment.NewLine, "\r\n");
-            fixedSource = fixedSource.Replace(Environment.NewLine, "\r\n");
-        }
-
         var test = new Test
         {
             TestCode = source,

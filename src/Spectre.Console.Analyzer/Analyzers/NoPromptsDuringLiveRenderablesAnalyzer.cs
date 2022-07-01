@@ -34,12 +34,15 @@ public class NoPromptsDuringLiveRenderablesAnalyzer : SpectreAnalyzer
                 var ansiConsoleType = context.Compilation.GetTypeByMetadataName("Spectre.Console.AnsiConsole");
                 var ansiConsoleExtensionsType = context.Compilation.GetTypeByMetadataName("Spectre.Console.AnsiConsoleExtensions");
 
-                if (!Equals(methodSymbol.ContainingType, ansiConsoleType) && !Equals(methodSymbol.ContainingType, ansiConsoleExtensionsType))
+                if (!SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, ansiConsoleType) &&
+                    !SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, ansiConsoleExtensionsType))
                 {
                     return;
                 }
 
+#pragma warning disable RS1030 // Do not invoke Compilation.GetSemanticModel() method within a diagnostic analyzer
                 var model = context.Compilation.GetSemanticModel(context.Operation.Syntax.SyntaxTree);
+#pragma warning restore RS1030 // Do not invoke Compilation.GetSemanticModel() method within a diagnostic analyzer
                 var parentInvocations = invocationOperation
                     .Syntax.Ancestors()
                     .OfType<InvocationExpressionSyntax>()

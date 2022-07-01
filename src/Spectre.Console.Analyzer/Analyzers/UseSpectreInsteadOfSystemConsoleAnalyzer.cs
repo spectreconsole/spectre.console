@@ -33,7 +33,7 @@ public class UseSpectreInsteadOfSystemConsoleAnalyzer : SpectreAnalyzer
 
                 var systemConsoleType = context.Compilation.GetTypeByMetadataName("System.Console");
 
-                if (!Equals(invocationOperation.TargetMethod.ContainingType, systemConsoleType))
+                if (!SymbolEqualityComparer.Default.Equals(invocationOperation.TargetMethod.ContainingType, systemConsoleType))
                 {
                     return;
                 }
