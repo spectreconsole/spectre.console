@@ -40,7 +40,7 @@ public sealed class AnsiConsoleFactory
         var interactive = settings.Interactive == InteractionSupport.Yes;
         if (settings.Interactive == InteractionSupport.Detect)
         {
-            interactive = Environment.UserInteractive;
+            interactive = !System.Console.IsInputRedirected;
         }
 
         var profile = new Profile(output, encoding);
