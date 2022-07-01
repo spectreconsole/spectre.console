@@ -13,7 +13,6 @@ global using Spectre.Console.Advanced;
 global using Spectre.Console.Rendering;
 global using Spectre.Console.Testing;
 global using Spectre.Console.Tests.Data;
-global using Spectre.Verify.Extensions;
 global using VerifyTests;
 global using VerifyXunit;
 global using Xunit;

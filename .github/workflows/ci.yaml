@@ -21,10 +21,6 @@ jobs:
 
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: | 
-          5.0.301
-          6.0.101
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
@@ -80,10 +76,6 @@ jobs:
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: | 
-            5.0.301
-            6.0.101
 
       - name: Integration Tests
         shell: bash

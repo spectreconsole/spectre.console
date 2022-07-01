@@ -33,12 +33,14 @@ public class NoConcurrentLiveRenderablesAnalyzer : SpectreAnalyzer
                     .Select(i => context.Compilation.GetTypeByMetadataName(i))
                     .ToImmutableArray();
 
-                if (liveTypes.All(i => !Equals(i, methodSymbol.ContainingType)))
+                if (liveTypes.All(i => !SymbolEqualityComparer.Default.Equals(i, methodSymbol.ContainingType)))
                 {
                     return;
                 }
 
+#pragma warning disable RS1030 // Do not invoke Compilation.GetSemanticModel() method within a diagnostic analyzer
                 var model = context.Compilation.GetSemanticModel(context.Operation.Syntax.SyntaxTree);
+#pragma warning restore RS1030 // Do not invoke Compilation.GetSemanticModel() method within a diagnostic analyzer
                 var parentInvocations = invocationOperation
                     .Syntax.Ancestors()
                     .OfType<InvocationExpressionSyntax>()

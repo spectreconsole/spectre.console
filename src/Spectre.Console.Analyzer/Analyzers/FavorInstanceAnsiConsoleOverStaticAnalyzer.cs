@@ -24,7 +24,7 @@ public class FavorInstanceAnsiConsoleOverStaticAnalyzer : SpectreAnalyzer
                 // if this operation isn't an invocation against one of the System.Console methods
                 // defined in _methods then we can safely stop analyzing and return;
                 var invocationOperation = (IInvocationOperation)context.Operation;
-                if (!Equals(invocationOperation.TargetMethod.ContainingType, ansiConsoleType))
+                if (!SymbolEqualityComparer.Default.Equals(invocationOperation.TargetMethod.ContainingType, ansiConsoleType))
                 {
                     return;
                 }
@@ -63,7 +63,7 @@ public class FavorInstanceAnsiConsoleOverStaticAnalyzer : SpectreAnalyzer
             .Ancestors().OfType<MethodDeclarationSyntax>()
             .First()
             .ParameterList.Parameters
-            .Any(i => i.Type.NormalizeWhitespace().ToString() == "IAnsiConsole");
+            .Any(i => i.Type?.NormalizeWhitespace()?.ToString() == "IAnsiConsole");
     }
 
     private static bool HasFieldAnsiConsole(SyntaxNode syntaxNode)
@@ -72,7 +72,7 @@ public class FavorInstanceAnsiConsoleOverStaticAnalyzer : SpectreAnalyzer
             .Ancestors()
             .OfType<MethodDeclarationSyntax>()
             .First()
-            .Modifiers.Any(i => i.Kind() == SyntaxKind.StaticKeyword);
+            .Modifiers.Any(i => i.IsKind(SyntaxKind.StaticKeyword));
 
         return syntaxNode
             .Ancestors().OfType<ClassDeclarationSyntax>()
@@ -81,6 +81,6 @@ public class FavorInstanceAnsiConsoleOverStaticAnalyzer : SpectreAnalyzer
             .OfType<FieldDeclarationSyntax>()
             .Any(i =>
                 i.Declaration.Type.NormalizeWhitespace().ToString() == "IAnsiConsole" &&
-                (!isStatic ^ i.Modifiers.Any(modifier => modifier.Kind() == SyntaxKind.StaticKeyword)));
+                (!isStatic ^ i.Modifiers.Any(modifier => modifier.IsKind(SyntaxKind.StaticKeyword))));
     }
 }
