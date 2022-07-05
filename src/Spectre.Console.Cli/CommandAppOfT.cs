@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Spectre.Console.Cli;
 
 /// <summary>
@@ -46,5 +48,16 @@ public sealed class CommandApp<TDefaultCommand> : ICommandApp
     public Task<int> RunAsync(IEnumerable<string> args)
     {
         return _app.RunAsync(args);
+    }
+
+    /// <summary>
+    /// Runs the command line application with specified arguments.
+    /// </summary>
+    /// <param name="args">The arguments.</param>
+    /// <param name="token">A cancellation token.</param>
+    /// <returns>The exit code from the executed command.</returns>
+    public Task<int> RunAsync(IEnumerable<string> args, CancellationToken? token)
+    {
+        return _app.RunAsync(args, token);
     }
 }

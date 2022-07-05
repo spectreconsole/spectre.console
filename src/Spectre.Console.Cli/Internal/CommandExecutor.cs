@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Spectre.Console.Cli;
 
 internal sealed class CommandExecutor
@@ -10,7 +12,7 @@ internal sealed class CommandExecutor
         _registrar.Register(typeof(DefaultPairDeconstructor), typeof(DefaultPairDeconstructor));
     }
 
-    public async Task<int> Execute(IConfiguration configuration, IEnumerable<string> args)
+    public async Task<int> Execute(IConfiguration configuration, IEnumerable<string> args, CancellationToken? token)
     {
         if (configuration == null)
         {
@@ -72,7 +74,7 @@ internal sealed class CommandExecutor
         // Create the resolver and the context.
         using (var resolver = new TypeResolverAdapter(_registrar.Build()))
         {
-            var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data);
+            var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data, token);
 
             // Execute the command tree.
             return await Execute(leaf, parsedResult.Tree, context, resolver, configuration).ConfigureAwait(false);
