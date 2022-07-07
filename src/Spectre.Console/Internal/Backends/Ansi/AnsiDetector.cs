@@ -13,6 +13,7 @@ internal static class AnsiDetector
         new Regex("^rxvt"), // RXVT
         new Regex("^eterm"), // Eterm
         new Regex("^screen"), // GNU screen, tmux
+        new Regist("^alacritty"), // Alacritty
         new Regex("tmux"), // tmux
         new Regex("^vt100"), // DEC VT series
         new Regex("^vt102"), // DEC VT series
