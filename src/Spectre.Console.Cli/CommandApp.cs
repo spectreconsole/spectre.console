@@ -64,7 +64,7 @@ public sealed class CommandApp : ICommandApp
     /// <returns>The exit code from the executed command.</returns>
     public async Task<int> RunAsync(IEnumerable<string> args)
     {
-        return await RunAsync(args, null);
+        return await RunAsync(args);
     }
 
     /// <summary>
