@@ -49,6 +49,36 @@ public partial class AnsiConsoleTests
             console.Output.ShouldMatch("]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\\\\https:\\/\\/patriksvensson\\.se]8;;\\\\");
         }
 
+        [Fact]
+        public void Should_Output_Expected_Ansi_For_Link_With_Bracket_In_Url_Only()
+        {
+            // Given
+            var console = new TestConsole()
+                .EmitAnsiSequences();
+
+            // When
+            const string Path = "file://c:/temp/[x].txt";
+            console.Markup($"[link]{Path.EscapeMarkup()}[/]");
+
+            // Then
+            console.Output.ShouldMatch("]8;id=[0-9]*;file:\\/\\/c:\\/temp\\/\\[x\\].txt\\\\file:\\/\\/c:\\/temp\\/\\[x\\].txt]8;;\\\\");
+        }
+
+        [Fact]
+        public void Should_Output_Expected_Ansi_For_Link_With_Bracket_In_Url()
+        {
+            // Given
+            var console = new TestConsole()
+                .EmitAnsiSequences();
+
+            // When
+            const string Path = "file://c:/temp/[x].txt";
+            console.Markup($"[link={Path.EscapeMarkup()}]{Path.EscapeMarkup()}[/]");
+
+            // Then
+            console.Output.ShouldMatch("]8;id=[0-9]*;file:\\/\\/c:\\/temp\\/\\[x\\].txt\\\\file:\\/\\/c:\\/temp\\/\\[x\\].txt]8;;\\\\");
+        }
+
         [Theory]
         [InlineData("[yellow]Hello [[ World[/]", "[93mHello [ World[0m")]
         public void Should_Be_Able_To_Escape_Tags(string markup, string expected)
