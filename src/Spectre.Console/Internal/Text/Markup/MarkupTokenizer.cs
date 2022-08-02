@@ -66,13 +66,39 @@ internal sealed class MarkupTokenizer : IDisposable
             var builder = new StringBuilder();
             while (!_reader.Eof)
             {
-                current = _reader.Peek();
-                if (current == ']')
+                current = _reader.Read();
+                var next = '\0';
+                if (!_reader.Eof)
                 {
-                    break;
+                    next = _reader.Peek();
                 }
 
-                builder.Append(_reader.Read());
+                if (current == ']')
+                {
+                    if (next != ']')
+                    {
+                        break;
+                    }
+
+                    _reader.Read();
+                }
+
+                builder.Append(current);
+
+                if (current != '[')
+                {
+                    continue;
+                }
+
+                if (next == '[')
+                {
+                    _reader.Read();
+                }
+                else
+                {
+                    throw new InvalidOperationException(
+                        $"Encountered malformed markup tag at position {_reader.Position - 1}.");
+                }
             }
 
             if (_reader.Eof)
@@ -80,7 +106,6 @@ internal sealed class MarkupTokenizer : IDisposable
                 throw new InvalidOperationException($"Encountered malformed markup tag at position {_reader.Position}.");
             }
 
-            _reader.Read();
             Current = new MarkupToken(MarkupTokenKind.Open, builder.ToString(), position);
             return true;
         }

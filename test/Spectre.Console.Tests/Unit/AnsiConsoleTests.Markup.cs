@@ -100,6 +100,7 @@ public partial class AnsiConsoleTests
         [InlineData("[yellow]Hello[/", "Encountered malformed markup tag at position 15.")]
         [InlineData("[yellow]Hello[/foo", "Encountered malformed markup tag at position 15.")]
         [InlineData("[yellow Hello", "Encountered malformed markup tag at position 13.")]
+        [InlineData("[yellow[green]]Hello", "Encountered malformed markup tag at position 7.")]
         public void Should_Throw_If_Encounters_Malformed_Tag(string markup, string expected)
         {
             // Given
