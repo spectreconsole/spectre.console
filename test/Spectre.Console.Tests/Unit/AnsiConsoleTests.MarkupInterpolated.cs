@@ -33,7 +33,7 @@ public partial class AnsiConsoleTests
             console.MarkupInterpolated($"[link={Path}]{Path}[/]");
 
             // Then
-            var pathAsRegEx = Regex.Replace(Path, "([/\\[\\]\\\\])", "\\$1", RegexOptions.Compiled|RegexOptions.IgnoreCase);
+            var pathAsRegEx = Regex.Replace(Path, "([/\\[\\]\\\\])", "\\$1", RegexOptions.Compiled | RegexOptions.IgnoreCase);
             console.Output.ShouldMatch($"\\]8;id=[0-9]+;{pathAsRegEx}\\\\{pathAsRegEx}\\]8;;\\\\");
         }
     }
