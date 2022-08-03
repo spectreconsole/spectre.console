@@ -141,5 +141,18 @@ public partial class AnsiConsoleTests
             result.ShouldBeOfType<InvalidOperationException>()
                 .Message.ShouldBe("Encountered closing tag when none was expected near position 5.");
         }
+
+        [Fact]
+        public void Should_Not_Get_Confused_When_Mixing_Escaped_And_Unescaped()
+        {
+            // Given
+            var console = new TestConsole();
+
+            // When
+            console.Markup("[grey][[grey]][/][white][[white]][/]");
+
+            // Then
+            console.Output.ShouldBe("[grey][white]");
+        }
     }
 }
