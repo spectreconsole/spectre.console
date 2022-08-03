@@ -59,7 +59,7 @@ internal sealed class MarkupTokenizer : IDisposable
                 if (encounteredClosing)
                 {
                     throw new InvalidOperationException(
-                        $"Encountered unescaped ']' token at position {_reader.Position}.");
+                        $"Encountered unescaped ']' token at position {_reader.Position}");
                 }
             }
 
@@ -68,7 +68,7 @@ internal sealed class MarkupTokenizer : IDisposable
 
         if (encounteredClosing)
         {
-            throw new InvalidOperationException($"Encountered unescaped ']' token at position {_reader.Position}.");
+            throw new InvalidOperationException($"Encountered unescaped ']' token at position {_reader.Position}");
         }
 
         Current = new MarkupToken(MarkupTokenKind.Text, builder.ToString(), position);
