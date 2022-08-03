@@ -107,7 +107,7 @@ public sealed class MarkupTests
         // Then
         result.ShouldNotBeNull();
         result.ShouldBeOfType<InvalidOperationException>();
-        result.Message.ShouldBe("Encountered unescaped ']' token at position 16.");
+        result.Message.ShouldBe("Encountered unescaped ']' token at position 16");
     }
 
     [Fact]
