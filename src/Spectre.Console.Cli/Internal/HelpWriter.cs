@@ -75,6 +75,7 @@ internal static class HelpWriter
         var isDefaultCommand = command?.IsDefaultCommand ?? false;
 
         var result = new List<IRenderable>();
+        result.AddRange(GetDescription(command));
         result.AddRange(GetUsage(model, command));
         result.AddRange(GetExamples(model, command));
         result.AddRange(GetArguments(command));
@@ -82,6 +83,19 @@ internal static class HelpWriter
         result.AddRange(GetCommands(model, container, isDefaultCommand));
 
         return result;
+    }
+
+    private static IEnumerable<IRenderable> GetDescription(CommandInfo? command)
+    {
+        if (command?.Description == null)
+        {
+            yield break;
+        }
+
+        var composer = new Composer();
+        composer.Style("yellow", "DESCRIPTION:").LineBreak();
+        composer.Text(command.Description).LineBreak();
+        yield return composer.LineBreak();
     }
 
     private static IEnumerable<IRenderable> GetUsage(CommandModel model, CommandInfo? command)

@@ -1,3 +1,6 @@
+﻿DESCRIPTION:
+The lion command.
+
 USAGE:
     myapp cat [LEGS] lion <TEETH> [OPTIONS]
 
