@@ -155,6 +155,30 @@ public sealed class TextPromptTests
     }
 
     [Fact]
+    [Expectation("AutoComplete_PreviousChoice")]
+    public Task Should_Auto_Complete_To_Previous_Choice_When_Pressing_ShiftTab_On_A_Match()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Input.PushText("Ban");
+        console.Input.PushKey(ConsoleKey.Tab);
+        console.Input.PushKey(ConsoleKey.Tab);
+        var shiftTab = new ConsoleKeyInfo((char)ConsoleKey.Tab, ConsoleKey.Tab, true, false, false);
+        console.Input.PushKey(shiftTab);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        console.Prompt(
+            new TextPrompt<string>("Favorite fruit?")
+                .AddChoice("Banana")
+                .AddChoice("Bandana")
+                .AddChoice("Orange"));
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
     [Expectation("CustomValidation")]
     public Task Should_Return_Error_If_Custom_Validation_Fails()
     {
