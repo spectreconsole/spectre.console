@@ -221,9 +221,9 @@ internal static class ExceptionFormatter
         return true;
     }
 
-    private static IEnumerable<StackFrame> FilterStackFrames(this IEnumerable<StackFrame?> frames)
+    private static IEnumerable<StackFrame> FilterStackFrames(this IEnumerable<StackFrame?>? frames)
     {
-        var allFrames = frames.ToArray();
+        var allFrames = frames?.ToArray() ?? Array.Empty<StackFrame>();
         var numberOfFrames = allFrames.Length;
 
         for (var i = 0; i < numberOfFrames; i++)
