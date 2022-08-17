@@ -1,3 +1,6 @@
+﻿DESCRIPTION:
+The animal command.
+
 USAGE:
     myapp animal [LEGS] [OPTIONS] <COMMAND>
 
