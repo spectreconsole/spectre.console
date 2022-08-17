@@ -55,6 +55,30 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        public void Should_Throw_If_Settings_Validation_Fails_On_Settings_With_ctor()
+        {
+            // Given
+            var app = new CommandApp();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddBranch<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<TurtleCommand>("turtle");
+                });
+            });
+
+            // When
+            var result = Record.Exception(() => app.Run(new[] { "animal", "4", "turtle", "--name", "Klaus" }));
+
+            // Then
+            result.ShouldBeOfType<CommandRuntimeException>().And(e =>
+            {
+                e.Message.ShouldBe("Only 'Lonely George' is valid name for a turtle!");
+            });
+        }
+
+        [Fact]
         public void Should_Throw_If_Command_Validation_Fails()
         {
             // Given

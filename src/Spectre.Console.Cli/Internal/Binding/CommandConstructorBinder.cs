@@ -45,6 +45,13 @@ internal static class CommandConstructorBinder
             }
         }
 
+        // Validate the settings.
+        var validationResult = settings.Validate();
+        if (!validationResult.Successful)
+        {
+            throw CommandRuntimeException.ValidationFailed(validationResult);
+        }
+
         return settings;
     }
 }
