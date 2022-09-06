@@ -4,6 +4,7 @@
         <Description>Best practice analyzers for Spectre.Console.</Description>
         <TargetFramework>netstandard2.0</TargetFramework>
         <IsPackable>true</IsPackable>
+        <DevelopmentDependency>true</DevelopmentDependency>
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <Nullable>enable</Nullable>
         <NoPackageAnalysis>true</NoPackageAnalysis>

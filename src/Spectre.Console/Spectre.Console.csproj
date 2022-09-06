@@ -4,7 +4,6 @@
     <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
-    <DevelopmentDependency>true</DevelopmentDependency>
     <NoWarn>SA1633</NoWarn>
   </PropertyGroup>
 
