@@ -116,6 +116,64 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        [Expectation("Default_Without_Args")]
+        public Task Should_Output_Default_Command_When_Command_Has_Required_Parameters_And_Is_Called_Without_Args()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<LionCommand>();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+            });
+
+            // When
+            var result = fixture.Run();
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Default_Without_Args_Additional")]
+        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<LionCommand>();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+                configurator.AddCommand<GiraffeCommand>("giraffe");
+            });
+
+            // When
+            var result = fixture.Run();
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Greeter_Default")]
+        public Task Should_Not_Output_Default_Command_When_Command_Has_No_Required_Parameters_And_Is_Called_Without_Args()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<GreeterCommand>();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+            });
+
+            // When
+            var result = fixture.Run();
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
         [Expectation("RootExamples")]
         public Task Should_Output_Root_Examples_Defined_On_Root()
         {
