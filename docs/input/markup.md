@@ -106,6 +106,15 @@ AnsiConsole.Markup("[rgb(255,0,0)]Baz[/] ");
 
 For a list of colors, see the [Colors](xref:colors) appendix section.
 
+## Links
+
+To output a clickable link, you can use the `[link]` style.
+
+```csharp
+AnsiConsole.Markup("[link]https://spectreconsole.net[/]");
+AnsiConsole.Markup("[link=https://spectreconsole.net]Spectre Console Documentation[/]");
+```
+
 ## Styles
 
 For a list of styles, see the [Styles](xref:styles) appendix section.
