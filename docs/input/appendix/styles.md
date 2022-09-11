@@ -5,6 +5,7 @@ Highlights:
     - Bold, Italic, Underline, strikethrough
     - Dim, Invert
     - Conceal, slowblink, rapidblink
+    - Links
 ---
 
 Note that what styles that can be used is defined by the system or your terminal software, and may not appear as they should.
@@ -45,5 +46,9 @@ Note that what styles that can be used is defined by the system or your terminal
     <tr>
         <td><code>strikethrough</code></td>
         <td>Shows text with a horizontal line through the center</td>
+    </tr>
+    <tr>
+        <td><code>link</link></td>
+        <td>Creates a clickable link within text</td>
     </tr>
 </table>
