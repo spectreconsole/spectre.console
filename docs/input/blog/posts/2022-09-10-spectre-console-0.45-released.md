@@ -1,6 +1,6 @@
 Title: Spectre.Console 0.45 released!
 Description: .NET 5 dropped, Spectre.Console.Cli moved to separate NuGet package
-Published: 20220910
+Published: 2022-09-10
 Category: Release Notes
 Excluded: false
 ---
