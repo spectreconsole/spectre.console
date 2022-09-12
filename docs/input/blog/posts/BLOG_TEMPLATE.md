@@ -1,6 +1,6 @@
 Title: Short title, less than 50 characters
 Description: Longer description, with optional *bold* and **italic** characters. Shouldn't be TOO long but can span multiple lines.
-Published: 20210710
+Published: 2021-07-10
 Category: Release Notes | News | or whatever
 Excluded: true
 ---
