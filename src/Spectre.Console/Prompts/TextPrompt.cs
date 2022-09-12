@@ -31,6 +31,12 @@ public sealed class TextPrompt<T> : IPrompt<T>
     public bool IsSecret { get; set; }
 
     /// <summary>
+    /// Gets or sets the character to use while masking
+    /// a secret prompt.
+    /// </summary>
+    public char? Mask { get; set; } = '*';
+
+    /// <summary>
     /// Gets or sets the validation error message.
     /// </summary>
     public string ValidationErrorMessage { get; set; } = "[red]Invalid input[/]";
