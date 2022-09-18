@@ -186,4 +186,22 @@ public static class StringExtensions
         return text.Contains(value, StringComparison.Ordinal);
 #endif
     }
+
+    /// <summary>
+    /// "Masks" every character in a string.
+    /// </summary>
+    /// <param name="value">String value to mask.</param>
+    /// <param name="mask">Character to use for masking.</param>
+    /// <returns>Masked string.</returns>
+    public static string Mask(this string value, char? mask)
+    {
+        var output = string.Empty;
+
+        foreach (var c in value)
+        {
+            output += mask;
+        }
+
+        return output;
+    }
 }

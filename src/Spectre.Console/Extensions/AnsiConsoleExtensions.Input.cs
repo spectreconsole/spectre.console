@@ -5,7 +5,7 @@ namespace Spectre.Console;
 /// </summary>
 public static partial class AnsiConsoleExtensions
 {
-    internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, IEnumerable<string>? items = null, CancellationToken cancellationToken = default)
+    internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, char? mask, IEnumerable<string>? items = null, CancellationToken cancellationToken = default)
     {
         if (console is null)
         {
@@ -58,7 +58,8 @@ public static partial class AnsiConsoleExtensions
             if (!char.IsControl(key.KeyChar))
             {
                 text += key.KeyChar.ToString();
-                console.Write(secret ? "*" : key.KeyChar.ToString(), style);
+                var output = key.KeyChar.ToString();
+                console.Write(secret ? output.Mask(mask) : output, style);
             }
         }
     }
