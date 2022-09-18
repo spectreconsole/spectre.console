@@ -197,6 +197,11 @@ public static class StringExtensions
     {
         var output = string.Empty;
 
+        if (mask is null)
+        {
+            return output;
+        }
+
         foreach (var c in value)
         {
             output += mask;
