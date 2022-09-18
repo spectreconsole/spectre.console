@@ -227,7 +227,7 @@ public sealed class TextPromptTests
 
     [Fact]
     [Expectation("SecretDefaultValueCustomMask")]
-    public Task Should_Choose_Custom_Masked_Default_Value_If_Nothing_Is_Entered_And_Prompt_Is_Secret()
+    public Task Should_Choose_Custom_Masked_Default_Value_If_Nothing_Is_Entered_And_Prompt_Is_Secret_And_Mask_Is_Custom()
     {
         // Given
         var console = new TestConsole();
@@ -239,6 +239,25 @@ public sealed class TextPromptTests
                 .Secret()
                 .DefaultValue("Banana")
                 .Mask('-'));
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("SecretDefaultValueNullMask")]
+    public Task Should_Choose_Empty_Masked_Default_Value_If_Nothing_Is_Entered_And_Prompt_Is_Secret_And_Mask_Is_Null()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        console.Prompt(
+            new TextPrompt<string>("Favorite fruit?")
+                .Secret()
+                .DefaultValue("Banana")
+                .Mask(null));
 
         // Then
         return Verifier.Verify(console.Output);
