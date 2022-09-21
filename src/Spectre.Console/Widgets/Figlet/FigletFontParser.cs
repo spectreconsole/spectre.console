@@ -35,7 +35,7 @@ internal static class FigletFontParser
                 throw new InvalidOperationException("Unknown index for FIGlet character");
             }
 
-            buffer.Add(line.Replace(header.Hardblank, ' ').ReplaceExact("@", string.Empty));
+            buffer.Add(line.Replace(header.Hardblank, ' ').TrimEnd('@'));
 
             if (line.EndsWith("@@", StringComparison.Ordinal))
             {
