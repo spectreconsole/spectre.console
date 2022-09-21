@@ -236,9 +236,8 @@ public sealed class TextPromptTests
         // When
         console.Prompt(
             new TextPrompt<string>("Favorite fruit?")
-                .Secret()
-                .DefaultValue("Banana")
-                .Mask('-'));
+                .Secret('-')
+                .DefaultValue("Banana"));
 
         // Then
         return Verifier.Verify(console.Output);
@@ -255,9 +254,8 @@ public sealed class TextPromptTests
         // When
         console.Prompt(
             new TextPrompt<string>("Favorite fruit?")
-                .Secret()
-                .DefaultValue("Banana")
-                .Mask(null));
+                .Secret(null)
+                .DefaultValue("Banana"));
 
         // Then
         return Verifier.Verify(console.Output);

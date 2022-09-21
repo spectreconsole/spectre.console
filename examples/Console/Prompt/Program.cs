@@ -160,8 +160,7 @@ namespace Prompt
             return AnsiConsole.Prompt(
                 new TextPrompt<string>("Enter [green]password[/]?")
                     .PromptStyle("red")
-                    .Secret()
-                    .Mask('-'));
+                    .Secret('-'));
         }
 
         public static string AskPasswordWithNullMask()
@@ -169,8 +168,7 @@ namespace Prompt
             return AnsiConsole.Prompt(
                 new TextPrompt<string>("Enter [green]password[/]?")
                     .PromptStyle("red")
-                    .Secret()
-                    .Mask(null));
+                    .Secret(null));
         }
 
         public static string AskColor()

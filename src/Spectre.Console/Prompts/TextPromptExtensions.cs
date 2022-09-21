@@ -289,19 +289,20 @@ public static class TextPromptExtensions
     }
 
     /// <summary>
-    /// Sets the character used when masking secret input.
+    /// Replaces prompt user input with mask in the console.
     /// </summary>
-    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <typeparam name="T">The prompt type.</typeparam>
     /// <param name="obj">The prompt.</param>
-    /// <param name="mask">The character to use.</param>
+    /// <param name="mask">The masking character to use for the secret.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> Mask<T>(this TextPrompt<T> obj, char? mask)
+    public static TextPrompt<T> Secret<T>(this TextPrompt<T> obj, char? mask)
     {
         if (obj is null)
         {
             throw new ArgumentNullException(nameof(obj));
         }
 
+        obj.IsSecret = true;
         obj.Mask = mask;
         return obj;
     }
