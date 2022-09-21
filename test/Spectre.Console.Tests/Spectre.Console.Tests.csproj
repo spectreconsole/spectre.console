@@ -9,6 +9,8 @@
     <AdditionalFiles Include="..\..\src\stylecop.json" Link="Properties/stylecop.json" />
     <None Remove="Data\starwars.flf" />
     <EmbeddedResource Include="Data\starwars.flf" />
+    <None Remove="Data\poison.flf" />
+    <EmbeddedResource Include="Data\poison.flf" />
   </ItemGroup>
 
   <ItemGroup>
