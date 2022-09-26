@@ -19,7 +19,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     public int PageSize { get; set; } = 10;
 
     /// <summary>
-    /// Gets or sets whether the selection should wrap around when reaching the edge.
+    /// Gets or sets a value indicating whether the selection should wrap around when reaching the edge.
     /// Defaults to <c>false</c>.
     /// </summary>
     public bool WrapAround { get; set; } = false;
