@@ -31,6 +31,12 @@ public sealed class TextPrompt<T> : IPrompt<T>
     public bool IsSecret { get; set; }
 
     /// <summary>
+    /// Gets or sets the character to use while masking
+    /// a secret prompt.
+    /// </summary>
+    public char? Mask { get; set; } = '*';
+
+    /// <summary>
     /// Gets or sets the validation error message.
     /// </summary>
     public string ValidationErrorMessage { get; set; } = "[red]Invalid input[/]";
@@ -119,14 +125,15 @@ public sealed class TextPrompt<T> : IPrompt<T>
 
             while (true)
             {
-                var input = await console.ReadLine(promptStyle, IsSecret, choices, cancellationToken).ConfigureAwait(false);
+                var input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken).ConfigureAwait(false);
 
                 // Nothing entered?
                 if (string.IsNullOrWhiteSpace(input))
                 {
                     if (DefaultValue != null)
                     {
-                        console.Write(IsSecret ? "******" : converter(DefaultValue.Value), promptStyle);
+                        var defaultValue = converter(DefaultValue.Value);
+                        console.Write(IsSecret ? defaultValue.Mask(Mask) : defaultValue, promptStyle);
                         console.WriteLine();
                         return DefaultValue.Value;
                     }
@@ -202,12 +209,13 @@ public sealed class TextPrompt<T> : IPrompt<T>
             appendSuffix = true;
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
             var defaultValueStyle = DefaultValueStyle?.ToMarkup() ?? "green";
+            var defaultValue = converter(DefaultValue.Value);
 
             builder.AppendFormat(
                 CultureInfo.InvariantCulture,
                 " [{0}]({1})[/]",
                 defaultValueStyle,
-                IsSecret ? "******" : converter(DefaultValue.Value));
+                IsSecret ? defaultValue.Mask(Mask) : defaultValue);
         }
 
         var markup = builder.ToString().Trim();
