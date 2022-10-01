@@ -14,7 +14,7 @@ After that you will need to reference the `Spectre.Console` namespace.
 Once that is done, you can start using all the available features.
 
 ```csharp
-using Spectre.Console
+using Spectre.Console;
 
 public static class Program
 {
