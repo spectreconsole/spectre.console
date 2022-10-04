@@ -5,6 +5,34 @@ namespace Spectre.Console.Tests.Unit;
 public sealed class ProgressTests
 {
     [Fact]
+    public void Setting_MaxValue_To_Zero_Should_Make_Percentage_Zero()
+    {
+        // Given
+        var console = new TestConsole()
+            .Width(10)
+            .Interactive()
+            .EmitAnsiSequences();
+
+        var task = default(ProgressTask);
+        var progress = new Progress(console)
+            .Columns(new[] { new ProgressBarColumn() })
+            .AutoRefresh(false)
+            .AutoClear(true);
+
+        // When
+        progress.Start(ctx =>
+        {
+            task = ctx.AddTask("foo");
+            task.Increment(100);
+            task.MaxValue = 0;
+        });
+
+        // Then
+        task.Value.ShouldBe(0);
+        task.Percentage.ShouldBe(0);
+    }
+
+    [Fact]
     public void Should_Render_Task_Correctly()
     {
         // Given
