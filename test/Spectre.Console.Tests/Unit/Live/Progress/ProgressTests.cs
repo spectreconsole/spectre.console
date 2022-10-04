@@ -23,7 +23,6 @@ public sealed class ProgressTests
         progress.Start(ctx =>
         {
             task = ctx.AddTask("foo");
-            task.Increment(100);
             task.MaxValue = 0;
         });
 
