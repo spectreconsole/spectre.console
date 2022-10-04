@@ -187,6 +187,11 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
                 current.IsSelected = !current.IsSelected;
             }
 
+            if (key.Key == ConsoleKey.Escape)
+            {
+                return ListPromptInputResult.Abort;
+            }
+
             // Refresh the list
             return ListPromptInputResult.Refresh;
         }
