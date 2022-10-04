@@ -5,7 +5,7 @@ namespace Spectre.Console.Tests.Unit;
 public sealed class ProgressTests
 {
     [Fact]
-    public void Setting_MaxValue_To_Zero_Should_Make_Percentage_Zero()
+    public void Setting_Max_Value_To_Zero_Should_Make_Percentage_Zero()
     {
         // Given
         var console = new TestConsole()
