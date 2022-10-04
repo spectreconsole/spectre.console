@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: Continuous Integration
+name: Pull Request
 on: pull_request
 
 env:
