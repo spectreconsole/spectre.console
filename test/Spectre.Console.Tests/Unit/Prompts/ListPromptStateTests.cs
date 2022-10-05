@@ -34,6 +34,42 @@ public sealed class ListPromptStateTests
         state.Index.ShouldBe(index + 1);
     }
 
+    [Fact]
+    public void LetterJumpToSelection()
+    {
+        // Given
+        var state = new ListPromptState<string>(
+            new[]
+            {
+                new ListPromptItem<string>("apple"),
+                new ListPromptItem<string>("bannana"),
+                new ListPromptItem<string>("fish"),
+                new ListPromptItem<string>("flamingo"),
+            }
+            .ToList(), 3, true);
+
+        // First item should be selected
+        state.Index.ShouldBe(0);
+
+        // When user presses F
+        state.Update(ConsoleKey.F);
+
+        // Then should jump to fish
+        state.Index.ShouldBe(2);
+                
+        // When user presses F again
+        state.Update(ConsoleKey.F);
+
+        // Then should jump to flamingo
+        state.Index.ShouldBe(3);
+
+        // When user presses F third time
+        state.Update(ConsoleKey.F);
+
+        // Then should cycle back to fish
+        state.Index.ShouldBe(2);
+    }
+
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
