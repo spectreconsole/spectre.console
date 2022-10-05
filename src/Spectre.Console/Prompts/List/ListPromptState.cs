@@ -50,7 +50,6 @@ internal sealed class ListPromptState<T>
                 {
                     // cycle to next (circular)
                     index = indexes[(currentlySelected + 1) % indexes.Length];
-
                 }
             }
         }
