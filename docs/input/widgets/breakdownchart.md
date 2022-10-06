@@ -2,73 +2,133 @@ Title: Breakdown Chart
 Order: 25
 Description: "Use **BreakdownChart** to render breakdown charts to the console."
 Highlights:
-- Custom colors
-- Labels
-- Custom Sizing
-Reference:
-- T:Spectre.Console.BreakdownChart
+    - Custom colors
+    - Labels
+    - Use your own data with a converter.
+Reference: T:Spectre.Console.BreakdownChart
+
 ---
 
 Use `BreakdownChart` to render breakdown charts to the console.
 
 <?# AsciiCast cast="breakdown-chart" /?>
-<!---
-Documentation steps
-1. Edit front matter. Change all fields. Order dictates how it is sorted in the sidebar. Remove hidden attributes.
-   Make sure to reference the appropriate XMLDOC page. You can find this by looking in the generated HTML
-   of the API reference section. You can reference multiple items e.g. types, methods, etc that are related to the Widget. 
-2. Remove comments as you edit the fields.
-3. All widgets should have at minimum description and a usage section. 
--->
-
-<!---
-Short description of the widget. Can be the same as the description above
--->
-
-
-<!---
-Optional: Embed an asciicast. The cast parameter should be the base name of the cast. There are two files, 
-one suffixed with -rich.cast and a second named -plain.cast. The cast attribute should be the name without
-the suffix. 
-
-To generate a new cast file, open the \resources\scripts\Generator\Generator.sln project and add a new sample in the
-Commands/AsciiCast/Samples/ folder. If the widget is static such as a tree or a table, try and animate the widget
-using the Live widget to change the content or styling. 
-
-Running the generator project with by executing
-
-dotnet run -- samples -l
-
-and pick your sample. This will generate a new asciicast in the docs/input/assets/casts folder which can then be referenced via:
-
-<?# AsciiCast cast="sample-name" /?>
--->
-
-
 
 ## Usage
 
 ### Basic usage
 
-<!---
-Code sample for a default output of the widget. Code Samples can be embedded with a markdown code block or
-linked to via the Example snipped. The example snippet takes the XMLDOC reference of the snippet from the Examples
-project that you want to reference.
-
-If linking to a method it will, by default, only include the method body. Include BodyOnly="false" to include
-the entire method including the declaration.
-
-<?# Example symbol="M:Prompt.Program.AskConfirmation" /?>
--->
+```csharp
+AnsiConsole.Write(new BreakdownChart()
+    .Width(60)
+    // Add item is in the order of label, value, then color.
+    .AddItem("SCSS", 80, Color.Red)
+    .AddItem("HTML", 28.3, Color.Blue)
+    .AddItem("C#", 22.6, Color.Green)
+    .AddItem("JavaScript", 6, Color.Yellow)
+    .AddItem("Ruby", 6, Color.LightGreen)
+    .AddItem("Shell", 0.1, Color.Aqua));
+```
 
 ### Additional Styling
 
-<!---
-Include additional examples of styling or functionality
--->
+```csharp
+// Render chart at full width of console.
+AnsiConsole.Write(new BreakdownChart()
+    .FullSize()
+    .AddItem("SCSS", 80, Color.Red)
+    .AddItem("HTML", 28.3, Color.Blue)
+    .AddItem("C#", 22.6, Color.Green)
+    .AddItem("JavaScript", 6, Color.Yellow)
+    .AddItem("Ruby", 6, Color.LightGreen)
+    .AddItem("Shell", 0.1, Color.Aqua));
+```
 
-### More styling and functions
+```csharp
+// Show percentage signs after the values in the chart.
+AnsiConsole.Write(new BreakdownChart()
+    .ShowPercentage()
+    .AddItem("SCSS", 80, Color.Red)
+    .AddItem("HTML", 28.3, Color.Blue)
+    .AddItem("C#", 22.6, Color.Green)
+    .AddItem("JavaScript", 6, Color.Yellow)
+    .AddItem("Ruby", 6, Color.LightGreen)
+    .AddItem("Shell", 0.1, Color.Aqua));
+```
 
-<!---
-Include additional examples of styling or functionality
--->
+```csharp
+// Hide tags displaying in the chart altogether.
+AnsiConsole.Write(new BreakdownChart()
+    .HideTag()
+    .AddItem("SCSS", 80, Color.Red)
+    .AddItem("HTML", 28.3, Color.Blue)
+    .AddItem("C#", 22.6, Color.Green)
+    .AddItem("JavaScript", 6, Color.Yellow)
+    .AddItem("Ruby", 6, Color.LightGreen)
+    .AddItem("Shell", 0.1, Color.Aqua));
+```
+
+```csharp
+// Hide the values next to the tag from displaying in the chart.
+AnsiConsole.Write(new BreakdownChart()
+    .HideTagValues()
+    .AddItem("SCSS", 80, Color.Red)
+    .AddItem("HTML", 28.3, Color.Blue)
+    .AddItem("C#", 22.6, Color.Green)
+    .AddItem("JavaScript", 6, Color.Yellow)
+    .AddItem("Ruby", 6, Color.LightGreen)
+    .AddItem("Shell", 0.1, Color.Aqua));
+```
+
+### Additional Functionality
+
+#### Add items with converter
+
+```csharp
+// Create a list of fruits with their colors
+var items = new List<(string Label, double Value, Color color)>
+{
+    ("Apple", 12, Color.Green),
+    ("Orange", 54, Color.Orange1),
+    ("Banana", 33, Color.Yellow),
+};
+
+// Render the chart
+AnsiConsole.Write(new BreakdownChart()
+    .FullSize()
+    .ShowPercentage()
+    .AddItems(items, (item) => new BreakdownChartItem(
+        item.Label, item.Value, item.color)));
+```
+
+#### Add items implementing IBreakdownChartItem
+
+```csharp
+// Declare Fruit that implements IBreakdownChartItem
+public sealed class Fruit : IBreakdownChartItem
+{
+    public string Label { get; set; }
+    public double Value { get; set; }
+    public Color Color { get; set; }
+
+    public Fruit(string label, double value, Color color)
+    {
+        Label = label;
+        Value = value;
+        Color = color;
+    }
+}
+
+// Create a list of fruits
+var items = new List<Fruit>
+{
+    new Fruit("Apple", 12, Color.Green),
+    new Fruit("Orange", 54, Color.Orange1),
+    new Fruit("Banana", 33, Color.Yellow),
+}
+
+// Render chart
+AnsiConsole.Write(new BreakdownChart()
+.Width(60)
+.AddItem(new Fruit("Mango", 3, Color.Orange4))
+.AddItems(items));
+```
