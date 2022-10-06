@@ -29,27 +29,27 @@ internal sealed class ListPromptState<T>
             var keyStruck = new string((char)key, 1);
 
             // find indexes of items that start with the letter
-            int[] indexes = Items.Select((item, idx) => (item, idx))
-                               .Where(k => k.item.Data.ToString()?.StartsWith(keyStruck, StringComparison.InvariantCultureIgnoreCase) ?? false)
-                               .Select(k => k.idx)
-                               .ToArray();
+            int[] matchingIndexes = Items.Select((item, idx) => (item, idx))
+                                   .Where(k => k.item.Data.ToString()?.StartsWith(keyStruck, StringComparison.InvariantCultureIgnoreCase) ?? false)
+                                   .Select(k => k.idx)
+                                   .ToArray();
 
-            // if there are items begining with this letter
-            if (indexes.Length > 0)
+            // if there are items beginning with this letter
+            if (matchingIndexes.Length > 0)
             {
                 // is one of them currently selected?
-                var currentlySelected = Array.IndexOf(indexes, index);
+                var currentlySelected = Array.IndexOf(matchingIndexes, index);
 
                 if (currentlySelected == -1)
                 {
-                    // we are not currently selecting any item begining with the struck key
+                    // we are not currently selecting any item beginning with the struck key
                     // so jump to first item in list that begins with the letter
-                    index = indexes[0];
+                    index = matchingIndexes[0];
                 }
                 else
                 {
                     // cycle to next (circular)
-                    index = indexes[(currentlySelected + 1) % indexes.Length];
+                    index = matchingIndexes[(currentlySelected + 1) % matchingIndexes.Length];
                 }
             }
         }
