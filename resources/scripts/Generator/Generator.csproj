@@ -51,6 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Spectre.Console.Cli\Spectre.Console.Cli.csproj" />
     <ProjectReference Include="..\..\..\src\Spectre.Console.ImageSharp\Spectre.Console.ImageSharp.csproj" />
     <ProjectReference Include="..\..\..\src\Spectre.Console\Spectre.Console.csproj" />
   </ItemGroup>
