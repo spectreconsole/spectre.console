@@ -53,18 +53,21 @@ public sealed partial class CommandAppTests
             var result = app.Run(new[]
             {
                 "animal", "4", "dog", "12", "--",
-                "--foo", "bar", "-bar", "\"baz\"", "qux",
+                "--foo", "bar", "--foo", "baz",
+                "-bar", "\"baz\"", "qux",
                 "foo bar baz qux",
             });
 
             // Then
-            result.Context.Remaining.Raw.Count.ShouldBe(6);
+            result.Context.Remaining.Raw.Count.ShouldBe(8);
             result.Context.Remaining.Raw[0].ShouldBe("--foo");
             result.Context.Remaining.Raw[1].ShouldBe("bar");
-            result.Context.Remaining.Raw[2].ShouldBe("-bar");
+            result.Context.Remaining.Raw[2].ShouldBe("--foo");
             result.Context.Remaining.Raw[3].ShouldBe("baz");
-            result.Context.Remaining.Raw[4].ShouldBe("qux");
-            result.Context.Remaining.Raw[5].ShouldBe("foo bar baz qux");
+            result.Context.Remaining.Raw[4].ShouldBe("-bar");
+            result.Context.Remaining.Raw[5].ShouldBe("baz");
+            result.Context.Remaining.Raw[6].ShouldBe("qux");
+            result.Context.Remaining.Raw[7].ShouldBe("foo bar baz qux");
         }
     }
 }
