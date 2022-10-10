@@ -23,16 +23,16 @@ public sealed partial class CommandAppTests
             {
                 "animal", "4", "dog", "12", "--",
                 "--foo", "bar", "--foo", "baz",
-                "-bar", "\"baz\"", "qux",
+                "-xyz", "\"baz\"", "qux",
                 "foo bar baz qux",
             });
 
             // Then
             result.Context.Remaining.Parsed.Count.ShouldBe(4);
             result.Context.ShouldHaveRemainingArgument("foo", values: new[] { "bar", "baz" });
-            result.Context.ShouldHaveRemainingArgument("b", values: new[] { (string)null });
-            result.Context.ShouldHaveRemainingArgument("a", values: new[] { (string)null });
-            result.Context.ShouldHaveRemainingArgument("r", values: new[] { (string)null });
+            result.Context.ShouldHaveRemainingArgument("x", values: new[] { (string)null });
+            result.Context.ShouldHaveRemainingArgument("y", values: new[] { (string)null });
+            result.Context.ShouldHaveRemainingArgument("z", values: new[] { (string)null });
         }
 
         [Fact]
@@ -54,7 +54,7 @@ public sealed partial class CommandAppTests
             {
                 "animal", "4", "dog", "12", "--",
                 "--foo", "bar", "--foo", "baz",
-                "-bar", "\"baz\"", "qux",
+                "-xyz", "\"baz\"", "qux",
                 "foo bar baz qux",
             });
 
@@ -64,7 +64,7 @@ public sealed partial class CommandAppTests
             result.Context.Remaining.Raw[1].ShouldBe("bar");
             result.Context.Remaining.Raw[2].ShouldBe("--foo");
             result.Context.Remaining.Raw[3].ShouldBe("baz");
-            result.Context.Remaining.Raw[4].ShouldBe("-bar");
+            result.Context.Remaining.Raw[4].ShouldBe("-xyz");
             result.Context.Remaining.Raw[5].ShouldBe("baz");
             result.Context.Remaining.Raw[6].ShouldBe("qux");
             result.Context.Remaining.Raw[7].ShouldBe("foo bar baz qux");
