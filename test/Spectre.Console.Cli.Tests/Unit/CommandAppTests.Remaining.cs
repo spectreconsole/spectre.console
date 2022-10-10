@@ -25,6 +25,7 @@ public sealed partial class CommandAppTests
                 "--foo", "bar", "--foo", "baz",
                 "-xyz", "\"baz\"", "qux",
                 "foo bar baz qux",
+                "cmd", "/c", "set && pause",
             });
 
             // Then
@@ -56,10 +57,11 @@ public sealed partial class CommandAppTests
                 "--foo", "bar", "--foo", "baz",
                 "-xyz", "\"baz\"", "qux",
                 "foo bar baz qux",
+                "cmd", "/c", "set && pause",
             });
 
             // Then
-            result.Context.Remaining.Raw.Count.ShouldBe(8);
+            result.Context.Remaining.Raw.Count.ShouldBe(11);
             result.Context.Remaining.Raw[0].ShouldBe("--foo");
             result.Context.Remaining.Raw[1].ShouldBe("bar");
             result.Context.Remaining.Raw[2].ShouldBe("--foo");
@@ -68,6 +70,9 @@ public sealed partial class CommandAppTests
             result.Context.Remaining.Raw[5].ShouldBe("baz");
             result.Context.Remaining.Raw[6].ShouldBe("qux");
             result.Context.Remaining.Raw[7].ShouldBe("foo bar baz qux");
+            result.Context.Remaining.Raw[8].ShouldBe("cmd");
+            result.Context.Remaining.Raw[9].ShouldBe("/c");
+            result.Context.Remaining.Raw[10].ShouldBe("set && pause");
         }
     }
 }
