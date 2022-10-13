@@ -1,4 +1,4 @@
-DESCRIPTION:
+﻿DESCRIPTION:
 Contains settings for a cat.
 
 USAGE:
@@ -14,4 +14,4 @@ OPTIONS:
         --agility <VALUE>    The agility between 0 and 100
 
 COMMANDS:
-    lion <TEETH>    The lion command.
+    lion <TEETH>    The lion command

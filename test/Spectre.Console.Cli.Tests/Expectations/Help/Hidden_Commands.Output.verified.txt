@@ -6,5 +6,5 @@ OPTIONS:
     -v, --version    Prints version information
 
 COMMANDS:
-    dog <AGE>    The dog command.
-    horse        The horse command.
+    dog <AGE>    The dog command
+    horse        The horse command
