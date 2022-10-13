@@ -10,4 +10,4 @@ OPTIONS:
     -v, --version    Prints version information
 
 COMMANDS:
-    animal    The animal command
+    animal    The animal command.

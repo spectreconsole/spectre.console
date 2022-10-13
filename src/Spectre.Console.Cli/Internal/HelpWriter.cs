@@ -377,7 +377,7 @@ internal static class HelpWriter
 
             grid.AddRow(
                 arguments.ToString().TrimEnd(),
-                child.Description?.TrimEnd('.') ?? " ");
+                child.Description ?? " ");
         }
 
         result.Add(grid);
