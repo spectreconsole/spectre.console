@@ -117,4 +117,17 @@ public sealed class ListPromptStateTests
         // Then
         state.Index.ShouldBe(8);
     }
+
+    [Fact]
+    public void Should_Do_Nothing()
+    {
+        // Given
+        var state = CreateListPromptState(100, 10, true);
+
+        // When
+        state.Update(ConsoleKey.Escape);
+
+        // Then
+        state.Index.ShouldBe(0);
+    }
 }
