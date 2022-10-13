@@ -74,6 +74,23 @@ public static class ConfiguratorExtensions
     }
 
     /// <summary>
+    /// Tells the help writer whether or not to trim trailing period.
+    /// </summary>
+    /// <param name="configurator">The configurator.</param>
+    /// <param name="trimTrailingPeriods">True to trim trailing period (default), false to not.</param>
+    /// <returns>A configurator that can be used to configure the application further.</returns>
+    public static IConfigurator TrimTrailingPeriods(this IConfigurator configurator, bool trimTrailingPeriods)
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        configurator.Settings.TrimTrailingPeriod = trimTrailingPeriods;
+        return configurator;
+    }
+
+    /// <summary>
     /// Tells the command line application to propagate all
     /// exceptions to the user.
     /// </summary>
