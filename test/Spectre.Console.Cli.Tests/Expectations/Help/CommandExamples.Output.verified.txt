@@ -1,4 +1,4 @@
-﻿DESCRIPTION:
+DESCRIPTION:
 The animal command.
 
 USAGE:
@@ -15,5 +15,5 @@ OPTIONS:
     -a, --alive    Indicates whether or not the animal is alive
 
 COMMANDS:
-    dog <AGE>    The dog command
-    horse        The horse command
+    dog <AGE>    The dog command.
+    horse        The horse command.
