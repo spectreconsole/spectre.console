@@ -104,6 +104,11 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
             return ListPromptInputResult.Submit;
         }
 
+        if (key.Key == ConsoleKey.Escape)
+        {
+            return ListPromptInputResult.Abort;
+        }
+
         return ListPromptInputResult.None;
     }
 

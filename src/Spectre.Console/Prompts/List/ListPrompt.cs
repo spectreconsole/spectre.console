@@ -16,7 +16,8 @@ internal sealed class ListPrompt<T>
         ListPromptTree<T> tree,
         CancellationToken cancellationToken,
         int requestedPageSize = 15,
-        bool wrapAround = false)
+        bool wrapAround = false,
+        bool allowAbort = true)
     {
         if (tree is null)
         {
@@ -54,14 +55,20 @@ internal sealed class ListPrompt<T>
                     continue;
                 }
 
-                var key = rawKey.Value;
-                var result = _strategy.HandleInput(key, state);
-                if (result == ListPromptInputResult.Submit)
+                ConsoleKeyInfo key = rawKey.Value;
+                ListPromptInputResult result = _strategy.HandleInput(key, state);
+                if (allowAbort && result is ListPromptInputResult.Abort)
                 {
                     break;
                 }
 
-                if (state.Update(key.Key) || result == ListPromptInputResult.Refresh)
+                if (result is ListPromptInputResult.Submit)
+                {
+                    break;
+                }
+
+                if (state.Update(key.Key)
+                    || result is ListPromptInputResult.Refresh)
                 {
                     hook.Refresh();
                 }
