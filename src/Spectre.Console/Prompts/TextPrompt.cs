@@ -20,6 +20,11 @@ public sealed class TextPrompt<T> : IPrompt<T>
     public List<T> Choices { get; } = new List<T>();
 
     /// <summary>
+    /// Gets or sets the culture to use when converting input to object.
+    /// </summary>
+    public CultureInfo? Culture { get; set; }
+
+    /// <summary>
     /// Gets or sets the message for invalid choices.
     /// </summary>
     public string InvalidChoiceMessage { get; set; } = "[red]Please select one of the available options[/]";
@@ -83,6 +88,7 @@ public sealed class TextPrompt<T> : IPrompt<T>
     /// Gets or sets the default value.
     /// </summary>
     internal DefaultPromptValue<T>? DefaultValue { get; set; }
+
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TextPrompt{T}"/> class.
@@ -160,7 +166,8 @@ public sealed class TextPrompt<T> : IPrompt<T>
                         continue;
                     }
                 }
-                else if (!TypeConverterHelper.TryConvertFromString<T>(input, out result) || result == null)
+                else if (!TypeConverterHelper.TryConvertFromStringWithCulture<T>(input, Culture, out result) || result == 
+                null)
                 {
                     console.MarkupLine(ValidationErrorMessage);
                     WritePrompt(console);

@@ -21,6 +21,28 @@ internal static class TypeConverterHelper
         }
     }
 
+    public static bool TryConvertFromStringWithCulture<T>(string input, CultureInfo? info, [MaybeNull] out T result)
+    {
+        try
+        {
+            if (info == null)
+            {
+                return TryConvertFromString<T>(input, out result);
+            }
+            else
+            {
+                result = (T)GetTypeConverter<T>().ConvertFromString(null!, info, input);
+            }
+
+            return true;
+        }
+        catch
+        {
+            result = default;
+            return false;
+        }
+    }
+
     public static TypeConverter GetTypeConverter<T>()
     {
         var converter = TypeDescriptor.GetConverter(typeof(T));
