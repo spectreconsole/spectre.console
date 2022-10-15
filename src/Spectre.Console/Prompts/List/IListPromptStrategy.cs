@@ -8,6 +8,12 @@ internal interface IListPromptStrategy<T>
     where T : notnull
 {
     /// <summary>
+    /// Gets or sets the converter to get the display string for a choice. By default
+    /// the corresponding <see cref="TypeConverter"/> is used.
+    /// </summary>
+    Func<T, string>? Converter { get; set; }
+
+    /// <summary>
     /// Handles any input received from the user.
     /// </summary>
     /// <param name="key">The key that was pressed.</param>

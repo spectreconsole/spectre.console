@@ -29,10 +29,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     /// </summary>
     public Style? HighlightStyle { get; set; }
 
-    /// <summary>
-    /// Gets or sets the converter to get the display string for a choice. By default
-    /// the corresponding <see cref="TypeConverter"/> is used.
-    /// </summary>
+    /// <inheritdoc/>
     public Func<T, string>? Converter { get; set; }
 
     /// <summary>

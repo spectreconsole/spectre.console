@@ -36,10 +36,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     /// </summary>
     public Style? DisabledStyle { get; set; }
 
-    /// <summary>
-    /// Gets or sets the converter to get the display string for a choice. By default
-    /// the corresponding <see cref="TypeConverter"/> is used.
-    /// </summary>
+    /// <inheritdoc/>
     public Func<T, string>? Converter { get; set; }
 
     /// <summary>

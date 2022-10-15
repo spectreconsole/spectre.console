@@ -19,7 +19,7 @@ internal sealed class ListPromptState<T>
         WrapAround = wrapAround;
     }
 
-    public bool Update(ConsoleKey key)
+    public bool Update(ConsoleKey key, Func<T, string>? converter = null)
     {
         var index = Index;
 
@@ -29,8 +29,8 @@ internal sealed class ListPromptState<T>
             var keyStruck = new string((char)key, 1);
 
             // find indexes of items that start with the letter
-            int[] matchingIndexes = Items.Select((item, idx) => (item, idx))
-                                   .Where(k => k.item.Data.ToString()?.StartsWith(keyStruck, StringComparison.InvariantCultureIgnoreCase) ?? false)
+            int[] matchingIndexes = Items.Select((item, idx) => (ItemToString(item, converter), idx))
+                                   .Where(k => k.Item1?.StartsWith(keyStruck, StringComparison.InvariantCultureIgnoreCase) ?? false)
                                    .Select(k => k.idx)
                                    .ToArray();
 
@@ -75,5 +75,10 @@ internal sealed class ListPromptState<T>
         }
 
         return false;
+    }
+
+    private string ItemToString(ListPromptItem<T> item, Func<T, string>? converter)
+    {
+        return (converter ?? TypeConverterHelper.ConvertToString)?.Invoke(item.Data) ?? item.Data.ToString() ?? "?";
     }
 }
