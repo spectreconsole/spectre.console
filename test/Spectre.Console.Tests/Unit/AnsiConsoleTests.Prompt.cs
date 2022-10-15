@@ -26,27 +26,29 @@ public partial class AnsiConsoleTests
         [Fact]
         public void Should_Return_Correct_DateTime_When_Asked_PL_Culture()
         {
-            var console = new TestConsole()
-                .Colors(ColorSystem.Standard)
-                .EmitAnsiSequences();
+            // Given
+            var console = new TestConsole().EmitAnsiSequences();
             console.Input.PushTextWithEnter("1/2/1998");
 
+            // When
             var dateTime = console.Ask<DateTime>(string.Empty, CultureInfo.GetCultureInfo("pl-PL"));
 
-            Assert.Equal(dateTime, new DateTime(1998, 2, 1));
+            // Then
+            dateTime.ShouldBe(new DateTime(1998, 2, 1));
         }
 
         [Fact]
         public void Should_Return_Correct_DateTime_When_Asked_US_Culture()
         {
-            var console = new TestConsole()
-                .Colors(ColorSystem.Standard)
-                .EmitAnsiSequences();
+            // Given
+            var console = new TestConsole().EmitAnsiSequences();
             console.Input.PushTextWithEnter("2/1/1998");
 
+            // When
             var dateTime = console.Ask<DateTime>(string.Empty, CultureInfo.GetCultureInfo("en-US"));
 
-            Assert.Equal(dateTime, new DateTime(1998, 2, 1));
+            // Then
+            dateTime.ShouldBe(new DateTime(1998, 2, 1));
         }
     }
 }
