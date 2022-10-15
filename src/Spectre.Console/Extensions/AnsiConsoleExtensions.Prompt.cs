@@ -35,6 +35,21 @@ public static partial class AnsiConsoleExtensions
     }
 
     /// <summary>
+    /// Displays a prompt to the user.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="console">The console.</param>
+    /// <param name="prompt">The prompt markup text.</param>
+    /// <param name="culture">Specific CultureInfo to use when converting input.</param>
+    /// <returns>The prompt input result.</returns>
+    public static T Ask<T>(this IAnsiConsole console, string prompt, CultureInfo? culture)
+    {
+        var textPrompt = new TextPrompt<T>(prompt);
+        textPrompt.Culture = culture;
+        return textPrompt.Show(console);
+    }
+
+    /// <summary>
     /// Displays a prompt with two choices, yes or no.
     /// </summary>
     /// <param name="console">The console.</param>
