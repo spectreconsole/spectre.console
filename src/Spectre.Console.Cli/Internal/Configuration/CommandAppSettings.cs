@@ -10,6 +10,7 @@ internal sealed class CommandAppSettings : ICommandAppSettings
     public CaseSensitivity CaseSensitivity { get; set; }
     public bool PropagateExceptions { get; set; }
     public bool ValidateExamples { get; set; }
+    public bool TrimTrailingPeriod { get; set; } = true;
     public bool StrictParsing { get; set; }
 
     public ParsingMode ParsingMode =>

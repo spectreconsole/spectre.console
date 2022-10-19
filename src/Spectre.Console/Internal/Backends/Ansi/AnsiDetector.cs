@@ -24,6 +24,7 @@ internal static class AnsiDetector
         new Regex("linux"), // Linux console
         new Regex("konsole"), // Konsole
         new Regex("bvterm"), // Bitvise SSH Client
+        new Regex("^st-256color"), // Suckless Simple Terminal, st
     };
 
     public static (bool SupportsAnsi, bool LegacyConsole) Detect(bool stdError, bool upgrade)

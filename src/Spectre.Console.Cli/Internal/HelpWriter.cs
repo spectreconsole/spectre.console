@@ -375,9 +375,18 @@ internal static class HelpWriter
                 arguments.Space();
             }
 
-            grid.AddRow(
-                arguments.ToString().TrimEnd(),
-                child.Description?.TrimEnd('.') ?? " ");
+            if (model.TrimTrailingPeriod)
+            {
+                grid.AddRow(
+                    arguments.ToString().TrimEnd(),
+                    child.Description?.TrimEnd('.') ?? " ");
+            }
+            else
+            {
+                grid.AddRow(
+                    arguments.ToString().TrimEnd(),
+                    child.Description ?? " ");
+            }
         }
 
         result.Add(grid);

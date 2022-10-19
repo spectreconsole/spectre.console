@@ -93,7 +93,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     /// <inheritdoc/>
     ListPromptInputResult IListPromptStrategy<T>.HandleInput(ConsoleKeyInfo key, ListPromptState<T> state)
     {
-        if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.Spacebar)
+        if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.Spacebar || key.Key == ConsoleKey.Packet)
         {
             // Selecting a non leaf in "leaf mode" is not allowed
             if (state.Current.IsGroup && Mode == SelectionMode.Leaf)
