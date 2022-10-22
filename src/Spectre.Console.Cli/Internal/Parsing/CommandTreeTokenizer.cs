@@ -201,7 +201,9 @@ internal static class CommandTreeTokenizer
                     throw CommandParseException.OptionValueWasExpected(reader.Original, token);
                 }
 
-                result.Add(ScanString(context, reader));
+                var tokenValue = ScanString(context, reader);
+                tokenValue.HadSeparator = true;
+                result.Add(tokenValue);
             }
         }
 
