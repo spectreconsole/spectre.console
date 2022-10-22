@@ -142,6 +142,39 @@ public sealed partial class CommandAppTests
         app.Configure(config =>
         {
             config.PropagateExceptions();
+            config.AddBranch<AnimalSettings>("animal", animal =>
+            {
+                animal.AddCommand<DogCommand>("dog");
+            });
+        });
+
+        // When
+        var result = app.Run(new[]
+        {
+            "animal", "--alive", "4", "dog", "--good-boy", "12",
+            "--name", "Rufus",
+        });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
+        {
+            dog.Legs.ShouldBe(4);
+            dog.Age.ShouldBe(12);
+            dog.GoodBoy.ShouldBe(true);
+            dog.IsAlive.ShouldBe(true);
+            dog.Name.ShouldBe("Rufus");
+        });
+    }
+
+    [Fact]
+    public void Should_Pass_Case_6()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
             config.AddCommand<OptionVectorCommand>("multi");
         });
 
@@ -164,7 +197,7 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
-    public void Should_Pass_Case_6()
+    public void Should_Pass_Case_7()
     {
         // Given
         var app = new CommandAppTester();
@@ -488,6 +521,181 @@ public sealed partial class CommandAppTests
         result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
         {
             dog.IsAlive.ShouldBe(expected);
+        });
+    }
+
+    [Fact]
+    public void Should_Set_Short_Option_Before_Argument()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<DogCommand>("dog");
+        });
+
+        // When
+        var result = app.Run(new[] { "dog", "-a", "-n=Rufus", "4", "12", });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(settings =>
+        {
+            settings.IsAlive.ShouldBeTrue();
+            settings.Name.ShouldBe("Rufus");
+            settings.Legs.ShouldBe(4);
+            settings.Age.ShouldBe(12);
+        });
+    }
+
+    [Theory]
+    [InlineData("true", true)]
+    [InlineData("True", true)]
+    [InlineData("false", false)]
+    [InlineData("False", false)]
+    public void Should_Set_Short_Option_With_Explicit_Boolan_Flag_Before_Argument(string value, bool expected)
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<DogCommand>("dog");
+        });
+
+        // When
+        var result = app.Run(new[] { "dog", "-a", value, "4", "12", });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(settings =>
+        {
+            settings.IsAlive.ShouldBe(expected);
+            settings.Legs.ShouldBe(4);
+            settings.Age.ShouldBe(12);
+        });
+    }
+
+    [Fact]
+    public void Should_Set_Long_Option_Before_Argument()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<DogCommand>("dog");
+        });
+
+        // When
+        var result = app.Run(new[] { "dog", "--alive", "--name=Rufus", "4", "12" });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(settings =>
+        {
+            settings.IsAlive.ShouldBeTrue();
+            settings.Name.ShouldBe("Rufus");
+            settings.Legs.ShouldBe(4);
+            settings.Age.ShouldBe(12);
+        });
+    }
+
+    [Theory]
+    [InlineData("true", true)]
+    [InlineData("True", true)]
+    [InlineData("false", false)]
+    [InlineData("False", false)]
+    public void Should_Set_Long_Option_With_Explicit_Boolan_Flag_Before_Argument(string value, bool expected)
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<DogCommand>("dog");
+        });
+
+        // When
+        var result = app.Run(new[] { "dog", "--alive", value, "4", "12", });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(settings =>
+        {
+            settings.IsAlive.ShouldBe(expected);
+            settings.Legs.ShouldBe(4);
+            settings.Age.ShouldBe(12);
+        });
+    }
+
+    [Theory]
+
+    // Long options
+    [InlineData("dog --alive 4 12 --name Rufus", 4, 12, false, true, "Rufus")]
+    [InlineData("dog --alive=true 4 12 --name Rufus", 4, 12, false, true, "Rufus")]
+    [InlineData("dog --alive:true 4 12 --name Rufus", 4, 12, false, true, "Rufus")]
+    [InlineData("dog --alive --good-boy 4 12 --name Rufus", 4, 12, true, true, "Rufus")]
+    [InlineData("dog --alive=true --good-boy=true 4 12 --name Rufus", 4, 12, true, true, "Rufus")]
+    [InlineData("dog --alive:true --good-boy:true 4 12 --name Rufus", 4, 12, true, true, "Rufus")]
+    [InlineData("dog --alive --good-boy --name Rufus 4 12", 4, 12, true, true, "Rufus")]
+    [InlineData("dog --alive=true --good-boy=true --name Rufus 4 12", 4, 12, true, true, "Rufus")]
+    [InlineData("dog --alive:true --good-boy:true --name Rufus 4 12", 4, 12, true, true, "Rufus")]
+
+    // Short options
+    [InlineData("dog -a 4 12 --name Rufus", 4, 12, false, true, "Rufus")]
+    [InlineData("dog -a=true 4 12 --name Rufus", 4, 12, false, true, "Rufus")]
+    [InlineData("dog -a:true 4 12 --name Rufus", 4, 12, false, true, "Rufus")]
+    [InlineData("dog -a --good-boy 4 12 --name Rufus", 4, 12, true, true, "Rufus")]
+    [InlineData("dog -a=true -g=true 4 12 --name Rufus", 4, 12, true, true, "Rufus")]
+    [InlineData("dog -a:true -g:true 4 12 --name Rufus", 4, 12, true, true, "Rufus")]
+    [InlineData("dog -a -g --name Rufus 4 12", 4, 12, true, true, "Rufus")]
+    [InlineData("dog -a=true -g=true --name Rufus 4 12", 4, 12, true, true, "Rufus")]
+    [InlineData("dog -a:true -g:true --name Rufus 4 12", 4, 12, true, true, "Rufus")]
+
+    // Switch around ordering of the options
+    [InlineData("dog --good-boy:true --name Rufus --alive:true 4 12", 4, 12, true, true, "Rufus")]
+    [InlineData("dog --name Rufus --alive:true --good-boy:true 4 12", 4, 12, true, true, "Rufus")]
+    [InlineData("dog --name Rufus --good-boy:true --alive:true 4 12", 4, 12, true, true, "Rufus")]
+
+    // Inject the command arguments in between the options
+    [InlineData("dog 4 12 --good-boy:true --name Rufus --alive:true", 4, 12, true, true, "Rufus")]
+    [InlineData("dog 4 --good-boy:true 12 --name Rufus --alive:true", 4, 12, true, true, "Rufus")]
+    [InlineData("dog --good-boy:true 4 12 --name Rufus --alive:true", 4, 12, true, true, "Rufus")]
+    [InlineData("dog --good-boy:true 4 --name Rufus 12 --alive:true", 4, 12, true, true, "Rufus")]
+    [InlineData("dog --name Rufus --alive:true 4 12 --good-boy:true", 4, 12, true, true, "Rufus")]
+    [InlineData("dog --name Rufus --alive:true 4 --good-boy:true 12", 4, 12, true, true, "Rufus")]
+
+    // Inject the command arguments in between the options (all flag values set to false)
+    [InlineData("dog 4 12 --good-boy:false --name Rufus --alive:false", 4, 12, false, false, "Rufus")]
+    [InlineData("dog 4 --good-boy:false 12 --name Rufus --alive:false", 4, 12, false, false, "Rufus")]
+    [InlineData("dog --good-boy:false 4 12 --name Rufus --alive:false", 4, 12, false, false, "Rufus")]
+    [InlineData("dog --good-boy:false 4 --name Rufus 12 --alive:false", 4, 12, false, false, "Rufus")]
+    [InlineData("dog --name Rufus --alive:false 4 12 --good-boy:false", 4, 12, false, false, "Rufus")]
+    [InlineData("dog --name Rufus --alive:false 4 --good-boy:false 12", 4, 12, false, false, "Rufus")]
+    public void Should_Set_Option_Before_Argument(string arguments, int legs, int age, bool goodBoy, bool isAlive, string name)
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<DogCommand>("dog");
+        });
+
+        // When
+        var result = app.Run(arguments.Split(' '));
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(settings =>
+        {
+            settings.Legs.ShouldBe(legs);
+            settings.Age.ShouldBe(age);
+            settings.GoodBoy.ShouldBe(goodBoy);
+            settings.IsAlive.ShouldBe(isAlive);
+            settings.Name.ShouldBe(name);
         });
     }
 
