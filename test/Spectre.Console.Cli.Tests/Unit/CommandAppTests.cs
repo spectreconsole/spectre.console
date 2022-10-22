@@ -492,6 +492,106 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
+    public void Should_Set_Short_Option_Before_Argument()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<DogCommand>("dog");
+        });
+
+        // When
+        var result = app.Run(new[] { "dog", "-a", "12", });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(settings =>
+        {
+            settings.IsAlive.ShouldBeTrue();
+            settings.Age.ShouldBe(12);
+        });
+    }
+
+    [Theory]
+    [InlineData("true", true)]
+    [InlineData("True", true)]
+    [InlineData("false", false)]
+    [InlineData("False", false)]
+    public void Should_Set_Short_Option_With_Explicit_Boolan_Flag_Before_Argument(string value, bool expected)
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<DogCommand>("dog");
+        });
+
+        // When
+        var result = app.Run(new[] { "dog", "-a", value, "12", });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(settings =>
+        {
+            settings.IsAlive.ShouldBe(expected);
+            settings.Age.ShouldBe(12);
+        });
+    }
+
+    [Fact]
+    public void Should_Set_Long_Option_Before_Argument()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<DogCommand>("dog");
+        });
+
+        // When
+        var result = app.Run(new[] { "dog", "--alive", "12", });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(settings =>
+        {
+            settings.IsAlive.ShouldBeTrue();
+            settings.Age.ShouldBe(12);
+        });
+    }
+
+    [Theory]
+    [InlineData("true", true)]
+    [InlineData("True", true)]
+    [InlineData("false", false)]
+    [InlineData("False", false)]
+    public void Should_Set_Long_Option_With_Explicit_Boolan_Flag_Before_Argument(string value, bool expected)
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<DogCommand>("dog");
+        });
+
+        // When
+        var result = app.Run(new[] { "dog", "--alive", value, "12", });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(settings =>
+        {
+            settings.IsAlive.ShouldBe(expected);
+            settings.Age.ShouldBe(12);
+        });
+    }
+
+    [Fact]
     public void Should_Throw_When_Encountering_Unknown_Option_In_Strict_Mode()
     {
         // Given
