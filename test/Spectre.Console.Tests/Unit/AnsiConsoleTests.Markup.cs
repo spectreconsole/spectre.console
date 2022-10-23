@@ -154,5 +154,25 @@ public partial class AnsiConsoleTests
             // Then
             console.Output.ShouldBe("[grey][white]");
         }
+
+        [Theory]
+        [InlineData("[white][[[/][white]]][/]", "[]")]
+        [InlineData("[white][[[/]", "[")]
+        [InlineData("[white]]][/]", "]")]
+        [InlineData("[black on white link=https://www.gooole.com/q=]]]Search for a bracket[/]", "Search for a bracket")]
+        [InlineData("[link=https://www.gooole.com/q=]] black on white]Search for a bracket[/]", "Search for a bracket")]
+        [InlineData("[link]https://www.gooole.com/q=]][/]", "https://www.gooole.com/q=]")]
+        public void Should_Not_Fail_As_In_GH1024(string markup, string expected)
+        {
+            // Given
+            var console = new TestConsole();
+            console.EmitAnsiSequences = false;
+
+            // When
+            console.Markup(markup);
+
+            // Then
+            console.Output.ShouldBe(expected);
+        }
     }
 }
