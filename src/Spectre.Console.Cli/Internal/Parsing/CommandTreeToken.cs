@@ -8,6 +8,11 @@ internal sealed class CommandTreeToken
     public string Representation { get; }
     public bool IsGrouped { get; set; }
 
+    /// <summary>
+    /// Whether a separater was encountered before the <see cref="CommandTreeToken.Value"/>.
+    /// </summary>
+    public bool HadSeparator { get; set; }
+
     public enum Kind
     {
         String,
