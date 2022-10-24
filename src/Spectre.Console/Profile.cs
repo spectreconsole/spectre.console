@@ -15,6 +15,11 @@ public sealed class Profile
     private int? _height;
 
     /// <summary>
+    /// Gets or sets a value indicating whether initial paragraph spacing must be preserved across word wrapping.
+    /// </summary>
+    public bool PreserveSpacing { get; set; }
+
+    /// <summary>
     /// Gets the enrichers used to build this profile.
     /// </summary>
     public IReadOnlyCollection<string> Enrichers

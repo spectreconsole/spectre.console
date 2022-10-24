@@ -143,7 +143,7 @@ public sealed class Paragraph : Renderable, IAlignable, IOverflowable
 
         var lines = context.SingleLine
             ? new List<SegmentLine>(_lines)
-            : SplitLines(maxWidth);
+            : SplitLines(maxWidth, context.PreserveSpacing);
 
         // Justify lines
         var justification = context.Justification ?? Alignment ?? Justify.Left;
@@ -182,7 +182,7 @@ public sealed class Paragraph : Renderable, IAlignable, IOverflowable
         return result;
     }
 
-    private List<SegmentLine> SplitLines(int maxWidth)
+    private List<SegmentLine> SplitLines(int maxWidth, bool preserveSpacing = false)
     {
         if (maxWidth <= 0)
         {
@@ -215,7 +215,7 @@ public sealed class Paragraph : Renderable, IAlignable, IOverflowable
                 }
 
                 current = iterator.Current;
-                if (currentLine != (currentLine = iterator.CurrentLine))
+                if (preserveSpacing && currentLine != (currentLine = iterator.CurrentLine))
                 {
                     var lineFirstSegment = currentLine?.First() ?? Segment.Empty;
                     lineSeed = lineFirstSegment.IsWhiteSpace ? lineFirstSegment : null;

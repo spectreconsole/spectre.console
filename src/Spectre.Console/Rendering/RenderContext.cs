@@ -13,6 +13,11 @@ public sealed class RenderContext
     public ColorSystem ColorSystem => _capabilities.ColorSystem;
 
     /// <summary>
+    /// Gets a value indicating whether preserve spacing feature is enabled. See also <see cref="Spectre.Console.Profile.PreserveSpacing"/>.
+    /// </summary>
+    public bool PreserveSpacing { get; }
+
+    /// <summary>
     /// Gets a value indicating whether or not VT/Ansi codes are supported.
     /// </summary>
     public bool Ansi => _capabilities.Ansi;
@@ -43,12 +48,25 @@ public sealed class RenderContext
     {
     }
 
-    private RenderContext(IReadOnlyCapabilities capabilities, Justify? justification = null, bool singleLine = false)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RenderContext"/> class.
+    /// </summary>
+    /// <param name="capabilities">The capabilities.</param>
+    /// <param name="preserveSpacing">The preserve spacing flag.</param>
+    public RenderContext(IReadOnlyCapabilities capabilities, bool preserveSpacing)
+        : this(capabilities, null, false, preserveSpacing)
+    {
+    }
+
+    private RenderContext(
+        IReadOnlyCapabilities capabilities, Justify? justification = null,
+        bool singleLine = false, bool preserveSpacing = false)
     {
         _capabilities = capabilities ?? throw new ArgumentNullException(nameof(capabilities));
 
         Justification = justification;
         SingleLine = singleLine;
+        PreserveSpacing = preserveSpacing;
     }
 
     /// <summary>

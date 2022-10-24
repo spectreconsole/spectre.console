@@ -23,7 +23,7 @@ public static class RenderableExtensions
             throw new ArgumentNullException(nameof(renderable));
         }
 
-        var context = new RenderContext(console.Profile.Capabilities);
+        var context = new RenderContext(console.Profile.Capabilities, console.Profile.PreserveSpacing);
         var renderables = console.Pipeline.Process(context, new[] { renderable });
 
         return GetSegments(console, context, renderables);
