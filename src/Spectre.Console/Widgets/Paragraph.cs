@@ -197,6 +197,8 @@ public sealed class Paragraph : Renderable, IAlignable, IOverflowable
 
         var lines = new List<SegmentLine>();
         var line = new SegmentLine();
+        var lineSeed = (Segment?)null;
+        var currentLine = (SegmentLine?)null;
 
         var newLine = true;
 
@@ -213,6 +215,11 @@ public sealed class Paragraph : Renderable, IAlignable, IOverflowable
                 }
 
                 current = iterator.Current;
+                if (currentLine != (currentLine = iterator.CurrentLine))
+                {
+                    var lineFirstSegment = currentLine?.First() ?? Segment.Empty;
+                    lineSeed = lineFirstSegment.IsWhiteSpace ? lineFirstSegment : null;
+                }
             }
             else
             {
@@ -266,7 +273,7 @@ public sealed class Paragraph : Renderable, IAlignable, IOverflowable
                 {
                     line.Add(Segment.Empty);
                     lines.Add(line);
-                    line = new SegmentLine();
+                    line = lineSeed is null ? new SegmentLine() : new SegmentLine(new[] { lineSeed });
                     newLine = true;
                 }
             }

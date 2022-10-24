@@ -15,6 +15,11 @@ public sealed class SegmentLineIterator : IEnumerator<Segment>
     /// </summary>
     public Segment Current { get; private set; }
 
+    /// <summary>
+    /// Gets the current line.
+    /// </summary>
+    public SegmentLine? CurrentLine { get; private set; }
+
     /// <inheritdoc/>
     object? IEnumerator.Current => Current;
 
@@ -34,6 +39,7 @@ public sealed class SegmentLineIterator : IEnumerator<Segment>
         _lines = new List<SegmentLine>(lines);
 
         Current = Segment.Empty;
+        CurrentLine = null;
     }
 
     /// <inheritdoc/>
@@ -100,6 +106,7 @@ public sealed class SegmentLineIterator : IEnumerator<Segment>
         // Reset the flag
         _lineBreakEmitted = false;
 
+        CurrentLine = _lines[_currentLine];
         Current = _lines[_currentLine][_currentIndex];
         return true;
     }
