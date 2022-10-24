@@ -183,7 +183,7 @@ public sealed partial class CommandAppTests
                 });
 
                 // When
-                var result = app.Run("dog", "--alive", "foo");
+                var result = app.Run("dog", "--alive=indeterminate", "foo");
 
                 // Then
                 return Verifier.Verify(result.Output);
@@ -201,7 +201,7 @@ public sealed partial class CommandAppTests
                 });
 
                 // When
-                var result = app.Run("dog", "-a", "foo");
+                var result = app.Run("dog", "-a=indeterminate", "foo");
 
                 // Then
                 return Verifier.Verify(result.Output);

@@ -142,6 +142,39 @@ public sealed partial class CommandAppTests
         app.Configure(config =>
         {
             config.PropagateExceptions();
+            config.AddBranch<AnimalSettings>("animal", animal =>
+            {
+                animal.AddCommand<DogCommand>("dog");
+            });
+        });
+
+        // When
+        var result = app.Run(new[]
+        {
+            "animal", "--alive", "4", "dog", "--good-boy", "12",
+            "--name", "Rufus",
+        });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
+        {
+            dog.Legs.ShouldBe(4);
+            dog.Age.ShouldBe(12);
+            dog.GoodBoy.ShouldBe(true);
+            dog.IsAlive.ShouldBe(true);
+            dog.Name.ShouldBe("Rufus");
+        });
+    }
+
+    [Fact]
+    public void Should_Pass_Case_6()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
             config.AddCommand<OptionVectorCommand>("multi");
         });
 
@@ -164,7 +197,7 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
-    public void Should_Pass_Case_6()
+    public void Should_Pass_Case_7()
     {
         // Given
         var app = new CommandAppTester();
@@ -503,13 +536,15 @@ public sealed partial class CommandAppTests
         });
 
         // When
-        var result = app.Run(new[] { "dog", "-a", "12", });
+        var result = app.Run(new[] { "dog", "-a", "-n=Rufus", "4", "12", });
 
         // Then
         result.ExitCode.ShouldBe(0);
         result.Settings.ShouldBeOfType<DogSettings>().And(settings =>
         {
             settings.IsAlive.ShouldBeTrue();
+            settings.Name.ShouldBe("Rufus");
+            settings.Legs.ShouldBe(4);
             settings.Age.ShouldBe(12);
         });
     }
@@ -530,13 +565,14 @@ public sealed partial class CommandAppTests
         });
 
         // When
-        var result = app.Run(new[] { "dog", "-a", value, "12", });
+        var result = app.Run(new[] { "dog", "-a", value, "4", "12", });
 
         // Then
         result.ExitCode.ShouldBe(0);
         result.Settings.ShouldBeOfType<DogSettings>().And(settings =>
         {
             settings.IsAlive.ShouldBe(expected);
+            settings.Legs.ShouldBe(4);
             settings.Age.ShouldBe(12);
         });
     }
@@ -553,13 +589,15 @@ public sealed partial class CommandAppTests
         });
 
         // When
-        var result = app.Run(new[] { "dog", "--alive", "12", });
+        var result = app.Run(new[] { "dog", "--alive", "--name=Rufus", "4", "12" });
 
         // Then
         result.ExitCode.ShouldBe(0);
         result.Settings.ShouldBeOfType<DogSettings>().And(settings =>
         {
             settings.IsAlive.ShouldBeTrue();
+            settings.Name.ShouldBe("Rufus");
+            settings.Legs.ShouldBe(4);
             settings.Age.ShouldBe(12);
         });
     }
@@ -580,13 +618,14 @@ public sealed partial class CommandAppTests
         });
 
         // When
-        var result = app.Run(new[] { "dog", "--alive", value, "12", });
+        var result = app.Run(new[] { "dog", "--alive", value, "4", "12", });
 
         // Then
         result.ExitCode.ShouldBe(0);
         result.Settings.ShouldBeOfType<DogSettings>().And(settings =>
         {
             settings.IsAlive.ShouldBe(expected);
+            settings.Legs.ShouldBe(4);
             settings.Age.ShouldBe(12);
         });
     }
