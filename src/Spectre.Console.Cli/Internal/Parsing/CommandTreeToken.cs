@@ -9,7 +9,7 @@ internal sealed class CommandTreeToken
     public bool IsGrouped { get; set; }
 
     /// <summary>
-    /// Gets or sets whether a separater was encountered immediately before the <see cref="CommandTreeToken.Value"/>.
+    /// Gets or sets a value indicating whether a separater was encountered immediately before the <see cref="CommandTreeToken.Value"/>.
     /// </summary>
     public bool HadSeparator { get; set; }
 
