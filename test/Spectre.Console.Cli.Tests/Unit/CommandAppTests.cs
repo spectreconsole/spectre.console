@@ -631,6 +631,7 @@ public sealed partial class CommandAppTests
     }
 
     [Theory]
+
     // Long options
     [InlineData("dog --alive 4 12 --name Rufus", 4, 12, false, true, "Rufus")]
     [InlineData("dog --alive=true 4 12 --name Rufus", 4, 12, false, true, "Rufus")]
@@ -641,7 +642,8 @@ public sealed partial class CommandAppTests
     [InlineData("dog --alive --good-boy --name Rufus 4 12", 4, 12, true, true, "Rufus")]
     [InlineData("dog --alive=true --good-boy=true --name Rufus 4 12", 4, 12, true, true, "Rufus")]
     [InlineData("dog --alive:true --good-boy:true --name Rufus 4 12", 4, 12, true, true, "Rufus")]
-    //Short options
+
+    // Short options
     [InlineData("dog -a 4 12 --name Rufus", 4, 12, false, true, "Rufus")]
     [InlineData("dog -a=true 4 12 --name Rufus", 4, 12, false, true, "Rufus")]
     [InlineData("dog -a:true 4 12 --name Rufus", 4, 12, false, true, "Rufus")]
@@ -651,10 +653,12 @@ public sealed partial class CommandAppTests
     [InlineData("dog -a -g --name Rufus 4 12", 4, 12, true, true, "Rufus")]
     [InlineData("dog -a=true -g=true --name Rufus 4 12", 4, 12, true, true, "Rufus")]
     [InlineData("dog -a:true -g:true --name Rufus 4 12", 4, 12, true, true, "Rufus")]
+
     // Switch around ordering of the options
     [InlineData("dog --good-boy:true --name Rufus --alive:true 4 12", 4, 12, true, true, "Rufus")]
     [InlineData("dog --name Rufus --alive:true --good-boy:true 4 12", 4, 12, true, true, "Rufus")]
     [InlineData("dog --name Rufus --good-boy:true --alive:true 4 12", 4, 12, true, true, "Rufus")]
+
     // Inject the command arguments in between the options
     [InlineData("dog 4 12 --good-boy:true --name Rufus --alive:true", 4, 12, true, true, "Rufus")]
     [InlineData("dog 4 --good-boy:true 12 --name Rufus --alive:true", 4, 12, true, true, "Rufus")]
@@ -662,6 +666,7 @@ public sealed partial class CommandAppTests
     [InlineData("dog --good-boy:true 4 --name Rufus 12 --alive:true", 4, 12, true, true, "Rufus")]
     [InlineData("dog --name Rufus --alive:true 4 12 --good-boy:true", 4, 12, true, true, "Rufus")]
     [InlineData("dog --name Rufus --alive:true 4 --good-boy:true 12", 4, 12, true, true, "Rufus")]
+
     // Inject the command arguments in between the options (all flag values set to false)
     [InlineData("dog 4 12 --good-boy:false --name Rufus --alive:false", 4, 12, false, false, "Rufus")]
     [InlineData("dog 4 --good-boy:false 12 --name Rufus --alive:false", 4, 12, false, false, "Rufus")]
