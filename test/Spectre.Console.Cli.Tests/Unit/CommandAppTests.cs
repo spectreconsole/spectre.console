@@ -2,6 +2,48 @@ namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed partial class CommandAppTests
 {
+    [Theory]
+
+    // Special character handling
+    [InlineData("-R")]
+    [InlineData("-Rufus")]
+    [InlineData("--R")]
+    [InlineData("--Rufus")]
+
+    // Double-quote handling
+    [InlineData("\"Rufus\"")]
+    [InlineData("\" Rufus\"")]
+    [InlineData("\"-R\"")]
+    [InlineData("\"-Rufus\"")]
+    [InlineData("\" -Rufus\"")]
+
+    // Single-quote handling
+    [InlineData("'Rufus'")]
+    [InlineData("' Rufus'")]
+    [InlineData("'-R'")]
+    [InlineData("'-Rufus'")]
+    [InlineData("' -Rufus'")]
+    public void Quote_Tests(string actualAndExpected)
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<GenericCommand<FooCommandSettings>>("test");
+        });
+
+        // When
+        var result = app.Run(new[]
+        {
+            "test", actualAndExpected,
+        });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<FooCommandSettings>().And(foo => foo.Qux.ShouldBe(actualAndExpected));
+    }
+
     [Fact]
     public void Should_Pass_Case_1()
     {
