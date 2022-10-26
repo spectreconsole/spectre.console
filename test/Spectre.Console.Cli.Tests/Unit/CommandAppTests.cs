@@ -3,6 +3,8 @@ namespace Spectre.Console.Tests.Unit.Cli;
 public sealed partial class CommandAppTests
 {
     [Theory]
+    [InlineData("\"\"")]
+    [InlineData("\" \"")]
 
     // Special character handling
     [InlineData("-R")]
