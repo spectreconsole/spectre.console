@@ -190,6 +190,38 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
+    public void Should_Preserve_Quotes_Hyphen_Delimiters_Spaces()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<DogCommand>("dog");
+        });
+
+        // When
+        var result = app.Run(new[]
+        {
+            "dog", "12", "4",
+            "--name=\" -Rufus --' ",
+            "--",
+            "--order-by", "\"-size\"",
+            "--order-by", " ",
+            "--order-by", string.Empty,
+        });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
+        {
+            dog.Name.ShouldBe("\" -Rufus --' ");
+        });
+        result.Context.Remaining.Parsed.Count.ShouldBe(1);
+        result.Context.ShouldHaveRemainingArgument("order-by", values: new[] { "\"-size\"", " ", string.Empty });
+    }
+
+    [Fact]
     public void Should_Be_Able_To_Use_Command_Alias()
     {
         // Given
@@ -805,7 +837,7 @@ public sealed partial class CommandAppTests
             result.Context.Remaining.Raw[0].ShouldBe("--foo");
             result.Context.Remaining.Raw[1].ShouldBe("bar");
             result.Context.Remaining.Raw[2].ShouldBe("-bar");
-            result.Context.Remaining.Raw[3].ShouldBe("baz");
+            result.Context.Remaining.Raw[3].ShouldBe("\"baz\"");
             result.Context.Remaining.Raw[4].ShouldBe("qux");
         }
     }
