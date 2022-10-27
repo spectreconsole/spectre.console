@@ -4,7 +4,7 @@ _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.consol
 
 A .NET 6/.NET Standard 2.0 library that makes it easier to create beautiful, cross platform, console applications.  
 It is heavily inspired by the excellent [Rich library](https://github.com/willmcgugan/rich) 
-for Python.
+for Python. For detailed usage instructions, [please refer to the documentation at https://spectreconsole.net/.](https://spectreconsole.net/)
 
 ## Table of Contents
 
