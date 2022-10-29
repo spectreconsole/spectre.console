@@ -372,7 +372,8 @@ public sealed partial class CommandAppTests
                 });
 
                 // When
-                var result = fixture.Run("--name", "\"Rufus");
+                //var result = fixture.Run("--name", "\"Rufus");
+                var result = fixture.Run("dog", "4", "12", "--name", "\"Rufus");
 
                 // Then
                 return Verifier.Verify(result);

@@ -49,39 +49,64 @@ internal static class CommandTreeTokenizer
 
     private static int ParseToken(CommandTreeTokenizerContext context, TextBuffer reader, int position, int start, List<CommandTreeToken> tokens)
     {
-        while (reader.Peek() != -1)
+        if (!reader.ReachedEnd && reader.Peek() == '-')
         {
-            if (reader.ReachedEnd)
+            // Option
+            tokens.AddRange(ScanOptions(context, reader));
+        }
+        else
+        {
+            // Command or argument
+            while (reader.Peek() != -1)
             {
-                position += reader.Position - start;
-                break;
-            }
+                if (reader.ReachedEnd)
+                {
+                    position += reader.Position - start;
+                    break;
+                }
 
-            var character = reader.Peek();
-
-            // Eat whitespace
-            if (char.IsWhiteSpace(character))
-            {
-                reader.Consume();
-                continue;
-            }
-
-            if (character == '-')
-            {
-                // Option
-                tokens.AddRange(ScanOptions(context, reader));
-            }
-            else
-            {
-                // Command or argument
                 tokens.Add(ScanString(context, reader));
-            }
 
-            // Flush remaining tokens
-            context.FlushRemaining();
+                // Flush remaining tokens
+                context.FlushRemaining();
+            }
         }
 
         return position;
+
+        //while (reader.Peek() != -1)
+        //{
+        //    if (reader.ReachedEnd)
+        //    {
+        //        position += reader.Position - start;
+        //        break;
+        //    }
+
+        //    var character = reader.Peek();
+
+        //    //// Eat whitespace
+        //    //if (char.IsWhiteSpace(character))
+        //    //{
+        //    //    reader.Consume();
+        //    //    continue;
+        //    //}
+
+        //    if (character == '-')
+        //    {
+        //        // Option
+        //        tokens.AddRange(ScanOptions(context, reader));
+        //    }
+        //    else
+        //    {
+        //        // Command or argument
+        //        tokens.Add(ScanString(context, reader));
+        //    }
+
+        //    // Flush remaining tokens
+        //    context.FlushRemaining();
+        //}
+
+        //return position;
     }
 
     private static CommandTreeToken ScanString(
@@ -89,14 +114,14 @@ internal static class CommandTreeTokenizer
         TextBuffer reader,
         char[]? stop = null)
     {
-        if (reader.TryPeek(out var character))
-        {
-            // Is this a quoted string?
-            if (character == '\"')
-            {
-                return ScanQuotedString(context, reader);
-            }
-        }
+        //if (reader.TryPeek(out var character))
+        //{
+        //    // Is this a quoted string?
+        //    if (character == '\"')
+        //    {
+        //        return ScanQuotedString(context, reader);
+        //    }
+        //}
 
         var position = reader.Position;
         var builder = new StringBuilder();
@@ -114,48 +139,49 @@ internal static class CommandTreeTokenizer
         }
 
         var value = builder.ToString();
-        return new CommandTreeToken(CommandTreeToken.Kind.String, position, value.Trim(), value);
+        return new CommandTreeToken(CommandTreeToken.Kind.String, position, value, value);
+        //return new CommandTreeToken(CommandTreeToken.Kind.String, position, value.Trim(), value);
     }
 
-    private static CommandTreeToken ScanQuotedString(CommandTreeTokenizerContext context, TextBuffer reader)
-    {
-        var position = reader.Position;
+    //private static CommandTreeToken ScanQuotedString(CommandTreeTokenizerContext context, TextBuffer reader)
+    //{
+    //    var position = reader.Position;
 
-        context.FlushRemaining();
-        reader.Consume('\"');
+    //    context.FlushRemaining();
+    //    reader.Consume('\"');
 
-        var builder = new StringBuilder();
-        var terminated = false;
-        while (!reader.ReachedEnd)
-        {
-            var character = reader.Peek();
-            if (character == '\"')
-            {
-                terminated = true;
-                reader.Read();
-                break;
-            }
+    //    var builder = new StringBuilder();
+    //    var terminated = false;
+    //    while (!reader.ReachedEnd)
+    //    {
+    //        var character = reader.Peek();
+    //        if (character == '\"')
+    //        {
+    //            terminated = true;
+    //            reader.Read();
+    //            break;
+    //        }
 
-            builder.Append(reader.Read());
-        }
+    //        builder.Append(reader.Read());
+    //    }
 
-        if (!terminated)
-        {
-            var unterminatedQuote = builder.ToString();
-            var token = new CommandTreeToken(CommandTreeToken.Kind.String, position, unterminatedQuote, $"\"{unterminatedQuote}");
-            throw CommandParseException.UnterminatedQuote(reader.Original, token);
-        }
+    //    if (!terminated)
+    //    {
+    //        var unterminatedQuote = builder.ToString();
+    //        var token = new CommandTreeToken(CommandTreeToken.Kind.String, position, unterminatedQuote, $"\"{unterminatedQuote}");
+    //        throw CommandParseException.UnterminatedQuote(reader.Original, token);
+    //    }
 
-        var quotedString = builder.ToString();
+    //    var quotedString = builder.ToString();
 
-        // Add to the context
-        context.AddRemaining(quotedString);
+    //    // Add to the context
+    //    context.AddRemaining(quotedString);
 
-        return new CommandTreeToken(
-            CommandTreeToken.Kind.String,
-            position, quotedString,
-            quotedString);
-    }
+    //    return new CommandTreeToken(
+    //        CommandTreeToken.Kind.String,
+    //        position, quotedString,
+    //        quotedString);
+    //}
 
     private static IEnumerable<CommandTreeToken> ScanOptions(CommandTreeTokenizerContext context, TextBuffer reader)
     {
@@ -271,7 +297,7 @@ internal static class CommandTreeTokenizer
         var name = ScanString(context, reader, new[] { '=', ':' });
 
         // Perform validation of the name.
-        if (name.Value.Length == 0)
+        if (name.Value == " ")
         {
             throw CommandParseException.LongOptionNameIsMissing(reader, position);
         }

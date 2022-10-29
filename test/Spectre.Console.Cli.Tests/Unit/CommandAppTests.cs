@@ -805,7 +805,7 @@ public sealed partial class CommandAppTests
             result.Context.Remaining.Raw[0].ShouldBe("--foo");
             result.Context.Remaining.Raw[1].ShouldBe("bar");
             result.Context.Remaining.Raw[2].ShouldBe("-bar");
-            result.Context.Remaining.Raw[3].ShouldBe("baz");
+            result.Context.Remaining.Raw[3].ShouldBe("\"baz\"");
             result.Context.Remaining.Raw[4].ShouldBe("qux");
         }
     }
