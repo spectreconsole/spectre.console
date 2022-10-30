@@ -203,8 +203,11 @@ public sealed partial class CommandAppTests
         // When
         var result = app.Run(new[]
         {
-            "dog", "12", "4", 
+            "dog", "12", "4",
             "--name=\" -Rufus --' ",
+            "--",
+            "--order-by", "\"-size\"",
+            "--order-by", " ",
         });
 
         // Then
@@ -213,6 +216,8 @@ public sealed partial class CommandAppTests
         {
             dog.Name.ShouldBe("\" -Rufus --' ");
         });
+        result.Context.Remaining.Parsed.Count.ShouldBe(1);
+        result.Context.ShouldHaveRemainingArgument("order-by", values: new[] { "\"-size\"", " " });
     }
 
     [Fact]
