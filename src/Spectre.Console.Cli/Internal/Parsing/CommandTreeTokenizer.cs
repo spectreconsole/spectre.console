@@ -108,7 +108,7 @@ internal static class CommandTreeTokenizer
         reader.Consume('-');
         context.AddRemaining('-');
 
-        if (!reader.TryPeek(out var character))
+        if (!reader.TryPeek(out var character) || character == ' ')
         {
             var token = new CommandTreeToken(CommandTreeToken.Kind.ShortOption, position, "-", "-");
             throw CommandParseException.OptionHasNoName(reader.Original, token);

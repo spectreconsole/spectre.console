@@ -127,6 +127,7 @@ public class CommandTreeTokenizerTests
         }
 
         [Theory]
+        [InlineData("-- ")]
         [InlineData("--Name ")]
         [InlineData("--Name\"")]
         [InlineData("--Nam\"e")]
@@ -178,5 +179,22 @@ public class CommandTreeTokenizerTests
                 ex.Message.ShouldBe("Short option does not have a valid name.");
             });
         }
+    }
+
+    [Theory]
+    [InlineData("-")]
+    [InlineData("- ")]
+    public void Should_Throw_On_Missing_Option_Name(string actual)
+    {
+        // Given
+
+        // When
+        var result = Record.Exception(() => CommandTreeTokenizer.Tokenize(new string[] { actual }));
+
+        // Then
+        result.ShouldBeOfType<CommandParseException>().And(ex =>
+        {
+            ex.Message.ShouldBe("Option does not have a name.");
+        });
     }
 }
