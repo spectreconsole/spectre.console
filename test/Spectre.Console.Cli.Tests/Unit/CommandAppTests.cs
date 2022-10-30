@@ -190,6 +190,32 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
+    public void Should_Preserve_Quotes_Hyphen_Delimiters_Spaces()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<DogCommand>("dog");
+        });
+
+        // When
+        var result = app.Run(new[]
+        {
+            "dog", "12", "4", 
+            "--name=\" -Rufus --' ",
+        });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
+        {
+            dog.Name.ShouldBe("\" -Rufus --' ");
+        });
+    }
+
+    [Fact]
     public void Should_Be_Able_To_Use_Command_Alias()
     {
         // Given

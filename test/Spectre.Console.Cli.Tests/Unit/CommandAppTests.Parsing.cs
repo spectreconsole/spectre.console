@@ -357,30 +357,6 @@ public sealed partial class CommandAppTests
         }
 
         [UsesVerify]
-        [ExpectationPath("UnterminatedQuote")]
-        public sealed class UnterminatedQuote
-        {
-            [Fact]
-            [Expectation("Test_1")]
-            public Task Should_Return_Correct_Text()
-            {
-                // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
-
-                // When
-                //var result = fixture.Run("--name", "\"Rufus");
-                var result = fixture.Run("dog", "4", "12", "--name", "\"Rufus");
-
-                // Then
-                return Verifier.Verify(result);
-            }
-        }
-
-        [UsesVerify]
         [ExpectationPath("OptionWithoutName")]
         public sealed class OptionWithoutName
         {
@@ -609,24 +585,6 @@ public sealed partial class CommandAppTests
                 // Then
                 result.ShouldBe("Error: Command 'dog' is missing required argument 'AGE'.");
             }
-        }
-
-        [Fact]
-        [Expectation("Quoted_Strings")]
-        public Task Should_Parse_Quoted_Strings_Correctly()
-        {
-            // Given
-            var fixture = new Fixture();
-            fixture.Configure(configurator =>
-            {
-                configurator.AddCommand<DumpRemainingCommand>("foo");
-            });
-
-            // When
-            var result = fixture.Run("foo", "--", "/c", "\"set && pause\"");
-
-            // Then
-            return Verifier.Verify(result);
         }
     }
 

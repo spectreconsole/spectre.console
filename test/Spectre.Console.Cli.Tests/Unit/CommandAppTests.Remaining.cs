@@ -66,5 +66,34 @@ public sealed partial class CommandAppTests
             result.Context.Remaining.Raw[4].ShouldBe("qux");
             result.Context.Remaining.Raw[5].ShouldBe("foo bar baz qux");
         }
+
+        [Fact]
+        public void Should_Preserve_Quotes_Hyphen_Delimiters()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddBranch<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<DogCommand>("dog");
+                });
+            });
+
+            // When
+            var result = app.Run(new[]
+            {
+                "animal", "4", "dog", "12", "--",
+                "/c", "\"set && pause\"",
+                "Name=\" -Rufus --' ",
+            });
+
+            // Then
+            result.Context.Remaining.Raw.Count.ShouldBe(3);
+            result.Context.Remaining.Raw[0].ShouldBe("/c");
+            result.Context.Remaining.Raw[1].ShouldBe("\"set && pause\"");
+            result.Context.Remaining.Raw[2].ShouldBe("Name=\" -Rufus --' ");
+        }
     }
 }

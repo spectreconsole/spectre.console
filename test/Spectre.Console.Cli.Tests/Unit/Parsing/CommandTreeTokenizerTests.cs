@@ -31,6 +31,7 @@ public class CommandTreeTokenizerTests
         // Then
         result.Tokens.Count.ShouldBe(1);
         result.Tokens[0].Value.ShouldBe(actualAndExpected);
+        result.Tokens[0].TokenKind.ShouldBe(CommandTreeToken.Kind.String);
     }
 
     [Theory]
@@ -47,6 +48,7 @@ public class CommandTreeTokenizerTests
         // Then
         result.Tokens.Count.ShouldBe(1);
         result.Tokens[0].Value.ShouldBe(actualAndExpected);
+        result.Tokens[0].TokenKind.ShouldBe(CommandTreeToken.Kind.String);
     }
 
     [Theory]
@@ -63,6 +65,7 @@ public class CommandTreeTokenizerTests
         // Then
         result.Tokens.Count.ShouldBe(1);
         result.Tokens[0].Value.ShouldBe(actualAndExpected);
+        result.Tokens[0].TokenKind.ShouldBe(CommandTreeToken.Kind.String);
     }
 
     [Theory]
@@ -78,22 +81,26 @@ public class CommandTreeTokenizerTests
         // Then
         result.Tokens.Count.ShouldBe(1);
         result.Tokens[0].Value.ShouldBe(actualAndExpected);
+        result.Tokens[0].TokenKind.ShouldBe(CommandTreeToken.Kind.String);
     }
 
     [Theory]
-    [InlineData("--Name=\" -Rufus --' ", "Name", "\" -Rufus --' ")]
-    [InlineData("-N=\" -Rufus --' ", "N", "\" -Rufus --' ")]
-    [InlineData("-N:\" -Rufus --' ", "N", "\" -Rufus --' ")]
-    public void Should_Preserve_Quotes_Hyphen_Delimiters_Spaces2(string actual, string expectedToken1Value, string expectedToken2Value)
+    [InlineData("--Name-")]
+
+    [InlineData("--Name ")]
+    [InlineData("--Name\"")]
+    [InlineData("--Nam\"e")]
+    [InlineData("-N-")]
+    [InlineData("-N\"")]
+    public void Should_Something(string actualAndExpected)
     {
         // Given
 
         // When
-        var result = CommandTreeTokenizer.Tokenize(new string[] { actual });
+        var result = CommandTreeTokenizer.Tokenize(new string[] { actualAndExpected });
 
         // Then
-        result.Tokens.Count.ShouldBe(2);
-        result.Tokens[0].Value.ShouldBe(expectedToken1Value);
-        result.Tokens[1].Value.ShouldBe(expectedToken2Value);
+        result.Tokens.Count.ShouldBe(1);
+        result.Tokens[0].Value.ShouldBe(actualAndExpected);
     }
 }
