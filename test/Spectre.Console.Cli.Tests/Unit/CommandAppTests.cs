@@ -208,6 +208,7 @@ public sealed partial class CommandAppTests
             "--",
             "--order-by", "\"-size\"",
             "--order-by", " ",
+            "--order-by", string.Empty,
         });
 
         // Then
@@ -217,7 +218,7 @@ public sealed partial class CommandAppTests
             dog.Name.ShouldBe("\" -Rufus --' ");
         });
         result.Context.Remaining.Parsed.Count.ShouldBe(1);
-        result.Context.ShouldHaveRemainingArgument("order-by", values: new[] { "\"-size\"", " " });
+        result.Context.ShouldHaveRemainingArgument("order-by", values: new[] { "\"-size\"", " ", string.Empty });
     }
 
     [Fact]

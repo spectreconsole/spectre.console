@@ -5,6 +5,7 @@ public class CommandTreeTokenizerTests
     public sealed class ScanString
     {
         [Theory]
+        [InlineData("")]
         [InlineData(" ")]
         [InlineData("  ")]
         [InlineData("\t")]
