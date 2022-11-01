@@ -205,6 +205,41 @@ public sealed class PanelTests
     }
 
     [Fact]
+    [Expectation("Render_Width")]
+    public Task Should_Render_To_Specified_Width()
+    {
+        // Given
+        var console = new TestConsole();
+
+        // When
+        console.Write(new Panel(new Text("Hello World"))
+        {
+            Width = 25,
+        });
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Width_MaxWidth")]
+    public Task Should_Use_Max_Width_If_Specified_Width_Is_Too_Large()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Width = 20;
+
+        // When
+        console.Write(new Panel(new Text("Hello World"))
+        {
+            Width = 25,
+        });
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
     [Expectation("Render_Child_RightAligned")]
     public Task Should_Justify_Child_To_Right_Correctly()
     {
