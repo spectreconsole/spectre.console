@@ -24,6 +24,10 @@ public sealed class MyCommandSettings : CommandSettings
 
 This setting file tells `Spectre.Console.Cli` that our command has two parameters. One is marked as a `CommandArgument`, the other is a `CommandOption`.
 
+## Case Sensitivity
+
+CommandsSettings are in `PascalCase`, also known as `UpperCamelCase`.
+
 ## CommandArgument
 
 Arguments have a position and a name. The name is not only used for generating help, but its formatting is used to determine whether or not the argument is optional. The name must either be surrounded by square brackets (e.g. `[name]`) or angle brackets (e.g. `<name>`). Angle brackets denote required whereas square brackets denote optional. If neither are specified an exception will be thrown.
