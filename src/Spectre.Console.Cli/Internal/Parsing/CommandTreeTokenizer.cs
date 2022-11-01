@@ -262,9 +262,11 @@ internal static class CommandTreeTokenizer
             }
             else
             {
+                // Create a token representing the short option.
                 var representation = current.ToString(CultureInfo.InvariantCulture);
                 var tokenPosition = position + 1 + result.Count;
                 var token = new CommandTreeToken(CommandTreeToken.Kind.ShortOption, tokenPosition, representation, representation);
+
                 throw CommandParseException.InvalidShortOptionName(reader.Original, token);
             }
         }

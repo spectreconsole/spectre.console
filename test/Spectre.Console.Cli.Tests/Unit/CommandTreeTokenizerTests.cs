@@ -1,6 +1,6 @@
 namespace Spectre.Console.Tests.Unit.Cli;
 
-public class CommandTreeTokenizerTests
+public sealed class CommandTreeTokenizerTests
 {
     public sealed class ShortOptions
     {
