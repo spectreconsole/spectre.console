@@ -54,10 +54,17 @@ public sealed class CommandTreeTokenizerTests
         }
 
         [Theory]
-        [InlineData("-a:-1.5", null)]
-        [InlineData("-a=-1.5", null)]
-        [InlineData("-a", "-1.5")]
-        public void With_Negative_Numeric_Value(string firstArg, string secondArg)
+
+        // Positive values
+        [InlineData("-a:1.5", null, "1.5")]
+        [InlineData("-a=1.5", null, "1.5")]
+        [InlineData("-a", "1.5", "1.5")]
+
+        // Negative values
+        [InlineData("-a:-1.5", null, "-1.5")]
+        [InlineData("-a=-1.5", null, "-1.5")]
+        [InlineData("-a", "-1.5", "-1.5")]
+        public void With_Numeric_Value(string firstArg, string secondArg, string expectedValue)
         {
             // Given
             List<string> args = new List<string>();
@@ -85,8 +92,8 @@ public sealed class CommandTreeTokenizerTests
             t.TokenKind.ShouldBe(CommandTreeToken.Kind.String);
             t.IsGrouped.ShouldBe(false);
             t.Position.ShouldBe(3);
-            t.Value.ShouldBe("-1.5");
-            t.Representation.ShouldBe("-1.5");
+            t.Value.ShouldBe(expectedValue);
+            t.Representation.ShouldBe(expectedValue);
         }
 
         [Fact]
@@ -107,6 +114,22 @@ public sealed class CommandTreeTokenizerTests
             t.Position.ShouldBe(0);
             t.Value.ShouldBe("-6..2");
             t.Representation.ShouldBe("-6..2");
+        }
+
+        [Theory]
+        [InlineData("-a1")]
+        public void Should_Throw_On_Invalid_Option_Name(string actual)
+        {
+            // Given
+
+            // When
+            var result = Record.Exception(() => CommandTreeTokenizer.Tokenize(new string[] { actual }));
+
+            // Then
+            result.ShouldBeOfType<CommandParseException>().And(ex =>
+            {
+                ex.Message.ShouldBe("Short option does not have a valid name.");
+            });
         }
     }
 }
