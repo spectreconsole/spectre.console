@@ -235,12 +235,36 @@ internal static class CommandTreeTokenizer
                     ? new CommandTreeToken(CommandTreeToken.Kind.ShortOption, position, value, $"-{value}")
                     : new CommandTreeToken(CommandTreeToken.Kind.ShortOption, position + result.Count, value, value));
             }
+            else if (result.Count == 0 && char.IsDigit(current))
+            {
+                // We require short options to be named with letters. Short options that start with a number
+                // ("-1", "-2ab", "-3..7") may actually mean values (either for options or arguments) and will
+                // be tokenized as strings. This block handles parsing those cases, but we only allow this
+                // when the digit is the first character in the token (i.e. "-a1" is always an error), hence the
+                // result.Count == 0 check above.
+                string value = string.Empty;
+
+                while (!reader.ReachedEnd)
+                {
+                    char c = reader.Peek();
+
+                    if (char.IsWhiteSpace(c))
+                    {
+                        break;
+                    }
+
+                    value += c.ToString(CultureInfo.InvariantCulture);
+                    reader.Read();
+                }
+
+                value = "-" + value; // Prefix with the minus sign that we originally thought to mean a short option
+                result.Add(new CommandTreeToken(CommandTreeToken.Kind.String, position, value, value));
+            }
             else
             {
-                // Create a token representing the short option.
+                var representation = current.ToString(CultureInfo.InvariantCulture);
                 var tokenPosition = position + 1 + result.Count;
-                var represntation = current.ToString(CultureInfo.InvariantCulture);
-                var token = new CommandTreeToken(CommandTreeToken.Kind.ShortOption, tokenPosition, represntation, represntation);
+                var token = new CommandTreeToken(CommandTreeToken.Kind.ShortOption, tokenPosition, representation, representation);
                 throw CommandParseException.InvalidShortOptionName(reader.Original, token);
             }
         }
