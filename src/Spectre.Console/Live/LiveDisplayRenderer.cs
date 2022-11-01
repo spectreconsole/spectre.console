@@ -41,7 +41,7 @@ internal sealed class LiveDisplayRenderer : IRenderHook
         }
     }
 
-    public IEnumerable<IRenderable> Process(RenderContext context, IEnumerable<IRenderable> renderables)
+    public IEnumerable<IRenderable> Process(RenderOptions options, IEnumerable<IRenderable> renderables)
     {
         lock (_context.Lock)
         {

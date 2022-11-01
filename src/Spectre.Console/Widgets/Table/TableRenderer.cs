@@ -26,7 +26,7 @@ internal static class TableRenderer
             foreach (var (columnIndex, _, _, (rowWidth, cell)) in columnWidths.Zip(row).Enumerate())
             {
                 var justification = context.Columns[columnIndex].Alignment;
-                var childContext = context.Options.WithJustification(justification);
+                var childContext = context.Options with { Justification = justification };
 
                 var lines = Segment.SplitLines(cell.Render(childContext, rowWidth));
                 cellHeight = Math.Max(cellHeight, lines.Count);

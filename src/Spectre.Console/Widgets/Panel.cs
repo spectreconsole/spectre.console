@@ -69,16 +69,16 @@ public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, 
     }
 
     /// <inheritdoc/>
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         var child = new Padder(_child, Padding);
-        return Measure(context, maxWidth, child);
+        return Measure(options, maxWidth, child);
     }
 
-    private Measurement Measure(RenderContext context, int maxWidth, IRenderable child)
+    private Measurement Measure(RenderOptions options, int maxWidth, IRenderable child)
     {
-        var edgeWidth = (context.GetSafeBorder(this) is not NoBoxBorder) ? EdgeWidth : 0;
-        var childWidth = child.Measure(context, maxWidth - edgeWidth);
+        var edgeWidth = (options.GetSafeBorder(this) is not NoBoxBorder) ? EdgeWidth : 0;
+        var childWidth = child.Measure(options, maxWidth - edgeWidth);
 
         if (Width != null)
         {
@@ -97,16 +97,16 @@ public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, 
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        var border = context.GetSafeBorder(this);
+        var border = options.GetSafeBorder(this);
         var borderStyle = BorderStyle ?? Style.Plain;
 
         var showBorder = border is not NoBoxBorder;
         var edgeWidth = showBorder ? EdgeWidth : 0;
 
         var child = new Padder(_child, Padding);
-        var width = Measure(context, maxWidth, child);
+        var width = Measure(options, maxWidth, child);
 
         var panelWidth = Math.Min(!Expand ? width.Max : maxWidth, maxWidth);
         var innerWidth = panelWidth - edgeWidth;
@@ -119,11 +119,11 @@ public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, 
         // Panel top
         if (showBorder)
         {
-            AddTopBorder(result, context, border, borderStyle, panelWidth);
+            AddTopBorder(result, options, border, borderStyle, panelWidth);
         }
 
         // Split the child segments into lines.
-        var childSegments = ((IRenderable)child).Render(context, innerWidth);
+        var childSegments = ((IRenderable)child).Render(options, innerWidth);
         foreach (var (_, _, last, line) in Segment.SplitLines(childSegments, innerWidth, height).Enumerate())
         {
             if (line.Count == 1 && line[0].IsWhiteSpace)
@@ -188,7 +188,7 @@ public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, 
     }
 
     private void AddTopBorder(
-        List<Segment> result, RenderContext context, BoxBorder border,
+        List<Segment> result, RenderOptions options, BoxBorder border,
         Style borderStyle, int panelWidth)
     {
         var rule = new Rule
@@ -205,7 +205,7 @@ public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, 
         result.Add(new Segment(border.GetPart(BoxBorderPart.TopLeft), borderStyle));
 
         // Top border (and header text if specified)
-        result.AddRange(((IRenderable)rule).Render(context, panelWidth - 2).Where(x => !x.IsLineBreak));
+        result.AddRange(((IRenderable)rule).Render(options, panelWidth - 2).Where(x => !x.IsLineBreak));
 
         // Top right border
         result.Add(new Segment(border.GetPart(BoxBorderPart.TopRight), borderStyle));

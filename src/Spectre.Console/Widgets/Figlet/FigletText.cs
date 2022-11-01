@@ -37,7 +37,7 @@ public sealed class FigletText : Renderable, IAlignable
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var style = new Style(Color ?? Console.Color.Default);
         var alignment = Alignment ?? Justify.Left;

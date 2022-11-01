@@ -100,14 +100,14 @@ public sealed class Table : Renderable, IHasTableBorder, IExpandable, IAlignable
     }
 
     /// <inheritdoc/>
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
-        if (context is null)
+        if (options is null)
         {
-            throw new ArgumentNullException(nameof(context));
+            throw new ArgumentNullException(nameof(options));
         }
 
-        var measurer = new TableMeasurer(this, context);
+        var measurer = new TableMeasurer(this, options);
 
         // Calculate the total cell width
         var totalCellWidth = measurer.CalculateTotalCellWidth(maxWidth);
@@ -120,14 +120,14 @@ public sealed class Table : Renderable, IHasTableBorder, IExpandable, IAlignable
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        if (context is null)
+        if (options is null)
         {
-            throw new ArgumentNullException(nameof(context));
+            throw new ArgumentNullException(nameof(options));
         }
 
-        var measurer = new TableMeasurer(this, context);
+        var measurer = new TableMeasurer(this, options);
 
         // Calculate the column and table width
         var totalCellWidth = measurer.CalculateTotalCellWidth(maxWidth);
@@ -139,7 +139,7 @@ public sealed class Table : Renderable, IHasTableBorder, IExpandable, IAlignable
 
         // Render the table
         return TableRenderer.Render(
-            new TableRendererContext(this, context, rows, tableWidth, maxWidth),
+            new TableRendererContext(this, options, rows, tableWidth, maxWidth),
             columnWidths);
     }
 

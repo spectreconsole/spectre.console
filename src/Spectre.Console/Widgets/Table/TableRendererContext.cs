@@ -33,7 +33,7 @@ internal sealed class TableRendererContext : TableAccessor
     public TableTitle? Caption => _table.Caption;
     public Justify? Alignment => _table.Alignment;
 
-    public TableRendererContext(Table table, RenderContext options, IEnumerable<TableRow> rows, int tableWidth, int maxWidth)
+    public TableRendererContext(Table table, RenderOptions options, IEnumerable<TableRow> rows, int tableWidth, int maxWidth)
         : base(table, options)
     {
         _table = table ?? throw new ArgumentNullException(nameof(table));

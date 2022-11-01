@@ -9,14 +9,14 @@ internal sealed class ControlCode : Renderable
         _segment = Segment.Control(control);
     }
 
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         return new Measurement(0, 0);
     }
 
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        if (context.Ansi)
+        if (options.Ansi)
         {
             yield return _segment;
         }

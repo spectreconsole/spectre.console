@@ -14,13 +14,13 @@ internal sealed class BreakdownTags : Renderable
         _data = data ?? throw new ArgumentNullException(nameof(data));
     }
 
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         var width = Math.Min(Width ?? maxWidth, maxWidth);
         return new Measurement(width, width);
     }
 
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var culture = Culture ?? CultureInfo.InvariantCulture;
 
@@ -35,7 +35,7 @@ internal sealed class BreakdownTags : Renderable
             panels.Add(panel);
         }
 
-        foreach (var segment in ((IRenderable)new Columns(panels).Padding(0, 0)).Render(context, maxWidth))
+        foreach (var segment in ((IRenderable)new Columns(panels).Padding(0, 0)).Render(options, maxWidth))
         {
             yield return segment;
         }

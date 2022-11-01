@@ -66,9 +66,9 @@ public sealed class TextPath : IRenderable, IAlignable
     }
 
     /// <inheritdoc/>
-    public Measurement Measure(RenderContext context, int maxWidth)
+    public Measurement Measure(RenderOptions options, int maxWidth)
     {
-        var fitted = Fit(context, maxWidth);
+        var fitted = Fit(options, maxWidth);
         var separatorCount = fitted.Length - 1;
         var length = fitted.Sum(f => f.Length) + separatorCount;
 
@@ -78,7 +78,7 @@ public sealed class TextPath : IRenderable, IAlignable
     }
 
     /// <inheritdoc/>
-    public IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    public IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var alignment = Alignment ?? Justify.Left;
 
@@ -87,7 +87,7 @@ public sealed class TextPath : IRenderable, IAlignable
         var stemStyle = StemStyle ?? Style.Plain;
         var leafStyle = LeafStyle ?? Style.Plain;
 
-        var fitted = Fit(context, maxWidth);
+        var fitted = Fit(options, maxWidth);
         var parts = new List<Segment>();
         foreach (var (_, first, last, item) in fitted.Enumerate())
         {
@@ -127,7 +127,7 @@ public sealed class TextPath : IRenderable, IAlignable
         return parts;
     }
 
-    private string[] Fit(RenderContext context, int maxWidth)
+    private string[] Fit(RenderOptions options, int maxWidth)
     {
         // No parts?
         if (_parts.Length == 0)
@@ -141,7 +141,7 @@ public sealed class TextPath : IRenderable, IAlignable
             return _parts;
         }
 
-        var ellipsis = context.Unicode ? UnicodeEllipsis : Ellipsis;
+        var ellipsis = options.Unicode ? UnicodeEllipsis : Ellipsis;
         var ellipsisLength = Cell.GetCellLength(ellipsis);
 
         if (_parts.Length >= 2)

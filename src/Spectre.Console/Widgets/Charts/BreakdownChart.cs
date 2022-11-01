@@ -53,14 +53,14 @@ public sealed class BreakdownChart : Renderable, IHasCulture
     }
 
     /// <inheritdoc/>
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         var width = Math.Min(Width ?? maxWidth, maxWidth);
         return new Measurement(width, width);
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var width = Math.Min(Width ?? maxWidth, maxWidth);
 
@@ -90,6 +90,6 @@ public sealed class BreakdownChart : Renderable, IHasCulture
             });
         }
 
-        return ((IRenderable)grid).Render(context, width);
+        return ((IRenderable)grid).Render(options, width);
     }
 }

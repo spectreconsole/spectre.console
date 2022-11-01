@@ -83,14 +83,14 @@ internal sealed class Composer : IRenderable
         return this;
     }
 
-    public Measurement Measure(RenderContext context, int maxWidth)
+    public Measurement Measure(RenderOptions options, int maxWidth)
     {
-        return ((IRenderable)new Markup(_content.ToString())).Measure(context, maxWidth);
+        return ((IRenderable)new Markup(_content.ToString())).Measure(options, maxWidth);
     }
 
-    public IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    public IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        return ((IRenderable)new Markup(_content.ToString())).Render(context, maxWidth);
+        return ((IRenderable)new Markup(_content.ToString())).Render(options, maxWidth);
     }
 
     public override string ToString()
