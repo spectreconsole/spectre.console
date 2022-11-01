@@ -41,6 +41,11 @@ public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, 
     public int? Width { get; set; }
 
     /// <summary>
+    /// Gets or sets the height of the panel.
+    /// </summary>
+    public int? Height { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether or not the panel is inlined.
     /// </summary>
     internal bool Inline { get; set; }
@@ -106,17 +111,20 @@ public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, 
         var panelWidth = Math.Min(!Expand ? width.Max : maxWidth, maxWidth);
         var innerWidth = panelWidth - edgeWidth;
 
+        var height = Height != null ? Height - 2 : null;
+
+        // Start building the panel
         var result = new List<Segment>();
 
+        // Panel top
         if (showBorder)
         {
-            // Panel top
             AddTopBorder(result, context, border, borderStyle, panelWidth);
         }
 
         // Split the child segments into lines.
         var childSegments = ((IRenderable)child).Render(context, innerWidth);
-        foreach (var (_, _, last, line) in Segment.SplitLines(childSegments, innerWidth).Enumerate())
+        foreach (var (_, _, last, line) in Segment.SplitLines(childSegments, innerWidth, height).Enumerate())
         {
             if (line.Count == 1 && line[0].IsWhiteSpace)
             {

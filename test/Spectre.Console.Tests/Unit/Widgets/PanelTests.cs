@@ -240,6 +240,41 @@ public sealed class PanelTests
     }
 
     [Fact]
+    [Expectation("Render_Height")]
+    public Task Should_Render_To_Specified_Height()
+    {
+        // Given
+        var console = new TestConsole();
+
+        // When
+        console.Write(new Panel(new Text("Hello World\nHello Hello Hello"))
+        {
+            Height = 25,
+        });
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Width_Height")]
+    public Task Should_Render_To_Specified_Width_And_Height()
+    {
+        // Given
+        var console = new TestConsole();
+
+        // When
+        console.Write(new Panel("Hello World\nHello Hello Hello")
+        {
+            Width = 50,
+            Height = 25,
+        });
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
     [Expectation("Render_Child_RightAligned")]
     public Task Should_Justify_Child_To_Right_Correctly()
     {
