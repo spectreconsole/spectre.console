@@ -111,7 +111,11 @@ public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, 
         var panelWidth = Math.Min(!Expand ? width.Max : maxWidth, maxWidth);
         var innerWidth = panelWidth - edgeWidth;
 
-        var height = Height != null ? Height - 2 : null;
+        var height = Height != null
+            ? Height - 2
+            : options.Height != null
+                ? options.Height - 2
+                : null;
 
         // Start building the panel
         var result = new List<Segment>();

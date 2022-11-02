@@ -3,7 +3,7 @@ namespace Spectre.Console;
 /// <summary>
 /// A renderable breakdown chart.
 /// </summary>
-public sealed class BreakdownChart : Renderable, IHasCulture
+public sealed class BreakdownChart : Renderable, IHasCulture, IExpandable
 {
     /// <summary>
     /// Gets the breakdown chart data.
@@ -42,6 +42,13 @@ public sealed class BreakdownChart : Renderable, IHasCulture
     /// </summary>
     /// <remarks>Defaults to invariant culture.</remarks>
     public CultureInfo? Culture { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not the object should
+    /// expand to the available space. If <c>false</c>, the object's
+    /// width will be auto calculated.
+    /// </summary>
+    public bool Expand { get; set; } = true;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BreakdownChart"/> class.
@@ -88,6 +95,11 @@ public sealed class BreakdownChart : Renderable, IHasCulture
                 ShowTagValues = ShowTagValues,
                 ValueFormatter = ValueFormatter,
             });
+        }
+
+        if (!Expand)
+        {
+            grid.Collapse();
         }
 
         return ((IRenderable)grid).Render(options, width);

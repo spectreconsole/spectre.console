@@ -569,6 +569,21 @@ public class Segment
         return cells;
     }
 
+    internal static List<SegmentLine> MakeWidth(int expectedWidth, List<SegmentLine> lines)
+    {
+        foreach (var line in lines)
+        {
+            var width = line.CellCount();
+            if (width < expectedWidth)
+            {
+                var diff = expectedWidth - width;
+                line.Add(new Segment(new string(' ', diff)));
+            }
+        }
+
+        return lines;
+    }
+
     internal static List<string> SplitSegment(string text, int maxCellLength)
     {
         var list = new List<string>();

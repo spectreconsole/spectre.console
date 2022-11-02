@@ -4,8 +4,8 @@ namespace Spectre.Console.Rendering;
 /// Represents render options.
 /// </summary>
 /// <param name="Capabilities">The capabilities.</param>
-/// <param name="ConsoleDimensions">The console dimensions.</param>
-public record class RenderOptions(IReadOnlyCapabilities Capabilities, Size ConsoleDimensions)
+/// <param name="ConsoleSize">The console size.</param>
+public record class RenderOptions(IReadOnlyCapabilities Capabilities, Size ConsoleSize)
 {
     /// <summary>
     /// Gets the current color system.
@@ -32,6 +32,10 @@ public record class RenderOptions(IReadOnlyCapabilities Capabilities, Size Conso
     /// </summary>
     public int? Height { get; init; }
 
+    /// <summary>
+    /// Gets a value indicating whether the context want items to render without
+    /// line breaks and return a single line where applicable.
+    /// </summary>
     internal bool SingleLine { get; init; }
 
     /// <summary>
