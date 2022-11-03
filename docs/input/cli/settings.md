@@ -52,8 +52,6 @@ public string? LastName { get; set; }
 * Options with a single character must be preceded by a single dash (e.g. `-c`).
 * Multi-character options must be preceded by two dashes (e.g. `--count`).
 
-`NOTE:` There can only be one `argument vector`, and it needs to be the last argument of the command.
-
 ### Flags
 
 There is a special mode for `CommandOptions` on boolean types. Typically all `CommandOptions` require a value to be included after the switch. For these only the switch needs to be specified to mark the value as true. This example would allow the user to run either `app.exe --debug`, or `app.exe --debug true`.
