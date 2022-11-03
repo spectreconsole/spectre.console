@@ -1,4 +1,4 @@
 Error: Flags cannot be assigned a value.
 
-       dog -a foo
+       dog -a=indeterminate foo
            ^^ Can't assign value
