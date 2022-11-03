@@ -39,7 +39,7 @@ public sealed class TextPrompt<T> : IPrompt<T>
     /// <summary>
     /// Gets or sets the validation error message.
     /// </summary>
-    public string ValidationErrorMessage { get; set; } = "[" + "red" + "]" + "Invalid input[/]";
+    public string ValidationErrorMessage { get; set; } = "[red]Invalid input[/]";
 
     /// <summary>
     /// Gets or sets a value indicating whether or not
