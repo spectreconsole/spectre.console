@@ -7,16 +7,6 @@ namespace Spectre.Console.Cli;
 public abstract class Command : ICommand<EmptyCommandSettings>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="Command{TDefaultCommand}"/> class.
-    /// </summary>
-    /// <param name="registrar">The registrar.</param>
-    public Command(ITypeRegistrar? registrar = null)
-    {
-        _app = new Command(registrar);
-        _app.GetConfigurator().SetDefaultCommand<TDefaultCommand>();
-    }
-
-    /// <summary>
     /// Executes the command.
     /// </summary>
     /// <param name="context">The command context.</param>
