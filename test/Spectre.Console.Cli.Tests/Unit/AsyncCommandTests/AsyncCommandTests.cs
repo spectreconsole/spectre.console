@@ -1,9 +1,9 @@
 namespace Spectre.Console.Cli.Tests.Unit.AsyncCommandTests;
 
 // A dummy AsyncCommand<T> impl
-public sealed class AsyncTestCommand : AsyncCommand<AsyncTestCommand.Settings>
+public class AsyncTestCommand : AsyncCommand<AsyncTestCommand.Settings>
 {
-    public sealed class Settings : CommandSettings
+    public class Settings : CommandSettings
     {
         [CommandOption("--foo")]
         public int Foo { get; set; }
@@ -21,20 +21,35 @@ public sealed class AsyncTestCommand : AsyncCommand<AsyncTestCommand.Settings>
     public void Test_For_An_Async_Command()
     {
         // Given
-        var tester = new CommandAppTester();
-        tester.Configure(c =>
+        var app = new AsyncTester();
+        app.Configure(config =>
         {
-            c.AddCommand<AsyncTestCommand>("the_command");
+            config.PropagateExceptions();
+            config.AddBranch<AnimalSettings>("animal", animal =>
+            {
+                animal.AddBranch<MammalSettings>("mammal", mammal =>
+                {
+                    mammal.AddCommand<DogCommand>("dog");
+                    mammal.AddCommand<HorseCommand>("horse");
+                });
+            });
         });
 
         // When
-        var result = tester.Run("--foo 32");
+        var result = app.RunAsync(new[]
+        {
+            "animal", "--alive", "mammal", "--name",
+            "Rufus", "dog", "12", "--good-boy",
+        });
 
         // Then
         result.ExitCode.ShouldBe(0);
-        result.Settings.ShouldBeOfType<Settings>().And(settings =>
+        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
         {
-            settings.Foo.ShouldBe(32);
+            dog.Age.ShouldBe(12);
+            dog.GoodBoy.ShouldBe(true);
+            dog.Name.ShouldBe("Rufus");
+            dog.IsAlive.ShouldBe(true);
         });
     }
 }
