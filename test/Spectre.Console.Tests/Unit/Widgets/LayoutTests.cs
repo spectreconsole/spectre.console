@@ -243,4 +243,26 @@ public sealed class LayoutTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    [Expectation("Render_Fallback_Layout")]
+    public Task Should_Fall_Back_To_Parent_Layout_If_All_Children_Are_Invisible()
+    {
+        // Given
+        var console = new TestConsole().Size(new Size(40, 15));
+        var layout = new Layout()
+            .SplitRows(
+                new Layout("T1").SplitColumns(
+                    new Layout("A").Invisible(),
+                    new Layout("B").Invisible()),
+                new Layout("T2").SplitColumns(
+                    new Layout("C").Invisible(),
+                    new Layout("D").Invisible()));
+
+        // When
+        console.Write(layout);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
 }

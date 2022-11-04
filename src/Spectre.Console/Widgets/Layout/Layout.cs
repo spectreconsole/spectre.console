@@ -87,9 +87,14 @@ public sealed class Layout : Renderable, IRatioResolvable, IHasVisibility
     /// <remarks>Defaults to <c>true</c>.</remarks>
     public bool IsVisible { get; set; } = true;
 
-    internal IEnumerable<Layout> Children => _children.Where(c => c.IsVisible);
-    internal bool HasChildren => Children.Any();
+    /// <summary>
+    /// Gets the splitter used for this layout.
+    /// </summary>
     internal LayoutSplitter Splitter => _splitter;
+
+    /// <summary>
+    /// Gets the <see cref="IRenderable"/> associated with this layout.
+    /// </summary>
     internal IRenderable Renderable => _renderable;
 
     /// <summary>
@@ -106,11 +111,30 @@ public sealed class Layout : Renderable, IRatioResolvable, IHasVisibility
     /// Initializes a new instance of the <see cref="Layout"/> class.
     /// </summary>
     /// <param name="name">The layout name.</param>
-    public Layout(string? name = null)
+    public Layout(string name)
+        : this(name, null)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Layout"/> class.
+    /// </summary>
+    /// <param name="renderable">The renderable.</param>
+    public Layout(IRenderable renderable)
+        : this(null, renderable)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Layout"/> class.
+    /// </summary>
+    /// <param name="name">The layout name.</param>
+    /// <param name="renderable">The renderable.</param>
+    public Layout(string? name = null, IRenderable? renderable = null)
     {
         _splitter = LayoutSplitter.Null;
-        _children = new Layout[] { };
-        _renderable = new LayoutPlaceholder(this);
+        _children = Array.Empty<Layout>();
+        _renderable = renderable ?? new LayoutPlaceholder(this);
         _ratio = 1;
         _width = null;
 
@@ -140,7 +164,7 @@ public sealed class Layout : Renderable, IRatioResolvable, IHasVisibility
                 return current;
             }
 
-            foreach (var layout in current.Children)
+            foreach (var layout in current.GetChildren())
             {
                 stack.Push(layout);
             }
@@ -218,6 +242,16 @@ public sealed class Layout : Renderable, IRatioResolvable, IHasVisibility
         }
     }
 
+    private IEnumerable<Layout> GetChildren(bool visibleOnly = false)
+    {
+        return visibleOnly ? _children.Where(c => c.IsVisible) : _children;
+    }
+
+    private bool HasChildren(bool visibleOnly = false)
+    {
+        return visibleOnly ? _children.Any(c => c.IsVisible) : _children.Any();
+    }
+
     private void Split(LayoutSplitter splitter, Layout[] layouts)
     {
         if (_children.Length > 0)
@@ -237,7 +271,7 @@ public sealed class Layout : Renderable, IRatioResolvable, IHasVisibility
         var renderHeight = options.Height ?? options.ConsoleSize.Height;
         var regionMap = MakeRegionMap(maxWidth, renderHeight);
 
-        foreach (var (layout, region) in regionMap.Where(x => !x.Layout.HasChildren))
+        foreach (var (layout, region) in regionMap.Where(x => !x.Layout.HasChildren(visibleOnly: true)))
         {
             var segments = layout.Renderable.Render(options with { Height = region.Height }, region.Width);
 
@@ -262,10 +296,10 @@ public sealed class Layout : Renderable, IRatioResolvable, IHasVisibility
             var current = stack.Pop();
             result.Add(current);
 
-            if (current.Layout.HasChildren)
+            if (current.Layout.HasChildren(visibleOnly: true))
             {
                 foreach (var childAndRegion in current.Layout.Splitter
-                    .Divide(current.Region, current.Layout.Children))
+                    .Divide(current.Region, current.Layout.GetChildren(visibleOnly: true)))
                 {
                     stack.Push(childAndRegion);
                 }
