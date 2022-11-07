@@ -13,10 +13,10 @@ internal interface IRatioResolvable
     /// <summary>
     /// Gets the size.
     /// </summary>
-    int? Width { get; }
+    int? Size { get; }
 
     /// <summary>
     /// Gets the minimum size.
     /// </summary>
-    int MinimumWidth { get; }
+    int MinimumSize { get; }
 }

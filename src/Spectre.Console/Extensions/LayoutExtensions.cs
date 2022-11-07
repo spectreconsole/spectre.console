@@ -23,19 +23,19 @@ public static class LayoutExtensions
     }
 
     /// <summary>
-    /// Sets the width of the layout.
+    /// Sets the size of the layout.
     /// </summary>
     /// <param name="layout">The layout.</param>
-    /// <param name="width">The width.</param>
+    /// <param name="size">The size.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Layout Width(this Layout layout, int width)
+    public static Layout Size(this Layout layout, int size)
     {
         if (layout is null)
         {
             throw new ArgumentNullException(nameof(layout));
         }
 
-        layout.Width = width;
+        layout.Size = size;
         return layout;
     }
 
@@ -43,16 +43,16 @@ public static class LayoutExtensions
     /// Sets the minimum width of the layout.
     /// </summary>
     /// <param name="layout">The layout.</param>
-    /// <param name="width">The width.</param>
+    /// <param name="size">The size.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Layout MinimumWidth(this Layout layout, int width)
+    public static Layout MinimumSize(this Layout layout, int size)
     {
         if (layout is null)
         {
             throw new ArgumentNullException(nameof(layout));
         }
 
-        layout.MinimumWidth = width;
+        layout.MinimumSize = size;
         return layout;
     }
 }

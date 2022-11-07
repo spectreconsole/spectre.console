@@ -14,37 +14,34 @@ internal static class Ratio
 
         static int? GetEdgeWidth(IRatioResolvable edge)
         {
-            if (edge.Width != null)
+            if (edge.Size != null && edge.Size < edge.MinimumSize)
             {
-                if (edge.Width < edge.MinimumWidth)
-                {
-                    return edge.MinimumWidth;
-                }
+                return edge.MinimumSize;
             }
 
-            return edge.Width;
+            return edge.Size;
         }
 
-        var widths = edges.Select(x => GetEdgeWidth(x)).ToArray();
+        var sizes = edges.Select(x => GetEdgeWidth(x)).ToArray();
 
-        while (widths.Any(s => s == null))
+        while (sizes.Any(s => s == null))
         {
             // Get all edges and map them back to their index.
             // Ignore edges which have a explicit size.
-            var flexibleEdges = widths.Zip(edges, (a, b) => (Size: a, Edge: b))
+            var flexibleEdges = sizes.Zip(edges, (a, b) => (Size: a, Edge: b))
                 .Enumerate()
                 .Select(x => (x.Index, x.Item.Size, x.Item.Edge))
                 .Where(x => x.Size == null)
                 .ToList();
 
             // Get the remaining space
-            var remaining = total - widths.Select(size => size ?? 0).Sum();
+            var remaining = total - sizes.Select(size => size ?? 0).Sum();
             if (remaining <= 0)
             {
                 // No more room for flexible edges.
-                return widths
+                return sizes
                     .Zip(edges, (size, edge) => (Size: size, Edge: edge))
-                    .Select(zip => zip.Size ?? zip.Edge.MinimumWidth)
+                    .Select(zip => zip.Size ?? zip.Edge.MinimumSize)
                     .Select(size => size > 0 ? size : 1)
                     .ToList();
             }
@@ -54,9 +51,9 @@ internal static class Ratio
             var invalidate = false;
             foreach (var (index, size, edge) in flexibleEdges)
             {
-                if (portion * edge.Ratio <= edge.MinimumWidth)
+                if (portion * edge.Ratio <= edge.MinimumSize)
                 {
-                    widths[index] = edge.MinimumWidth;
+                    sizes[index] = edge.MinimumSize;
 
                     // New fixed size will invalidate calculations,
                     // so we need to repeat the process
@@ -68,16 +65,16 @@ internal static class Ratio
             if (!invalidate)
             {
                 var remainder = 0f;
-                foreach (var foo in flexibleEdges)
+                foreach (var flexibleEdge in flexibleEdges)
                 {
-                    var (div, mod) = DivMod((portion * foo.Edge.Ratio) + remainder, 1);
+                    var (div, mod) = DivMod((portion * flexibleEdge.Edge.Ratio) + remainder, 1);
                     remainder = mod;
-                    widths[foo.Index] = div;
+                    sizes[flexibleEdge.Index] = div;
                 }
             }
         }
 
-        return widths.Select(x => x ?? 1).ToList();
+        return sizes.Select(x => x ?? 1).ToList();
     }
 
     public static List<int> Reduce(int total, List<int> ratios, List<int> maximums, List<int> values)

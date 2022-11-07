@@ -9,8 +9,8 @@ public sealed class Layout : Renderable, IRatioResolvable, IHasVisibility
     private Layout[] _children;
     private IRenderable _renderable;
     private int _ratio;
-    private int _minimumWidth;
-    private int? _width;
+    private int _minimumSize;
+    private int? _size;
 
     /// <summary>
     /// Gets or sets the name.
@@ -45,17 +45,17 @@ public sealed class Layout : Renderable, IRatioResolvable, IHasVisibility
     /// Defaults to <c>1</c>.
     /// Must be greater than <c>0</c>.
     /// </remarks>
-    public int MinimumWidth
+    public int MinimumSize
     {
-        get => _minimumWidth;
+        get => _minimumSize;
         set
         {
             if (value < 1)
             {
-                throw new InvalidOperationException("Minimum width must be equal to or greater than 1");
+                throw new InvalidOperationException("Minimum size must be equal to or greater than 1");
             }
 
-            _minimumWidth = value;
+            _minimumSize = value;
         }
     }
 
@@ -66,17 +66,17 @@ public sealed class Layout : Renderable, IRatioResolvable, IHasVisibility
     /// Defaults to <c>null</c>.
     /// Must be greater than <c>0</c>.
     /// </remarks>
-    public int? Width
+    public int? Size
     {
-        get => _width;
+        get => _size;
         set
         {
             if (value < 1)
             {
-                throw new InvalidOperationException("Width must be equal to or greater than 1");
+                throw new InvalidOperationException("Size must be equal to or greater than 1");
             }
 
-            _width = value;
+            _size = value;
         }
     }
 
@@ -136,7 +136,7 @@ public sealed class Layout : Renderable, IRatioResolvable, IHasVisibility
         _children = Array.Empty<Layout>();
         _renderable = renderable ?? new LayoutPlaceholder(this);
         _ratio = 1;
-        _width = null;
+        _size = null;
 
         Name = name;
     }
