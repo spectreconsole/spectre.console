@@ -5,6 +5,7 @@ internal class CommandTreeParser
     private readonly CommandModel _configuration;
     private readonly ParsingMode _parsingMode;
     private readonly CommandOptionAttribute _help;
+    private readonly bool _convertFlagsToRemainingArgumentsIfCannotBeAssigned;
 
     public CaseSensitivity CaseSensitivity { get; }
 
@@ -24,6 +25,7 @@ internal class CommandTreeParser
         _configuration = configuration;
         _parsingMode = parsingMode ?? _configuration.ParsingMode;
         _help = new CommandOptionAttribute("-h|--help");
+        _convertFlagsToRemainingArgumentsIfCannotBeAssigned = settings.ConvertFlagsToRemainingArgumentsIfCannotBeAssigned;
 
         CaseSensitivity = settings.CaseSensitivity;
     }
@@ -255,9 +257,7 @@ internal class CommandTreeParser
             var option = node.FindOption(token.Value, isLongOption, CaseSensitivity);
             if (option != null)
             {
-                node.Mapped.Add(new MappedCommandParameter(
-                    option, ParseOptionValue(context, stream, token, node, option)));
-
+                ParseOptionValue(context, stream, token, node, option);
                 return;
             }
 
@@ -271,7 +271,7 @@ internal class CommandTreeParser
 
         if (context.State == State.Remaining)
         {
-            ParseOptionValue(context, stream, token, node, null);
+            ParseOptionValue(context, stream, token, node);
             return;
         }
 
@@ -281,17 +281,19 @@ internal class CommandTreeParser
         }
         else
         {
-            ParseOptionValue(context, stream, token, node, null);
+            ParseOptionValue(context, stream, token, node);
         }
     }
 
-    private string? ParseOptionValue(
+    private void ParseOptionValue(
         CommandTreeParserContext context,
         CommandTreeTokenStream stream,
         CommandTreeToken token,
         CommandTree current,
-        CommandParameter? parameter)
+        CommandParameter? parameter = null)
     {
+        bool addToMappedCommandParameters = parameter != null;
+
         var value = default(string);
 
         // Parse the value of the token (if any).
@@ -325,7 +327,21 @@ internal class CommandTreeParser
                                 else
                                 {
                                     // Flags cannot be assigned a value.
-                                    throw CommandParseException.CannotAssignValueToFlag(context.Arguments, token);
+                                    if (_convertFlagsToRemainingArgumentsIfCannotBeAssigned)
+                                    {
+                                        value = stream.Consume(CommandTreeToken.Kind.String)?.Value;
+
+                                        context.AddRemainingArgument(token.Value, value);
+
+                                        // Prevent the option and it's non-boolean value from being added to
+                                        // mapped parameters (otherwise an exception will be thrown later
+                                        // when binding the value to the flag in the comand settings)
+                                        addToMappedCommandParameters = false;
+                                    }
+                                    else
+                                    {
+                                        throw CommandParseException.CannotAssignValueToFlag(context.Arguments, token);
+                                    }
                                 }
                             }
                             else
@@ -379,10 +395,12 @@ internal class CommandTreeParser
                     {
                         if (parameter.IsFlagValue())
                         {
-                            return null;
+                            value = null;
                         }
-
-                        throw CommandParseException.OptionHasNoValue(context.Arguments, token, option);
+                        else
+                        {
+                            throw CommandParseException.OptionHasNoValue(context.Arguments, token, option);
+                        }
                     }
                     else
                     {
@@ -394,6 +412,9 @@ internal class CommandTreeParser
             }
         }
 
-        return value;
+        if (parameter != null && addToMappedCommandParameters)
+        {
+            current.Mapped.Add(new MappedCommandParameter(parameter, value));
+        }
     }
 }
