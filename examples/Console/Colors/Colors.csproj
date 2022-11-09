@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ExampleTitle>Colors</ExampleTitle>
     <ExampleDescription>Demonstrates how to use [yellow]c[/][red]o[/][green]l[/][blue]o[/][aqua]r[/][lime]s[/] in the console.</ExampleDescription>
     <ExampleGroup>Misc</ExampleGroup>

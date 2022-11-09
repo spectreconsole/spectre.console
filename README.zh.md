@@ -2,7 +2,7 @@
 
 _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.console.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_
 
-`Spectre.Console`是一个 .NET 6/.NET Standard 2.0 的库，可以更轻松地创建美观的跨平台控制台应用程序。
+`Spectre.Console`是一个 .NET 的库，可以更轻松地创建美观的跨平台控制台应用程序。
 
 深受 [Rich](https://github.com/willmcgugan/rich) 这个Python优秀库的启发。
 

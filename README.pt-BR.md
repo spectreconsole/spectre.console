@@ -2,7 +2,7 @@
 
 _[![Spectre.Console NuGet Versão](https://img.shields.io/nuget/v/spectre.console.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_
 
-Uma biblioteca .NET 6/.NET Standard 2.0 que torna mais fácil criar aplicativos de console bonitos e multiplataforma. 
+Uma biblioteca .NET que torna mais fácil criar aplicativos de console bonitos e multiplataforma. 
 É fortemente inspirada na excelente [biblioteca Rich](https://github.com/willmcgugan/rich) 
 para Python.
 
