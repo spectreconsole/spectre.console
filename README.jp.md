@@ -2,7 +2,7 @@
 
 _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.console.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_
 
-綺麗なコンソールアプリケーションを簡単に作成するための.NET Standard 2.0ライブラリです。
+綺麗なコンソールアプリケーションを簡単に作成するための.NETライブラリです。
 Python用の素晴らしい[Rich ライブラリ](https://github.com/willmcgugan/rich)に強く影響を受けています。
 
 ## 目次

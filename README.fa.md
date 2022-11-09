@@ -4,7 +4,7 @@ _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.consol
 
 <div dir="rtl">
 
-یک کتابخانه NET Standard 2.0/.NET 6. که ایجاد Console Applicationهای زیبا و cross platform را آسان‌تر می‌کند.  
+یک کتابخانه .NET. که ایجاد Console Applicationهای زیبا و cross platform را آسان‌تر می‌کند.  
 از کتابخانه عالی [Rich](https://github.com/willmcgugan/rich)  برای پایتون، بسیار الهام گرفته شده است.
 
 ## فهرست
