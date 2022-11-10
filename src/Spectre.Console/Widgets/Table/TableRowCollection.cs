@@ -107,8 +107,7 @@ public sealed class TableRowCollection : IReadOnlyList<TableRow>
                 throw new IndexOutOfRangeException("Table row index cannot exceed the number of rows in the table.");
             }
 
-            var tableRow = _list.ElementAtOrDefault(row);
-
+            var tableRow = _list.ElementAt(row);
             var currentRenderables = tableRow.ToList();
 
             if (column < 0)
