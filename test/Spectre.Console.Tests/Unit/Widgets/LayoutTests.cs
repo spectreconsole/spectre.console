@@ -209,14 +209,14 @@ public sealed class LayoutTests
     }
 
     [Fact]
-    [Expectation("Render_Layout_With_Respect_To_Width")]
-    public Task Should_Render_Layout_With_Respect_To_Width()
+    [Expectation("Render_Layout_With_Respect_To_Size")]
+    public Task Should_Render_Layout_With_Respect_To_Size()
     {
         // Given
         var console = new TestConsole().Size(new Size(40, 15));
         var layout = new Layout()
             .SplitColumns(
-                new Layout("Left").Width(28),
+                new Layout("Left").Size(28),
                 new Layout("Right"));
 
         // When
@@ -227,14 +227,14 @@ public sealed class LayoutTests
     }
 
     [Fact]
-    [Expectation("Render_Layout_With_Respect_To_Minimum_Width")]
-    public Task Should_Render_Layout_With_Respect_To_Minimum_Width()
+    [Expectation("Render_Layout_With_Respect_To_Minimum_Size")]
+    public Task Should_Render_Layout_With_Respect_To_Minimum_Size()
     {
         // Given
         var console = new TestConsole().Size(new Size(40, 15));
         var layout = new Layout()
             .SplitColumns(
-                new Layout("Left").Width(28).MinimumWidth(30),
+                new Layout("Left").Size(28).MinimumSize(30),
                 new Layout("Right"));
 
         // When

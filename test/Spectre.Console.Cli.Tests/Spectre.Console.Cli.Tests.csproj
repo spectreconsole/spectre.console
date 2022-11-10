@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('Windows'))">net7.0;net48</TargetFrameworks>
-    <TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('Windows'))">net7.0</TargetFrameworks>
+    <TargetFrameworks>net7.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,17 +27,6 @@
     <ProjectReference Include="..\..\src\Spectre.Console.Cli\Spectre.Console.Cli.csproj" />
     <ProjectReference Include="..\..\src\Spectre.Console.Testing\Spectre.Console.Testing.csproj" />
     <ProjectReference Include="..\..\src\Spectre.Console\Spectre.Console.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Expectations\Help\Description_No_Trailing_Period.Output.received.txt">
-      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
-      <DependentUpon>%(ParentFile).cs</DependentUpon>
-    </None>
-    <None Update="Expectations\Help\Description_No_Trailing_Period.Output.verified.txt">
-      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
-      <DependentUpon>%(ParentFile).cs</DependentUpon>
-    </None>
   </ItemGroup>
 
 </Project>

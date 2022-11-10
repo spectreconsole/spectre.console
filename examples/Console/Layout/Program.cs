@@ -24,8 +24,8 @@ public static class Program
                         .SplitRows(
                             new Layout("LeftTop"),
                             new Layout("LeftBottom")),
-                    new Layout("Right") { Ratio = 2 },
-                    new Layout("RightRight") { Width = 3 }),
+                    new Layout("Right").Ratio(2),
+                    new Layout("RightRight").Size(3)),
             new Layout("Bottom"));
 
         layout["LeftBottom"].Update(
