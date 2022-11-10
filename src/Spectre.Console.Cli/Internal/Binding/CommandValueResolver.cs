@@ -85,7 +85,7 @@ internal static class CommandValueResolver
                         }
 
                         // Assign the value to the parameter.
-                        binder.Bind(mapped.Parameter, resolver, converter.ConvertFromInvariantString(mapped.Value));
+                        binder.Bind(mapped.Parameter, resolver, converter.ConvertFromInvariantString(mapped.Value ?? string.Empty));
                     }
                 }
 
@@ -130,7 +130,13 @@ internal static class CommandValueResolver
             if (parameter.ParameterType.IsArray)
             {
                 // Return a converter for each array item (not the whole array)
-                return TypeDescriptor.GetConverter(parameter.ParameterType.GetElementType());
+                var elementType = parameter.ParameterType.GetElementType();
+                if (elementType == null)
+                {
+                    throw new InvalidOperationException("Could not get element type");
+                }
+
+                return TypeDescriptor.GetConverter(elementType);
             }
 
             if (parameter.IsFlagValue())
