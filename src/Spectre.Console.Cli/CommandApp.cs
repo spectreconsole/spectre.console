@@ -82,6 +82,7 @@ public sealed class CommandApp : ICommandApp
                 .Execute(_configurator, args)
                 .ConfigureAwait(false);
         }
+
         // Should we always propagate when debugging?
         catch (Exception ex) when (!Debugger.IsAttached
                 || ex is not CommandAppException appException

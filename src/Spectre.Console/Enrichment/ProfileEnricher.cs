@@ -4,20 +4,20 @@ internal static class ProfileEnricher
 {
     private static readonly List<IProfileEnricher> _defaultEnrichers = new()
     {
-            new AppVeyorEnricher(),
-            new BambooEnricher(),
-            new BitbucketEnricher(),
-            new BitriseEnricher(),
-            new ContinuaEnricher(),
-            new GitHubEnricher(),
-            new GitLabEnricher(),
-            new GoCDEnricher(),
-            new JenkinsEnricher(),
-            new MyGetEnricher(),
-            new TeamCityEnricher(),
-            new TfsEnricher(),
-            new TravisEnricher(),
-        };
+        new AppVeyorEnricher(),
+        new BambooEnricher(),
+        new BitbucketEnricher(),
+        new BitriseEnricher(),
+        new ContinuaEnricher(),
+        new GitHubEnricher(),
+        new GitLabEnricher(),
+        new GoCDEnricher(),
+        new JenkinsEnricher(),
+        new MyGetEnricher(),
+        new TeamCityEnricher(),
+        new TfsEnricher(),
+        new TravisEnricher(),
+    };
 
     public static void Enrich(
         Profile profile,
