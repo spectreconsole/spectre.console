@@ -186,8 +186,10 @@ public sealed class TableTests
     {
         // Given
         var console = new TestConsole();
-        var table = new Table();
-        table.Alignment = Justify.Left;
+        var table = new Table
+        {
+            Alignment = Justify.Left,
+        };
         table.AddColumns("Foo", "Bar", "Baz");
         table.AddRow("Qux", "Corgi", "Waldo");
         table.AddRow("Grault", "Garply", "Fred");
@@ -205,8 +207,10 @@ public sealed class TableTests
     {
         // Given
         var console = new TestConsole();
-        var table = new Table();
-        table.Alignment = Justify.Center;
+        var table = new Table
+        {
+            Alignment = Justify.Center,
+        };
         table.AddColumns("Foo", "Bar", "Baz");
         table.AddRow("Qux", "Corgi", "Waldo");
         table.AddRow("Grault", "Garply", "Fred");
@@ -224,8 +228,10 @@ public sealed class TableTests
     {
         // Given
         var console = new TestConsole();
-        var table = new Table();
-        table.Alignment = Justify.Right;
+        var table = new Table
+        {
+            Alignment = Justify.Right,
+        };
         table.AddColumns("Foo", "Bar", "Baz");
         table.AddRow("Qux", "Corgi", "Waldo");
         table.AddRow("Grault", "Garply", "Fred");
@@ -396,9 +402,12 @@ public sealed class TableTests
     {
         // Given
         var console = new TestConsole();
-        var table = new Table { Border = TableBorder.Rounded };
-        table.Title = new TableTitle("Hello World");
-        table.Caption = new TableTitle("Goodbye World");
+        var table = new Table
+        {
+            Border = TableBorder.Rounded,
+            Title = new TableTitle("Hello World"),
+            Caption = new TableTitle("Goodbye World"),
+        };
         table.AddColumns("Foo", "Bar", "Baz");
         table.AddRow("Qux", "Corgi", "Waldo");
         table.AddRow("Grault", "Garply", "Fred");
@@ -479,9 +488,12 @@ public sealed class TableTests
     {
         // Given
         var console = new TestConsole();
-        var table = new Table { Border = TableBorder.Rounded };
-        table.Title = new TableTitle("hello world");
-        table.Caption = new TableTitle("goodbye world");
+        var table = new Table
+        {
+            Border = TableBorder.Rounded,
+            Title = new TableTitle("hello world"),
+            Caption = new TableTitle("goodbye world"),
+        };
         table.AddColumns("Foo", "Bar", "Baz");
         table.AddRow("Qux", "Corgi", "Waldo");
         table.AddRow("Grault", "Garply", "Fred");
@@ -504,8 +516,10 @@ public sealed class TableTests
         table.AddRow("Qux With A Long Description", "Corgi", "Waldo");
         table.AddRow("Grault", "Garply", "Fred On A Long Long Walk");
 
-        var panel = new Panel(table);
-        panel.Border = BoxBorder.Double;
+        var panel = new Panel(table)
+        {
+            Border = BoxBorder.Double,
+        };
 
         // When
         console.Write(panel);

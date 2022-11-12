@@ -263,10 +263,7 @@ public static class TextPromptExtensions
             throw new ArgumentNullException(nameof(choices));
         }
 
-        foreach (var choice in choices)
-        {
-            obj.Choices.Add(choice);
-        }
+        obj.Choices.AddRange(choices);
 
         return obj;
     }

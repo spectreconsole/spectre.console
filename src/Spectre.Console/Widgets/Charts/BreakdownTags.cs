@@ -27,9 +27,11 @@ internal sealed class BreakdownTags : Renderable
         var panels = new List<Panel>();
         foreach (var item in _data)
         {
-            var panel = new Panel(GetTag(item, culture));
-            panel.Inline = true;
-            panel.Padding = new Padding(0, 0);
+            var panel = new Panel(GetTag(item, culture))
+            {
+                Inline = true,
+                Padding = new Padding(0, 0),
+            };
             panel.NoBorder();
 
             panels.Add(panel);

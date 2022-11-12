@@ -10,10 +10,7 @@ public static partial class AnsiConsole
     /// </summary>
     public static void Record()
     {
-        if (_recorder == null)
-        {
-            _recorder = new Recorder(Console);
-        }
+        _recorder ??= new Recorder(Console);
     }
 
     /// <summary>

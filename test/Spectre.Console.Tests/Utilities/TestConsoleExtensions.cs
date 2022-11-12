@@ -2,8 +2,8 @@ namespace Spectre.Console.Tests;
 
 public static class TestConsoleExtensions
 {
-    private static readonly Regex _lineNumberRegex = new Regex(":\\d+", RegexOptions.Singleline);
-    private static readonly Regex _filenameRegex = new Regex("\\sin\\s.*cs:nn", RegexOptions.Multiline);
+    private static readonly Regex _lineNumberRegex = new(":\\d+", RegexOptions.Singleline);
+    private static readonly Regex _filenameRegex = new("\\sin\\s.*cs:nn", RegexOptions.Multiline);
 
     public static string WriteNormalizedException(this TestConsole console, Exception ex, ExceptionFormats formats = ExceptionFormats.Default)
     {

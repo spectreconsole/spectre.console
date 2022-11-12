@@ -37,7 +37,7 @@ internal static class TypeConverterHelper
             }
             else
             {
-                result = (T?)GetTypeConverter<T>().ConvertFromString(null!, info, input);
+                result = (T?)GetTypeConverter<T>().ConvertFromString(null, info, input);
             }
 
             return true;

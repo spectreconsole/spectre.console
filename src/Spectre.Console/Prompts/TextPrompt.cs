@@ -123,7 +123,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
         {
             var promptStyle = PromptStyle ?? Style.Plain;
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
-            var choices = Choices.Select(choice => converter(choice)).ToList();
+            var choices = Choices.ConvertAll(choice => converter(choice));
             var choiceMap = Choices.ToDictionary(choice => converter(choice), choice => choice, _comparer);
 
             WritePrompt(console);

@@ -15,8 +15,10 @@ internal sealed class ProgressRefreshThread : IDisposable
         _running = new ManualResetEvent(false);
         _stopped = new ManualResetEvent(false);
 
-        _thread = new Thread(Run);
-        _thread.IsBackground = true;
+        _thread = new Thread(Run)
+        {
+            IsBackground = true,
+        };
         _thread.Start();
     }
 

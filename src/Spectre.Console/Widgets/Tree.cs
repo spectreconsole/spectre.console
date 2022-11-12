@@ -55,8 +55,10 @@ public sealed class Tree : Renderable, IHasTreeNodes
         var stack = new Stack<Queue<TreeNode>>();
         stack.Push(new Queue<TreeNode>(new[] { _root }));
 
-        var levels = new List<Segment>();
-        levels.Add(GetGuide(context, TreeGuidePart.Continue));
+        var levels = new List<Segment>
+        {
+            GetGuide(context, TreeGuidePart.Continue),
+        };
 
         while (stack.Count > 0)
         {

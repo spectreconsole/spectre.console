@@ -2,8 +2,8 @@ namespace Spectre.Console.Enrichment;
 
 internal static class ProfileEnricher
 {
-    private static readonly List<IProfileEnricher> _defaultEnrichers = new List<IProfileEnricher>
-        {
+    private static readonly List<IProfileEnricher> _defaultEnrichers = new()
+    {
             new AppVeyorEnricher(),
             new BambooEnricher(),
             new BitbucketEnricher(),

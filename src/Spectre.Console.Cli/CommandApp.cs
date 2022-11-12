@@ -82,16 +82,11 @@ public sealed class CommandApp : ICommandApp
                 .Execute(_configurator, args)
                 .ConfigureAwait(false);
         }
-        catch (Exception ex)
+        // Should we always propagate when debugging?
+        catch (Exception ex) when (!Debugger.IsAttached
+                || ex is not CommandAppException appException
+                || !appException.AlwaysPropagateWhenDebugging)
         {
-            // Should we always propagate when debugging?
-            if (Debugger.IsAttached
-                && ex is CommandAppException appException
-                && appException.AlwaysPropagateWhenDebugging)
-            {
-                throw;
-            }
-
             if (_configurator.Settings.PropagateExceptions)
             {
                 throw;

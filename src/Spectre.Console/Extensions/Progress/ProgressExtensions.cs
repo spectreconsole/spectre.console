@@ -23,7 +23,7 @@ public static class ProgressExtensions
             throw new ArgumentNullException(nameof(columns));
         }
 
-        if (!columns.Any())
+        if (columns.Length == 0)
         {
             throw new InvalidOperationException("At least one column must be specified.");
         }

@@ -6,11 +6,11 @@ namespace Spectre.Console;
 public static partial class AnsiConsole
 {
 #pragma warning disable CS0618 // 'AnsiConsoleFactory' is obsolete
-    private static readonly AnsiConsoleFactory _factory = new AnsiConsoleFactory();
+    private static readonly AnsiConsoleFactory _factory = new();
 #pragma warning restore CS0618
 
     private static Recorder? _recorder;
-    private static Lazy<IAnsiConsole> _console = new Lazy<IAnsiConsole>(
+    private static Lazy<IAnsiConsole> _console = new(
         () =>
         {
             var console = Create(new AnsiConsoleSettings

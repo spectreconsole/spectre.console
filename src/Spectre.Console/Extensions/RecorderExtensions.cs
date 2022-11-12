@@ -5,8 +5,8 @@ namespace Spectre.Console;
 /// </summary>
 public static class RecorderExtensions
 {
-    private static readonly TextEncoder _textEncoder = new TextEncoder();
-    private static readonly HtmlEncoder _htmlEncoder = new HtmlEncoder();
+    private static readonly TextEncoder _textEncoder = new();
+    private static readonly HtmlEncoder _htmlEncoder = new();
 
     /// <summary>
     /// Exports the recorded content as text.

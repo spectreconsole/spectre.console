@@ -44,8 +44,10 @@ public static partial class AnsiConsoleExtensions
     /// <returns>The prompt input result.</returns>
     public static T Ask<T>(this IAnsiConsole console, string prompt, CultureInfo? culture)
     {
-        var textPrompt = new TextPrompt<T>(prompt);
-        textPrompt.Culture = culture;
+        var textPrompt = new TextPrompt<T>(prompt)
+        {
+            Culture = culture,
+        };
         return textPrompt.Show(console);
     }
 

@@ -33,7 +33,7 @@ public sealed class ProgressTaskState
                 return default;
             }
 
-            if (!(value is T))
+            if (value is not T)
             {
                 throw new InvalidOperationException("State value is of the wrong type.");
             }
@@ -62,7 +62,7 @@ public sealed class ProgressTaskState
             var old = default(T);
             if (_state.TryGetValue(key, out var value))
             {
-                if (!(value is T))
+                if (value is not T)
                 {
                     throw new InvalidOperationException("State value is of the wrong type.");
                 }

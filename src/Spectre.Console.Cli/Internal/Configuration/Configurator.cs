@@ -65,7 +65,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
 
         method = method.MakeGenericMethod(command);
 
-        if (!(method.Invoke(this, new object[] { name }) is ICommandConfigurator result))
+        if (method.Invoke(this, new object[] { name }) is not ICommandConfigurator result)
         {
             throw new CommandConfigurationException("Invoking AddCommand returned null.");
         }
@@ -79,7 +79,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
 
         // Create the configurator.
         var configuratorType = typeof(Configurator<>).MakeGenericType(settings);
-        if (!(Activator.CreateInstance(configuratorType, new object?[] { command, _registrar }) is IUnsafeBranchConfigurator configurator))
+        if (Activator.CreateInstance(configuratorType, new object?[] { command, _registrar }) is not IUnsafeBranchConfigurator configurator)
         {
             throw new CommandConfigurationException("Could not create configurator by reflection.");
         }

@@ -31,7 +31,7 @@ internal static class CommandConstructorBinder
         }
 
         // Create the settings.
-        if (!(Activator.CreateInstance(constructor.DeclaringType, parameters.ToArray()) is CommandSettings settings))
+        if (Activator.CreateInstance(constructor.DeclaringType, parameters.ToArray()) is not CommandSettings settings)
         {
             throw new InvalidOperationException("Could not create settings");
         }

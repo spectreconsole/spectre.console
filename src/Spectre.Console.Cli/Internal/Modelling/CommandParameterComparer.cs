@@ -2,7 +2,7 @@ namespace Spectre.Console.Cli;
 
 internal static class CommandParameterComparer
 {
-    public static readonly ByBackingPropertyComparer ByBackingProperty = new ByBackingPropertyComparer();
+    public static readonly ByBackingPropertyComparer ByBackingProperty = new();
 
     public sealed class ByBackingPropertyComparer : IEqualityComparer<CommandParameter?>
     {

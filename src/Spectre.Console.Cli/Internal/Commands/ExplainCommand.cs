@@ -37,8 +37,8 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
     public override int Execute([NotNull] CommandContext context, [NotNull] Settings settings)
     {
         var tree = new Tree("CLI Configuration");
-        tree.AddNode(ValueMarkup("Application Name", _commandModel.ApplicationName, "no application name"));
-        tree.AddNode(ValueMarkup("Parsing Mode", _commandModel.ParsingMode.ToString()));
+        tree.AddNode(ExplainCommand.ValueMarkup("Application Name", _commandModel.ApplicationName, "no application name"));
+        tree.AddNode(ExplainCommand.ValueMarkup("Parsing Mode", _commandModel.ParsingMode.ToString()));
 
         if (settings.Commands == null || settings.Commands.Length == 0)
         {
@@ -48,7 +48,7 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
                 : _commandModel.Commands;
 
             AddCommands(
-                tree.AddNode(ParentMarkup("Commands")),
+                tree.AddNode(ExplainCommand.ParentMarkup("Commands")),
                 commands,
                 settings.Detailed ?? false,
                 settings.IncludeHidden);
@@ -79,7 +79,7 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
             }
 
             AddCommands(
-                tree.AddNode(ParentMarkup("Commands")),
+                tree.AddNode(ExplainCommand.ParentMarkup("Commands")),
                 new[] { currentCommand },
                 settings.Detailed ?? true,
                 settings.IncludeHidden);
@@ -90,12 +90,12 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
         return 0;
     }
 
-    private IRenderable ValueMarkup(string key, string value)
+    private static IRenderable ValueMarkup(string key, string value)
     {
         return new Markup($"{key}: [blue]{value.EscapeMarkup()}[/]");
     }
 
-    private IRenderable ValueMarkup(string key, string? value, string noValueText)
+    private static IRenderable ValueMarkup(string key, string? value, string noValueText)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
@@ -107,7 +107,7 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
         return table;
     }
 
-    private string ParentMarkup(string description)
+    private static string ParentMarkup(string description)
     {
         return $"[yellow]{description.EscapeMarkup()}[/]";
     }
@@ -119,7 +119,7 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
             return;
         }
 
-        var parentNode = node.AddNode(ParentMarkup(description));
+        var parentNode = node.AddNode(ExplainCommand.ParentMarkup(description));
         foreach (var s in strings)
         {
             parentNode.AddNode(s);
@@ -142,21 +142,21 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
             }
 
             var commandNode = node.AddNode(commandName);
-            commandNode.AddNode(ValueMarkup("Description", command.Description, "no description"));
+            commandNode.AddNode(ExplainCommand.ValueMarkup("Description", command.Description, "no description"));
             if (command.IsHidden)
             {
-                commandNode.AddNode(ValueMarkup("IsHidden", command.IsHidden.ToString()));
+                commandNode.AddNode(ExplainCommand.ValueMarkup("IsHidden", command.IsHidden.ToString()));
             }
 
             if (!command.IsBranch)
             {
-                commandNode.AddNode(ValueMarkup("Type", command.CommandType?.ToString(), "no command type"));
-                commandNode.AddNode(ValueMarkup("Settings Type", command.SettingsType.ToString()));
+                commandNode.AddNode(ExplainCommand.ValueMarkup("Type", command.CommandType?.ToString(), "no command type"));
+                commandNode.AddNode(ExplainCommand.ValueMarkup("Settings Type", command.SettingsType.ToString()));
             }
 
             if (command.Parameters.Count > 0)
             {
-                var parametersNode = commandNode.AddNode(ParentMarkup("Parameters"));
+                var parametersNode = commandNode.AddNode(ExplainCommand.ParentMarkup("Parameters"));
                 foreach (var parameter in command.Parameters)
                 {
                     AddParameter(parametersNode, parameter, detailed, includeHidden);
@@ -168,7 +168,7 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
 
             if (command.Children.Count > 0)
             {
-                var childNode = commandNode.AddNode(ParentMarkup("Child Commands"));
+                var childNode = commandNode.AddNode(ExplainCommand.ParentMarkup("Child Commands"));
                 AddCommands(childNode, command.Children, detailed, includeHidden);
             }
         }
@@ -192,50 +192,50 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
         var parameterNode = parametersNode.AddNode(
             $"{parameter.PropertyName} [grey]{parameter.Property.PropertyType.ToString().EscapeMarkup()}[/]");
 
-        parameterNode.AddNode(ValueMarkup("Description", parameter.Description, "no description"));
-        parameterNode.AddNode(ValueMarkup("Parameter Kind", parameter.ParameterKind.ToString()));
+        parameterNode.AddNode(ExplainCommand.ValueMarkup("Description", parameter.Description, "no description"));
+        parameterNode.AddNode(ExplainCommand.ValueMarkup("Parameter Kind", parameter.ParameterKind.ToString()));
 
         if (parameter is CommandOption commandOptionParameter)
         {
             if (commandOptionParameter.IsShadowed)
             {
-                parameterNode.AddNode(ValueMarkup("IsShadowed", commandOptionParameter.IsShadowed.ToString()));
+                parameterNode.AddNode(ExplainCommand.ValueMarkup("IsShadowed", commandOptionParameter.IsShadowed.ToString()));
             }
 
             if (commandOptionParameter.LongNames.Count > 0)
             {
-                parameterNode.AddNode(ValueMarkup(
+                parameterNode.AddNode(ExplainCommand.ValueMarkup(
                     "Long Names",
                     string.Join("|", commandOptionParameter.LongNames.Select(i => $"--{i}"))));
 
-                parameterNode.AddNode(ValueMarkup(
+                parameterNode.AddNode(ExplainCommand.ValueMarkup(
                     "Short Names",
                     string.Join("|", commandOptionParameter.ShortNames.Select(i => $"-{i}"))));
             }
         }
         else if (parameter is CommandArgument commandArgumentParameter)
         {
-            parameterNode.AddNode(ValueMarkup("Position", commandArgumentParameter.Position.ToString()));
-            parameterNode.AddNode(ValueMarkup("Value", commandArgumentParameter.Value));
+            parameterNode.AddNode(ExplainCommand.ValueMarkup("Position", commandArgumentParameter.Position.ToString()));
+            parameterNode.AddNode(ExplainCommand.ValueMarkup("Value", commandArgumentParameter.Value));
         }
 
-        parameterNode.AddNode(ValueMarkup("Required", parameter.Required.ToString()));
+        parameterNode.AddNode(ExplainCommand.ValueMarkup("Required", parameter.Required.ToString()));
 
         if (parameter.Converter != null)
         {
-            parameterNode.AddNode(ValueMarkup(
+            parameterNode.AddNode(ExplainCommand.ValueMarkup(
                 "Converter", $"\"{parameter.Converter.ConverterTypeName}\""));
         }
 
         if (parameter.DefaultValue != null)
         {
-            parameterNode.AddNode(ValueMarkup(
+            parameterNode.AddNode(ExplainCommand.ValueMarkup(
                 "Default Value", $"\"{parameter.DefaultValue.Value}\""));
         }
 
         if (parameter.PairDeconstructor != null)
         {
-            parameterNode.AddNode(ValueMarkup("Pair Deconstructor", parameter.PairDeconstructor.Type.ToString()));
+            parameterNode.AddNode(ExplainCommand.ValueMarkup("Pair Deconstructor", parameter.PairDeconstructor.Type.ToString()));
         }
 
         AddStringList(

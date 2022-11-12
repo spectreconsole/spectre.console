@@ -4,7 +4,7 @@ internal static class TypeNameHelper
 {
     // from  https://github.com/benaadams/Ben.Demystifier/blob/main/src/Ben.Demystifier/TypeNameHelper.cs
     // which was adapted from https://github.com/aspnet/Common/blob/dev/shared/Microsoft.Extensions.TypeNameHelper.Sources/TypeNameHelper.cs
-    public static readonly Dictionary<Type, string> BuiltInTypeNames = new Dictionary<Type, string>
+    public static readonly Dictionary<Type, string> BuiltInTypeNames = new()
     {
         { typeof(void), "void" },
         { typeof(bool), "bool" },
@@ -24,7 +24,7 @@ internal static class TypeNameHelper
         { typeof(ushort), "ushort" },
     };
 
-    public static readonly Dictionary<string, string> FSharpTypeNames = new Dictionary<string, string>
+    public static readonly Dictionary<string, string> FSharpTypeNames = new()
     {
         { "Unit", "void" },
         { "FSharpOption", "Option" },

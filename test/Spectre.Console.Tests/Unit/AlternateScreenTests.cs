@@ -54,8 +54,10 @@ public sealed class AlternateScreenTests
     public async Task Should_Write_To_Alternate_Screen()
     {
         // Given
-        var console = new TestConsole();
-        console.EmitAnsiSequences = true;
+        var console = new TestConsole
+        {
+            EmitAnsiSequences = true,
+        };
         console.Profile.Capabilities.AlternateBuffer = true;
 
         // When

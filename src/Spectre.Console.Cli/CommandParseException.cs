@@ -19,7 +19,7 @@ public sealed class CommandParseException : CommandRuntimeException
     {
         if (commandType == null)
         {
-            return new CommandParseException($"Could not create command. Command type is unknown.");
+            return new CommandParseException("Could not create command. Command type is unknown.");
         }
 
         return new CommandParseException($"Could not create command of type '{commandType.FullName}'.");

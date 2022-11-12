@@ -2,14 +2,14 @@ namespace Spectre.Console.Tests.Unit;
 
 public sealed class ListPromptStateTests
 {
-    private ListPromptState<string> CreateListPromptState(int count, int pageSize, bool shouldWrap)
+    private static ListPromptState<string> CreateListPromptState(int count, int pageSize, bool shouldWrap)
         => new(Enumerable.Repeat(new ListPromptItem<string>(string.Empty), count).ToList(), pageSize, shouldWrap);
 
     [Fact]
     public void Should_Have_Start_Index_Zero()
     {
         // Given
-        var state = CreateListPromptState(100, 10, false);
+        var state = ListPromptStateTests.CreateListPromptState(100, 10, false);
 
         // When
         /* noop */
@@ -24,7 +24,7 @@ public sealed class ListPromptStateTests
     public void Should_Increase_Index(bool wrap)
     {
         // Given
-        var state = CreateListPromptState(100, 10, wrap);
+        var state = ListPromptStateTests.CreateListPromptState(100, 10, wrap);
         var index = state.Index;
 
         // When
@@ -40,7 +40,7 @@ public sealed class ListPromptStateTests
     public void Should_Go_To_End(bool wrap)
     {
         // Given
-        var state = CreateListPromptState(100, 10, wrap);
+        var state = ListPromptStateTests.CreateListPromptState(100, 10, wrap);
 
         // When
         state.Update(ConsoleKey.End);
@@ -53,7 +53,7 @@ public sealed class ListPromptStateTests
     public void Should_Clamp_Index_If_No_Wrap()
     {
         // Given
-        var state = CreateListPromptState(100, 10, false);
+        var state = ListPromptStateTests.CreateListPromptState(100, 10, false);
         state.Update(ConsoleKey.End);
 
         // When
@@ -67,7 +67,7 @@ public sealed class ListPromptStateTests
     public void Should_Wrap_Index_If_Wrap()
     {
         // Given
-        var state = CreateListPromptState(100, 10, true);
+        var state = ListPromptStateTests.CreateListPromptState(100, 10, true);
         state.Update(ConsoleKey.End);
 
         // When
@@ -81,7 +81,7 @@ public sealed class ListPromptStateTests
     public void Should_Wrap_Index_If_Wrap_And_Down()
     {
         // Given
-        var state = CreateListPromptState(100, 10, true);
+        var state = ListPromptStateTests.CreateListPromptState(100, 10, true);
 
         // When
         state.Update(ConsoleKey.UpArrow);
@@ -94,7 +94,7 @@ public sealed class ListPromptStateTests
     public void Should_Wrap_Index_If_Wrap_And_Page_Up()
     {
         // Given
-        var state = CreateListPromptState(10, 100, true);
+        var state = ListPromptStateTests.CreateListPromptState(10, 100, true);
 
         // When
         state.Update(ConsoleKey.PageUp);
@@ -107,7 +107,7 @@ public sealed class ListPromptStateTests
     public void Should_Wrap_Index_If_Wrap_And_Offset_And_Page_Down()
     {
         // Given
-        var state = CreateListPromptState(10, 100, true);
+        var state = ListPromptStateTests.CreateListPromptState(10, 100, true);
         state.Update(ConsoleKey.End);
         state.Update(ConsoleKey.UpArrow);
 

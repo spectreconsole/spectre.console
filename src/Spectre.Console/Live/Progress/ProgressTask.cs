@@ -225,8 +225,7 @@ public sealed class ProgressTask : IProgress<double>
     private double GetPercentage()
     {
         var percentage = (Value / MaxValue) * 100;
-        percentage = Math.Min(100, Math.Max(0, percentage));
-        return percentage;
+        return Math.Min(100, Math.Max(0, percentage));
     }
 
     private double? GetSpeed()

@@ -4,7 +4,7 @@ namespace Spectre.Console.Rendering;
 
 internal sealed class LiveRenderable : Renderable
 {
-    private readonly object _lock = new object();
+    private readonly object _lock = new();
     private readonly IAnsiConsole _console;
     private IRenderable? _renderable;
     private SegmentShape? _shape;

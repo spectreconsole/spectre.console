@@ -58,7 +58,7 @@ public sealed class MarkdownTableBorder : TableBorder
         {
             var padding = columns[columnIndex].Padding;
 
-            if (padding != null && padding.Value.Left > 0)
+            if (padding?.Left > 0)
             {
                 // Left padding
                 builder.Append(" ".Repeat(padding.Value.Left));
@@ -91,7 +91,7 @@ public sealed class MarkdownTableBorder : TableBorder
             }
 
             // Right padding
-            if (padding != null && padding.Value.Right > 0)
+            if (padding?.Right > 0)
             {
                 builder.Append(" ".Repeat(padding.Value.Right));
             }
