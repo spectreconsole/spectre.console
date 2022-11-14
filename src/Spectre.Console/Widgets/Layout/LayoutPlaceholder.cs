@@ -17,7 +17,8 @@ internal sealed class LayoutPlaceholder : Renderable
             ? $"{Layout.Name} ({width} x {height})"
             : $"{width} x {height}";
 
-        var renderable = (IRenderable)new Panel(string.Empty)
+        var panel = new Panel(
+            Align.Center(new Text("Placeholder"), VerticalAlignment.Middle))
         {
             Width = maxWidth,
             Height = options.Height ?? options.ConsoleSize.Height,
@@ -25,6 +26,6 @@ internal sealed class LayoutPlaceholder : Renderable
             Border = BoxBorder.Rounded,
         };
 
-        return renderable.Render(options, maxWidth);
+        return ((IRenderable)panel).Render(options, maxWidth);
     }
 }

@@ -127,7 +127,7 @@ public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, 
         }
 
         // Split the child segments into lines.
-        var childSegments = ((IRenderable)child).Render(options, innerWidth);
+        var childSegments = ((IRenderable)child).Render(options with { Height = height }, innerWidth);
         foreach (var (_, _, last, line) in Segment.SplitLines(childSegments, innerWidth, height).Enumerate())
         {
             if (line.Count == 1 && line[0].IsWhiteSpace)
@@ -202,7 +202,7 @@ public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, 
             TitlePadding = 1,
             TitleSpacing = 0,
             Title = Header?.Text,
-            Alignment = Header?.Alignment ?? Justify.Left,
+            Justification = Header?.Justification ?? Justify.Left,
         };
 
         // Top left border

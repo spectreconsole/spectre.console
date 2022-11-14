@@ -159,7 +159,7 @@ internal static class TableRenderer
         }
 
         var paragraph = new Markup(header.Text, header.Style ?? defaultStyle)
-            .Alignment(Justify.Center)
+            .Justify(Justify.Center)
             .Overflow(Overflow.Ellipsis);
 
         // Render the paragraphs

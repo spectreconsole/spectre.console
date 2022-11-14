@@ -72,7 +72,7 @@ public sealed class BarChart : Renderable, IHasCulture
 
         if (!string.IsNullOrWhiteSpace(Label))
         {
-            grid.AddRow(Text.Empty, new Markup(Label).Alignment(LabelAlignment));
+            grid.AddRow(Text.Empty, new Markup(Label).Justify(LabelAlignment));
         }
 
         foreach (var item in Data)

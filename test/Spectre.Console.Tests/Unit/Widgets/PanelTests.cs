@@ -81,7 +81,7 @@ public sealed class PanelTests
         // When
         console.Write(new Panel("Hello World")
         {
-            Header = new PanelHeader("Greeting").LeftAligned(),
+            Header = new PanelHeader("Greeting").LeftJustified(),
             Expand = true,
         });
 
@@ -117,7 +117,7 @@ public sealed class PanelTests
         // When
         console.Write(new Panel("Hello World")
         {
-            Header = new PanelHeader("Greeting").RightAligned(),
+            Header = new PanelHeader("Greeting").RightJustified(),
             Expand = true,
         });
 
@@ -283,7 +283,7 @@ public sealed class PanelTests
 
         // When
         console.Write(
-            new Panel(new Text("Hello World").RightAligned())
+            new Panel(new Text("Hello World").RightJustified())
             {
                 Expand = true,
             });

@@ -3,7 +3,7 @@ namespace Spectre.Console;
 /// <summary>
 /// Represents text rendered with a FIGlet font.
 /// </summary>
-public sealed class FigletText : Renderable, IAlignable
+public sealed class FigletText : Renderable, IHasJustification
 {
     private readonly FigletFont _font;
     private readonly string _text;
@@ -14,7 +14,7 @@ public sealed class FigletText : Renderable, IAlignable
     public Color? Color { get; set; }
 
     /// <inheritdoc/>
-    public Justify? Alignment { get; set; }
+    public Justify? Justification { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FigletText"/> class.
@@ -40,7 +40,7 @@ public sealed class FigletText : Renderable, IAlignable
     protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var style = new Style(Color ?? Console.Color.Default);
-        var alignment = Alignment ?? Justify.Left;
+        var alignment = Justification ?? Console.Justify.Left;
 
         foreach (var row in GetRows(maxWidth))
         {
@@ -49,7 +49,7 @@ public sealed class FigletText : Renderable, IAlignable
                 var line = new Segment(string.Concat(row.Select(x => x.Lines[index])), style);
 
                 var lineWidth = line.CellCount();
-                if (alignment == Justify.Left)
+                if (alignment == Console.Justify.Left)
                 {
                     yield return line;
 
@@ -58,7 +58,7 @@ public sealed class FigletText : Renderable, IAlignable
                         yield return Segment.Padding(maxWidth - lineWidth);
                     }
                 }
-                else if (alignment == Justify.Center)
+                else if (alignment == Console.Justify.Center)
                 {
                     var left = (maxWidth - lineWidth) / 2;
                     var right = left + ((maxWidth - lineWidth) % 2);
@@ -67,7 +67,7 @@ public sealed class FigletText : Renderable, IAlignable
                     yield return line;
                     yield return Segment.Padding(right);
                 }
-                else if (alignment == Justify.Right)
+                else if (alignment == Console.Justify.Right)
                 {
                     if (lineWidth < maxWidth)
                     {

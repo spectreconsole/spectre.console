@@ -4,15 +4,15 @@ namespace Spectre.Console;
 /// A renderable piece of markup text.
 /// </summary>
 [SuppressMessage("Naming", "CA1724:Type names should not match namespaces")]
-public sealed class Markup : Renderable, IAlignable, IOverflowable
+public sealed class Markup : Renderable, IHasJustification, IOverflowable
 {
     private readonly Paragraph _paragraph;
 
     /// <inheritdoc/>
-    public Justify? Alignment
+    public Justify? Justification
     {
-        get => _paragraph.Alignment;
-        set => _paragraph.Alignment = value;
+        get => _paragraph.Justification;
+        set => _paragraph.Justification = value;
     }
 
     /// <inheritdoc/>

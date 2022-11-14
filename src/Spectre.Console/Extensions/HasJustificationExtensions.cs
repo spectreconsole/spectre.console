@@ -1,80 +1,80 @@
 namespace Spectre.Console;
 
 /// <summary>
-/// Contains extension methods for <see cref="IAlignable"/>.
+/// Contains extension methods for <see cref="IHasJustification"/>.
 /// </summary>
-public static class AlignableExtensions
+public static class HasJustificationExtensions
 {
     /// <summary>
-    /// Sets the alignment for an <see cref="IAlignable"/> object.
+    /// Sets the justification for an <see cref="IHasJustification"/> object.
     /// </summary>
-    /// <typeparam name="T">The alignable object type.</typeparam>
+    /// <typeparam name="T">The type that can be justified.</typeparam>
     /// <param name="obj">The alignable object.</param>
     /// <param name="alignment">The alignment.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static T Alignment<T>(this T obj, Justify? alignment)
-        where T : class, IAlignable
+    public static T Justify<T>(this T obj, Justify? alignment)
+        where T : class, IHasJustification
     {
         if (obj is null)
         {
             throw new System.ArgumentNullException(nameof(obj));
         }
 
-        obj.Alignment = alignment;
+        obj.Justification = alignment;
         return obj;
     }
 
     /// <summary>
-    /// Sets the <see cref="IAlignable"/> object to be left aligned.
+    /// Sets the <see cref="IHasJustification"/> object to be left justified.
     /// </summary>
-    /// <typeparam name="T">The alignable type.</typeparam>
+    /// <typeparam name="T">The type that can be justified.</typeparam>
     /// <param name="obj">The alignable object.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static T LeftAligned<T>(this T obj)
-        where T : class, IAlignable
+    public static T LeftJustified<T>(this T obj)
+        where T : class, IHasJustification
     {
         if (obj is null)
         {
             throw new System.ArgumentNullException(nameof(obj));
         }
 
-        obj.Alignment = Justify.Left;
+        obj.Justification = Console.Justify.Left;
         return obj;
     }
 
     /// <summary>
-    /// Sets the <see cref="IAlignable"/> object to be centered.
+    /// Sets the <see cref="IHasJustification"/> object to be centered.
     /// </summary>
-    /// <typeparam name="T">The alignable type.</typeparam>
+    /// <typeparam name="T">The type that can be justified.</typeparam>
     /// <param name="obj">The alignable object.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static T Centered<T>(this T obj)
-        where T : class, IAlignable
+        where T : class, IHasJustification
     {
         if (obj is null)
         {
             throw new System.ArgumentNullException(nameof(obj));
         }
 
-        obj.Alignment = Justify.Center;
+        obj.Justification = Console.Justify.Center;
         return obj;
     }
 
     /// <summary>
-    /// Sets the <see cref="IAlignable"/> object to be right aligned.
+    /// Sets the <see cref="IHasJustification"/> object to be right justified.
     /// </summary>
-    /// <typeparam name="T">The alignable type.</typeparam>
+    /// <typeparam name="T">The type that can be justified.</typeparam>
     /// <param name="obj">The alignable object.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static T RightAligned<T>(this T obj)
-        where T : class, IAlignable
+    public static T RightJustified<T>(this T obj)
+        where T : class, IHasJustification
     {
         if (obj is null)
         {
             throw new System.ArgumentNullException(nameof(obj));
         }
 
-        obj.Alignment = Justify.Right;
+        obj.Justification = Console.Justify.Right;
         return obj;
     }
 }

@@ -84,7 +84,7 @@ public static class Program
     private static void HorizontalRule(string title)
     {
         AnsiConsole.WriteLine();
-        AnsiConsole.Write(new Rule($"[white bold]{title}[/]").RuleStyle("grey").LeftAligned());
+        AnsiConsole.Write(new Rule($"[white bold]{title}[/]").RuleStyle("grey").LeftJustified());
         AnsiConsole.WriteLine();
     }
 }

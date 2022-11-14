@@ -20,7 +20,7 @@ public sealed class PercentageColumn : ProgressColumn
     {
         var percentage = (int)task.Percentage;
         var style = percentage == 100 ? CompletedStyle : Style ?? Style.Plain;
-        return new Text($"{percentage}%", style).RightAligned();
+        return new Text($"{percentage}%", style).RightJustified();
     }
 
     /// <inheritdoc/>

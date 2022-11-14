@@ -59,6 +59,7 @@ public sealed class Table : Renderable, IHasTableBorder, IExpandable, IAlignable
     public TableTitle? Caption { get; set; }
 
     /// <inheritdoc/>
+    [Obsolete("Use the Align widget instead. This property will be removed in a later release.")]
     public Justify? Alignment { get; set; }
 
     // Whether this is a grid or not.

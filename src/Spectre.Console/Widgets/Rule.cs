@@ -3,7 +3,7 @@ namespace Spectre.Console;
 /// <summary>
 /// A renderable horizontal rule.
 /// </summary>
-public sealed class Rule : Renderable, IAlignable, IHasBoxBorder
+public sealed class Rule : Renderable, IHasJustification, IHasBoxBorder
 {
     /// <summary>
     /// Gets or sets the rule title markup text.
@@ -16,9 +16,9 @@ public sealed class Rule : Renderable, IAlignable, IHasBoxBorder
     public Style? Style { get; set; }
 
     /// <summary>
-    /// Gets or sets the rule's title alignment.
+    /// Gets or sets the rule's title justification.
     /// </summary>
-    public Justify? Alignment { get; set; }
+    public Justify? Justification { get; set; }
 
     /// <inheritdoc/>
     public BoxBorder Border { get; set; } = BoxBorder.Square;
@@ -102,7 +102,7 @@ public sealed class Rule : Renderable, IAlignable, IHasBoxBorder
         var border = Border.GetSafeBorder(safe: !options.Unicode);
         var borderPart = border.GetPart(BoxBorderPart.Top);
 
-        var alignment = Alignment ?? Justify.Center;
+        var alignment = Justification ?? Justify.Center;
         if (alignment == Justify.Left)
         {
             var left = new Segment(borderPart.Repeat(TitlePadding) + new string(' ', TitleSpacing), Style ?? Style.Plain);
