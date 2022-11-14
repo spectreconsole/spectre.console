@@ -13,7 +13,7 @@ public sealed class BoxBorderTests
             public void Should_Return_Safe_Border()
             {
                 // Given, When
-                var border = BoxExtensions.GetSafeBorder(BoxBorder.None, safe: true);
+                var border = BoxBorder.None.GetSafeBorder(safe: true);
 
                 // Then
                 border.ShouldBeSameAs(BoxBorder.None);
@@ -45,7 +45,7 @@ public sealed class BoxBorderTests
             public void Should_Return_Safe_Border()
             {
                 // Given, When
-                var border = BoxExtensions.GetSafeBorder(BoxBorder.Ascii, safe: true);
+                var border = BoxBorder.Ascii.GetSafeBorder(safe: true);
 
                 // Then
                 border.ShouldBeSameAs(BoxBorder.Ascii);
@@ -77,7 +77,7 @@ public sealed class BoxBorderTests
             public void Should_Return_Safe_Border()
             {
                 // Given, When
-                var border = BoxExtensions.GetSafeBorder(BoxBorder.Double, safe: true);
+                var border = BoxBorder.Double.GetSafeBorder(safe: true);
 
                 // Then
                 border.ShouldBeSameAs(BoxBorder.Double);
@@ -109,7 +109,7 @@ public sealed class BoxBorderTests
             public void Should_Return_Safe_Border()
             {
                 // Given, When
-                var border = BoxExtensions.GetSafeBorder(BoxBorder.Heavy, safe: true);
+                var border = BoxBorder.Heavy.GetSafeBorder(safe: true);
 
                 // Then
                 border.ShouldBeSameAs(BoxBorder.Square);
@@ -139,7 +139,7 @@ public sealed class BoxBorderTests
         public void Should_Return_Safe_Border()
         {
             // Given, When
-            var border = BoxExtensions.GetSafeBorder(BoxBorder.Rounded, safe: true);
+            var border = BoxBorder.Rounded.GetSafeBorder(safe: true);
 
             // Then
             border.ShouldBeSameAs(BoxBorder.Square);
@@ -168,7 +168,7 @@ public sealed class BoxBorderTests
         public void Should_Return_Safe_Border()
         {
             // Given, When
-            var border = BoxExtensions.GetSafeBorder(BoxBorder.Square, safe: true);
+            var border = BoxBorder.Square.GetSafeBorder(safe: true);
 
             // Then
             border.ShouldBeSameAs(BoxBorder.Square);

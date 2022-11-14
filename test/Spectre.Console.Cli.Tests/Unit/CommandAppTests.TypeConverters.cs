@@ -24,10 +24,7 @@ public sealed partial class CommandAppTests
 
             // Then
             result.ExitCode.ShouldBe(0);
-            result.Settings.ShouldBeOfType<CatSettings>().And(cat =>
-            {
-                cat.Agility.ShouldBe(6);
-            });
+            result.Settings.ShouldBeOfType<CatSettings>().And(cat => cat.Agility.ShouldBe(6));
         }
     }
 }

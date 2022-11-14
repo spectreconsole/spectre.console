@@ -10,10 +10,7 @@ public sealed partial class CommandAppTests
 
         // When
         var defaultSensitivity = CaseSensitivity.None;
-        app.Configure(config =>
-        {
-            defaultSensitivity = config.Settings.CaseSensitivity;
-        });
+        app.Configure(config => defaultSensitivity = config.Settings.CaseSensitivity);
 
         // Then
         defaultSensitivity.ShouldBe(CaseSensitivity.All);

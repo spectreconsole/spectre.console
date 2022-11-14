@@ -21,10 +21,7 @@ public static class TestConsoleExtensions
 
     public static string NormalizeStackTrace(string text)
     {
-        text = _lineNumberRegex.Replace(text, match =>
-        {
-            return ":nn";
-        });
+        text = _lineNumberRegex.Replace(text, match => ":nn");
 
         return _filenameRegex.Replace(text, match =>
         {

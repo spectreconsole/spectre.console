@@ -112,7 +112,7 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
         return $"[yellow]{description.EscapeMarkup()}[/]";
     }
 
-    private void AddStringList(TreeNode node, string description, IList<string>? strings)
+    private static void AddStringList(TreeNode node, string description, IList<string>? strings)
     {
         if (strings == null || strings.Count == 0)
         {
@@ -159,12 +159,12 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
                 var parametersNode = commandNode.AddNode(ExplainCommand.ParentMarkup("Parameters"));
                 foreach (var parameter in command.Parameters)
                 {
-                    AddParameter(parametersNode, parameter, detailed, includeHidden);
+                    ExplainCommand.AddParameter(parametersNode, parameter, detailed, includeHidden);
                 }
             }
 
-            AddStringList(commandNode, "Aliases", command.Aliases.ToList());
-            AddStringList(commandNode, "Examples", command.Examples.Select(i => string.Join(" ", i)).ToList());
+            ExplainCommand.AddStringList(commandNode, "Aliases", command.Aliases.ToList());
+            ExplainCommand.AddStringList(commandNode, "Examples", command.Examples.Select(i => string.Join(" ", i)).ToList());
 
             if (command.Children.Count > 0)
             {
@@ -174,7 +174,7 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
         }
     }
 
-    private void AddParameter(TreeNode parametersNode, CommandParameter parameter, bool detailed, bool includeHidden)
+    private static void AddParameter(TreeNode parametersNode, CommandParameter parameter, bool detailed, bool includeHidden)
     {
         if (!includeHidden && parameter.IsHidden)
         {
@@ -238,10 +238,10 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
             parameterNode.AddNode(ExplainCommand.ValueMarkup("Pair Deconstructor", parameter.PairDeconstructor.Type.ToString()));
         }
 
-        AddStringList(
+        ExplainCommand.AddStringList(
             parameterNode,
             "Validators",
-            parameter.Validators.Select(i => i.GetType().ToString()).ToList());
+            parameter.Validators.ConvertAll(i => i.GetType().ToString()));
     }
 
     private static string GetShortOptions(CommandParameter parameter)

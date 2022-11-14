@@ -19,10 +19,10 @@ public sealed class EmojiTests
     public void Should_Contain_Predefined_Emojis()
     {
         // Given, When
-        const string result = "Hello " + Emoji.Known.GlobeShowingEuropeAfrica + "!";
+        const string Result = "Hello " + Emoji.Known.GlobeShowingEuropeAfrica + "!";
 
         // Then
-        result.ShouldBe("Hello 🌍!");
+        Result.ShouldBe("Hello 🌍!");
     }
 
     public sealed class TheReplaceMethod

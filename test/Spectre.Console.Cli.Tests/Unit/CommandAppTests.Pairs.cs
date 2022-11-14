@@ -76,10 +76,7 @@ public sealed partial class CommandAppTests
         {
             // Given
             var app = new CommandApp<GenericCommand<AmbiguousSettings>>();
-            app.Configure(config =>
-            {
-                config.PropagateExceptions();
-            });
+            app.Configure(config => config.PropagateExceptions());
 
             // When
             var result = Record.Exception(() => app.Run(new[]
@@ -89,10 +86,7 @@ public sealed partial class CommandAppTests
             }));
 
             // Then
-            result.ShouldBeOfType<CommandConfigurationException>().And(ex =>
-            {
-                ex.Message.ShouldBe("The option 'var' is both marked as pair deconstructable and convertable.");
-            });
+            result.ShouldBeOfType<CommandConfigurationException>().And(ex => ex.Message.ShouldBe("The option 'var' is both marked as pair deconstructable and convertable."));
         }
 
         [Fact]
@@ -100,10 +94,7 @@ public sealed partial class CommandAppTests
         {
             // Given
             var app = new CommandApp<GenericCommand<NotDeconstructableSettings>>();
-            app.Configure(config =>
-            {
-                config.PropagateExceptions();
-            });
+            app.Configure(config => config.PropagateExceptions());
 
             // When
             var result = Record.Exception(() => app.Run(new[]
@@ -113,10 +104,7 @@ public sealed partial class CommandAppTests
             }));
 
             // Then
-            result.ShouldBeOfType<CommandConfigurationException>().And(ex =>
-            {
-                ex.Message.ShouldBe("The option 'var' is marked as pair deconstructable, but the underlying type does not support that.");
-            });
+            result.ShouldBeOfType<CommandConfigurationException>().And(ex => ex.Message.ShouldBe("The option 'var' is marked as pair deconstructable, but the underlying type does not support that."));
         }
 
         [Fact]
@@ -125,10 +113,7 @@ public sealed partial class CommandAppTests
             // Given
             var app = new CommandAppTester();
             app.SetDefaultCommand<GenericCommand<DefaultPairDeconstructorSettings>>();
-            app.Configure(config =>
-            {
-                config.PropagateExceptions();
-            });
+            app.Configure(config => config.PropagateExceptions());
 
             // When
             var result = app.Run(new[]
@@ -155,10 +140,7 @@ public sealed partial class CommandAppTests
             // Given
             var app = new CommandAppTester();
             app.SetDefaultCommand<GenericCommand<DefaultPairDeconstructorEnumValueSettings>>();
-            app.Configure(config =>
-            {
-                config.PropagateExceptions();
-            });
+            app.Configure(config => config.PropagateExceptions());
 
             // When
             var result = app.Run(new[]
@@ -205,10 +187,7 @@ public sealed partial class CommandAppTests
             // Given
             var app = new CommandAppTester();
             app.SetDefaultCommand<GenericCommand<LookupSettings>>();
-            app.Configure(config =>
-            {
-                config.PropagateExceptions();
-            });
+            app.Configure(config => config.PropagateExceptions());
 
             // When
             var result = app.Run(new[]
@@ -233,10 +212,7 @@ public sealed partial class CommandAppTests
             // Given
             var app = new CommandAppTester();
             app.SetDefaultCommand<GenericCommand<DictionarySettings>>();
-            app.Configure(config =>
-            {
-                config.PropagateExceptions();
-            });
+            app.Configure(config => config.PropagateExceptions());
 
             // When
             var result = app.Run(new[]
@@ -262,10 +238,7 @@ public sealed partial class CommandAppTests
             // Given
             var app = new CommandAppTester();
             app.SetDefaultCommand<GenericCommand<DictionarySettings>>();
-            app.Configure(config =>
-            {
-                config.PropagateExceptions();
-            });
+            app.Configure(config => config.PropagateExceptions());
 
             // When
             var result = app.Run(new[]
@@ -290,10 +263,7 @@ public sealed partial class CommandAppTests
             // Given
             var app = new CommandAppTester();
             app.SetDefaultCommand<GenericCommand<ReadOnlyDictionarySettings>>();
-            app.Configure(config =>
-            {
-                config.PropagateExceptions();
-            });
+            app.Configure(config => config.PropagateExceptions());
 
             // When
             var result = app.Run(new[]

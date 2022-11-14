@@ -16,10 +16,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(config =>
-                {
-                    config.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(config => config.AddCommand<DogCommand>("dog"));
 
                 // When
                 var result = fixture.Run("cat", "14");
@@ -34,10 +31,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<EmptyCommand>("empty");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<EmptyCommand>("empty"));
 
                 // When
                 var result = fixture.Run("empty", "other");
@@ -52,13 +46,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(config =>
-                {
-                    config.AddBranch<CommandSettings>("dog", a =>
-                    {
-                        a.AddCommand<CatCommand>("cat");
-                    });
-                });
+                fixture.Configure(config => config.AddBranch<CommandSettings>("dog", a => a.AddCommand<CatCommand>("cat")));
 
                 // When
                 var result = fixture.Run("dog", "bat", "14");
@@ -73,10 +61,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(config =>
-                {
-                    config.AddCommand<CatCommand>("cat");
-                });
+                fixture.Configure(config => config.AddCommand<CatCommand>("cat"));
 
                 // When
                 var result = fixture.Run("bat", "14");
@@ -92,10 +77,7 @@ public sealed partial class CommandAppTests
                 // Given
                 var fixture = new Fixture();
                 fixture.WithDefaultCommand<GenericCommand<EmptyCommandSettings>>();
-                fixture.Configure(config =>
-                {
-                    config.AddCommand<GenericCommand<EmptyCommandSettings>>("cat");
-                });
+                fixture.Configure(config => config.AddCommand<GenericCommand<EmptyCommandSettings>>("cat"));
 
                 // When
                 var result = fixture.Run("bat");
@@ -111,13 +93,7 @@ public sealed partial class CommandAppTests
                 // Given
                 var fixture = new Fixture();
                 fixture.WithDefaultCommand<GenericCommand<EmptyCommandSettings>>();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddBranch<CommandSettings>("dog", a =>
-                    {
-                        a.AddCommand<CatCommand>("cat");
-                    });
-                });
+                fixture.Configure(configurator => configurator.AddBranch<CommandSettings>("dog", a => a.AddCommand<CatCommand>("cat")));
 
                 // When
                 var result = fixture.Run("dog", "bat");
@@ -133,10 +109,7 @@ public sealed partial class CommandAppTests
                 // Given
                 var fixture = new Fixture();
                 fixture.WithDefaultCommand<GenericCommand<FooCommandSettings>>();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<GenericCommand<BarCommandSettings>>("bar");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<GenericCommand<BarCommandSettings>>("bar"));
 
                 // When
                 var result = fixture.Run("qux", "bat");
@@ -151,13 +124,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddBranch<FooCommandSettings>("foo", a =>
-                    {
-                        a.AddCommand<GenericCommand<BarCommandSettings>>("bar");
-                    });
-                });
+                fixture.Configure(configurator => configurator.AddBranch<FooCommandSettings>("foo", a => a.AddCommand<GenericCommand<BarCommandSettings>>("bar")));
 
                 // When
                 var result = fixture.Run("foo", "qux", "bat");
@@ -177,10 +144,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
                 var result = fixture.Run("dog", "--alive", "foo");
@@ -195,10 +159,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
                 var result = fixture.Run("dog", "-a", "foo");
@@ -218,10 +179,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
                 var result = fixture.Run("dog", "--name");
@@ -236,10 +194,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
                 var result = fixture.Run("dog", "-n");
@@ -259,10 +214,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<GiraffeCommand>("giraffe");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<GiraffeCommand>("giraffe"));
 
                 // When
                 var result = fixture.Run("giraffe", "foo", "bar", "baz");
@@ -282,10 +234,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
                 var result = fixture.Run("--foo");
@@ -300,10 +249,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
                 var result = fixture.Run("-f");
@@ -366,10 +312,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
                 var result = fixture.Run("--name", "\"Rufus");
@@ -389,10 +332,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
                 var result = fixture.Run("dog", "-", " ");
@@ -407,13 +347,10 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
-                var result = fixture.Run("dog", $"--foo=");
+                var result = fixture.Run("dog", "--foo=");
 
                 // Then
                 return Verifier.Verify(result);
@@ -425,13 +362,10 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
-                var result = fixture.Run("dog", $"--foo:");
+                var result = fixture.Run("dog", "--foo:");
 
                 // Then
                 return Verifier.Verify(result);
@@ -443,13 +377,10 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
-                var result = fixture.Run("dog", $"-f=");
+                var result = fixture.Run("dog", "-f=");
 
                 // Then
                 return Verifier.Verify(result);
@@ -461,13 +392,10 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
-                var result = fixture.Run("dog", $"-f:");
+                var result = fixture.Run("dog", "-f:");
 
                 // Then
                 return Verifier.Verify(result);
@@ -484,13 +412,10 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
-                var result = fixture.Run("dog", $"-f0o");
+                var result = fixture.Run("dog", "-f0o");
 
                 // Then
                 return Verifier.Verify(result);
@@ -507,13 +432,10 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
-                var result = fixture.Run("dog", $"--f");
+                var result = fixture.Run("dog", "--f");
 
                 // Then
                 return Verifier.Verify(result);
@@ -530,13 +452,10 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
-                var result = fixture.Run("dog", $"-- ");
+                var result = fixture.Run("dog", "-- ");
 
                 // Then
                 return Verifier.Verify(result);
@@ -553,13 +472,10 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
-                var result = fixture.Run("dog", $"--1foo");
+                var result = fixture.Run("dog", "--1foo");
 
                 // Then
                 return Verifier.Verify(result);
@@ -576,13 +492,10 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
-                var result = fixture.Run("dog", $"--f€oo");
+                var result = fixture.Run("dog", "--f€oo");
 
                 // Then
                 return Verifier.Verify(result);
@@ -597,10 +510,7 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
+                fixture.Configure(configurator => configurator.AddCommand<DogCommand>("dog"));
 
                 // When
                 var result = fixture.Run("dog", option);
@@ -616,10 +526,7 @@ public sealed partial class CommandAppTests
         {
             // Given
             var fixture = new Fixture();
-            fixture.Configure(configurator =>
-            {
-                configurator.AddCommand<DumpRemainingCommand>("foo");
-            });
+            fixture.Configure(configurator => configurator.AddCommand<DumpRemainingCommand>("foo"));
 
             // When
             var result = fixture.Run("foo", "--", "/c", "\"set && pause\"");

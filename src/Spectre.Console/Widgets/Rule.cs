@@ -67,8 +67,10 @@ public sealed class Rule : Renderable, IAlignable, IHasBoxBorder
 
         var (left, right) = GetLineSegments(context, maxWidth, title);
 
-        var segments = new List<Segment>();
-        segments.Add(left);
+        var segments = new List<Segment>
+        {
+            left,
+        };
         segments.AddRange(title);
         segments.Add(right);
         segments.Add(Segment.LineBreak);

@@ -67,9 +67,7 @@ internal sealed class HtmlEncoder : IAnsiConsoleEncoder
 
         if ((style.Decoration & Decoration.Invert) != 0)
         {
-            var temp = foreground;
-            foreground = background;
-            background = temp;
+            (background, foreground) = (foreground, background);
         }
 
         if ((style.Decoration & Decoration.Dim) != 0)

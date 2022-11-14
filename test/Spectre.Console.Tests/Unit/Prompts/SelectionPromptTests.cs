@@ -18,6 +18,6 @@ public sealed class SelectionPromptTests
         prompt.Show(console);
 
         // Then
-        console.Output.ShouldContain(@"[red]This text will never be red[/]");
+        console.Output.ShouldContain("[red]This text will never be red[/]");
     }
 }

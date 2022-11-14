@@ -68,7 +68,7 @@ internal sealed class TableMeasurer : TableAccessor
             if (tableWidth > maxWidth)
             {
                 var excessWidth = tableWidth - maxWidth;
-                widths = Ratio.Reduce(excessWidth, widths.Select(_ => 1).ToList(), widths, widths);
+                widths = Ratio.Reduce(excessWidth, widths.ConvertAll(_ => 1), widths, widths);
                 tableWidth = widths.Sum();
             }
         }
@@ -141,7 +141,7 @@ internal sealed class TableMeasurer : TableAccessor
                     break;
                 }
 
-                var maxReduce = widths.Select(_ => Math.Min(excessWidth, columnDifference)).ToList();
+                var maxReduce = widths.ConvertAll(_ => Math.Min(excessWidth, columnDifference));
                 widths = Ratio.Reduce(excessWidth, ratios, maxReduce, widths);
 
                 totalWidth = widths.Sum();

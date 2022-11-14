@@ -90,10 +90,7 @@ public sealed partial class CommandAppTests
             {
                 config.PropagateExceptions();
 
-                config.SafetyOff().AddBranch("animal", typeof(AnimalSettings), animal =>
-                {
-                    animal.SafetyOn<MammalSettings>().AddCommand<DogCommand>("dog");
-                });
+                config.SafetyOff().AddBranch("animal", typeof(AnimalSettings), animal => animal.SafetyOn<MammalSettings>().AddCommand<DogCommand>("dog"));
             }));
 
             // Then
@@ -209,10 +206,7 @@ public sealed partial class CommandAppTests
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.SafetyOff().AddBranch("animal", typeof(AnimalSettings), animal =>
-                {
-                    animal.AddCommand("dog", typeof(DogCommand));
-                });
+                config.SafetyOff().AddBranch("animal", typeof(AnimalSettings), animal => animal.AddCommand("dog", typeof(DogCommand)));
             });
 
             // When

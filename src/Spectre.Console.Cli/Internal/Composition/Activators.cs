@@ -61,10 +61,7 @@ internal sealed class ReflectionActivator : ComponentActivator
         _constructor = GetGreediestConstructor(type);
         _parameters = new List<ParameterInfo>();
 
-        foreach (var parameter in _constructor.GetParameters())
-        {
-            _parameters.Add(parameter);
-        }
+        _parameters.AddRange(_constructor.GetParameters());
     }
 
     public override object Activate(DefaultTypeResolver container)

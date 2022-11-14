@@ -75,7 +75,7 @@ internal abstract class CommandParameter : ICommandParameterInfo
             {
                 if (Activator.CreateInstance(deconstructorType) is not IPairDeconstructor activatedDeconstructor)
                 {
-                    throw new InvalidOperationException($"Could not create pair deconstructor.");
+                    throw new InvalidOperationException("Could not create pair deconstructor.");
                 }
 
                 deconstructor = activatedDeconstructor;

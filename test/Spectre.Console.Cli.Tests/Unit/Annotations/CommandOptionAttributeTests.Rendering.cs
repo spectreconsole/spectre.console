@@ -229,10 +229,7 @@ public sealed partial class CommandOptionAttributeTests
             where TSettings : CommandSettings
         {
             var app = new CommandAppTester();
-            app.Configure(c =>
-            {
-                c.AddCommand<GenericCommand<TSettings>>("foo");
-            });
+            app.Configure(c => c.AddCommand<GenericCommand<TSettings>>("foo"));
 
             return app.RunAndCatch<CommandTemplateException>(args);
         }

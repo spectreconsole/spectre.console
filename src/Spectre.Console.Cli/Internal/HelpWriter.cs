@@ -46,8 +46,10 @@ internal static class HelpWriter
 
         public static IReadOnlyList<HelpOption> Get(CommandModel model, CommandInfo? command)
         {
-            var parameters = new List<HelpOption>();
-            parameters.Add(new HelpOption("h", "help", null, null, "Prints help information"));
+            var parameters = new List<HelpOption>
+            {
+                new HelpOption("h", "help", null, null, "Prints help information"),
+            };
 
             // At the root and no default command?
             if (command == null && model?.DefaultCommand == null)

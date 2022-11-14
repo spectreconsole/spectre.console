@@ -162,10 +162,7 @@ internal static class CommandModelBuilder
             }
 
             // Add all parameters to the result.
-            foreach (var groupResult in parameters)
-            {
-                result.Add(groupResult);
-            }
+            result.AddRange(parameters);
         }
 
         return result;

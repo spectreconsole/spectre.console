@@ -19,10 +19,7 @@ public sealed partial class CommandAppTests
             var result = Record.Exception(() => app.Run(new[] { "multi", "a", "b", "c" }));
 
             // Then
-            result.ShouldBeOfType<CommandConfigurationException>().And(ex =>
-            {
-                ex.Message.ShouldBe("The command 'multi' specifies more than one vector argument.");
-            });
+            result.ShouldBeOfType<CommandConfigurationException>().And(ex => ex.Message.ShouldBe("The command 'multi' specifies more than one vector argument."));
         }
 
         [Fact]
@@ -40,10 +37,7 @@ public sealed partial class CommandAppTests
             var result = Record.Exception(() => app.Run(new[] { "multi", "a", "b", "c" }));
 
             // Then
-            result.ShouldBeOfType<CommandConfigurationException>().And(ex =>
-            {
-                ex.Message.ShouldBe("The command 'multi' specifies an argument vector that is not the last argument.");
-            });
+            result.ShouldBeOfType<CommandConfigurationException>().And(ex => ex.Message.ShouldBe("The command 'multi' specifies an argument vector that is not the last argument."));
         }
 
         [Fact]

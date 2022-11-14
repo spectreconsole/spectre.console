@@ -15,10 +15,7 @@ public sealed class AlternateScreenTests
         var result = Record.Exception(() =>
         {
             console.WriteLine("Foo");
-            console.AlternateScreen(() =>
-            {
-                console.WriteLine("Bar");
-            });
+            console.AlternateScreen(() => console.WriteLine("Bar"));
         });
 
         // Then
@@ -38,10 +35,7 @@ public sealed class AlternateScreenTests
         var result = Record.Exception(() =>
         {
             console.WriteLine("Foo");
-            console.AlternateScreen(() =>
-            {
-                console.WriteLine("Bar");
-            });
+            console.AlternateScreen(() => console.WriteLine("Bar"));
         });
 
         // Then
@@ -62,10 +56,7 @@ public sealed class AlternateScreenTests
 
         // When
         console.WriteLine("Foo");
-        console.AlternateScreen(() =>
-        {
-            console.WriteLine("Bar");
-        });
+        console.AlternateScreen(() => console.WriteLine("Bar"));
 
         // Then
         await Verifier.Verify(console.Output);

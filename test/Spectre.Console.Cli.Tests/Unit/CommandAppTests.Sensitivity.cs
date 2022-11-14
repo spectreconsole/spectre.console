@@ -23,10 +23,7 @@ public sealed partial class CommandApptests
 
         // Then
         result.ShouldNotBeNull();
-        result.ShouldBeOfType<CommandParseException>().And(ex =>
-        {
-            ex.Message.ShouldBe("Unknown command 'Command'.");
-        });
+        result.ShouldBeOfType<CommandParseException>().And(ex => ex.Message.ShouldBe("Unknown command 'Command'."));
     }
 
     [Fact]
@@ -50,10 +47,7 @@ public sealed partial class CommandApptests
 
         // Then
         result.ShouldNotBeNull();
-        result.ShouldBeOfType<CommandParseException>().And(ex =>
-        {
-            ex.Message.ShouldBe("Unknown option 'Foo'.");
-        });
+        result.ShouldBeOfType<CommandParseException>().And(ex => ex.Message.ShouldBe("Unknown option 'Foo'."));
     }
 
     [Fact]
@@ -76,10 +70,7 @@ public sealed partial class CommandApptests
 
         // Then
         result.ShouldNotBeNull();
-        result.ShouldBeOfType<CommandParseException>().And(ex =>
-        {
-            ex.Message.ShouldBe("Unknown option 'F'.");
-        });
+        result.ShouldBeOfType<CommandParseException>().And(ex => ex.Message.ShouldBe("Unknown option 'F'."));
     }
 
     [Fact]
@@ -103,9 +94,6 @@ public sealed partial class CommandApptests
 
         // Then
         result.ExitCode.ShouldBe(0);
-        result.Settings.ShouldBeOfType<StringOptionSettings>().And(vec =>
-        {
-            vec.Foo.ShouldBe("bar");
-        });
+        result.Settings.ShouldBeOfType<StringOptionSettings>().And(vec => vec.Foo.ShouldBe("bar"));
     }
 }

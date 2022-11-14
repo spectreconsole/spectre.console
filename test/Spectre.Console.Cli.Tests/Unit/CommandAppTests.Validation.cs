@@ -23,10 +23,7 @@ public sealed partial class CommandAppTests
             var result = Record.Exception(() => app.Run(new[] { "animal", "3", "dog", "7", "--name", "Rufus" }));
 
             // Then
-            result.ShouldBeOfType<CommandRuntimeException>().And(e =>
-            {
-                e.Message.ShouldBe("Animals must have an even number of legs.");
-            });
+            result.ShouldBeOfType<CommandRuntimeException>().And(e => e.Message.ShouldBe("Animals must have an even number of legs."));
         }
 
         [Fact]
@@ -48,10 +45,7 @@ public sealed partial class CommandAppTests
             var result = Record.Exception(() => app.Run(new[] { "animal", "4", "dog", "7", "--name", "Tiger" }));
 
             // Then
-            result.ShouldBeOfType<CommandRuntimeException>().And(e =>
-            {
-                e.Message.ShouldBe("Tiger is not a dog name!");
-            });
+            result.ShouldBeOfType<CommandRuntimeException>().And(e => e.Message.ShouldBe("Tiger is not a dog name!"));
         }
 
         [Fact]
@@ -62,20 +56,14 @@ public sealed partial class CommandAppTests
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddBranch<AnimalSettings>("animal", animal =>
-                {
-                    animal.AddCommand<TurtleCommand>("turtle");
-                });
+                config.AddBranch<AnimalSettings>("animal", animal => animal.AddCommand<TurtleCommand>("turtle"));
             });
 
             // When
             var result = Record.Exception(() => app.Run(new[] { "animal", "4", "turtle", "--name", "Klaus" }));
 
             // Then
-            result.ShouldBeOfType<CommandRuntimeException>().And(e =>
-            {
-                e.Message.ShouldBe("Only 'Lonely George' is valid name for a turtle!");
-            });
+            result.ShouldBeOfType<CommandRuntimeException>().And(e => e.Message.ShouldBe("Only 'Lonely George' is valid name for a turtle!"));
         }
 
         [Fact]
@@ -97,10 +85,7 @@ public sealed partial class CommandAppTests
             var result = Record.Exception(() => app.Run(new[] { "animal", "4", "dog", "101", "--name", "Rufus" }));
 
             // Then
-            result.ShouldBeOfType<CommandRuntimeException>().And(e =>
-            {
-                e.Message.ShouldBe("Dog is too old...");
-            });
+            result.ShouldBeOfType<CommandRuntimeException>().And(e => e.Message.ShouldBe("Dog is too old..."));
         }
     }
 }

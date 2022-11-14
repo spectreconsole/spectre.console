@@ -127,10 +127,7 @@ public sealed partial class CommandAppTests
             // Given
             var fixture = new CommandAppTester();
             fixture.SetDefaultCommand<LionCommand>();
-            fixture.Configure(configurator =>
-            {
-                configurator.SetApplicationName("myapp");
-            });
+            fixture.Configure(configurator => configurator.SetApplicationName("myapp"));
 
             // When
             var result = fixture.Run("--help");
@@ -283,10 +280,7 @@ public sealed partial class CommandAppTests
             // Given
             var fixture = new CommandAppTester();
             fixture.SetDefaultCommand<GenericCommand<ArgumentOrderSettings>>();
-            fixture.Configure(configurator =>
-            {
-                configurator.SetApplicationName("myapp");
-            });
+            fixture.Configure(configurator => configurator.SetApplicationName("myapp"));
 
             // When
             var result = fixture.Run("--help");
@@ -302,10 +296,7 @@ public sealed partial class CommandAppTests
             // Given
             var fixture = new CommandAppTester();
             fixture.SetDefaultCommand<GenericCommand<HiddenOptionSettings>>();
-            fixture.Configure(configurator =>
-            {
-                configurator.SetApplicationName("myapp");
-            });
+            fixture.Configure(configurator => configurator.SetApplicationName("myapp"));
 
             // When
             var result = fixture.Run("--help");

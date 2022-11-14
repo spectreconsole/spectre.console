@@ -30,10 +30,7 @@ public sealed partial class CommandAppTests
         {
             // Given
             var app = new CommandAppTester();
-            app.Configure(config =>
-            {
-                config.AddCommand<ThrowingCommand>("throw");
-            });
+            app.Configure(config => config.AddCommand<ThrowingCommand>("throw"));
 
             // When
             var result = app.Run(new[] { "throw" });
@@ -51,10 +48,7 @@ public sealed partial class CommandAppTests
             app.Configure(config =>
             {
                 config.AddCommand<ThrowingCommand>("throw");
-                config.SetExceptionHandler(_ =>
-                {
-                    exceptionHandled = true;
-                });
+                config.SetExceptionHandler(_ => exceptionHandled = true);
             });
 
             // When

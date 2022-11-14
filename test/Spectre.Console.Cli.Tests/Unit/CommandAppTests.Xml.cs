@@ -38,10 +38,7 @@ public sealed partial class CommandAppTests
         {
             // Given
             var fixture = new CommandAppTester();
-            fixture.Configure(config =>
-            {
-                config.AddCommand<DogCommand>("dog");
-            });
+            fixture.Configure(config => config.AddCommand<DogCommand>("dog"));
 
             // When
             var result = fixture.Run(Constants.XmlDocCommand);
@@ -78,13 +75,7 @@ public sealed partial class CommandAppTests
         {
             // Given
             var fixture = new CommandAppTester();
-            fixture.Configure(config =>
-            {
-                config.AddBranch<AnimalSettings>("animal", animal =>
-                {
-                    animal.AddCommand<DogCommand>("dog");
-                });
-            });
+            fixture.Configure(config => config.AddBranch<AnimalSettings>("animal", animal => animal.AddCommand<DogCommand>("dog")));
 
             // When
             var result = fixture.Run(Constants.XmlDocCommand);
@@ -99,10 +90,7 @@ public sealed partial class CommandAppTests
         {
             // Given
             var fixture = new CommandAppTester();
-            fixture.Configure(config =>
-            {
-                config.AddCommand<OptionVectorCommand>("cmd");
-            });
+            fixture.Configure(config => config.AddCommand<OptionVectorCommand>("cmd"));
 
             // When
             var result = fixture.Run(Constants.XmlDocCommand);
@@ -118,10 +106,7 @@ public sealed partial class CommandAppTests
             // Given
             var fixture = new CommandAppTester();
             fixture.SetDefaultCommand<DogCommand>();
-            fixture.Configure(config =>
-            {
-                config.AddCommand<HorseCommand>("horse");
-            });
+            fixture.Configure(config => config.AddCommand<HorseCommand>("horse"));
 
             // When
             var result = fixture.Run(Constants.XmlDocCommand);

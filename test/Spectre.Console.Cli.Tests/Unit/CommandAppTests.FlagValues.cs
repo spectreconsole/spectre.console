@@ -48,10 +48,7 @@ public sealed partial class CommandAppTests
             var result = Record.Exception(() => app.Run(new[] { "foo", "--serve", "123" }));
 
             // Then
-            result.ShouldBeOfType<CommandConfigurationException>().And(ex =>
-            {
-                ex.Message.ShouldBe("The option 'serve' has an optional value but does not implement IFlagValue.");
-            });
+            result.ShouldBeOfType<CommandConfigurationException>().And(ex => ex.Message.ShouldBe("The option 'serve' has an optional value but does not implement IFlagValue."));
         }
 
         [Fact]

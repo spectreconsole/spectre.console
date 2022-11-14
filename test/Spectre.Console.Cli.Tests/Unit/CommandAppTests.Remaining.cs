@@ -12,10 +12,7 @@ public sealed partial class CommandAppTests
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddBranch<AnimalSettings>("animal", animal =>
-                {
-                    animal.AddCommand<DogCommand>("dog");
-                });
+                config.AddBranch<AnimalSettings>("animal", animal => animal.AddCommand<DogCommand>("dog"));
             });
 
             // When
@@ -43,10 +40,7 @@ public sealed partial class CommandAppTests
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddBranch<AnimalSettings>("animal", animal =>
-                {
-                    animal.AddCommand<DogCommand>("dog");
-                });
+                config.AddBranch<AnimalSettings>("animal", animal => animal.AddCommand<DogCommand>("dog"));
             });
 
             // When
