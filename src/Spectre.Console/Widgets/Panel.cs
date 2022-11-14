@@ -117,6 +117,13 @@ public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, 
                 ? options.Height - 2
                 : null;
 
+        if (!Expand)
+        {
+            // Set the height to the explicit height (or null)
+            // if the panel isn't expandable.
+            height = Height != null ? Height - 2 : null;
+        }
+
         // Start building the panel
         var result = new List<Segment>();
 
