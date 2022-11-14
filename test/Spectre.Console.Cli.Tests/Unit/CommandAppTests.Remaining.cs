@@ -124,7 +124,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<DogCommand>("dog");
             });
 
-
             // When
             var result = Record.Exception(() => app.Run(new[]
             {
@@ -151,7 +150,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<DogCommand>("dog");
             });
 
-
             // When
             var result = Record.Exception(() => app.Run(new[]
             {
@@ -165,7 +163,6 @@ public sealed partial class CommandAppTests
                 ex.Message.ShouldBe($"Unknown option 'r'.");
             });
         }
-
 
         [Fact]
         public void Should_Register_Remaining_Parsed_Arguments_With_Context()
