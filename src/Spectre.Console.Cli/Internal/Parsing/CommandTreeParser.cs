@@ -358,7 +358,8 @@ internal class CommandTreeParser
         }
         else
         {
-            if (context.State == State.Remaining || context.ParsingMode == ParsingMode.Relaxed)
+            if (parameter == null && // Only add tokens which have not been matched to a command parameter
+                (context.State == State.Remaining || context.ParsingMode == ParsingMode.Relaxed))
             {
                 context.AddRemainingArgument(token.Value, null);
             }

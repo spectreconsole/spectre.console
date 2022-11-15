@@ -4,6 +4,169 @@ public sealed partial class CommandAppTests
 {
     public sealed class Remaining
     {
+        [Theory]
+        [InlineData("-a")]
+        [InlineData("--alive")]
+        public void Should_Not_Add_Known_Flags_To_Remaining_Arguments_RelaxedParsing(string knownFlag)
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddCommand<DogCommand>("dog");
+            });
+
+            // When
+            var result = app.Run(new[]
+            {
+                "dog", "12", "4",
+                knownFlag,
+            });
+
+            // Then
+            result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
+            {
+                dog.IsAlive.ShouldBe(true);
+            });
+
+            result.Context.Remaining.Parsed.Count.ShouldBe(0);
+            result.Context.Remaining.Raw.Count.ShouldBe(0);
+        }
+
+        [Theory]
+        [InlineData("-r")]
+        [InlineData("--romeo")]
+        public void Should_Add_Unknown_Flags_To_Remaining_Arguments_RelaxedParsing(string unknownFlag)
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddCommand<DogCommand>("dog");
+            });
+
+            // When
+            var result = app.Run(new[]
+            {
+                "dog", "12", "4",
+                unknownFlag,
+            });
+
+            // Then
+            result.Context.Remaining.Parsed.Count.ShouldBe(1);
+            result.Context.ShouldHaveRemainingArgument(unknownFlag.TrimStart('-'), values: new[] { (string)null });
+            result.Context.Remaining.Raw.Count.ShouldBe(0);
+        }
+
+        [Fact]
+        public void Should_Add_Unknown_Flags_When_Grouped_To_Remaining_Arguments_RelaxedParsing()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddCommand<DogCommand>("dog");
+            });
+
+            // When
+            var result = app.Run(new[]
+            {
+                "dog", "12", "4",
+                "-agr",
+            });
+
+            // Then
+            result.Context.Remaining.Parsed.Count.ShouldBe(1);
+            result.Context.ShouldHaveRemainingArgument("r", values: new[] { (string)null });
+            result.Context.Remaining.Raw.Count.ShouldBe(0);
+        }
+
+        [Theory]
+        [InlineData("-a")]
+        [InlineData("--alive")]
+        public void Should_Not_Add_Known_Flags_To_Remaining_Arguments_StrictParsing(string knownFlag)
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.UseStrictParsing();
+                config.PropagateExceptions();
+                config.AddCommand<DogCommand>("dog");
+            });
+
+            // When
+            var result = app.Run(new[]
+            {
+                "dog", "12", "4",
+                knownFlag,
+            });
+
+            // Then
+            result.Context.Remaining.Parsed.Count.ShouldBe(0);
+            result.Context.Remaining.Raw.Count.ShouldBe(0);
+        }
+
+        [Theory]
+        [InlineData("-r")]
+        [InlineData("--romeo")]
+        public void Should_Not_Add_Unknown_Flags_To_Remaining_Arguments_StrictParsing(string unknownFlag)
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.UseStrictParsing();
+                config.PropagateExceptions();
+                config.AddCommand<DogCommand>("dog");
+            });
+
+
+            // When
+            var result = Record.Exception(() => app.Run(new[]
+            {
+                "dog", "12", "4",
+                unknownFlag,
+            }));
+
+            // Then
+            result.ShouldBeOfType<CommandParseException>().And(ex =>
+            {
+                ex.Message.ShouldBe($"Unknown option '{unknownFlag.TrimStart('-')}'.");
+            });
+        }
+
+        [Fact]
+        public void Should_Not_Add_Unknown_Flags_When_Grouped_To_Remaining_Arguments_StrictParsing()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.UseStrictParsing();
+                config.PropagateExceptions();
+                config.AddCommand<DogCommand>("dog");
+            });
+
+
+            // When
+            var result = Record.Exception(() => app.Run(new[]
+            {
+                "dog", "12", "4",
+                "-agr",
+            }));
+
+            // Then
+            result.ShouldBeOfType<CommandParseException>().And(ex =>
+            {
+                ex.Message.ShouldBe($"Unknown option 'r'.");
+            });
+        }
+
+
         [Fact]
         public void Should_Register_Remaining_Parsed_Arguments_With_Context()
         {
