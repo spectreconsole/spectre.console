@@ -17,6 +17,13 @@ public sealed class FigletText : Renderable, IHasJustification
     public Justify? Justification { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether or not
+    /// the right side should be padded.
+    /// </summary>
+    /// <remarks>Defaults to <c>false</c>.</remarks>
+    public bool Pad { get; set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="FigletText"/> class.
     /// </summary>
     /// <param name="text">The text.</param>
@@ -53,7 +60,7 @@ public sealed class FigletText : Renderable, IHasJustification
                 {
                     yield return line;
 
-                    if (lineWidth < maxWidth)
+                    if (lineWidth < maxWidth && Pad)
                     {
                         yield return Segment.Padding(maxWidth - lineWidth);
                     }
@@ -65,7 +72,11 @@ public sealed class FigletText : Renderable, IHasJustification
 
                     yield return Segment.Padding(left);
                     yield return line;
-                    yield return Segment.Padding(right);
+
+                    if (Pad)
+                    {
+                        yield return Segment.Padding(right);
+                    }
                 }
                 else if (alignment == Console.Justify.Right)
                 {
