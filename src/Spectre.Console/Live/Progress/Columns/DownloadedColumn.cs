@@ -11,7 +11,7 @@ public sealed class DownloadedColumn : ProgressColumn
     public CultureInfo? Culture { get; set; }
 
     /// <inheritdoc/>
-    public override IRenderable Render(RenderContext context, ProgressTask task, TimeSpan deltaTime)
+    public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
     {
         var total = new FileSize(task.MaxValue);
 

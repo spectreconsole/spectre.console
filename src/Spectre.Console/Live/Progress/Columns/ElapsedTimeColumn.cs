@@ -14,7 +14,7 @@ public sealed class ElapsedTimeColumn : ProgressColumn
     public Style Style { get; set; } = new Style(foreground: Color.Blue);
 
     /// <inheritdoc/>
-    public override IRenderable Render(RenderContext context, ProgressTask task, TimeSpan deltaTime)
+    public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
     {
         var elapsed = task.ElapsedTime;
         if (elapsed == null)
@@ -31,7 +31,7 @@ public sealed class ElapsedTimeColumn : ProgressColumn
     }
 
     /// <inheritdoc/>
-    public override int? GetColumnWidth(RenderContext context)
+    public override int? GetColumnWidth(RenderOptions options)
     {
         return 8;
     }

@@ -20,12 +20,12 @@ public sealed class ColorBox : Renderable
         _width = width;
     }
 
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         return new Measurement(1, GetWidth(maxWidth));
     }
 
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         maxWidth = GetWidth(maxWidth);
 

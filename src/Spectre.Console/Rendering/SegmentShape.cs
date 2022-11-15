@@ -11,13 +11,8 @@ internal readonly struct SegmentShape
         Height = height;
     }
 
-    public static SegmentShape Calculate(RenderContext context, List<SegmentLine> lines)
+    public static SegmentShape Calculate(RenderOptions options, List<SegmentLine> lines)
     {
-        if (context is null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
-
         if (lines is null)
         {
             throw new ArgumentNullException(nameof(lines));
@@ -36,7 +31,7 @@ internal readonly struct SegmentShape
             Math.Max(Height, other.Height));
     }
 
-    public void Apply(RenderContext context, ref List<SegmentLine> lines)
+    public void Apply(RenderOptions options, ref List<SegmentLine> lines)
     {
         foreach (var line in lines)
         {

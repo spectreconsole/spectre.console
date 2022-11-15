@@ -64,7 +64,7 @@ internal sealed class DefaultProgressRenderer : ProgressRenderer
                 _stopwatch.Start();
             }
 
-            var renderContext = new RenderContext(_console.Profile.Capabilities);
+            var renderContext = RenderOptions.Create(_console, _console.Profile.Capabilities);
 
             var delta = _stopwatch.Elapsed - _lastUpdate;
             _lastUpdate = _stopwatch.Elapsed;
@@ -105,7 +105,7 @@ internal sealed class DefaultProgressRenderer : ProgressRenderer
         }
     }
 
-    public override IEnumerable<IRenderable> Process(RenderContext context, IEnumerable<IRenderable> renderables)
+    public override IEnumerable<IRenderable> Process(RenderOptions options, IEnumerable<IRenderable> renderables)
     {
         lock (_lock)
         {

@@ -24,7 +24,7 @@ public static class PanelExtensions
             throw new ArgumentNullException(nameof(text));
         }
 
-        alignment ??= panel.Header?.Alignment;
+        alignment ??= panel.Header?.Justification;
         return Header(panel, new PanelHeader(text, alignment));
     }
 
@@ -44,7 +44,7 @@ public static class PanelExtensions
         if (panel.Header != null)
         {
             // Update existing style
-            panel.Header.Alignment = alignment;
+            panel.Header.Justification = alignment;
         }
         else
         {

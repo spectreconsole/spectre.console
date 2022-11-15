@@ -19,17 +19,17 @@ public static class Program
         catch (Exception ex)
         {
             AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("Default").LeftAligned());
+            AnsiConsole.Write(new Rule("Default").LeftJustified());
             AnsiConsole.WriteLine();
             AnsiConsole.WriteException(ex);
 
             AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("Compact").LeftAligned());
+            AnsiConsole.Write(new Rule("Compact").LeftJustified());
             AnsiConsole.WriteLine();
             AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything | ExceptionFormats.ShowLinks);
 
             AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("Compact + Custom colors").LeftAligned());
+            AnsiConsole.Write(new Rule("Compact + Custom colors").LeftJustified());
             AnsiConsole.WriteLine();
             AnsiConsole.WriteException(ex, new ExceptionSettings
             {
@@ -56,7 +56,7 @@ public static class Program
         catch (Exception ex)
         {
             AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("Async").LeftAligned());
+            AnsiConsole.Write(new Rule("Async").LeftJustified());
             AnsiConsole.WriteLine();
             AnsiConsole.WriteException(ex, ExceptionFormats.ShortenPaths);
         }

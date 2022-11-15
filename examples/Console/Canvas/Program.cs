@@ -40,7 +40,7 @@ public static class Program
     private static void Render(IRenderable canvas, string title)
     {
         AnsiConsole.WriteLine();
-        AnsiConsole.Write(new Rule($"[yellow]{title}[/]").LeftAligned().RuleStyle("grey"));
+        AnsiConsole.Write(new Rule($"[yellow]{title}[/]").LeftJustified().RuleStyle("grey"));
         AnsiConsole.WriteLine();
         AnsiConsole.Write(canvas);
     }

@@ -67,7 +67,7 @@ internal sealed class LiveRenderable : Renderable
         }
     }
 
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         lock (_lock)
         {
@@ -75,10 +75,10 @@ internal sealed class LiveRenderable : Renderable
 
             if (_renderable != null)
             {
-                var segments = _renderable.Render(context, maxWidth);
+                var segments = _renderable.Render(options, maxWidth);
                 var lines = Segment.SplitLines(segments);
 
-                var shape = SegmentShape.Calculate(context, lines);
+                var shape = SegmentShape.Calculate(options, lines);
                 if (shape.Height > _console.Profile.Height)
                 {
                     if (Overflow == VerticalOverflow.Crop)
@@ -97,12 +97,12 @@ internal sealed class LiveRenderable : Renderable
                             lines.RemoveRange(0, start);
                         }
 
-                        shape = SegmentShape.Calculate(context, lines);
+                        shape = SegmentShape.Calculate(options, lines);
                     }
                     else if (Overflow == VerticalOverflow.Ellipsis)
                     {
                         var ellipsisText = _console.Profile.Capabilities.Unicode ? "…" : "...";
-                        var ellipsis = new SegmentLine(((IRenderable)new Markup($"[yellow]{ellipsisText}[/]")).Render(context, maxWidth));
+                        var ellipsis = new SegmentLine(((IRenderable)new Markup($"[yellow]{ellipsisText}[/]")).Render(options, maxWidth));
 
                         if (OverflowCropping == VerticalOverflowCropping.Bottom)
                         {
@@ -120,14 +120,14 @@ internal sealed class LiveRenderable : Renderable
                             lines.Insert(0, ellipsis);
                         }
 
-                        shape = SegmentShape.Calculate(context, lines);
+                        shape = SegmentShape.Calculate(options, lines);
                     }
 
                     DidOverflow = true;
                 }
 
                 _shape = _shape == null ? shape : _shape.Value.Inflate(shape);
-                _shape.Value.Apply(context, ref lines);
+                _shape.Value.Apply(options, ref lines);
 
                 foreach (var (_, _, last, line) in lines.Enumerate())
                 {

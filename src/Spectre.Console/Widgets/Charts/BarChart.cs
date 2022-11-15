@@ -52,14 +52,14 @@ public sealed class BarChart : Renderable, IHasCulture
     }
 
     /// <inheritdoc/>
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         var width = Math.Min(Width ?? maxWidth, maxWidth);
         return new Measurement(width, width);
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var width = Math.Min(Width ?? maxWidth, maxWidth);
         var maxValue = Math.Max(MaxValue ?? 0d, Data.Max(item => item.Value));
@@ -72,7 +72,7 @@ public sealed class BarChart : Renderable, IHasCulture
 
         if (!string.IsNullOrWhiteSpace(Label))
         {
-            grid.AddRow(Text.Empty, new Markup(Label).Alignment(LabelAlignment));
+            grid.AddRow(Text.Empty, new Markup(Label).Justify(LabelAlignment));
         }
 
         foreach (var item in Data)
@@ -93,6 +93,6 @@ public sealed class BarChart : Renderable, IHasCulture
                 });
         }
 
-        return ((IRenderable)grid).Render(context, width);
+        return ((IRenderable)grid).Render(options, width);
     }
 }
