@@ -92,7 +92,7 @@ public sealed class Align : Renderable
             {
                 case VerticalAlignment.Top:
                     {
-                        var diff = Height - lines.Count;
+                        var diff = height - lines.Count;
                         for (var i = 0; i < diff; i++)
                         {
                             lines.Add(blank);
@@ -121,7 +121,7 @@ public sealed class Align : Renderable
 
                 case VerticalAlignment.Bottom:
                     {
-                        var diff = Height - lines.Count;
+                        var diff = height - lines.Count;
                         for (var i = 0; i < diff; i++)
                         {
                             lines.Insert(0, blank);
