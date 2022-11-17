@@ -30,7 +30,7 @@ internal sealed class BreakdownTags : Renderable
             var panel = new Panel(GetTag(item, culture))
             {
                 Inline = true,
-                Padding = new Padding(0, 0, 2, 0);
+                Padding = new Padding(0, 0, 2, 0),
             };
             panel.NoBorder();
 

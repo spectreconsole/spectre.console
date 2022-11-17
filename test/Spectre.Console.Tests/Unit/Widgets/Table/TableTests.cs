@@ -186,12 +186,12 @@ public sealed class TableTests
     {
         // Given
         var console = new TestConsole();
-        #pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 // Type or member is obsolete
         var table = new Table
         {
             Alignment = Justify.Left,
         };
-        #pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning restore CS0618 // Type or member is obsolete
         table.AddColumns("Foo", "Bar", "Baz");
         table.AddRow("Qux", "Corgi", "Waldo");
         table.AddRow("Grault", "Garply", "Fred");

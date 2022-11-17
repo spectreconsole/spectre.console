@@ -5,6 +5,6 @@ internal static class RenderOptionsExtensions
     public static BoxBorder GetSafeBorder<T>(this RenderOptions options, T border)
         where T : IHasBoxBorder, IHasBorder
     {
-        return BoxExtensions.GetSafeBorder(border.Border, !options.Unicode && border.UseSafeBorder);
+        return border.Border.GetSafeBorder(!options.Unicode && border.UseSafeBorder);
     }
 }

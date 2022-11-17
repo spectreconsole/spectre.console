@@ -213,7 +213,7 @@ public sealed class Layout : Renderable, IRatioResolvable, IHasVisibility
         var map = MakeRenderMap(options, maxWidth);
 
         var layoutLines = new List<SegmentLine>();
-        layoutLines.AddRange(Enumerable.Range(0, height).Select(x => new SegmentLine()));
+        layoutLines.AddRange(Enumerable.Range(0, height).Select(_ => new SegmentLine()));
 
         foreach (var (region, lines) in map.Values.Select(x => (x.Region, x.Render)))
         {
@@ -249,7 +249,7 @@ public sealed class Layout : Renderable, IRatioResolvable, IHasVisibility
 
     private bool HasChildren(bool visibleOnly = false)
     {
-        return visibleOnly ? _children.Any(c => c.IsVisible) : _children.Any();
+        return visibleOnly ? _children.Any(c => c.IsVisible) : _children.Length > 0;
     }
 
     private void Split(LayoutSplitter splitter, Layout[] layouts)
