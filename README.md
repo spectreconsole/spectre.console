@@ -100,10 +100,4 @@ Copyright © Patrik Svensson, Phil Scott, Nils Andresen
 
 Spectre.Console is provided as-is under the MIT license. For more information see LICENSE.
 
-### SixLabors.ImageSharp License
-
-The SixLabors.ImageSharp library that is bundled as part of Spectre.Console is distributed under a separate license to Spectre.Console, see: https://github.com/SixLabors/ImageSharp/blob/master/LICENSE
-
-Whilst Spectre.Console is released under an Open Source or Source Available license, then it will continue to consume ImageSharp under the terms of the Apache 2.0 License since the requirements of the Six Labors Split License are met to do so. 
-
-This means that downstream consumers of Spectre.Console have nothing to pay if they continue to use ImageSharp as a Transitive Package Dependency (as defined in the Six Labors Split License). 
+* SixLabors.ImageSharp, a library which Spectre.Console relies upon, is licensed under Apache 2.0 when distributed as part of Spectre.Console. The Six Labors Split License covers all other usage, see: https://github.com/SixLabors/ImageSharp/blob/master/LICENSE 
