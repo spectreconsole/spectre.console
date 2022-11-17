@@ -6,12 +6,12 @@ namespace Spectre.Console;
 public enum Justify
 {
     /// <summary>
-    /// Left aligned.
+    /// Left justified.
     /// </summary>
     Left = 0,
 
     /// <summary>
-    /// Right aligned.
+    /// Right justified.
     /// </summary>
     Right = 1,
 

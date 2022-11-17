@@ -46,7 +46,7 @@ namespace Prompt
 
             // Summary
             AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("[yellow]Results[/]").RuleStyle("grey").LeftAligned());
+            AnsiConsole.Write(new Rule("[yellow]Results[/]").RuleStyle("grey").LeftJustified());
             AnsiConsole.Write(new Table().AddColumns("[grey]Question[/]", "[grey]Answer[/]")
                 .RoundedBorder()
                 .BorderColor(Color.Grey)
@@ -63,7 +63,7 @@ namespace Prompt
         private static void WriteDivider(string text)
         {
             AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule($"[yellow]{text}[/]").RuleStyle("grey").LeftAligned());
+            AnsiConsole.Write(new Rule($"[yellow]{text}[/]").RuleStyle("grey").LeftJustified());
         }
 
         public static bool AskConfirmation()

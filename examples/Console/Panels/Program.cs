@@ -17,7 +17,7 @@ public static class Program
 
         // Left adjusted panel with text
         AnsiConsole.Write(
-            new Panel(new Text("Left adjusted\nLeft").LeftAligned())
+            new Panel(new Text("Left adjusted\nLeft").LeftJustified())
                 .Expand()
                 .SquareBorder()
                 .Header("[red]Left[/]"));
@@ -32,7 +32,7 @@ public static class Program
 
         // Right adjusted, rounded panel with text
         AnsiConsole.Write(
-            new Panel(new Text("Right adjusted\nRight").RightAligned())
+            new Panel(new Text("Right adjusted\nRight").RightJustified())
                 .Expand()
                 .RoundedBorder()
                 .Header("[blue]Right[/]")

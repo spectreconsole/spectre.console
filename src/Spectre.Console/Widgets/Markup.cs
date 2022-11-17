@@ -4,15 +4,15 @@ namespace Spectre.Console;
 /// A renderable piece of markup text.
 /// </summary>
 [SuppressMessage("Naming", "CA1724:Type names should not match namespaces")]
-public sealed class Markup : Renderable, IAlignable, IOverflowable
+public sealed class Markup : Renderable, IHasJustification, IOverflowable
 {
     private readonly Paragraph _paragraph;
 
     /// <inheritdoc/>
-    public Justify? Alignment
+    public Justify? Justification
     {
-        get => _paragraph.Alignment;
-        set => _paragraph.Alignment = value;
+        get => _paragraph.Justification;
+        set => _paragraph.Justification = value;
     }
 
     /// <inheritdoc/>
@@ -43,15 +43,15 @@ public sealed class Markup : Renderable, IAlignable, IOverflowable
     }
 
     /// <inheritdoc/>
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
-        return ((IRenderable)_paragraph).Measure(context, maxWidth);
+        return ((IRenderable)_paragraph).Measure(options, maxWidth);
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        return ((IRenderable)_paragraph).Render(context, maxWidth);
+        return ((IRenderable)_paragraph).Render(options, maxWidth);
     }
 
     /// <summary>

@@ -186,16 +186,36 @@ public sealed class TableTests
     {
         // Given
         var console = new TestConsole();
+        #pragma warning disable CS0618 // Type or member is obsolete
         var table = new Table
         {
             Alignment = Justify.Left,
         };
+        #pragma warning restore CS0618 // Type or member is obsolete
         table.AddColumns("Foo", "Bar", "Baz");
         table.AddRow("Qux", "Corgi", "Waldo");
         table.AddRow("Grault", "Garply", "Fred");
 
         // When
         console.Write(table);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_LeftAligned", "Align_Widget")]
+    public Task Should_Left_Align_Table_Correctly_When_Wrapped_In_Align_Widget()
+    {
+        // Given
+        var console = new TestConsole();
+        var table = new Table();
+        table.AddColumns("Foo", "Bar", "Baz");
+        table.AddRow("Qux", "Corgi", "Waldo");
+        table.AddRow("Grault", "Garply", "Fred");
+
+        // When
+        console.Write(Align.Left(table));
 
         // Then
         return Verifier.Verify(console.Output);
@@ -207,10 +227,12 @@ public sealed class TableTests
     {
         // Given
         var console = new TestConsole();
+#pragma warning disable CS0618 // Type or member is obsolete
         var table = new Table
         {
             Alignment = Justify.Center,
         };
+#pragma warning restore CS0618 // Type or member is obsolete
         table.AddColumns("Foo", "Bar", "Baz");
         table.AddRow("Qux", "Corgi", "Waldo");
         table.AddRow("Grault", "Garply", "Fred");
@@ -223,21 +245,59 @@ public sealed class TableTests
     }
 
     [Fact]
+    [Expectation("Render_Centered", "Align_Widget")]
+    public Task Should_Center_Table_Correctly_When_Wrapped_In_Align_Widget()
+    {
+        // Given
+        var console = new TestConsole();
+        var table = new Table();
+        table.AddColumns("Foo", "Bar", "Baz");
+        table.AddRow("Qux", "Corgi", "Waldo");
+        table.AddRow("Grault", "Garply", "Fred");
+
+        // When
+        console.Write(Align.Center(table));
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
     [Expectation("Render_RightAligned")]
     public Task Should_Right_Align_Table_Correctly()
     {
         // Given
         var console = new TestConsole();
+#pragma warning disable CS0618 // Type or member is obsolete
         var table = new Table
         {
             Alignment = Justify.Right,
         };
+#pragma warning restore CS0618 // Type or member is obsolete
         table.AddColumns("Foo", "Bar", "Baz");
         table.AddRow("Qux", "Corgi", "Waldo");
         table.AddRow("Grault", "Garply", "Fred");
 
         // When
         console.Write(table);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_RightAligned", "Align_Widget")]
+    public Task Should_Right_Align_Table_Correctly_When_Wrapped_In_Align_Widget()
+    {
+        // Given
+        var console = new TestConsole();
+        var table = new Table();
+        table.AddColumns("Foo", "Bar", "Baz");
+        table.AddRow("Qux", "Corgi", "Waldo");
+        table.AddRow("Grault", "Garply", "Fred");
+
+        // When
+        console.Write(Align.Right(table));
 
         // Then
         return Verifier.Verify(console.Output);
@@ -386,7 +446,7 @@ public sealed class TableTests
         table.AddColumn(new TableColumn(new Panel("[u]DEF[/]").BorderColor(Color.Green)));
         table.AddColumn(new TableColumn(new Panel("[u]GHI[/]").BorderColor(Color.Blue)));
         table.AddRow(new Text("Hello").Centered(), new Markup("[red]World[/]"), Text.Empty);
-        table.AddRow(second, new Text("Whaat"), new Text("Lol").RightAligned());
+        table.AddRow(second, new Text("Whaat"), new Text("Lol").RightJustified());
         table.AddRow(new Markup("[blue]Hej[/]"), new Markup("[yellow]Världen[/]"), Text.Empty);
 
         // When

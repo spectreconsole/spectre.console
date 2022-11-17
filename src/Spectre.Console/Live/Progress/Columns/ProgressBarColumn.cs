@@ -31,7 +31,7 @@ public sealed class ProgressBarColumn : ProgressColumn
     public Style IndeterminateStyle { get; set; } = ProgressBar.DefaultPulseStyle;
 
     /// <inheritdoc/>
-    public override IRenderable Render(RenderContext context, ProgressTask task, TimeSpan deltaTime)
+    public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
     {
         return new ProgressBar
         {

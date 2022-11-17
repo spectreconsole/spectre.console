@@ -11,14 +11,14 @@ public static class Program
             new Rule()
                 .RuleStyle(Style.Parse("yellow"))
                 .AsciiBorder()
-                .LeftAligned());
+                .LeftJustified());
 
         // Left aligned title
         Render(
             new Rule("[blue]Left aligned[/]")
                 .RuleStyle(Style.Parse("red"))
                 .DoubleBorder()
-                .LeftAligned());
+                .LeftJustified());
 
         // Centered title
         Render(
@@ -31,7 +31,7 @@ public static class Program
         Render(
             new Rule("[red]Right aligned[/]")
                 .RuleStyle(Style.Parse("blue"))
-                .RightAligned());
+                .RightJustified());
     }
 
     private static void Render(Rule rule)

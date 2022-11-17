@@ -77,6 +77,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paths", "Console\Paths\Path
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Console.Cli", "..\src\Spectre.Console.Cli\Spectre.Console.Cli.csproj", "{EFAADF6A-C77D-41EC-83F5-BBB4FFC5A6D7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Layout", "Console\Layout\Layout.csproj", "{A9FDE73A-8452-4CA3-B366-3F900597E132}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -507,6 +509,18 @@ Global
 		{EFAADF6A-C77D-41EC-83F5-BBB4FFC5A6D7}.Release|x64.Build.0 = Release|Any CPU
 		{EFAADF6A-C77D-41EC-83F5-BBB4FFC5A6D7}.Release|x86.ActiveCfg = Release|Any CPU
 		{EFAADF6A-C77D-41EC-83F5-BBB4FFC5A6D7}.Release|x86.Build.0 = Release|Any CPU
+		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Debug|x64.Build.0 = Debug|Any CPU
+		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Debug|x86.Build.0 = Debug|Any CPU
+		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Release|x64.ActiveCfg = Release|Any CPU
+		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Release|x64.Build.0 = Release|Any CPU
+		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Release|x86.ActiveCfg = Release|Any CPU
+		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

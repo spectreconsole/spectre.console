@@ -29,7 +29,7 @@ public sealed class Rows : Renderable, IExpandable
     }
 
     /// <inheritdoc/>
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         if (Expand)
         {
@@ -37,7 +37,7 @@ public sealed class Rows : Renderable, IExpandable
         }
         else
         {
-            var measurements = _children.Select(c => c.Measure(context, maxWidth));
+            var measurements = _children.Select(c => c.Measure(options, maxWidth));
             return new Measurement(
                 measurements.Min(c => c.Min),
                 measurements.Min(c => c.Max));
@@ -45,13 +45,13 @@ public sealed class Rows : Renderable, IExpandable
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var result = new List<Segment>();
 
         foreach (var child in _children)
         {
-            var segments = child.Render(context, maxWidth);
+            var segments = child.Render(options, maxWidth);
             foreach (var (_, _, last, segment) in segments.Enumerate())
             {
                 result.Add(segment);
