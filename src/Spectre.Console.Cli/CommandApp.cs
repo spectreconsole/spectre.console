@@ -113,7 +113,7 @@ public sealed class CommandApp : ICommandApp
         }
     }
 
-    internal Configurator GetConfigurator()
+    internal IConfigurator GetConfigurator()
     {
         return _configurator;
     }

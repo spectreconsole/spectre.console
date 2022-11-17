@@ -1,3 +1,5 @@
+using static Spectre.Console.Cli.CommandTreeTokenizer;
+
 namespace Spectre.Console.Cli;
 
 internal class CommandTreeParser
@@ -14,25 +16,25 @@ internal class CommandTreeParser
         Remaining = 1,
     }
 
-    public CommandTreeParser(CommandModel configuration, ICommandAppSettings settings, ParsingMode? parsingMode = null)
+    public CommandTreeParser(CommandModel configuration, CaseSensitivity caseSensitivity, ParsingMode? parsingMode = null)
     {
-        if (settings is null)
-        {
-            throw new ArgumentNullException(nameof(settings));
-        }
-
-        _configuration = configuration;
+        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         _parsingMode = parsingMode ?? _configuration.ParsingMode;
         _help = new CommandOptionAttribute("-h|--help");
 
-        CaseSensitivity = settings.CaseSensitivity;
+        CaseSensitivity = caseSensitivity;
     }
 
     public CommandTreeParserResult Parse(IEnumerable<string> args)
     {
-        var context = new CommandTreeParserContext(args, _parsingMode);
+        var parserContext = new CommandTreeParserContext(args, _parsingMode);
+        var tokenizerResult = CommandTreeTokenizer.Tokenize(args);
 
-        var tokenizerResult = CommandTreeTokenizer.Tokenize(context.Arguments);
+        return Parse(parserContext, tokenizerResult);
+    }
+
+    public CommandTreeParserResult Parse(CommandTreeParserContext context, CommandTreeTokenizerResult tokenizerResult)
+    {
         var tokens = tokenizerResult.Tokens;
         var rawRemaining = tokenizerResult.Remaining;
 

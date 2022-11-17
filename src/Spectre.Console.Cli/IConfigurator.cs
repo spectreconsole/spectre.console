@@ -17,6 +17,16 @@ public interface IConfigurator
     void AddExample(string[] args);
 
     /// <summary>
+    /// Adds a default command.
+    /// </summary>
+    /// <remarks>
+    /// This is the command that will run if the user doesn't specify one on the command line.
+    /// </remarks>
+    /// <typeparam name="TDefaultCommand">The default command type.</typeparam>
+    void SetDefaultCommand<TDefaultCommand>()
+        where TDefaultCommand : class, ICommand;
+
+    /// <summary>
     /// Adds a command.
     /// </summary>
     /// <typeparam name="TCommand">The command type.</typeparam>

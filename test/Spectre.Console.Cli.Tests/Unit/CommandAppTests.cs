@@ -10,50 +10,14 @@ public sealed partial class CommandAppTests
         app.Configure(config =>
         {
             config.PropagateExceptions();
-            config.AddBranch<AnimalSettings>("animal", animal =>
-            {
-                animal.AddBranch<MammalSettings>("mammal", mammal =>
-                {
-                    mammal.AddCommand<DogCommand>("dog");
-                    mammal.AddCommand<HorseCommand>("horse");
-                });
-            });
-        });
-
-        // When
-        var result = app.Run(new[]
-        {
-            "animal", "--alive", "mammal", "--name",
-            "Rufus", "dog", "12", "--good-boy",
-        });
-
-        // Then
-        result.ExitCode.ShouldBe(0);
-        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
-        {
-            dog.Age.ShouldBe(12);
-            dog.GoodBoy.ShouldBe(true);
-            dog.Name.ShouldBe("Rufus");
-            dog.IsAlive.ShouldBe(true);
-        });
-    }
-
-    [Fact]
-    public void Should_Pass_Case_2()
-    {
-        // Given
-        var app = new CommandAppTester();
-        app.Configure(config =>
-        {
-            config.PropagateExceptions();
             config.AddCommand<DogCommand>("dog");
         });
 
         // When
         var result = app.Run(new[]
         {
-            "dog", "12", "4", "--good-boy",
-            "--name", "Rufus", "--alive",
+                "dog", "12", "4", "--good-boy",
+                "--name", "Rufus", "--alive",
         });
 
         // Then
@@ -69,106 +33,7 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
-    public void Should_Pass_Case_3()
-    {
-        // Given
-        var app = new CommandAppTester();
-        app.Configure(config =>
-        {
-            config.PropagateExceptions();
-            config.AddBranch<AnimalSettings>("animal", animal =>
-            {
-                animal.AddCommand<DogCommand>("dog");
-                animal.AddCommand<HorseCommand>("horse");
-            });
-        });
-
-        // When
-        var result = app.Run(new[]
-        {
-            "animal", "dog", "12", "--good-boy",
-            "--name", "Rufus",
-        });
-
-        // Then
-        result.ExitCode.ShouldBe(0);
-        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
-        {
-            dog.Age.ShouldBe(12);
-            dog.GoodBoy.ShouldBe(true);
-            dog.Name.ShouldBe("Rufus");
-            dog.IsAlive.ShouldBe(false);
-        });
-    }
-
-    [Fact]
-    public void Should_Pass_Case_4()
-    {
-        // Given
-        var app = new CommandAppTester();
-        app.Configure(config =>
-        {
-            config.PropagateExceptions();
-            config.AddBranch<AnimalSettings>("animal", animal =>
-            {
-                animal.AddCommand<DogCommand>("dog");
-            });
-        });
-
-        // When
-        var result = app.Run(new[]
-        {
-            "animal", "4", "dog", "12", "--good-boy",
-            "--name", "Rufus",
-        });
-
-        // Then
-        result.ExitCode.ShouldBe(0);
-        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
-        {
-            dog.Legs.ShouldBe(4);
-            dog.Age.ShouldBe(12);
-            dog.GoodBoy.ShouldBe(true);
-            dog.IsAlive.ShouldBe(false);
-            dog.Name.ShouldBe("Rufus");
-        });
-    }
-
-    [Fact]
-    public void Should_Pass_Case_5()
-    {
-        // Given
-        var app = new CommandAppTester();
-        app.Configure(config =>
-        {
-            config.PropagateExceptions();
-            config.AddBranch<AnimalSettings>("animal", animal =>
-            {
-                animal.AddCommand<DogCommand>("dog");
-            });
-        });
-
-        // When
-        var result = app.Run(new[]
-        {
-            "animal", "--alive", "4", "dog", "--good-boy", "12",
-            "--name", "Rufus",
-        });
-
-        // Then
-        result.ExitCode.ShouldBe(0);
-        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
-        {
-            dog.Legs.ShouldBe(4);
-            dog.Age.ShouldBe(12);
-            dog.GoodBoy.ShouldBe(true);
-            dog.IsAlive.ShouldBe(true);
-            dog.Name.ShouldBe("Rufus");
-        });
-    }
-
-    [Fact]
-    public void Should_Pass_Case_6()
+    public void Should_Pass_Case_2()
     {
         // Given
         var app = new CommandAppTester();
@@ -197,7 +62,7 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
-    public void Should_Pass_Case_7()
+    public void Should_Pass_Case_3()
     {
         // Given
         var app = new CommandAppTester();
@@ -846,7 +711,7 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
-    public void Should_Be_Able_To_Set_The_Default_Command()
+    public void Should_Run_The_Default_Command()
     {
         // Given
         var app = new CommandAppTester();
@@ -866,6 +731,62 @@ public sealed partial class CommandAppTests
             dog.Age.ShouldBe(12);
             dog.GoodBoy.ShouldBe(true);
             dog.Name.ShouldBe("Rufus");
+        });
+    }
+
+    [Fact]
+    public void Should_Run_The_Default_Command_Not_The_Named_Command()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<HorseCommand>("horse");
+        });
+        app.SetDefaultCommand<DogCommand>();
+
+        // When
+        var result = app.Run(new[]
+        {
+            "4", "12", "--good-boy", "--name", "Rufus",
+        });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
+        {
+            dog.Legs.ShouldBe(4);
+            dog.Age.ShouldBe(12);
+            dog.GoodBoy.ShouldBe(true);
+            dog.Name.ShouldBe("Rufus");
+        });
+    }
+
+    [Fact]
+    public void Should_Run_The_Named_Command_Not_The_Default_Command()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<HorseCommand>("horse");
+        });
+        app.SetDefaultCommand<DogCommand>();
+
+        // When
+        var result = app.Run(new[]
+        {
+            "horse", "4", "--name", "Arkle",
+        });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<MammalSettings>().And(horse =>
+        {
+            horse.Legs.ShouldBe(4);
+            horse.Name.ShouldBe("Arkle");
         });
     }
 

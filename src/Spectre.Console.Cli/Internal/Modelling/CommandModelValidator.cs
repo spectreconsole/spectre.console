@@ -14,7 +14,7 @@ internal static class CommandModelValidator
             throw new ArgumentNullException(nameof(settings));
         }
 
-        if (model.Commands.Count == 0 && model.DefaultCommand == null)
+        if (model.Commands.Count == 0)
         {
             throw CommandConfigurationException.NoCommandConfigured();
         }
@@ -31,7 +31,6 @@ internal static class CommandModelValidator
             }
         }
 
-        Validate(model.DefaultCommand);
         foreach (var command in model.Commands)
         {
             Validate(command);
@@ -147,7 +146,7 @@ internal static class CommandModelValidator
         {
             try
             {
-                var parser = new CommandTreeParser(model, settings, ParsingMode.Strict);
+                var parser = new CommandTreeParser(model, settings.CaseSensitivity, ParsingMode.Strict);
                 parser.Parse(example);
             }
             catch (Exception ex)

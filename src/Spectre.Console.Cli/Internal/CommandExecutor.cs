@@ -45,12 +45,10 @@ internal sealed class CommandExecutor
         }
 
         // Parse and map the model against the arguments.
-        var parser = new CommandTreeParser(model, configuration.Settings);
-        var parsedResult = parser.Parse(args);
-        _registrar.RegisterInstance(typeof(CommandTreeParserResult), parsedResult);
+        var parsedResult = ParseCommandLineArguments(model, configuration.Settings, args);
 
         // Currently the root?
-        if (parsedResult.Tree == null)
+        if (parsedResult?.Tree == null)
         {
             // Display help.
             configuration.Settings.Console.SafeRender(HelpWriter.Write(model));
@@ -66,7 +64,8 @@ internal sealed class CommandExecutor
             return leaf.ShowHelp ? 0 : 1;
         }
 
-        // Register the arguments with the container.
+        // Register the parsed command tree and any remaining arguments with the container.
+        _registrar.RegisterInstance(typeof(CommandTreeParserResult), parsedResult);
         _registrar.RegisterInstance(typeof(IRemainingArguments), parsedResult.Remaining);
 
         // Create the resolver and the context.
@@ -77,6 +76,31 @@ internal sealed class CommandExecutor
             // Execute the command tree.
             return await Execute(leaf, parsedResult.Tree, context, resolver, configuration).ConfigureAwait(false);
         }
+    }
+
+    private CommandTreeParserResult? ParseCommandLineArguments(CommandModel model, CommandAppSettings settings, IEnumerable<string> args)
+    {
+        var parser = new CommandTreeParser(model, settings.CaseSensitivity);
+
+        var parserContext = new CommandTreeParserContext(args, settings.ParsingMode);
+        var tokenizerResult = CommandTreeTokenizer.Tokenize(args);
+        var parsedResult = parser.Parse(parserContext, tokenizerResult);
+
+        var lastParsedCommand = parsedResult?.Tree?.GetLeafCommand()?.Command;
+        if (lastParsedCommand != null && lastParsedCommand.IsBranch && lastParsedCommand.DefaultCommand != null)
+        {
+            // Insert this branch's default command into the command line
+            // arguments and try again to see if it will parse.
+            var argsWithDefaultCommand = new List<string>(args);
+
+            argsWithDefaultCommand.Insert(tokenizerResult.Tokens.Position, lastParsedCommand.DefaultCommand.Name);
+
+            parserContext = new CommandTreeParserContext(argsWithDefaultCommand, settings.ParsingMode);
+            tokenizerResult = CommandTreeTokenizer.Tokenize(argsWithDefaultCommand);
+            parsedResult = parser.Parse(parserContext, tokenizerResult);
+        }
+
+        return parsedResult;
     }
 
     private static string ResolveApplicationVersion(IConfiguration configuration)
