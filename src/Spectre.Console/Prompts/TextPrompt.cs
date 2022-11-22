@@ -4,7 +4,7 @@ namespace Spectre.Console;
 /// Represents a prompt.
 /// </summary>
 /// <typeparam name="T">The prompt result type.</typeparam>
-public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
+public sealed class TextPrompt<T> : IPrompt<T>, INullablePrompt<T>, IHasCulture
 {
     private readonly string _prompt;
     private readonly StringComparer? _comparer;
@@ -72,7 +72,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     /// <summary>
     /// Gets or sets the validator.
     /// </summary>
-    public Func<T, ValidationResult>? Validator { get; set; }
+    public Func<T?, ValidationResult>? Validator { get; set; }
 
     /// <summary>
     /// Gets or sets the style in which the default value is displayed.
@@ -111,8 +111,31 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
         return ShowAsync(console, CancellationToken.None).GetAwaiter().GetResult();
     }
 
+    /// <summary>
+    /// Shows the prompt and requests input from the user.
+    /// </summary>
+    /// <param name="console">The console to show the prompt in.</param>
+    /// <returns>The user input converted to the expected type.</returns>
+    /// <inheritdoc/>
+    public T? ShowNullable(IAnsiConsole console)
+    {
+        return ShowNullableAsync(console, CancellationToken.None).GetAwaiter().GetResult();
+    }
+
     /// <inheritdoc/>
     public async Task<T> ShowAsync(IAnsiConsole console, CancellationToken cancellationToken)
+    {
+        return (await ShowNullableAsync(console, false, cancellationToken))
+            ?? throw new Exception("This method do not allow for null");
+    }
+
+    /// <inheritdoc/>
+    public Task<T?> ShowNullableAsync(IAnsiConsole console, CancellationToken cancellationToken)
+    {
+        return ShowNullableAsync(console, true, cancellationToken);
+    }
+
+    private async Task<T?> ShowNullableAsync(IAnsiConsole console, bool allowNull, CancellationToken cancellationToken)
     {
         if (console is null)
         {
@@ -165,7 +188,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
                         continue;
                     }
                 }
-                else if (!TypeConverterHelper.TryConvertFromStringWithCulture<T>(input, Culture, out result) || result == null)
+                else if (!TypeConverterHelper.TryConvertFromStringWithCulture<T>(input, Culture, out result) || (!allowNull && result == null))
                 {
                     console.MarkupLine(ValidationErrorMessage);
                     WritePrompt(console);
@@ -232,7 +255,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
         console.Markup(markup + " ");
     }
 
-    private bool ValidateResult(T value, [NotNullWhen(false)] out string? message)
+    private bool ValidateResult(T? value, [NotNullWhen(false)] out string? message)
     {
         if (Validator != null)
         {

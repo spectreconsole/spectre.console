@@ -187,7 +187,7 @@ public static class TextPromptExtensions
     /// <param name="validator">The validation criteria.</param>
     /// <param name="message">The validation error message.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> Validate<T>(this TextPrompt<T> obj, Func<T, bool> validator, string? message = null)
+    public static TextPrompt<T> Validate<T>(this TextPrompt<T> obj, Func<T?, bool> validator, string? message = null)
     {
         if (obj is null)
         {
@@ -214,7 +214,7 @@ public static class TextPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="validator">The validation criteria.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> Validate<T>(this TextPrompt<T> obj, Func<T, ValidationResult> validator)
+    public static TextPrompt<T> Validate<T>(this TextPrompt<T> obj, Func<T?, ValidationResult> validator)
     {
         if (obj is null)
         {
