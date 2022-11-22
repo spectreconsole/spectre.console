@@ -10,6 +10,7 @@ global using System.Threading;
 global using System.Threading.Tasks;
 global using Shouldly;
 global using Spectre.Console.Advanced;
+global using Spectre.Console.Json;
 global using Spectre.Console.Rendering;
 global using Spectre.Console.Testing;
 global using Spectre.Console.Tests.Data;

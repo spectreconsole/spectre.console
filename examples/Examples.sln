@@ -79,6 +79,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Console.Cli", "..\s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Layout", "Console\Layout\Layout.csproj", "{A9FDE73A-8452-4CA3-B366-3F900597E132}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Json", "Console\Json\Json.csproj", "{ABE3E734-0756-4D5A-B28A-E6E526D9927D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -521,6 +523,18 @@ Global
 		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Release|x64.Build.0 = Release|Any CPU
 		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Release|x86.ActiveCfg = Release|Any CPU
 		{A9FDE73A-8452-4CA3-B366-3F900597E132}.Release|x86.Build.0 = Release|Any CPU
+		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Debug|x64.Build.0 = Debug|Any CPU
+		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Debug|x86.Build.0 = Debug|Any CPU
+		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Release|x64.ActiveCfg = Release|Any CPU
+		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Release|x64.Build.0 = Release|Any CPU
+		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Release|x86.ActiveCfg = Release|Any CPU
+		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

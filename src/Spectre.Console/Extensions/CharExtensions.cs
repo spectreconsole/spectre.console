@@ -3,7 +3,7 @@ namespace Spectre.Console;
 /// <summary>
 /// Contains extension methods for <see cref="char"/>.
 /// </summary>
-public static class CharExtensions
+public static partial class CharExtensions
 {
     /// <summary>
     /// Gets the cell width of a character.

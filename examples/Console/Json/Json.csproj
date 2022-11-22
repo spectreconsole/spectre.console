@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ExampleTitle>Json</ExampleTitle>
+    <ExampleDescription>Demonstrates how to use print syntax highlighted JSON.</ExampleDescription>
+    <ExampleGroup>Widgets</ExampleGroup>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Shared.csproj" />
+    <ProjectReference Include="..\..\..\src\Spectre.Console.Json\Spectre.Console.Json.csproj" />
+  </ItemGroup>
+
+</Project>
