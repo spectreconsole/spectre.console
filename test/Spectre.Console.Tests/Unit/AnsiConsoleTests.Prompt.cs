@@ -50,5 +50,19 @@ public partial class AnsiConsoleTests
             // Then
             dateTime.ShouldBe(new DateTime(1998, 2, 1));
         }
+
+        [Fact]
+        public void Should_Return_Null_Value_When_Asked_Nullable_US_Culture()
+        {
+            // Given
+            var console = new TestConsole().EmitAnsiSequences();
+            console.Input.PushKey(ConsoleKey.Enter);
+
+            // When
+            var dateTime = console.AskNullable<decimal?>(string.Empty, CultureInfo.GetCultureInfo("en-US"));
+
+            // Then
+            dateTime.ShouldBe(null);
+        }
     }
 }
