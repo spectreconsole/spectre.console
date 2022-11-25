@@ -16,6 +16,11 @@ public interface ICommandAppSettings
     string? ApplicationVersion { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether displaying or not the options default values in the help text.
+    /// </summary>
+    bool EnableOptionsDefaultValues { get; set; }
+
+    /// <summary>
     /// Gets or sets the <see cref="IAnsiConsole"/>.
     /// </summary>
     IAnsiConsole? Console { get; set; }

@@ -67,12 +67,12 @@ internal static class HelpWriter
         }
     }
 
-    public static IEnumerable<IRenderable> Write(CommandModel model)
+    public static IEnumerable<IRenderable> Write(CommandModel model, bool writeOptionsDefaultValues)
     {
-        return WriteCommand(model, null);
+        return WriteCommand(model, null, writeOptionsDefaultValues);
     }
 
-    public static IEnumerable<IRenderable> WriteCommand(CommandModel model, CommandInfo? command)
+    public static IEnumerable<IRenderable> WriteCommand(CommandModel model, CommandInfo? command, bool writeOptionsDefaultValues)
     {
         var container = command as ICommandContainer ?? model;
         var isDefaultCommand = command?.IsDefaultCommand ?? false;
@@ -82,7 +82,7 @@ internal static class HelpWriter
         result.AddRange(GetUsage(model, command));
         result.AddRange(GetExamples(model, command));
         result.AddRange(GetArguments(command));
-        result.AddRange(GetOptions(model, command));
+        result.AddRange(GetOptions(model, command, writeOptionsDefaultValues));
         result.AddRange(GetCommands(model, container, isDefaultCommand));
 
         return result;
@@ -269,7 +269,7 @@ internal static class HelpWriter
         return result;
     }
 
-    private static IEnumerable<IRenderable> GetOptions(CommandModel model, CommandInfo? command)
+    private static IEnumerable<IRenderable> GetOptions(CommandModel model, CommandInfo? command, bool writeDefaultValues)
     {
         // Collect all options into a single structure.
         var parameters = HelpOption.Get(model, command);
@@ -286,7 +286,7 @@ internal static class HelpWriter
             };
 
         var helpOptions = parameters.ToArray();
-        var defaultValueColumn = helpOptions.Any(e => e.DefaultValue != null);
+        var defaultValueColumn = writeDefaultValues && helpOptions.Any(e => e.DefaultValue != null);
 
         var grid = new Grid();
         grid.AddColumn(new GridColumn { Padding = new Padding(4, 4), NoWrap = true });
