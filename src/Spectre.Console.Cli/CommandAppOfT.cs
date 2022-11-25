@@ -8,6 +8,7 @@ public sealed class CommandApp<TDefaultCommand> : ICommandApp
     where TDefaultCommand : class, ICommand
 {
     private readonly CommandApp _app;
+    private readonly ConfiguredCommand _defaultCommand;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CommandApp{TDefaultCommand}"/> class.
@@ -16,7 +17,7 @@ public sealed class CommandApp<TDefaultCommand> : ICommandApp
     public CommandApp(ITypeRegistrar? registrar = null)
     {
         _app = new CommandApp(registrar);
-        _app.GetConfigurator().SetDefaultCommand<TDefaultCommand>();
+        _defaultCommand = _app.GetConfigurator().SetDefaultCommand<TDefaultCommand>();
     }
 
     /// <summary>
@@ -46,5 +47,27 @@ public sealed class CommandApp<TDefaultCommand> : ICommandApp
     public Task<int> RunAsync(IEnumerable<string> args)
     {
         return _app.RunAsync(args);
+    }
+
+    /// <summary>
+    /// Sets the description of the default command.
+    /// </summary>
+    /// <param name="description">The default command description.</param>
+    /// <returns>The same <see cref="CommandApp{TDefaultCommand}"/> instance so that multiple calls can be chained.</returns>
+    public CommandApp<TDefaultCommand> WithDescription(string description)
+    {
+        _defaultCommand.Description = description;
+        return this;
+    }
+
+    /// <summary>
+    /// Sets data that will be passed to the command via the <see cref="CommandContext"/>.
+    /// </summary>
+    /// <param name="data">The data to pass to the default command.</param>
+    /// <returns>The same <see cref="CommandApp{TDefaultCommand}"/> instance so that multiple calls can be chained.</returns>
+    public CommandApp<TDefaultCommand> WithData(object data)
+    {
+        _defaultCommand.Data = data;
+        return this;
     }
 }
