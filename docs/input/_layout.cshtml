@@ -17,7 +17,7 @@
 
     @{
         string title = Document.ContainsKey(Keys.Title) ? $"Spectre.Console - {Document.GetString(Keys.Title)}" : "Spectre.Console";
-        string description = Document.ContainsKey(Constants.Description) ? Document.GetString(Constants.Description) : "Spectre.Console is a .NET Standard 2.0 library that makes it easier to create beautiful console applications";
+        string description = Document.ContainsKey(Constants.Description) ? Document.GetString(Constants.Description) : "Spectre.Console is a .NET library that makes it easier to create beautiful console applications";
         var card = Context.FindCard(Model.Id);
         var urlBase = $"https://{Document.GetString(Keys.Host)}/";
     }

@@ -23,13 +23,13 @@ internal sealed class ProgressBar : Renderable, IHasCulture
 
     internal static Style DefaultPulseStyle { get; } = new Style(foreground: Color.DodgerBlue1, background: Color.Grey23);
 
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         var width = Math.Min(Width ?? maxWidth, maxWidth);
         return new Measurement(4, width);
     }
 
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var width = Math.Min(Width ?? maxWidth, maxWidth);
         var completedBarCount = Math.Min(MaxValue, Math.Max(0, Value));
@@ -37,7 +37,7 @@ internal sealed class ProgressBar : Renderable, IHasCulture
 
         if (IsIndeterminate && !isCompleted)
         {
-            foreach (var segment in RenderIndeterminate(context, width))
+            foreach (var segment in RenderIndeterminate(options, width))
             {
                 yield return segment;
             }
@@ -45,7 +45,7 @@ internal sealed class ProgressBar : Renderable, IHasCulture
             yield break;
         }
 
-        var bar = !context.Unicode ? AsciiBar : UnicodeBar;
+        var bar = !options.Unicode ? AsciiBar : UnicodeBar;
         var style = isCompleted ? FinishedStyle : CompletedStyle;
         var barCount = Math.Max(0, (int)(width * (completedBarCount / MaxValue)));
 
@@ -84,29 +84,29 @@ internal sealed class ProgressBar : Renderable, IHasCulture
                 }
             }
 
-            var legacy = context.ColorSystem == ColorSystem.NoColors || context.ColorSystem == ColorSystem.Legacy;
+            var legacy = options.ColorSystem == ColorSystem.NoColors || options.ColorSystem == ColorSystem.Legacy;
             var remainingToken = ShowRemaining && !legacy ? bar : ' ';
             yield return new Segment(new string(remainingToken, diff), RemainingStyle);
         }
     }
 
-    private IEnumerable<Segment> RenderIndeterminate(RenderContext context, int width)
+    private IEnumerable<Segment> RenderIndeterminate(RenderOptions options, int width)
     {
-        var bar = context.Unicode ? UnicodeBar.ToString() : AsciiBar.ToString();
+        var bar = options.Unicode ? UnicodeBar.ToString() : AsciiBar.ToString();
         var style = IndeterminateStyle ?? DefaultPulseStyle;
 
         IEnumerable<Segment> GetPulseSegments()
         {
             // For 1-bit and 3-bit colors, fall back to
             // a simpler versions with only two colors.
-            if (context.ColorSystem == ColorSystem.NoColors ||
-                context.ColorSystem == ColorSystem.Legacy)
+            if (options.ColorSystem == ColorSystem.NoColors ||
+                options.ColorSystem == ColorSystem.Legacy)
             {
                 // First half of the pulse
                 var segments = Enumerable.Repeat(new Segment(bar, new Style(style.Foreground)), PULSESIZE / 2);
 
                 // Second half of the pulse
-                var legacy = context.ColorSystem == ColorSystem.NoColors || context.ColorSystem == ColorSystem.Legacy;
+                var legacy = options.ColorSystem == ColorSystem.NoColors || options.ColorSystem == ColorSystem.Legacy;
                 var bar2 = legacy ? " " : bar;
                 segments = segments.Concat(Enumerable.Repeat(new Segment(bar2, new Style(style.Background)), PULSESIZE - (PULSESIZE / 2)));
 

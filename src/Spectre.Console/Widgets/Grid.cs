@@ -30,6 +30,7 @@ public sealed class Grid : JustInTimeRenderable, IExpandable, IAlignable
     }
 
     /// <inheritdoc/>
+    [Obsolete("Use the Align widget instead. This property will be removed in a later release.")]
     public Justify? Alignment
     {
         get => _alignment;

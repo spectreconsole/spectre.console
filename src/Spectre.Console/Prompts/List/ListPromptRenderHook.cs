@@ -32,7 +32,7 @@ internal sealed class ListPromptRenderHook<T> : IRenderHook
         _console.Write(new ControlCode(string.Empty));
     }
 
-    public IEnumerable<IRenderable> Process(RenderContext context, IEnumerable<IRenderable> renderables)
+    public IEnumerable<IRenderable> Process(RenderOptions options, IEnumerable<IRenderable> renderables)
     {
         lock (_lock)
         {

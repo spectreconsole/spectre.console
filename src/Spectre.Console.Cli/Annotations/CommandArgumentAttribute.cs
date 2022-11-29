@@ -31,7 +31,7 @@ public sealed class CommandArgumentAttribute : Attribute
     /// Initializes a new instance of the <see cref="CommandArgumentAttribute"/> class.
     /// </summary>
     /// <param name="position">The argument position.</param>
-    /// <param name="template">The argument template.</param>
+    /// <param name="template">The argument template. Wrap in &lt;&gt; for required arguments, [] for optional ones. For example "[MyArgument]".</param>
     public CommandArgumentAttribute(int position, string template)
     {
         if (template == null)

@@ -77,7 +77,7 @@ public sealed class TextPathTests
         var console = new TestConsole().Width(40);
 
         // When
-        console.Write(new TextPath("C:/My documents/Bar/Baz.txt").RightAligned());
+        console.Write(new TextPath("C:/My documents/Bar/Baz.txt").RightJustified());
 
         // Then
         console.Output.TrimEnd('\n')

@@ -5,14 +5,20 @@ internal static class FigletFontParser
     public static FigletFont Parse(string source)
     {
         var lines = source.SplitLines();
-        var header = ParseHeader(lines.FirstOrDefault());
 
-        var characters = new List<FigletCharacter>();
+        var headerLine = lines.FirstOrDefault();
+        if (headerLine == null)
+        {
+            throw new InvalidOperationException("Could not read header line");
+        }
+
+        var header = ParseHeader(headerLine);
 
         var index = 32;
         var indexOverridden = false;
         var hasOverriddenIndex = false;
         var buffer = new List<string>();
+        var characters = new List<FigletCharacter>();
 
         foreach (var line in lines.Skip(header.CommentLines + 1))
         {

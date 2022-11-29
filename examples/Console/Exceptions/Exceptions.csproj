@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ExampleTitle>Exceptions</ExampleTitle>
     <ExampleDescription>Demonstrates how to render formatted exceptions.</ExampleDescription>
     <ExampleGroup>Misc</ExampleGroup>

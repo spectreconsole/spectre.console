@@ -5,14 +5,14 @@ namespace Spectre.Console;
 /// of the paragraph can have individual styling.
 /// </summary>
 [DebuggerDisplay("{_text,nq}")]
-public sealed class Paragraph : Renderable, IAlignable, IOverflowable
+public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
 {
     private readonly List<SegmentLine> _lines;
 
     /// <summary>
     /// Gets or sets the alignment of the whole paragraph.
     /// </summary>
-    public Justify? Alignment { get; set; }
+    public Justify? Justification { get; set; }
 
     /// <summary>
     /// Gets or sets the text overflow strategy.
@@ -115,7 +115,7 @@ public sealed class Paragraph : Renderable, IAlignable, IOverflowable
     }
 
     /// <inheritdoc/>
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         if (_lines.Count == 0)
         {
@@ -129,11 +129,11 @@ public sealed class Paragraph : Renderable, IAlignable, IOverflowable
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        if (context is null)
+        if (options is null)
         {
-            throw new ArgumentNullException(nameof(context));
+            throw new ArgumentNullException(nameof(options));
         }
 
         if (_lines.Count == 0)
@@ -141,13 +141,13 @@ public sealed class Paragraph : Renderable, IAlignable, IOverflowable
             return Array.Empty<Segment>();
         }
 
-        var lines = context.SingleLine
+        var lines = options.SingleLine
             ? new List<SegmentLine>(_lines)
             : SplitLines(maxWidth);
 
         // Justify lines
-        var justification = context.Justification ?? Alignment ?? Justify.Left;
-        if (justification != Justify.Left)
+        var justification = options.Justification ?? Justification ?? Console.Justify.Left;
+        if (justification != Console.Justify.Left)
         {
             foreach (var line in lines)
             {
@@ -155,7 +155,7 @@ public sealed class Paragraph : Renderable, IAlignable, IOverflowable
             }
         }
 
-        if (context.SingleLine)
+        if (options.SingleLine)
         {
             // Return the first line
             return lines[0].Where(segment => !segment.IsLineBreak);

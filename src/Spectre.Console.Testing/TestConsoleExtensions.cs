@@ -53,6 +53,31 @@ public static class TestConsoleExtensions
     }
 
     /// <summary>
+    /// Sets the console height.
+    /// </summary>
+    /// <param name="console">The console.</param>
+    /// <param name="width">The console height.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static TestConsole Height(this TestConsole console, int width)
+    {
+        console.Profile.Height = width;
+        return console;
+    }
+
+    /// <summary>
+    /// Sets the console size.
+    /// </summary>
+    /// <param name="console">The console.</param>
+    /// <param name="size">The console size.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static TestConsole Size(this TestConsole console, Size size)
+    {
+        console.Profile.Width = size.Width;
+        console.Profile.Height = size.Height;
+        return console;
+    }
+
+    /// <summary>
     /// Turns on emitting of VT/ANSI sequences.
     /// </summary>
     /// <param name="console">The console.</param>

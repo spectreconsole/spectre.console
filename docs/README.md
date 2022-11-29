@@ -1,6 +1,6 @@
 # Documentation
 
-To start contributing to the [Spectre.Console](https://github.com/spectreconsole/spectre.console) documentation, you will need the [.NET Core SDK](https://dot.net) 5.0.202 or higher (as defined in the repository root `global.json` file).
+To start contributing to the [Spectre.Console](https://github.com/spectreconsole/spectre.console) documentation, you will need the [.NET Core SDK](https://dot.net) 7.0.100 or higher (as defined in the repository root `global.json` file).
 
 ## Running Preview Site
 

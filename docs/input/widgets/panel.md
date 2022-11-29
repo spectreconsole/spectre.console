@@ -12,7 +12,7 @@ The `Panel` widget can be used to organize text into a rendered box.
 
 ## Usage
 
-To render a table, create a `Table` instance, passing a string to its constructor to assign the contents.
+To render a panel, create a `Panel` instance, passing a string to its constructor to assign the contents.
 
 ```csharp
 var panel = new Panel("Hello World");

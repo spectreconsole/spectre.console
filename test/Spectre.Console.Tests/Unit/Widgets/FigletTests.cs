@@ -60,7 +60,7 @@ public sealed class FigletTests
         // Given
         var console = new TestConsole().Width(120);
         var text = new FigletText(FigletFont.Default, "Spectre.Console")
-            .Alignment(Justify.Left);
+            .Justify(Justify.Left);
 
         // When
         console.Write(text);
@@ -76,7 +76,7 @@ public sealed class FigletTests
         // Given
         var console = new TestConsole().Width(120);
         var text = new FigletText(FigletFont.Default, "Spectre.Console")
-            .Alignment(Justify.Center);
+            .Justify(Justify.Center);
 
         // When
         console.Write(text);
@@ -92,7 +92,7 @@ public sealed class FigletTests
         // Given
         var console = new TestConsole().Width(120);
         var text = new FigletText(FigletFont.Default, "Spectre.Console")
-            .Alignment(Justify.Right);
+            .Justify(Justify.Right);
 
         // When
         console.Write(text);

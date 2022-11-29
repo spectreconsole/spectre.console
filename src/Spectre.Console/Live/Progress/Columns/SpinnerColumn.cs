@@ -95,9 +95,9 @@ public sealed class SpinnerColumn : ProgressColumn
     }
 
     /// <inheritdoc/>
-    public override IRenderable Render(RenderContext context, ProgressTask task, TimeSpan deltaTime)
+    public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
     {
-        var useAscii = !context.Unicode && _spinner.IsUnicode;
+        var useAscii = !options.Unicode && _spinner.IsUnicode;
         var spinner = useAscii ? Spinner.Known.Ascii : _spinner ?? Spinner.Known.Default;
 
         if (!task.IsStarted)
@@ -123,24 +123,24 @@ public sealed class SpinnerColumn : ProgressColumn
     }
 
     /// <inheritdoc/>
-    public override int? GetColumnWidth(RenderContext context)
+    public override int? GetColumnWidth(RenderOptions options)
     {
-        return GetMaxWidth(context);
+        return GetMaxWidth(options);
     }
 
-    private int GetMaxWidth(RenderContext context)
+    private int GetMaxWidth(RenderOptions options)
     {
         lock (_lock)
         {
             if (_maxWidth == null)
             {
-                var useAscii = !context.Unicode && _spinner.IsUnicode;
+                var useAscii = !options.Unicode && _spinner.IsUnicode;
                 var spinner = useAscii ? Spinner.Known.Ascii : _spinner ?? Spinner.Known.Default;
 
                 _maxWidth = Math.Max(
                     Math.Max(
-                    ((IRenderable)new Markup(PendingText ?? " ")).Measure(context, int.MaxValue).Max,
-                    ((IRenderable)new Markup(CompletedText ?? " ")).Measure(context, int.MaxValue).Max),
+                    ((IRenderable)new Markup(PendingText ?? " ")).Measure(options, int.MaxValue).Max,
+                    ((IRenderable)new Markup(CompletedText ?? " ")).Measure(options, int.MaxValue).Max),
                     spinner.Frames.Max(frame => Cell.GetCellLength(frame)));
             }
 

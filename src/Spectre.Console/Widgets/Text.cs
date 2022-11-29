@@ -5,7 +5,7 @@ namespace Spectre.Console;
 /// </summary>
 [DebuggerDisplay("{_text,nq}")]
 [SuppressMessage("Naming", "CA1724:Type names should not match namespaces")]
-public sealed class Text : Renderable, IAlignable, IOverflowable
+public sealed class Text : Renderable, IHasJustification, IOverflowable
 {
     private readonly Paragraph _paragraph;
 
@@ -32,10 +32,10 @@ public sealed class Text : Renderable, IAlignable, IOverflowable
     /// <summary>
     /// Gets or sets the text alignment.
     /// </summary>
-    public Justify? Alignment
+    public Justify? Justification
     {
-        get => _paragraph.Alignment;
-        set => _paragraph.Alignment = value;
+        get => _paragraph.Justification;
+        set => _paragraph.Justification = value;
     }
 
     /// <summary>
@@ -58,14 +58,14 @@ public sealed class Text : Renderable, IAlignable, IOverflowable
     public int Lines => _paragraph.Lines;
 
     /// <inheritdoc/>
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
-        return ((IRenderable)_paragraph).Measure(context, maxWidth);
+        return ((IRenderable)_paragraph).Measure(options, maxWidth);
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        return ((IRenderable)_paragraph).Render(context, maxWidth);
+        return ((IRenderable)_paragraph).Render(options, maxWidth);
     }
 }

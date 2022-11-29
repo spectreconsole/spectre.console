@@ -16,7 +16,7 @@ public sealed class ProgressColumnFixture<T>
     public string Render()
     {
         var console = new TestConsole();
-        var context = new RenderContext(console.Profile.Capabilities);
+        var context = RenderOptions.Create(console, console.Profile.Capabilities);
         console.Write(Column.Render(context, Task, TimeSpan.Zero));
         return console.Output;
     }
