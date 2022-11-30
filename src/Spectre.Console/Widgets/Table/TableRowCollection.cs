@@ -58,7 +58,7 @@ public sealed class TableRowCollection : IReadOnlyList<TableRow>
         {
             var row = CreateRow(columns);
             _list.Add(row);
-            return _list.IndexOf(row);
+            return _list.Count - 1;
         }
     }
 
