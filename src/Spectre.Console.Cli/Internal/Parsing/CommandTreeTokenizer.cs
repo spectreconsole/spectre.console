@@ -30,7 +30,7 @@ internal static class CommandTreeTokenizer
 
         foreach (var arg in args)
         {
-            if (arg == string.Empty)
+            if (string.IsNullOrEmpty(arg))
             {
                 // Null strings in the args array are still represented as tokens
                 tokens.Add(new CommandTreeToken(CommandTreeToken.Kind.String, position, string.Empty, string.Empty));
