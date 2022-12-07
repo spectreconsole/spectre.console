@@ -86,8 +86,11 @@ internal sealed class CommandExecutor
         var tokenizerResult = CommandTreeTokenizer.Tokenize(args);
         var parsedResult = parser.Parse(parserContext, tokenizerResult);
 
-        var lastParsedCommand = parsedResult?.Tree?.GetLeafCommand()?.Command;
-        if (lastParsedCommand != null && lastParsedCommand.IsBranch && lastParsedCommand.DefaultCommand != null)
+        var lastParsedLeaf = parsedResult?.Tree?.GetLeafCommand();
+        var lastParsedCommand = lastParsedLeaf?.Command;
+        if (lastParsedLeaf != null && lastParsedCommand != null &&
+            lastParsedCommand.IsBranch && !lastParsedLeaf.ShowHelp &&
+            lastParsedCommand.DefaultCommand != null)
         {
             // Insert this branch's default command into the command line
             // arguments and try again to see if it will parse.
