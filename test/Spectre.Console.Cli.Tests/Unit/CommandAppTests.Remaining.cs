@@ -95,5 +95,34 @@ public sealed partial class CommandAppTests
             result.Context.Remaining.Raw[1].ShouldBe("\"set && pause\"");
             result.Context.Remaining.Raw[2].ShouldBe("Name=\" -Rufus --' ");
         }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Should_Convert_Flags_To_Remaining_Arguments_If_Cannot_Be_Assigned(bool useStrictParsing)
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.Settings.ConvertFlagsToRemainingArgumentsIfCannotBeAssigned = true;
+                config.Settings.StrictParsing = useStrictParsing;
+                config.PropagateExceptions();
+                config.AddCommand<DogCommand>("dog");
+            });
+
+            // When
+            var result = app.Run(new[]
+            {
+                "dog", "12", "4",
+                "--good-boy=Please be good Rufus!",
+            });
+
+            // Then
+            result.Context.Remaining.Parsed.Count.ShouldBe(1);
+            result.Context.ShouldHaveRemainingArgument("good-boy", values: new[] { "Please be good Rufus!" });
+
+            result.Context.Remaining.Raw.Count.ShouldBe(0); // nb. there are no "raw" remaining arguments on the command line
+        }
     }
 }
