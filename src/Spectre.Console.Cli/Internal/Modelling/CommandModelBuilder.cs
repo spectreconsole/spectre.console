@@ -173,7 +173,7 @@ internal static class CommandModelBuilder
 
     private static CommandOption BuildOptionParameter(PropertyInfo property, CommandOptionAttribute attribute)
     {
-        var description = property.GetCustomAttribute<DescriptionAttribute>();
+        var description = property.LocalizedDescription();
         var converter = property.GetCustomAttribute<TypeConverterAttribute>();
         var deconstructor = property.GetCustomAttribute<PairDeconstructorAttribute>();
         var valueProvider = property.GetCustomAttribute<ParameterValueProviderAttribute>();
@@ -188,14 +188,14 @@ internal static class CommandModelBuilder
         }
 
         return new CommandOption(property.PropertyType, kind,
-            property, description?.Description, converter, deconstructor,
+            property, description, converter, deconstructor,
             attribute, valueProvider, validators, defaultValue,
             attribute.ValueIsOptional);
     }
 
     private static CommandArgument BuildArgumentParameter(PropertyInfo property, CommandArgumentAttribute attribute)
     {
-        var description = property.GetCustomAttribute<DescriptionAttribute>();
+        var description = property.LocalizedDescription();
         var converter = property.GetCustomAttribute<TypeConverterAttribute>();
         var defaultValue = property.GetCustomAttribute<DefaultValueAttribute>();
         var valueProvider = property.GetCustomAttribute<ParameterValueProviderAttribute>();
@@ -205,7 +205,7 @@ internal static class CommandModelBuilder
 
         return new CommandArgument(
             property.PropertyType, kind, property,
-            description?.Description, converter,
+            description, converter,
             defaultValue, attribute, valueProvider,
             validators);
     }
