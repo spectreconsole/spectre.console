@@ -1,9 +1,9 @@
 Title: Welcome!
-Description: Spectre.Console is a .NET Standard 2.0 library that makes it easier to create beautiful console applications.
+Description: Spectre.Console is a .NET library that makes it easier to create beautiful console applications.
 Order: 0
 ---
 
-Spectre.Console is a `.NET Standard 2.0` library that makes it easier 
+Spectre.Console is a `.NET` library that makes it easier 
 to create beautiful console applications. 
 
 ## Spectre.Console.AnsiConsole Features

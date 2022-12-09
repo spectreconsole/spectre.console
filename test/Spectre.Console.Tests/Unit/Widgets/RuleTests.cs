@@ -70,7 +70,7 @@ public sealed class RuleTests
         // When
         console.Write(new Rule("Hello World")
         {
-            Alignment = Justify.Left,
+            Justification = Justify.Left,
         });
 
         // Then
@@ -87,7 +87,7 @@ public sealed class RuleTests
         // When
         console.Write(new Rule("Hello World")
         {
-            Alignment = Justify.Right,
+            Justification = Justify.Right,
         });
 
         // Then

@@ -302,7 +302,7 @@ public sealed class StyleTests
         [InlineData("rgb(255)", "Invalid RGB color 'rgb(255)'.")]
         [InlineData("rgb(255,255)", "Invalid RGB color 'rgb(255,255)'.")]
         [InlineData("rgb(255,255,255", "Invalid RGB color 'rgb(255,255,255'.")]
-        [InlineData("rgb(A,B,C)", "Invalid RGB color 'rgb(A,B,C)'. Input string was not in a correct format.")]
+        [InlineData("rgb(A,B,C)", "Invalid RGB color 'rgb(A,B,C)'.")]
         public void Should_Return_Error_If_Rgb_Color_Is_Invalid(string style, string expected)
         {
             // Given, When
@@ -310,7 +310,7 @@ public sealed class StyleTests
 
             // Then
             result.ShouldNotBeNull();
-            result.Message.ShouldBe(expected);
+            result.Message.ShouldStartWith(expected);
         }
     }
 

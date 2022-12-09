@@ -15,17 +15,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_When_Command_Is_Unknown()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(config =>
+                var app = new CommandAppTester();
+                app.Configure(config =>
                 {
                     config.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("cat", "14");
+                var result = app.Run("cat", "14");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -33,17 +33,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_For_Unknown_Command_When_Current_Command_Has_No_Arguments()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<EmptyCommand>("empty");
                 });
 
                 // When
-                var result = fixture.Run("empty", "other");
+                var result = app.Run("empty", "other");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -51,8 +51,8 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_With_Suggestion_When_Command_Followed_By_Argument_Is_Unknown_And_Distance_Is_Small()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(config =>
+                var app = new CommandAppTester();
+                app.Configure(config =>
                 {
                     config.AddBranch<CommandSettings>("dog", a =>
                     {
@@ -61,10 +61,10 @@ public sealed partial class CommandAppTests
                 });
 
                 // When
-                var result = fixture.Run("dog", "bat", "14");
+                var result = app.Run("dog", "bat", "14");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -72,17 +72,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_With_Suggestion_When_Root_Command_Followed_By_Argument_Is_Unknown_And_Distance_Is_Small()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(config =>
+                var app = new CommandAppTester();
+                app.Configure(config =>
                 {
                     config.AddCommand<CatCommand>("cat");
                 });
 
                 // When
-                var result = fixture.Run("bat", "14");
+                var result = app.Run("bat", "14");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -90,18 +90,18 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_With_Suggestion_And_No_Arguments_When_Root_Command_Is_Unknown_And_Distance_Is_Small()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.WithDefaultCommand<GenericCommand<EmptyCommandSettings>>();
-                fixture.Configure(config =>
+                var app = new CommandAppTester();
+                app.SetDefaultCommand<GenericCommand<EmptyCommandSettings>>();
+                app.Configure(config =>
                 {
                     config.AddCommand<GenericCommand<EmptyCommandSettings>>("cat");
                 });
 
                 // When
-                var result = fixture.Run("bat");
+                var result = app.Run("bat");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -109,9 +109,9 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_With_Suggestion_And_No_Arguments_When_Command_Is_Unknown_And_Distance_Is_Small()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.WithDefaultCommand<GenericCommand<EmptyCommandSettings>>();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.SetDefaultCommand<GenericCommand<EmptyCommandSettings>>();
+                app.Configure(configurator =>
                 {
                     configurator.AddBranch<CommandSettings>("dog", a =>
                     {
@@ -120,10 +120,10 @@ public sealed partial class CommandAppTests
                 });
 
                 // When
-                var result = fixture.Run("dog", "bat");
+                var result = app.Run("dog", "bat");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -131,18 +131,18 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_With_Suggestion_When_Root_Command_After_Argument_Is_Unknown_And_Distance_Is_Small()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.WithDefaultCommand<GenericCommand<FooCommandSettings>>();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.SetDefaultCommand<GenericCommand<FooCommandSettings>>();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<GenericCommand<BarCommandSettings>>("bar");
                 });
 
                 // When
-                var result = fixture.Run("qux", "bat");
+                var result = app.Run("qux", "bat");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -150,8 +150,8 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_With_Suggestion_When_Command_After_Argument_Is_Unknown_And_Distance_Is_Small()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddBranch<FooCommandSettings>("foo", a =>
                     {
@@ -160,10 +160,10 @@ public sealed partial class CommandAppTests
                 });
 
                 // When
-                var result = fixture.Run("foo", "qux", "bat");
+                var result = app.Run("foo", "qux", "bat");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -176,17 +176,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_For_Long_Option()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", "--alive", "foo");
+                var result = app.Run("dog", "--alive=indeterminate", "foo");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -194,17 +194,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_For_Short_Option()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", "-a", "foo");
+                var result = app.Run("dog", "-a=indeterminate", "foo");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -217,17 +217,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_For_Long_Option()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", "--name");
+                var result = app.Run("dog", "--name");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -235,17 +235,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_For_Short_Option()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", "-n");
+                var result = app.Run("dog", "-n");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -258,17 +258,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<GiraffeCommand>("giraffe");
                 });
 
                 // When
-                var result = fixture.Run("giraffe", "foo", "bar", "baz");
+                var result = app.Run("giraffe", "foo", "bar", "baz");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -281,17 +281,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_For_Long_Option()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("--foo");
+                var result = app.Run("--foo");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -299,17 +299,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_For_Short_Option()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("-f");
+                var result = app.Run("-f");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -322,18 +322,18 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_For_Long_Option_If_Strict_Mode_Is_Enabled()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.UseStrictParsing();
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", "--unknown");
+                var result = app.Run("dog", "--unknown");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -341,41 +341,18 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_For_Short_Option_If_Strict_Mode_Is_Enabled()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.UseStrictParsing();
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", "-u");
+                var result = app.Run("dog", "-u");
 
                 // Then
-                return Verifier.Verify(result);
-            }
-        }
-
-        [UsesVerify]
-        [ExpectationPath("UnterminatedQuote")]
-        public sealed class UnterminatedQuote
-        {
-            [Fact]
-            [Expectation("Test_1")]
-            public Task Should_Return_Correct_Text()
-            {
-                // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<DogCommand>("dog");
-                });
-
-                // When
-                var result = fixture.Run("--name", "\"Rufus");
-
-                // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -388,17 +365,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_For_Short_Option()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", "-", " ");
+                var result = app.Run("dog", "-", " ");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -406,17 +383,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_For_Missing_Long_Option_Value_With_Equality_Separator()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", $"--foo=");
+                var result = app.Run("dog", $"--foo=");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -424,17 +401,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_For_Missing_Long_Option_Value_With_Colon_Separator()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", $"--foo:");
+                var result = app.Run("dog", $"--foo:");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -442,17 +419,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_For_Missing_Short_Option_Value_With_Equality_Separator()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", $"-f=");
+                var result = app.Run("dog", $"-f=");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Fact]
@@ -460,17 +437,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text_For_Missing_Short_Option_Value_With_Colon_Separator()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", $"-f:");
+                var result = app.Run("dog", $"-f:");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -483,17 +460,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", $"-f0o");
+                var result = app.Run("dog", $"-f0o");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -506,17 +483,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", $"--f");
+                var result = app.Run("dog", $"--f");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -529,17 +506,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", $"-- ");
+                var result = app.Run("dog", $"-- ");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -552,17 +529,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", $"--1foo");
+                var result = app.Run("dog", $"--1foo");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
         }
 
@@ -575,17 +552,17 @@ public sealed partial class CommandAppTests
             public Task Should_Return_Correct_Text()
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", $"--f€oo");
+                var result = app.Run("dog", $"--f€oo");
 
                 // Then
-                return Verifier.Verify(result);
+                return Verifier.Verify(result.Output);
             }
 
             [Theory]
@@ -596,70 +573,17 @@ public sealed partial class CommandAppTests
             public void Should_Allow_Special_Symbols_In_Name(string option)
             {
                 // Given
-                var fixture = new Fixture();
-                fixture.Configure(configurator =>
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
                 {
                     configurator.AddCommand<DogCommand>("dog");
                 });
 
                 // When
-                var result = fixture.Run("dog", option);
+                var result = app.Run("dog", option);
 
                 // Then
-                result.ShouldBe("Error: Command 'dog' is missing required argument 'AGE'.");
-            }
-        }
-
-        [Fact]
-        [Expectation("Quoted_Strings")]
-        public Task Should_Parse_Quoted_Strings_Correctly()
-        {
-            // Given
-            var fixture = new Fixture();
-            fixture.Configure(configurator =>
-            {
-                configurator.AddCommand<DumpRemainingCommand>("foo");
-            });
-
-            // When
-            var result = fixture.Run("foo", "--", "/c", "\"set && pause\"");
-
-            // Then
-            return Verifier.Verify(result);
-        }
-    }
-
-    internal sealed class Fixture
-    {
-        private Action<CommandApp> _appConfiguration = _ => { };
-        private Action<IConfigurator> _configuration;
-
-        public void WithDefaultCommand<T>()
-            where T : class, ICommand
-        {
-            _appConfiguration = (app) => app.SetDefaultCommand<T>();
-        }
-
-        public void Configure(Action<IConfigurator> action)
-        {
-            _configuration = action;
-        }
-
-        public string Run(params string[] args)
-        {
-            using (var console = new TestConsole())
-            {
-                var app = new CommandApp();
-                _appConfiguration?.Invoke(app);
-
-                app.Configure(_configuration);
-                app.Configure(c => c.ConfigureConsole(console));
-                app.Run(args);
-
-                return console.Output
-                    .NormalizeLineEndings()
-                    .TrimLines()
-                    .Trim();
+                result.Output.ShouldBe("Error: Command 'dog' is missing required argument 'AGE'.");
             }
         }
     }

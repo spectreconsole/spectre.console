@@ -2,9 +2,9 @@
 
 _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.console.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_ _[![Spectre.Console CLI NuGet Version](https://img.shields.io/nuget/v/spectre.console.cli.svg?style=flat&label=NuGet%3A%20Spectre.Console.Cli)](https://www.nuget.org/packages/spectre.console.cli)_ [![Netlify Status](https://api.netlify.com/api/v1/badges/1eaf215a-eb9c-45e4-8c64-c90b62963149/deploy-status)](https://app.netlify.com/sites/spectreconsole/deploys)
 
-A .NET 6/.NET Standard 2.0 library that makes it easier to create beautiful, cross platform, console applications.  
+A .NET library that makes it easier to create beautiful, cross platform, console applications.  
 It is heavily inspired by the excellent [Rich library](https://github.com/willmcgugan/rich) 
-for Python.
+for Python. For detailed usage instructions, [please refer to the documentation at https://spectreconsole.net/.](https://spectreconsole.net/)
 
 ## Table of Contents
 
@@ -81,6 +81,7 @@ Spectre.Console to show their support and to ensure the longevity of the project
 * [Steven Knox](https://github.com/stevenknox)
 * [David Pendray](https://github.com/dpen2000)
 * [Elmah.io](https://github.com/elmahio)
+* [Tom Kerkhove](https://github.com/tomkerkhove)
 
 We really appreciate it.  
 **Thank you very much!**
@@ -100,4 +101,4 @@ Copyright © Patrik Svensson, Phil Scott, Nils Andresen
 
 Spectre.Console is provided as-is under the MIT license. For more information see LICENSE.
 
-* For SixLabors.ImageSharp, see https://github.com/SixLabors/ImageSharp/blob/master/LICENSE
+* SixLabors.ImageSharp, a library which Spectre.Console relies upon, is licensed under Apache 2.0 when distributed as part of Spectre.Console. The Six Labors Split License covers all other usage, see: https://github.com/SixLabors/ImageSharp/blob/master/LICENSE 

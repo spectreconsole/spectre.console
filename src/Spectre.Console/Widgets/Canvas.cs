@@ -70,7 +70,7 @@ public sealed class Canvas : Renderable
     }
 
     /// <inheritdoc/>
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         if (PixelWidth < 0)
         {
@@ -88,7 +88,7 @@ public sealed class Canvas : Renderable
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         if (PixelWidth < 0)
         {

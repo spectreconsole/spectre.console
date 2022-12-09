@@ -44,17 +44,17 @@ public sealed class RenderPipeline
     /// <summary>
     /// Processes the specified renderables.
     /// </summary>
-    /// <param name="context">The render context.</param>
+    /// <param name="options">The render options.</param>
     /// <param name="renderables">The renderables to process.</param>
     /// <returns>The processed renderables.</returns>
-    public IEnumerable<IRenderable> Process(RenderContext context, IEnumerable<IRenderable> renderables)
+    public IEnumerable<IRenderable> Process(RenderOptions options, IEnumerable<IRenderable> renderables)
     {
         lock (_lock)
         {
             var current = renderables;
             for (var index = _hooks.Count - 1; index >= 0; index--)
             {
-                current = _hooks[index].Process(context, current);
+                current = _hooks[index].Process(options, current);
             }
 
             return current;

@@ -29,13 +29,13 @@ internal static class HelpWriter
 
     private sealed class HelpOption
     {
-        public string Short { get; }
-        public string Long { get; }
+        public string? Short { get; }
+        public string? Long { get; }
         public string? Value { get; }
         public bool? ValueIsOptional { get; }
         public string? Description { get; }
 
-        public HelpOption(string @short, string @long, string? @value, bool? valueIsOptional, string? description)
+        public HelpOption(string? @short, string? @long, string? @value, bool? valueIsOptional, string? description)
         {
             Short = @short;
             Long = @long;
@@ -375,9 +375,18 @@ internal static class HelpWriter
                 arguments.Space();
             }
 
-            grid.AddRow(
-                arguments.ToString().TrimEnd(),
-                child.Description?.TrimEnd('.') ?? " ");
+            if (model.TrimTrailingPeriod)
+            {
+                grid.AddRow(
+                    arguments.ToString().TrimEnd(),
+                    child.Description?.TrimEnd('.') ?? " ");
+            }
+            else
+            {
+                grid.AddRow(
+                    arguments.ToString().TrimEnd(),
+                    child.Description ?? " ");
+            }
         }
 
         result.Add(grid);

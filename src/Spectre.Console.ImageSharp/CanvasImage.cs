@@ -71,7 +71,7 @@ public sealed class CanvasImage : Renderable
     }
 
     /// <inheritdoc/>
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         if (PixelWidth < 0)
         {
@@ -88,7 +88,7 @@ public sealed class CanvasImage : Renderable
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var image = Image;
 
@@ -138,6 +138,6 @@ public sealed class CanvasImage : Renderable
             }
         }
 
-        return ((IRenderable)canvas).Render(context, maxWidth);
+        return ((IRenderable)canvas).Render(options, maxWidth);
     }
 }

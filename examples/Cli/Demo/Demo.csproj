@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <ExampleName>Demo</ExampleName>
     <ExampleDescription>Demonstrates the most common use cases of Spectre.Cli.</ExampleDescription>

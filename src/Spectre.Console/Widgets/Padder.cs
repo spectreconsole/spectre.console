@@ -29,10 +29,10 @@ public sealed class Padder : Renderable, IPaddable, IExpandable
     }
 
     /// <inheritdoc/>
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         var paddingWidth = Padding?.GetWidth() ?? 0;
-        var measurement = _child.Measure(context, maxWidth - paddingWidth);
+        var measurement = _child.Measure(options, maxWidth - paddingWidth);
 
         return new Measurement(
             measurement.Min + paddingWidth,
@@ -40,14 +40,14 @@ public sealed class Padder : Renderable, IPaddable, IExpandable
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var paddingWidth = Padding?.GetWidth() ?? 0;
         var childWidth = maxWidth - paddingWidth;
 
         if (!Expand)
         {
-            var measurement = _child.Measure(context, maxWidth - paddingWidth);
+            var measurement = _child.Measure(options, maxWidth - paddingWidth);
             childWidth = measurement.Max;
         }
 
@@ -66,7 +66,7 @@ public sealed class Padder : Renderable, IPaddable, IExpandable
             result.Add(Segment.LineBreak);
         }
 
-        var child = _child.Render(context, maxWidth - paddingWidth);
+        var child = _child.Render(options, maxWidth - paddingWidth);
         foreach (var line in Segment.SplitLines(child))
         {
             // Left padding

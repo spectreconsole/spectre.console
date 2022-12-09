@@ -47,7 +47,7 @@ public sealed class Tree : Renderable, IHasTreeNodes
     }
 
     /// <inheritdoc />
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var result = new List<Segment>();
         var visitedNodes = new HashSet<TreeNode>();
@@ -56,7 +56,7 @@ public sealed class Tree : Renderable, IHasTreeNodes
         stack.Push(new Queue<TreeNode>(new[] { _root }));
 
         var levels = new List<Segment>();
-        levels.Add(GetGuide(context, TreeGuidePart.Continue));
+        levels.Add(GetGuide(options, TreeGuidePart.Continue));
 
         while (stack.Count > 0)
         {
@@ -66,7 +66,7 @@ public sealed class Tree : Renderable, IHasTreeNodes
                 levels.RemoveLast();
                 if (levels.Count > 0)
                 {
-                    levels.AddOrReplaceLast(GetGuide(context, TreeGuidePart.Fork));
+                    levels.AddOrReplaceLast(GetGuide(options, TreeGuidePart.Fork));
                 }
 
                 continue;
@@ -83,11 +83,11 @@ public sealed class Tree : Renderable, IHasTreeNodes
 
             if (isLastChild)
             {
-                levels.AddOrReplaceLast(GetGuide(context, TreeGuidePart.End));
+                levels.AddOrReplaceLast(GetGuide(options, TreeGuidePart.End));
             }
 
             var prefix = levels.Skip(1).ToList();
-            var renderableLines = Segment.SplitLines(current.Renderable.Render(context, maxWidth - Segment.CellCount(prefix)));
+            var renderableLines = Segment.SplitLines(current.Renderable.Render(options, maxWidth - Segment.CellCount(prefix)));
 
             foreach (var (_, isFirstLine, _, line) in renderableLines.Enumerate())
             {
@@ -102,14 +102,14 @@ public sealed class Tree : Renderable, IHasTreeNodes
                 if (isFirstLine && prefix.Count > 0)
                 {
                     var part = isLastChild ? TreeGuidePart.Space : TreeGuidePart.Continue;
-                    prefix.AddOrReplaceLast(GetGuide(context, part));
+                    prefix.AddOrReplaceLast(GetGuide(options, part));
                 }
             }
 
             if (current.Expanded && current.Nodes.Count > 0)
             {
-                levels.AddOrReplaceLast(GetGuide(context, isLastChild ? TreeGuidePart.Space : TreeGuidePart.Continue));
-                levels.Add(GetGuide(context, current.Nodes.Count == 1 ? TreeGuidePart.End : TreeGuidePart.Fork));
+                levels.AddOrReplaceLast(GetGuide(options, isLastChild ? TreeGuidePart.Space : TreeGuidePart.Continue));
+                levels.Add(GetGuide(options, current.Nodes.Count == 1 ? TreeGuidePart.End : TreeGuidePart.Fork));
 
                 stack.Push(new Queue<TreeNode>(current.Nodes));
             }
@@ -118,9 +118,9 @@ public sealed class Tree : Renderable, IHasTreeNodes
         return result;
     }
 
-    private Segment GetGuide(RenderContext context, TreeGuidePart part)
+    private Segment GetGuide(RenderOptions options, TreeGuidePart part)
     {
-        var guide = Guide.GetSafeTreeGuide(safe: !context.Unicode);
+        var guide = Guide.GetSafeTreeGuide(safe: !options.Unicode);
         return new Segment(guide.GetPart(part), Style ?? Style.Plain);
     }
 }

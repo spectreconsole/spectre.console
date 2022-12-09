@@ -1,0 +1,2 @@
+{"version": 2, "width": 40, "height": 3, "timestamp": 1667342769, "env": {"SHELL": "/bin/bash", "TERM": "xterm-256color"}}
+[0.0, "o", "\u001b[38;5;9;48;5;0mHeader 1\u001b[0m  \u001b[38;5;2;48;5;0mHeader 2\u001b[0m  \u001b[38;5;12;48;5;0mHeader 3\u001b[0m\r\nRow 1      Row 2       Row 3\r\n"]

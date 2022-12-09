@@ -55,11 +55,11 @@ public sealed class Columns : Renderable, IPaddable, IExpandable
     }
 
     /// <inheritdoc/>
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         var maxPadding = Math.Max(Padding.GetLeftSafe(), Padding.GetRightSafe());
 
-        var itemWidths = _items.Select(item => item.Measure(context, maxWidth).Max).ToArray();
+        var itemWidths = _items.Select(item => item.Measure(options, maxWidth).Max).ToArray();
         var columnCount = CalculateColumnCount(maxWidth, itemWidths, _items.Count, maxPadding);
         if (columnCount == 0)
         {
@@ -83,11 +83,11 @@ public sealed class Columns : Renderable, IPaddable, IExpandable
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var maxPadding = Math.Max(Padding.GetLeftSafe(), Padding.GetRightSafe());
 
-        var itemWidths = _items.Select(item => item.Measure(context, maxWidth).Max).ToArray();
+        var itemWidths = _items.Select(item => item.Measure(options, maxWidth).Max).ToArray();
         var columnCount = CalculateColumnCount(maxWidth, itemWidths, _items.Count, maxPadding);
         if (columnCount == 0)
         {
@@ -121,7 +121,7 @@ public sealed class Columns : Renderable, IPaddable, IExpandable
             table.AddRow(_items.Skip(start).Take(columnCount).ToArray());
         }
 
-        return ((IRenderable)table).Render(context, maxWidth);
+        return ((IRenderable)table).Render(options, maxWidth);
     }
 
     // Algorithm borrowed from https://github.com/willmcgugan/rich/blob/master/rich/columns.py

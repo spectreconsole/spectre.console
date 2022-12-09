@@ -13,5 +13,5 @@ internal abstract class ProgressRenderer : IRenderHook
     }
 
     public abstract void Update(ProgressContext context);
-    public abstract IEnumerable<IRenderable> Process(RenderContext context, IEnumerable<IRenderable> renderables);
+    public abstract IEnumerable<IRenderable> Process(RenderOptions options, IEnumerable<IRenderable> renderables);
 }

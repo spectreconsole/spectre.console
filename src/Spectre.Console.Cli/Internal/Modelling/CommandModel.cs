@@ -7,6 +7,7 @@ internal sealed class CommandModel : ICommandContainer
     public CommandInfo? DefaultCommand { get; }
     public IList<CommandInfo> Commands { get; }
     public IList<string[]> Examples { get; }
+    public bool TrimTrailingPeriod { get; }
 
     public CommandModel(
         CommandAppSettings settings,
@@ -16,6 +17,7 @@ internal sealed class CommandModel : ICommandContainer
     {
         ApplicationName = settings.ApplicationName;
         ParsingMode = settings.ParsingMode;
+        TrimTrailingPeriod = settings.TrimTrailingPeriod;
         DefaultCommand = defaultCommand;
         Commands = new List<CommandInfo>(commands ?? Array.Empty<CommandInfo>());
         Examples = new List<string[]>(examples ?? Array.Empty<string[]>());

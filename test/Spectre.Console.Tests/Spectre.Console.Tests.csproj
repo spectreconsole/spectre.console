@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('Windows'))">net6.0;net48</TargetFrameworks>
-    <TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('Windows'))">net6.0</TargetFrameworks>
+    <TargetFrameworks>net7.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,10 +17,9 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.XUnit" Version="1.1.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.XUnit" Version="1.1.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.6.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
-    <PackageReference Include="Shouldly" Version="4.0.3" />
-    <PackageReference Include="Spectre.Verify.Extensions" Version="17.1.6" />
-    <PackageReference Include="Verify.Xunit" Version="17.1.6" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
+    <PackageReference Include="Shouldly" Version="4.1.0" />
+    <PackageReference Include="Spectre.Verify.Extensions" Version="18.0.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <PrivateAssets>all</PrivateAssets>

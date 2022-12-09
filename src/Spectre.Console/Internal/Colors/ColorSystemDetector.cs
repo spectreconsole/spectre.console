@@ -64,8 +64,8 @@ internal static class ColorSystemDetector
             return false;
         }
 
-#if NET5_0_OR_GREATER
-        // The reason we're not always using this, is because it will return wrong values on other runtimes than .NET 5+
+#if NET6_0_OR_GREATER
+        // The reason we're not always using this, is because it will return wrong values on other runtimes than .NET 6+
         // See https://docs.microsoft.com/en-us/dotnet/core/compatibility/core-libraries/5.0/environment-osversion-returns-correct-version
         var version = Environment.OSVersion.Version;
         major = version.Major;

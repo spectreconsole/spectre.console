@@ -16,15 +16,15 @@ public sealed class PercentageColumn : ProgressColumn
     public Style CompletedStyle { get; set; } = new Style(foreground: Color.Green);
 
     /// <inheritdoc/>
-    public override IRenderable Render(RenderContext context, ProgressTask task, TimeSpan deltaTime)
+    public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
     {
         var percentage = (int)task.Percentage;
         var style = percentage == 100 ? CompletedStyle : Style ?? Style.Plain;
-        return new Text($"{percentage}%", style).RightAligned();
+        return new Text($"{percentage}%", style).RightJustified();
     }
 
     /// <inheritdoc/>
-    public override int? GetColumnWidth(RenderContext context)
+    public override int? GetColumnWidth(RenderOptions options)
     {
         return 4;
     }

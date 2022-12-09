@@ -77,12 +77,6 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
 
-      - name: Integration Tests
-        shell: bash
-        run: |
-          dotnet tool restore
-          dotnet example --all --skip live --skip livetable --skip prompt --skip screens
-
       - name: Build
         shell: bash
         run: |

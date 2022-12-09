@@ -4,7 +4,7 @@ namespace Spectre.Console;
 /// Represents a prompt.
 /// </summary>
 /// <typeparam name="T">The prompt result type.</typeparam>
-public sealed class TextPrompt<T> : IPrompt<T>
+public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
 {
     private readonly string _prompt;
     private readonly StringComparer? _comparer;
@@ -18,6 +18,11 @@ public sealed class TextPrompt<T> : IPrompt<T>
     /// Gets the list of choices.
     /// </summary>
     public List<T> Choices { get; } = new List<T>();
+
+    /// <summary>
+    /// Gets or sets the culture to use when converting input to object.
+    /// </summary>
+    public CultureInfo? Culture { get; set; }
 
     /// <summary>
     /// Gets or sets the message for invalid choices.
@@ -160,7 +165,7 @@ public sealed class TextPrompt<T> : IPrompt<T>
                         continue;
                     }
                 }
-                else if (!TypeConverterHelper.TryConvertFromString<T>(input, out result) || result == null)
+                else if (!TypeConverterHelper.TryConvertFromStringWithCulture<T>(input, Culture, out result) || result == null)
                 {
                     console.MarkupLine(ValidationErrorMessage);
                     WritePrompt(console);

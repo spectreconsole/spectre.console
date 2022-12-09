@@ -34,7 +34,7 @@ internal sealed class FallbackStatusRenderer : ProgressRenderer
         }
     }
 
-    public override IEnumerable<IRenderable> Process(RenderContext context, IEnumerable<IRenderable> renderables)
+    public override IEnumerable<IRenderable> Process(RenderOptions options, IEnumerable<IRenderable> renderables)
     {
         lock (_lock)
         {

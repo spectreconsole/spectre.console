@@ -201,8 +201,9 @@ public class Segment
     /// </summary>
     /// <param name="segments">The segments to split into lines.</param>
     /// <param name="maxWidth">The maximum width.</param>
+    /// <param name="height">The height (if any).</param>
     /// <returns>A list of lines.</returns>
-    public static List<SegmentLine> SplitLines(IEnumerable<Segment> segments, int maxWidth)
+    public static List<SegmentLine> SplitLines(IEnumerable<Segment> segments, int maxWidth, int? height = null)
     {
         if (segments is null)
         {
@@ -292,6 +293,25 @@ public class Segment
         if (line.Count > 0)
         {
             lines.Add(line);
+        }
+
+        // Got a height specified?
+        if (height != null)
+        {
+            if (lines.Count >= height)
+            {
+                // Remove lines
+                lines.RemoveRange(height.Value, lines.Count - height.Value);
+            }
+            else
+            {
+                // Add lines
+                var missing = height - lines.Count;
+                for (var i = 0; i < missing; i++)
+                {
+                    lines.Add(new SegmentLine());
+                }
+            }
         }
 
         return lines;
@@ -547,6 +567,21 @@ public class Segment
         }
 
         return cells;
+    }
+
+    internal static List<SegmentLine> MakeWidth(int expectedWidth, List<SegmentLine> lines)
+    {
+        foreach (var line in lines)
+        {
+            var width = line.CellCount();
+            if (width < expectedWidth)
+            {
+                var diff = expectedWidth - width;
+                line.Add(new Segment(new string(' ', diff)));
+            }
+        }
+
+        return lines;
     }
 
     internal static List<string> SplitSegment(string text, int maxCellLength)
