@@ -29,4 +29,15 @@
     <ProjectReference Include="..\..\src\Spectre.Console\Spectre.Console.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Expectations\Help\Default_Without_Args_Additional.Output.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>%(ParentFile).cs</DependentUpon>
+    </None>
+    <None Update="Expectations\Help\Greeter_Default.Output.verified.txt">
+      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
+      <DependentUpon>%(ParentFile).cs</DependentUpon>
+    </None>
+  </ItemGroup>
+
 </Project>
