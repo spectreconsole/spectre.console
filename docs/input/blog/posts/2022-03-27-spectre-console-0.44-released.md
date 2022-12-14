@@ -1,6 +1,6 @@
 Title: Spectre.Console 0.44 released!
 Description: Alternate screen buffers, better exception rendering... and more!
-Published: 20220327
+Published: 2022-03-27
 Category: Release Notes
 Excluded: false
 ---

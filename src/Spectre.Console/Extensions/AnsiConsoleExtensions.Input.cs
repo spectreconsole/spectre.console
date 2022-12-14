@@ -5,7 +5,7 @@ namespace Spectre.Console;
 /// </summary>
 public static partial class AnsiConsoleExtensions
 {
-    internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, IEnumerable<string>? items = null, CancellationToken cancellationToken = default)
+    internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, char? mask, IEnumerable<string>? items = null, CancellationToken cancellationToken = default)
     {
         if (console is null)
         {
@@ -33,7 +33,10 @@ public static partial class AnsiConsoleExtensions
 
             if (key.Key == ConsoleKey.Tab && autocomplete.Count > 0)
             {
-                var replace = AutoComplete(autocomplete, text);
+                var autoCompleteDirection = key.Modifiers.HasFlag(ConsoleModifiers.Shift)
+                    ? AutoCompleteDirection.Backward
+                    : AutoCompleteDirection.Forward;
+                var replace = AutoComplete(autocomplete, text, autoCompleteDirection);
                 if (!string.IsNullOrEmpty(replace))
                 {
                     // Render the suggestion
@@ -58,12 +61,13 @@ public static partial class AnsiConsoleExtensions
             if (!char.IsControl(key.KeyChar))
             {
                 text += key.KeyChar.ToString();
-                console.Write(secret ? "*" : key.KeyChar.ToString(), style);
+                var output = key.KeyChar.ToString();
+                console.Write(secret ? output.Mask(mask) : output, style);
             }
         }
     }
 
-    private static string AutoComplete(List<string> autocomplete, string text)
+    private static string AutoComplete(List<string> autocomplete, string text, AutoCompleteDirection autoCompleteDirection)
     {
         var found = autocomplete.Find(i => i == text);
         var replace = string.Empty;
@@ -85,15 +89,38 @@ public static partial class AnsiConsoleExtensions
         else
         {
             // Get the next match
-            var index = autocomplete.IndexOf(found) + 1;
-            if (index >= autocomplete.Count)
-            {
-                index = 0;
-            }
-
-            replace = autocomplete[index];
+            replace = GetAutocompleteValue(autoCompleteDirection, autocomplete, found);
         }
 
         return replace;
+    }
+
+    private static string GetAutocompleteValue(AutoCompleteDirection autoCompleteDirection, IList<string> autocomplete, string found)
+    {
+        var foundAutocompleteIndex = autocomplete.IndexOf(found);
+        var index = autoCompleteDirection switch
+        {
+            AutoCompleteDirection.Forward => foundAutocompleteIndex + 1,
+            AutoCompleteDirection.Backward => foundAutocompleteIndex - 1,
+            _ => throw new ArgumentOutOfRangeException(nameof(autoCompleteDirection), autoCompleteDirection, null),
+        };
+
+        if (index >= autocomplete.Count)
+        {
+            index = 0;
+        }
+
+        if (index < 0)
+        {
+            index = autocomplete.Count - 1;
+        }
+
+        return autocomplete[index];
+    }
+
+    private enum AutoCompleteDirection
+    {
+        Forward,
+        Backward,
     }
 }

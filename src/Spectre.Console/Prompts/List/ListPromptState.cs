@@ -6,15 +6,17 @@ internal sealed class ListPromptState<T>
     public int Index { get; private set; }
     public int ItemCount => Items.Count;
     public int PageSize { get; }
+    public bool WrapAround { get; }
     public IReadOnlyList<ListPromptItem<T>> Items { get; }
 
     public ListPromptItem<T> Current => Items[Index];
 
-    public ListPromptState(IReadOnlyList<ListPromptItem<T>> items, int pageSize)
+    public ListPromptState(IReadOnlyList<ListPromptItem<T>> items, int pageSize, bool wrapAround)
     {
         Index = 0;
         Items = items;
         PageSize = pageSize;
+        WrapAround = wrapAround;
     }
 
     public bool Update(ConsoleKey key)
@@ -30,7 +32,9 @@ internal sealed class ListPromptState<T>
             _ => Index,
         };
 
-        index = index.Clamp(0, ItemCount - 1);
+        index = WrapAround
+            ? (ItemCount + (index % ItemCount)) % ItemCount
+            : index.Clamp(0, ItemCount - 1);
         if (index != Index)
         {
             Index = index;

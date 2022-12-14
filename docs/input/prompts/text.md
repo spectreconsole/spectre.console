@@ -65,6 +65,23 @@ What's the secret number? _
 Enter password: ************_
 ```
 
+## Masks
+
+<?# Example symbol="M:Prompt.Program.AskPasswordWithCustomMask" project="Prompt" /?>
+
+
+```text
+Enter password: ------------_
+```
+
+You can utilize a null character to completely hide input.
+
+<?# Example symbol="M:Prompt.Program.AskPasswordWithNullMask" project="Prompt" /?>
+
+```text
+Enter password: _
+```
+
 ## Optional
 
 <?# Example symbol="M:Prompt.Program.AskColor" project="Prompt" /?>

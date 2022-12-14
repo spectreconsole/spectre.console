@@ -3,7 +3,7 @@ namespace Spectre.Console;
 /// <summary>
 /// A renderable horizontal rule.
 /// </summary>
-public sealed class Rule : Renderable, IAlignable, IHasBoxBorder
+public sealed class Rule : Renderable, IHasJustification, IHasBoxBorder
 {
     /// <summary>
     /// Gets or sets the rule title markup text.
@@ -16,9 +16,9 @@ public sealed class Rule : Renderable, IAlignable, IHasBoxBorder
     public Style? Style { get; set; }
 
     /// <summary>
-    /// Gets or sets the rule's title alignment.
+    /// Gets or sets the rule's title justification.
     /// </summary>
-    public Justify? Alignment { get; set; }
+    public Justify? Justification { get; set; }
 
     /// <inheritdoc/>
     public BoxBorder Border { get; set; } = BoxBorder.Square;
@@ -43,17 +43,17 @@ public sealed class Rule : Renderable, IAlignable, IHasBoxBorder
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var extraLength = (2 * TitlePadding) + (2 * TitleSpacing);
 
         if (Title == null || maxWidth <= extraLength)
         {
-            return GetLineWithoutTitle(context, maxWidth);
+            return GetLineWithoutTitle(options, maxWidth);
         }
 
         // Get the title and make sure it fits.
-        var title = GetTitleSegments(context, Title, maxWidth - extraLength);
+        var title = GetTitleSegments(options, Title, maxWidth - extraLength);
         if (Segment.CellCount(title) > maxWidth - extraLength)
         {
             // Truncate the title
@@ -61,11 +61,11 @@ public sealed class Rule : Renderable, IAlignable, IHasBoxBorder
             if (!title.Any())
             {
                 // We couldn't fit the title at all.
-                return GetLineWithoutTitle(context, maxWidth);
+                return GetLineWithoutTitle(options, maxWidth);
             }
         }
 
-        var (left, right) = GetLineSegments(context, maxWidth, title);
+        var (left, right) = GetLineSegments(options, maxWidth, title);
 
         var segments = new List<Segment>();
         segments.Add(left);
@@ -76,9 +76,9 @@ public sealed class Rule : Renderable, IAlignable, IHasBoxBorder
         return segments;
     }
 
-    private IEnumerable<Segment> GetLineWithoutTitle(RenderContext context, int maxWidth)
+    private IEnumerable<Segment> GetLineWithoutTitle(RenderOptions options, int maxWidth)
     {
-        var border = Border.GetSafeBorder(safe: !context.Unicode);
+        var border = Border.GetSafeBorder(safe: !options.Unicode);
         var text = border.GetPart(BoxBorderPart.Top).Repeat(maxWidth);
 
         return new[]
@@ -88,21 +88,21 @@ public sealed class Rule : Renderable, IAlignable, IHasBoxBorder
         };
     }
 
-    private IEnumerable<Segment> GetTitleSegments(RenderContext context, string title, int width)
+    private IEnumerable<Segment> GetTitleSegments(RenderOptions options, string title, int width)
     {
         title = title.NormalizeNewLines().ReplaceExact("\n", " ").Trim();
         var markup = new Markup(title, Style);
-        return ((IRenderable)markup).Render(context.WithSingleLine(), width);
+        return ((IRenderable)markup).Render(options with { SingleLine = true }, width);
     }
 
-    private (Segment Left, Segment Right) GetLineSegments(RenderContext context, int width, IEnumerable<Segment> title)
+    private (Segment Left, Segment Right) GetLineSegments(RenderOptions options, int width, IEnumerable<Segment> title)
     {
         var titleLength = Segment.CellCount(title);
 
-        var border = Border.GetSafeBorder(safe: !context.Unicode);
+        var border = Border.GetSafeBorder(safe: !options.Unicode);
         var borderPart = border.GetPart(BoxBorderPart.Top);
 
-        var alignment = Alignment ?? Justify.Center;
+        var alignment = Justification ?? Justify.Center;
         if (alignment == Justify.Left)
         {
             var left = new Segment(borderPart.Repeat(TitlePadding) + new string(' ', TitleSpacing), Style ?? Style.Plain);

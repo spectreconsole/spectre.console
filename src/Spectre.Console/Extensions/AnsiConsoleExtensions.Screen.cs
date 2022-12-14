@@ -27,19 +27,18 @@ public static partial class AnsiConsoleExtensions
             throw new NotSupportedException("Alternate buffers are not supported by your terminal.");
         }
 
-        console.ExclusivityMode.Run<object?>(() =>
-        {
-            // Switch to alternate screen
-            console.Write(new ControlCode("\u001b[?1049h\u001b[H"));
+        // Switch to alternate screen
+        console.Write(new ControlCode("\u001b[?1049h\u001b[H"));
 
+        try
+        {
             // Execute custom action
             action();
-
+        }
+        finally
+        {
             // Switch back to primary screen
             console.Write(new ControlCode("\u001b[?1049l"));
-
-            // Dummy result
-            return null;
-        });
+        }
     }
 }

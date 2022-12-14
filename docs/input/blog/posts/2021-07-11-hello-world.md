@@ -1,6 +1,6 @@
 Title: Hello, World
 Description: To help track new releases, updates and planning for Spectre.Console, we've added a new blog to the documentation.
-Published: 20210711
+Published: 2021-07-11
 Category: News
 ---
 

@@ -23,13 +23,13 @@ public static class RenderableExtensions
             throw new ArgumentNullException(nameof(renderable));
         }
 
-        var context = new RenderContext(console.Profile.Capabilities);
+        var context = RenderOptions.Create(console, console.Profile.Capabilities);
         var renderables = console.Pipeline.Process(context, new[] { renderable });
 
         return GetSegments(console, context, renderables);
     }
 
-    private static IEnumerable<Segment> GetSegments(IAnsiConsole console, RenderContext options, IEnumerable<IRenderable> renderables)
+    private static IEnumerable<Segment> GetSegments(IAnsiConsole console, RenderOptions options, IEnumerable<IRenderable> renderables)
     {
         var result = new List<Segment>();
         foreach (var renderable in renderables)

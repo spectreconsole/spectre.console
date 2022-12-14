@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ExampleTitle>Live</ExampleTitle>
     <ExampleDescription>Demonstrates how to do live updates.</ExampleDescription>
     <ExampleGroup>Live</ExampleGroup>

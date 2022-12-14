@@ -58,9 +58,9 @@ public static class Program
         var table = new Table().BorderColor(Color.Grey).Title("Aligned").RoundedBorder();
         table.AddColumns("[grey]Alignment[/]", "[grey]Path[/]");
 
-        table.AddRow(new Text("Left"), new TextPath(path).LeftAligned());
+        table.AddRow(new Text("Left"), new TextPath(path).LeftJustified());
         table.AddRow(new Text("Center"), new TextPath(path).Centered());
-        table.AddRow(new Text("Right"), new TextPath(path).RightAligned());
+        table.AddRow(new Text("Right"), new TextPath(path).RightJustified());
 
         AnsiConsole.Write(table);
     }

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <LangVersion>9</LangVersion>
     <ExampleTitle>Prompt</ExampleTitle>
     <ExampleDescription>Demonstrates how to get input from a user.</ExampleDescription>

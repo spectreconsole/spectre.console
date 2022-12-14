@@ -4,7 +4,7 @@ public sealed class RenderHookTests
 {
     private sealed class HelloRenderHook : IRenderHook
     {
-        public IEnumerable<IRenderable> Process(RenderContext context, IEnumerable<IRenderable> renderables)
+        public IEnumerable<IRenderable> Process(RenderOptions options, IEnumerable<IRenderable> renderables)
         {
             return new IRenderable[] { new Text("Hello\n") }.Concat(renderables);
         }

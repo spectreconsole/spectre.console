@@ -315,12 +315,28 @@ internal class CommandTreeParser
                         {
                             if (!CliConstants.AcceptedBooleanValues.Contains(valueToken.Value, StringComparer.OrdinalIgnoreCase))
                             {
-                                // Flags cannot be assigned a value.
-                                throw CommandParseException.CannotAssignValueToFlag(context.Arguments, token);
+                                if (!valueToken.HadSeparator)
+                                {
+                                    // Do nothing
+                                    // - assume valueToken is unrelated to the flag parameter (ie. we've parsed it unnecessarily)
+                                    // - rely on the "No value?" code below to set the flag to its default value
+                                    // - valueToken will be handled on the next pass of the parser
+                                }
+                                else
+                                {
+                                    // Flags cannot be assigned a value.
+                                    throw CommandParseException.CannotAssignValueToFlag(context.Arguments, token);
+                                }
+                            }
+                            else
+                            {
+                                value = stream.Consume(CommandTreeToken.Kind.String)?.Value;
                             }
                         }
-
-                        value = stream.Consume(CommandTreeToken.Kind.String)?.Value;
+                        else
+                        {
+                            value = stream.Consume(CommandTreeToken.Kind.String)?.Value;
+                        }
                     }
                     else
                     {

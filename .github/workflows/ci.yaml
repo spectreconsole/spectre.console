@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: Continuous Integration
+name: Pull Request
 on: pull_request
 
 env:
@@ -20,7 +20,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v3
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
@@ -75,13 +75,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v2
-
-      - name: Integration Tests
-        shell: bash
-        run: |
-          dotnet tool restore
-          dotnet example --all --skip live --skip livetable --skip prompt --skip screens
+        uses: actions/setup-dotnet@v3
 
       - name: Build
         shell: bash

@@ -35,7 +35,7 @@ AnsiConsole.Write(table);
 
 ## Convenience methods
 
-There is also convenience methods on `AnsiConsole` that can be used
+There are also convenience methods on `AnsiConsole` that can be used
 to write markup text to the console without instantiating a new `Markup`
 instance.
 
@@ -66,7 +66,7 @@ AnsiConsole.Markup("[red]{0}[/]", Markup.Escape("Hello [World]"));
 
 ## Escaping Interpolated Strings
 
-When working with interpolated string, you can use the `MarkupInterpolated` and `MarkupLineInterpolated` methods to automatically escape the values in the interpolated string holes.
+When working with interpolated strings, you can use the `MarkupInterpolated` and `MarkupLineInterpolated` methods to automatically escape the values in the interpolated string "holes".
 
 ```csharp
 string hello = "Hello [World]";
@@ -75,8 +75,7 @@ AnsiConsole.MarkupInterpolated($"[red]{hello}[/]");
 
 ## Setting background color
 
-You can set the background color in markup by prefixing the color with
-`on`.
+You can set the background color in markup by prefixing the color with `on`.
 
 ```csharp
 AnsiConsole.Markup("[bold yellow on blue]Hello[/]");
@@ -105,6 +104,15 @@ AnsiConsole.Markup("[rgb(255,0,0)]Baz[/] ");
 ```
 
 For a list of colors, see the [Colors](xref:colors) appendix section.
+
+## Links
+
+To output a clickable link, you can use the `[link]` style.
+
+```csharp
+AnsiConsole.Markup("[link]https://spectreconsole.net[/]");
+AnsiConsole.Markup("[link=https://spectreconsole.net]Spectre Console Documentation[/]");
+```
 
 ## Styles
 

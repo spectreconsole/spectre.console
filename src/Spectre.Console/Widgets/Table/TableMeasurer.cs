@@ -8,7 +8,7 @@ internal sealed class TableMeasurer : TableAccessor
     private readonly TableBorder _border;
     private readonly bool _padRightCell;
 
-    public TableMeasurer(Table table, RenderContext options)
+    public TableMeasurer(Table table, RenderOptions options)
         : base(table, options)
     {
         _explicitWidth = table.Width;

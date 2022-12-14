@@ -1,3 +1,5 @@
+using Spectre.Console.Cli;
+
 namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed partial class CommandAppTests
@@ -41,6 +43,30 @@ public sealed partial class CommandAppTests
                 configurator.AddCommand<GiraffeCommand>("giraffe")
                     .WithExample(new[] { "giraffe", "123" })
                     .IsHidden();
+            });
+
+            // When
+            var result = fixture.Run("--help");
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Description_No_Trailing_Period")]
+        public Task Should_Not_Trim_Description_Trailing_Period()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+                configurator.AddCommand<DogCommand>("dog");
+                configurator.AddCommand<HorseCommand>("horse");
+                configurator.AddCommand<GiraffeCommand>("giraffe")
+                    .WithExample(new[] { "giraffe", "123" })
+                    .IsHidden();
+                configurator.TrimTrailingPeriods(false);
             });
 
             // When

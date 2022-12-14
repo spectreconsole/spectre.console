@@ -4,7 +4,7 @@ internal sealed class HtmlEncoder : IAnsiConsoleEncoder
 {
     public string Encode(IAnsiConsole console, IEnumerable<IRenderable> renderables)
     {
-        var context = new RenderContext(new EncoderCapabilities(ColorSystem.TrueColor));
+        var context = RenderOptions.Create(console, new EncoderCapabilities(ColorSystem.TrueColor));
         var builder = new StringBuilder();
 
         builder.Append("<pre style=\"font-size:90%;font-family:consolas,'Courier New',monospace\">\n");

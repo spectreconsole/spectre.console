@@ -23,7 +23,7 @@ public static class Program
         {
             AnsiConsole.ResetColors();
             AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("[yellow bold underline]3-bit Colors[/]").RuleStyle("grey").LeftAligned());
+            AnsiConsole.Write(new Rule("[yellow bold underline]3-bit Colors[/]").RuleStyle("grey").LeftJustified());
             AnsiConsole.WriteLine();
 
             for (var i = 0; i < 8; i++)
@@ -46,7 +46,7 @@ public static class Program
         {
             AnsiConsole.ResetColors();
             AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("[yellow bold underline]4-bit Colors[/]").RuleStyle("grey").LeftAligned());
+            AnsiConsole.Write(new Rule("[yellow bold underline]4-bit Colors[/]").RuleStyle("grey").LeftJustified());
             AnsiConsole.WriteLine();
 
             for (var i = 0; i < 16; i++)
@@ -69,7 +69,7 @@ public static class Program
         {
             AnsiConsole.ResetColors();
             AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("[yellow bold underline]8-bit Colors[/]").RuleStyle("grey").LeftAligned());
+            AnsiConsole.Write(new Rule("[yellow bold underline]8-bit Colors[/]").RuleStyle("grey").LeftJustified());
             AnsiConsole.WriteLine();
 
             for (var i = 0; i < 16; i++)
@@ -96,7 +96,7 @@ public static class Program
         {
             AnsiConsole.ResetColors();
             AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("[yellow bold underline]24-bit Colors[/]").RuleStyle("grey").LeftAligned());
+            AnsiConsole.Write(new Rule("[yellow bold underline]24-bit Colors[/]").RuleStyle("grey").LeftJustified());
             AnsiConsole.WriteLine();
 
             AnsiConsole.Write(new ColorBox(width: 80, height: 15));

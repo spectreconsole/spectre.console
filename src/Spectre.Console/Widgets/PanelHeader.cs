@@ -3,7 +3,7 @@ namespace Spectre.Console;
 /// <summary>
 /// Represents a panel header.
 /// </summary>
-public sealed class PanelHeader : IAlignable
+public sealed class PanelHeader : IHasJustification
 {
     /// <summary>
     /// Gets the panel header text.
@@ -13,7 +13,7 @@ public sealed class PanelHeader : IAlignable
     /// <summary>
     /// Gets or sets the panel header alignment.
     /// </summary>
-    public Justify? Alignment { get; set; }
+    public Justify? Justification { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PanelHeader"/> class.
@@ -23,7 +23,7 @@ public sealed class PanelHeader : IAlignable
     public PanelHeader(string text, Justify? alignment = null)
     {
         Text = text ?? throw new ArgumentNullException(nameof(text));
-        Alignment = alignment;
+        Justification = alignment;
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public sealed class PanelHeader : IAlignable
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public PanelHeader SetAlignment(Justify alignment)
     {
-        Alignment = alignment;
+        Justification = alignment;
         return this;
     }
 }

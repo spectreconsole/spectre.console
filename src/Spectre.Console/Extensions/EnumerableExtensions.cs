@@ -110,7 +110,7 @@ internal static class EnumerableExtensions
         return source.Select((value, index) => func(value, index));
     }
 
-#if !NET5_0_OR_GREATER
+#if !NET6_0_OR_GREATER
     public static IEnumerable<(TFirst First, TSecond Second)> Zip<TFirst, TSecond>(
         this IEnumerable<TFirst> source, IEnumerable<TSecond> first)
     {

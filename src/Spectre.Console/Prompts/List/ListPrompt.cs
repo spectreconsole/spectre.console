@@ -15,7 +15,8 @@ internal sealed class ListPrompt<T>
     public async Task<ListPromptState<T>> Show(
         ListPromptTree<T> tree,
         CancellationToken cancellationToken,
-        int requestedPageSize = 15)
+        int requestedPageSize = 15,
+        bool wrapAround = false)
     {
         if (tree is null)
         {
@@ -37,7 +38,7 @@ internal sealed class ListPrompt<T>
         }
 
         var nodes = tree.Traverse().ToList();
-        var state = new ListPromptState<T>(nodes, _strategy.CalculatePageSize(_console, nodes.Count, requestedPageSize));
+        var state = new ListPromptState<T>(nodes, _strategy.CalculatePageSize(_console, nodes.Count, requestedPageSize), wrapAround);
         var hook = new ListPromptRenderHook<T>(_console, () => BuildRenderable(state));
 
         using (new RenderHookScope(_console, hook))

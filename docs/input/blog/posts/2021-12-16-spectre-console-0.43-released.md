@@ -1,6 +1,6 @@
 Title: Spectre.Console 0.43 released!
 Description: Now with .NET 6 support... and more!
-Published: 20211216
+Published: 2021-12-16
 Category: Release Notes
 Excluded: false
 ---

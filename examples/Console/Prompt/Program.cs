@@ -35,12 +35,18 @@ namespace Prompt
             WriteDivider("Secrets");
             var password = AskPassword();
 
+            WriteDivider("Mask");
+            var mask = AskPasswordWithCustomMask();
+
+            WriteDivider("Null Mask");
+            var nullMask = AskPasswordWithNullMask();
+
             WriteDivider("Optional");
             var color = AskColor();
 
             // Summary
             AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule("[yellow]Results[/]").RuleStyle("grey").LeftAligned());
+            AnsiConsole.Write(new Rule("[yellow]Results[/]").RuleStyle("grey").LeftJustified());
             AnsiConsole.Write(new Table().AddColumns("[grey]Question[/]", "[grey]Answer[/]")
                 .RoundedBorder()
                 .BorderColor(Color.Grey)
@@ -49,13 +55,15 @@ namespace Prompt
                 .AddRow("[grey]Favorite sport[/]", sport)
                 .AddRow("[grey]Age[/]", age.ToString())
                 .AddRow("[grey]Password[/]", password)
+                .AddRow("[grey]Mask[/]", mask)
+                .AddRow("[grey]Null Mask[/]", nullMask)
                 .AddRow("[grey]Favorite color[/]", string.IsNullOrEmpty(color) ? "Unknown" : color));
         }
 
         private static void WriteDivider(string text)
         {
             AnsiConsole.WriteLine();
-            AnsiConsole.Write(new Rule($"[yellow]{text}[/]").RuleStyle("grey").LeftAligned());
+            AnsiConsole.Write(new Rule($"[yellow]{text}[/]").RuleStyle("grey").LeftJustified());
         }
 
         public static bool AskConfirmation()
@@ -145,6 +153,22 @@ namespace Prompt
                 new TextPrompt<string>("Enter [green]password[/]?")
                     .PromptStyle("red")
                     .Secret());
+        }
+
+        public static string AskPasswordWithCustomMask()
+        {
+            return AnsiConsole.Prompt(
+                new TextPrompt<string>("Enter [green]password[/]?")
+                    .PromptStyle("red")
+                    .Secret('-'));
+        }
+
+        public static string AskPasswordWithNullMask()
+        {
+            return AnsiConsole.Prompt(
+                new TextPrompt<string>("Enter [green]password[/]?")
+                    .PromptStyle("red")
+                    .Secret(null));
         }
 
         public static string AskColor()

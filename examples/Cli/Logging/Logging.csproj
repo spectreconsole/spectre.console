@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <ExampleName>Logging</ExampleName>
     <ExampleDescription>Demonstrates how to dynamically configure Serilog for logging using parameters from a command.</ExampleDescription>

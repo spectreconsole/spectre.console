@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <ExampleName>Dynamic</ExampleName>
     <ExampleDescription>Demonstrates how to define dynamic commands.</ExampleDescription>

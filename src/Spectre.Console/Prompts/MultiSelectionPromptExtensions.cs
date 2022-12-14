@@ -212,6 +212,25 @@ public static class MultiSelectionPromptExtensions
     }
 
     /// <summary>
+    /// Sets whether the selection should wrap around when reaching its edges.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="shouldWrap">Whether the selection should wrap around.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static MultiSelectionPrompt<T> WrapAround<T>(this MultiSelectionPrompt<T> obj, bool shouldWrap = true)
+        where T : notnull
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        obj.WrapAround = shouldWrap;
+        return obj;
+    }
+
+    /// <summary>
     /// Sets the highlight style of the selected choice.
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>

@@ -37,6 +37,11 @@ public interface ICommandAppSettings
     CaseSensitivity CaseSensitivity { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether trailing period of a description is trimmed.
+    /// </summary>
+    bool TrimTrailingPeriod { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether or not parsing is strict.
     /// </summary>
     bool StrictParsing { get; set; }

@@ -4,20 +4,23 @@ namespace Spectre.Console.Tests.Unit;
 [ExpectationPath("Widgets/Figlet")]
 public sealed class FigletTests
 {
-    [Fact]
+    [Theory]
+    [InlineData("starwars.flf")]
+    [InlineData("poison.flf")]
     [Expectation("Load_Stream")]
-    public async Task Should_Load_Font_From_Stream()
+    public async Task Should_Load_Font_From_Stream(string fontfile)
     {
         // Given
         var console = new TestConsole().Width(180);
-        var font = FigletFont.Load(EmbeddedResourceReader.LoadResourceStream("Spectre.Console.Tests/Data/starwars.flf"));
+        var font = FigletFont.Load(EmbeddedResourceReader.LoadResourceStream($"Spectre.Console.Tests/Data/{fontfile}"));
         var text = new FigletText(font, "Patrik was here");
 
         // When
         console.Write(text);
 
         // Then
-        await Verifier.Verify(console.Output);
+        await Verifier.Verify(console.Output)
+            .UseParameters(fontfile);
     }
 
     [Fact]
@@ -57,7 +60,7 @@ public sealed class FigletTests
         // Given
         var console = new TestConsole().Width(120);
         var text = new FigletText(FigletFont.Default, "Spectre.Console")
-            .Alignment(Justify.Left);
+            .Justify(Justify.Left);
 
         // When
         console.Write(text);
@@ -73,7 +76,7 @@ public sealed class FigletTests
         // Given
         var console = new TestConsole().Width(120);
         var text = new FigletText(FigletFont.Default, "Spectre.Console")
-            .Alignment(Justify.Center);
+            .Justify(Justify.Center);
 
         // When
         console.Write(text);
@@ -89,7 +92,7 @@ public sealed class FigletTests
         // Given
         var console = new TestConsole().Width(120);
         var text = new FigletText(FigletFont.Default, "Spectre.Console")
-            .Alignment(Justify.Right);
+            .Justify(Justify.Right);
 
         // When
         console.Write(text);

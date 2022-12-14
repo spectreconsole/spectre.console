@@ -107,6 +107,7 @@ public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorde
     }
 
     /// <inheritdoc/>
+    [Obsolete("Use the Align widget instead. This property will be removed in a later release.")]
     public Justify? Alignment
     {
         get => _alignment;
@@ -162,6 +163,7 @@ public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorde
     {
         var culture = Culture ?? CultureInfo.InvariantCulture;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         var table = new Table
         {
             Border = _border,
@@ -169,6 +171,7 @@ public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorde
             BorderStyle = _borderStyle,
             Alignment = _alignment,
         };
+#pragma warning restore CS0618 // Type or member is obsolete
 
         if (ShowHeader)
         {

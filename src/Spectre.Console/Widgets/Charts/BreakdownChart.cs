@@ -3,7 +3,7 @@ namespace Spectre.Console;
 /// <summary>
 /// A renderable breakdown chart.
 /// </summary>
-public sealed class BreakdownChart : Renderable, IHasCulture
+public sealed class BreakdownChart : Renderable, IHasCulture, IExpandable
 {
     /// <summary>
     /// Gets the breakdown chart data.
@@ -44,6 +44,13 @@ public sealed class BreakdownChart : Renderable, IHasCulture
     public CultureInfo? Culture { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether or not the object should
+    /// expand to the available space. If <c>false</c>, the object's
+    /// width will be auto calculated.
+    /// </summary>
+    public bool Expand { get; set; } = true;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="BreakdownChart"/> class.
     /// </summary>
     public BreakdownChart()
@@ -53,14 +60,14 @@ public sealed class BreakdownChart : Renderable, IHasCulture
     }
 
     /// <inheritdoc/>
-    protected override Measurement Measure(RenderContext context, int maxWidth)
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         var width = Math.Min(Width ?? maxWidth, maxWidth);
         return new Measurement(width, width);
     }
 
     /// <inheritdoc/>
-    protected override IEnumerable<Segment> Render(RenderContext context, int maxWidth)
+    protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var width = Math.Min(Width ?? maxWidth, maxWidth);
 
@@ -90,6 +97,11 @@ public sealed class BreakdownChart : Renderable, IHasCulture
             });
         }
 
-        return ((IRenderable)grid).Render(context, width);
+        if (!Expand)
+        {
+            grid.Collapse();
+        }
+
+        return ((IRenderable)grid).Render(options, width);
     }
 }

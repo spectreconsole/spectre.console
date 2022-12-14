@@ -61,6 +61,15 @@ public sealed class TestConsoleInput : IAnsiConsoleInput
         _input.Enqueue(new ConsoleKeyInfo((char)input, input, false, false, false));
     }
 
+    /// <summary>
+    /// Pushes the specified key to the input queue.
+    /// </summary>
+    /// <param name="consoleKeyInfo">The input.</param>
+    public void PushKey(ConsoleKeyInfo consoleKeyInfo)
+    {
+        _input.Enqueue(consoleKeyInfo);
+    }
+
     /// <inheritdoc/>
     public bool IsKeyAvailable()
     {

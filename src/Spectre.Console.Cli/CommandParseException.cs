@@ -91,11 +91,6 @@ public sealed class CommandParseException : CommandRuntimeException
         return CommandLineParseExceptionFactory.Create(reader.Original, token, "Invalid long option name.", "Invalid character.");
     }
 
-    internal static CommandParseException UnterminatedQuote(string input, CommandTreeToken token)
-    {
-        return CommandLineParseExceptionFactory.Create(input, token, $"Encountered unterminated quoted string '{token.Value}'.", "Did you forget the closing quotation mark?");
-    }
-
     internal static CommandParseException UnknownCommand(CommandModel model, CommandTree? node, IEnumerable<string> args, CommandTreeToken token)
     {
         var suggestion = CommandSuggestor.Suggest(model, node?.Command, token.Value);

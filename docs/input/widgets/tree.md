@@ -43,7 +43,7 @@ AnsiConsole.Write(root);
 ## Collapsing nodes
 
 ```csharp
-root.AddNode("Label").Collapsed();
+root.AddNode("Label").Collapse();
 ```
 
 ## Appearance
