@@ -100,6 +100,30 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        [Expectation("Command_Disable_Options_Default_Values")]
+        public Task Should_Not_Print_Default_Column()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+                configurator.AddBranch<CatSettings>("cat", animal =>
+                {
+                    animal.SetDescription("Contains settings for a cat.");
+                    animal.AddCommand<LionCommand>("lion");
+                });
+                configurator.DisableOptionsDefaultValues();
+            });
+
+            // When
+            var result = fixture.Run("cat", "--help");
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
         [Expectation("Leaf")]
         public Task Should_Output_Leaf_Correctly()
         {
