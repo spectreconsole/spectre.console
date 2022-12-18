@@ -8,9 +8,9 @@ namespace Generator.Commands.Samples
 
         public override void Run(IAnsiConsole console)
         {
-            console.Write(new FigletText("Left aligned").LeftAligned().Color(Color.Red));
+            console.Write(new FigletText("Left aligned").LeftJustified().Color(Color.Red));
             console.Write(new FigletText("Centered").Centered().Color(Color.Green));
-            console.Write(new FigletText("Right aligned").RightAligned().Color(Color.Blue));
+            console.Write(new FigletText("Right aligned").RightJustified().Color(Color.Blue));
         }
     }
 }

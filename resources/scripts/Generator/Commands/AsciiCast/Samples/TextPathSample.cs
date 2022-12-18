@@ -34,9 +34,9 @@ namespace Generator.Commands.Samples
             console.Write(
                 new Panel(
                     new Padder(new Rows(
-                        new TextPath("/This/Is/A/Long/Path/That/Will/Be/Truncated.txt").LeftAligned(),
+                        new TextPath("/This/Is/A/Long/Path/That/Will/Be/Truncated.txt").LeftJustified(),
                         new TextPath("/This/Is/A/Long/Path/That/Will/Be/Truncated.txt").Centered(),
-                        new TextPath("/This/Is/A/Long/Path/That/Will/Be/Truncated.txt").RightAligned()), new Padding(0,1)))
+                        new TextPath("/This/Is/A/Long/Path/That/Will/Be/Truncated.txt").RightJustified()), new Padding(0,1)))
                 .BorderStyle(new Style(foreground: Color.Grey))
                 .Header("Alignment"));
         }

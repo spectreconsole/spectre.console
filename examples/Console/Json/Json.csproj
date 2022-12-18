@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <ExampleTitle>Json</ExampleTitle>
-    <ExampleDescription>Demonstrates how to use print syntax highlighted JSON.</ExampleDescription>
+    <ExampleDescription>Demonstrates how to print syntax highlighted JSON.</ExampleDescription>
     <ExampleGroup>Widgets</ExampleGroup>
   </PropertyGroup>
 
