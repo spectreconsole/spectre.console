@@ -100,7 +100,7 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
-        [Expectation("Command_Disable_Options_Default_Values")]
+        [Expectation("Command_Disable_Default")]
         public Task Should_Not_Print_Default_Column()
         {
             // Given
