@@ -16,7 +16,7 @@ public interface ICommandAppSettings
     string? ApplicationVersion { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether displaying or not the options default values in the help text.
+    /// Gets or sets a value indicating whether any default values for command options are shown in the help text.
     /// </summary>
     bool EnableOptionsDefaultValues { get; set; }
 
