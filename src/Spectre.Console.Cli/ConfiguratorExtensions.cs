@@ -41,6 +41,23 @@ public static class ConfiguratorExtensions
     }
 
     /// <summary>
+    /// Hides the <c>DEFAULT</c> column that lists default values coming from the
+    /// <see cref="DefaultValueAttribute"/> in the options help text.
+    /// </summary>
+    /// <param name="configurator">The configurator.</param>
+    /// <returns>A configurator that can be used to configure the application further.</returns>
+    public static IConfigurator HideOptionDefaultValues(this IConfigurator configurator)
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        configurator.Settings.ShowOptionDefaultValues = false;
+        return configurator;
+    }
+
+    /// <summary>
     /// Configures the console.
     /// </summary>
     /// <param name="configurator">The configurator.</param>

@@ -34,42 +34,45 @@ internal static class HelpWriter
         public string? Value { get; }
         public bool? ValueIsOptional { get; }
         public string? Description { get; }
+        public object? DefaultValue { get; }
 
-        public HelpOption(string? @short, string? @long, string? @value, bool? valueIsOptional, string? description)
+        public HelpOption(string? @short, string? @long, string? @value, bool? valueIsOptional, string? description, object? defaultValue)
         {
             Short = @short;
             Long = @long;
             Value = value;
             ValueIsOptional = valueIsOptional;
             Description = description;
+            DefaultValue = defaultValue;
         }
 
         public static IReadOnlyList<HelpOption> Get(CommandModel model, CommandInfo? command)
         {
             var parameters = new List<HelpOption>();
-            parameters.Add(new HelpOption("h", "help", null, null, "Prints help information"));
+            parameters.Add(new HelpOption("h", "help", null, null, "Prints help information", null));
 
             // At the root and no default command?
             if (command == null && model?.DefaultCommand == null)
             {
-                parameters.Add(new HelpOption("v", "version", null, null, "Prints version information"));
+                parameters.Add(new HelpOption("v", "version", null, null, "Prints version information", null));
             }
 
             parameters.AddRange(command?.Parameters.OfType<CommandOption>().Where(o => !o.IsHidden).Select(o =>
                 new HelpOption(
                     o.ShortNames.FirstOrDefault(), o.LongNames.FirstOrDefault(),
-                    o.ValueName, o.ValueIsOptional, o.Description))
+                    o.ValueName, o.ValueIsOptional, o.Description,
+                    o.ParameterKind == ParameterKind.Flag && o.DefaultValue?.Value is false ? null : o.DefaultValue?.Value))
                 ?? Array.Empty<HelpOption>());
             return parameters;
         }
     }
 
-    public static IEnumerable<IRenderable> Write(CommandModel model)
+    public static IEnumerable<IRenderable> Write(CommandModel model, bool writeOptionsDefaultValues)
     {
-        return WriteCommand(model, null);
+        return WriteCommand(model, null, writeOptionsDefaultValues);
     }
 
-    public static IEnumerable<IRenderable> WriteCommand(CommandModel model, CommandInfo? command)
+    public static IEnumerable<IRenderable> WriteCommand(CommandModel model, CommandInfo? command, bool writeOptionsDefaultValues)
     {
         var container = command as ICommandContainer ?? model;
         var isDefaultCommand = command?.IsDefaultCommand ?? false;
@@ -79,7 +82,7 @@ internal static class HelpWriter
         result.AddRange(GetUsage(model, command));
         result.AddRange(GetExamples(model, command));
         result.AddRange(GetArguments(command));
-        result.AddRange(GetOptions(model, command));
+        result.AddRange(GetOptions(model, command, writeOptionsDefaultValues));
         result.AddRange(GetCommands(model, container, isDefaultCommand));
 
         return result;
@@ -266,7 +269,7 @@ internal static class HelpWriter
         return result;
     }
 
-    private static IEnumerable<IRenderable> GetOptions(CommandModel model, CommandInfo? command)
+    private static IEnumerable<IRenderable> GetOptions(CommandModel model, CommandInfo? command, bool writeDefaultValues)
     {
         // Collect all options into a single structure.
         var parameters = HelpOption.Get(model, command);
@@ -282,8 +285,16 @@ internal static class HelpWriter
                 new Markup(Environment.NewLine),
             };
 
+        var helpOptions = parameters.ToArray();
+        var defaultValueColumn = writeDefaultValues && helpOptions.Any(e => e.DefaultValue != null);
+
         var grid = new Grid();
         grid.AddColumn(new GridColumn { Padding = new Padding(4, 4), NoWrap = true });
+        if (defaultValueColumn)
+        {
+            grid.AddColumn(new GridColumn { Padding = new Padding(0, 0, 4, 0) });
+        }
+
         grid.AddColumn(new GridColumn { Padding = new Padding(0, 0) });
 
         static string GetOptionParts(HelpOption option)
@@ -327,11 +338,22 @@ internal static class HelpWriter
             return builder.ToString();
         }
 
-        foreach (var option in parameters.ToArray())
+        if (defaultValueColumn)
         {
-            grid.AddRow(
-                GetOptionParts(option),
-                option.Description?.TrimEnd('.') ?? " ");
+            grid.AddRow(" ", "[lime]DEFAULT[/]", " ");
+        }
+
+        foreach (var option in helpOptions)
+        {
+            var columns = new List<string> { GetOptionParts(option) };
+            if (defaultValueColumn)
+            {
+                columns.Add(option.DefaultValue == null ? " " : $"[bold]{option.DefaultValue.ToString().EscapeMarkup()}[/]");
+            }
+
+            columns.Add(option.Description?.TrimEnd('.') ?? " ");
+
+            grid.AddRow(columns.ToArray());
         }
 
         result.Add(grid);

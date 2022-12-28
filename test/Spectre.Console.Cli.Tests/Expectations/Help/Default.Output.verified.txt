@@ -9,8 +9,9 @@ ARGUMENTS:
     [LEGS]     The number of legs
 
 OPTIONS:
-    -h, --help               Prints help information
-    -a, --alive              Indicates whether or not the animal is alive
+                             DEFAULT
+    -h, --help                          Prints help information
+    -a, --alive                         Indicates whether or not the animal is alive
     -n, --name <VALUE>
-        --agility <VALUE>    The agility between 0 and 100
-    -c <CHILDREN>            The number of children the lion has
+        --agility <VALUE>    10         The agility between 0 and 100
+    -c <CHILDREN>                       The number of children the lion has
