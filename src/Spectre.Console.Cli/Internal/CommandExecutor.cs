@@ -53,7 +53,7 @@ internal sealed class CommandExecutor
         if (parsedResult.Tree == null)
         {
             // Display help.
-            configuration.Settings.Console.SafeRender(HelpWriter.Write(model, configuration.Settings.EnableOptionsDefaultValues));
+            configuration.Settings.Console.SafeRender(HelpWriter.Write(model, configuration.Settings.ShowOptionDefaultValues));
             return 0;
         }
 
@@ -62,7 +62,7 @@ internal sealed class CommandExecutor
         if (leaf.Command.IsBranch || leaf.ShowHelp)
         {
             // Branches can't be executed. Show help.
-            configuration.Settings.Console.SafeRender(HelpWriter.WriteCommand(model, leaf.Command, configuration.Settings.EnableOptionsDefaultValues));
+            configuration.Settings.Console.SafeRender(HelpWriter.WriteCommand(model, leaf.Command, configuration.Settings.ShowOptionDefaultValues));
             return leaf.ShowHelp ? 0 : 1;
         }
 
@@ -70,7 +70,7 @@ internal sealed class CommandExecutor
         if (leaf.Command.IsDefaultCommand && args.Count() == 0 && leaf.Command.Parameters.Any(p => p.Required))
         {
             // Display help for default command.
-            configuration.Settings.Console.SafeRender(HelpWriter.WriteCommand(model, leaf.Command, configuration.Settings.EnableOptionsDefaultValues));
+            configuration.Settings.Console.SafeRender(HelpWriter.WriteCommand(model, leaf.Command, configuration.Settings.ShowOptionDefaultValues));
             return 1;
         }
 

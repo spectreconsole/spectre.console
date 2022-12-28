@@ -100,7 +100,7 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
-        [Expectation("Command_Disable_Default")]
+        [Expectation("Command_Hide_Default")]
         public Task Should_Not_Print_Default_Column()
         {
             // Given
@@ -113,7 +113,7 @@ public sealed partial class CommandAppTests
                     animal.SetDescription("Contains settings for a cat.");
                     animal.AddCommand<LionCommand>("lion");
                 });
-                configurator.DisableOptionsDefaultValues();
+                configurator.HideOptionDefaultValues();
             });
 
             // When

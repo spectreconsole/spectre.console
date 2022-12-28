@@ -4,7 +4,7 @@ internal sealed class CommandAppSettings : ICommandAppSettings
 {
     public string? ApplicationName { get; set; }
     public string? ApplicationVersion { get; set; }
-    public bool EnableOptionsDefaultValues { get; set; }
+    public bool ShowOptionDefaultValues { get; set; }
     public IAnsiConsole? Console { get; set; }
     public ICommandInterceptor? Interceptor { get; set; }
     public ITypeRegistrarFrontend Registrar { get; set; }
@@ -23,7 +23,7 @@ internal sealed class CommandAppSettings : ICommandAppSettings
     {
         Registrar = new TypeRegistrar(registrar);
         CaseSensitivity = CaseSensitivity.All;
-        EnableOptionsDefaultValues = true;
+        ShowOptionDefaultValues = true;
     }
 
     public bool IsTrue(Func<CommandAppSettings, bool> func, string environmentVariableName)

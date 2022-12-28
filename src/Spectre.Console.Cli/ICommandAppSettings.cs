@@ -18,7 +18,7 @@ public interface ICommandAppSettings
     /// <summary>
     /// Gets or sets a value indicating whether any default values for command options are shown in the help text.
     /// </summary>
-    bool EnableOptionsDefaultValues { get; set; }
+    bool ShowOptionDefaultValues { get; set; }
 
     /// <summary>
     /// Gets or sets the <see cref="IAnsiConsole"/>.
