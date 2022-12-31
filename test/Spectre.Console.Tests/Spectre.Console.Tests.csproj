@@ -6,7 +6,9 @@
 
   <ItemGroup>
     <AdditionalFiles Include="..\..\src\stylecop.json" Link="Properties/stylecop.json" />
+    <None Remove="Data\example.json" />
     <None Remove="Data\starwars.flf" />
+    <EmbeddedResource Include="Data\example.json" />
     <EmbeddedResource Include="Data\starwars.flf" />
     <None Remove="Data\poison.flf" />
     <EmbeddedResource Include="Data\poison.flf" />
@@ -29,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Spectre.Console.Cli\Spectre.Console.Cli.csproj" />
+    <ProjectReference Include="..\..\src\Spectre.Console.Json\Spectre.Console.Json.csproj" />
     <ProjectReference Include="..\..\src\Spectre.Console.Testing\Spectre.Console.Testing.csproj" />
     <ProjectReference Include="..\..\src\Spectre.Console\Spectre.Console.csproj" />
   </ItemGroup>

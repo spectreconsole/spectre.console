@@ -23,11 +23,22 @@ internal sealed class StringBuffer : IDisposable
         _reader.Dispose();
     }
 
+    public char Expect(char character)
+    {
+        var read = Read();
+        if (read != character)
+        {
+            throw new InvalidOperationException($"Expected '{character}', but found '{read}'");
+        }
+
+        return read;
+    }
+
     public char Peek()
     {
         if (Eof)
         {
-            throw new InvalidOperationException("Tried to peek past the end of the text.");
+            return '\0';
         }
 
         return (char)_reader.Peek();
@@ -37,7 +48,7 @@ internal sealed class StringBuffer : IDisposable
     {
         if (Eof)
         {
-            throw new InvalidOperationException("Tried to read past the end of the text.");
+            return '\0';
         }
 
         Position++;

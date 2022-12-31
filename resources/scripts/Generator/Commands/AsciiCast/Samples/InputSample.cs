@@ -19,7 +19,7 @@ namespace Generator.Commands.Samples
             console.DisplayThenType(c => password = AskPassword(c), "hunter2↲");
             console.DisplayThenType(c => color = AskColor(c), "↲");
 
-            AnsiConsole.Write(new Rule("[yellow]Results[/]").RuleStyle("grey").LeftAligned());
+            AnsiConsole.Write(new Rule("[yellow]Results[/]").RuleStyle("grey").LeftJustified());
             AnsiConsole.Write(new Table().AddColumns("[grey]Question[/]", "[grey]Answer[/]")
                 .RoundedBorder()
                 .BorderColor(Color.Grey)
@@ -33,7 +33,7 @@ namespace Generator.Commands.Samples
         private static string AskName(IAnsiConsole console)
         {
             console.WriteLine();
-            console.Write(new Rule("[yellow]Strings[/]").RuleStyle("grey").LeftAligned());
+            console.Write(new Rule("[yellow]Strings[/]").RuleStyle("grey").LeftJustified());
             var name = console.Ask<string>("What's your [green]name[/]?");
             return name;
         }
@@ -42,7 +42,7 @@ namespace Generator.Commands.Samples
         private static string AskSport(IAnsiConsole console)
         {
             console.WriteLine();
-            console.Write(new Rule("[yellow]Choices[/]").RuleStyle("grey").LeftAligned());
+            console.Write(new Rule("[yellow]Choices[/]").RuleStyle("grey").LeftJustified());
 
             return console.Prompt(
                 new TextPrompt<string>("What's your [green]favorite sport[/]?")
@@ -56,7 +56,7 @@ namespace Generator.Commands.Samples
         private static int AskAge(IAnsiConsole console)
         {
             console.WriteLine();
-            console.Write(new Rule("[yellow]Integers[/]").RuleStyle("grey").LeftAligned());
+            console.Write(new Rule("[yellow]Integers[/]").RuleStyle("grey").LeftJustified());
 
             return console.Prompt(
                 new TextPrompt<int>("How [green]old[/] are you?")
@@ -76,7 +76,7 @@ namespace Generator.Commands.Samples
         private static string AskPassword(IAnsiConsole console)
         {
             console.WriteLine();
-            console.Write(new Rule("[yellow]Secrets[/]").RuleStyle("grey").LeftAligned());
+            console.Write(new Rule("[yellow]Secrets[/]").RuleStyle("grey").LeftJustified());
 
             return console.Prompt(
                 new TextPrompt<string>("Enter [green]password[/]?")
@@ -87,7 +87,7 @@ namespace Generator.Commands.Samples
         private static string AskColor(IAnsiConsole console)
         {
             console.WriteLine();
-            console.Write(new Rule("[yellow]Optional[/]").RuleStyle("grey").LeftAligned());
+            console.Write(new Rule("[yellow]Optional[/]").RuleStyle("grey").LeftJustified());
 
             return console.Prompt(
                 new TextPrompt<string>("[grey][[Optional]][/] What is your [green]favorite color[/]?")

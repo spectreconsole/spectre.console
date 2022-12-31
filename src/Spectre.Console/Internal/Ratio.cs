@@ -89,7 +89,7 @@ internal static class Ratio
         var totalRemaining = total;
         var result = new List<int>();
 
-        foreach (var (ratio, maximum, value) in ratios.Zip(maximums, values))
+        foreach (var (ratio, maximum, value) in ratios.ZipThree(maximums, values))
         {
             if (ratio != 0 && totalRatio > 0)
             {

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+    <IsPackable>true</IsPackable>
+    <Description>A library that extends Spectre.Console with JSON superpowers.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Spectre.Console\Internal\Extensions\CharExtensions.cs" Link="Internal\CharExtensions.cs" />
+    <Compile Include="..\Spectre.Console\Internal\Extensions\EnumerableExtensions.cs" Link="Internal\EnumerableExtensions.cs" />
+    <Compile Include="..\Spectre.Console\Internal\Text\StringBuffer.cs" Link="Internal\StringBuffer.cs" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json" Link="Properties/stylecop.json" />
+    <None Include="../../resources/gfx/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Spectre.Console\Spectre.Console.csproj" />
+  </ItemGroup>
+
+</Project>

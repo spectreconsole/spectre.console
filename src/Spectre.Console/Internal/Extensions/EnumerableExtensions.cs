@@ -118,7 +118,7 @@ internal static class EnumerableExtensions
     }
 #endif
 
-    public static IEnumerable<(TFirst First, TSecond Second, TThird Third)> Zip<TFirst, TSecond, TThird>(
+    public static IEnumerable<(TFirst First, TSecond Second, TThird Third)> ZipThree<TFirst, TSecond, TThird>(
         this IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third)
     {
         return first.Zip(second, (a, b) => (a, b))
