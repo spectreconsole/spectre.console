@@ -39,48 +39,11 @@ public sealed class CommandApp : ICommandApp
     /// Sets the default command.
     /// </summary>
     /// <typeparam name="TCommand">The command type.</typeparam>
-    public void SetDefaultCommand<TCommand>()
+    /// <returns>A <see cref="DefaultCommandBuilder"/> that can be used to configure the default command.</returns>
+    public DefaultCommandBuilder SetDefaultCommand<TCommand>()
         where TCommand : class, ICommand
     {
-        GetConfigurator().SetDefaultCommand<TCommand>();
-    }
-
-    /// <summary>
-    /// Sets the default command with the provided <paramref name="description"/>.
-    /// </summary>
-    /// <param name="description">The default command description.</param>
-    /// <typeparam name="TCommand">The command type.</typeparam>
-    public void SetDefaultCommand<TCommand>(string description)
-        where TCommand : class, ICommand
-    {
-        var defaultCommand = GetConfigurator().SetDefaultCommand<TCommand>();
-        defaultCommand.Description = description;
-    }
-
-    /// <summary>
-    /// Sets the default command with the provided <paramref name="data"/>.
-    /// </summary>
-    /// <param name="data">The data to pass to the default command.</param>
-    /// <typeparam name="TCommand">The command type.</typeparam>
-    public void SetDefaultCommand<TCommand>(object data)
-        where TCommand : class, ICommand
-    {
-        var defaultCommand = GetConfigurator().SetDefaultCommand<TCommand>();
-        defaultCommand.Data = data;
-    }
-
-    /// <summary>
-    /// Sets the default command with the provided <paramref name="description"/> and <paramref name="data"/>.
-    /// </summary>
-    /// <param name="description">The default command description.</param>
-    /// <param name="data">The data to pass to the default command.</param>
-    /// <typeparam name="TCommand">The command type.</typeparam>
-    public void SetDefaultCommand<TCommand>(string description, object data)
-        where TCommand : class, ICommand
-    {
-        var defaultCommand = GetConfigurator().SetDefaultCommand<TCommand>();
-        defaultCommand.Description = description;
-        defaultCommand.Data = data;
+        return new DefaultCommandBuilder(GetConfigurator().SetDefaultCommand<TCommand>());
     }
 
     /// <summary>
