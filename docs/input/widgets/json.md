@@ -12,7 +12,7 @@ the [Spectre.Console.Json](https://www.nuget.org/packages/Spectre.Console.Json) 
 > dotnet add package Spectre.Console.Json
 ```
 
-## Loading images
+## Rendering JSON
 
 Once you've added the `Spectre.Console.Json` NuGet package, 
 you can start rendering JSON to the console.
