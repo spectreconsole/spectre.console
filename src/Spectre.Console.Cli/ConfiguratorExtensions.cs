@@ -181,7 +181,7 @@ public static class ConfiguratorExtensions
     /// <param name="configurator">The configurator.</param>
     /// <param name="name">The name of the command branch.</param>
     /// <param name="action">The command branch configuration.</param>
-    /// <returns>A branch configurator that can be used to configure the command further.</returns>
+    /// <returns>A branch configurator that can be used to configure the branch further.</returns>
     public static IBranchConfigurator AddBranch(
         this IConfigurator configurator,
         string name,
@@ -202,7 +202,7 @@ public static class ConfiguratorExtensions
     /// <param name="configurator">The configurator.</param>
     /// <param name="name">The name of the command branch.</param>
     /// <param name="action">The command branch configuration.</param>
-    /// <returns>A branch configurator that can be used to configure the command further.</returns>
+    /// <returns>A branch configurator that can be used to configure the branch further.</returns>
     public static IBranchConfigurator AddBranch<TSettings>(
         this IConfigurator<TSettings> configurator,
         string name,
