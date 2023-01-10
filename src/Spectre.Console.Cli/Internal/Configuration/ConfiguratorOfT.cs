@@ -47,12 +47,13 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return new CommandConfigurator(command);
     }
 
-    public void AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
+    public IBranchConfigurator AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
         where TDerivedSettings : TSettings
     {
         var command = ConfiguredCommand.FromBranch<TDerivedSettings>(name);
         action(new Configurator<TDerivedSettings>(command, _registrar));
-        _command.Children.Add(command);
+        var added = _command.Children.AddAndReturn(command);
+        return new BranchConfigurator(added);
     }
 
     ICommandConfigurator IUnsafeConfigurator.AddCommand(string name, Type command)
@@ -73,7 +74,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return result;
     }
 
-    void IUnsafeConfigurator.AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action)
+    IBranchConfigurator IUnsafeConfigurator.AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action)
     {
         var command = ConfiguredCommand.FromBranch(settings, name);
 
@@ -85,6 +86,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         }
 
         action(configurator);
-        _command.Children.Add(command);
+        var added = _command.Children.AddAndReturn(command);
+        return new BranchConfigurator(added);
     }
 }
