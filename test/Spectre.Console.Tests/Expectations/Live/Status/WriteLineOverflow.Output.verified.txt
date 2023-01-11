@@ -1,0 +1,12 @@
+﻿[?25l                                                    
+[38;5;11m⣷[0m long text that should not interfere writeline text
+                                                    
+[2K[1A[2K[1A[38;5;15mxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx[0m
+[38;5;15mxxxxxxxxxx[0m
+                                                    
+[38;5;11m⣷[0m long text that should not interfere writeline text
+                                                    
+[2K[1A[2K[1A                                                    
+[38;5;11m⣷[0m long text that should not interfere writeline text
+                                                    
+[2K[1A[2K[1A[2K[?25h
