@@ -25,11 +25,12 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         Examples.Add(args);
     }
 
-    public void SetDefaultCommand<TDefaultCommand>()
+    public ConfiguredCommand SetDefaultCommand<TDefaultCommand>()
         where TDefaultCommand : class, ICommand
     {
         DefaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(
             CliConstants.DefaultCommandName, isDefaultCommand: true);
+        return DefaultCommand;
     }
 
     public ICommandConfigurator AddCommand<TCommand>(string name)

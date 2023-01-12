@@ -1,3 +1,5 @@
+using Spectre.Console.Cli.Internal.Configuration;
+
 namespace Spectre.Console.Cli;
 
 /// <summary>
@@ -39,10 +41,11 @@ public sealed class CommandApp : ICommandApp
     /// Sets the default command.
     /// </summary>
     /// <typeparam name="TCommand">The command type.</typeparam>
-    public void SetDefaultCommand<TCommand>()
+    /// <returns>A <see cref="DefaultCommandConfigurator"/> that can be used to configure the default command.</returns>
+    public DefaultCommandConfigurator SetDefaultCommand<TCommand>()
         where TCommand : class, ICommand
     {
-        GetConfigurator().SetDefaultCommand<TCommand>();
+        return new DefaultCommandConfigurator(GetConfigurator().SetDefaultCommand<TCommand>());
     }
 
     /// <summary>

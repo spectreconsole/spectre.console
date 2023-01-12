@@ -846,30 +846,6 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
-    public void Should_Be_Able_To_Set_The_Default_Command()
-    {
-        // Given
-        var app = new CommandAppTester();
-        app.SetDefaultCommand<DogCommand>();
-
-        // When
-        var result = app.Run(new[]
-        {
-            "4", "12", "--good-boy", "--name", "Rufus",
-        });
-
-        // Then
-        result.ExitCode.ShouldBe(0);
-        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
-        {
-            dog.Legs.ShouldBe(4);
-            dog.Age.ShouldBe(12);
-            dog.GoodBoy.ShouldBe(true);
-            dog.Name.ShouldBe("Rufus");
-        });
-    }
-
-    [Fact]
     public void Should_Set_Command_Name_In_Context()
     {
         // Given
@@ -917,6 +893,66 @@ public sealed partial class CommandAppTests
         // Then
         result.Context.ShouldNotBeNull();
         result.Context.Data.ShouldBe(123);
+    }
+
+    public sealed class Default_Command
+    {
+        [Fact]
+        public void Should_Be_Able_To_Set_The_Default_Command()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.SetDefaultCommand<DogCommand>();
+
+            // When
+            var result = app.Run(new[]
+            {
+                "4", "12", "--good-boy", "--name", "Rufus",
+            });
+
+            // Then
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
+            {
+                dog.Legs.ShouldBe(4);
+                dog.Age.ShouldBe(12);
+                dog.GoodBoy.ShouldBe(true);
+                dog.Name.ShouldBe("Rufus");
+            });
+        }
+
+        [Fact]
+        public void Should_Set_The_Default_Command_Description_Data_CommandApp()
+        {
+            // Given
+            var app = new CommandApp();
+            app.SetDefaultCommand<DogCommand>()
+                .WithDescription("The default command")
+                .WithData(new string[] { "foo", "bar" });
+
+            // When
+
+            // Then
+            app.GetConfigurator().DefaultCommand.ShouldNotBeNull();
+            app.GetConfigurator().DefaultCommand.Description.ShouldBe("The default command");
+            app.GetConfigurator().DefaultCommand.Data.ShouldBe(new string[] { "foo", "bar" });
+        }
+
+        [Fact]
+        public void Should_Set_The_Default_Command_Description_Data_CommandAppOfT()
+        {
+            // Given
+            var app = new CommandApp<DogCommand>()
+                .WithDescription("The default command")
+                .WithData(new string[] { "foo", "bar" });
+
+            // When
+
+            // Then
+            app.GetConfigurator().DefaultCommand.ShouldNotBeNull();
+            app.GetConfigurator().DefaultCommand.Description.ShouldBe("The default command");
+            app.GetConfigurator().DefaultCommand.Data.ShouldBe(new string[] { "foo", "bar" });
+        }
     }
 
     public sealed class Delegate_Commands

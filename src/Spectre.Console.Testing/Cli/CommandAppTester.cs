@@ -25,11 +25,25 @@ public sealed class CommandAppTester
     /// <summary>
     /// Sets the default command.
     /// </summary>
+    /// <param name="description">The optional default command description.</param>
+    /// <param name="data">The optional default command data.</param>
     /// <typeparam name="T">The default command type.</typeparam>
-    public void SetDefaultCommand<T>()
+    public void SetDefaultCommand<T>(string? description = null, object? data = null)
         where T : class, ICommand
     {
-        _appConfiguration = (app) => app.SetDefaultCommand<T>();
+        _appConfiguration = (app) =>
+        {
+            var defaultCommandBuilder = app.SetDefaultCommand<T>();
+            if (description != null)
+            {
+                defaultCommandBuilder.WithDescription(description);
+            }
+
+            if (data != null)
+            {
+                defaultCommandBuilder.WithData(data);
+            }
+        };
     }
 
     /// <summary>
