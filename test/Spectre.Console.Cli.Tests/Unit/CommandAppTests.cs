@@ -897,7 +897,6 @@ public sealed partial class CommandAppTests
 
     public sealed class Default_Command
     {
-
         [Fact]
         public void Should_Be_Able_To_Set_The_Default_Command()
         {
