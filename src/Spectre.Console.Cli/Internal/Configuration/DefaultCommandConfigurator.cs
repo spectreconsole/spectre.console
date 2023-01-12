@@ -1,13 +1,13 @@
-namespace Spectre.Console.Cli;
+namespace Spectre.Console.Cli.Internal.Configuration;
 
 /// <summary>
-/// Fluent builder for the default command.
+/// Fluent configurator for the default command.
 /// </summary>
-public sealed class DefaultCommandBuilder
+public sealed class DefaultCommandConfigurator
 {
     private readonly ConfiguredCommand _defaultCommand;
 
-    internal DefaultCommandBuilder(ConfiguredCommand defaultCommand)
+    internal DefaultCommandConfigurator(ConfiguredCommand defaultCommand)
     {
         _defaultCommand = defaultCommand;
     }
@@ -16,8 +16,8 @@ public sealed class DefaultCommandBuilder
     /// Sets the description of the default command.
     /// </summary>
     /// <param name="description">The default command description.</param>
-    /// <returns>The same <see cref="DefaultCommandBuilder"/> instance so that multiple calls can be chained.</returns>
-    public DefaultCommandBuilder WithDescription(string description)
+    /// <returns>The same <see cref="DefaultCommandConfigurator"/> instance so that multiple calls can be chained.</returns>
+    public DefaultCommandConfigurator WithDescription(string description)
     {
         _defaultCommand.Description = description;
         return this;
@@ -27,8 +27,8 @@ public sealed class DefaultCommandBuilder
     /// Sets data that will be passed to the command via the <see cref="CommandContext"/>.
     /// </summary>
     /// <param name="data">The data to pass to the default command.</param>
-    /// <returns>The same <see cref="DefaultCommandBuilder"/> instance so that multiple calls can be chained.</returns>
-    public DefaultCommandBuilder WithData(object data)
+    /// <returns>The same <see cref="DefaultCommandConfigurator"/> instance so that multiple calls can be chained.</returns>
+    public DefaultCommandConfigurator WithData(object data)
     {
         _defaultCommand.Data = data;
         return this;

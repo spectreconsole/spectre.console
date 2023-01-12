@@ -1,3 +1,5 @@
+using Spectre.Console.Cli.Internal.Configuration;
+
 namespace Spectre.Console.Cli;
 
 /// <summary>
@@ -8,7 +10,7 @@ public sealed class CommandApp<TDefaultCommand> : ICommandApp
     where TDefaultCommand : class, ICommand
 {
     private readonly CommandApp _app;
-    private readonly DefaultCommandBuilder _defaultCommandBuilder;
+    private readonly DefaultCommandConfigurator _defaultCommandConfigurator;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CommandApp{TDefaultCommand}"/> class.
@@ -17,7 +19,7 @@ public sealed class CommandApp<TDefaultCommand> : ICommandApp
     public CommandApp(ITypeRegistrar? registrar = null)
     {
         _app = new CommandApp(registrar);
-        _defaultCommandBuilder = new DefaultCommandBuilder(_app.GetConfigurator().SetDefaultCommand<TDefaultCommand>());
+        _defaultCommandConfigurator = _app.SetDefaultCommand<TDefaultCommand>();
     }
 
     /// <summary>
@@ -49,6 +51,11 @@ public sealed class CommandApp<TDefaultCommand> : ICommandApp
         return _app.RunAsync(args);
     }
 
+    internal Configurator GetConfigurator()
+    {
+        return _app.GetConfigurator();
+    }
+
     /// <summary>
     /// Sets the description of the default command.
     /// </summary>
@@ -56,7 +63,7 @@ public sealed class CommandApp<TDefaultCommand> : ICommandApp
     /// <returns>The same <see cref="CommandApp{TDefaultCommand}"/> instance so that multiple calls can be chained.</returns>
     public CommandApp<TDefaultCommand> WithDescription(string description)
     {
-        _defaultCommandBuilder.WithDescription(description);
+        _defaultCommandConfigurator.WithDescription(description);
         return this;
     }
 
@@ -67,7 +74,7 @@ public sealed class CommandApp<TDefaultCommand> : ICommandApp
     /// <returns>The same <see cref="CommandApp{TDefaultCommand}"/> instance so that multiple calls can be chained.</returns>
     public CommandApp<TDefaultCommand> WithData(object data)
     {
-        _defaultCommandBuilder.WithData(data);
+        _defaultCommandConfigurator.WithData(data);
         return this;
     }
 }
