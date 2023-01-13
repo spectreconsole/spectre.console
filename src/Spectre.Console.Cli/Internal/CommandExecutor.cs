@@ -25,6 +25,8 @@ internal sealed class CommandExecutor
         _registrar.RegisterInstance(typeof(CommandModel), model);
         _registrar.RegisterDependencies(model);
 
+        var applicationVersion = ResolveApplicationVersion(configuration);
+
         // No default command?
         if (model.DefaultCommand == null)
         {
@@ -38,20 +40,24 @@ internal sealed class CommandExecutor
                     firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase))
                 {
                     var console = configuration.Settings.Console.GetConsole();
-                    console.WriteLine(ResolveApplicationVersion(configuration));
+                    console.WriteLine(applicationVersion);
                     return 0;
                 }
             }
         }
 
         // Parse and map the model against the arguments.
-        var parsedResult = ParseCommandLineArguments(model, configuration.Settings, args);
+        var parser = new CommandTreeParser(model, configuration.Settings);
+        var parsedResult = parser.Parse(args);
+        _registrar.RegisterInstance(typeof(CommandTreeParserResult), parsedResult);
+
+        var helpProvider = new HelpWriter(model, parsedResult, configuration.Settings.ShowOptionDefaultValues) as IHelpProvider;
 
         // Currently the root?
         if (parsedResult?.Tree == null)
         {
             // Display help.
-            configuration.Settings.Console.SafeRender(HelpWriter.Write(model, configuration.Settings.ShowOptionDefaultValues));
+            configuration.Settings.Console.SafeRender(helpProvider.Help);
             return 0;
         }
 
@@ -60,7 +66,7 @@ internal sealed class CommandExecutor
         if (leaf.Command.IsBranch || leaf.ShowHelp)
         {
             // Branches can't be executed. Show help.
-            configuration.Settings.Console.SafeRender(HelpWriter.WriteCommand(model, leaf.Command, configuration.Settings.ShowOptionDefaultValues));
+            configuration.Settings.Console.SafeRender(helpProvider.Help);
             return leaf.ShowHelp ? 0 : 1;
         }
 
@@ -68,7 +74,7 @@ internal sealed class CommandExecutor
         if (leaf.Command.IsDefaultCommand && args.Count() == 0 && leaf.Command.Parameters.Any(p => p.Required))
         {
             // Display help for default command.
-            configuration.Settings.Console.SafeRender(HelpWriter.WriteCommand(model, leaf.Command, configuration.Settings.ShowOptionDefaultValues));
+            configuration.Settings.Console.SafeRender(helpProvider.Help);
             return 1;
         }
 
@@ -79,7 +85,7 @@ internal sealed class CommandExecutor
         // Create the resolver and the context.
         using (var resolver = new TypeResolverAdapter(_registrar.Build()))
         {
-            var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data);
+            var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data, helpProvider.Help, applicationVersion);
 
             // Execute the command tree.
             return await Execute(leaf, parsedResult.Tree, context, resolver, configuration).ConfigureAwait(false);

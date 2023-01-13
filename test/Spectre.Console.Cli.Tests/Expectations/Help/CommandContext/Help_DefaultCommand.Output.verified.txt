@@ -1,0 +1,14 @@
+----------------------------------
+---      DEFAULT COMMAND       ---
+----------------------------------
+
+USAGE:
+    myapp [OPTIONS]
+
+OPTIONS:
+    -h, --help    Prints help information
+
+COMMANDS:
+    dog <AGE>    The dog command
+
+Version 1.1.0
