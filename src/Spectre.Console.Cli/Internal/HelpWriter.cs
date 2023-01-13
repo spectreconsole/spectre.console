@@ -1,7 +1,24 @@
 namespace Spectre.Console.Cli;
 
-internal static class HelpWriter
+internal class HelpWriter : IHelpProvider
 {
+    /// <inheritdoc/>
+    public IEnumerable<IRenderable> Help { get; }
+
+    public HelpWriter(CommandModel model, CommandTreeParserResult parsedResult, bool showOptionDefaultValues)
+    {
+        if (parsedResult.Tree == null)
+        {
+            Help = Write(model, showOptionDefaultValues);
+        }
+        else
+        {
+            var leaf = parsedResult.Tree.GetLeafCommand();
+
+            Help = WriteCommand(model, leaf.Command, showOptionDefaultValues);
+        }
+    }
+
     private sealed class HelpArgument
     {
         public string Name { get; }
@@ -67,12 +84,12 @@ internal static class HelpWriter
         }
     }
 
-    public static IEnumerable<IRenderable> Write(CommandModel model, bool writeOptionsDefaultValues)
+    private static IEnumerable<IRenderable> Write(CommandModel model, bool writeOptionsDefaultValues)
     {
         return WriteCommand(model, null, writeOptionsDefaultValues);
     }
 
-    public static IEnumerable<IRenderable> WriteCommand(CommandModel model, CommandInfo? command, bool writeOptionsDefaultValues)
+    private static IEnumerable<IRenderable> WriteCommand(CommandModel model, CommandInfo? command, bool writeOptionsDefaultValues)
     {
         var container = command as ICommandContainer ?? model;
         var isDefaultCommand = command?.IsDefaultCommand ?? false;

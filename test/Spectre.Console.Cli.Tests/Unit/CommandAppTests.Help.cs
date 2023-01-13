@@ -8,6 +8,58 @@ public sealed partial class CommandAppTests
     [ExpectationPath("Help")]
     public class Help
     {
+        [UsesVerify]
+        [ExpectationPath("CommandContext")]
+        public class CommandContext
+        {
+            [Fact]
+            [Expectation("Help_DefaultCommand")]
+            public Task Should_Output_Help_Correctly_DefaultCommand()
+            {
+                // Given
+                var fixture = new CommandAppTester();
+                fixture.SetDefaultCommand<DefaultCommand>();
+                fixture.Configure(configurator =>
+                {
+                    configurator.SetApplicationName("myapp");
+                    configurator.SetApplicationVersion("1.1.0");
+
+                    configurator.AddCommand<DogCommand>("dog");
+                });
+
+                // When
+                var result = fixture.Run();
+
+                // Then
+                return Verifier.Verify(result.Output);
+            }
+
+            [Fact]
+            [Expectation("Help_DefaultCommand_With_Branch")]
+            public Task Should_Output_Help_Correctly_DefaultCommand_With_Branch()
+            {
+                // Given
+                var fixture = new CommandAppTester();
+                fixture.SetDefaultCommand<DefaultCommand>();
+                fixture.Configure(configurator =>
+                {
+                    configurator.SetApplicationName("myapp");
+                    configurator.SetApplicationVersion("1.1.0");
+
+                    configurator.AddBranch<DogSettings>("animal", animal =>
+                    {
+                        animal.AddCommand<DogCommand>("dog");
+                    });
+                });
+
+                // When
+                var result = fixture.Run();
+
+                // Then
+                return Verifier.Verify(result.Output);
+            }
+        }
+
         [Fact]
         [Expectation("Root")]
         public Task Should_Output_Root_Correctly()
