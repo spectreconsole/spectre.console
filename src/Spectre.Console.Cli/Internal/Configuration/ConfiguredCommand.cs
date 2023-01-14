@@ -29,6 +29,9 @@ internal sealed class ConfiguredCommand
         Delegate = @delegate;
         IsDefaultCommand = isDefaultCommand;
 
+        // Default commands are always created as hidden.
+        IsHidden = IsDefaultCommand;
+
         Children = new List<ConfiguredCommand>();
         Examples = new List<string[]>();
     }

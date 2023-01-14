@@ -6,10 +6,6 @@ internal static class TypeRegistrarExtensions
     {
         var stack = new Stack<CommandInfo>();
         model.Commands.ForEach(c => stack.Push(c));
-        if (model.DefaultCommand != null)
-        {
-            stack.Push(model.DefaultCommand);
-        }
 
         while (stack.Count > 0)
         {
