@@ -4,7 +4,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
     where TSettings : CommandSettings
 {
     private readonly ConfiguredCommand _command;
-    private readonly ITypeRegistrar? _registrar;
+    private readonly ITypeRegistrar? _registrar;
 
     public Configurator(ConfiguredCommand command, ITypeRegistrar? registrar)
     {
@@ -22,13 +22,13 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         _command.Examples.Add(args);
     }
 
-    public void SetDefaultCommand<TDefaultCommand>()
-        where TDefaultCommand : class, ICommandLimiter<TSettings>
-    {
-        var defaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(
-            CliConstants.DefaultCommandName, isDefaultCommand: true);
-
-        _command.Children.Add(defaultCommand);
+    public void SetDefaultCommand<TDefaultCommand>()
+        where TDefaultCommand : class, ICommandLimiter<TSettings>
+    {
+        var defaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(
+            CliConstants.DefaultCommandName, isDefaultCommand: true);
+
+        _command.Children.Add(defaultCommand);
     }
 
     public void HideBranch()
