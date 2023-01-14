@@ -13,6 +13,7 @@ internal sealed class CommandAppSettings : ICommandAppSettings
     public bool ValidateExamples { get; set; }
     public bool TrimTrailingPeriod { get; set; } = true;
     public bool StrictParsing { get; set; }
+    public bool ConvertFlagsToRemainingArgumentsIfCannotBeAssigned { get; set; } = false;
 
     public ParsingMode ParsingMode =>
         StrictParsing ? ParsingMode.Strict : ParsingMode.Relaxed;

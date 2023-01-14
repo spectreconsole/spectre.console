@@ -52,6 +52,14 @@ public interface ICommandAppSettings
     bool StrictParsing { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether or not flags found on the commnd line
+    /// that would normally result in a <see cref="CommandParseException"/> being thrown
+    /// during parsing with the message "Flags cannot be assigned a value."
+    /// should instead be added to the remaining arguments collection.
+    /// </summary>
+    bool ConvertFlagsToRemainingArgumentsIfCannotBeAssigned { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether or not exceptions should be propagated.
     /// <para>Setting this to <c>true</c> will disable default Exception handling and
     /// any <see cref="ExceptionHandler"/>, if set.</para>

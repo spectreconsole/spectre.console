@@ -1,3 +1,7 @@
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Spectre.Console.Cli.Tests")]
+
 namespace Spectre.Console.Cli;
 
 internal static class CommandModelBuilder
@@ -25,18 +29,19 @@ internal static class CommandModelBuilder
             result.Add(Build(null, command));
         }
 
-        var defaultCommand = default(CommandInfo);
         if (configuration.DefaultCommand != null)
         {
             // Add the examples from the configuration to the default command.
             configuration.DefaultCommand.Examples.AddRange(configuration.Examples);
 
             // Build the default command.
-            defaultCommand = Build(null, configuration.DefaultCommand);
+            var defaultCommand = Build(null, configuration.DefaultCommand);
+
+            result.Add(defaultCommand);
         }
 
         // Create the command model and validate it.
-        var model = new CommandModel(configuration.Settings, defaultCommand, result, configuration.Examples);
+        var model = new CommandModel(configuration.Settings, result, configuration.Examples);
         CommandModelValidator.Validate(model, configuration.Settings);
 
         return model;
