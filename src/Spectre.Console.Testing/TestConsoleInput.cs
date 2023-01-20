@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+
 namespace Spectre.Console.Testing;
 
 /// <summary>
@@ -5,14 +7,14 @@ namespace Spectre.Console.Testing;
 /// </summary>
 public sealed class TestConsoleInput : IAnsiConsoleInput
 {
-    private readonly Queue<ConsoleKeyInfo> _input;
+    private readonly BlockingCollection<ConsoleKeyInfo> _input;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TestConsoleInput"/> class.
     /// </summary>
     public TestConsoleInput()
     {
-        _input = new Queue<ConsoleKeyInfo>();
+        _input = new BlockingCollection<ConsoleKeyInfo>();
     }
 
     /// <summary>
@@ -49,7 +51,7 @@ public sealed class TestConsoleInput : IAnsiConsoleInput
     public void PushCharacter(char input)
     {
         var control = char.IsUpper(input);
-        _input.Enqueue(new ConsoleKeyInfo(input, (ConsoleKey)input, false, false, control));
+        _input.Add(new ConsoleKeyInfo(input, (ConsoleKey)input, false, false, control));
     }
 
     /// <summary>
@@ -58,7 +60,7 @@ public sealed class TestConsoleInput : IAnsiConsoleInput
     /// <param name="input">The input.</param>
     public void PushKey(ConsoleKey input)
     {
-        _input.Enqueue(new ConsoleKeyInfo((char)input, input, false, false, false));
+        _input.Add(new ConsoleKeyInfo((char)input, input, false, false, false));
     }
 
     /// <summary>
@@ -67,7 +69,7 @@ public sealed class TestConsoleInput : IAnsiConsoleInput
     /// <param name="consoleKeyInfo">The input.</param>
     public void PushKey(ConsoleKeyInfo consoleKeyInfo)
     {
-        _input.Enqueue(consoleKeyInfo);
+        _input.Add(consoleKeyInfo);
     }
 
     /// <inheritdoc/>
@@ -79,12 +81,12 @@ public sealed class TestConsoleInput : IAnsiConsoleInput
     /// <inheritdoc/>
     public ConsoleKeyInfo? ReadKey(bool intercept)
     {
-        if (_input.Count == 0)
+        while (_input.Count == 0)
         {
-            throw new InvalidOperationException("No input available.");
+            // an async version could do an await Task.Delay() here
         }
 
-        return _input.Dequeue();
+        return _input.Take();
     }
 
     /// <inheritdoc/>
