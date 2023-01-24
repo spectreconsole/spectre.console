@@ -29,5 +29,52 @@ public sealed partial class CommandAppTests
                 cat.Agility.ShouldBe(6);
             });
         }
+
+        [Fact]
+        public void Should_Convert_Enum_Ignoring_Case()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.AddCommand<HorseCommand>("horse");
+            });
+
+            // When
+            var result = app.Run(new[] { "horse", "--day", "friday" });
+
+            // Then
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<HorseSettings>().And(horse =>
+            {
+                horse.Day.ShouldBe(DayOfWeek.Friday);
+            });
+        }
+
+        [Fact]
+        public void Should_List_All_Valid_Enum_Values_On_Conversion_Error()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.AddCommand<HorseCommand>("horse");
+            });
+
+            // When
+            var result = app.Run(new[] { "horse", "--day", "heimday" });
+
+            // Then
+            result.ExitCode.ShouldBe(-1);
+            result.Output.ShouldStartWith("Error");
+            result.Output.ShouldContain("heimday");
+            result.Output.ShouldContain(nameof(DayOfWeek.Sunday));
+            result.Output.ShouldContain(nameof(DayOfWeek.Monday));
+            result.Output.ShouldContain(nameof(DayOfWeek.Tuesday));
+            result.Output.ShouldContain(nameof(DayOfWeek.Wednesday));
+            result.Output.ShouldContain(nameof(DayOfWeek.Thursday));
+            result.Output.ShouldContain(nameof(DayOfWeek.Friday));
+            result.Output.ShouldContain(nameof(DayOfWeek.Saturday));
+        }
     }
 }

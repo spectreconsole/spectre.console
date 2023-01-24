@@ -42,6 +42,13 @@ public class CommandRuntimeException : CommandAppException
         return new CommandRuntimeException($"Could not find converter for type '{parameter.ParameterType.FullName}'.");
     }
 
+    internal static CommandRuntimeException ConversionFailed(MappedCommandParameter parameter, TypeConverter typeConverter, Exception exception)
+    {
+        var standardValues = typeConverter.GetStandardValuesSupported() ? typeConverter.GetStandardValues() : null;
+        var validValues = standardValues == null ? string.Empty : $" Valid values are '{string.Join("', '", standardValues.Cast<object>().Select(Convert.ToString))}'";
+        return new CommandRuntimeException($"Failed to convert '{parameter.Value}' to {parameter.Parameter.ParameterType.Name}.{validValues}", exception);
+    }
+
     internal static CommandRuntimeException ValidationFailed(ValidationResult result)
     {
         return new CommandRuntimeException(result.Message ?? "Unknown validation error.");

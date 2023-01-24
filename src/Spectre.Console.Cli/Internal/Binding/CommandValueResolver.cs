@@ -84,8 +84,18 @@ internal static class CommandValueResolver
                             throw CommandRuntimeException.NoConverterFound(mapped.Parameter);
                         }
 
+                        object? value;
+                        try
+                        {
+                            value = converter.ConvertFromInvariantString(mapped.Value ?? string.Empty);
+                        }
+                        catch (Exception exception)
+                        {
+                            throw CommandRuntimeException.ConversionFailed(mapped, converter, exception);
+                        }
+
                         // Assign the value to the parameter.
-                        binder.Bind(mapped.Parameter, resolver, converter.ConvertFromInvariantString(mapped.Value ?? string.Empty));
+                        binder.Bind(mapped.Parameter, resolver, value);
                     }
                 }
 
