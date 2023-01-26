@@ -12,7 +12,7 @@ Spectre.Console can render [FIGlet](http://www.figlet.org/) text by using the `F
 ```csharp
 AnsiConsole.Write(
     new FigletText("Hello")
-        .LeftAligned()
+        .LeftJustified()
         .Color(Color.Red));
 ```
 
@@ -26,6 +26,6 @@ var font = FigletFont.Load("starwars.flf");
 
 AnsiConsole.Write(
     new FigletText(font, "Hello")
-        .LeftAligned()
+        .LeftJustified()
         .Color(Color.Red));
 ```

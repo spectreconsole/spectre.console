@@ -53,7 +53,7 @@ You can also specify it via an extension method:
 
 ```csharp
 var rule = new Rule("[red]Hello[/]");
-rule.LeftAligned();
+rule.LeftJustified();
 AnsiConsole.Write(rule);
 ```
 
