@@ -45,16 +45,16 @@ grid.AddColumn();
 
 // Add header row 
 grid.AddRow(new Text[]{
-    new Text("Header 1", new Style(Color.Red, Color.Black)).LeftAligned(),
+    new Text("Header 1", new Style(Color.Red, Color.Black)).LeftJustified(),
     new Text("Header 2", new Style(Color.Green, Color.Black)).Centered(),
-    new Text("Header 3", new Style(Color.Blue, Color.Black)).RightAligned()
+    new Text("Header 3", new Style(Color.Blue, Color.Black)).RightJustified()
 });
 
 // Add content row 
 grid.AddRow(new Text[]{
-    new Text("Row 1").LeftAligned(),
+    new Text("Row 1").LeftJustified(),
     new Text("Row 2").Centered(),
-    new Text("Row 3").RightAligned()
+    new Text("Row 3").RightJustified()
 });
 
 // Write centered cell grid contents to Console
@@ -73,9 +73,9 @@ grid.AddColumn();
 
 // Add header row 
 grid.AddRow(new Text[]{
-    new Text("Header 1", new Style(Color.Red, Color.Black)).LeftAligned(),
+    new Text("Header 1", new Style(Color.Red, Color.Black)).LeftJustified(),
     new Text("Header 2", new Style(Color.Green, Color.Black)).Centered(),
-    new Text("Header 3", new Style(Color.Blue, Color.Black)).RightAligned()
+    new Text("Header 3", new Style(Color.Blue, Color.Black)).RightJustified()
 });
 
 var embedded = new Grid();
@@ -88,7 +88,7 @@ embedded.AddRow(new Text("Embedded III"), new Text("Embedded IV"));
 
 // Add content row 
 grid.AddRow(
-    new Text("Row 1").LeftAligned(),
+    new Text("Row 1").LeftJustified(),
     new Text("Row 2").Centered(),
     embedded
 );
