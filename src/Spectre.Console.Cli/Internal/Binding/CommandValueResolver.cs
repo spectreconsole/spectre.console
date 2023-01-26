@@ -78,18 +78,26 @@ internal static class CommandValueResolver
                     }
                     else
                     {
-                        var converter = GetConverter(lookup, binder, resolver, mapped.Parameter);
+                        var (converter, stringConstructor) = GetConverter(lookup, binder, resolver, mapped.Parameter);
                         if (converter == null)
                         {
                             throw CommandRuntimeException.NoConverterFound(mapped.Parameter);
                         }
 
                         object? value;
+                        var mappedValue = mapped.Value ?? string.Empty;
                         try
                         {
-                            value = converter.ConvertFromInvariantString(mapped.Value ?? string.Empty);
+                            try
+                            {
+                                value = converter.ConvertFromInvariantString(mappedValue);
+                            }
+                            catch (NotSupportedException) when (stringConstructor != null)
+                            {
+                                value = stringConstructor.Invoke(new object[] { mappedValue });
+                            }
                         }
-                        catch (Exception exception)
+                        catch (Exception exception) when (exception is not CommandRuntimeException)
                         {
                             throw CommandRuntimeException.ConversionFailed(mapped, converter, exception);
                         }
@@ -122,7 +130,7 @@ internal static class CommandValueResolver
     {
         if (result != null && result.GetType() != parameter.ParameterType)
         {
-            var converter = GetConverter(lookup, binder, resolver, parameter);
+            var (converter, _) = GetConverter(lookup, binder, resolver, parameter);
             if (converter != null)
             {
                 result = converter.ConvertFrom(result);
@@ -133,8 +141,14 @@ internal static class CommandValueResolver
     }
 
     [SuppressMessage("Style", "IDE0019:Use pattern matching", Justification = "It's OK")]
-    private static TypeConverter? GetConverter(CommandValueLookup lookup, CommandValueBinder binder, ITypeResolver resolver, CommandParameter parameter)
+    private static (TypeConverter? Converter, ConstructorInfo? StringConstructor) GetConverter(CommandValueLookup lookup, CommandValueBinder binder, ITypeResolver resolver, CommandParameter parameter)
     {
+        static ConstructorInfo? GetStringConstructor(Type type)
+        {
+            var constructor = type.GetConstructor(BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(string) }, null);
+            return constructor?.GetParameters()[0].ParameterType == typeof(string) ? constructor : null;
+        }
+
         if (parameter.Converter == null)
         {
             if (parameter.ParameterType.IsArray)
@@ -146,12 +160,12 @@ internal static class CommandValueResolver
                     throw new InvalidOperationException("Could not get element type");
                 }
 
-                return TypeDescriptor.GetConverter(elementType);
+                return (TypeDescriptor.GetConverter(elementType), GetStringConstructor(elementType));
             }
 
             if (parameter.IsFlagValue())
             {
-                // Is the optional value instanciated?
+                // Is the optional value instantiated?
                 var value = lookup.GetValue(parameter) as IFlagValue;
                 if (value == null)
                 {
@@ -161,18 +175,18 @@ internal static class CommandValueResolver
                     value = lookup.GetValue(parameter) as IFlagValue;
                     if (value == null)
                     {
-                        throw new InvalidOperationException("Could not intialize optional value.");
+                        throw new InvalidOperationException("Could not initialize optional value.");
                     }
                 }
 
                 // Return a converter for the flag element type.
-                return TypeDescriptor.GetConverter(value.Type);
+                return (TypeDescriptor.GetConverter(value.Type), GetStringConstructor(value.Type));
             }
 
-            return TypeDescriptor.GetConverter(parameter.ParameterType);
+            return (TypeDescriptor.GetConverter(parameter.ParameterType), GetStringConstructor(parameter.ParameterType));
         }
 
         var type = Type.GetType(parameter.Converter.ConverterTypeName);
-        return resolver.Resolve(type) as TypeConverter;
+        return (resolver.Resolve(type) as TypeConverter, null);
     }
 }
