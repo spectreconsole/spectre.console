@@ -89,9 +89,9 @@ public static class BarChartExtensions
     /// <typeparam name="T">A type that implements <see cref="IBarChartItem"/>.</typeparam>
     /// <param name="chart">The bar chart.</param>
     /// <param name="items">The items.</param>
-    /// <param name="converter">The converter that converts instances of <c>T</c> to <see cref="BarChartItem"/>.</param>
+    /// <param name="converter">The converter that converts instances of <c>T</c> to <see cref="IBarChartItem"/>.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static BarChart AddItems<T>(this BarChart chart, IEnumerable<T> items, Func<T, BarChartItem> converter)
+    public static BarChart AddItems<T>(this BarChart chart, IEnumerable<T> items, Func<T, IBarChartItem> converter)
     {
         if (chart is null)
         {
