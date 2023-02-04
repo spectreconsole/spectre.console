@@ -40,6 +40,12 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
     public bool ShowDefaultValue { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets a value indicating whether the confirmation
+    /// should use case insensitive matching.
+    /// </summary>
+    public bool CaseInsensitive { get; set; } = true;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="ConfirmationPrompt"/> class.
     /// </summary>
     /// <param name="prompt">The prompt markup text.</param>
@@ -67,6 +73,7 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
             .AddChoice(No);
 
         var result = await prompt.ShowAsync(console, cancellationToken).ConfigureAwait(false);
-        return result == Yes;
+
+        return Yes.ToString().Equals(result.ToString(), CaseInsensitive ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
     }
 }
