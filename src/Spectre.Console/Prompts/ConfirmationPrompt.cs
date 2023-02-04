@@ -63,7 +63,8 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
     /// <inheritdoc/>
     public async Task<bool> ShowAsync(IAnsiConsole console, CancellationToken cancellationToken)
     {
-        var prompt = new TextPrompt<char>(_prompt)
+        var comparer = CaseInsensitive ? StringComparer.CurrentCultureIgnoreCase : StringComparer.CurrentCulture;
+        var prompt = new TextPrompt<char>(_prompt, comparer)
             .InvalidChoiceMessage(InvalidChoiceMessage)
             .ValidationErrorMessage(InvalidChoiceMessage)
             .ShowChoices(ShowChoices)
