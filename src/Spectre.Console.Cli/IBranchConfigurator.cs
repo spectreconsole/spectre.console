@@ -1,7 +1,7 @@
-﻿namespace Spectre.Console.Cli;
+namespace Spectre.Console.Cli;
 
 /// <summary>
-/// Represents a command configurator.
+/// Represents a branch configurator.
 /// </summary>
 public interface IBranchConfigurator
 {
