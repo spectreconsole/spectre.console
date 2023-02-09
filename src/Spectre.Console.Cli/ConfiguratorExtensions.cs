@@ -181,7 +181,8 @@ public static class ConfiguratorExtensions
     /// <param name="configurator">The configurator.</param>
     /// <param name="name">The name of the command branch.</param>
     /// <param name="action">The command branch configuration.</param>
-    public static void AddBranch(
+    /// <returns>A branch configurator that can be used to configure the branch further.</returns>
+    public static IBranchConfigurator AddBranch(
         this IConfigurator configurator,
         string name,
         Action<IConfigurator<CommandSettings>> action)
@@ -191,7 +192,7 @@ public static class ConfiguratorExtensions
             throw new ArgumentNullException(nameof(configurator));
         }
 
-        configurator.AddBranch(name, action);
+        return configurator.AddBranch(name, action);
     }
 
     /// <summary>
@@ -201,7 +202,8 @@ public static class ConfiguratorExtensions
     /// <param name="configurator">The configurator.</param>
     /// <param name="name">The name of the command branch.</param>
     /// <param name="action">The command branch configuration.</param>
-    public static void AddBranch<TSettings>(
+    /// <returns>A branch configurator that can be used to configure the branch further.</returns>
+    public static IBranchConfigurator AddBranch<TSettings>(
         this IConfigurator<TSettings> configurator,
         string name,
         Action<IConfigurator<TSettings>> action)
@@ -212,7 +214,7 @@ public static class ConfiguratorExtensions
             throw new ArgumentNullException(nameof(configurator));
         }
 
-        configurator.AddBranch(name, action);
+        return configurator.AddBranch(name, action);
     }
 
     /// <summary>

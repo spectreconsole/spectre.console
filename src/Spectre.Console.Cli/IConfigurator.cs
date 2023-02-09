@@ -41,6 +41,7 @@ public interface IConfigurator
     /// <typeparam name="TSettings">The command setting type.</typeparam>
     /// <param name="name">The name of the command branch.</param>
     /// <param name="action">The command branch configurator.</param>
-    void AddBranch<TSettings>(string name, Action<IConfigurator<TSettings>> action)
+    /// <returns>A branch configurator that can be used to configure the branch further.</returns>
+    IBranchConfigurator AddBranch<TSettings>(string name, Action<IConfigurator<TSettings>> action)
         where TSettings : CommandSettings;
 }

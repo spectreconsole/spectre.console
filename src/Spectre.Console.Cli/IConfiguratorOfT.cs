@@ -51,6 +51,7 @@ public interface IConfigurator<in TSettings>
     /// <typeparam name="TDerivedSettings">The derived command setting type.</typeparam>
     /// <param name="name">The name of the command branch.</param>
     /// <param name="action">The command branch configuration.</param>
-    void AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
+    /// <returns>A branch configurator that can be used to configure the branch further.</returns>
+    IBranchConfigurator AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
         where TDerivedSettings : TSettings;
 }

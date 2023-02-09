@@ -281,6 +281,65 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
+    public void Should_Be_Able_To_Use_Branch_Alias()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddBranch<AnimalSettings>("animal", animal =>
+            {
+                animal.AddCommand<DogCommand>("dog");
+                animal.AddCommand<HorseCommand>("horse");
+            }).WithAlias("a");
+        });
+
+        // When
+        var result = app.Run(new[]
+        {
+            "a", "dog", "12", "--good-boy",
+            "--name", "Rufus",
+        });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
+        {
+            dog.Age.ShouldBe(12);
+            dog.GoodBoy.ShouldBe(true);
+            dog.Name.ShouldBe("Rufus");
+            dog.IsAlive.ShouldBe(false);
+        });
+    }
+
+    [Fact]
+    public void Should_Throw_If_Branch_Alias_Conflicts_With_Another_Command()
+    {
+        // Given
+        var app = new CommandApp();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<DogCommand>("a");
+            config.AddBranch<AnimalSettings>("animal", animal =>
+            {
+                animal.AddCommand<DogCommand>("dog");
+                animal.AddCommand<HorseCommand>("horse");
+            }).WithAlias("a");
+        });
+
+        // When
+        var result = Record.Exception(() => app.Run(new[] { "a", "0", "12" }));
+
+        // Then
+        result.ShouldBeOfType<CommandConfigurationException>().And(ex =>
+        {
+            ex.Message.ShouldBe("The alias 'a' for 'animal' conflicts with another command.");
+        });
+    }
+
+    [Fact]
     public void Should_Assign_Default_Value_To_Optional_Argument()
     {
         // Given
