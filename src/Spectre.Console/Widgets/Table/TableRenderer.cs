@@ -2,8 +2,8 @@ namespace Spectre.Console;
 
 internal static class TableRenderer
 {
-    private static readonly Style _defaultHeadingStyle = new Style(Color.Silver);
-    private static readonly Style _defaultCaptionStyle = new Style(Color.Grey);
+    private static readonly Style _defaultHeadingStyle = Color.Silver;
+    private static readonly Style _defaultCaptionStyle = Color.Grey;
 
     public static List<Segment> Render(TableRendererContext context, List<int> columnWidths)
     {

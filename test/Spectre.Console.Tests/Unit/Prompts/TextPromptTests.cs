@@ -337,7 +337,7 @@ public sealed class TextPromptTests
         var prompt = new TextPrompt<string>("Enter Value:")
                 .ShowDefaultValue()
                 .DefaultValue("default")
-                .DefaultValueStyle(new Style(foreground: Color.Red));
+                .DefaultValueStyle(Color.Red);
 
         // When
         console.Prompt(prompt);
@@ -384,7 +384,7 @@ public sealed class TextPromptTests
                 .ShowChoices()
                 .AddChoice("Choice 1")
                 .AddChoice("Choice 2")
-                .ChoicesStyle(new Style(foreground: Color.Red));
+                .ChoicesStyle(Color.Red);
 
         // When
         console.Prompt(prompt);

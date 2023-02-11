@@ -89,15 +89,15 @@ public sealed class JsonText : JustInTimeRenderable
 
         var context = new JsonBuilderContext(new JsonTextStyles
         {
-            BracesStyle = BracesStyle ?? new Style(Color.Grey),
-            BracketsStyle = BracketsStyle ?? new Style(Color.Grey),
-            MemberStyle = MemberStyle ?? new Style(Color.Blue),
-            ColonStyle = ColonStyle ?? new Style(Color.Yellow),
-            CommaStyle = CommaStyle ?? new Style(Color.Grey),
-            StringStyle = StringStyle ?? new Style(Color.Red),
-            NumberStyle = NumberStyle ?? new Style(Color.Green),
-            BooleanStyle = BooleanStyle ?? new Style(Color.Green),
-            NullStyle = NullStyle ?? new Style(Color.Grey),
+            BracesStyle = BracesStyle ?? Color.Grey,
+            BracketsStyle = BracketsStyle ?? Color.Grey,
+            MemberStyle = MemberStyle ?? Color.Blue,
+            ColonStyle = ColonStyle ?? Color.Yellow,
+            CommaStyle = CommaStyle ?? Color.Grey,
+            StringStyle = StringStyle ?? Color.Red,
+            NumberStyle = NumberStyle ?? Color.Green,
+            BooleanStyle = BooleanStyle ?? Color.Green,
+            NullStyle = NullStyle ?? Color.Grey,
         });
 
         _syntax.Accept(JsonBuilder.Shared, context);

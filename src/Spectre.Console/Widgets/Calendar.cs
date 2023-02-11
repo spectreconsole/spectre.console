@@ -153,7 +153,7 @@ public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorde
         _useSafeBorder = true;
         _borderStyle = null;
         _culture = CultureInfo.InvariantCulture;
-        _highlightStyle = new Style(foreground: Color.Blue);
+        _highlightStyle = Color.Blue;
         _showHeader = true;
         _calendarEvents = new ListWithCallback<CalendarEvent>(() => MarkAsDirty());
     }

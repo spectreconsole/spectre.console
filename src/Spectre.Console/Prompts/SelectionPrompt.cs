@@ -137,8 +137,8 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     IRenderable IListPromptStrategy<T>.Render(IAnsiConsole console, bool scrollable, int cursorIndex, IEnumerable<(int Index, ListPromptItem<T> Node)> items)
     {
         var list = new List<IRenderable>();
-        var disabledStyle = DisabledStyle ?? new Style(foreground: Color.Grey);
-        var highlightStyle = HighlightStyle ?? new Style(foreground: Color.Blue);
+        var disabledStyle = DisabledStyle ?? Color.Grey;
+        var highlightStyle = HighlightStyle ?? Color.Blue;
 
         if (Title != null)
         {
