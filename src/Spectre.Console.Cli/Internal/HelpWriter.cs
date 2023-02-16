@@ -348,7 +348,17 @@ internal static class HelpWriter
             var columns = new List<string> { GetOptionParts(option) };
             if (defaultValueColumn)
             {
-                columns.Add(option.DefaultValue == null ? " " : $"[bold]{option.DefaultValue.ToString().EscapeMarkup()}[/]");
+                static string Bold(object obj) => $"[bold]{obj.ToString().EscapeMarkup()}[/]";
+
+                var defaultValue = option.DefaultValue switch
+                {
+                    null => " ",
+                    "" => " ",
+                    Array { Length: 0 } => " ",
+                    Array array => string.Join(", ", array.Cast<object>().Select(Bold)),
+                    _ => Bold(option.DefaultValue),
+                };
+                columns.Add(defaultValue);
             }
 
             columns.Add(option.Description?.TrimEnd('.') ?? " ");
