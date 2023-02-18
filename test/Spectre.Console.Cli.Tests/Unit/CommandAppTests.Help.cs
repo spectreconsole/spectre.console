@@ -1,5 +1,3 @@
-using Spectre.Console.Cli;
-
 namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed partial class CommandAppTests
@@ -41,7 +39,7 @@ public sealed partial class CommandAppTests
                 configurator.AddCommand<DogCommand>("dog");
                 configurator.AddCommand<HorseCommand>("horse");
                 configurator.AddCommand<GiraffeCommand>("giraffe")
-                    .WithExample(new[] { "giraffe", "123" })
+                    .WithExample("giraffe", "123")
                     .IsHidden();
             });
 
@@ -64,7 +62,7 @@ public sealed partial class CommandAppTests
                 configurator.AddCommand<DogCommand>("dog");
                 configurator.AddCommand<HorseCommand>("horse");
                 configurator.AddCommand<GiraffeCommand>("giraffe")
-                    .WithExample(new[] { "giraffe", "123" })
+                    .WithExample("giraffe", "123")
                     .IsHidden();
                 configurator.TrimTrailingPeriods(false);
             });
@@ -232,8 +230,8 @@ public sealed partial class CommandAppTests
             fixture.Configure(configurator =>
             {
                 configurator.SetApplicationName("myapp");
-                configurator.AddExample(new[] { "dog", "--name", "Rufus", "--age", "12", "--good-boy" });
-                configurator.AddExample(new[] { "horse", "--name", "Brutus" });
+                configurator.AddExample("dog", "--name", "Rufus", "--age", "12", "--good-boy");
+                configurator.AddExample("horse", "--name", "Brutus");
                 configurator.AddCommand<DogCommand>("dog");
                 configurator.AddCommand<HorseCommand>("horse");
             });
@@ -255,9 +253,9 @@ public sealed partial class CommandAppTests
             {
                 configurator.SetApplicationName("myapp");
                 configurator.AddCommand<DogCommand>("dog")
-                    .WithExample(new[] { "dog", "--name", "Rufus", "--age", "12", "--good-boy" });
+                    .WithExample("dog", "--name", "Rufus", "--age", "12", "--good-boy");
                 configurator.AddCommand<HorseCommand>("horse")
-                    .WithExample(new[] { "horse", "--name", "Brutus" });
+                    .WithExample("horse", "--name", "Brutus");
             });
 
             // When
@@ -280,9 +278,9 @@ public sealed partial class CommandAppTests
                 {
                     animal.SetDescription("The animal command.");
                     animal.AddCommand<DogCommand>("dog")
-                        .WithExample(new[] { "animal", "dog", "--name", "Rufus", "--age", "12", "--good-boy" });
+                        .WithExample("animal", "dog", "--name", "Rufus", "--age", "12", "--good-boy");
                     animal.AddCommand<HorseCommand>("horse")
-                        .WithExample(new[] { "animal", "horse", "--name", "Brutus" });
+                        .WithExample("animal", "horse", "--name", "Brutus");
                 });
             });
 
@@ -308,9 +306,9 @@ public sealed partial class CommandAppTests
                     animal.AddExample(new[] { "animal", "--help" });
 
                     animal.AddCommand<DogCommand>("dog")
-                        .WithExample(new[] { "animal", "dog", "--name", "Rufus", "--age", "12", "--good-boy" });
+                        .WithExample("animal", "dog", "--name", "Rufus", "--age", "12", "--good-boy");
                     animal.AddCommand<HorseCommand>("horse")
-                        .WithExample(new[] { "animal", "horse", "--name", "Brutus" });
+                        .WithExample("animal", "horse", "--name", "Brutus");
                 });
             });
 
@@ -331,7 +329,7 @@ public sealed partial class CommandAppTests
             fixture.Configure(configurator =>
             {
                 configurator.SetApplicationName("myapp");
-                configurator.AddExample(new[] { "12", "-c", "3" });
+                configurator.AddExample("12", "-c", "3");
             });
 
             // When

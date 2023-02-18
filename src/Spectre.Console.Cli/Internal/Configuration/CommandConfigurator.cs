@@ -9,7 +9,7 @@ internal sealed class CommandConfigurator : ICommandConfigurator
         Command = command;
     }
 
-    public ICommandConfigurator WithExample(string[] args)
+    public ICommandConfigurator WithExample(params string[] args)
     {
         Command.Examples.Add(args);
         return this;

@@ -20,7 +20,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         Examples = new List<string[]>();
     }
 
-    public void AddExample(string[] args)
+    public void AddExample(params string[] args)
     {
         Examples.Add(args);
     }
