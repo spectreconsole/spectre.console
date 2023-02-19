@@ -20,7 +20,7 @@ public class StaticAnsiConsoleToInstanceFix : CodeFixProvider
         var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
         if (root != null)
         {
-            var methodDeclaration = root.FindNode(context.Span).FirstAncestorOrSelf<InvocationExpressionSyntax>();
+            var methodDeclaration = root.FindNode(context.Span, getInnermostNodeForTie: true).FirstAncestorOrSelf<InvocationExpressionSyntax>();
             if (methodDeclaration != null)
             {
                 context.RegisterCodeFix(
