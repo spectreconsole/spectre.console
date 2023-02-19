@@ -1,4 +1,5 @@
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using Microsoft.CodeAnalysis.Editing;
+using Microsoft.CodeAnalysis.Simplification;
 
 namespace Spectre.Console.Analyzer.CodeActions;
 
@@ -32,89 +33,150 @@ public class SwitchToAnsiConsoleAction : CodeAction
     /// <inheritdoc />
     protected override async Task<Document> GetChangedDocumentAsync(CancellationToken cancellationToken)
     {
-        var originalCaller = ((MemberAccessExpressionSyntax)_originalInvocation.Expression).Name.ToString();
+        var editor = await DocumentEditor.CreateAsync(_document, cancellationToken).ConfigureAwait(false);
+        var compilation = editor.SemanticModel.Compilation;
 
-        var syntaxTree = await _document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
-        if (syntaxTree == null)
+        var operation = editor.SemanticModel.GetOperation(_originalInvocation, cancellationToken) as IInvocationOperation;
+        if (operation == null)
         {
             return _document;
         }
 
-        var root = (CompilationUnitSyntax)await syntaxTree.GetRootAsync(cancellationToken).ConfigureAwait(false);
-
-        // If there is an ansiConsole passed into the method then we'll use it.
+        // If there is an IAnsiConsole passed into the method then we'll use it.
         // otherwise we'll check for a field level instance.
         // if neither of those exist we'll fall back to the static param.
-        var ansiConsoleParameterDeclaration = GetAnsiConsoleParameterDeclaration();
-        var ansiConsoleFieldIdentifier = GetAnsiConsoleFieldDeclaration();
-        var ansiConsoleIdentifier = ansiConsoleParameterDeclaration ??
-                                    ansiConsoleFieldIdentifier ??
-                                    Constants.StaticInstance;
+        var spectreConsoleSymbol = compilation.GetTypeByMetadataName("Spectre.Console.AnsiConsole");
+        var iansiConsoleSymbol = compilation.GetTypeByMetadataName("Spectre.Console.IAnsiConsole");
 
-        // Replace the System.Console call with a call to the identifier above.
-        var newRoot = root.ReplaceNode(
-            _originalInvocation,
-            GetImportedSpectreCall(originalCaller, ansiConsoleIdentifier));
-
-        // If we are calling the static instance and Spectre isn't imported yet we should do so.
-        if (ansiConsoleIdentifier == Constants.StaticInstance && root.Usings.ToList().All(i => i.Name.ToString() != Constants.SpectreConsole))
+        ISymbol? accessibleConsoleSymbol = spectreConsoleSymbol;
+        if (iansiConsoleSymbol != null)
         {
-            newRoot = newRoot.AddUsings(Syntax.SpectreUsing);
+            var isInStaticContext = IsInStaticContext(operation, cancellationToken, out var parentStaticMemberStartPosition);
+
+            foreach (var symbol in editor.SemanticModel.LookupSymbols(operation.Syntax.GetLocation().SourceSpan.Start))
+            {
+                // LookupSymbols check the accessibility of the symbol, but it can
+                // suggest instance members when the current context is static.
+                var symbolType = symbol switch
+                {
+                    IParameterSymbol parameter => parameter.Type,
+                    IFieldSymbol field when !isInStaticContext || field.IsStatic => field.Type,
+                    IPropertySymbol { GetMethod: not null } property when !isInStaticContext || property.IsStatic => property.Type,
+                    ILocalSymbol local => local.Type,
+                    _ => null,
+                };
+
+                // Locals can be returned even if there are not valid in the current context. For instance,
+                // it can return locals declared after the current location. Or it can return locals that
+                // should not be accessible in a static local function.
+                //
+                // void Sample()
+                // {
+                //    int local = 0;
+                //    static void LocalFunction() => local; <-- local is invalid here but LookupSymbols suggests it
+                // }
+                if (symbol.Kind is SymbolKind.Local)
+                {
+                    var localPosition = symbol.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax(cancellationToken).GetLocation().SourceSpan.Start;
+
+                    // The local is not part of the source tree
+                    if (localPosition == null)
+                    {
+                        break;
+                    }
+
+                    // The local is declared after the current expression
+                    if (localPosition > _originalInvocation.Span.Start)
+                    {
+                        break;
+                    }
+
+                    // The local is declared outside the static local function
+                    if (isInStaticContext && localPosition < parentStaticMemberStartPosition)
+                    {
+                        break;
+                    }
+                }
+
+                if (IsOrImplementSymbol(symbolType, iansiConsoleSymbol))
+                {
+                    accessibleConsoleSymbol = symbol;
+                    break;
+                }
+            }
         }
 
-        return _document.WithSyntaxRoot(newRoot);
-    }
-
-    private string? GetAnsiConsoleParameterDeclaration()
-    {
-        return _originalInvocation
-            .Ancestors().OfType<MethodDeclarationSyntax>()
-            .FirstOrDefault()
-            ?.ParameterList.Parameters
-            .FirstOrDefault(i => i.Type?.NormalizeWhitespace()?.ToString() == "IAnsiConsole")
-            ?.Identifier.Text;
-    }
-
-    private string? GetAnsiConsoleFieldDeclaration()
-    {
-        // let's look to see if our call is in a static method.
-        // if so we'll only want to look for static IAnsiConsoles
-        // and vice-versa if we aren't.
-        // If there is no parent method, the SyntaxNode should be in
-        // a top-level statement, so there is no field anyway.
-        var isStatic = _originalInvocation
-            .Ancestors()
-            .OfType<MethodDeclarationSyntax>()
-            .FirstOrDefault()
-            ?.Modifiers.Any(i => i.IsKind(SyntaxKind.StaticKeyword));
-
-        if (isStatic == null)
+        if (accessibleConsoleSymbol == null)
         {
-            return null;
+            return _document;
         }
 
-        return _originalInvocation
-            .Ancestors().OfType<ClassDeclarationSyntax>()
-            .First()
-            .Members
-            .OfType<FieldDeclarationSyntax>()
-            .FirstOrDefault(i =>
-                i.Declaration.Type.NormalizeWhitespace().ToString() == "IAnsiConsole" &&
-                (!isStatic.GetValueOrDefault() ^ i.Modifiers.Any(modifier => modifier.IsKind(SyntaxKind.StaticKeyword))))
-            ?.Declaration.Variables.First().Identifier.Text;
+        // Replace the original invocation
+        var generator = editor.Generator;
+        var consoleExpression = accessibleConsoleSymbol switch
+        {
+            ITypeSymbol typeSymbol => generator.TypeExpression(typeSymbol, addImport: true).WithAdditionalAnnotations(Simplifier.AddImportsAnnotation),
+            _ => generator.IdentifierName(accessibleConsoleSymbol.Name),
+        };
+
+        var newExpression = generator.InvocationExpression(generator.MemberAccessExpression(consoleExpression, operation.TargetMethod.Name), _originalInvocation.ArgumentList.Arguments)
+                .WithLeadingTrivia(_originalInvocation.GetLeadingTrivia())
+                .WithTrailingTrivia(_originalInvocation.GetTrailingTrivia());
+
+        editor.ReplaceNode(_originalInvocation, newExpression);
+
+        return editor.GetChangedDocument();
     }
 
-    private ExpressionSyntax GetImportedSpectreCall(string originalCaller, string ansiConsoleIdentifier)
+    private static bool IsOrImplementSymbol(ITypeSymbol? symbol, ITypeSymbol interfaceSymbol)
     {
-        return ExpressionStatement(
-                InvocationExpression(
-                        MemberAccessExpression(
-                            SyntaxKind.SimpleMemberAccessExpression,
-                            IdentifierName(ansiConsoleIdentifier),
-                            IdentifierName(originalCaller)))
-                    .WithArgumentList(_originalInvocation.ArgumentList)
-                    .WithTrailingTrivia(_originalInvocation.GetTrailingTrivia())
-                    .WithLeadingTrivia(_originalInvocation.GetLeadingTrivia()))
-        .Expression;
+        if (symbol == null)
+        {
+            return false;
+        }
+
+        if (SymbolEqualityComparer.Default.Equals(symbol, interfaceSymbol))
+        {
+            return true;
+        }
+
+        foreach (var iface in symbol.AllInterfaces)
+        {
+            if (SymbolEqualityComparer.Default.Equals(iface, interfaceSymbol))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool IsInStaticContext(IOperation operation, CancellationToken cancellationToken, out int parentStaticMemberStartPosition)
+    {
+        // Local functions can be nested, and an instance local function can be declared
+        // in a static local function. So, you need to continue to check ancestors when a
+        // local function is not static.
+        foreach (var member in operation.Syntax.Ancestors())
+        {
+            if (member is LocalFunctionStatementSyntax localFunction)
+            {
+                var symbol = operation.SemanticModel!.GetDeclaredSymbol(localFunction, cancellationToken);
+                if (symbol != null && symbol.IsStatic)
+                {
+                    parentStaticMemberStartPosition = localFunction.GetLocation().SourceSpan.Start;
+                    return true;
+                }
+            }
+            else if (member is MethodDeclarationSyntax methodDeclaration)
+            {
+                parentStaticMemberStartPosition = methodDeclaration.GetLocation().SourceSpan.Start;
+
+                var symbol = operation.SemanticModel!.GetDeclaredSymbol(methodDeclaration, cancellationToken);
+                return symbol != null && symbol.IsStatic;
+            }
+        }
+
+        parentStaticMemberStartPosition = -1;
+        return false;
     }
 }
