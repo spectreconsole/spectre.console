@@ -69,8 +69,8 @@ public class SwitchToAnsiConsoleAction : CodeAction
     {
         return _originalInvocation
             .Ancestors().OfType<MethodDeclarationSyntax>()
-            .First()
-            .ParameterList.Parameters
+            .FirstOrDefault()
+            ?.ParameterList.Parameters
             .FirstOrDefault(i => i.Type?.NormalizeWhitespace()?.ToString() == "IAnsiConsole")
             ?.Identifier.Text;
     }
@@ -80,11 +80,18 @@ public class SwitchToAnsiConsoleAction : CodeAction
         // let's look to see if our call is in a static method.
         // if so we'll only want to look for static IAnsiConsoles
         // and vice-versa if we aren't.
+        // If there is no parent method, the SyntaxNode should be in
+        // a top-level statement, so there is no field anyway.
         var isStatic = _originalInvocation
             .Ancestors()
             .OfType<MethodDeclarationSyntax>()
-            .First()
-            .Modifiers.Any(i => i.IsKind(SyntaxKind.StaticKeyword));
+            .FirstOrDefault()
+            ?.Modifiers.Any(i => i.IsKind(SyntaxKind.StaticKeyword));
+
+        if (isStatic == null)
+        {
+            return null;
+        }
 
         return _originalInvocation
             .Ancestors().OfType<ClassDeclarationSyntax>()
@@ -93,7 +100,7 @@ public class SwitchToAnsiConsoleAction : CodeAction
             .OfType<FieldDeclarationSyntax>()
             .FirstOrDefault(i =>
                 i.Declaration.Type.NormalizeWhitespace().ToString() == "IAnsiConsole" &&
-                (!isStatic ^ i.Modifiers.Any(modifier => modifier.IsKind(SyntaxKind.StaticKeyword))))
+                (!isStatic.GetValueOrDefault() ^ i.Modifiers.Any(modifier => modifier.IsKind(SyntaxKind.StaticKeyword))))
             ?.Declaration.Variables.First().Identifier.Text;
     }
 

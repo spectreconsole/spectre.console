@@ -139,4 +139,25 @@ class TestClass
             .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource)
             .ConfigureAwait(false);
     }
+
+    [Fact]
+    public async Task SystemConsole_replaced_with_AnsiConsole_in_top_level_statements()
+    {
+        const string Source = @"
+using System;
+
+Console.WriteLine(""Hello, World"");
+";
+
+        const string FixedSource = @"
+using System;
+using Spectre.Console;
+
+AnsiConsole.WriteLine(""Hello, World"");
+";
+
+        await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
+            .VerifyCodeFixAsync(Source, OutputKind.ConsoleApplication, _expectedDiagnostic.WithLocation(4, 1), FixedSource)
+            .ConfigureAwait(false);
+    }
 }
