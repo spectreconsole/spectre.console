@@ -40,9 +40,7 @@ public class NoPromptsDuringLiveRenderablesAnalyzer : SpectreAnalyzer
                     return;
                 }
 
-#pragma warning disable RS1030 // Do not invoke Compilation.GetSemanticModel() method within a diagnostic analyzer
-                var model = context.Compilation.GetSemanticModel(context.Operation.Syntax.SyntaxTree);
-#pragma warning restore RS1030 // Do not invoke Compilation.GetSemanticModel() method within a diagnostic analyzer
+                var model = context.Operation.SemanticModel!;
                 var parentInvocations = invocationOperation
                     .Syntax.Ancestors()
                     .OfType<InvocationExpressionSyntax>()
