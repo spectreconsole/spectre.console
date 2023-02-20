@@ -54,7 +54,7 @@ public class NoPromptsDuringLiveRenderablesAnalyzer : SpectreAnalyzer
 
                 if (parentInvocations.All(parent =>
                     parent.TargetMethod.Name != "Start" ||
-                    !liveTypes.Contains(parent.TargetMethod.ContainingType)))
+                    !liveTypes.Contains(parent.TargetMethod.ContainingType, SymbolEqualityComparer.Default)))
                 {
                     return;
                 }
