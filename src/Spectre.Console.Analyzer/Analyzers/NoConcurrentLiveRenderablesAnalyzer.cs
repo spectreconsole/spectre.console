@@ -44,7 +44,7 @@ public class NoConcurrentLiveRenderablesAnalyzer : SpectreAnalyzer
                 var parentInvocations = invocationOperation
                     .Syntax.Ancestors()
                     .OfType<InvocationExpressionSyntax>()
-                    .Select(i => model.GetOperation(i))
+                    .Select(i => model.GetOperation(i, context.CancellationToken))
                     .OfType<IInvocationOperation>()
                     .ToList();
 
