@@ -49,7 +49,7 @@ public class NoConcurrentLiveRenderablesAnalyzer : SpectreAnalyzer
                     .ToList();
 
                 if (parentInvocations.All(parent =>
-                    parent.TargetMethod.Name != StartMethod || !liveTypes.Contains(parent.TargetMethod.ContainingType)))
+                    parent.TargetMethod.Name != StartMethod || !liveTypes.Contains(parent.TargetMethod.ContainingType, SymbolEqualityComparer.Default)))
                 {
                     return;
                 }
