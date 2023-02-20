@@ -18,6 +18,13 @@ public class UseSpectreInsteadOfSystemConsoleAnalyzer : SpectreAnalyzer
     /// <inheritdoc />
     protected override void AnalyzeCompilation(CompilationStartAnalysisContext compilationStartContext)
     {
+        var systemConsoleType = compilationStartContext.Compilation.GetTypeByMetadataName("System.Console");
+        var spectreConsoleType = compilationStartContext.Compilation.GetTypeByMetadataName("Spectre.Console.AnsiConsole");
+        if (systemConsoleType == null || spectreConsoleType == null)
+        {
+            return;
+        }
+
         compilationStartContext.RegisterOperationAction(
             context =>
             {
@@ -30,8 +37,6 @@ public class UseSpectreInsteadOfSystemConsoleAnalyzer : SpectreAnalyzer
                 {
                     return;
                 }
-
-                var systemConsoleType = context.Compilation.GetTypeByMetadataName("System.Console");
 
                 if (!SymbolEqualityComparer.Default.Equals(invocationOperation.TargetMethod.ContainingType, systemConsoleType))
                 {

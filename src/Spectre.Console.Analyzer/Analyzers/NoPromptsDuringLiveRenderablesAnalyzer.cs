@@ -17,6 +17,14 @@ public class NoPromptsDuringLiveRenderablesAnalyzer : SpectreAnalyzer
     /// <inheritdoc />
     protected override void AnalyzeCompilation(CompilationStartAnalysisContext compilationStartContext)
     {
+        var ansiConsoleType = compilationStartContext.Compilation.GetTypeByMetadataName("Spectre.Console.AnsiConsole");
+        var ansiConsoleExtensionsType = compilationStartContext.Compilation.GetTypeByMetadataName("Spectre.Console.AnsiConsoleExtensions");
+
+        if (ansiConsoleType is null && ansiConsoleExtensionsType is null)
+        {
+            return;
+        }
+
         compilationStartContext.RegisterOperationAction(
             context =>
             {
@@ -30,9 +38,6 @@ public class NoPromptsDuringLiveRenderablesAnalyzer : SpectreAnalyzer
                 {
                     return;
                 }
-
-                var ansiConsoleType = context.Compilation.GetTypeByMetadataName("Spectre.Console.AnsiConsole");
-                var ansiConsoleExtensionsType = context.Compilation.GetTypeByMetadataName("Spectre.Console.AnsiConsoleExtensions");
 
                 if (!SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, ansiConsoleType) &&
                     !SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, ansiConsoleExtensionsType))

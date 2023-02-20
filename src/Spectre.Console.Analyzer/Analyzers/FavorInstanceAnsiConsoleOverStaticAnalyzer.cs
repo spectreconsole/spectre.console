@@ -16,11 +16,15 @@ public class FavorInstanceAnsiConsoleOverStaticAnalyzer : SpectreAnalyzer
     /// <inheritdoc />
     protected override void AnalyzeCompilation(CompilationStartAnalysisContext compilationStartContext)
     {
+        var ansiConsoleType = compilationStartContext.Compilation.GetTypeByMetadataName("Spectre.Console.AnsiConsole");
+        if (ansiConsoleType == null)
+        {
+            return;
+        }
+
         compilationStartContext.RegisterOperationAction(
             context =>
             {
-                var ansiConsoleType = context.Compilation.GetTypeByMetadataName("Spectre.Console.AnsiConsole");
-
                 // if this operation isn't an invocation against one of the System.Console methods
                 // defined in _methods then we can safely stop analyzing and return;
                 var invocationOperation = (IInvocationOperation)context.Operation;

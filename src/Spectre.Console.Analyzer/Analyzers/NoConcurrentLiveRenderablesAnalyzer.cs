@@ -17,6 +17,16 @@ public class NoConcurrentLiveRenderablesAnalyzer : SpectreAnalyzer
     /// <inheritdoc />
     protected override void AnalyzeCompilation(CompilationStartAnalysisContext compilationStartContext)
     {
+        var liveTypes = Constants.LiveRenderables
+            .Select(i => compilationStartContext.Compilation.GetTypeByMetadataName(i))
+            .Where(i => i != null)
+            .ToImmutableArray();
+
+        if (liveTypes.Length == 0)
+        {
+            return;
+        }
+
         compilationStartContext.RegisterOperationAction(
             context =>
             {
@@ -28,10 +38,6 @@ public class NoConcurrentLiveRenderablesAnalyzer : SpectreAnalyzer
                 {
                     return;
                 }
-
-                var liveTypes = Constants.LiveRenderables
-                    .Select(i => context.Compilation.GetTypeByMetadataName(i))
-                    .ToImmutableArray();
 
                 if (liveTypes.All(i => !SymbolEqualityComparer.Default.Equals(i, methodSymbol.ContainingType)))
                 {
