@@ -70,6 +70,24 @@ public sealed class TextPathTests
         console.Output.ShouldEndWith("\n");
     }
 
+    [Theory]
+    [InlineData("C:/My documents/Bar/Baz.txt")]
+    [InlineData("/My documents/Bar/Baz.txt")]
+    [InlineData("My documents/Bar/Baz.txt")]
+    [InlineData("Bar/Baz.txt")]
+    [InlineData("Baz.txt")]
+    public void Should_Not_Insert_Line_Break_At_End_Of_Path_If_No_Line_Break_Is_Set(string input)
+    {
+        // Given
+        var console = new TestConsole().Width(80);
+
+        // When
+        console.Write(new TextPath(input).NoLineBreak());
+
+        // Then
+        console.Output.ShouldNotEndWith("\n");
+    }
+
     [Fact]
     public void Should_Right_Align_Correctly()
     {

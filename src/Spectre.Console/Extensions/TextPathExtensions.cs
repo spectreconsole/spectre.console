@@ -116,4 +116,20 @@ public static class TextPathExtensions
     {
         return LeafStyle(obj, new Style(foreground: color));
     }
+
+    /// <summary>
+    /// Sets the <see cref="TextPath.NoLineBreak"/> flag to true.
+    /// </summary>
+    /// <param name="obj">The path.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static TextPath NoLineBreak(this TextPath obj)
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        obj.NoLineBreak = true;
+        return obj;
+    }
 }
