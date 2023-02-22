@@ -52,12 +52,12 @@ public sealed class TextPath : IRenderable, IHasJustification
         _parts = path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
         // Rooted Unix path?
-        if (path.StartsWith("/"))
+        if (path.StartsWith("/", StringComparison.Ordinal))
         {
             _rooted = true;
             _parts = new[] { "/" }.Concat(_parts).ToArray();
         }
-        else if (_parts.Length > 0 && _parts[0].EndsWith(":"))
+        else if (_parts.Length > 0 && _parts[0].EndsWith(":", StringComparison.Ordinal))
         {
             // Rooted Windows path
             _rooted = true;
