@@ -75,7 +75,9 @@ public class SwitchToAnsiConsoleAction : CodeAction
                 //    int local = 0;
                 //    static void LocalFunction() => local; <-- local is invalid here but LookupSymbols suggests it
                 // }
-                if (symbol.Kind is SymbolKind.Local)
+                //
+                // Parameters from the ancestor methods or local functions are also returned even if the operation is in a static local function.
+                if (symbol.Kind is SymbolKind.Local or SymbolKind.Parameter)
                 {
                     var localPosition = symbol.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax(cancellationToken).GetLocation().SourceSpan.Start;
 
@@ -164,6 +166,24 @@ public class SwitchToAnsiConsoleAction : CodeAction
                 if (symbol != null && symbol.IsStatic)
                 {
                     parentStaticMemberStartPosition = localFunction.GetLocation().SourceSpan.Start;
+                    return true;
+                }
+            }
+            else if (member is LambdaExpressionSyntax lambdaExpression)
+            {
+                var symbol = operation.SemanticModel!.GetSymbolInfo(lambdaExpression, cancellationToken).Symbol;
+                if (symbol != null && symbol.IsStatic)
+                {
+                    parentStaticMemberStartPosition = lambdaExpression.GetLocation().SourceSpan.Start;
+                    return true;
+                }
+            }
+            else if (member is AnonymousMethodExpressionSyntax anonymousMethod)
+            {
+                var symbol = operation.SemanticModel!.GetSymbolInfo(anonymousMethod, cancellationToken).Symbol;
+                if (symbol != null && symbol.IsStatic)
+                {
+                    parentStaticMemberStartPosition = anonymousMethod.GetLocation().SourceSpan.Start;
                     return true;
                 }
             }
