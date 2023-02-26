@@ -115,7 +115,7 @@ namespace Prompt
                         .AddChoices(favorites));
             }
 
-            AnsiConsole.MarkupLine("Your selected: [yellow]{0}[/]", fruit);
+            AnsiConsole.MarkupLine("You selected: [yellow]{0}[/]", fruit);
             return fruit;
         }
 
