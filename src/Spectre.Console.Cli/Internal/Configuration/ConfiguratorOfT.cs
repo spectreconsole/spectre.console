@@ -22,13 +22,12 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         _command.Examples.Add(args);
     }
 
-    public void SetDefaultCommand<TDefaultCommand>()
-        where TDefaultCommand : class, ICommandLimiter<TSettings>
-    {
-        var defaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(
+    public void SetDefaultCommand<TDefaultCommand>()
+        where TDefaultCommand : class, ICommandLimiter<TSettings>
+    {
+        var defaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(
             CliConstants.DefaultCommandName, isDefaultCommand: true);
-
-        _command.Children.Add(defaultCommand);
+        _command.Children.Add(defaultCommand);
     }
 
     public void HideBranch()
