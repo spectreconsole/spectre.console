@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed partial class CommandAppTests
@@ -75,6 +77,28 @@ public sealed partial class CommandAppTests
             result.Output.ShouldContain(nameof(DayOfWeek.Thursday));
             result.Output.ShouldContain(nameof(DayOfWeek.Friday));
             result.Output.ShouldContain(nameof(DayOfWeek.Saturday));
+        }
+
+        [Fact]
+        public void Should_Convert_FileInfo_And_DirectoryInfo()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.AddCommand<HorseCommand>("horse");
+            });
+
+            // When
+            var result = app.Run(new[] { "horse", "--file", "ntp.conf", "--directory", "etc" });
+
+            // Then
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<HorseSettings>().And(horse =>
+            {
+                horse.File.Name.ShouldBe("ntp.conf");
+                horse.Directory.Name.ShouldBe("etc");
+            });
         }
     }
 }
