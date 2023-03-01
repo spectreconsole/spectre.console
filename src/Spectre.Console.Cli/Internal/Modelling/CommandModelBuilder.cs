@@ -1,7 +1,3 @@
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("Spectre.Console.Cli.Tests")]
-
 namespace Spectre.Console.Cli;
 
 internal static class CommandModelBuilder
