@@ -265,7 +265,7 @@ public sealed partial class CommandAppTests
             var app = new CommandAppTester();
             app.Configure(config =>
             {
-                config.Settings.ConvertFlagsToRemainingArgumentsIfCannotBeAssigned = true;
+                config.Settings.ConvertFlagsToRemainingArguments = true;
                 config.Settings.StrictParsing = useStrictParsing;
                 config.PropagateExceptions();
                 config.AddCommand<DogCommand>("dog");
