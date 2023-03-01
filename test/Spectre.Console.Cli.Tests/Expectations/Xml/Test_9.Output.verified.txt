@@ -28,6 +28,8 @@
     <Command Name="__default_command" IsBranch="false" ClrType="Spectre.Console.Tests.Data.HorseCommand" Settings="Spectre.Console.Tests.Data.HorseSettings">
       <Parameters>
         <Option Short="d" Long="day" Value="NULL" Required="false" Kind="scalar" ClrType="System.DayOfWeek" />
+        <Option Short="" Long="directory" Value="NULL" Required="false" Kind="scalar" ClrType="System.IO.DirectoryInfo" />
+        <Option Short="" Long="file" Value="NULL" Required="false" Kind="scalar" ClrType="System.IO.FileInfo" />
         <Option Short="n,p" Long="name,pet-name" Value="VALUE" Required="false" Kind="scalar" ClrType="System.String" />
       </Parameters>
     </Command>
