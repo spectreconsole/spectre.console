@@ -88,7 +88,7 @@ internal sealed class CommandExecutor
 
     private CommandTreeParserResult? ParseCommandLineArguments(CommandModel model, CommandAppSettings settings, IEnumerable<string> args)
     {
-        var parser = new CommandTreeParser(model, settings.CaseSensitivity, settings.ParsingMode, settings.ConvertFlagsToRemainingArgumentsIfCannotBeAssigned);
+        var parser = new CommandTreeParser(model, settings.CaseSensitivity, settings.ParsingMode, settings.ConvertFlagsToRemainingArguments);
 
         var parserContext = new CommandTreeParserContext(args, settings.ParsingMode);
         var tokenizerResult = CommandTreeTokenizer.Tokenize(args);

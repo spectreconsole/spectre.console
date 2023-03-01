@@ -7,7 +7,7 @@ internal class CommandTreeParser
     private readonly CommandModel _configuration;
     private readonly ParsingMode _parsingMode;
     private readonly CommandOptionAttribute _help;
-    private readonly bool _convertFlagsToRemainingArgumentsIfCannotBeAssigned;
+    private readonly bool _convertFlagsToRemainingArguments;
 
     public CaseSensitivity CaseSensitivity { get; }
 
@@ -17,12 +17,12 @@ internal class CommandTreeParser
         Remaining = 1,
     }
 
-    public CommandTreeParser(CommandModel configuration, CaseSensitivity caseSensitivity, ParsingMode? parsingMode = null, bool? convertFlagsToRemainingArgumentsIfCannotBeAssigned = null)
+    public CommandTreeParser(CommandModel configuration, CaseSensitivity caseSensitivity, ParsingMode? parsingMode = null, bool? convertFlagsToRemainingArguments = null)
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         _parsingMode = parsingMode ?? _configuration.ParsingMode;
         _help = new CommandOptionAttribute("-h|--help");
-        _convertFlagsToRemainingArgumentsIfCannotBeAssigned = convertFlagsToRemainingArgumentsIfCannotBeAssigned ?? false;
+        _convertFlagsToRemainingArguments = convertFlagsToRemainingArguments ?? false;
 
         CaseSensitivity = caseSensitivity;
     }
@@ -329,7 +329,7 @@ internal class CommandTreeParser
                                 else
                                 {
                                     // Flags cannot be assigned a value.
-                                    if (_convertFlagsToRemainingArgumentsIfCannotBeAssigned)
+                                    if (_convertFlagsToRemainingArguments)
                                     {
                                         value = stream.Consume(CommandTreeToken.Kind.String)?.Value;
 

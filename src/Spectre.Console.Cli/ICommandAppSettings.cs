@@ -57,7 +57,7 @@ public interface ICommandAppSettings
     /// during parsing with the message "Flags cannot be assigned a value."
     /// should instead be added to the remaining arguments collection.
     /// </summary>
-    bool ConvertFlagsToRemainingArgumentsIfCannotBeAssigned { get; set; }
+    bool ConvertFlagsToRemainingArguments { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether or not exceptions should be propagated.
