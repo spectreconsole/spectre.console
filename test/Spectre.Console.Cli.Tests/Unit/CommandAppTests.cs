@@ -941,7 +941,7 @@ public sealed partial class CommandAppTests
 
         // Then
         result.ExitCode.ShouldBe(0);
-        result.Settings.ShouldBeOfType<MammalSettings>().And(horse =>
+        result.Settings.ShouldBeOfType<HorseSettings>().And(horse =>
         {
             horse.Legs.ShouldBe(4);
             horse.Name.ShouldBe("Arkle");
