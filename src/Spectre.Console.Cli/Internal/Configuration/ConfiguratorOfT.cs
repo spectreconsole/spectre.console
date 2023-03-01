@@ -4,7 +4,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
     where TSettings : CommandSettings
 {
     private readonly ConfiguredCommand _command;
-    private readonly ITypeRegistrar? _registrar;
+    private readonly ITypeRegistrar? _registrar;
 
     public Configurator(ConfiguredCommand command, ITypeRegistrar? registrar)
     {
