@@ -8,7 +8,7 @@ internal static class TableRenderer
     public static List<Segment> Render(TableRendererContext context, List<int> columnWidths)
     {
         // Can't render the table?
-        if (context.TableWidth <= 0 || context.TableWidth > context.MaxWidth || columnWidths.Any(c => c <= 0))
+        if (context.TableWidth <= 0 || context.TableWidth > context.MaxWidth || columnWidths.Any(c => c < 0))
         {
             return new List<Segment>(new[] { new Segment("…", context.BorderStyle ?? Style.Plain) });
         }
@@ -23,12 +23,12 @@ internal static class TableRenderer
 
             // Get the list of cells for the row and calculate the cell height
             var cells = new List<List<SegmentLine>>();
-            foreach (var (columnIndex, _, _, (rowWidth, cell)) in columnWidths.Zip(row).Enumerate())
+            foreach (var (columnIndex, _, _, (columnWidth, cell)) in columnWidths.Zip(row).Enumerate())
             {
                 var justification = context.Columns[columnIndex].Alignment;
                 var childContext = context.Options with { Justification = justification };
 
-                var lines = Segment.SplitLines(cell.Render(childContext, rowWidth));
+                var lines = Segment.SplitLines(cell.Render(childContext, columnWidth));
                 cellHeight = Math.Max(cellHeight, lines.Count);
                 cells.Add(lines);
             }
