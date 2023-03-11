@@ -14,6 +14,16 @@ public sealed class DownloadedColumn : ProgressColumn
     public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
     {
         var total = new FileSize(task.MaxValue);
+        var downloaded = new FileSize(task.Value, total.Unit);
+
+        if (task.IsFailed)
+        {
+            return new Markup(string.Format(
+                "[red]{0}/{1}[/] [red]{2}[/]",
+                downloaded.Format(Culture),
+                total.Format(Culture),
+                total.Suffix));
+        }
 
         if (task.IsFinished)
         {
@@ -24,8 +34,6 @@ public sealed class DownloadedColumn : ProgressColumn
         }
         else
         {
-            var downloaded = new FileSize(task.Value, total.Unit);
-
             return new Markup(string.Format(
                 "{0}[grey]/[/]{1} [grey]{2}[/]",
                 downloaded.Format(Culture),
