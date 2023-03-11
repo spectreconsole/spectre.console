@@ -48,6 +48,10 @@ public sealed class SpinnerColumn : ProgressColumn
         }
     }
 
+    /// <summary>
+    /// Gets or sets the text that should be shown instead
+    /// of the spinner once a task was marked as failed.
+    /// </summary>
     public string? FailedText
     {
         get => _failedText;

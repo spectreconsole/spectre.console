@@ -30,6 +30,9 @@ public sealed class ProgressBarColumn : ProgressColumn
     /// </summary>
     public Style IndeterminateStyle { get; set; } = ProgressBar.DefaultPulseStyle;
 
+    /// <summary>
+    /// Gets or sets the style of a failed progress bar.
+    /// </summary>
     public Style FailedStyle { get; set; } = new Style(foreground: Color.Red);
 
     /// <inheritdoc/>
