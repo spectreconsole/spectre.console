@@ -5,6 +5,8 @@ internal sealed class ProgressBar : Renderable, IHasCulture
     private const int PULSESIZE = 20;
     private const int PULSESPEED = 15;
 
+    public bool IsFailed { get; set; }
+
     public double Value { get; set; }
     public double MaxValue { get; set; } = 100;
 
@@ -20,6 +22,7 @@ internal sealed class ProgressBar : Renderable, IHasCulture
     public Style FinishedStyle { get; set; } = new Style(foreground: Color.Green);
     public Style RemainingStyle { get; set; } = new Style(foreground: Color.Grey);
     public Style IndeterminateStyle { get; set; } = DefaultPulseStyle;
+    public Style FailedStyle { get; set; } = new Style(foreground: Color.Red);
 
     internal static Style DefaultPulseStyle { get; } = new Style(foreground: Color.DodgerBlue1, background: Color.Grey23);
 
@@ -35,7 +38,7 @@ internal sealed class ProgressBar : Renderable, IHasCulture
         var completedBarCount = Math.Min(MaxValue, Math.Max(0, Value));
         var isCompleted = completedBarCount >= MaxValue;
 
-        if (IsIndeterminate && !isCompleted)
+        if (IsIndeterminate && !isCompleted && !IsFailed)
         {
             foreach (var segment in RenderIndeterminate(options, width))
             {
@@ -46,7 +49,16 @@ internal sealed class ProgressBar : Renderable, IHasCulture
         }
 
         var bar = !options.Unicode ? AsciiBar : UnicodeBar;
-        var style = isCompleted ? FinishedStyle : CompletedStyle;
+        var style = CompletedStyle;
+        if (isCompleted)
+        {
+            style = FinishedStyle;
+        }
+        else if (IsFailed)
+        {
+            style = FailedStyle;
+        }
+
         var barCount = Math.Max(0, (int)(width * (completedBarCount / MaxValue)));
 
         // Show value?

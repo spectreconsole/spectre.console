@@ -30,6 +30,8 @@ public sealed class ProgressBarColumn : ProgressColumn
     /// </summary>
     public Style IndeterminateStyle { get; set; } = ProgressBar.DefaultPulseStyle;
 
+    public Style FailedStyle { get; set; } = new Style(foreground: Color.Red);
+
     /// <inheritdoc/>
     public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
     {
@@ -43,6 +45,8 @@ public sealed class ProgressBarColumn : ProgressColumn
             RemainingStyle = RemainingStyle,
             IndeterminateStyle = IndeterminateStyle,
             IsIndeterminate = task.IsIndeterminate,
+            FailedStyle = FailedStyle,
+            IsFailed = task.IsFailed,
         };
     }
 }
