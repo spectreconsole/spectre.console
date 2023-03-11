@@ -55,7 +55,11 @@ public sealed class SpinnerColumn : ProgressColumn
     public string? FailedText
     {
         get => _failedText;
-        set => _failedText = value;
+        set
+        {
+            _failedText = value;
+            _maxWidth = null;
+        }
     }
 
     /// <summary>
