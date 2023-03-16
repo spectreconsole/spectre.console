@@ -46,7 +46,7 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
     /// <remarks>
     /// Defaults to <see cref="StringComparer.CurrentCultureIgnoreCase"/>.
     /// </remarks>
-    public StringComparer ChoiceComparer { get; set; } = StringComparer.CurrentCultureIgnoreCase;
+    public StringComparer Comparer { get; set; } = StringComparer.CurrentCultureIgnoreCase;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ConfirmationPrompt"/> class.
@@ -66,7 +66,9 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
     /// <inheritdoc/>
     public async Task<bool> ShowAsync(IAnsiConsole console, CancellationToken cancellationToken)
     {
-        var prompt = new TextPrompt<char>(_prompt, ChoiceComparer)
+        var comparer = Comparer ?? StringComparer.CurrentCultureIgnoreCase;
+
+        var prompt = new TextPrompt<char>(_prompt, comparer)
             .InvalidChoiceMessage(InvalidChoiceMessage)
             .ValidationErrorMessage(InvalidChoiceMessage)
             .ShowChoices(ShowChoices)
@@ -77,6 +79,6 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
 
         var result = await prompt.ShowAsync(console, cancellationToken).ConfigureAwait(false);
 
-        return ChoiceComparer.Compare(Yes.ToString(), result.ToString()) == 0;
+        return comparer.Compare(Yes.ToString(), result.ToString()) == 0;
     }
 }
