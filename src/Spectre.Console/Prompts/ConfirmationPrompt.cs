@@ -40,10 +40,13 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
     public bool ShowDefaultValue { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets a value indicating whether the confirmation
-    /// should use case insensitive matching.
+    /// Gets or sets the string comparer to use when comparing user input
+    /// against Yes/No choices.
     /// </summary>
-    public bool CaseInsensitive { get; set; } = true;
+    /// <remarks>
+    /// Defaults to <see cref="StringComparer.CurrentCultureIgnoreCase"/>.
+    /// </remarks>
+    public StringComparer Comparer { get; set; } = StringComparer.CurrentCultureIgnoreCase;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ConfirmationPrompt"/> class.
@@ -63,7 +66,8 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
     /// <inheritdoc/>
     public async Task<bool> ShowAsync(IAnsiConsole console, CancellationToken cancellationToken)
     {
-        var comparer = CaseInsensitive ? StringComparer.CurrentCultureIgnoreCase : StringComparer.CurrentCulture;
+        var comparer = Comparer ?? StringComparer.CurrentCultureIgnoreCase;
+
         var prompt = new TextPrompt<char>(_prompt, comparer)
             .InvalidChoiceMessage(InvalidChoiceMessage)
             .ValidationErrorMessage(InvalidChoiceMessage)
@@ -75,6 +79,6 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
 
         var result = await prompt.ShowAsync(console, cancellationToken).ConfigureAwait(false);
 
-        return Yes.ToString().Equals(result.ToString(), CaseInsensitive ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
+        return comparer.Compare(Yes.ToString(), result.ToString()) == 0;
     }
 }
