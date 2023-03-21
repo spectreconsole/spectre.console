@@ -5,7 +5,7 @@ namespace Spectre.Console;
 /// </summary>
 public sealed class TreeNode : IHasTreeNodes
 {
-    internal IRenderable Renderable { get; }
+    public IRenderable Renderable { get; }
 
     /// <summary>
     /// Gets the tree node's child nodes.
