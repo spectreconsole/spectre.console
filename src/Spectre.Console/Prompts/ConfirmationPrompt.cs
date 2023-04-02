@@ -40,6 +40,16 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
     public bool ShowDefaultValue { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets the style in which the default value is displayed.
+    /// </summary>
+    public Style? DefaultValueStyle { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style in which the list of choices is displayed.
+    /// </summary>
+    public Style? ChoicesStyle { get; set; }
+
+    /// <summary>
     /// Gets or sets the string comparer to use when comparing user input
     /// against Yes/No choices.
     /// </summary>
@@ -72,8 +82,10 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
             .InvalidChoiceMessage(InvalidChoiceMessage)
             .ValidationErrorMessage(InvalidChoiceMessage)
             .ShowChoices(ShowChoices)
+            .ChoicesStyle(ChoicesStyle ?? "blue")
             .ShowDefaultValue(ShowDefaultValue)
             .DefaultValue(DefaultValue ? Yes : No)
+            .DefaultValueStyle(DefaultValueStyle ?? "green")
             .AddChoice(Yes)
             .AddChoice(No);
 
