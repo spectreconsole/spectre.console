@@ -36,7 +36,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
     public ICommandConfigurator AddCommand<TCommand>(string name)
         where TCommand : class, ICommand
     {
-        var command = Commands.AddAndReturn(ConfiguredCommand.FromType<TCommand>(name, false));
+        var command = Commands.AddAndReturn(ConfiguredCommand.FromType<TCommand>(name, isDefaultCommand: false));
         return new CommandConfigurator(command);
     }
 
