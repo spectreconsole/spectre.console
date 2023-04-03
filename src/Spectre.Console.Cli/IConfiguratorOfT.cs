@@ -20,6 +20,18 @@ public interface IConfigurator<in TSettings>
     void AddExample(string[] args);
 
     /// <summary>
+    /// Adds a default command.
+    /// </summary>
+    /// <remarks>
+    /// This is the command that will run if the user doesn't specify one on the command line.
+    /// It must be able to execute successfully by itself ie. without requiring any command line
+    /// arguments, flags or option values.
+    /// </remarks>
+    /// <typeparam name="TDefaultCommand">The default command type.</typeparam>
+    void SetDefaultCommand<TDefaultCommand>()
+        where TDefaultCommand : class, ICommandLimiter<TSettings>;
+
+    /// <summary>
     /// Marks the branch as hidden.
     /// Hidden branches do not show up in help documentation or
     /// generated XML models.
