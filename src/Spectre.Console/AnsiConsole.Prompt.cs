@@ -33,6 +33,18 @@ public static partial class AnsiConsole
     }
 
     /// <summary>
+    /// Display a prompt with validation to the user
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="prompt">The prompt markup text.</param>
+    /// <param name="validator">Validator to verify inputs.</param>
+    /// <returns>The prompt input result.</returns>
+    public static T Ask<T>(string prompt, Func<T, ValidationResult> validator)
+    {
+        return new TextPrompt<T>(prompt) { Validator = validator }.Show(Console);
+    }
+
+    /// <summary>
     /// Displays a prompt to the user with a given default.
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>
@@ -42,6 +54,21 @@ public static partial class AnsiConsole
     public static T Ask<T>(string prompt, T defaultValue)
     {
         return new TextPrompt<T>(prompt)
+            .DefaultValue(defaultValue)
+            .Show(Console);
+    }
+
+    /// <summary>
+    /// Show the user a prompt with validation, with the specified defaults.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="prompt">The prompt markup text.</param>
+    /// <param name="defaultValue">The default value.</param>
+    /// <param name="validator">Validator to verify inputs.</param>
+    /// <returns>The prompt input result.</returns>
+    public static T Ask<T>(string prompt, T defaultValue, Func<T, ValidationResult> validator)
+    {
+        return new TextPrompt<T>(prompt) { Validator = validator }
             .DefaultValue(defaultValue)
             .Show(Console);
     }
