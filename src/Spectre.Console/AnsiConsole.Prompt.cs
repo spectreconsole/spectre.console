@@ -33,7 +33,7 @@ public static partial class AnsiConsole
     }
 
     /// <summary>
-    /// Display a prompt with validation to the user
+    /// Display a prompt with validation to the user.
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>
     /// <param name="prompt">The prompt markup text.</param>
