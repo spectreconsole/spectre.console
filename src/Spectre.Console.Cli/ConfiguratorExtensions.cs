@@ -237,7 +237,6 @@ public static class ConfiguratorExtensions
         return configurator.AddDelegate<EmptyCommandSettings>(name, (c, _) => func(c));
     }
 
-
     /// <summary>
     /// Adds a command without settings that executes an async delegate.
     /// </summary>
