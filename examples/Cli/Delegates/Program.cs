@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -14,7 +15,13 @@ public static partial class Program
                 .WithDescription("Foos the bars");
 
             config.AddDelegate<BarSettings>("bar", Bar)
-                .WithDescription("Bars the foos"); ;
+                .WithDescription("Bars the foos");
+
+            config.AddAsyncDelegate("foo", FooAsync)
+                .WithDescription("Foos the bars asynchronously");
+
+            config.AddAsyncDelegate<BarSettings>("bar", BarAsync)
+                .WithDescription("Bars the foos asynchronously");
         });
 
         return app.Run(args);
@@ -34,5 +41,21 @@ public static partial class Program
         }
 
         return 0;
+    }
+
+    private static Task<int> FooAsync(CommandContext context)
+    {
+        AnsiConsole.WriteLine("Foo");
+        return Task.FromResult(0);
+    }
+
+    private static Task<int> BarAsync(CommandContext context, BarSettings settings)
+    {
+        for (var index = 0; index < settings.Count; index++)
+        {
+            AnsiConsole.WriteLine("Bar");
+        }
+
+        return Task.FromResult(0);
     }
 }
