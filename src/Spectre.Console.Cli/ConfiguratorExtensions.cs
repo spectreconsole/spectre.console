@@ -239,7 +239,7 @@ public static class ConfiguratorExtensions
 
 
     /// <summary>
-    /// Adds a command without settings that executes a delegate.
+    /// Adds a command without settings that executes an async delegate.
     /// </summary>
     /// <param name="configurator">The configurator.</param>
     /// <param name="name">The name of the command.</param>
@@ -281,7 +281,7 @@ public static class ConfiguratorExtensions
     }
 
     /// <summary>
-    /// Adds a command without settings that executes a delegate.
+    /// Adds a command without settings that executes an async delegate.
     /// </summary>
     /// <typeparam name="TSettings">The command setting type.</typeparam>
     /// <param name="configurator">The configurator.</param>

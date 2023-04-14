@@ -36,7 +36,7 @@ public interface IConfigurator
         where TSettings : CommandSettings;
 
     /// <summary>
-    /// Adds a command that executes a delegate.
+    /// Adds a command that executes an async delegate.
     /// </summary>
     /// <typeparam name="TSettings">The command setting type.</typeparam>
     /// <param name="name">The name of the command.</param>

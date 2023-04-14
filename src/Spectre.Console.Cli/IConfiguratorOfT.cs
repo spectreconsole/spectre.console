@@ -58,7 +58,7 @@ public interface IConfigurator<in TSettings>
         where TDerivedSettings : TSettings;
 
     /// <summary>
-    /// Adds a command that executes a delegate.
+    /// Adds a command that executes an async delegate.
     /// </summary>
     /// <typeparam name="TDerivedSettings">The derived command setting type.</typeparam>
     /// <param name="name">The name of the command.</param>
