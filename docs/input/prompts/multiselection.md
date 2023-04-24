@@ -29,13 +29,13 @@ var fruits = AnsiConsole.Prompt(
             "[grey](Press [blue]<space>[/] to toggle a fruit, " + 
             "[green]<enter>[/] to accept)[/]")
         .AddChoices(new[] {
-            "Apple", "Apricot", "Avocado", 
+            "Apple", "Apricot", "Avocado",
             "Banana", "Blackcurrant", "Blueberry",
-            "Cherry", "Cloudberry", "Cocunut",
+            "Cherry", "Cloudberry", "Coconut",
         }));
 
 // Write the selected fruits to the terminal
-foreach (string fruit in fruits) 
+foreach (string fruit in fruits)
 {
     AnsiConsole.WriteLine(fruit);
 }
