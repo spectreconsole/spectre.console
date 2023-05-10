@@ -16,9 +16,9 @@ internal sealed class ProgressBar : Renderable, IHasCulture
     public bool IsIndeterminate { get; set; }
     public CultureInfo? Culture { get; set; }
 
-    public Style CompletedStyle { get; set; } = new Style(foreground: Color.Yellow);
-    public Style FinishedStyle { get; set; } = new Style(foreground: Color.Green);
-    public Style RemainingStyle { get; set; } = new Style(foreground: Color.Grey);
+    public Style CompletedStyle { get; set; } = Color.Yellow;
+    public Style FinishedStyle { get; set; } = Color.Green;
+    public Style RemainingStyle { get; set; } = Color.Grey;
     public Style IndeterminateStyle { get; set; } = DefaultPulseStyle;
 
     internal static Style DefaultPulseStyle { get; } = new Style(foreground: Color.DodgerBlue1, background: Color.Grey23);
