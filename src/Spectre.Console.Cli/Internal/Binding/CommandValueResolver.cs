@@ -133,11 +133,31 @@ internal static class CommandValueResolver
             var (converter, _) = GetConverter(lookup, binder, resolver, parameter);
             if (converter != null)
             {
-                result = converter.ConvertFrom(result);
+                result = result is Array array ? ConvertArray(array, converter) : converter.ConvertFrom(result);
             }
         }
 
         return result;
+    }
+
+    private static Array ConvertArray(Array sourceArray, TypeConverter converter)
+    {
+        Array? targetArray = null;
+        for (var i = 0; i < sourceArray.Length; i++)
+        {
+            var item = sourceArray.GetValue(i);
+            if (item != null)
+            {
+                var converted = converter.ConvertFrom(item);
+                if (converted != null)
+                {
+                    targetArray ??= Array.CreateInstance(converted.GetType(), sourceArray.Length);
+                    targetArray.SetValue(converted, i);
+                }
+            }
+        }
+
+        return targetArray ?? sourceArray;
     }
 
     [SuppressMessage("Style", "IDE0019:Use pattern matching", Justification = "It's OK")]

@@ -9,4 +9,9 @@ public class LionSettings : CatSettings
     [CommandOption("-c <CHILDREN>")]
     [Description("The number of children the lion has.")]
     public int Children { get; set; }
+
+    [CommandOption("-d <DAY>")]
+    [Description("The days the lion goes hunting.")]
+    [DefaultValue(new[] { DayOfWeek.Monday, DayOfWeek.Thursday })]
+    public DayOfWeek[] HuntDays { get; set; }
 }

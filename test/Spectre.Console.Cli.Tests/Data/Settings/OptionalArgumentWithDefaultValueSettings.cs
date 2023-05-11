@@ -33,3 +33,18 @@ public sealed class RequiredArgumentWithDefaultValueSettings : CommandSettings
     [DefaultValue("Hello World")]
     public string Greeting { get; set; }
 }
+
+public sealed class OptionWithArrayOfEnumDefaultValueSettings : CommandSettings
+{
+    [CommandOption("--days")]
+    [DefaultValue(new[] { DayOfWeek.Sunday, DayOfWeek.Saturday })]
+    public DayOfWeek[] Days { get; set; }
+}
+
+public sealed class OptionWithArrayOfStringDefaultValueAndTypeConverterSettings : CommandSettings
+{
+    [CommandOption("--numbers")]
+    [DefaultValue(new[] { "2", "3" })]
+    [TypeConverter(typeof(StringToIntegerConverter))]
+    public int[] Numbers { get; set; }
+}
