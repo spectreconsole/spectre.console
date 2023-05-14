@@ -82,7 +82,7 @@ public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorde
     /// <summary>
     /// Gets or sets the calendar's highlight <see cref="Style"/>.
     /// </summary>
-    public Style HightlightStyle
+    public Style HighlightStyle
     {
         get => _highlightStyle;
         set => MarkAsDirty(() => _highlightStyle = value);
@@ -155,7 +155,7 @@ public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorde
         _culture = CultureInfo.InvariantCulture;
         _highlightStyle = Color.Blue;
         _showHeader = true;
-        _calendarEvents = new ListWithCallback<CalendarEvent>(() => MarkAsDirty());
+        _calendarEvents = new ListWithCallback<CalendarEvent>(MarkAsDirty);
     }
 
     /// <inheritdoc/>

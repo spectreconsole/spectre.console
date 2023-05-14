@@ -57,11 +57,6 @@ internal sealed class ProgressBar : Renderable, IHasCulture
             barCount = Math.Max(0, barCount);
         }
 
-        if (barCount < 0)
-        {
-            yield break;
-        }
-
         yield return new Segment(new string(bar, barCount), style);
 
         if (ShowValue)
@@ -99,14 +94,13 @@ internal sealed class ProgressBar : Renderable, IHasCulture
         {
             // For 1-bit and 3-bit colors, fall back to
             // a simpler versions with only two colors.
-            if (options.ColorSystem == ColorSystem.NoColors ||
-                options.ColorSystem == ColorSystem.Legacy)
+            if (options.ColorSystem is ColorSystem.NoColors or ColorSystem.Legacy)
             {
                 // First half of the pulse
                 var segments = Enumerable.Repeat(new Segment(bar, new Style(style.Foreground)), PULSESIZE / 2);
 
                 // Second half of the pulse
-                var legacy = options.ColorSystem == ColorSystem.NoColors || options.ColorSystem == ColorSystem.Legacy;
+                var legacy = options.ColorSystem is ColorSystem.NoColors or ColorSystem.Legacy;
                 var bar2 = legacy ? " " : bar;
                 segments = segments.Concat(Enumerable.Repeat(new Segment(bar2, new Style(style.Background)), PULSESIZE - (PULSESIZE / 2)));
 
