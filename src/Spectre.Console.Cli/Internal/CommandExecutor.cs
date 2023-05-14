@@ -47,7 +47,7 @@ internal sealed class CommandExecutor
         }
 
         // Parse and map the model against the arguments.
-        var parser = new CommandTreeParser(model, configuration.Settings);
+        var parser = new CommandTreeParser(model, configuration.Settings.CaseSensitivity);
         var parsedResult = parser.Parse(args);
         _registrar.RegisterInstance(typeof(CommandTreeParserResult), parsedResult);
 
