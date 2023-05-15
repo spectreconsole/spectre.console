@@ -5,9 +5,9 @@ internal class HelpWriter : IHelpProvider
     /// <inheritdoc/>
     public IEnumerable<IRenderable> Help { get; }
 
-    public HelpWriter(CommandModel model, CommandTreeParserResult parsedResult, bool showOptionDefaultValues)
+    public HelpWriter(CommandModel model, CommandTreeParserResult? parsedResult, bool showOptionDefaultValues)
     {
-        if (parsedResult.Tree == null)
+        if (parsedResult?.Tree == null)
         {
             Help = Write(model, showOptionDefaultValues);
         }

@@ -1,5 +1,3 @@
-using static Spectre.Console.Cli.CommandTreeTokenizer;
-
 namespace Spectre.Console.Cli;
 
 internal class CommandTreeParser
@@ -27,15 +25,33 @@ internal class CommandTreeParser
         CaseSensitivity = caseSensitivity;
     }
 
-    public CommandTreeParserResult Parse(IEnumerable<string> args)
+    public CommandTreeParserResult? Parse(IEnumerable<string> args)
     {
         var parserContext = new CommandTreeParserContext(args, _parsingMode);
         var tokenizerResult = CommandTreeTokenizer.Tokenize(args);
+        var parsedResult = Parse(parserContext, tokenizerResult);
 
-        return Parse(parserContext, tokenizerResult);
+        var lastParsedLeaf = parsedResult?.Tree?.GetLeafCommand();
+        var lastParsedCommand = lastParsedLeaf?.Command;
+        if (lastParsedLeaf != null && lastParsedCommand != null &&
+            lastParsedCommand.IsBranch && !lastParsedLeaf.ShowHelp &&
+            lastParsedCommand.DefaultCommand != null)
+        {
+            // Insert this branch's default command into the command line
+            // arguments and try again to see if it will parse.
+            var argsWithDefaultCommand = new List<string>(args);
+
+            argsWithDefaultCommand.Insert(tokenizerResult.Tokens.Position, lastParsedCommand.DefaultCommand.Name);
+
+            parserContext = new CommandTreeParserContext(argsWithDefaultCommand, _parsingMode);
+            tokenizerResult = CommandTreeTokenizer.Tokenize(argsWithDefaultCommand);
+            parsedResult = Parse(parserContext, tokenizerResult);
+        }
+
+        return parsedResult;
     }
 
-    public CommandTreeParserResult Parse(CommandTreeParserContext context, CommandTreeTokenizerResult tokenizerResult)
+    private CommandTreeParserResult? Parse(CommandTreeParserContext context, CommandTreeTokenizer.CommandTreeTokenizerResult tokenizerResult)
     {
         var tokens = tokenizerResult.Tokens;
         var rawRemaining = tokenizerResult.Remaining;
