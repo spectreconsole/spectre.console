@@ -24,6 +24,25 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        public async void Should_Handle_Exception_Asynchronously()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.SetDefaultCommand<AsynchronousCommand>();
+
+            // When
+            var result = await app.RunAsync(new[]
+                        {
+                        "--ThrowException",
+                        "true",
+                        });
+
+            // Then
+            result.ExitCode.ShouldBe(-1);
+        }
+
+
+        [Fact]
         public async void Should_Throw_Exception_Asynchronously()
         {
             // Given
