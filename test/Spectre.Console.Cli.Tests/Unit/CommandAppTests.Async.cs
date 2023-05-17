@@ -41,7 +41,6 @@ public sealed partial class CommandAppTests
             result.ExitCode.ShouldBe(-1);
         }
 
-
         [Fact]
         public async void Should_Throw_Exception_Asynchronously()
         {
