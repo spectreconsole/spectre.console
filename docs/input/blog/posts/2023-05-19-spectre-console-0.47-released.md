@@ -7,7 +7,7 @@ Excluded: false
 
 Version 0.47 of Spectre.Console has been released!
 
-There are a lot of fixes and improvements in this release, the most noteworthy changes being support for the [Alacritty](https://github.com/alacritty/alacritty) terminal and continued improvements to the command line parsing.
+There are a lot of fixes and improvements in this release, the most noteworthy changes being support for the [Alacritty](https://github.com/alacritty/alacritty) terminal and continued improvements to command line parsing.
 
 Thank you to all contributers.
 
