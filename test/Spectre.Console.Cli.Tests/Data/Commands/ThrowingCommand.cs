@@ -7,7 +7,3 @@ public sealed class ThrowingCommand : Command<ThrowingCommandSettings>
         throw new InvalidOperationException("W00t?");
     }
 }
-
-public sealed class ThrowingCommandSettings : CommandSettings
-{
-}
