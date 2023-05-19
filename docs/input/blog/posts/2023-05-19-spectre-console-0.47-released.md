@@ -19,7 +19,6 @@ Thank you to all contributers.
 * [@MaxAtoms](https://github.com/MaxAtoms) made their first contribution in [#1211](https://github.com/spectreconsole/spectre.console/pull/1211)
 * [@phillip-haydon](https://github.com/phillip-haydon) made their first contribution in [#1218](https://github.com/spectreconsole/spectre.console/pull/1218)
 
-
 ## What's Changed
 * Add Alacritty to the supported terminals in AnsiDetector by [@MaxAtoms](https://github.com/MaxAtoms) in [#1211](https://github.com/spectreconsole/spectre.console/pull/1211)
 * Add an implicit operator to convert from Color to Style by [@0xced](https://github.com/0xced) in [#1160](https://github.com/spectreconsole/spectre.console/pull/1160)
