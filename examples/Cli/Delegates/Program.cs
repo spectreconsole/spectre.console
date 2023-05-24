@@ -17,10 +17,10 @@ public static partial class Program
             config.AddDelegate<BarSettings>("bar", Bar)
                 .WithDescription("Bars the foos");
 
-            config.AddAsyncDelegate("foo", FooAsync)
+            config.AddAsyncDelegate("fooAsync", FooAsync)
                 .WithDescription("Foos the bars asynchronously");
 
-            config.AddAsyncDelegate<BarSettings>("bar", BarAsync)
+            config.AddAsyncDelegate<BarSettings>("barAsync", BarAsync)
                 .WithDescription("Bars the foos asynchronously");
         });
 
