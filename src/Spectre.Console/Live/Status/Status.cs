@@ -15,7 +15,7 @@ public sealed class Status
     /// <summary>
     /// Gets or sets the spinner style.
     /// </summary>
-    public Style? SpinnerStyle { get; set; } = new Style(foreground: Color.Yellow);
+    public Style? SpinnerStyle { get; set; } = Color.Yellow;
 
     /// <summary>
     /// Gets or sets a value indicating whether or not status

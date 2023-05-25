@@ -225,7 +225,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     IRenderable IListPromptStrategy<T>.Render(IAnsiConsole console, bool scrollable, int cursorIndex, IEnumerable<(int Index, ListPromptItem<T> Node)> items)
     {
         var list = new List<IRenderable>();
-        var highlightStyle = HighlightStyle ?? new Style(foreground: Color.Blue);
+        var highlightStyle = HighlightStyle ?? Color.Blue;
 
         if (Title != null)
         {

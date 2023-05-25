@@ -49,8 +49,8 @@ public sealed class Grid : JustInTimeRenderable, IExpandable, IAlignable
     {
         _expand = false;
         _alignment = null;
-        _columns = new ListWithCallback<GridColumn>(() => MarkAsDirty());
-        _rows = new ListWithCallback<GridRow>(() => MarkAsDirty());
+        _columns = new ListWithCallback<GridColumn>(MarkAsDirty);
+        _rows = new ListWithCallback<GridRow>(MarkAsDirty);
     }
 
     /// <summary>

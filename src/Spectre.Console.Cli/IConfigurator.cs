@@ -14,7 +14,7 @@ public interface IConfigurator
     /// Adds an example of how to use the application.
     /// </summary>
     /// <param name="args">The example arguments.</param>
-    void AddExample(string[] args);
+    void AddExample(params string[] args);
 
     /// <summary>
     /// Adds a command.

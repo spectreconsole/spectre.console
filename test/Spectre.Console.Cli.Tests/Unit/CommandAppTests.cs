@@ -397,6 +397,50 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
+    public void Should_Assign_Array_Default_Value_To_Command_Option()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.SetDefaultCommand<GenericCommand<OptionWithArrayOfEnumDefaultValueSettings>>();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+        });
+
+        // When
+        var result = app.Run(Array.Empty<string>());
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<OptionWithArrayOfEnumDefaultValueSettings>().And(settings =>
+        {
+            settings.Days.ShouldBe(new[] { DayOfWeek.Sunday, DayOfWeek.Saturday });
+        });
+    }
+
+    [Fact]
+    public void Should_Assign_Array_Default_Value_To_Command_Option_Using_Converter_If_Necessary()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.SetDefaultCommand<GenericCommand<OptionWithArrayOfStringDefaultValueAndTypeConverterSettings>>();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+        });
+
+        // When
+        var result = app.Run(Array.Empty<string>());
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<OptionWithArrayOfStringDefaultValueAndTypeConverterSettings>().And(settings =>
+        {
+            settings.Numbers.ShouldBe(new[] { 2, 3 });
+        });
+    }
+
+    [Fact]
     public void Should_Throw_If_Required_Argument_Have_Default_Value()
     {
         // Given

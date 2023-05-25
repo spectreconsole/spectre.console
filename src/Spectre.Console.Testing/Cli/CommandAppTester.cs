@@ -142,4 +142,50 @@ public sealed class CommandAppTester
 
         return new CommandAppResult(result, output, context, settings);
     }
+
+    /// <summary>
+    /// Runs the command application asynchronously.
+    /// </summary>
+    /// <param name="args">The arguments.</param>
+    /// <returns>The result.</returns>
+    public async Task<CommandAppResult> RunAsync(params string[] args)
+    {
+        var console = new TestConsole().Width(int.MaxValue);
+        return await RunAsync(args, console);
+    }
+
+    private async Task<CommandAppResult> RunAsync(string[] args, TestConsole console, Action<IConfigurator>? config = null)
+    {
+        CommandContext? context = null;
+        CommandSettings? settings = null;
+
+        var app = new CommandApp(Registrar);
+        _appConfiguration?.Invoke(app);
+
+        if (_configuration != null)
+        {
+            app.Configure(_configuration);
+        }
+
+        if (config != null)
+        {
+            app.Configure(config);
+        }
+
+        app.Configure(c => c.ConfigureConsole(console));
+        app.Configure(c => c.SetInterceptor(new CallbackCommandInterceptor((ctx, s) =>
+        {
+            context = ctx;
+            settings = s;
+        })));
+
+        var result = await app.RunAsync(args);
+
+        var output = console.Output
+            .NormalizeLineEndings()
+            .TrimLines()
+            .Trim();
+
+        return new CommandAppResult(result, output, context, settings);
+    }
 }

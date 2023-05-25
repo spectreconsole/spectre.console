@@ -11,7 +11,7 @@ public sealed class RemainingTimeColumn : ProgressColumn
     /// <summary>
     /// Gets or sets the style of the remaining time text.
     /// </summary>
-    public Style Style { get; set; } = new Style(foreground: Color.Blue);
+    public Style Style { get; set; } = Color.Blue;
 
     /// <inheritdoc/>
     public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
