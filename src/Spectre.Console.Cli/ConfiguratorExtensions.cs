@@ -238,6 +238,26 @@ public static class ConfiguratorExtensions
     }
 
     /// <summary>
+    /// Adds a command without settings that executes an async delegate.
+    /// </summary>
+    /// <param name="configurator">The configurator.</param>
+    /// <param name="name">The name of the command.</param>
+    /// <param name="func">The delegate to execute as part of command execution.</param>
+    /// <returns>A command configurator that can be used to configure the command further.</returns>
+    public static ICommandConfigurator AddAsyncDelegate(
+        this IConfigurator configurator,
+        string name,
+        Func<CommandContext, Task<int>> func)
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        return configurator.AddAsyncDelegate<EmptyCommandSettings>(name, (c, _) => func(c));
+    }
+
+    /// <summary>
     /// Adds a command without settings that executes a delegate.
     /// </summary>
     /// <typeparam name="TSettings">The command setting type.</typeparam>
@@ -257,6 +277,28 @@ public static class ConfiguratorExtensions
         }
 
         return configurator.AddDelegate<TSettings>(name, (c, _) => func(c));
+    }
+
+    /// <summary>
+    /// Adds a command without settings that executes an async delegate.
+    /// </summary>
+    /// <typeparam name="TSettings">The command setting type.</typeparam>
+    /// <param name="configurator">The configurator.</param>
+    /// <param name="name">The name of the command.</param>
+    /// <param name="func">The delegate to execute as part of command execution.</param>
+    /// <returns>A command configurator that can be used to configure the command further.</returns>
+    public static ICommandConfigurator AddAsyncDelegate<TSettings>(
+        this IConfigurator<TSettings> configurator,
+        string name,
+        Func<CommandContext, Task<int>> func)
+        where TSettings : CommandSettings
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        return configurator.AddAsyncDelegate<TSettings>(name, (c, _) => func(c));
     }
 
     /// <summary>

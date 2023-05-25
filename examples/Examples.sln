@@ -81,6 +81,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Layout", "Console\Layout\La
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Json", "Console\Json\Json.csproj", "{ABE3E734-0756-4D5A-B28A-E6E526D9927D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Console.Json", "..\src\Spectre.Console.Json\Spectre.Console.Json.csproj", "{91A5637F-1F89-48B3-A0BA-6CC629807393}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -535,6 +537,18 @@ Global
 		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Release|x64.Build.0 = Release|Any CPU
 		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Release|x86.ActiveCfg = Release|Any CPU
 		{ABE3E734-0756-4D5A-B28A-E6E526D9927D}.Release|x86.Build.0 = Release|Any CPU
+		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Debug|x64.Build.0 = Debug|Any CPU
+		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Debug|x86.Build.0 = Debug|Any CPU
+		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Release|x64.ActiveCfg = Release|Any CPU
+		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Release|x64.Build.0 = Release|Any CPU
+		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Release|x86.ActiveCfg = Release|Any CPU
+		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -549,6 +563,7 @@ Global
 		{0C58FB17-F60A-47AB-84BF-961EC8C06AE6} = {2571F1BD-6556-4F96-B27B-B6190E1BF13A}
 		{A127CE7D-A5A7-4745-9809-EBD7CB12CEE7} = {2571F1BD-6556-4F96-B27B-B6190E1BF13A}
 		{EFAADF6A-C77D-41EC-83F5-BBB4FFC5A6D7} = {2571F1BD-6556-4F96-B27B-B6190E1BF13A}
+		{91A5637F-1F89-48B3-A0BA-6CC629807393} = {2571F1BD-6556-4F96-B27B-B6190E1BF13A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3EE724C5-CAB4-410D-AC63-8D4260EF83ED}

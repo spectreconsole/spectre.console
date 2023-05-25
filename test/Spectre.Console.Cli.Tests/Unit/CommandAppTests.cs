@@ -1136,6 +1136,37 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        public async void Should_Execute_Async_Delegate_Command_At_Root_Level()
+        {
+            // Given
+            var dog = default(DogSettings);
+            var data = 0;
+
+            var app = new CommandApp();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddAsyncDelegate<DogSettings>(
+                    "foo", (context, settings) =>
+                    {
+                        dog = settings;
+                        data = (int)context.Data;
+                        return Task.FromResult(1);
+                    }).WithData(2);
+            });
+
+            // When
+            var result = await app.RunAsync(new[] { "foo", "4", "12" });
+
+            // Then
+            result.ShouldBe(1);
+            dog.ShouldNotBeNull();
+            dog.Age.ShouldBe(12);
+            dog.Legs.ShouldBe(4);
+            data.ShouldBe(2);
+        }
+
+        [Fact]
         public void Should_Execute_Nested_Delegate_Command()
         {
             // Given
@@ -1160,6 +1191,40 @@ public sealed partial class CommandAppTests
 
             // When
             var result = app.Run(new[] { "foo", "4", "bar", "12" });
+
+            // Then
+            result.ShouldBe(1);
+            dog.ShouldNotBeNull();
+            dog.Age.ShouldBe(12);
+            dog.Legs.ShouldBe(4);
+            data.ShouldBe(2);
+        }
+
+        [Fact]
+        public async void Should_Execute_Nested_Async_Delegate_Command()
+        {
+            // Given
+            var dog = default(DogSettings);
+            var data = 0;
+
+            var app = new CommandApp();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddBranch<AnimalSettings>("foo", foo =>
+                {
+                    foo.AddAsyncDelegate<DogSettings>(
+                        "bar", (context, settings) =>
+                        {
+                            dog = settings;
+                            data = (int)context.Data;
+                            return Task.FromResult(1);
+                        }).WithData(2);
+                });
+            });
+
+            // When
+            var result = await app.RunAsync(new[] { "foo", "4", "bar", "12" });
 
             // Then
             result.ShouldBe(1);

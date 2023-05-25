@@ -9,7 +9,7 @@ public static partial class Program
     {
         [CommandOption("--count")]
         [Description("The number of bars to print")]
-        [DefaultValue(1)]
+        [DefaultValue(3)]
         public int Count { get; set; }
     }
 }
