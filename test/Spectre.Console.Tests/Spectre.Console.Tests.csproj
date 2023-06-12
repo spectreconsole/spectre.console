@@ -12,6 +12,9 @@
     <EmbeddedResource Include="Data\starwars.flf" />
     <None Remove="Data\poison.flf" />
     <EmbeddedResource Include="Data\poison.flf" />
+    <None Update="Expectations\Widgets\Rows\Render_Empty.Output.verified.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
