@@ -10,7 +10,7 @@ internal sealed class ListPromptConstants
     public const string MoreChoicesMarkup = "[grey](Move up and down to reveal more choices)[/]";
     public const string SearchPlaceholderMarkup = "[grey](Type to search)[/]";
 
-    public static string GetSelectedCheckbox(bool isGroup, SelectionMode mode, Style style = null)
+    public static string GetSelectedCheckbox(bool isGroup, SelectionMode mode, Style? style = null)
     {
         if (style != null)
         {
