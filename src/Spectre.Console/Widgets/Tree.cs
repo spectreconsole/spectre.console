@@ -36,6 +36,7 @@ public sealed class Tree : Renderable, IHasTreeNodes
             _root.Expand(value);
         }
     }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Tree"/> class.
     /// </summary>
