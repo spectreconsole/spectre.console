@@ -7,6 +7,7 @@ namespace Spectre.Console;
 public sealed class Tree : Renderable, IHasTreeNodes
 {
     private readonly TreeNode _root;
+    private bool _expanded = true;
 
     /// <summary>
     /// Gets or sets the tree style.
@@ -23,7 +24,6 @@ public sealed class Tree : Renderable, IHasTreeNodes
     /// </summary>
     public List<TreeNode> Nodes => _root.Nodes;
 
-    private bool _expanded { get; set; } = true;
     /// <summary>
     /// Gets or sets a value indicating whether or not the tree is expanded or not.
     /// </summary>
@@ -36,7 +36,6 @@ public sealed class Tree : Renderable, IHasTreeNodes
             _root.Expand(value);
         }
     }
-
     /// <summary>
     /// Initializes a new instance of the <see cref="Tree"/> class.
     /// </summary>
