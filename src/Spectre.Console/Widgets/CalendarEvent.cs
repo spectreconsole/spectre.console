@@ -26,13 +26,19 @@ public sealed class CalendarEvent
     public int Day { get; }
 
     /// <summary>
+    /// Gets the custom highlight style of the calendar event.
+    /// </summary>
+    public Style? CustomHighlightStyle { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="CalendarEvent"/> class.
     /// </summary>
     /// <param name="year">The year of the calendar event.</param>
     /// <param name="month">The month of the calendar event.</param>
     /// <param name="day">The day of the calendar event.</param>
-    public CalendarEvent(int year, int month, int day)
-        : this(string.Empty, year, month, day)
+    /// <param name="customHighlightStyle">The custom highlight style of the calendar event.</param>
+    public CalendarEvent(int year, int month, int day, Style? customHighlightStyle = null)
+        : this(string.Empty, year, month, day, customHighlightStyle)
     {
     }
 
@@ -43,11 +49,14 @@ public sealed class CalendarEvent
     /// <param name="year">The year of the calendar event.</param>
     /// <param name="month">The month of the calendar event.</param>
     /// <param name="day">The day of the calendar event.</param>
-    public CalendarEvent(string description, int year, int month, int day)
+    /// <param name="customHighlightStyle">The custom highlight style of the calendar event.</param>
+    public CalendarEvent(string description, int year, int month, int day, Style? customHighlightStyle = null)
     {
         Description = description ?? string.Empty;
         Year = year;
         Month = month;
         Day = day;
+        CustomHighlightStyle = customHighlightStyle;
+
     }
 }
