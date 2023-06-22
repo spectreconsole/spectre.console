@@ -57,6 +57,5 @@ public sealed class CalendarEvent
         Month = month;
         Day = day;
         CustomHighlightStyle = customHighlightStyle;
-
     }
 }
