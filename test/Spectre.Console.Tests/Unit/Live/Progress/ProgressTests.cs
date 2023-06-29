@@ -300,7 +300,7 @@ public sealed class ProgressTests
                     "foo2",
                     "beforeFoo3",
                     "foo3",
-                    "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h"
+                    "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h",
                 });
     }
 
@@ -339,7 +339,7 @@ public sealed class ProgressTests
                 "foo2",
                 "beforeFoo3",
                 "foo3",
-                "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h"
+                "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h",
             });
     }
 }
