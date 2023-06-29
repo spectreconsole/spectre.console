@@ -275,7 +275,7 @@ public sealed class ProgressTests
             .EmitAnsiSequences();
 
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new TaskDescriptionColumn())
             .AutoRefresh(false)
             .AutoClear(true);
 
@@ -291,18 +291,17 @@ public sealed class ProgressTests
         });
 
         // Then
-        console.Output
-            .NormalizeLineEndings()
-            .ShouldBe(
-                "[?25l" // Hide cursor
-                + "          \n" // Top padding
-                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
-                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
-                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
-                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
-                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
-                + "          " // Bottom padding
-                + "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h"); // Clear + show cursor
+        console.Output.SplitLines().Select(x => x.Trim()).ToArray()
+            .ShouldBeEquivalentTo(new[]
+                {
+                    "[?25l",
+                    "foo1",
+                    "afterFoo1",
+                    "foo2",
+                    "beforeFoo3",
+                    "foo3",
+                    "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h"
+                });
     }
 
     [Fact]
@@ -315,7 +314,7 @@ public sealed class ProgressTests
             .EmitAnsiSequences();
 
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new TaskDescriptionColumn())
             .AutoRefresh(false)
             .AutoClear(true);
 
@@ -327,21 +326,20 @@ public sealed class ProgressTests
             var foo3 = ctx.AddTask("foo3");
 
             var afterFoo1 = ctx.AddTaskAt("afterFoo1", 1);
-            var beforeFoo3 = ctx.AddTaskAt("beforeFoo3", 2);
+            var beforeFoo3 = ctx.AddTaskAt("beforeFoo3", 3);
         });
 
         // Then
-        console.Output
-            .NormalizeLineEndings()
-            .ShouldBe(
-                "[?25l" // Hide cursor
-                + "          \n" // Top padding
-                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
-                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
-                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
-                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
-                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
-                + "          " // Bottom padding
-                + "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h"); // Clear + show cursor
+        console.Output.SplitLines().Select(x => x.Trim()).ToArray()
+            .ShouldBeEquivalentTo(new[]
+            {
+                "[?25l",
+                "foo1",
+                "afterFoo1",
+                "foo2",
+                "beforeFoo3",
+                "foo3",
+                "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h"
+            });
     }
 }
