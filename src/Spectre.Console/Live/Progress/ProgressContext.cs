@@ -91,11 +91,6 @@ public sealed class ProgressContext
     /// <returns>The newly created task.</returns>
     public ProgressTask AddTask(string description, ProgressTaskSettings settings)
     {
-        if (settings is null)
-        {
-            throw new ArgumentNullException(nameof(settings));
-        }
-
         lock (_taskLock)
         {
             return AddTaskAt(description, settings, _tasks.Count);
@@ -111,11 +106,6 @@ public sealed class ProgressContext
     /// <returns>The newly created task.</returns>
     public ProgressTask AddTaskBefore(string description, ProgressTaskSettings settings, ProgressTask referenceProgressTask)
     {
-        if (settings is null)
-        {
-            throw new ArgumentNullException(nameof(settings));
-        }
-
         lock (_taskLock)
         {
             var indexOfReference = _tasks.IndexOf(referenceProgressTask);
@@ -133,11 +123,6 @@ public sealed class ProgressContext
     /// <returns>The newly created task.</returns>
     public ProgressTask AddTaskAfter(string description, ProgressTaskSettings settings, ProgressTask referenceProgressTask)
     {
-        if (settings is null)
-        {
-            throw new ArgumentNullException(nameof(settings));
-        }
-
         lock (_taskLock)
         {
             var indexOfReference = _tasks.IndexOf(referenceProgressTask);
