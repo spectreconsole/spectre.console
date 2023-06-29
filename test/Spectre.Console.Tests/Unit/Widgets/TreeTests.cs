@@ -73,4 +73,57 @@ public class TreeTests
         // Then
         result.ShouldBeOfType<CircularTreeException>();
     }
+
+    [Fact]
+    [Expectation("Render_NoChildren_OfCollapsed")]
+    public void Should_Render_Tree_With_No_Child_Of_Collapsed_Nodes_Correctly()
+    {
+        // Given
+        var console = new TestConsole();
+        var tree = new Tree(new Text("Root node"));
+        var node1 = new TreeNode(new Text("Node level 1"));
+        node1.AddNode(new TreeNode(new Text("Node level 2")));
+        tree.AddNode(node1);
+        node1.Expanded = false;
+
+        // When
+        console.Write(tree);
+
+        // Then
+        console.Output.SplitLines()
+            .Select(x => x.Trim())
+            .ToArray()
+            .ShouldBeEquivalentTo(new[]
+            {
+                "Root node",
+                "└── Node level 1",
+                string.Empty,
+            });
+    }
+
+    [Fact]
+    [Expectation("Render_NoChildren_IfRouteCollapsed")]
+    public void Should_Render_Tree_With_No_Child_If_Route_Collapsed_Correctly()
+    {
+        // Given
+        var console = new TestConsole();
+        var tree = new Tree(new Text("Root node"));
+        var node1 = new TreeNode(new Text("Node level 1"));
+        node1.AddNode(new TreeNode(new Text("Node level 2")));
+        tree.AddNode(node1);
+        tree.Expanded = false;
+
+        // When
+        console.Write(tree);
+
+        // Then
+        console.Output.SplitLines()
+            .Select(x => x.Trim())
+            .ToArray()
+            .ShouldBeEquivalentTo(new[]
+            {
+                "Root node",
+                string.Empty,
+            });
+    }
 }
