@@ -304,4 +304,44 @@ public sealed class ProgressTests
                 + "          " // Bottom padding
                 + "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h"); // Clear + show cursor
     }
+
+    [Fact]
+    public void Should_Render_Tasks_At_Specified_Indexes_Correctly()
+    {
+        // Given
+        var console = new TestConsole()
+            .Width(10)
+            .Interactive()
+            .EmitAnsiSequences();
+
+        var progress = new Progress(console)
+            .Columns(new[] { new ProgressBarColumn() })
+            .AutoRefresh(false)
+            .AutoClear(true);
+
+        // When
+        progress.Start(ctx =>
+        {
+            var foo1 = ctx.AddTask("foo1");
+            var foo2 = ctx.AddTask("foo2");
+            var foo3 = ctx.AddTask("foo3");
+
+            var afterFoo1 = ctx.AddTaskAt("afterFoo1", 1);
+            var beforeFoo3 = ctx.AddTaskAt("beforeFoo3", 2);
+        });
+
+        // Then
+        console.Output
+            .NormalizeLineEndings()
+            .ShouldBe(
+                "[?25l" // Hide cursor
+                + "          \n" // Top padding
+                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
+                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
+                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
+                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
+                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
+                + "          " // Bottom padding
+                + "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h"); // Clear + show cursor
+    }
 }
