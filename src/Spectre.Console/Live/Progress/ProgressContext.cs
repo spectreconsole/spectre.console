@@ -14,7 +14,16 @@ public sealed class ProgressContext
     /// <summary>
     /// Gets a value indicating whether or not all started tasks have completed.
     /// </summary>
-    public bool IsFinished => _tasks.Where(x => x.IsStarted).All(task => task.IsFinished);
+    public bool IsFinished
+    {
+        get
+        {
+            lock (_taskLock)
+            {
+                return _tasks.Where(x => x.IsStarted).All(task => task.IsFinished);
+            }
+        }
+    }
 
     internal ProgressContext(IAnsiConsole console, ProgressRenderer renderer)
     {
@@ -41,6 +50,40 @@ public sealed class ProgressContext
     }
 
     /// <summary>
+    /// Adds a task before the reference task.
+    /// </summary>
+    /// <param name="description">The task description.</param>
+    /// <param name="referenceProgressTask">The reference task to add before.</param>
+    /// <param name="autoStart">Whether or not the task should start immediately.</param>
+    /// <param name="maxValue">The task's max value.</param>
+    /// <returns>The newly created task.</returns>
+    public ProgressTask AddTaskBefore(string description, ProgressTask referenceProgressTask, bool autoStart = true, double maxValue = 100)
+    {
+        return AddTaskBefore(description, new ProgressTaskSettings
+        {
+            AutoStart = autoStart,
+            MaxValue = maxValue,
+        }, referenceProgressTask);
+    }
+
+    /// <summary>
+    /// Adds a task after the reference task.
+    /// </summary>
+    /// <param name="description">The task description.</param>
+    /// <param name="referenceProgressTask">The reference task to add after.</param>
+    /// <param name="autoStart">Whether or not the task should start immediately.</param>
+    /// <param name="maxValue">The task's max value.</param>
+    /// <returns>The newly created task.</returns>
+    public ProgressTask AddTaskAfter(string description, ProgressTask referenceProgressTask, bool autoStart = true, double maxValue = 100)
+    {
+        return AddTaskAfter(description, new ProgressTaskSettings
+        {
+            AutoStart = autoStart,
+            MaxValue = maxValue,
+        }, referenceProgressTask);
+    }
+
+    /// <summary>
     /// Adds a task.
     /// </summary>
     /// <param name="description">The task description.</param>
@@ -55,11 +98,51 @@ public sealed class ProgressContext
 
         lock (_taskLock)
         {
-            var task = new ProgressTask(_taskId++, description, settings.MaxValue, settings.AutoStart);
+            return AddTaskAt(description, settings, _tasks.Count);
+        }
+    }
 
-            _tasks.Add(task);
+    /// <summary>
+    /// Adds a task before the reference task.
+    /// </summary>
+    /// <param name="description">The task description.</param>
+    /// <param name="settings">The task settings.</param>
+    /// <param name="referenceProgressTask">The reference task to add before.</param>
+    /// <returns>The newly created task.</returns>
+    public ProgressTask AddTaskBefore(string description, ProgressTaskSettings settings, ProgressTask referenceProgressTask)
+    {
+        if (settings is null)
+        {
+            throw new ArgumentNullException(nameof(settings));
+        }
 
-            return task;
+        lock (_taskLock)
+        {
+            var indexOfReference = _tasks.IndexOf(referenceProgressTask);
+
+            return AddTaskAt(description, settings, indexOfReference);
+        }
+    }
+
+    /// <summary>
+    /// Adds a task after the reference task.
+    /// </summary>
+    /// <param name="description">The task description.</param>
+    /// <param name="settings">The task settings.</param>
+    /// <param name="referenceProgressTask">The reference task to add before</param>
+    /// <returns>The newly created task.</returns>
+    public ProgressTask AddTaskAfter(string description, ProgressTaskSettings settings, ProgressTask referenceProgressTask)
+    {
+        if (settings is null)
+        {
+            throw new ArgumentNullException(nameof(settings));
+        }
+
+        lock (_taskLock)
+        {
+            var indexOfReference = _tasks.IndexOf(referenceProgressTask);
+
+            return AddTaskAt(description, settings, indexOfReference + 1);
         }
     }
 
@@ -70,6 +153,20 @@ public sealed class ProgressContext
     {
         _renderer.Update(this);
         _console.Write(new ControlCode(string.Empty));
+    }
+
+    private ProgressTask AddTaskAt(string description, ProgressTaskSettings settings, int position)
+    {
+        if (settings is null)
+        {
+            throw new ArgumentNullException(nameof(settings));
+        }
+
+        var task = new ProgressTask(_taskId++, description, settings.MaxValue, settings.AutoStart);
+
+        _tasks.Insert(position, task);
+
+        return task;
     }
 
     internal IReadOnlyList<ProgressTask> GetTasks()

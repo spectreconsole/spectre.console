@@ -264,4 +264,44 @@ public sealed class ProgressTests
         // Then
         task.RemainingTime.ShouldBe(TimeSpan.MaxValue);
     }
+
+    [Fact]
+    public void Should_Render_Tasks_Added_Before_And_After_Correctly()
+    {
+        // Given
+        var console = new TestConsole()
+            .Width(10)
+            .Interactive()
+            .EmitAnsiSequences();
+
+        var progress = new Progress(console)
+            .Columns(new[] { new ProgressBarColumn() })
+            .AutoRefresh(false)
+            .AutoClear(true);
+
+        // When
+        progress.Start(ctx =>
+        {
+            var foo1 = ctx.AddTask("foo1");
+            var foo2 = ctx.AddTask("foo2");
+            var foo3 = ctx.AddTask("foo3");
+
+            var afterFoo1 = ctx.AddTaskAfter("afterFoo1", foo1);
+            var beforeFoo3 = ctx.AddTaskBefore("beforeFoo3", foo3);
+        });
+
+        // Then
+        console.Output
+            .NormalizeLineEndings()
+            .ShouldBe(
+                "[?25l" // Hide cursor
+                + "          \n" // Top padding
+                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
+                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
+                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
+                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
+                + "[38;5;8m━━━━━━━━━━[0m\n" // Task
+                + "          " // Bottom padding
+                + "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h"); // Clear + show cursor
+    }
 }
