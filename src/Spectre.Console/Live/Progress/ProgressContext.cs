@@ -129,7 +129,7 @@ public sealed class ProgressContext
     /// </summary>
     /// <param name="description">The task description.</param>
     /// <param name="settings">The task settings.</param>
-    /// <param name="referenceProgressTask">The reference task to add before</param>
+    /// <param name="referenceProgressTask">The reference task to add before.</param>
     /// <returns>The newly created task.</returns>
     public ProgressTask AddTaskAfter(string description, ProgressTaskSettings settings, ProgressTask referenceProgressTask)
     {
