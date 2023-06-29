@@ -50,6 +50,26 @@ public sealed class ProgressContext
     }
 
     /// <summary>
+    /// Adds a task.
+    /// </summary>
+    /// <param name="description">The task description.</param>
+    /// <param name="index">The index at which the task should be inserted.</param>
+    /// <param name="autoStart">Whether or not the task should start immediately.</param>
+    /// <param name="maxValue">The task's max value.</param>
+    /// <returns>The newly created task.</returns>
+    public ProgressTask AddTaskAt(string description, int index, bool autoStart = true, double maxValue = 100)
+    {
+        lock (_taskLock)
+        {
+            return AddTaskAtInternal(description, new ProgressTaskSettings
+            {
+                AutoStart = autoStart,
+                MaxValue = maxValue,
+            }, index);
+        }
+    }
+
+    /// <summary>
     /// Adds a task before the reference task.
     /// </summary>
     /// <param name="description">The task description.</param>
@@ -93,7 +113,22 @@ public sealed class ProgressContext
     {
         lock (_taskLock)
         {
-            return AddTaskAt(description, settings, _tasks.Count);
+            return AddTaskAtInternal(description, settings, _tasks.Count);
+        }
+    }
+
+    /// <summary>
+    /// Adds a task at the specified index.
+    /// </summary>
+    /// <param name="description">The task description.</param>
+    /// <param name="settings">The task settings.</param>
+    /// <param name="index">The index at which the task should be inserted.</param>
+    /// <returns>The newly created task.</returns>
+    public ProgressTask AddTaskAt(string description, ProgressTaskSettings settings, int index)
+    {
+        lock (_taskLock)
+        {
+            return AddTaskAtInternal(description, settings, index);
         }
     }
 
@@ -110,7 +145,7 @@ public sealed class ProgressContext
         {
             var indexOfReference = _tasks.IndexOf(referenceProgressTask);
 
-            return AddTaskAt(description, settings, indexOfReference);
+            return AddTaskAtInternal(description, settings, indexOfReference);
         }
     }
 
@@ -127,7 +162,7 @@ public sealed class ProgressContext
         {
             var indexOfReference = _tasks.IndexOf(referenceProgressTask);
 
-            return AddTaskAt(description, settings, indexOfReference + 1);
+            return AddTaskAtInternal(description, settings, indexOfReference + 1);
         }
     }
 
@@ -140,7 +175,7 @@ public sealed class ProgressContext
         _console.Write(new ControlCode(string.Empty));
     }
 
-    private ProgressTask AddTaskAt(string description, ProgressTaskSettings settings, int position)
+    private ProgressTask AddTaskAtInternal(string description, ProgressTaskSettings settings, int position)
     {
         if (settings is null)
         {
