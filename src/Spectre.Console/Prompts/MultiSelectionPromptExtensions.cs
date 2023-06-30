@@ -148,6 +148,46 @@ public static class MultiSelectionPromptExtensions
     }
 
     /// <summary>
+    /// Adds choice tree.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="rootChoice">The tree's root.</param>
+    /// <param name="getChildChoices">A function to get node child choices.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static MultiSelectionPrompt<T> AddChoiceTree<T>(this MultiSelectionPrompt<T> obj, T rootChoice, Func<T, IEnumerable<T>> getChildChoices)
+        where T : notnull
+    {
+        var multiSelectionItem = obj.AddChoice(rootChoice);
+        AddChildChoice(
+            getChildChoices,
+            rootChoice,
+            multiSelectionItem,
+            rootChoice: true);
+        return obj;
+
+        static void AddChildChoice(
+            Func<T, IEnumerable<T>> getChildChoices,
+            T parentChoice,
+            ISelectionItem<T> selectionItem,
+            bool rootChoice = false)
+        {
+            if (!rootChoice)
+            {
+                selectionItem = selectionItem.AddChild(parentChoice);
+            }
+
+            foreach (var childChoice in getChildChoices(parentChoice))
+            {
+                AddChildChoice(
+                    getChildChoices,
+                    childChoice,
+                    selectionItem);
+            }
+        }
+    }
+
+    /// <summary>
     /// Marks an item as selected.
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>

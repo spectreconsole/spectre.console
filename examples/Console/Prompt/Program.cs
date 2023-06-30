@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Spectre.Console;
 
 namespace Prompt
@@ -26,6 +28,9 @@ namespace Prompt
             WriteDivider("Lists");
             var fruit = AskFruit();
 
+            WriteDivider("Prompt Tree");
+            var deepSpaceObjects = AskDeepSpaceObjects();
+
             WriteDivider("Choices");
             var sport = AskSport();
 
@@ -52,6 +57,7 @@ namespace Prompt
                 .BorderColor(Color.Grey)
                 .AddRow("[grey]Name[/]", name)
                 .AddRow("[grey]Favorite fruit[/]", fruit)
+                .AddRow("[grey]Favorite DSOs[/]", string.Join(", ", deepSpaceObjects))
                 .AddRow("[grey]Favorite sport[/]", sport)
                 .AddRow("[grey]Age[/]", age.ToString())
                 .AddRow("[grey]Password[/]", password)
@@ -117,6 +123,62 @@ namespace Prompt
 
             AnsiConsole.MarkupLine("You selected: [yellow]{0}[/]", fruit);
             return fruit;
+        }
+
+        public static IEnumerable<string> AskDeepSpaceObjects()
+        {
+            var tree =
+                new SelectableItems(
+                    "All",
+                    new SelectableItems(
+                        "Galaxies",
+                        new SelectableItems(
+                            "Spiral",
+                            new SelectableItem("Milky Way"),
+                            new SelectableItem("M31 (Andromeda)")),
+                        new SelectableItems(
+                            "Elliptical",
+                            new SelectableItems("M87 (Virgo A)"),
+                            new SelectableItems("M49 (NGC 4472)"))),
+                    new SelectableItems(
+                        "Globular Clusters",
+                        new SelectableItem("NGC 5139 (Omega Centauri)"),
+                        new SelectableItem("M13 (Hercules)"),
+                        new SelectableItem("M3"),
+                        new SelectableItem("M5")),
+                    new SelectableItems(
+                        "Open Clusters",
+                        new SelectableItem("M45 (The Pleiades)"),
+                        new SelectableItem("M44 (The Beehive Cluster)"),
+                        new SelectableItem("M6 (the Butterfly Cluster)"),
+                        new SelectableItem("M7 (Ptolemy's Cluster)")),
+                    new SelectableItems(
+                        "Nebulas",
+                        new SelectableItems(
+                            "Emission",
+                            new SelectableItem("M42 (Orion Nebula)"),
+                            new SelectableItem("M16 (Eagle Nebula)")),
+                        new SelectableItems(
+                            "Planetary",
+                            new SelectableItem("M57 (Ring Nebula)"),
+                            new SelectableItem("M27 (Dumbbell Nebula)"))));
+
+            return AnsiConsole.Prompt(
+                    new MultiSelectionPrompt<SelectableItem>()
+                        .AddChoiceTree(
+                            tree,
+                            selectableItem =>
+                                selectableItem is SelectableItems selectableItems
+                                    ? selectableItems.Children
+                                    : Enumerable.Empty<SelectableItem>())
+                        .PageSize(15)
+                        .Title("What are your favorite DSOs?")
+                        .HighlightStyle(
+                            new Style(
+                                Color.Black,
+                                Color.SteelBlue1))
+                        .UseConverter(selectable => selectable.Name))
+                .Select(selectableItem => selectableItem.Name);
         }
 
         public static string AskSport()
