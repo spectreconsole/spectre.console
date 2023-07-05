@@ -18,7 +18,7 @@ public sealed class PercentageColumn : ProgressColumn
     /// <summary>
     /// Gets or sets style for a failed task.
     /// </summary>
-    public Style FailedStype { get; set; } = new Style(foreground: Color.Red);
+    public Style FailedStyle { get; set; } = new Style(foreground: Color.Red);
 
     /// <inheritdoc/>
     public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
@@ -27,7 +27,7 @@ public sealed class PercentageColumn : ProgressColumn
         var style = Style;
         if (task.IsFailed)
         {
-            style = FailedStype;
+            style = FailedStyle;
         }
         else if (percentage == 100)
         {
