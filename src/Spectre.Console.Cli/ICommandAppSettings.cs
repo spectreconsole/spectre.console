@@ -16,6 +16,15 @@ public interface ICommandAppSettings
     string? ApplicationVersion { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating how many examples from direct children to show in the help text.
+    /// </summary>
+    /// <remarks>
+    /// The <see cref="HelpWriter"/> uses examples from a command's direct children
+    /// when no examples have been explicity set on the command itself.
+    /// </remarks>
+    int MaximumIndirectExamples { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether any default values for command options are shown in the help text.
     /// </summary>
     bool ShowOptionDefaultValues { get; set; }

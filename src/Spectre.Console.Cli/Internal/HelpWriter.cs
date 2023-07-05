@@ -51,8 +51,8 @@ internal static class HelpWriter
             var parameters = new List<HelpOption>();
             parameters.Add(new HelpOption("h", "help", null, null, "Prints help information", null));
 
-            // At the root and no default command?
-            if (command == null && model?.DefaultCommand == null)
+            // At the root?
+            if ((command == null || command?.Parent == null) && !(command?.IsBranch ?? false))
             {
                 parameters.Add(new HelpOption("v", "version", null, null, "Prints version information", null));
             }
@@ -67,12 +67,12 @@ internal static class HelpWriter
         }
     }
 
-    public static IEnumerable<IRenderable> Write(CommandModel model, bool writeOptionsDefaultValues)
+    public static IEnumerable<IRenderable> Write(CommandModel model, int maxIndirectExamples, bool writeOptionsDefaultValues)
     {
-        return WriteCommand(model, null, writeOptionsDefaultValues);
+        return WriteCommand(model, null, maxIndirectExamples, writeOptionsDefaultValues);
     }
 
-    public static IEnumerable<IRenderable> WriteCommand(CommandModel model, CommandInfo? command, bool writeOptionsDefaultValues)
+    public static IEnumerable<IRenderable> WriteCommand(CommandModel model, CommandInfo? command, int maxIndirectExamples, bool writeOptionsDefaultValues)
     {
         var container = command as ICommandContainer ?? model;
         var isDefaultCommand = command?.IsDefaultCommand ?? false;
@@ -80,7 +80,7 @@ internal static class HelpWriter
         var result = new List<IRenderable>();
         result.AddRange(GetDescription(command));
         result.AddRange(GetUsage(model, command));
-        result.AddRange(GetExamples(model, command));
+        result.AddRange(GetExamples(model, command, maxIndirectExamples));
         result.AddRange(GetArguments(command));
         result.AddRange(GetOptions(model, command, writeOptionsDefaultValues));
         result.AddRange(GetCommands(model, container, isDefaultCommand));
@@ -159,9 +159,27 @@ internal static class HelpWriter
                 }
             }
 
-            if (command.IsBranch)
+            if (command.IsBranch && command.DefaultCommand == null)
             {
+                // The user must specify the command
                 parameters.Add("[aqua]<COMMAND>[/]");
+            }
+            else if (command.IsBranch && command.DefaultCommand != null && command.Children.Count > 0)
+            {
+                // We are on a branch with a default commnd
+                // The user can optionally specify the command
+                parameters.Add("[aqua][[COMMAND]][/]");
+            }
+            else if (command.IsDefaultCommand)
+            {
+                var commands = model.Commands.Where(x => !x.IsHidden && !x.IsDefaultCommand).ToList();
+
+                if (commands.Count > 0)
+                {
+                    // Commands other than the default are present
+                    // So make these optional in the usage statement
+                    parameters.Add("[aqua][[COMMAND]][/]");
+                }
             }
         }
 
@@ -174,7 +192,7 @@ internal static class HelpWriter
         };
     }
 
-    private static IEnumerable<IRenderable> GetExamples(CommandModel model, CommandInfo? command)
+    private static IEnumerable<IRenderable> GetExamples(CommandModel model, CommandInfo? command, int maxIndirectExamples)
     {
         var maxExamples = int.MaxValue;
 
@@ -183,7 +201,7 @@ internal static class HelpWriter
         {
             // Since we're not checking direct examples,
             // make sure that we limit the number of examples.
-            maxExamples = 5;
+            maxExamples = maxIndirectExamples;
 
             // Get the current root command.
             var root = command ?? (ICommandContainer)model;
@@ -212,7 +230,7 @@ internal static class HelpWriter
             }
         }
 
-        if (examples.Count > 0)
+        if (Math.Min(maxExamples, examples.Count) > 0)
         {
             var composer = new Composer();
             composer.LineBreak();
@@ -371,10 +389,7 @@ internal static class HelpWriter
         return result;
     }
 
-    private static IEnumerable<IRenderable> GetCommands(
-        CommandModel model,
-        ICommandContainer command,
-        bool isDefaultCommand)
+    private static IEnumerable<IRenderable> GetCommands(CommandModel model, ICommandContainer command, bool isDefaultCommand)
     {
         var commands = isDefaultCommand ? model.Commands : command.Commands;
         commands = commands.Where(x => !x.IsHidden).ToList();

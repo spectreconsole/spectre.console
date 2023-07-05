@@ -362,7 +362,7 @@ public sealed partial class CommandAppTests
         });
 
         // When
-        var result = app.Run("-c", "0", "-v", "50", "ABBA", "Herreys");
+        var result = app.Run("-c", "0", "--value", "50", "ABBA", "Herreys");
 
         // Then
         result.ExitCode.ShouldBe(0);

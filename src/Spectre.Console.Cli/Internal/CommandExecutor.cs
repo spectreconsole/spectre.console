@@ -10,12 +10,16 @@ internal sealed class CommandExecutor
         _registrar.Register(typeof(DefaultPairDeconstructor), typeof(DefaultPairDeconstructor));
     }
 
+#pragma warning disable SA1507 // Code should not contain multiple blank lines in a row
     public async Task<int> Execute(IConfiguration configuration, IEnumerable<string> args)
     {
         if (configuration == null)
         {
             throw new ArgumentNullException(nameof(configuration));
         }
+
+        args ??= new List<string>();
+
 
         _registrar.RegisterInstance(typeof(IConfiguration), configuration);
         _registrar.RegisterLazy(typeof(IAnsiConsole), () => configuration.Settings.Console.GetConsole());
@@ -25,33 +29,26 @@ internal sealed class CommandExecutor
         _registrar.RegisterInstance(typeof(CommandModel), model);
         _registrar.RegisterDependencies(model);
 
-        // No default command?
-        if (model.DefaultCommand == null)
+
+        // Asking for version? Kind of a hack, but it's alright.
+        // We should probably make this a bit better in the future.
+        if (args.Contains("-v") || args.Contains("--version"))
         {
-            // Got at least one argument?
-            var firstArgument = args.FirstOrDefault();
-            if (firstArgument != null)
-            {
-                // Asking for version? Kind of a hack, but it's alright.
-                // We should probably make this a bit better in the future.
-                if (firstArgument.Equals("--version", StringComparison.OrdinalIgnoreCase) ||
-                    firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase))
-                {
-                    var console = configuration.Settings.Console.GetConsole();
-                    console.WriteLine(ResolveApplicationVersion(configuration));
-                    return 0;
-                }
-            }
+            var console = configuration.Settings.Console.GetConsole();
+            console.WriteLine(ResolveApplicationVersion(configuration));
+            return 0;
         }
+
 
         // Parse and map the model against the arguments.
         var parsedResult = ParseCommandLineArguments(model, configuration.Settings, args);
+
 
         // Currently the root?
         if (parsedResult?.Tree == null)
         {
             // Display help.
-            configuration.Settings.Console.SafeRender(HelpWriter.Write(model, configuration.Settings.ShowOptionDefaultValues));
+            configuration.Settings.Console.SafeRender(HelpWriter.Write(model, configuration.Settings.MaximumIndirectExamples, configuration.Settings.ShowOptionDefaultValues));
             return 0;
         }
 
@@ -60,7 +57,7 @@ internal sealed class CommandExecutor
         if (leaf.Command.IsBranch || leaf.ShowHelp)
         {
             // Branches can't be executed. Show help.
-            configuration.Settings.Console.SafeRender(HelpWriter.WriteCommand(model, leaf.Command, configuration.Settings.ShowOptionDefaultValues));
+            configuration.Settings.Console.SafeRender(HelpWriter.WriteCommand(model, leaf.Command, configuration.Settings.MaximumIndirectExamples, configuration.Settings.ShowOptionDefaultValues));
             return leaf.ShowHelp ? 0 : 1;
         }
 
@@ -68,9 +65,10 @@ internal sealed class CommandExecutor
         if (leaf.Command.IsDefaultCommand && args.Count() == 0 && leaf.Command.Parameters.Any(p => p.Required))
         {
             // Display help for default command.
-            configuration.Settings.Console.SafeRender(HelpWriter.WriteCommand(model, leaf.Command, configuration.Settings.ShowOptionDefaultValues));
+            configuration.Settings.Console.SafeRender(HelpWriter.WriteCommand(model, leaf.Command, configuration.Settings.MaximumIndirectExamples, configuration.Settings.ShowOptionDefaultValues));
             return 1;
         }
+
 
         // Register the arguments with the container.
         _registrar.RegisterInstance(typeof(CommandTreeParserResult), parsedResult);
@@ -85,6 +83,7 @@ internal sealed class CommandExecutor
             return await Execute(leaf, parsedResult.Tree, context, resolver, configuration).ConfigureAwait(false);
         }
     }
+#pragma warning restore SA1507 // Code should not contain multiple blank lines in a row
 
     private CommandTreeParserResult? ParseCommandLineArguments(CommandModel model, CommandAppSettings settings, IEnumerable<string> args)
     {
