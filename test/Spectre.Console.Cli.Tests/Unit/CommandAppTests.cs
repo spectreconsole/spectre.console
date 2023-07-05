@@ -10,50 +10,14 @@ public sealed partial class CommandAppTests
         app.Configure(config =>
         {
             config.PropagateExceptions();
-            config.AddBranch<AnimalSettings>("animal", animal =>
-            {
-                animal.AddBranch<MammalSettings>("mammal", mammal =>
-                {
-                    mammal.AddCommand<DogCommand>("dog");
-                    mammal.AddCommand<HorseCommand>("horse");
-                });
-            });
-        });
-
-        // When
-        var result = app.Run(new[]
-        {
-            "animal", "--alive", "mammal", "--name",
-            "Rufus", "dog", "12", "--good-boy",
-        });
-
-        // Then
-        result.ExitCode.ShouldBe(0);
-        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
-        {
-            dog.Age.ShouldBe(12);
-            dog.GoodBoy.ShouldBe(true);
-            dog.Name.ShouldBe("Rufus");
-            dog.IsAlive.ShouldBe(true);
-        });
-    }
-
-    [Fact]
-    public void Should_Pass_Case_2()
-    {
-        // Given
-        var app = new CommandAppTester();
-        app.Configure(config =>
-        {
-            config.PropagateExceptions();
             config.AddCommand<DogCommand>("dog");
         });
 
         // When
         var result = app.Run(new[]
         {
-            "dog", "12", "4", "--good-boy",
-            "--name", "Rufus", "--alive",
+                "dog", "12", "4", "--good-boy",
+                "--name", "Rufus", "--alive",
         });
 
         // Then
@@ -69,7 +33,7 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
-    public void Should_Pass_Case_3()
+    public void Should_Pass_Case_2()
     {
         // Given
         var app = new CommandAppTester();
@@ -197,7 +161,7 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
-    public void Should_Pass_Case_7()
+    public void Should_Pass_Case_3()
     {
         // Given
         var app = new CommandAppTester();
@@ -429,6 +393,50 @@ public sealed partial class CommandAppTests
         result.Settings.ShouldBeOfType<OptionalArgumentWithDefaultValueAndTypeConverterSettings>().And(settings =>
         {
             settings.Greeting.ShouldBe(5);
+        });
+    }
+
+    [Fact]
+    public void Should_Assign_Array_Default_Value_To_Command_Option()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.SetDefaultCommand<GenericCommand<OptionWithArrayOfEnumDefaultValueSettings>>();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+        });
+
+        // When
+        var result = app.Run(Array.Empty<string>());
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<OptionWithArrayOfEnumDefaultValueSettings>().And(settings =>
+        {
+            settings.Days.ShouldBe(new[] { DayOfWeek.Sunday, DayOfWeek.Saturday });
+        });
+    }
+
+    [Fact]
+    public void Should_Assign_Array_Default_Value_To_Command_Option_Using_Converter_If_Necessary()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.SetDefaultCommand<GenericCommand<OptionWithArrayOfStringDefaultValueAndTypeConverterSettings>>();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+        });
+
+        // When
+        var result = app.Run(Array.Empty<string>());
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<OptionWithArrayOfStringDefaultValueAndTypeConverterSettings>().And(settings =>
+        {
+            settings.Numbers.ShouldBe(new[] { 2, 3 });
         });
     }
 
@@ -905,6 +913,86 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
+    public void Should_Run_The_Default_Command()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.SetDefaultCommand<DogCommand>();
+
+        // When
+        var result = app.Run(new[]
+        {
+            "4", "12", "--good-boy", "--name", "Rufus",
+        });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
+        {
+            dog.Legs.ShouldBe(4);
+            dog.Age.ShouldBe(12);
+            dog.GoodBoy.ShouldBe(true);
+            dog.Name.ShouldBe("Rufus");
+        });
+    }
+
+    [Fact]
+    public void Should_Run_The_Default_Command_Not_The_Named_Command()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<HorseCommand>("horse");
+        });
+        app.SetDefaultCommand<DogCommand>();
+
+        // When
+        var result = app.Run(new[]
+        {
+            "4", "12", "--good-boy", "--name", "Rufus",
+        });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<DogSettings>().And(dog =>
+        {
+            dog.Legs.ShouldBe(4);
+            dog.Age.ShouldBe(12);
+            dog.GoodBoy.ShouldBe(true);
+            dog.Name.ShouldBe("Rufus");
+        });
+    }
+
+    [Fact]
+    public void Should_Run_The_Named_Command_Not_The_Default_Command()
+    {
+        // Given
+        var app = new CommandAppTester();
+        app.Configure(config =>
+        {
+            config.PropagateExceptions();
+            config.AddCommand<HorseCommand>("horse");
+        });
+        app.SetDefaultCommand<DogCommand>();
+
+        // When
+        var result = app.Run(new[]
+        {
+            "horse", "4", "--name", "Arkle",
+        });
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Settings.ShouldBeOfType<HorseSettings>().And(horse =>
+        {
+            horse.Legs.ShouldBe(4);
+            horse.Name.ShouldBe("Arkle");
+        });
+    }
+
+    [Fact]
     public void Should_Set_Command_Name_In_Context()
     {
         // Given
@@ -1048,6 +1136,37 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        public async void Should_Execute_Async_Delegate_Command_At_Root_Level()
+        {
+            // Given
+            var dog = default(DogSettings);
+            var data = 0;
+
+            var app = new CommandApp();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddAsyncDelegate<DogSettings>(
+                    "foo", (context, settings) =>
+                    {
+                        dog = settings;
+                        data = (int)context.Data;
+                        return Task.FromResult(1);
+                    }).WithData(2);
+            });
+
+            // When
+            var result = await app.RunAsync(new[] { "foo", "4", "12" });
+
+            // Then
+            result.ShouldBe(1);
+            dog.ShouldNotBeNull();
+            dog.Age.ShouldBe(12);
+            dog.Legs.ShouldBe(4);
+            data.ShouldBe(2);
+        }
+
+        [Fact]
         public void Should_Execute_Nested_Delegate_Command()
         {
             // Given
@@ -1080,68 +1199,39 @@ public sealed partial class CommandAppTests
             dog.Legs.ShouldBe(4);
             data.ShouldBe(2);
         }
-    }
 
-    public sealed class Remaining_Arguments
-    {
         [Fact]
-        public void Should_Register_Remaining_Parsed_Arguments_With_Context()
+        public async void Should_Execute_Nested_Async_Delegate_Command()
         {
             // Given
-            var app = new CommandAppTester();
+            var dog = default(DogSettings);
+            var data = 0;
+
+            var app = new CommandApp();
             app.Configure(config =>
             {
                 config.PropagateExceptions();
-                config.AddBranch<AnimalSettings>("animal", animal =>
+                config.AddBranch<AnimalSettings>("foo", foo =>
                 {
-                    animal.AddCommand<DogCommand>("dog");
+                    foo.AddAsyncDelegate<DogSettings>(
+                        "bar", (context, settings) =>
+                        {
+                            dog = settings;
+                            data = (int)context.Data;
+                            return Task.FromResult(1);
+                        }).WithData(2);
                 });
             });
 
             // When
-            var result = app.Run(new[]
-            {
-                "animal", "4", "dog", "12", "--",
-                "--foo", "bar", "--foo", "baz",
-                "-bar", "\"baz\"", "qux",
-            });
+            var result = await app.RunAsync(new[] { "foo", "4", "bar", "12" });
 
             // Then
-            result.Context.Remaining.Parsed.Count.ShouldBe(4);
-            result.Context.ShouldHaveRemainingArgument("foo", values: new[] { "bar", "baz" });
-            result.Context.ShouldHaveRemainingArgument("b", values: new[] { (string)null });
-            result.Context.ShouldHaveRemainingArgument("a", values: new[] { (string)null });
-            result.Context.ShouldHaveRemainingArgument("r", values: new[] { (string)null });
-        }
-
-        [Fact]
-        public void Should_Register_Remaining_Raw_Arguments_With_Context()
-        {
-            // Given
-            var app = new CommandAppTester();
-            app.Configure(config =>
-            {
-                config.PropagateExceptions();
-                config.AddBranch<AnimalSettings>("animal", animal =>
-                {
-                    animal.AddCommand<DogCommand>("dog");
-                });
-            });
-
-            // When
-            var result = app.Run(new[]
-            {
-                "animal", "4", "dog", "12", "--",
-                "--foo", "bar", "-bar", "\"baz\"", "qux",
-            });
-
-            // Then
-            result.Context.Remaining.Raw.Count.ShouldBe(5);
-            result.Context.Remaining.Raw[0].ShouldBe("--foo");
-            result.Context.Remaining.Raw[1].ShouldBe("bar");
-            result.Context.Remaining.Raw[2].ShouldBe("-bar");
-            result.Context.Remaining.Raw[3].ShouldBe("\"baz\"");
-            result.Context.Remaining.Raw[4].ShouldBe("qux");
+            result.ShouldBe(1);
+            dog.ShouldNotBeNull();
+            dog.Age.ShouldBe(12);
+            dog.Legs.ShouldBe(4);
+            data.ShouldBe(2);
         }
     }
 }

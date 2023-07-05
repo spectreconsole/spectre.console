@@ -14,7 +14,7 @@ public interface IConfigurator
     /// Adds an example of how to use the application.
     /// </summary>
     /// <param name="args">The example arguments.</param>
-    void AddExample(string[] args);
+    void AddExample(params string[] args);
 
     /// <summary>
     /// Adds a command.
@@ -33,6 +33,16 @@ public interface IConfigurator
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
     ICommandConfigurator AddDelegate<TSettings>(string name, Func<CommandContext, TSettings, int> func)
+        where TSettings : CommandSettings;
+
+    /// <summary>
+    /// Adds a command that executes an async delegate.
+    /// </summary>
+    /// <typeparam name="TSettings">The command setting type.</typeparam>
+    /// <param name="name">The name of the command.</param>
+    /// <param name="func">The delegate to execute as part of command execution.</param>
+    /// <returns>A command configurator that can be used to configure the command further.</returns>
+    ICommandConfigurator AddAsyncDelegate<TSettings>(string name, Func<CommandContext, TSettings, Task<int>> func)
         where TSettings : CommandSettings;
 
     /// <summary>

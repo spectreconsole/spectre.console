@@ -13,7 +13,7 @@ public sealed class PercentageColumn : ProgressColumn
     /// <summary>
     /// Gets or sets the style for a completed task.
     /// </summary>
-    public Style CompletedStyle { get; set; } = new Style(foreground: Color.Green);
+    public Style CompletedStyle { get; set; } = Color.Green;
 
     /// <summary>
     /// Gets or sets style for a failed task.

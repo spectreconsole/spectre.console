@@ -18,9 +18,9 @@ internal sealed class ProgressBar : Renderable, IHasCulture
     public bool IsIndeterminate { get; set; }
     public CultureInfo? Culture { get; set; }
 
-    public Style CompletedStyle { get; set; } = new Style(foreground: Color.Yellow);
-    public Style FinishedStyle { get; set; } = new Style(foreground: Color.Green);
-    public Style RemainingStyle { get; set; } = new Style(foreground: Color.Grey);
+    public Style CompletedStyle { get; set; } = Color.Yellow;
+    public Style FinishedStyle { get; set; } = Color.Green;
+    public Style RemainingStyle { get; set; } = Color.Grey;
     public Style IndeterminateStyle { get; set; } = DefaultPulseStyle;
     public Style FailedStyle { get; set; } = new Style(foreground: Color.Red);
 
@@ -69,11 +69,6 @@ internal sealed class ProgressBar : Renderable, IHasCulture
             barCount = Math.Max(0, barCount);
         }
 
-        if (barCount < 0)
-        {
-            yield break;
-        }
-
         yield return new Segment(new string(bar, barCount), style);
 
         if (ShowValue)
@@ -111,14 +106,13 @@ internal sealed class ProgressBar : Renderable, IHasCulture
         {
             // For 1-bit and 3-bit colors, fall back to
             // a simpler versions with only two colors.
-            if (options.ColorSystem == ColorSystem.NoColors ||
-                options.ColorSystem == ColorSystem.Legacy)
+            if (options.ColorSystem is ColorSystem.NoColors or ColorSystem.Legacy)
             {
                 // First half of the pulse
                 var segments = Enumerable.Repeat(new Segment(bar, new Style(style.Foreground)), PULSESIZE / 2);
 
                 // Second half of the pulse
-                var legacy = options.ColorSystem == ColorSystem.NoColors || options.ColorSystem == ColorSystem.Legacy;
+                var legacy = options.ColorSystem is ColorSystem.NoColors or ColorSystem.Legacy;
                 var bar2 = legacy ? " " : bar;
                 segments = segments.Concat(Enumerable.Repeat(new Segment(bar2, new Style(style.Background)), PULSESIZE - (PULSESIZE / 2)));
 

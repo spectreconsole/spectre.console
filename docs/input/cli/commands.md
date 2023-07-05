@@ -37,8 +37,8 @@ app.Configure(config =>
     config.AddCommand<HelloCommand>("hello")
         .WithAlias("hola")
         .WithDescription("Say hello")
-        .WithExample(new []{"hello", "Phil"})
-        .WithExample(new []{"hello", "Phil", "--count", "4"});
+        .WithExample("hello", "Phil")
+        .WithExample("hello", "Phil", "--count", "4");
 });
 ```
 

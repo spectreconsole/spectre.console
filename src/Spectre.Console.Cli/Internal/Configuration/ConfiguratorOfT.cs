@@ -22,6 +22,15 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         _command.Examples.Add(args);
     }
 
+    public void SetDefaultCommand<TDefaultCommand>()
+        where TDefaultCommand : class, ICommandLimiter<TSettings>
+    {
+        var defaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(
+            CliConstants.DefaultCommandName, isDefaultCommand: true);
+
+        _command.Children.Add(defaultCommand);
+    }
+
     public void HideBranch()
     {
         _command.IsHidden = true;
@@ -30,7 +39,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
     public ICommandConfigurator AddCommand<TCommand>(string name)
         where TCommand : class, ICommandLimiter<TSettings>
     {
-        var command = ConfiguredCommand.FromType<TCommand>(name);
+        var command = ConfiguredCommand.FromType<TCommand>(name, isDefaultCommand: false);
         var configurator = new CommandConfigurator(command);
 
         _command.Children.Add(command);
@@ -38,6 +47,16 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
     }
 
     public ICommandConfigurator AddDelegate<TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, int> func)
+        where TDerivedSettings : TSettings
+    {
+        var command = ConfiguredCommand.FromDelegate<TDerivedSettings>(
+            name, (context, settings) => Task.FromResult(func(context, (TDerivedSettings)settings)));
+
+        _command.Children.Add(command);
+        return new CommandConfigurator(command);
+    }
+
+    public ICommandConfigurator AddAsyncDelegate<TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, Task<int>> func)
         where TDerivedSettings : TSettings
     {
         var command = ConfiguredCommand.FromDelegate<TDerivedSettings>(

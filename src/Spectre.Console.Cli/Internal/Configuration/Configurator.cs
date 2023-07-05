@@ -20,7 +20,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         Examples = new List<string[]>();
     }
 
-    public void AddExample(string[] args)
+    public void AddExample(params string[] args)
     {
         Examples.Add(args);
     }
@@ -36,11 +36,19 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
     public ICommandConfigurator AddCommand<TCommand>(string name)
         where TCommand : class, ICommand
     {
-        var command = Commands.AddAndReturn(ConfiguredCommand.FromType<TCommand>(name, false));
+        var command = Commands.AddAndReturn(ConfiguredCommand.FromType<TCommand>(name, isDefaultCommand: false));
         return new CommandConfigurator(command);
     }
 
     public ICommandConfigurator AddDelegate<TSettings>(string name, Func<CommandContext, TSettings, int> func)
+        where TSettings : CommandSettings
+    {
+        var command = Commands.AddAndReturn(ConfiguredCommand.FromDelegate<TSettings>(
+            name, (context, settings) => Task.FromResult(func(context, (TSettings)settings))));
+        return new CommandConfigurator(command);
+    }
+
+    public ICommandConfigurator AddAsyncDelegate<TSettings>(string name, Func<CommandContext, TSettings, Task<int>> func)
         where TSettings : CommandSettings
     {
         var command = Commands.AddAndReturn(ConfiguredCommand.FromDelegate<TSettings>(

@@ -7,24 +7,25 @@ namespace Spectre.Console;
 
 internal static class AnsiDetector
 {
-    private static readonly Regex[] _regexes = new[]
+    private static readonly Regex[] _regexes =
     {
-        new Regex("^xterm"), // xterm, PuTTY, Mintty
-        new Regex("^rxvt"), // RXVT
-        new Regex("^eterm"), // Eterm
-        new Regex("^screen"), // GNU screen, tmux
-        new Regex("tmux"), // tmux
-        new Regex("^vt100"), // DEC VT series
-        new Regex("^vt102"), // DEC VT series
-        new Regex("^vt220"), // DEC VT series
-        new Regex("^vt320"), // DEC VT series
-        new Regex("ansi"), // ANSI
-        new Regex("scoansi"), // SCO ANSI
-        new Regex("cygwin"), // Cygwin, MinGW
-        new Regex("linux"), // Linux console
-        new Regex("konsole"), // Konsole
-        new Regex("bvterm"), // Bitvise SSH Client
-        new Regex("^st-256color"), // Suckless Simple Terminal, st
+        new("^xterm"), // xterm, PuTTY, Mintty
+        new("^rxvt"), // RXVT
+        new("^eterm"), // Eterm
+        new("^screen"), // GNU screen, tmux
+        new("tmux"), // tmux
+        new("^vt100"), // DEC VT series
+        new("^vt102"), // DEC VT series
+        new("^vt220"), // DEC VT series
+        new("^vt320"), // DEC VT series
+        new("ansi"), // ANSI
+        new("scoansi"), // SCO ANSI
+        new("cygwin"), // Cygwin, MinGW
+        new("linux"), // Linux console
+        new("konsole"), // Konsole
+        new("bvterm"), // Bitvise SSH Client
+        new("^st-256color"), // Suckless Simple Terminal, st
+        new("alacritty"), // Alacritty
     };
 
     public static (bool SupportsAnsi, bool LegacyConsole) Detect(bool stdError, bool upgrade)
@@ -61,7 +62,7 @@ internal static class AnsiDetector
         return (false, true);
     }
 
-    internal static class Windows
+    private static class Windows
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:Field names should not contain underscore")]
         private const int STD_OUTPUT_HANDLE = -11;

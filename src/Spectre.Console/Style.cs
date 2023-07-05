@@ -133,6 +133,15 @@ public sealed class Style : IEquatable<Style>
     }
 
     /// <summary>
+    /// Implicitly converts <see cref="Color"/> into a <see cref="Style"/> with a foreground color.
+    /// </summary>
+    /// <param name="color">The foreground color.</param>
+    public static implicit operator Style(Color color)
+    {
+        return new Style(foreground: color);
+    }
+
+    /// <summary>
     /// Converts the string representation of a style to its <see cref="Style"/> equivalent.
     /// </summary>
     /// <param name="text">A string containing a style to parse.</param>

@@ -3,6 +3,19 @@ namespace Spectre.Console.Tests.Unit;
 public sealed class StyleTests
 {
     [Fact]
+    public void Should_Convert_From_Color_As_Expected()
+    {
+        // Given
+        Style style;
+
+        // When
+        style = Color.Red;
+
+        // Then
+        style.Foreground.ShouldBe(Color.Red);
+    }
+
+    [Fact]
     public void Should_Combine_Two_Styles_As_Expected()
     {
         // Given

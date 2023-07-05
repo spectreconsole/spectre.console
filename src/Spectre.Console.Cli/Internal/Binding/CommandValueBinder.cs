@@ -65,6 +65,11 @@ internal sealed class CommandValueBinder
 
     private object GetArray(CommandParameter parameter, object? value)
     {
+        if (value is Array)
+        {
+            return value;
+        }
+
         // Add a new item to the array
         var array = (Array?)_lookup.GetValue(parameter);
         Array newArray;

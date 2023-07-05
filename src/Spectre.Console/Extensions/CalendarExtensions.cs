@@ -74,7 +74,7 @@ public static class CalendarExtensions
             throw new ArgumentNullException(nameof(calendar));
         }
 
-        calendar.HightlightStyle = style ?? Style.Plain;
+        calendar.HighlightStyle = style ?? Style.Plain;
         return calendar;
     }
 

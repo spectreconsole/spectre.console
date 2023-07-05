@@ -8,9 +8,8 @@ internal sealed class CommandInfo : ICommandContainer
     public object? Data { get; }
     public Type? CommandType { get; }
     public Type SettingsType { get; }
-    public Func<CommandContext, CommandSettings, int>? Delegate { get; }
+    public Func<CommandContext, CommandSettings, Task<int>>? Delegate { get; }
     public bool IsDefaultCommand { get; }
-    public bool IsHidden { get; }
     public CommandInfo? Parent { get; }
     public IList<CommandInfo> Children { get; }
     public IList<CommandParameter> Parameters { get; }
@@ -18,6 +17,10 @@ internal sealed class CommandInfo : ICommandContainer
 
     public bool IsBranch => CommandType == null && Delegate == null;
     IList<CommandInfo> ICommandContainer.Commands => Children;
+
+    // only branches can have a default command
+    public CommandInfo? DefaultCommand => IsBranch ? Children.FirstOrDefault(c => c.IsDefaultCommand) : null;
+    public bool IsHidden { get; }
 
     public CommandInfo(CommandInfo? parent, ConfiguredCommand prototype)
     {
