@@ -121,6 +121,29 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        [Expectation("Branch_Default_Greeter")]
+        public Task Should_Output_Branch_With_Default_Correctly()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+                configurator.AddBranch<OptionalArgumentWithDefaultValueSettings>("branch", animal =>
+                {
+                    animal.SetDefaultCommand<GreeterCommand>();
+                    animal.AddCommand<GreeterCommand>("greeter");
+                });
+            });
+
+            // When
+            var result = fixture.Run("branch", "--help");
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
         [Expectation("Command_Hide_Default")]
         public Task Should_Not_Print_Default_Column()
         {
@@ -226,7 +249,7 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
-        [Expectation("Greeter_Default")]
+        [Expectation("Default_Greeter")]
         public Task Should_Not_Output_Default_Command_When_Command_Has_No_Required_Parameters_And_Is_Called_Without_Args()
         {
             // Given
@@ -239,30 +262,6 @@ public sealed partial class CommandAppTests
 
             // When
             var result = fixture.Run();
-
-            // Then
-            return Verifier.Verify(result.Output);
-        }
-
-        [Fact]
-        [Expectation("Branch_Greeter_Default")]
-        public Task Should_Output_Branch_With_Default_Correctly()
-        {
-            // Given
-            var fixture = new CommandAppTester();
-            fixture.SetDefaultCommand<GreeterCommand>();
-            fixture.Configure(configurator =>
-            {
-                configurator.SetApplicationName("myapp");
-                configurator.AddBranch<OptionalArgumentWithDefaultValueSettings>("branch", animal =>
-                {
-                    animal.SetDefaultCommand<GreeterCommand>();
-                    animal.AddCommand<GreeterCommand>("greeter");
-                });
-            });
-
-            // When
-            var result = fixture.Run("branch", "--help");
 
             // Then
             return Verifier.Verify(result.Output);

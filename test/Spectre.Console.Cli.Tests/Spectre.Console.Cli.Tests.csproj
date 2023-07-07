@@ -34,7 +34,7 @@
       <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
       <DependentUpon>%(ParentFile).cs</DependentUpon>
     </None>
-    <None Update="Expectations\Help\Greeter_Default.Output.verified.txt">
+    <None Update="Expectations\Help\Default_Greeter.Output.verified.txt">
       <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
       <DependentUpon>%(ParentFile).cs</DependentUpon>
     </None>
