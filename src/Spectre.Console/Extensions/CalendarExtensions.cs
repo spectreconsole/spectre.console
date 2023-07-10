@@ -62,20 +62,37 @@ public static class CalendarExtensions
     }
 
     /// <summary>
-    /// Sets the calendar's highlight <see cref="Style"/>.
+    /// Adds a calendar event.
     /// </summary>
     /// <param name="calendar">The calendar.</param>
-    /// <param name="style">The highlight style.</param>
+    /// <param name="description">The calendar event description.</param>
+    /// <param name="year">The year of the calendar event.</param>
+    /// <param name="month">The month of the calendar event.</param>
+    /// <param name="day">The day of the calendar event.</param>
+    /// <param name="style">The style of the calendar event.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Calendar HighlightStyle(this Calendar calendar, Style? style)
+    public static Calendar AddCalendarEvent(this Calendar calendar, string description, int year, int month, int day, Style style)
     {
         if (calendar is null)
         {
             throw new ArgumentNullException(nameof(calendar));
         }
 
-        calendar.HighlightStyle = style ?? Style.Plain;
+        calendar.CalendarEvents.Add(new CalendarEvent(description, year, month, day, style));
         return calendar;
+    }
+
+    /// <summary>
+    /// Adds a calendar event.
+    /// </summary>
+    /// <param name="calendar">The calendar to add the calendar event to.</param>
+    /// <param name="description">The calendar event description.</param>
+    /// <param name="date">The calendar event date.</param>
+    /// <param name="style">The style of the calendar event.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Calendar AddCalendarEvent(this Calendar calendar, string description, DateTime date, Style style)
+    {
+        return AddCalendarEvent(calendar, description, date.Year, date.Month, date.Day, style);
     }
 
     /// <summary>

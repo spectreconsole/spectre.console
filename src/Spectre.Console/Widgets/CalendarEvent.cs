@@ -26,13 +26,18 @@ public sealed class CalendarEvent
     public int Day { get; }
 
     /// <summary>
+    /// Gets the <see cref="Style"/> of the calendar event.
+    /// </summary>
+    public Style Style { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="CalendarEvent"/> class.
     /// </summary>
     /// <param name="year">The year of the calendar event.</param>
     /// <param name="month">The month of the calendar event.</param>
     /// <param name="day">The day of the calendar event.</param>
     public CalendarEvent(int year, int month, int day)
-        : this(string.Empty, year, month, day)
+        : this(string.Empty, year, month, day, null)
     {
     }
 
@@ -43,11 +48,13 @@ public sealed class CalendarEvent
     /// <param name="year">The year of the calendar event.</param>
     /// <param name="month">The month of the calendar event.</param>
     /// <param name="day">The day of the calendar event.</param>
-    public CalendarEvent(string description, int year, int month, int day)
+    /// <param name="style">The style of the calendar event.</param>
+    public CalendarEvent(string description, int year, int month, int day, Style? style = null)
     {
         Description = description ?? string.Empty;
         Year = year;
         Month = month;
         Day = day;
+        Style = style ?? Style.Plain;
     }
 }
