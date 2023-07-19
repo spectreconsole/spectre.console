@@ -1,7 +1,8 @@
+using Spectre.Console.Cli.Completion;
+
 namespace Spectre.Console.Cli;
 
 [Description("Generates a list of completion options for the given command.")]
-[SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes")]
 internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
 {
     private readonly CommandModel _model;
@@ -9,12 +10,10 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
     private readonly IAnsiConsole _writer;
     private readonly IConfiguration _configuration;
 
-    public CompleteCommand
-    (
+    public CompleteCommand(
         IConfiguration configuration,
-        CommandModel model
-        , ITypeResolver typeResolver
-    )
+        CommandModel model,
+        ITypeResolver typeResolver)
     {
         _model = model ?? throw new ArgumentNullException(nameof(model));
         _typeResolver = typeResolver;
@@ -53,8 +52,8 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
 
         // Return early if the only thing we got was "".
         if (commandElements == null ||
-           (commandElements.Count() == 1 &&
-            string.IsNullOrEmpty(commandElements.First())))
+           (commandElements.Length == 1 &&
+            string.IsNullOrEmpty(commandElements[0])))
         {
             return model.Commands.Where(cmd => !cmd.IsHidden)
                                  .Select(c => c.Name)
@@ -75,13 +74,13 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
                 // Because we support netstandard2.0, we can't use SkipLast, since it's not supported. Also negative indexes are a no go.
                 // There probably is a more elegant way to get this result that I just can't see now.
                 // context = commandElements.SkipLast(1).Last();
-                context = commandElements.ToArray()[commandElements.Count() - 2];
+                context = commandElements.ToArray()[commandElements.Length - 2];
             }
         }
         catch (CommandParseException)
         {
             // Assume that it's because the last commandElement was not complete, and omit that one.
-            var strippedCommandElements = commandElements.Take(commandElements.Count() - 1);
+            var strippedCommandElements = commandElements.Take(commandElements.Length - 1);
             if (strippedCommandElements.Any())
             {
                 parsedResult = parser.Parse(strippedCommandElements);
@@ -89,7 +88,6 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
                 partialElement = commandElements.Last().ToLowerInvariant();
             }
         }
-
 
         // Return command options based on our current context, filtered on any partial element we found.
         // If partial element = "", the StartsWith will return all options.
@@ -112,7 +110,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
 
         CompletionResult childCommands = parent.Children.Where(cmd => !cmd.IsHidden)
                               .Select(c => c.Name)
-                              .Where(n => partialElement == string.Empty || n.StartsWith(partialElement))
+                              .Where(n => string.IsNullOrEmpty(partialElement) || n.StartsWith(partialElement))
                               .ToArray();
 
         childCommands = childCommands.WithGeneratedSuggestions();
@@ -132,8 +130,8 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
                 .ToArray();
         }
 
+        // Prefer manual suggestions over generated ones
         return allResults
-            //Prefer manual suggestions over generated ones
             .OrderBy(s => s.IsGenerated)
             .SelectMany(s => s.Suggestions)
             .Distinct()
@@ -144,19 +142,24 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
     {
         // Trailing space: The first empty parameter should be completed
         // No trailing space: The last parameter should be completed
-        var hasTrailingSpace = args.LastOrDefault() == string.Empty;
+        var hasTrailingSpace = args.LastOrDefault()?.Length == 0;
         var lastIsCommandArgument = mapped.LastOrDefault()?.Parameter is CommandArgument;
 
         if (!hasTrailingSpace)
         {
-            if(!lastIsCommandArgument)
+            if (!lastIsCommandArgument)
             {
                 return new List<CompletionResult>();
             }
 
             var lastMap = mapped.Last();
             var lastArgument = lastMap.Parameter as CommandArgument;
-            var completions = CompleteCommandArgument(lastArgument, lastMap.Value);
+            if (lastArgument == null)
+            {
+                return new List<CompletionResult>();
+            }
+
+            var completions = CompleteCommandArgument(parent, lastArgument, lastMap.Value);
             if (completions == null)
             {
                 return new List<CompletionResult>();
@@ -181,7 +184,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
                 continue;
             }
 
-            var completions = CompleteCommandArgument(commandArgumentParameter, parameter.Value);
+            var completions = CompleteCommandArgument(parent, commandArgumentParameter, parameter.Value);
             if (completions == null)
             {
                 continue;
@@ -194,24 +197,35 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
         }
 
         return result;
+    }
 
-        ICompletionResult? CompleteCommandArgument(CommandArgument commandArgumentParameter, string partialElement)
+    private ICompletionResult? CompleteCommandArgument(CommandInfo parent, CommandArgument commandArgumentParameter, string? partialElement)
+    {
+        partialElement ??= string.Empty;
+
+        var commandType = parent.CommandType;
+        if (commandType == null)
         {
-            var commandType = parent.CommandType;
-            // check if ICommandParameterCompleter is implemented
-            var implementsCompleter = commandType
-               .GetInterfaces()
-               .Any(i => i == typeof(ICommandParameterCompleter));
-
-            if (!implementsCompleter)
-            {
-               return CompletionResult.None();
-            }
-
-            var completer = _typeResolver.Resolve(commandType);
-            var completions = ((ICommandParameterCompleter)completer).GetSuggestions(commandArgumentParameter, partialElement);
-            return completions;
+            return CompletionResult.None();
         }
+
+        // check if ICommandParameterCompleter is implemented
+        var implementsCompleter = commandType
+           .GetInterfaces()
+           .Any(i => i == typeof(ICommandParameterCompleter));
+
+        if (!implementsCompleter)
+        {
+            return CompletionResult.None();
+        }
+
+        var completer = _typeResolver.Resolve(commandType);
+        if (completer is not ICommandParameterCompleter typedCompleter)
+        {
+            return CompletionResult.None();
+        }
+
+        return typedCompleter.GetSuggestions(commandArgumentParameter, partialElement);
     }
 
     private List<CompletionResult> GetParameters(CommandInfo parent, string partialElement)
@@ -230,7 +244,6 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
                 //                           .Select(s => "-" + s.ToLowerInvariant())
                 //                           .Where(p => p.StartsWith(partialElement)));
                 // Add all matching long parameter names
-
                 CompletionResult completions = commandOptionParameter.LongNames
                                     .Select(l => "--" + l.ToLowerInvariant())
                                     .Where(p => p.StartsWith(partialElement))

@@ -85,8 +85,6 @@ public class CommandParameterMatcher<T>
         return new CommandParameterMatcher<T>(result);
     }
 
-
-
     private static PropertyInfo PropertyOf(LambdaExpression methodExpression)
     {
         var body = RemoveConvert(methodExpression.Body);
@@ -100,9 +98,7 @@ public class CommandParameterMatcher<T>
             expression != null
             && (
                 expression.NodeType == ExpressionType.Convert
-                || expression.NodeType == ExpressionType.ConvertChecked
-            )
-        )
+                || expression.NodeType == ExpressionType.ConvertChecked))
         {
             expression = RemoveConvert(((UnaryExpression)expression).Operand);
         }

@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using System.Reflection;
+using Spectre.Console.Cli.Completion;
 
 namespace Spectre.Console.Tests.Data;
 
@@ -13,7 +14,7 @@ public class LionCommand : AnimalCommand<LionSettings>, ICommandParameterComplet
 
     public ICompletionResult GetSuggestions(ICommandParameterInfo parameter, string prefix)
     {
-        return CommandParameterMatcher<LionSettings>.Create()
+        return new CommandParameterMatcher<LionSettings>()
             .Add(x => x.Legs, (prefix) =>
             {
                 if (prefix.Length != 0)
