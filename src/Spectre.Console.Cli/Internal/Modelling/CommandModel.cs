@@ -1,14 +1,22 @@
 namespace Spectre.Console.Cli;
 
-internal sealed class CommandModel : ICommandContainer
+[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1124:DoNotUseRegions", Justification = "Hiding Help.ICommandModel explicit interface implementation in a region improves readability.")]
+internal sealed class CommandModel : ICommandContainer, Spectre.Console.Cli.Help.ICommandModel
 {
     public string? ApplicationName { get; }
     public ParsingMode ParsingMode { get; }
     public IList<CommandInfo> Commands { get; }
     public IList<string[]> Examples { get; }
-    public bool TrimTrailingPeriod { get; }
 
     public CommandInfo? DefaultCommand => Commands.FirstOrDefault(c => c.IsDefaultCommand);
+
+    #region Help.ICommandModel
+
+    string Help.ICommandModel.ApplicationName => GetApplicationName();
+    IList<Help.ICommandInfo> Help.ICommandContainer.Commands => Commands.Cast<Help.ICommandInfo>().ToList();
+    Help.ICommandInfo? Help.ICommandContainer.DefaultCommand => DefaultCommand;
+
+    #endregion
 
     public CommandModel(
         CommandAppSettings settings,
@@ -17,7 +25,6 @@ internal sealed class CommandModel : ICommandContainer
     {
         ApplicationName = settings.ApplicationName;
         ParsingMode = settings.ParsingMode;
-        TrimTrailingPeriod = settings.TrimTrailingPeriod;
         Commands = new List<CommandInfo>(commands ?? Array.Empty<CommandInfo>());
         Examples = new List<string[]>(examples ?? Array.Empty<string[]>());
     }

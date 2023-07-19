@@ -1,3 +1,5 @@
+using Spectre.Console.Cli.Tests.Data.Help;
+
 namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed partial class CommandAppTests
@@ -258,6 +260,32 @@ public sealed partial class CommandAppTests
             fixture.Configure(configurator =>
             {
                 configurator.SetApplicationName("myapp");
+            });
+
+            // When
+            var result = fixture.Run();
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Default_Custom_Help_Provider")]
+        public Task Should_Output_Default_Command_Custom_Help_Correctly()
+        {
+            // Create the custom help provider
+            var helpProvider = new CustomHelpProvider();
+
+            // Register the custom help provider
+            var registrar = new DefaultTypeRegistrar();
+            registrar.RegisterInstance(typeof(Spectre.Console.Cli.Help.IHelpProvider), helpProvider);
+
+            // Given
+            var fixture = new CommandAppTester(registrar);
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+                configurator.AddCommand<DogCommand>("dog");
             });
 
             // When

@@ -36,9 +36,11 @@ public sealed class FakeTypeResolver : ITypeResolver
 
         if (_registrations.TryGetValue(type, out var registrations))
         {
+            // The type might be an interface, but the registration should be a class.
+            // So call CreateInstance on the first registration rather than the type.
             return registrations.Count == 0
                 ? null
-                : Activator.CreateInstance(type);
+                : Activator.CreateInstance(registrations[0]);
         }
 
         return null;

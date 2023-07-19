@@ -1,6 +1,7 @@
 namespace Spectre.Console.Cli;
 
-internal sealed class CommandInfo : ICommandContainer
+[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1124:DoNotUseRegions", Justification = "Hiding Help.ICommandInfo explicit interface implementation in a region improves readability.")]
+internal sealed class CommandInfo : ICommandContainer, Spectre.Console.Cli.Help.ICommandInfo
 {
     public string Name { get; }
     public HashSet<string> Aliases { get; }
@@ -21,6 +22,15 @@ internal sealed class CommandInfo : ICommandContainer
     // only branches can have a default command
     public CommandInfo? DefaultCommand => IsBranch ? Children.FirstOrDefault(c => c.IsDefaultCommand) : null;
     public bool IsHidden { get; }
+
+    #region Help.ICommandInfo
+
+    IList<Help.ICommandInfo> Help.ICommandContainer.Commands => Children.Cast<Help.ICommandInfo>().ToList();
+    Help.ICommandInfo? Help.ICommandContainer.DefaultCommand => DefaultCommand;
+    IList<Help.ICommandParameter> Help.ICommandInfo.Parameters => Parameters.Cast<Help.ICommandParameter>().ToList();
+    Help.ICommandInfo? Help.ICommandInfo.Parent => Parent;
+
+    #endregion
 
     public CommandInfo(CommandInfo? parent, ConfiguredCommand prototype)
     {
@@ -48,24 +58,5 @@ internal sealed class CommandInfo : ICommandContainer
                 Description = description.Description;
             }
         }
-    }
-
-    /// <summary>
-    /// Walks up the command.Parent tree, adding each command into a list as it goes.
-    /// </summary>
-    /// <remarks>The first command added to the list is the current (ie. this one).</remarks>
-    /// <returns>The list of commands from current to root, as traversed by <see cref="CommandInfo.Parent"/>.</returns>
-    public List<CommandInfo> Flatten()
-    {
-        var result = new Stack<CommandInfo>();
-
-        var current = this;
-        while (current != null)
-        {
-            result.Push(current);
-            current = current.Parent;
-        }
-
-        return result.ToList();
     }
 }

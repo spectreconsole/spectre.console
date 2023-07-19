@@ -1,7 +1,18 @@
-namespace Spectre.Console.Cli;
+namespace Spectre.Console.Cli.Help;
 
-internal static class HelpWriter
+/// <summary>
+/// The default help provider for spectre.console.
+/// </summary>
+/// <remarks>
+/// Other IHelpProvider implementations can be injected into the CommandApp, if desired.
+/// </remarks>
+public class DefaultHelpProvider : IHelpProvider
 {
+    // Help provider configuration settings.
+    private readonly bool writeOptionsDefaultValues;
+    private readonly int maxIndirectExamples;
+    private readonly bool trimTrailingPeriod;
+
     private sealed class HelpArgument
     {
         public string Name { get; }
@@ -17,10 +28,10 @@ internal static class HelpWriter
             Description = description;
         }
 
-        public static IReadOnlyList<HelpArgument> Get(CommandInfo? command)
+        public static IReadOnlyList<HelpArgument> Get(ICommandInfo? command)
         {
             var arguments = new List<HelpArgument>();
-            arguments.AddRange(command?.Parameters?.OfType<CommandArgument>()?.Select(
+            arguments.AddRange(command?.Parameters?.OfType<ICommandArgument>()?.Select(
                 x => new HelpArgument(x.Value, x.Position, x.Required, x.Description))
                 ?? Array.Empty<HelpArgument>());
             return arguments;
@@ -46,7 +57,7 @@ internal static class HelpWriter
             DefaultValue = defaultValue;
         }
 
-        public static IReadOnlyList<HelpOption> Get(CommandModel model, CommandInfo? command)
+        public static IReadOnlyList<HelpOption> Get(ICommandInfo? command)
         {
             var parameters = new List<HelpOption>();
             parameters.Add(new HelpOption("h", "help", null, null, "Prints help information", null));
@@ -57,38 +68,51 @@ internal static class HelpWriter
                 parameters.Add(new HelpOption("v", "version", null, null, "Prints version information", null));
             }
 
-            parameters.AddRange(command?.Parameters.OfType<CommandOption>().Where(o => !o.IsHidden).Select(o =>
+            parameters.AddRange(command?.Parameters.OfType<ICommandOption>().Where(o => !o.IsHidden).Select(o =>
                 new HelpOption(
                     o.ShortNames.FirstOrDefault(), o.LongNames.FirstOrDefault(),
                     o.ValueName, o.ValueIsOptional, o.Description,
-                    o.ParameterKind == ParameterKind.Flag && o.DefaultValue?.Value is false ? null : o.DefaultValue?.Value))
+                    o.IsFlag && o.DefaultValue?.Value is false ? null : o.DefaultValue?.Value))
                 ?? Array.Empty<HelpOption>());
             return parameters;
         }
     }
 
-    public static IEnumerable<IRenderable> Write(CommandModel model, int maxIndirectExamples, bool writeOptionsDefaultValues)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DefaultHelpProvider"/> class.
+    /// </summary>
+    /// <param name="writeOptionsDefaultValue">A boolean value indicating whether to write option default values.</param>
+    /// <param name="maxIndirectExamples">The maximum number of indirect examples to display.</param>
+    /// <param name="trimTrailingPeriod">A boolean value indicating whether to trim trailing periods from command descriptions.</param>
+    public DefaultHelpProvider(bool writeOptionsDefaultValue, int maxIndirectExamples, bool trimTrailingPeriod)
     {
-        return WriteCommand(model, null, maxIndirectExamples, writeOptionsDefaultValues);
+        this.writeOptionsDefaultValues = writeOptionsDefaultValue;
+        this.maxIndirectExamples = maxIndirectExamples;
+        this.trimTrailingPeriod = trimTrailingPeriod;
     }
 
-    public static IEnumerable<IRenderable> WriteCommand(CommandModel model, CommandInfo? command, int maxIndirectExamples, bool writeOptionsDefaultValues)
+    /// <inheritdoc/>
+    public virtual IEnumerable<IRenderable> Write(ICommandModel model)
     {
-        var container = command as ICommandContainer ?? model;
-        var isDefaultCommand = command?.IsDefaultCommand ?? false;
+        return WriteCommand(model, null);
+    }
 
+    /// <inheritdoc/>
+    public virtual IEnumerable<IRenderable> WriteCommand(ICommandModel model, ICommandInfo? command)
+    {
         var result = new List<IRenderable>();
+
         result.AddRange(GetDescription(command));
         result.AddRange(GetUsage(model, command));
         result.AddRange(GetExamples(model, command, maxIndirectExamples));
         result.AddRange(GetArguments(command));
-        result.AddRange(GetOptions(model, command, writeOptionsDefaultValues));
-        result.AddRange(GetCommands(model, container, isDefaultCommand));
+        result.AddRange(GetOptions(command, writeOptionsDefaultValues));
+        result.AddRange(GetCommands(model, command, trimTrailingPeriod));
 
         return result;
     }
 
-    private static IEnumerable<IRenderable> GetDescription(CommandInfo? command)
+    private static IEnumerable<IRenderable> GetDescription(ICommandInfo? command)
     {
         if (command?.Description == null)
         {
@@ -101,11 +125,11 @@ internal static class HelpWriter
         yield return composer.LineBreak();
     }
 
-    private static IEnumerable<IRenderable> GetUsage(CommandModel model, CommandInfo? command)
+    private static IEnumerable<IRenderable> GetUsage(ICommandModel model, ICommandInfo? command)
     {
         var composer = new Composer();
         composer.Style("yellow", "USAGE:").LineBreak();
-        composer.Tab().Text(model.GetApplicationName());
+        composer.Tab().Text(model.ApplicationName);
 
         var parameters = new List<string>();
 
@@ -132,18 +156,18 @@ internal static class HelpWriter
                     }
                 }
 
-                if (current.Parameters.OfType<CommandArgument>().Any())
+                if (current.Parameters.OfType<ICommandArgument>().Any())
                 {
                     if (isCurrent)
                     {
-                        foreach (var argument in current.Parameters.OfType<CommandArgument>()
+                        foreach (var argument in current.Parameters.OfType<ICommandArgument>()
                             .Where(a => a.Required).OrderBy(a => a.Position).ToArray())
                         {
                             parameters.Add($"[aqua]<{argument.Value.EscapeMarkup()}>[/]");
                         }
                     }
 
-                    var optionalArguments = current.Parameters.OfType<CommandArgument>().Where(x => !x.Required).ToArray();
+                    var optionalArguments = current.Parameters.OfType<ICommandArgument>().Where(x => !x.Required).ToArray();
                     if (optionalArguments.Length > 0 || !isCurrent)
                     {
                         foreach (var optionalArgument in optionalArguments)
@@ -164,7 +188,7 @@ internal static class HelpWriter
                 // The user must specify the command
                 parameters.Add("[aqua]<COMMAND>[/]");
             }
-            else if (command.IsBranch && command.DefaultCommand != null && command.Children.Count > 0)
+            else if (command.IsBranch && command.DefaultCommand != null && command.Commands.Count > 0)
             {
                 // We are on a branch with a default commnd
                 // The user can optionally specify the command
@@ -192,7 +216,14 @@ internal static class HelpWriter
         };
     }
 
-    private static IEnumerable<IRenderable> GetExamples(CommandModel model, CommandInfo? command, int maxIndirectExamples)
+    /// <summary>
+    /// Gets the examples for a command.
+    /// </summary>
+    /// <remarks>
+    /// Examples from the command's direct children are used
+    /// if no examples have been set on the specified command or model.
+    /// </remarks>
+    private static IEnumerable<IRenderable> GetExamples(ICommandModel model, ICommandInfo? command, int maxIndirectExamples)
     {
         var maxExamples = int.MaxValue;
 
@@ -203,9 +234,10 @@ internal static class HelpWriter
             // make sure that we limit the number of examples.
             maxExamples = maxIndirectExamples;
 
-            // Get the current root command.
-            var root = command ?? (ICommandContainer)model;
-            var queue = new Queue<ICommandContainer>(new[] { root });
+            // Start at the current command (if exists)
+            // or alternatively commence at the model.
+            var commandContainer = command ?? (ICommandContainer)model;
+            var queue = new Queue<ICommandContainer>(new[] { commandContainer });
 
             // Traverse the command tree and look for examples.
             // As soon as a node contains commands, bail.
@@ -213,14 +245,14 @@ internal static class HelpWriter
             {
                 var current = queue.Dequeue();
 
-                foreach (var cmd in current.Commands.Where(x => !x.IsHidden))
+                foreach (var child in current.Commands.Where(x => !x.IsHidden))
                 {
-                    if (cmd.Examples.Count > 0)
+                    if (child.Examples.Count > 0)
                     {
-                        examples.AddRange(cmd.Examples);
+                        examples.AddRange(child.Examples);
                     }
 
-                    queue.Enqueue(cmd);
+                    queue.Enqueue(child);
                 }
 
                 if (examples.Count >= maxExamples)
@@ -239,7 +271,7 @@ internal static class HelpWriter
             for (var index = 0; index < Math.Min(maxExamples, examples.Count); index++)
             {
                 var args = string.Join(" ", examples[index]);
-                composer.Tab().Text(model.GetApplicationName()).Space().Style("grey", args);
+                composer.Tab().Text(model.ApplicationName).Space().Style("grey", args);
                 composer.LineBreak();
             }
 
@@ -249,7 +281,7 @@ internal static class HelpWriter
         return Array.Empty<IRenderable>();
     }
 
-    private static IEnumerable<IRenderable> GetArguments(CommandInfo? command)
+    private static IEnumerable<IRenderable> GetArguments(ICommandInfo? command)
     {
         var arguments = HelpArgument.Get(command);
         if (arguments.Count == 0)
@@ -287,10 +319,10 @@ internal static class HelpWriter
         return result;
     }
 
-    private static IEnumerable<IRenderable> GetOptions(CommandModel model, CommandInfo? command, bool writeDefaultValues)
+    private static IEnumerable<IRenderable> GetOptions(ICommandInfo? command, bool writeOptionsDefaultValues)
     {
         // Collect all options into a single structure.
-        var parameters = HelpOption.Get(model, command);
+        var parameters = HelpOption.Get(command);
         if (parameters.Count == 0)
         {
             return Array.Empty<IRenderable>();
@@ -304,7 +336,7 @@ internal static class HelpWriter
             };
 
         var helpOptions = parameters.ToArray();
-        var defaultValueColumn = writeDefaultValues && helpOptions.Any(e => e.DefaultValue != null);
+        var defaultValueColumn = writeOptionsDefaultValues && helpOptions.Any(e => e.DefaultValue != null);
 
         var grid = new Grid();
         grid.AddColumn(new GridColumn { Padding = new Padding(4, 4), NoWrap = true });
@@ -389,9 +421,12 @@ internal static class HelpWriter
         return result;
     }
 
-    private static IEnumerable<IRenderable> GetCommands(CommandModel model, ICommandContainer command, bool isDefaultCommand)
+    private static IEnumerable<IRenderable> GetCommands(ICommandModel model, ICommandInfo? command, bool trimTrailingPeriod)
     {
-        var commands = isDefaultCommand ? model.Commands : command.Commands;
+        var commandContainer = command ?? (ICommandContainer)model;
+        bool isDefaultCommand = command?.IsDefaultCommand ?? false;
+
+        var commands = isDefaultCommand ? model.Commands : commandContainer.Commands;
         commands = commands.Where(x => !x.IsHidden).ToList();
 
         if (commands.Count == 0)
@@ -422,7 +457,7 @@ internal static class HelpWriter
                 arguments.Space();
             }
 
-            if (model.TrimTrailingPeriod)
+            if (trimTrailingPeriod)
             {
                 grid.AddRow(
                     arguments.ToString().TrimEnd(),
