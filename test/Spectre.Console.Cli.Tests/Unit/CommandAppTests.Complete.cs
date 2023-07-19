@@ -270,5 +270,30 @@ public sealed partial class CommandAppTests
             // Then
             return Verifier.Verify(result.Output);
         }
+
+
+        [Fact]
+        [Expectation("Test_11")]
+        public Task Should_Return_Correct_Completions_For_Parameters_Name_Should_Be_Angelika()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+                config.AddCommand<LionCommand>("lion");
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .ToList()
+                   .Append("\"myapp lion 2 4 --name \"")
+                   ;
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
     }
 }

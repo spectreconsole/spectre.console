@@ -1,5 +1,3 @@
-using System.Linq.Expressions;
-using System.Reflection;
 using Spectre.Console.Cli.Completion;
 
 namespace Spectre.Console.Tests.Data;
@@ -33,6 +31,7 @@ public class LionCommand : AnimalCommand<LionSettings>, ICommandParameterComplet
 
                 return CompletionResult.Result("32").WithPreventDefault();
             })
+            .Add(x => x.Name, x => CompletionResult.Result("Angelika").WithPreventDefault())
             .Match(parameter, prefix);
     }
 

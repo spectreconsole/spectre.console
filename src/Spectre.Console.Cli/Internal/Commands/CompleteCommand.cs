@@ -116,7 +116,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
         childCommands = childCommands.WithGeneratedSuggestions();
 
         var parameters = GetParameters(parent, partialElement);
-        var arguments = GetCommandArguments(parent, parsedResult.Tree.Mapped, commandElements);
+        var arguments = GetCommandArguments(parent, parsedResult.Tree.Mapped, commandElements, partialElement);
 
         var allResults = parameters.Concat(arguments).Append(childCommands).ToArray();
 
@@ -138,8 +138,13 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
             .ToArray();
     }
 
-    private List<CompletionResult> GetCommandArguments(CommandInfo parent, List<MappedCommandParameter> mapped, string[] args)
+    private List<CompletionResult> GetCommandArguments(CommandInfo parent, List<MappedCommandParameter> mapped, string[] args, string partialElement)
     {
+        if (!string.IsNullOrEmpty(partialElement) && partialElement[0] == '-')
+        {
+            return new List<CompletionResult>();
+        }
+
         // Trailing space: The first empty parameter should be completed
         // No trailing space: The last parameter should be completed
         var hasTrailingSpace = args.LastOrDefault()?.Length == 0;
@@ -159,7 +164,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
                 return new List<CompletionResult>();
             }
 
-            var completions = CompleteCommandArgument(parent, lastArgument, lastMap.Value);
+            var completions = CompleteCommandOption(parent, lastArgument, lastMap.Value);
             if (completions == null)
             {
                 return new List<CompletionResult>();
@@ -179,27 +184,46 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
                 continue;
             }
 
-            if (parameter.Parameter is not CommandArgument commandArgumentParameter)
+            if (parameter.Parameter is CommandArgument commandArgumentParameter)
             {
-                continue;
-            }
+                var completions = CompleteCommandOption(parent, commandArgumentParameter, parameter.Value);
+                if (completions == null)
+                {
+                    continue;
+                }
 
-            var completions = CompleteCommandArgument(parent, commandArgumentParameter, parameter.Value);
-            if (completions == null)
-            {
-                continue;
+                if (completions.Suggestions.Any() || completions.PreventDefault)
+                {
+                    result.Add(new(completions));
+                }
             }
-
-            if (completions.Suggestions.Any() || completions.PreventDefault)
+            else if (parameter.Parameter is CommandOption option)
             {
-                result.Add(new(completions));
+                // arrive on
+                // "\"myapp lion 2 4 --name \""
+                //
+                //Debugger.Break();
+                var completions = CompleteCommandOption(parent, option, parameter.Value);
+                if (completions == null)
+                {
+                    continue;
+                }
+
+                if (completions.Suggestions.Any() || completions.PreventDefault)
+                {
+                    result.Add(new(completions));
+                }
+            }
+            else
+            {
+                Debugger.Break();
             }
         }
 
         return result;
     }
 
-    private ICompletionResult? CompleteCommandArgument(CommandInfo parent, CommandArgument commandArgumentParameter, string? partialElement)
+    private ICompletionResult? CompleteCommandOption(CommandInfo parent, ICommandParameterInfo commandArgumentParameter, string? partialElement)
     {
         partialElement ??= string.Empty;
 
