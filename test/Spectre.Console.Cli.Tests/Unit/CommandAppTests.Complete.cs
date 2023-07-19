@@ -229,11 +229,10 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
 
-
+            // Legs TEETH
+            // Legs should be completed, because it does not have a trailing space
             var commandToRun = Constants.CompleteCommand
                    .ToList()
-                   // Legs TEETH
-                   // Legs should be completed, because it does not have a trailing space
                    .Append("\"myapp lion 1\"");
 
             // When
@@ -257,11 +256,10 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
 
-
+            // Legs TEETH // TEEH should be completed
+            // Teeth should be completed, because it does have a trailing space
             var commandToRun = Constants.CompleteCommand
                    .ToList()
-                   // Legs TEETH // TEEH should be completed
-                   // Teeth should be completed, because it does have a trailing space
                    .Append("\"myapp lion 2 \"");
 
             // When
@@ -270,7 +268,6 @@ public sealed partial class CommandAppTests
             // Then
             return Verifier.Verify(result.Output);
         }
-
 
         [Fact]
         [Expectation("Test_11")]
@@ -287,6 +284,30 @@ public sealed partial class CommandAppTests
             var commandToRun = Constants.CompleteCommand
                    .ToList()
                    .Append("\"myapp lion 2 4 --name \"")
+                   ;
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_12")]
+        public Task Should_Return_Correct_Completions_For_Parameters_When_AlreadyFullyWritten()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+                config.AddCommand<LionCommand>("lion");
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .ToList()
+                   .Append("\"myapp lion 2 4 --name\"")
                    ;
 
             // When

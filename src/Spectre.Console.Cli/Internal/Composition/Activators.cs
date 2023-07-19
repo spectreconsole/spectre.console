@@ -84,7 +84,7 @@ internal sealed class ReflectionActivator : ComponentActivator
                 {
                     if (parameter.ParameterType == typeof(ITypeResolver))
                     {
-                        parameters[i] = (ITypeResolver)container;
+                        parameters[i] = container;
                         continue;
                     }
 

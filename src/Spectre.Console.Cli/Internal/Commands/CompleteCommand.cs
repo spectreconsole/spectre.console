@@ -102,7 +102,8 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
         else
         {
             // The Tree does not natively support walking or visiting, so we need to search it manually.
-            parent = FindContextInTree(parsedResult.Tree, context);
+            parent = FindContextInTree(parsedResult.Tree, context)
+                ?? parsedResult.Tree.Command;
         }
 
         // No idea why this fixes test 7: Parameters
@@ -158,8 +159,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
             }
 
             var lastMap = mapped.Last();
-            var lastArgument = lastMap.Parameter as CommandArgument;
-            if (lastArgument == null)
+            if (lastMap.Parameter is not CommandArgument lastArgument)
             {
                 return new List<CompletionResult>();
             }
@@ -202,7 +202,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
                 // arrive on
                 // "\"myapp lion 2 4 --name \""
                 //
-                //Debugger.Break();
+                // Debugger.Break();
                 var completions = CompleteCommandOption(parent, option, parameter.Value);
                 if (completions == null)
                 {
@@ -282,7 +282,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
         return parameters;
     }
 
-    private static CommandInfo FindContextInTree(CommandTree tree, string context)
+    private static CommandInfo? FindContextInTree(CommandTree tree, string context)
     {
         // This needs to become a recursive function, but for the simpler situations this would work.
         var commandInfo = tree.Command;

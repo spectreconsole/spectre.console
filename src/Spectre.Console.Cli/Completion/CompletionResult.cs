@@ -1,4 +1,4 @@
-﻿namespace Spectre.Console.Cli.Completion;
+namespace Spectre.Console.Cli.Completion;
 
 /// <summary>
 /// Represents a completion result.

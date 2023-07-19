@@ -31,19 +31,19 @@ public class LionCommand : AnimalCommand<LionSettings>, ICommandParameterComplet
 
                 return CompletionResult.Result("32").WithPreventDefault();
             })
-            .Add(x => x.Name, x => CompletionResult.Result("Angelika").WithPreventDefault())
+            .Add(x => x.Name, _ => CompletionResult.Result("Angelika").WithPreventDefault())
             .Match(parameter, prefix);
     }
 
     private static string FindNextEvenNumber(string input)
     {
-        int number = int.Parse(input); // Parse the input string to an integer
+        var number = int.Parse(input); // Parse the input string to an integer
 
         // Find the next even number greater than the input number
-        int nextEvenNumber = number + (2 - (number % 2));
+        var nextEvenNumber = number + (2 - (number % 2));
 
         // Convert the number to string to check the prefix
-        string nextEvenNumberString = nextEvenNumber.ToString();
+        var nextEvenNumberString = nextEvenNumber.ToString();
 
         // Check if the prefix of the even number matches the input string
         while (!nextEvenNumberString.StartsWith(input))

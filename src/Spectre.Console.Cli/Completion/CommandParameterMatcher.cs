@@ -26,11 +26,18 @@ namespace Spectre.Console.Cli.Completion;
             .Match(parameter, prefix);
  */
 
+/// <summary>
+/// Represents a command parameter matcher.
+/// </summary>
+/// <typeparam name="T">The settings type.</typeparam>
 public class CommandParameterMatcher<T>
     where T : CommandSettings
 {
     private readonly List<(PropertyInfo Property, Func<string, ICompletionResult> Func)> _completers;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CommandParameterMatcher{T}"/> class.
+    /// </summary>
     public CommandParameterMatcher()
     {
         _completers = new();
@@ -41,9 +48,15 @@ public class CommandParameterMatcher<T>
         _completers = completers?.ToList() ?? new();
     }
 
+    /// <summary>
+    /// Gets the suggestions for the specified parameter.
+    /// </summary>
+    /// <param name="parameter">Information on which parameter to get suggestions for.</param>
+    /// <param name="prefix">The prefix.</param>
+    /// <returns>The suggestions for the specified parameter.</returns>
     public ICompletionResult Match(ICommandParameterInfo parameter, string prefix)
     {
-        var property = _completers.FirstOrDefault(x => x.Property.Name == parameter.PropertyName);
+        var property = _completers.Find(x => x.Property.Name == parameter.PropertyName);
         if (property.Property == null)
         {
             return CompletionResult.None();
@@ -52,6 +65,12 @@ public class CommandParameterMatcher<T>
         return property.Func(prefix);
     }
 
+    /// <summary>
+    /// Adds a completer for the specified property.
+    /// </summary>
+    /// <param name="property">The property.</param>
+    /// <param name="completer">The completer.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
     public CommandParameterMatcher<T> Add(Expression<Func<T, object>> property, Func<string, ICompletionResult> completer)
     {
         var parameter = PropertyOf(property);
@@ -59,6 +78,11 @@ public class CommandParameterMatcher<T>
         return this;
     }
 
+    /// <summary>
+    /// Adds a completer for the specified property.
+    /// </summary>
+    /// <param name="completers">The completers.</param>
+    /// <returns>A new instance of the <see cref="CommandParameterMatcher{T}"/> class.</returns>
     public static CommandParameterMatcher<T> Create(Dictionary<Expression<Func<T, object>>, Func<string, ICompletionResult>> completers)
     {
         var result = new List<(PropertyInfo, Func<string, ICompletionResult>)>();
@@ -72,7 +96,11 @@ public class CommandParameterMatcher<T>
         return new CommandParameterMatcher<T>(result);
     }
 
-    // params create
+    /// <summary>
+    /// Adds a completer for the specified property.
+    /// </summary>
+    /// <param name="completers">The completers.</param>
+    /// <returns>A new instance of the <see cref="CommandParameterMatcher{T}"/> class.</returns>
     public static CommandParameterMatcher<T> Create(params (Expression<Func<T, object>>, Func<string, ICompletionResult>)[] completers)
     {
         var result = new List<(PropertyInfo, Func<string, ICompletionResult>)>();
@@ -87,12 +115,12 @@ public class CommandParameterMatcher<T>
 
     private static PropertyInfo PropertyOf(LambdaExpression methodExpression)
     {
-        var body = RemoveConvert(methodExpression.Body);
+        var body = RemoveConvert(methodExpression.Body) ?? methodExpression.Body;
         var prop = (MemberExpression)body;
         return (PropertyInfo)prop.Member;
     }
 
-    private static Expression RemoveConvert(Expression expression)
+    private static Expression? RemoveConvert(Expression? expression)
     {
         while (
             expression != null
