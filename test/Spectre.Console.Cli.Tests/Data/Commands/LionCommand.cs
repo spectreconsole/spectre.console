@@ -40,7 +40,7 @@ public class LionCommand : AnimalCommand<LionSettings>, ICommandParameterComplet
         int number = int.Parse(input); // Parse the input string to an integer
 
         // Find the next even number greater than the input number
-        int nextEvenNumber = number + (2 - number % 2);
+        int nextEvenNumber = number + (2 - (number % 2));
 
         // Convert the number to string to check the prefix
         string nextEvenNumberString = nextEvenNumber.ToString();
