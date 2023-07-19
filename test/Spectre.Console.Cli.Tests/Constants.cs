@@ -15,4 +15,11 @@ public static class Constants
                 CliConstants.Commands.Branch,
                 CliConstants.Commands.XmlDoc,
         };
+
+    public static string[] CompleteCommand { get; } =
+        new[]
+        {
+                CliConstants.Commands.Branch,
+                CliConstants.Commands.Complete,
+        };
 }

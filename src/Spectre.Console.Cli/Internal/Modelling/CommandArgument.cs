@@ -1,5 +1,6 @@
 namespace Spectre.Console.Cli;
 
+[DebuggerDisplay("Command {Value}")]
 internal sealed class CommandArgument : CommandParameter
 {
     public string Value { get; }
@@ -13,6 +14,8 @@ internal sealed class CommandArgument : CommandParameter
             : base(parameterType, parameterKind, property, description, converter, defaultValue,
                   null, valueProvider, validators, argument.IsRequired, false)
     {
+        // Teeth: 0
+        // Legs: 1
         Value = argument.ValueName;
         Position = argument.Position;
     }
