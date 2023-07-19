@@ -216,7 +216,10 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
             }
             else
             {
+                // Should not happen.
+#if DEBUG
                 Debugger.Break();
+#endif
             }
         }
 
