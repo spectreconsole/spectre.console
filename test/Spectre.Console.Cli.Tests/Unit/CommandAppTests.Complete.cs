@@ -642,6 +642,7 @@ public sealed partial class CommandAppTests
             var commandToRun = Constants.CompleteCommand
                    .Append("\"myapp user add angel --age 1\"")
                    ;
+
             // When
             var result = fixture.Run(commandToRun.ToArray());
 
@@ -668,6 +669,7 @@ public sealed partial class CommandAppTests
             var commandToRun = Constants.CompleteCommand
                    .Append("\"myapp user add angel --age \"")
                    ;
+
             // When
             var result = fixture.Run(commandToRun.ToArray());
 
@@ -692,8 +694,8 @@ public sealed partial class CommandAppTests
                 });
             });
             var commandToRun = Constants.CompleteCommand
-                   .Append("\"myapp user add \"")
-                   ;
+                   .Append("\"myapp user add \"");
+
             // When
             var result = fixture.Run(commandToRun.ToArray());
 
@@ -718,8 +720,8 @@ public sealed partial class CommandAppTests
                 });
             });
             var commandToRun = Constants.CompleteCommand
-                   .Append("\"myapp user add a\"")
-                   ;
+                   .Append("\"myapp user add a\"");
+
             // When
             var result = fixture.Run(commandToRun.ToArray());
 
