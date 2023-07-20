@@ -3,42 +3,16 @@ using Spectre.Console.Cli.Completion;
 namespace Spectre.Console.Tests.Data;
 
 [Description("The lion command.")]
-public class LionCommand : AnimalCommand<LionSettings>, ICommandCompletable, IAsyncCommandCompletable
+public class LionCommand : AnimalCommand<LionSettings>, IAsyncCommandCompletable
 {
     public override int Execute(CommandContext context, LionSettings settings)
     {
         return 0;
     }
 
-    public CompletionResult GetSuggestions(ICommandParameterInfo parameter, string prefix)
-    {
-        return new CommandParameterMatcher<LionSettings>()
-            .Add(x => x.Legs, (prefix) =>
-            {
-                if (prefix.Length != 0)
-                {
-                    return FindNextEvenNumber(prefix);
-                }
-
-                return "16";
-            })
-            .Add(x => x.Teeth, (prefix) =>
-            {
-                if (prefix.Length != 0)
-                {
-                    return FindNextEvenNumber(prefix);
-                }
-
-                return "32";
-            })
-            .Add(x => x.Name, _ => "Angelika")
-            .Match(parameter, prefix)
-            .WithPreventDefault();
-    }
-
     public async Task<CompletionResult> GetSuggestionsAsync(ICommandParameterInfo parameter, string prefix)
     {
-        return await new AsyncCommandParameterMatcher<LionSettings>()
+        return await AsyncSuggestionMatcher
             .Add(x => x.Legs, (prefix) =>
             {
                 if (prefix.Length != 0)

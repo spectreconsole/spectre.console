@@ -1,3 +1,5 @@
+using Spectre.Console.Cli.Completion;
+
 namespace Spectre.Console.Cli;
 
 /// <summary>
@@ -45,4 +47,15 @@ public abstract class Command<TSettings> : ICommand<TSettings>
     {
         return Task.FromResult(Execute(context, settings));
     }
+
+    /// <summary>
+    /// Gets a new suggestion matcher for this command.
+    /// </summary>
+    /// <returns>A suggestion matcher.</returns>
+    public virtual AsyncCommandParameterMatcher<TSettings> AsyncSuggestionMatcher => new();
+
+    /// <summary>
+    /// Gets a new suggestion matcher for this command.
+    /// </summary>
+    public virtual CommandParameterMatcher<TSettings> SuggestionMatcher => new();
 }

@@ -1,3 +1,5 @@
+using Spectre.Console.Cli.Tests.Data.Commands;
+
 namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed partial class CommandAppTests
@@ -635,6 +637,110 @@ public sealed partial class CommandAppTests
                    .Append("17")
                    ;
 
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_23")]
+        public Task CompletionSuggestionsAttribute_Should_Suggest_Option_Values_Starting_With_Partial()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+
+                config.AddBranch("user", feline =>
+                {
+                    feline.AddCommand<UserAddCommand>("add");
+                });
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .Append("\"myapp user add angel --age 1\"")
+                   ;
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_24")]
+        public Task CompletionSuggestionsAttribute_Should_Suggest_Option_Values()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+
+                config.AddBranch("user", feline =>
+                {
+                    feline.AddCommand<UserAddCommand>("add");
+                });
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .Append("\"myapp user add angel --age \"")
+                   ;
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_25")]
+        public Task CompletionSuggestionsAttribute_Should_Suggest_Argument_Values()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+
+                config.AddBranch("user", feline =>
+                {
+                    feline.AddCommand<UserAddCommand>("add");
+                });
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .Append("\"myapp user add \"")
+                   ;
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_26")]
+        public Task CompletionSuggestionsAttribute_Should_Suggest_Argument_Values_With_Partial()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+
+                config.AddBranch("user", feline =>
+                {
+                    feline.AddCommand<UserAddCommand>("add");
+                });
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .Append("\"myapp user add a\"")
+                   ;
             // When
             var result = fixture.Run(commandToRun.ToArray());
 
