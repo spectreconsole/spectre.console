@@ -21,7 +21,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp li\"");
 
             // When
@@ -45,7 +44,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<CatCommand>("cat");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp \"");
 
             // When
@@ -72,7 +70,6 @@ public sealed partial class CommandAppTests
                 });
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp \"");
 
             // When
@@ -99,7 +96,6 @@ public sealed partial class CommandAppTests
                 });
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp animal \"");
 
             // When
@@ -131,7 +127,6 @@ public sealed partial class CommandAppTests
                 });
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp other \"");
 
             // When
@@ -166,7 +161,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp f\"");
 
             // When
@@ -189,7 +183,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp lion 2 4 \"");
 
             // When
@@ -212,7 +205,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp lion --n\"");
 
             // When
@@ -239,7 +231,6 @@ public sealed partial class CommandAppTests
             // Legs TEETH
             // Legs should be completed, because it does not have a trailing space
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp lion 1\"");
 
             // When
@@ -266,7 +257,6 @@ public sealed partial class CommandAppTests
             // Legs TEETH // TEEH should be completed
             // Teeth should be completed, because it does have a trailing space
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp lion 2 \"");
 
             // When
@@ -289,7 +279,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp lion 2 4 --name \"")
                    ;
 
@@ -313,7 +302,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp lion 2 4 --name\"")
                    ;
 
@@ -346,7 +334,6 @@ public sealed partial class CommandAppTests
                 });
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp feline l\"");
 
             // When
@@ -380,7 +367,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp feline\"");
 
             // When
@@ -414,7 +400,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp feline \"");
 
             // When
@@ -448,7 +433,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp \"");
 
             // When
@@ -482,7 +466,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp\"");
 
             // When
@@ -516,7 +499,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp feline\"")
                    .Append("--position")
                    .Append("12")
@@ -553,7 +535,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp feline\"")
                    .Append("--position")
                    .Append("13")
@@ -590,7 +571,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp\"")
                    .Append("--position")
                    .Append("6")
@@ -631,7 +611,6 @@ public sealed partial class CommandAppTests
                 config.AddCommand<LionCommand>("lion");
             });
             var commandToRun = Constants.CompleteCommand
-                   .ToList()
                    .Append("\"myapp cats lion 1\"")
                    .Append("--position")
                    .Append("17")

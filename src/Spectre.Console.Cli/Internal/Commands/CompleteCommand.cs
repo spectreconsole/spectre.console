@@ -181,11 +181,6 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
     private static CompletionResult GetChildCommands(string partialElement, CommandInfo parent)
     {
         return GetSuggestions(partialElement, parent.Children);
-
-        // return parent.Children.Where(cmd => !cmd.IsHidden)
-        //            .Select(c => c.Name)
-        //            .Where(n => string.IsNullOrEmpty(partialElement) || n.StartsWith(partialElement))
-        //            .ToArray();
     }
 
     private static CompletionResult GetSuggestions(string partialElement, IEnumerable<CommandInfo> commands)
@@ -206,11 +201,6 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
 
             if (parameter is CommandOption commandOptionParameter && (startsWithDash || isEmpty))
             {
-                // It doesn't actually make much sense to autocomplete one-char parameters
-                // parameters.AddRangeIfNotNull(
-                //     commandOptionParameter.ShortNames
-                //                           .Select(s => "-" + s.ToLowerInvariant())
-                //                           .Where(p => p.StartsWith(partialElement)));
                 // Add all matching long parameter names
                 CompletionResult completions = commandOptionParameter.LongNames
                                     .Select(l => "--" + l.ToLowerInvariant())
@@ -271,17 +261,6 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
             {
                 continue;
             }
-
-            //var valuesViaAttributes = parameter.Parameter.Property.GetCustomAttributes<CompletionSuggestionsAttribute>();
-            //if (valuesViaAttributes?.Any() == true)
-            //{
-            //    var values = valuesViaAttributes
-            //        .Where(x => x.Suggestions != null)
-            //        .SelectMany(x => x.Suggestions);
-
-            //    result.Add(new(values, true));
-            //    continue;
-            //}
 
             var completions = await CompleteCommandOption(parent, parameter.Parameter, parameter.Value);
             if (completions == null)
@@ -377,7 +356,6 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         // Remove any leading or trailing " characters on each element
         for (int i = 0; i < result.Length; i++)
         {
-            // result[i] = result[i].Trim('"');
             result[i] = TrimOnce(result[i], '"');
         }
 
