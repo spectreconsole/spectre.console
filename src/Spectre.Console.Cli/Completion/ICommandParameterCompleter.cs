@@ -3,7 +3,7 @@ namespace Spectre.Console.Cli.Completion;
 /// <summary>
 /// Represents a command parameter completer.
 /// </summary>
-public interface ICommandParameterCompleter
+public interface ICommandCompletable
 {
     /// <summary>
     /// Gets the suggestions for the specified parameter.
