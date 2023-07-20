@@ -235,9 +235,7 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
                 return new List<CompletionResult>();
             }
 
-            var lastArgument = lastMap?.Parameter;
-
-            var completions = await CompleteCommandOption(parent, lastArgument, lastMap.Value);
+            var completions = await CompleteCommandOption(parent, lastMap.Parameter, lastMap.Value);
             if (completions == null)
             {
                 return new List<CompletionResult>();
