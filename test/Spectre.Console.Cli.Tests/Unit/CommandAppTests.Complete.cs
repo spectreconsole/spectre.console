@@ -600,5 +600,47 @@ public sealed partial class CommandAppTests
             // Then
             return Verifier.Verify(result.Output);
         }
+
+
+        // Test:
+        // myapp [branch] [command] [dynamic_argument]
+        // "myapp cats lion 1" <- should return 16
+        [Fact]
+        [Expectation("Test_22")]
+        public Task Should_Handle_Positions3()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+                config.AddBranch("cats", feline =>
+                {
+                    feline.AddCommand<CatCommand>("felix");
+                    feline.AddCommand<LionCommand>("lion");
+                });
+
+                config.AddBranch("dogs", feline =>
+                {
+                    feline.AddCommand<CatCommand>("felix");
+                    feline.AddCommand<LionCommand>("lion");
+                });
+
+                config.AddCommand<LionCommand>("lion");
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .ToList()
+                   .Append("\"myapp cats lion 1\"")
+                   .Append("--position")
+                   .Append("17")
+                   ;
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
     }
 }
