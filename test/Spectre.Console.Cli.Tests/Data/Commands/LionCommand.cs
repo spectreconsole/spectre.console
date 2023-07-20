@@ -32,7 +32,8 @@ public class LionCommand : AnimalCommand<LionSettings>, ICommandCompletable, IAs
                 return "32";
             })
             .Add(x => x.Name, _ => "Angelika")
-            .Match(parameter, prefix).WithPreventDefault();
+            .Match(parameter, prefix)
+            .WithPreventDefault();
     }
 
     public async Task<CompletionResult> GetSuggestionsAsync(ICommandParameterInfo parameter, string prefix)
@@ -57,7 +58,8 @@ public class LionCommand : AnimalCommand<LionSettings>, ICommandCompletable, IAs
                 return "32";
             })
             .Add(x => x.Name, _ => "Angelika")
-            .MatchAsync(parameter, prefix);
+            .MatchAsync(parameter, prefix)
+            .WithPreventDefault();
     }
 
     private static string FindNextEvenNumber(string input)
