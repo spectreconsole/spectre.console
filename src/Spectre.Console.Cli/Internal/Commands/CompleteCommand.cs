@@ -34,6 +34,8 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
 
     public override async Task<int> ExecuteAsync([NotNull] CommandContext context, [NotNull] Settings settings)
     {
+        HighjackConsoles();
+
         var commandToComplete = settings.CommandToComplete;
         if (string.IsNullOrEmpty(commandToComplete))
         {
@@ -371,5 +373,23 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         }
 
         return input;
+    }
+
+    /// <summary>
+    /// Prevents arbitrary consoles from being used by the completion command. (For example, logging consoles).
+    /// </summary>
+    private static void HighjackConsoles()
+    {
+        try
+        {
+            System.Console.Clear();
+        }
+        catch
+        {
+            // Ignored
+        }
+
+        AnsiConsole.Console = new HighjackedAnsiConsole(AnsiConsole.Console);
+        System.Console.SetOut(new HighjackedTextWriter(System.Console.Out));
     }
 }
