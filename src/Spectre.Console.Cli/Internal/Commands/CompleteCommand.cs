@@ -50,6 +50,11 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
             .TrimEnd('"')
             .Split(' ').Skip(1).ToArray();
 
+        if (commandElements?.Length is 0 or null)
+        {
+            return Array.Empty<string>();
+        }
+
         // Return early if the only thing we got was "".
         if (commandElements == null ||
            (commandElements.Length == 1 &&
@@ -85,8 +90,9 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
             {
                 parsedResult = parser.Parse(strippedCommandElements);
                 context = strippedCommandElements.Last();
-                partialElement = commandElements.Last().ToLowerInvariant();
             }
+
+            partialElement = commandElements.LastOrDefault()?.ToLowerInvariant() ?? string.Empty;
         }
 
         // Return command options based on our current context, filtered on any partial element we found.

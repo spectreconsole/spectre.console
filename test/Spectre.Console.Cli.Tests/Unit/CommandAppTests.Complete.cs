@@ -152,7 +152,44 @@ public sealed partial class CommandAppTests
                 config.AddBranch("feline", feline =>
                 {
                     feline.AddCommand<CatCommand>("felix");
+                    feline.AddCommand<LionCommand>("lion");
                 });
+
+                config.AddBranch("fantasy", other =>
+                {
+                    other.AddCommand<EmptyCommand>("fairy");
+                });
+
+                // This one should not appear in the completions
+                config.AddCommand<LionCommand>("lion");
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .ToList()
+                   .Append("\"myapp f\"");
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_13")]
+        public Task Should_Return_Correct_Completions_In_Branch()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+                config.AddBranch("feline", feline =>
+                {
+                    feline.AddCommand<CatCommand>("felix");
+                    feline.AddCommand<LionCommand>("lion");
+                });
+
                 config.AddBranch("fantasy", other =>
                 {
                     other.AddCommand<EmptyCommand>("fairy");
@@ -160,7 +197,7 @@ public sealed partial class CommandAppTests
             });
             var commandToRun = Constants.CompleteCommand
                    .ToList()
-                   .Append("\"myapp f\"");
+                   .Append("\"myapp feline l\"");
 
             // When
             var result = fixture.Run(commandToRun.ToArray());
