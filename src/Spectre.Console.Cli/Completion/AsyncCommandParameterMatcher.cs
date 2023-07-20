@@ -5,20 +5,20 @@ namespace Spectre.Console.Cli.Completion;
 /*
  Usage:
         return new CommandParameterMatcher<LionSettings>()
-            .Add(x => x.Legs, (prefix) =>
+            .Add(x => x.Legs, async (prefix) =>
             {
                 if (prefix.Length != 0)
                 {
-                    return CompletionResult.Result(FindNextEvenNumber(prefix)).WithPreventDefault();
+                    return CompletionResult.Result(await FindNextEvenNumberAsync(prefix)).WithPreventDefault();
                 }
 
                 return CompletionResult.Result("16").WithPreventDefault();
             })
-            .Add(x => x.Teeth, (prefix) =>
+            .Add(x => x.Teeth, async (prefix) =>
             {
                 if (prefix.Length != 0)
                 {
-                    return CompletionResult.Result(FindNextEvenNumber(prefix)).WithPreventDefault();
+                    return CompletionResult.Result(await FindNextEvenNumberAsync(prefix)).WithPreventDefault();
                 }
 
                 return CompletionResult.Result("32").WithPreventDefault();
@@ -30,20 +30,20 @@ namespace Spectre.Console.Cli.Completion;
 /// Represents a command parameter matcher.
 /// </summary>
 /// <typeparam name="T">The settings type.</typeparam>
-public class CommandParameterMatcher<T>
+public class AsyncCommandParameterMatcher<T>
     where T : CommandSettings
 {
-    private readonly List<(PropertyInfo Property, Func<string, CompletionResult> Func)> _completers;
+    private readonly List<(PropertyInfo Property, Func<string, Task<CompletionResult>> Func)> _completers;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CommandParameterMatcher{T}"/> class.
+    /// Initializes a new instance of the <see cref="AsyncCommandParameterMatcher{T}"/> class.
     /// </summary>
-    public CommandParameterMatcher()
+    public AsyncCommandParameterMatcher()
     {
         _completers = new();
     }
 
-    private CommandParameterMatcher(IEnumerable<(PropertyInfo, Func<string, CompletionResult>)>? completers)
+    private AsyncCommandParameterMatcher(IEnumerable<(PropertyInfo, Func<string, Task<CompletionResult>>)>? completers)
     {
         _completers = completers?.ToList() ?? new();
     }
@@ -54,7 +54,7 @@ public class CommandParameterMatcher<T>
     /// <param name="parameter">Information on which parameter to get suggestions for.</param>
     /// <param name="prefix">The prefix.</param>
     /// <returns>The suggestions for the specified parameter.</returns>
-    public CompletionResult Match(ICommandParameterInfo parameter, string prefix)
+    public async Task<CompletionResult> MatchAsync(ICommandParameterInfo parameter, string prefix)
     {
         var property = _completers.Find(x => x.Property.Name == parameter.PropertyName);
         if (property.Property == null)
@@ -62,7 +62,7 @@ public class CommandParameterMatcher<T>
             return CompletionResult.None();
         }
 
-        return property.Func(prefix);
+        return await property.Func(prefix);
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public class CommandParameterMatcher<T>
     /// <param name="property">The property.</param>
     /// <param name="completer">The completer.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public CommandParameterMatcher<T> Add(Expression<Func<T, object>> property, Func<string, CompletionResult> completer)
+    public AsyncCommandParameterMatcher<T> Add(Expression<Func<T, object>> property, Func<string, Task<CompletionResult>> completer)
     {
         var parameter = PropertyOf(property);
         _completers.Add((parameter, completer));
@@ -81,11 +81,24 @@ public class CommandParameterMatcher<T>
     /// <summary>
     /// Adds a completer for the specified property.
     /// </summary>
-    /// <param name="completers">The completers.</param>
-    /// <returns>A new instance of the <see cref="CommandParameterMatcher{T}"/> class.</returns>
-    public static CommandParameterMatcher<T> Create(Dictionary<Expression<Func<T, object>>, Func<string, CompletionResult>> completers)
+    /// <param name="property">The property.</param>
+    /// <param name="completer">The completer.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AsyncCommandParameterMatcher<T> Add(Expression<Func<T, object>> property, Func<string, CompletionResult> completer)
     {
-        var result = new List<(PropertyInfo, Func<string, CompletionResult>)>();
+        var parameter = PropertyOf(property);
+        _completers.Add((parameter, (prefix) => Task.FromResult(completer(prefix))));
+        return this;
+    }
+
+    /// <summary>
+    /// Adds a completer for the specified property.
+    /// </summary>
+    /// <param name="completers">The completers.</param>
+    /// <returns>A new instance of the <see cref="AsyncCommandParameterMatcher{T}"/> class.</returns>
+    public static AsyncCommandParameterMatcher<T> Create(Dictionary<Expression<Func<T, object>>, Func<string, Task<CompletionResult>>> completers)
+    {
+        var result = new List<(PropertyInfo, Func<string, Task<CompletionResult>>)>();
 
         foreach (var completer in completers)
         {
@@ -93,24 +106,24 @@ public class CommandParameterMatcher<T>
             result.Add((parameter, completer.Value));
         }
 
-        return new CommandParameterMatcher<T>(result);
+        return new AsyncCommandParameterMatcher<T>(result);
     }
 
     /// <summary>
     /// Adds a completer for the specified property.
     /// </summary>
     /// <param name="completers">The completers.</param>
-    /// <returns>A new instance of the <see cref="CommandParameterMatcher{T}"/> class.</returns>
-    public static CommandParameterMatcher<T> Create(params (Expression<Func<T, object>>, Func<string, CompletionResult>)[] completers)
+    /// <returns>A new instance of the <see cref="AsyncCommandParameterMatcher{T}"/> class.</returns>
+    public static AsyncCommandParameterMatcher<T> Create(params (Expression<Func<T, object>>, Func<string, Task<CompletionResult>>)[] completers)
     {
-        var result = new List<(PropertyInfo, Func<string, CompletionResult>)>();
+        var result = new List<(PropertyInfo, Func<string, Task<CompletionResult>>)>();
         foreach (var (key, value) in completers)
         {
             var parameter = PropertyOf(key);
             result.Add((parameter, value));
         }
 
-        return new CommandParameterMatcher<T>(result);
+        return new AsyncCommandParameterMatcher<T>(result);
     }
 
     private static PropertyInfo PropertyOf(LambdaExpression methodExpression)

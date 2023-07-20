@@ -3,7 +3,7 @@ namespace Spectre.Console.Cli.Completion;
 /// <summary>
 /// Represents a command parameter completer.
 /// </summary>
-public interface ICommandCompletable
+public interface IAsyncCommandCompletable
 {
     /// <summary>
     /// Gets the suggestions for the specified parameter.
@@ -11,5 +11,5 @@ public interface ICommandCompletable
     /// <param name="parameter">Information on which parameter to get suggestions for.</param>
     /// <param name="prefix">The prefix.</param>
     /// <returns>The suggestions for the specified parameter.</returns>
-    CompletionResult GetSuggestions(ICommandParameterInfo parameter, string? prefix);
+    Task<CompletionResult> GetSuggestionsAsync(ICommandParameterInfo parameter, string? prefix);
 }

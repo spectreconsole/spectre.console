@@ -3,36 +3,61 @@ using Spectre.Console.Cli.Completion;
 namespace Spectre.Console.Tests.Data;
 
 [Description("The lion command.")]
-public class LionCommand : AnimalCommand<LionSettings>, ICommandCompletable
+public class LionCommand : AnimalCommand<LionSettings>, ICommandCompletable, IAsyncCommandCompletable
 {
     public override int Execute(CommandContext context, LionSettings settings)
     {
         return 0;
     }
 
-    public ICompletionResult GetSuggestions(ICommandParameterInfo parameter, string prefix)
+    public CompletionResult GetSuggestions(ICommandParameterInfo parameter, string prefix)
     {
         return new CommandParameterMatcher<LionSettings>()
             .Add(x => x.Legs, (prefix) =>
             {
                 if (prefix.Length != 0)
                 {
-                    return CompletionResult.Result(FindNextEvenNumber(prefix)).WithPreventDefault();
+                    return FindNextEvenNumber(prefix);
                 }
 
-                return CompletionResult.Result("16").WithPreventDefault();
+                return "16";
             })
             .Add(x => x.Teeth, (prefix) =>
             {
                 if (prefix.Length != 0)
                 {
-                    return CompletionResult.Result(FindNextEvenNumber(prefix)).WithPreventDefault();
+                    return FindNextEvenNumber(prefix);
                 }
 
-                return CompletionResult.Result("32").WithPreventDefault();
+                return "32";
             })
-            .Add(x => x.Name, _ => CompletionResult.Result("Angelika").WithPreventDefault())
-            .Match(parameter, prefix);
+            .Add(x => x.Name, _ => "Angelika")
+            .Match(parameter, prefix).WithPreventDefault();
+    }
+
+    public async Task<CompletionResult> GetSuggestionsAsync(ICommandParameterInfo parameter, string prefix)
+    {
+        return await new AsyncCommandParameterMatcher<LionSettings>()
+            .Add(x => x.Legs, (prefix) =>
+            {
+                if (prefix.Length != 0)
+                {
+                    return FindNextEvenNumber(prefix);
+                }
+
+                return "16";
+            })
+            .Add(x => x.Teeth, (prefix) =>
+            {
+                if (prefix.Length != 0)
+                {
+                    return FindNextEvenNumber(prefix);
+                }
+
+                return "32";
+            })
+            .Add(x => x.Name, _ => "Angelika")
+            .MatchAsync(parameter, prefix);
     }
 
     private static string FindNextEvenNumber(string input)

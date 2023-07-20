@@ -3,7 +3,7 @@ using Spectre.Console.Cli.Completion;
 namespace Spectre.Console.Cli;
 
 [Description("Generates a list of completion options for the given command.")]
-internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
+internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
 {
     private readonly CommandModel _model;
     private readonly ITypeResolver _typeResolver;
@@ -23,11 +23,6 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
 
     public sealed class Settings : CommandSettings
     {
-        //public Settings(string? commandToComplete)
-        //{
-        //    CommandToComplete = commandToComplete;
-        //}
-
         [CommandArgument(0, "[commandToComplete]")]
         public string? CommandToComplete { get; set; }
 
@@ -36,9 +31,31 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
         public int? Position { get; set; }
     }
 
-    public override int Execute([NotNull] CommandContext context, [NotNull] Settings settings)
+    public override async Task<int> ExecuteAsync([NotNull] CommandContext context, [NotNull] Settings settings)
     {
-        foreach (var completion in GetCompletions(_model, settings))
+        var commandToComplete = settings.CommandToComplete;
+        if (string.IsNullOrEmpty(commandToComplete))
+        {
+            // No command to complete, so just print the application name.
+            _writer.WriteLine(_model.ApplicationName ?? string.Empty, Style.Plain);
+            return 0;
+        }
+
+        // Get all command elements and skip the application name at the start.
+        var normalizedCommand = commandToComplete
+            .TrimStart('"')
+            .TrimEnd('"');
+
+        if (!string.IsNullOrEmpty(normalizedCommand)
+            && settings.Position != null
+            && settings.Position > normalizedCommand.Length)
+        {
+            // extend the command to the position with whitespace
+            var requiredWhitespace = (settings.Position - normalizedCommand.Length) ?? 1;
+            normalizedCommand += new string(' ', requiredWhitespace);
+        }
+
+        foreach (var completion in await GetCompletionsAsync(_model, normalizedCommand))
         {
             _writer.WriteLine(completion, Style.Plain);
         }
@@ -46,24 +63,9 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
         return 0;
     }
 
-    private string[] GetCompletions(CommandModel model, Settings settings)
+    private async Task<string[]> GetCompletionsAsync(CommandModel model, string command)
     {
-        // Get all command elements and skip the application name at the start.
-        var normalizedCommand = settings.CommandToComplete?
-            .TrimStart('"')
-            .TrimEnd('"');
-
-        if (!string.IsNullOrEmpty(normalizedCommand)
-            && settings.Position != null
-            && settings.Position > normalizedCommand.Length
-        )
-        {
-            // extend the command to the position with whitespace
-            var requiredWhitespace = (settings.Position - normalizedCommand.Length) ?? 1;
-            normalizedCommand += new string(' ', requiredWhitespace);
-        }
-
-        var commandElements = normalizedCommand
+        var commandElements = command
             .Split(' ').Skip(1).ToArray();
 
         if (commandElements?.Length is 0 or null)
@@ -144,7 +146,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
         childCommands = childCommands.WithGeneratedSuggestions();
 
         var parameters = GetParameters(parent, partialElement);
-        var arguments = GetCommandArguments(parent, parsedResult.Tree.Mapped, commandElements, partialElement);
+        var arguments = await GetCommandArgumentsAsync(parent, parsedResult.Tree.Mapped, commandElements, partialElement);
 
         var allResults = parameters.Concat(arguments).Append(childCommands).ToArray();
 
@@ -184,7 +186,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
                     .ToArray();
     }
 
-    private List<CompletionResult> GetCommandArguments(CommandInfo parent, List<MappedCommandParameter> mapped, string[] args, string partialElement)
+    private async Task<List<CompletionResult>> GetCommandArgumentsAsync(CommandInfo parent, List<MappedCommandParameter> mapped, string[] args, string partialElement)
     {
         if (!string.IsNullOrEmpty(partialElement) && partialElement[0] == '-')
         {
@@ -209,7 +211,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
                 return new List<CompletionResult>();
             }
 
-            var completions = CompleteCommandOption(parent, lastArgument, lastMap.Value);
+            var completions = await CompleteCommandOption(parent, lastArgument, lastMap.Value);
             if (completions == null)
             {
                 return new List<CompletionResult>();
@@ -229,26 +231,39 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
                 continue;
             }
 
-            if (parameter.Parameter is CommandArgument commandArgumentParameter)
-            {
-                var completions = CompleteCommandOption(parent, commandArgumentParameter, parameter.Value);
-                if (completions == null)
-                {
-                    continue;
-                }
+            // if (parameter.Parameter is CommandArgument commandArgumentParameter)
+            // {
+            //     var completions = CompleteCommandOption(parent, commandArgumentParameter, parameter.Value);
+            //     if (completions == null)
+            //     {
+            //         continue;
+            //     }
 
-                if (completions.Suggestions.Any() || completions.PreventDefault)
-                {
-                    result.Add(new(completions));
-                }
-            }
-            else if (parameter.Parameter is CommandOption option)
+            // if (completions.Suggestions.Any() || completions.PreventDefault)
+            //     {
+            //         result.Add(new(completions));
+            //     }
+            // }
+            // else if (parameter.Parameter is CommandOption option)
+            // {
+            //     // arrive on
+            //     // "\"myapp lion 2 4 --name \""
+            //     //
+            //     // Debugger.Break();
+            //     var completions = CompleteCommandOption(parent, option, parameter.Value);
+            //     if (completions == null)
+            //     {
+            //         continue;
+            //     }
+
+            // if (completions.Suggestions.Any() || completions.PreventDefault)
+            //     {
+            //         result.Add(new(completions));
+            //     }
+            // }
+            if (parameter.Parameter is ICommandParameterInfo commandArgumentParameter)
             {
-                // arrive on
-                // "\"myapp lion 2 4 --name \""
-                //
-                // Debugger.Break();
-                var completions = CompleteCommandOption(parent, option, parameter.Value);
+                var completions = await CompleteCommandOption(parent, commandArgumentParameter, parameter.Value);
                 if (completions == null)
                 {
                     continue;
@@ -271,7 +286,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
         return result;
     }
 
-    private ICompletionResult? CompleteCommandOption(CommandInfo parent, ICommandParameterInfo commandArgumentParameter, string? partialElement)
+    private async Task<CompletionResult?> CompleteCommandOption(CommandInfo parent, ICommandParameterInfo commandArgumentParameter, string? partialElement)
     {
         partialElement ??= string.Empty;
 
@@ -281,23 +296,42 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
             return CompletionResult.None();
         }
 
-        // check if ICommandParameterCompleter is implemented
-        var implementsCompleter = commandType
-           .GetInterfaces()
-           .Any(i => i == typeof(ICommandCompletable));
+        var implementsCompleter = false;
+        var implementsAsyncCompleter = false;
+        foreach (var item in commandType.GetInterfaces())
+        {
+            if (item == typeof(ICommandCompletable))
+            {
+                implementsCompleter = true;
+            }
+            else if (item == typeof(IAsyncCommandCompletable))
+            {
+                implementsAsyncCompleter = true;
+            }
 
-        if (!implementsCompleter)
+            if (implementsCompleter && implementsAsyncCompleter)
+            {
+                break;
+            }
+        }
+
+        if (!(implementsCompleter || implementsAsyncCompleter))
         {
             return CompletionResult.None();
         }
 
         var completer = _typeResolver.Resolve(commandType);
-        if (completer is not ICommandCompletable typedCompleter)
+        if (completer is IAsyncCommandCompletable typedAsyncCompleter)
         {
-            return CompletionResult.None();
+            return await typedAsyncCompleter.GetSuggestionsAsync(commandArgumentParameter, partialElement);
         }
 
-        return typedCompleter.GetSuggestions(commandArgumentParameter, partialElement);
+        if (completer is ICommandCompletable typedCompleter)
+        {
+            return typedCompleter.GetSuggestions(commandArgumentParameter, partialElement);
+        }
+
+        return CompletionResult.None();
     }
 
     private List<CompletionResult> GetParameters(CommandInfo parent, string partialElement)
