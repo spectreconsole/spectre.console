@@ -95,7 +95,7 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
                 // Because we support netstandard2.0, we can't use SkipLast, since it's not supported. Also negative indexes are a no go.
                 // There probably is a more elegant way to get this result that I just can't see now.
                 // context = commandElements.SkipLast(1).Last();
-                context = commandElements.ToArray()[commandElements.Length - 2];
+                context = commandElements[commandElements.Length - 2];
             }
 
             // Early return when "myapp feline"
@@ -144,12 +144,17 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
             mappedParameters = lastContext.Mapped;
         }
 
-        var childCommands = GetChildCommands(partialElement, parent);
+        return await GetCompletionsAsync(commandElements, partialElement, parent, mappedParameters);
+    }
+
+    private async Task<string[]> GetCompletionsAsync(string[] commandElements, string partialElement, CommandInfo command, List<MappedCommandParameter> mappedParameters)
+    {
+        var childCommands = GetChildCommands(partialElement, command);
 
         childCommands = childCommands.WithGeneratedSuggestions();
 
-        var parameters = GetParameters(parent, partialElement);
-        var arguments = await GetCommandArgumentsAsync(parent, mappedParameters, commandElements, partialElement);
+        var parameters = GetParameters(command, partialElement);
+        var arguments = await GetCommandArgumentsAsync(command, mappedParameters, commandElements, partialElement);
 
         var allResults = parameters.Concat(arguments).Append(childCommands).ToArray();
 
@@ -229,17 +234,11 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         //// Trailing space: The first empty parameter should be completed
         //// No trailing space: The last parameter should be completed
         var hasTrailingSpace = args.LastOrDefault()?.Length == 0;
-        var lastIsCommandArgument = mapped.LastOrDefault()?.Parameter is CommandArgument;
+        var lastMap = mapped.LastOrDefault();
 
         if (!hasTrailingSpace)
         {
-            if (!lastIsCommandArgument)
-            {
-                return new List<CompletionResult>();
-            }
-
-            var lastMap = mapped.Last();
-            if (lastMap.Parameter is not CommandArgument lastArgument)
+            if (lastMap?.Parameter is not CommandArgument lastArgument)
             {
                 return new List<CompletionResult>();
             }
@@ -401,7 +400,8 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         // Remove any leading or trailing " characters on each element
         for (int i = 0; i < result.Length; i++)
         {
-            result[i] = result[i].Trim('"');
+            //result[i] = result[i].Trim('"');
+            result[i] = TrimOnce(result[i], '"');
         }
 
         return result;
