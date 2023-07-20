@@ -175,38 +175,6 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
-        [Expectation("Test_13")]
-        public Task Should_Return_Correct_Completions_In_Branch()
-        {
-            // Given
-            var fixture = new CommandAppTester();
-            fixture.Configure(config =>
-            {
-                config.SetApplicationName("myapp");
-                config.PropagateExceptions();
-                config.AddBranch("feline", feline =>
-                {
-                    feline.AddCommand<CatCommand>("felix");
-                    feline.AddCommand<LionCommand>("lion");
-                });
-
-                config.AddBranch("fantasy", other =>
-                {
-                    other.AddCommand<EmptyCommand>("fairy");
-                });
-            });
-            var commandToRun = Constants.CompleteCommand
-                   .ToList()
-                   .Append("\"myapp feline l\"");
-
-            // When
-            var result = fixture.Run(commandToRun.ToArray());
-
-            // Then
-            return Verifier.Verify(result.Output);
-        }
-
-        [Fact]
         [Expectation("Test_7")]
         public Task Should_Return_Correct_Completions_For_Parameters()
         {
@@ -345,6 +313,285 @@ public sealed partial class CommandAppTests
             var commandToRun = Constants.CompleteCommand
                    .ToList()
                    .Append("\"myapp lion 2 4 --name\"")
+                   ;
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_13")]
+        public Task Should_Return_Correct_Completions_In_Branch()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+                config.AddBranch("feline", feline =>
+                {
+                    feline.AddCommand<CatCommand>("felix");
+                    feline.AddCommand<LionCommand>("lion");
+                });
+
+                config.AddBranch("fantasy", other =>
+                {
+                    other.AddCommand<EmptyCommand>("fairy");
+                });
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .ToList()
+                   .Append("\"myapp feline l\"");
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_15")]
+        public Task Should_Return_Nothing_When_Match_Exact_But_No_Trailing_Space()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+                config.AddBranch("feline", feline =>
+                {
+                    feline.AddCommand<CatCommand>("felix");
+                    feline.AddCommand<LionCommand>("lion");
+                });
+
+                config.AddBranch("fantasy", other =>
+                {
+                    other.AddCommand<EmptyCommand>("fairy");
+                });
+
+                config.AddCommand<LionCommand>("lion");
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .ToList()
+                   .Append("\"myapp feline\"");
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_16")]
+        public Task Should_Return_Completions_When_Match_Exact_And_Has_Trailing_Space()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+                config.AddBranch("feline", feline =>
+                {
+                    feline.AddCommand<CatCommand>("felix");
+                    feline.AddCommand<LionCommand>("lion");
+                });
+
+                config.AddBranch("fantasy", other =>
+                {
+                    other.AddCommand<EmptyCommand>("fairy");
+                });
+
+                config.AddCommand<LionCommand>("lion");
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .ToList()
+                   .Append("\"myapp feline \"");
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_17")]
+        public Task Should_Return_All_Completions_When_No_Command()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+                config.AddBranch("feline", feline =>
+                {
+                    feline.AddCommand<CatCommand>("felix");
+                    feline.AddCommand<LionCommand>("lion");
+                });
+
+                config.AddBranch("fantasy", other =>
+                {
+                    other.AddCommand<EmptyCommand>("fairy");
+                });
+
+                config.AddCommand<LionCommand>("lion");
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .ToList()
+                   .Append("\"myapp \"");
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_18")]
+        public Task Should_Return_All_Completions_When_No_Command_But_Also_No_Trailing_Space()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+                config.AddBranch("feline", feline =>
+                {
+                    feline.AddCommand<CatCommand>("felix");
+                    feline.AddCommand<LionCommand>("lion");
+                });
+
+                config.AddBranch("fantasy", other =>
+                {
+                    other.AddCommand<EmptyCommand>("fairy");
+                });
+
+                config.AddCommand<LionCommand>("lion");
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .ToList()
+                   .Append("\"myapp\"");
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_19")]
+        public Task Should_Handle_Positions()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+                config.AddBranch("feline", feline =>
+                {
+                    feline.AddCommand<CatCommand>("felix");
+                    feline.AddCommand<LionCommand>("lion");
+                });
+
+                config.AddBranch("fantasy", other =>
+                {
+                    other.AddCommand<EmptyCommand>("fairy");
+                });
+
+                config.AddCommand<LionCommand>("lion");
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .ToList()
+                   .Append("\"myapp feline\"")
+                   .Append("--position")
+                   .Append("12")
+                   ;
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_20")]
+        public Task Should_Handle_Positions1()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+                config.AddBranch("feline", feline =>
+                {
+                    feline.AddCommand<CatCommand>("felix");
+                    feline.AddCommand<LionCommand>("lion");
+                });
+
+                config.AddBranch("fantasy", other =>
+                {
+                    other.AddCommand<EmptyCommand>("fairy");
+                });
+
+                config.AddCommand<LionCommand>("lion");
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .ToList()
+                   .Append("\"myapp feline\"")
+                   .Append("--position")
+                   .Append("13")
+                   ;
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_21")]
+        public Task Should_Handle_Positions2()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+                config.AddBranch("feline", feline =>
+                {
+                    feline.AddCommand<CatCommand>("felix");
+                    feline.AddCommand<LionCommand>("lion");
+                });
+
+                config.AddBranch("fantasy", other =>
+                {
+                    other.AddCommand<EmptyCommand>("fairy");
+                });
+
+                config.AddCommand<LionCommand>("lion");
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .ToList()
+                   .Append("\"myapp\"")
+                   .Append("--position")
+                   .Append("6")
                    ;
 
             // When

@@ -64,7 +64,7 @@ public sealed partial class CommandAppTests
             result.Settings.ShouldBeOfType<ValueProviderSettings>().And(settings =>
             {
                 settings.Foo.ShouldBe("20"); // 32 is 0x20
-                });
+            });
         }
 
         [Fact]
@@ -82,7 +82,7 @@ public sealed partial class CommandAppTests
             result.Settings.ShouldBeOfType<ValueProviderSettings>().And(settings =>
             {
                 settings.Foo.ShouldBe("C"); // 12 is 0xC
-                });
+            });
         }
     }
 }

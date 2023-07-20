@@ -23,13 +23,17 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
 
     public sealed class Settings : CommandSettings
     {
-        public Settings(string? commandToComplete)
-        {
-            CommandToComplete = commandToComplete;
-        }
+        //public Settings(string? commandToComplete)
+        //{
+        //    CommandToComplete = commandToComplete;
+        //}
 
         [CommandArgument(0, "[commandToComplete]")]
-        public string? CommandToComplete { get; }
+        public string? CommandToComplete { get; set; }
+
+        //--position
+        [CommandOption("--position|-p")]
+        public int? Position { get; set; }
     }
 
     public override int Execute([NotNull] CommandContext context, [NotNull] Settings settings)
@@ -45,14 +49,26 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
     private string[] GetCompletions(CommandModel model, Settings settings)
     {
         // Get all command elements and skip the application name at the start.
-        var commandElements = settings.CommandToComplete?
+        var normalizedCommand = settings.CommandToComplete?
             .TrimStart('"')
-            .TrimEnd('"')
+            .TrimEnd('"');
+
+        if (!string.IsNullOrEmpty(normalizedCommand)
+            && settings.Position != null
+            && settings.Position > normalizedCommand.Length
+        )
+        {
+            // extend the command to the position with whitespace
+            var requiredWhitespace = (settings.Position - normalizedCommand.Length) ?? 1;
+            normalizedCommand += new string(' ', requiredWhitespace);
+        }
+
+        var commandElements = normalizedCommand
             .Split(' ').Skip(1).ToArray();
 
         if (commandElements?.Length is 0 or null)
         {
-            return Array.Empty<string>();
+            return GetSuggestions(string.Empty, model.Commands).Suggestions.ToArray();
         }
 
         // Return early if the only thing we got was "".
@@ -73,13 +89,21 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
         try
         {
             parsedResult = parser.Parse(commandElements);
-            context = commandElements.Last();
+            context = commandElements.LastOrDefault() ?? string.Empty;
             if (string.IsNullOrEmpty(context))
             {
                 // Because we support netstandard2.0, we can't use SkipLast, since it's not supported. Also negative indexes are a no go.
                 // There probably is a more elegant way to get this result that I just can't see now.
                 // context = commandElements.SkipLast(1).Last();
                 context = commandElements.ToArray()[commandElements.Length - 2];
+            }
+
+            // Early return when "myapp feline"
+            // but show completions for feline if "myapp feline "
+            // spacing matters
+            if (parsedResult.Tree?.Command.Name == context)
+            {
+                return Array.Empty<string>();
             }
         }
         catch (CommandParseException)
@@ -115,10 +139,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
         // No idea why this fixes test 7: Parameters
         parent ??= parsedResult.Tree.Command;
 
-        CompletionResult childCommands = parent.Children.Where(cmd => !cmd.IsHidden)
-                              .Select(c => c.Name)
-                              .Where(n => string.IsNullOrEmpty(partialElement) || n.StartsWith(partialElement))
-                              .ToArray();
+        var childCommands = GetChildCommands(partialElement, parent);
 
         childCommands = childCommands.WithGeneratedSuggestions();
 
@@ -143,6 +164,24 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
             .SelectMany(s => s.Suggestions)
             .Distinct()
             .ToArray();
+    }
+
+    private static CompletionResult GetChildCommands(string partialElement, CommandInfo parent)
+    {
+        return GetSuggestions(partialElement, parent.Children);
+
+        // return parent.Children.Where(cmd => !cmd.IsHidden)
+        //            .Select(c => c.Name)
+        //            .Where(n => string.IsNullOrEmpty(partialElement) || n.StartsWith(partialElement))
+        //            .ToArray();
+    }
+
+    private static CompletionResult GetSuggestions(string partialElement, IEnumerable<CommandInfo> commands)
+    {
+        return commands.Where(cmd => !cmd.IsHidden)
+                    .Select(c => c.Name)
+                    .Where(n => string.IsNullOrEmpty(partialElement) || n.StartsWith(partialElement))
+                    .ToArray();
     }
 
     private List<CompletionResult> GetCommandArguments(CommandInfo parent, List<MappedCommandParameter> mapped, string[] args, string partialElement)
@@ -245,7 +284,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
         // check if ICommandParameterCompleter is implemented
         var implementsCompleter = commandType
            .GetInterfaces()
-           .Any(i => i == typeof(ICommandParameterCompleter));
+           .Any(i => i == typeof(ICommandCompletable));
 
         if (!implementsCompleter)
         {
@@ -253,7 +292,7 @@ internal sealed class CompleteCommand : Command<CompleteCommand.Settings>
         }
 
         var completer = _typeResolver.Resolve(commandType);
-        if (completer is not ICommandParameterCompleter typedCompleter)
+        if (completer is not ICommandCompletable typedCompleter)
         {
             return CompletionResult.None();
         }

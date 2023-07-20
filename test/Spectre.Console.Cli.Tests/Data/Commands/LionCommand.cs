@@ -4,7 +4,6 @@ namespace Spectre.Console.Tests.Data;
 
 [Description("The lion command.")]
 public class LionCommand : AnimalCommand<LionSettings>, ICommandCompletable
-
 {
     public override int Execute(CommandContext context, LionSettings settings)
     {
