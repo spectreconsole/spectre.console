@@ -601,7 +601,6 @@ public sealed partial class CommandAppTests
             return Verifier.Verify(result.Output);
         }
 
-
         // Test:
         // myapp [branch] [command] [dynamic_argument]
         // "myapp cats lion 1" <- should return 16

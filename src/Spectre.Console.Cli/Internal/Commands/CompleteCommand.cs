@@ -279,41 +279,6 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
             }
         }
 
-        //if (result.Any())
-        //{
-        //    return result;
-        //}
-
-        //var result = new List<CompletionResult>();
-        //foreach (var parameter in parent.Parameters)
-        //{
-        //    var startsWithDash = partialElement.StartsWith("-");
-        //    var isEmpty = string.IsNullOrEmpty(partialElement);
-
-        //    if (parameter is not CommandArgument)
-        //    {
-        //        continue;
-        //    }
-
-        //    var mappedParam = mapped.FirstOrDefault(x => x.Parameter == parameter);
-        //    if (mappedParam != null)
-        //    {
-        //        continue;
-        //    }
-
-        //    var completions = await CompleteCommandOption(parent, parameter, args.LastOrDefault() ?? string.Empty);
-        //    if (completions == null)
-        //    {
-        //        continue;
-        //    }
-
-        //    if (completions.Suggestions.Any() || completions.PreventDefault)
-        //    {
-        //        result.Add(new(completions));
-        //        break;
-        //    }
-        //}
-
         return result;
     }
 
@@ -327,26 +292,9 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
             return CompletionResult.None();
         }
 
-        var implementsCompleter = false;
-        var implementsAsyncCompleter = false;
-        foreach (var item in commandType.GetInterfaces())
-        {
-            if (item == typeof(ICommandCompletable))
-            {
-                implementsCompleter = true;
-            }
-            else if (item == typeof(IAsyncCommandCompletable))
-            {
-                implementsAsyncCompleter = true;
-            }
+        var implementsCompleter = commandType.GetInterfaces().Any(x => x == typeof(ICommandCompletable) || x == typeof(IAsyncCommandCompletable));
 
-            if (implementsCompleter && implementsAsyncCompleter)
-            {
-                break;
-            }
-        }
-
-        if (!(implementsCompleter || implementsAsyncCompleter))
+        if (!implementsCompleter)
         {
             return CompletionResult.None();
         }
@@ -400,7 +348,7 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         // Remove any leading or trailing " characters on each element
         for (int i = 0; i < result.Length; i++)
         {
-            //result[i] = result[i].Trim('"');
+            // result[i] = result[i].Trim('"');
             result[i] = TrimOnce(result[i], '"');
         }
 
@@ -421,7 +369,7 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         {
             return input.Substring(1, input.Length - 2);
         }
+
         return input;
     }
-
 }
