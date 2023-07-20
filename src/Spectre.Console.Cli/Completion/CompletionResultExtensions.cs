@@ -1,7 +1,7 @@
 namespace Spectre.Console.Cli.Completion;
 
 /// <summary>
-/// Extensions for Completions
+/// Extensions for Completions.
 /// </summary>
 public static class CompletionExtensions
 {
