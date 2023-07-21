@@ -1,3 +1,5 @@
+using System.Resources;
+
 namespace Spectre.Console.Cli.Internal.Commands.Completion;
 
 internal class PowershellCompletionIntegrationSettings : CommandSettings
@@ -23,56 +25,43 @@ internal class PowershellCompletionIntegration : Command<PowershellCompletionInt
         PowershellCompletionIntegrationSettings settings
     )
     {
-        StringBuilder outputBuilder = new();
-        // if (settings.AddToPath)
-        // {
-        //     outputBuilder.AppendLine(
-        //         "$env:path = $env:path -replace \"" + Environment.CurrentDirectory + "\", \"\""
-        //     );
-        //     outputBuilder.AppendLine("$env:path = $env:path -replace \";;\" , \";\"");
-        //     outputBuilder.AppendLine(
-        //         "$env:path = $env:path + \";" + Environment.CurrentDirectory + "\""
-        //     );
-        // }
+    
+        var resources = Properties.Resources.ResourceManager.GetString("PowershellIntegration_Fully_Integrated");
 
+        //_writer.WriteLine(resources);
+        //return 1;
+
+        StringBuilder sb = new();
         var startArgs = GetSelfStartCommandFromCommandLineArgs();
-
-        // if (!string.IsNullOrEmpty(startArgs.Runtime))
-        // {
-        //     var startCommand = "& \"" + startArgs.Runtime + "\" \"" + startArgs.Command + "\"";
-        // }
-        // else {
-        //     var startCommand = "& \"" + startArgs.Command + "\"";
-        //  }
 
         var startCommand = string.IsNullOrEmpty(startArgs.Runtime)
             ? "& \"" + startArgs.Command + "\""
             : "& \"" + startArgs.Runtime + "\" \"" + startArgs.Command + "\"";
 
-        var completionCommand = startCommand + " cli complete --position $cursorPosition \"$wordToComplete\"";
+        _writer.WriteLine(resources.Replace("[RUNCOMMAND]", startCommand));
 
-        outputBuilder
-            .Append("Register-ArgumentCompleter -Native -CommandName ")
-            .Append(startArgs.CommandName)
-            .AppendLine(" -ScriptBlock {");
+        //var completionCommand = startCommand + " cli complete --position $cursorPosition \"$wordToComplete\"";
 
-        outputBuilder.AppendLine("    param($commandName, $wordToComplete, $cursorPosition)");
-        outputBuilder
-        .Append("    $completions = ")
-        .AppendLine(completionCommand);
-        outputBuilder.AppendLine("    if ($completions) {");
-        outputBuilder.AppendLine("        foreach ($completion in $completions) {");
-        outputBuilder.AppendLine(
-            "            [System.Management.Automation.CompletionResult]::new($completion, $completion, 'ParameterValue', $completion)"
-        );
-        outputBuilder.AppendLine("        }");
-        outputBuilder.AppendLine("    }");
-        outputBuilder.AppendLine("    else {");
-        outputBuilder.AppendLine("        $null");
-        outputBuilder.AppendLine("    }");
-        outputBuilder.AppendLine("}");
+        //sb
+        //    .Append("Register-ArgumentCompleter -Native -CommandName ")
+        //    .Append(startArgs.CommandName)
+        //    .AppendLine(" -ScriptBlock {");
 
-        _writer.WriteLine(outputBuilder.ToString());
+        //sb.AppendLine("    param($commandName, $wordToComplete, $cursorPosition)");
+        //sb.Append("    $completions = ").AppendLine(completionCommand);
+        //sb.AppendLine("    if ($completions) {");
+        //sb.AppendLine("        foreach ($completion in $completions) {");
+        //sb.AppendLine(
+        //    "            [System.Management.Automation.CompletionResult]::new($completion, $completion, 'ParameterValue', $completion)"
+        //);
+        //sb.AppendLine("        }");
+        //sb.AppendLine("    }");
+        //sb.AppendLine("    else {");
+        //sb.AppendLine("        $null");
+        //sb.AppendLine("    }");
+        //sb.AppendLine("}");
+
+        //_writer.WriteLine(sb.ToString());
 
         // if (settings.Persist)
         // {
