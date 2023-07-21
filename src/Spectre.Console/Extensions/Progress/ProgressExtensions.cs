@@ -35,6 +35,32 @@ public static class ProgressExtensions
     }
 
     /// <summary>
+    /// Sets an optional header for the progress.
+    /// </summary>
+    /// <param name="progress">The <see cref="Progress"/> instance.</param>
+    /// <param name="headerRender">The header render function. Return null if no header.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Progress Header(this Progress progress, Func<IReadOnlyList<ProgressTask>, IRenderable?> headerRender)
+    {
+        progress.HeaderRenderable = headerRender;
+
+        return progress;
+    }
+
+    /// <summary>
+    /// Sets an optional footer for the progress.
+    /// </summary>
+    /// <param name="progress">The <see cref="Progress"/> instance.</param>
+    /// <param name="footerRender">The footer render function. Return null if no header.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Progress Footer(this Progress progress, Func<IReadOnlyList<ProgressTask>, IRenderable?> footerRender)
+    {
+        progress.FooterRenderable = footerRender;
+
+        return progress;
+    }
+
+    /// <summary>
     /// Sets whether or not auto refresh is enabled.
     /// If disabled, you will manually have to refresh the progress.
     /// </summary>

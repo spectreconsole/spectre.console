@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Spectre.Console;
 
@@ -22,35 +23,44 @@ public static class Program
                     new RemainingTimeColumn(),      // Remaining time
                     new SpinnerColumn(),            // Spinner
             })
+            .Header(_ => new Panel($"Going on a :rocket:, we're going to the :crescent_moon:").Expand().RoundedBorder())
+            .Footer(tasks =>
+            {
+                var grid = new Grid().AddColumn();
+                grid.AddRow(new Rule().RuleStyle(new Style(Color.Grey)));
+                grid.AddRow(new Markup($"[blue]{tasks.Count}[/] total tasks. [green]{tasks.Count(i => i.IsFinished)}[/] complete"));
+                return grid;
+            })
+
             .Start(ctx =>
             {
                 var random = new Random(DateTime.Now.Millisecond);
 
-                    // Create some tasks
-                    var tasks = CreateTasks(ctx, random);
+                // Create some tasks
+                var tasks = CreateTasks(ctx, random);
                 var warpTask = ctx.AddTask("Going to warp", autoStart: false).IsIndeterminate();
 
                     // Wait for all tasks (except the indeterminate one) to complete
-                    while (!ctx.IsFinished)
+                while (!ctx.IsFinished)
                 {
-                        // Increment progress
-                        foreach (var (task, increment) in tasks)
+                    // Increment progress
+                    foreach (var (task, increment) in tasks)
                     {
                         task.Increment(random.NextDouble() * increment);
                     }
 
-                        // Write some random things to the terminal
-                        if (random.NextDouble() < 0.1)
+                    // Write some random things to the terminal
+                    if (random.NextDouble() < 0.1)
                     {
                         WriteLogMessage();
                     }
 
-                        // Simulate some delay
-                        Thread.Sleep(100);
+                    // Simulate some delay
+                    Thread.Sleep(100);
                 }
 
                     // Now start the "warp" task
-                    warpTask.StartTask();
+                warpTask.StartTask();
                 warpTask.IsIndeterminate(false);
                 while (!ctx.IsFinished)
                 {
