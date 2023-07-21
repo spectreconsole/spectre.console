@@ -1,3 +1,4 @@
+using Spectre.Console.Cli.Internal.Commands.Completion;
 using Spectre.Console.Cli.Internal.Configuration;
 
 namespace Spectre.Console.Cli;
@@ -77,6 +78,12 @@ public sealed class CommandApp : ICommandApp
                     cli.AddCommand<XmlDocCommand>(CliConstants.Commands.XmlDoc);
                     cli.AddCommand<ExplainCommand>(CliConstants.Commands.Explain);
                     cli.AddCommand<CompleteCommand>(CliConstants.Commands.Complete);
+                });
+
+                _configurator.AddBranch(CliConstants.Commands.CompletionBranch, cli =>
+                {
+                    //cli.HideBranch();
+                    cli.AddCommand<PowershellCompletionIntegration>(CliConstants.Commands.PowershellCompletion);
                 });
 
                 _executed = true;
