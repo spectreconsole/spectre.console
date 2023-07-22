@@ -10,12 +10,12 @@ public sealed class Progress
     /// <summary>
     /// Gets or sets a optional header to be rendered with the progress list.
     /// </summary>
-    public Func<IReadOnlyList<ProgressTask>, IRenderable?> HeaderRenderable { get; set; } = _ => null;
+    public Func<IReadOnlyList<ProgressTask>, Rows?> HeaderRenderable { get; set; } = _ => null;
 
     /// <summary>
     /// Gets or sets a optional footer to be rendered with the progress.
     /// </summary>
-    public Func<IReadOnlyList<ProgressTask>, IRenderable?> FooterRenderable { get; set; } = _ => null;
+    public Func<IReadOnlyList<ProgressTask>, Rows?> FooterRenderable { get; set; } = _ => null;
 
     /// <summary>
     /// Gets or sets a value indicating whether or not task list should auto refresh.

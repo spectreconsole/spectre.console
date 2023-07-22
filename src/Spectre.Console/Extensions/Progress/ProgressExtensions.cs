@@ -40,7 +40,7 @@ public static class ProgressExtensions
     /// <param name="progress">The <see cref="Progress"/> instance.</param>
     /// <param name="headerRender">The header render function. Return null if no header.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Progress Header(this Progress progress, Func<IReadOnlyList<ProgressTask>, IRenderable?> headerRender)
+    public static Progress Header(this Progress progress, Func<IReadOnlyList<ProgressTask>, Rows?> headerRender)
     {
         progress.HeaderRenderable = headerRender;
 
@@ -53,7 +53,7 @@ public static class ProgressExtensions
     /// <param name="progress">The <see cref="Progress"/> instance.</param>
     /// <param name="footerRender">The footer render function. Return null if no header.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Progress Footer(this Progress progress, Func<IReadOnlyList<ProgressTask>, IRenderable?> footerRender)
+    public static Progress Footer(this Progress progress, Func<IReadOnlyList<ProgressTask>, Rows?> footerRender)
     {
         progress.FooterRenderable = footerRender;
 

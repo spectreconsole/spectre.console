@@ -8,13 +8,13 @@ internal sealed class DefaultProgressRenderer : ProgressRenderer
     private readonly object _lock;
     private readonly Stopwatch _stopwatch;
     private readonly bool _hideCompleted;
-    private readonly Func<IReadOnlyList<ProgressTask>, IRenderable?> _headerRenderable;
-    private readonly Func<IReadOnlyList<ProgressTask>, IRenderable?> _footerRenderable;
+    private readonly Func<IReadOnlyList<ProgressTask>, Rows?> _headerRenderable;
+    private readonly Func<IReadOnlyList<ProgressTask>, Rows?> _footerRenderable;
     private TimeSpan _lastUpdate;
 
     public override TimeSpan RefreshRate { get; }
 
-    public DefaultProgressRenderer(IAnsiConsole console, List<ProgressColumn> columns, TimeSpan refreshRate, bool hideCompleted, Func<IReadOnlyList<ProgressTask>, IRenderable?> headerRenderable, Func<IReadOnlyList<ProgressTask>, IRenderable?> footerRenderable)
+    public DefaultProgressRenderer(IAnsiConsole console, List<ProgressColumn> columns, TimeSpan refreshRate, bool hideCompleted, Func<IReadOnlyList<ProgressTask>, Rows?> headerRenderable, Func<IReadOnlyList<ProgressTask>, Rows?> footerRenderable)
     {
         _console = console ?? throw new ArgumentNullException(nameof(console));
         _columns = columns ?? throw new ArgumentNullException(nameof(columns));

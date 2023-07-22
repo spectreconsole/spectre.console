@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Spectre.Console;
+using Spectre.Console.Rendering;
 
 namespace Progress;
 
@@ -23,13 +24,28 @@ public static class Program
                     new RemainingTimeColumn(),      // Remaining time
                     new SpinnerColumn(),            // Spinner
             })
-            .Header(_ => new Panel($"Going on a :rocket:, we're going to the :crescent_moon:").Expand().RoundedBorder())
+            .Header(_ => new Rows(new Panel("Going on a :rocket:, we're going to the :crescent_moon:").Expand().RoundedBorder()))
             .Footer(tasks =>
             {
-                var grid = new Grid().AddColumn();
-                grid.AddRow(new Rule().RuleStyle(new Style(Color.Grey)));
-                grid.AddRow(new Markup($"[blue]{tasks.Count}[/] total tasks. [green]{tasks.Count(i => i.IsFinished)}[/] complete"));
-                return grid;
+                const string ESC = "\u001b";
+                string escapeSequence;
+                if (tasks.All(i => i.IsFinished))
+                {
+                    escapeSequence = $"{ESC}]]9;4;0;100{ESC}\\";
+                }
+                else
+                {
+                    var total = tasks.Sum(i => i.MaxValue);
+                    var done = tasks.Sum(i => i.Value);
+                    var percent = (int)(done / total * 100);
+                    escapeSequence = $"{ESC}]]9;4;1;{percent}{ESC}\\";
+                }
+
+                return new Rows(
+                    new Rule(),
+                    new ControlCode(escapeSequence),
+                    new Markup($"[blue]{tasks.Count}[/] total tasks. [green]{tasks.Count(i => i.IsFinished)}[/] complete.")
+                    );
             })
 
             .Start(ctx =>

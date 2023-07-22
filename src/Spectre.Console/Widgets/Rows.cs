@@ -63,7 +63,7 @@ public sealed class Rows : Renderable, IExpandable
 
                 if (last)
                 {
-                    if (!segment.IsLineBreak)
+                    if (!segment.IsLineBreak && child is not ControlCode)
                     {
                         result.Add(Segment.LineBreak);
                     }
