@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PowershellIntegration_Fully_Integrated" xml:space="preserve">
+  <data name="PowershellIntegration_Completion_and_alias" xml:space="preserve">
     <value>function Invoke-[APPNAME] {
     return [RUNCOMMAND] $args
 }
@@ -144,6 +144,16 @@ function Register-CompleterFor{
     }
 }
 
+Set-alias -name [APPNAME] -Value Invoke-[APPNAME]
+Set-alias -name [APPNAME_LowerCase] -Value Invoke-[APPNAME]
+
+Register-CompleterFor -name "[APPNAME]"
+Register-CompleterFor -name "[APPNAME_LowerCase]"
+
+Register-CompleterFor -name "Invoke-[APPNAME]"</value>
+  </data>
+  <data name="PowershellIntegration_Install" xml:space="preserve">
+    <value># adds for eg. Write-Host "Hello World! [Randomnumber]" to profile only once, otherwise does it overwrites it
 function Add-ProfileLine {
     param(
         [string]$identifier,
@@ -168,14 +178,26 @@ function Add-ProfileLine {
     $ProfileContent | Set-Content $ProfilePath
 }
 
-Set-alias -name [APPNAME] -Value Invoke-[APPNAME]
-Set-alias -name [APPNAME_LowerCase] -Value Invoke-[APPNAME]
 
-Register-CompleterFor -name "[APPNAME]"
-Register-CompleterFor -name "[APPNAME_LowerCase]"
+function Add-Profile-Script {
+    param(
+        [string]$identifier,
+        [string]$scriptContent
+    )
 
-Register-CompleterFor -name "Invoke-[APPNAME]"
+    $ProfilePath = $profile.CurrentUserAllHosts
+    # [DirectoryOfProfile]/Scripts/[identifier].ps1
+    $relativePath = Join-Path "Scripts" "$identifier.ps1"
 
-Add-ProfileLine -identifier "[APPNAME_LowerCase]-AutoComplete" -Line '[RUNCOMMAND] completion powershell | Out-String | Invoke-Expression'</value>
+    $ScriptPath = Join-Path (Split-Path $ProfilePath) $relativePath
+
+    # Write the content to the file
+    # overwrite if it exists
+    $scriptContent | Set-Content $ScriptPath
+    Add-ProfileLine -identifier $identifier -Line "if (Test-Path '$ScriptPath') { . '$ScriptPath' }"
+}
+
+$scriptContent = [RUNCOMMAND] completion powershell --noinstall | Out-String
+Add-Profile-Script -identifier [APPNAME_LowerCase] -scriptContent $scriptContent</value>
   </data>
 </root>

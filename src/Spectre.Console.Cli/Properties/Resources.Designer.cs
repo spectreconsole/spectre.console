@@ -78,9 +78,32 @@ namespace Spectre.Console.Cli.Properties {
         ///        $completions = [RUNCOMMAND] cli complete --position $cursorPosition &quot;$wordToComplete&quot;
         ///        if ($completions) {        /// [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string PowershellIntegration_Fully_Integrated {
+        internal static string PowershellIntegration_Completion_and_alias {
             get {
-                return ResourceManager.GetString("PowershellIntegration_Fully_Integrated", resourceCulture);
+                return ResourceManager.GetString("PowershellIntegration_Completion_and_alias", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to # adds for eg. Write-Host &quot;Hello World! [Randomnumber]&quot; to profile only once, otherwise does it overwrites it
+        ///function Add-ProfileLine {
+        ///    param(
+        ///        [string]$identifier,
+        ///        [string]$Line
+        ///
+        ///    )
+        ///    $ProfilePath = $profile.CurrentUserAllHosts
+        ///    $ProfileContent = Get-Content $ProfilePath
+        ///    
+        ///    # we need to remove Id: [identifier] and the line after it
+        ///    $IdLine = &quot;#Id: $identifier&quot;
+        ///    $IdLineIndex = $ProfileContent.IndexOf($IdLine)
+        ///    if ($IdLineIndex -ne -1) {
+        ///        $Prof [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string PowershellIntegration_Install {
+            get {
+                return ResourceManager.GetString("PowershellIntegration_Install", resourceCulture);
             }
         }
     }
