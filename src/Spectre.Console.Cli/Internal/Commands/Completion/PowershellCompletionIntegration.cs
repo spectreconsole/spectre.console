@@ -2,8 +2,8 @@ namespace Spectre.Console.Cli.Internal.Commands.Completion;
 
 internal class PowershellCompletionIntegrationSettings : CommandSettings
 {
-    [CommandOption("--noInstall")]
-    public bool NoInstall { get; set; }
+    [CommandOption("--install")]
+    public bool Install { get; set; }
 }
 
 internal class PowershellCompletionIntegration : Command<PowershellCompletionIntegrationSettings>
@@ -31,7 +31,7 @@ internal class PowershellCompletionIntegration : Command<PowershellCompletionInt
 
         var sb = new StringBuilder();
         sb.AppendLine(GetResource("PowershellIntegration_Completion_and_alias", replacements));
-        if (!settings.NoInstall)
+        if (settings.Install)
         {
             sb.AppendLine(GetResource("PowershellIntegration_Install", replacements));
         }

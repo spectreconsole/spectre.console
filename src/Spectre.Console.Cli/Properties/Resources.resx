@@ -197,7 +197,7 @@ function Add-Profile-Script {
     Add-ProfileLine -identifier $identifier -Line "if (Test-Path '$ScriptPath') { . '$ScriptPath' }"
 }
 
-$scriptContent = [RUNCOMMAND] completion powershell --noinstall | Out-String
+$scriptContent = [RUNCOMMAND] completion powershell | Out-String
 Add-Profile-Script -identifier [APPNAME_LowerCase] -scriptContent $scriptContent</value>
   </data>
 </root>
