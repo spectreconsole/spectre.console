@@ -22,6 +22,5 @@ internal static class CliConstants
 
         public const string CompletionBranch = "completion";
         public const string PowershellCompletion = "powershell";
-
     }
 }

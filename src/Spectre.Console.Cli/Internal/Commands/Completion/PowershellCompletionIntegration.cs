@@ -1,46 +1,26 @@
-using System;
-
 namespace Spectre.Console.Cli.Internal.Commands.Completion;
 
 internal class PowershellCompletionIntegrationSettings : CommandSettings
 {
-    // [CommandOption("--addToPath")]
-    // public bool AddToPath { get; set; }
-
-    //[CommandOption("--persist")]
-    //public bool Persist { get; set; }
-
     [CommandOption("--noInstall")]
     public bool NoInstall { get; set; }
 }
 
 internal class PowershellCompletionIntegration : Command<PowershellCompletionIntegrationSettings>
 {
-    private IAnsiConsole _writer;
-
-    public PowershellCompletionIntegration(IConfiguration configuration)
+    public PowershellCompletionIntegration()
     {
-        _writer = configuration.Settings.Console.GetConsole();
     }
 
     public override int Execute(
         CommandContext context,
-        PowershellCompletionIntegrationSettings settings
-    )
+        PowershellCompletionIntegrationSettings settings)
     {
-      
-        var resources = Properties.Resources.ResourceManager.GetString("PowershellIntegration_Completion_and_alias");
-
         var startArgs = GetSelfStartCommandFromCommandLineArgs();
 
         var startCommand = string.IsNullOrEmpty(startArgs.Runtime)
             ? "& \"" + startArgs.Command + "\""
             : "& \"" + startArgs.Runtime + "\" \"" + startArgs.Command + "\"";
-
-        //var result = resources
-        //    .Replace("[RUNCOMMAND]", startCommand)
-        //    .Replace("[APPNAME]", startArgs.CommandName)
-        //    .Replace("[APPNAME_LowerCase]", startArgs.CommandName.ToLowerInvariant());
 
         var replacements = new Dictionary<string, string>
         {
@@ -48,12 +28,6 @@ internal class PowershellCompletionIntegration : Command<PowershellCompletionInt
             ["[APPNAME]"] = startArgs.CommandName,
             ["[APPNAME_LowerCase]"] = startArgs.CommandName.ToLowerInvariant(),
         };
-
-        //var result = GetResource("PowershellIntegration_Completion_and_alias", replacements);
-        //if (!settings.NoInstall)
-        //{
-        //    result += GetResource("PowershellIntegration_Install", replacements);
-        //}
 
         var sb = new StringBuilder();
         sb.AppendLine(GetResource("PowershellIntegration_Completion_and_alias", replacements));
@@ -71,7 +45,7 @@ internal class PowershellCompletionIntegration : Command<PowershellCompletionInt
 
     private static string GetResource(string resourceName, Dictionary<string, string> replacements)
     {
-        var result = Properties.Resources.ResourceManager.GetString(resourceName);
+        var result = Properties.Resources.ResourceManager.GetString(resourceName) ?? throw new InvalidOperationException($"Could not find resource '{resourceName}'.");
         foreach (var replacement in replacements)
         {
             result = result.Replace(replacement.Key, replacement.Value);
