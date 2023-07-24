@@ -1,5 +1,3 @@
-using System.Resources;
-
 namespace Spectre.Console.Cli.Internal.Commands.Completion;
 
 internal class PowershellCompletionIntegrationSettings : CommandSettings
@@ -25,11 +23,7 @@ internal class PowershellCompletionIntegration : Command<PowershellCompletionInt
         PowershellCompletionIntegrationSettings settings
     )
     {
-    
         var resources = Properties.Resources.ResourceManager.GetString("PowershellIntegration_Fully_Integrated");
-
-        //_writer.WriteLine(resources);
-        //return 1;
 
         StringBuilder sb = new();
         var startArgs = GetSelfStartCommandFromCommandLineArgs();
@@ -38,40 +32,14 @@ internal class PowershellCompletionIntegration : Command<PowershellCompletionInt
             ? "& \"" + startArgs.Command + "\""
             : "& \"" + startArgs.Runtime + "\" \"" + startArgs.Command + "\"";
 
-        _writer.WriteLine(resources.Replace("[RUNCOMMAND]", startCommand));
+        var result = resources
+            .Replace("[RUNCOMMAND]", startCommand)
+            .Replace("[APPNAME]", startArgs.CommandName)
+            .Replace("[APPNAME_LowerCase]", startArgs.CommandName.ToLowerInvariant());
 
-        //var completionCommand = startCommand + " cli complete --position $cursorPosition \"$wordToComplete\"";
-
-        //sb
-        //    .Append("Register-ArgumentCompleter -Native -CommandName ")
-        //    .Append(startArgs.CommandName)
-        //    .AppendLine(" -ScriptBlock {");
-
-        //sb.AppendLine("    param($commandName, $wordToComplete, $cursorPosition)");
-        //sb.Append("    $completions = ").AppendLine(completionCommand);
-        //sb.AppendLine("    if ($completions) {");
-        //sb.AppendLine("        foreach ($completion in $completions) {");
-        //sb.AppendLine(
-        //    "            [System.Management.Automation.CompletionResult]::new($completion, $completion, 'ParameterValue', $completion)"
-        //);
-        //sb.AppendLine("        }");
-        //sb.AppendLine("    }");
-        //sb.AppendLine("    else {");
-        //sb.AppendLine("        $null");
-        //sb.AppendLine("    }");
-        //sb.AppendLine("}");
-
-        //_writer.WriteLine(sb.ToString());
-
-        // if (settings.Persist)
-        // {
-        //     // Add to profile
-        //     string profilePath = Path.Combine(
-        //         Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-        //         "WindowsPowerShell",
-        //         "profile.ps1"
-        //     );
-        // }
+        // Using Console.WriteLine instead of _writer.WriteLine because
+        // Spectre console inserts line breaks which breaks the script
+        System.Console.WriteLine(result);
 
         return 0;
     }

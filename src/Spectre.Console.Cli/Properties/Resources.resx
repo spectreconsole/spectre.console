@@ -118,27 +118,64 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PowershellIntegration_Fully_Integrated" xml:space="preserve">
-    <value>function Invoke-ApGet {
-    # $AdditionalParameters = $args -join '" "'
-    # $AdditionalParameters = '"' + $AdditionalParameters + '"'
-
-    $output = [RUNCOMMAND] $args
-
-    return $output
+    <value>function Invoke-[APPNAME] {
+    return [RUNCOMMAND] $args
 }
 
-# Register the Invoke-ApGet function as a completer for the apget command
-Register-ArgumentCompleter -Native -CommandName Invoke-ApGet -ScriptBlock {
-    param($commandName, $wordToComplete, $cursorPosition)
-    $completions = [RUNCOMMAND] cli complete --position $cursorPosition "$wordToComplete"
-    if ($completions) {
-        foreach ($completion in $completions) {
-            [System.Management.Automation.CompletionResult]::new($completion, $completion, 'ParameterValue', $completion)
+# Register-CompleterFor -CommandName [APPNAME]
+function Register-CompleterFor{
+    #appname parameter
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$name
+    )
+
+    Register-ArgumentCompleter -Native -CommandName $name -ScriptBlock {
+        param($commandName, $wordToComplete, $cursorPosition)
+        $completions = [RUNCOMMAND] cli complete --position $cursorPosition "$wordToComplete"
+        if ($completions) {
+            foreach ($completion in $completions) {
+                [System.Management.Automation.CompletionResult]::new($completion, $completion, 'ParameterValue', $completion)
+            }
+        }
+        else {
+            $null
         }
     }
-    else {
-        $null
+}
+
+function Add-ProfileLine {
+    param(
+        [string]$identifier,
+        [string]$Line
+
+    )
+    $ProfilePath = $profile.CurrentUserAllHosts
+    $ProfileContent = Get-Content $ProfilePath
+    
+    # we need to remove Id: [identifier] and the line after it
+    $IdLine = "#Id: $identifier"
+    $IdLineIndex = $ProfileContent.IndexOf($IdLine)
+    if ($IdLineIndex -ne -1) {
+        $ProfileContent = $ProfileContent | Where-Object { $_ -ne $IdLine -and $_ -ne $ProfileContent[$IdLineIndex + 1] }
     }
-}</value>
+
+    # adding the line
+    $ProfileContent += $IdLine
+    $ProfileContent += $Line
+
+    # writing the file
+    $ProfileContent | Set-Content $ProfilePath
+}
+
+Set-alias -name [APPNAME] -Value Invoke-[APPNAME]
+Set-alias -name [APPNAME_LowerCase] -Value Invoke-[APPNAME]
+
+Register-CompleterFor -name "[APPNAME]"
+Register-CompleterFor -name "[APPNAME_LowerCase]"
+
+Register-CompleterFor -name "Invoke-[APPNAME]"
+
+Add-ProfileLine -identifier "[APPNAME_LowerCase]-AutoComplete" -Line '[RUNCOMMAND] completion powershell | Out-String | Invoke-Expression'</value>
   </data>
 </root>

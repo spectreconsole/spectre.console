@@ -61,21 +61,22 @@ namespace Spectre.Console.Cli.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function Invoke-ApGet {
-        ///    $AdditionalParameters = $args -join &apos; &apos;
-        ///
-        ///    # Build the dotnet command with the provided parameters
-        ///    $dotnetCommand = &quot;dotnet `&quot;[dllPath]`&quot; $AdditionalParameters&quot;
-        ///
-        ///    # Execute the dotnet command
-        ///    $output = Invoke-Expression $dotnetCommand
-        ///
-        ///    # Return the output from the ApGet.dll and the completions
-        ///    return $output
+        ///   Looks up a localized string similar to function Invoke-[APPNAME] {
+        ///    return [RUNCOMMAND] $args
         ///}
         ///
-        ///# Register the Invoke-ApGet function as a completer for the apget command
-        ///Register-ArgumentCompleter -Native -CommandName Invoke-ApGet - [rest of string was truncated]&quot;;.
+        ///# Register-CompleterFor -CommandName [APPNAME]
+        ///function Register-CompleterFor{
+        ///    #appname parameter
+        ///    param(
+        ///        [Parameter(Mandatory=$true)]
+        ///        [string]$name
+        ///    )
+        ///
+        ///    Register-ArgumentCompleter -Native -CommandName $name -ScriptBlock {
+        ///        param($commandName, $wordToComplete, $cursorPosition)
+        ///        $completions = [RUNCOMMAND] cli complete --position $cursorPosition &quot;$wordToComplete&quot;
+        ///        if ($completions) {        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string PowershellIntegration_Fully_Integrated {
             get {
