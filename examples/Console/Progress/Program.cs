@@ -24,30 +24,7 @@ public static class Program
                     new RemainingTimeColumn(),      // Remaining time
                     new SpinnerColumn(),            // Spinner
             })
-            .Header(_ => new Rows(new Panel("Going on a :rocket:, we're going to the :crescent_moon:").Expand().RoundedBorder()))
-            .Footer(tasks =>
-            {
-                const string ESC = "\u001b";
-                string escapeSequence;
-                if (tasks.All(i => i.IsFinished))
-                {
-                    escapeSequence = $"{ESC}]]9;4;0;100{ESC}\\";
-                }
-                else
-                {
-                    var total = tasks.Sum(i => i.MaxValue);
-                    var done = tasks.Sum(i => i.Value);
-                    var percent = (int)(done / total * 100);
-                    escapeSequence = $"{ESC}]]9;4;1;{percent}{ESC}\\";
-                }
-
-                return new Rows(
-                    new Rule(),
-                    new ControlCode(escapeSequence),
-                    new Markup($"[blue]{tasks.Count}[/] total tasks. [green]{tasks.Count(i => i.IsFinished)}[/] complete.")
-                    );
-            })
-
+            .UseRenderHook((renderable, tasks) => RenderHook(tasks, renderable))
             .Start(ctx =>
             {
                 var random = new Random(DateTime.Now.Millisecond);
@@ -89,6 +66,35 @@ public static class Program
 
         // Done
         AnsiConsole.MarkupLine("[green]Done![/]");
+    }
+
+    private static IRenderable RenderHook(IReadOnlyList<ProgressTask> tasks, IRenderable renderable)
+    {
+        var header = new Panel("Going on a :rocket:, we're going to the :crescent_moon:").Expand().RoundedBorder();
+        var footer = new Rows(
+            new Rule(),
+            new Markup(
+                $"[blue]{tasks.Count}[/] total tasks. [green]{tasks.Count(i => i.IsFinished)}[/] complete.")
+        );
+
+        const string ESC = "\u001b";
+        string escapeSequence;
+        if (tasks.All(i => i.IsFinished))
+        {
+            escapeSequence = $"{ESC}]]9;4;0;100{ESC}\\";
+        }
+        else
+        {
+            var total = tasks.Sum(i => i.MaxValue);
+            var done = tasks.Sum(i => i.Value);
+            var percent = (int)(done / total * 100);
+            escapeSequence = $"{ESC}]]9;4;1;{percent}{ESC}\\";
+        }
+
+        var middleContent = new Grid().AddColumns(new GridColumn(), new GridColumn().Width(20));
+        middleContent.AddRow(renderable, new FigletText(tasks.Count(i => i.IsFinished == false).ToString()));
+
+        return new Rows(header, middleContent, footer, new ControlCode(escapeSequence));
     }
 
     private static List<(ProgressTask Task, int Delay)> CreateTasks(ProgressContext progress, Random random)

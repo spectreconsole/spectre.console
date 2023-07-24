@@ -8,13 +8,12 @@ internal sealed class DefaultProgressRenderer : ProgressRenderer
     private readonly object _lock;
     private readonly Stopwatch _stopwatch;
     private readonly bool _hideCompleted;
-    private readonly Func<IReadOnlyList<ProgressTask>, Rows?> _headerRenderable;
-    private readonly Func<IReadOnlyList<ProgressTask>, Rows?> _footerRenderable;
+    private readonly Func<IRenderable, IReadOnlyList<ProgressTask>, IRenderable> _renderHook;
     private TimeSpan _lastUpdate;
 
     public override TimeSpan RefreshRate { get; }
 
-    public DefaultProgressRenderer(IAnsiConsole console, List<ProgressColumn> columns, TimeSpan refreshRate, bool hideCompleted, Func<IReadOnlyList<ProgressTask>, Rows?> headerRenderable, Func<IReadOnlyList<ProgressTask>, Rows?> footerRenderable)
+    public DefaultProgressRenderer(IAnsiConsole console, List<ProgressColumn> columns, TimeSpan refreshRate, bool hideCompleted, Func<IRenderable, IReadOnlyList<ProgressTask>, IRenderable> renderHook)
     {
         _console = console ?? throw new ArgumentNullException(nameof(console));
         _columns = columns ?? throw new ArgumentNullException(nameof(columns));
@@ -23,8 +22,7 @@ internal sealed class DefaultProgressRenderer : ProgressRenderer
         _stopwatch = new Stopwatch();
         _lastUpdate = TimeSpan.Zero;
         _hideCompleted = hideCompleted;
-        _headerRenderable = headerRenderable;
-        _footerRenderable = footerRenderable;
+        _renderHook = renderHook;
 
         RefreshRate = refreshRate;
     }
@@ -101,15 +99,8 @@ internal sealed class DefaultProgressRenderer : ProgressRenderer
             // Add rows
             var tasks = context.GetTasks();
 
-            var headerRenderable = _headerRenderable(tasks);
-            var footerRenderable = _footerRenderable(tasks);
-
             var layout = new Grid();
             layout.AddColumn();
-            if (headerRenderable != null)
-            {
-                layout.AddRow(headerRenderable);
-            }
 
             foreach (var task in tasks.Where(tsk => !(_hideCompleted && tsk.IsFinished)))
             {
@@ -119,12 +110,7 @@ internal sealed class DefaultProgressRenderer : ProgressRenderer
 
             layout.AddRow(grid);
 
-            if (footerRenderable != null)
-            {
-                layout.AddRow(footerRenderable);
-            }
-
-            _live.SetRenderable(new Padder(layout, new Padding(0, 1)));
+            _live.SetRenderable(new Padder(_renderHook(layout, tasks), new Padding(0, 1)));
         }
     }
 

@@ -35,27 +35,14 @@ public static class ProgressExtensions
     }
 
     /// <summary>
-    /// Sets an optional header for the progress.
+    /// Sets an optional hook to intercept rendering.
     /// </summary>
     /// <param name="progress">The <see cref="Progress"/> instance.</param>
-    /// <param name="headerRender">The header render function. Return null if no header.</param>
+    /// <param name="renderHook">The custom render function.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Progress Header(this Progress progress, Func<IReadOnlyList<ProgressTask>, Rows?> headerRender)
+    public static Progress UseRenderHook(this Progress progress, Func<IRenderable, IReadOnlyList<ProgressTask>, IRenderable> renderHook)
     {
-        progress.HeaderRenderable = headerRender;
-
-        return progress;
-    }
-
-    /// <summary>
-    /// Sets an optional footer for the progress.
-    /// </summary>
-    /// <param name="progress">The <see cref="Progress"/> instance.</param>
-    /// <param name="footerRender">The footer render function. Return null if no header.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Progress Footer(this Progress progress, Func<IReadOnlyList<ProgressTask>, Rows?> footerRender)
-    {
-        progress.FooterRenderable = footerRender;
+        progress.RenderHook = renderHook;
 
         return progress;
     }

@@ -8,14 +8,9 @@ public sealed class Progress
     private readonly IAnsiConsole _console;
 
     /// <summary>
-    /// Gets or sets a optional header to be rendered with the progress list.
+    /// Gets or sets a optional custom render function.
     /// </summary>
-    public Func<IReadOnlyList<ProgressTask>, Rows?> HeaderRenderable { get; set; } = _ => null;
-
-    /// <summary>
-    /// Gets or sets a optional footer to be rendered with the progress.
-    /// </summary>
-    public Func<IReadOnlyList<ProgressTask>, Rows?> FooterRenderable { get; set; } = _ => null;
+    public Func<IRenderable, IReadOnlyList<ProgressTask>, IRenderable> RenderHook { get; set; } = (renderable, _) => renderable;
 
     /// <summary>
     /// Gets or sets a value indicating whether or not task list should auto refresh.
@@ -168,7 +163,7 @@ public sealed class Progress
         if (interactive)
         {
             var columns = new List<ProgressColumn>(Columns);
-            return new DefaultProgressRenderer(_console, columns, RefreshRate, HideCompleted, HeaderRenderable, FooterRenderable);
+            return new DefaultProgressRenderer(_console, columns, RefreshRate, HideCompleted, RenderHook);
         }
         else
         {
