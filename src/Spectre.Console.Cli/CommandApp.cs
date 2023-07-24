@@ -82,7 +82,7 @@ public sealed class CommandApp : ICommandApp
 
                 _configurator.AddBranch(CliConstants.Commands.CompletionBranch, cli =>
                 {
-                    //cli.HideBranch();
+                    cli.HideBranch();
                     cli.AddCommand<PowershellCompletionIntegration>(CliConstants.Commands.PowershellCompletion);
                 });
 
