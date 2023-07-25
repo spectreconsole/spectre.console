@@ -137,7 +137,15 @@ function Register-CompleterFor{
 
     Register-ArgumentCompleter -Native -CommandName $name -ScriptBlock {
         param($commandName, $wordToComplete, $cursorPosition)
-        $completions = [RUNCOMMAND] cli complete --position $cursorPosition "$wordToComplete"
+        # $completions = [RUNCOMMAND] cli complete --position $cursorPosition "$wordToComplete"
+        $completions = @()
+        if(Test-Path -PathType Leaf -Path ".\[COMMAND_LOCAL]"){
+            $completions = [RUNCOMMAND_LOCAL] cli complete --position $cursorPosition "$wordToComplete"
+        }
+        else{
+            $completions = [RUNCOMMAND] cli complete --position $cursorPosition "$wordToComplete"
+        }
+        
         if ($completions) {
             foreach ($completion in $completions) {
                 [System.Management.Automation.CompletionResult]::new($completion, $completion, 'ParameterValue', $completion)

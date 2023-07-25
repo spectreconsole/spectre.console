@@ -31,8 +31,8 @@ internal class PowershellCompletionIntegration : Command<PowershellCompletionInt
         
         var localCommand = startArgs.CommandName + startArgs.CommandExtension;
         var localStartCommand = string.IsNullOrEmpty(startArgs.Runtime)
-            ? "& \"" + localCommand + "\""
-            : "& \"" + startArgs.Runtime + "\" \"" + localCommand + "\"";
+            ? "& \".\\" + localCommand + "\""
+            : "& \"" + startArgs.Runtime + "\" \".\\" + localCommand + "\"";
 
         var replacements = new Dictionary<string, string>
         {
