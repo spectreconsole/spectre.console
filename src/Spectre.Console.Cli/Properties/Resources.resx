@@ -160,14 +160,40 @@ function Add-ProfileLine {
         [string]$Line
 
     )
-    $ProfilePath = $profile.CurrentUserAllHosts
-    $ProfileContent = Get-Content $ProfilePath
-    
+    $ProfilePath = $PROFILE.CurrentUserAllHosts
+
+    # If not exists: Empty string array
+    $ProfileContent = @()
+    if (Test-Path -Path $ProfilePath) {
+        $ProfileContent = [System.IO.File]::ReadAllLines($ProfilePath)
+    }
+
     # we need to remove Id: [identifier] and the line after it
     $IdLine = "#Id: $identifier"
-    $IdLineIndex = $ProfileContent.IndexOf($IdLine)
-    if ($IdLineIndex -ne -1) {
-        $ProfileContent = $ProfileContent | Where-Object { $_ -ne $IdLine -and $_ -ne $ProfileContent[$IdLineIndex + 1] }
+    # $IdLineIndex = $ProfileContent.IndexOf($IdLine)
+    if ($IdLineIndex -ne -1 -and $IdLineIndex -lt ($ProfileContent.Count - 1)) {
+        $newContent = @()
+        $switch = $false
+        for ($i = 0; $i -lt $ProfileContent.Count; $i++) {
+            $content = $ProfileContent[$i]
+            if ($content -eq $IdLine) {
+                $switch = $true
+                continue
+            }
+            if ($switch) {
+                $switch = $false
+                continue
+            }
+
+            $newContent += $content
+        }
+        $ProfileContent = $newContent
+    }
+
+    # ProfileContent suddendly is a string instead of a string array
+    # make it an array if it is a string
+    if ($ProfileContent -is [string]) {
+        $ProfileContent = @($ProfileContent)
     }
 
     # adding the line
