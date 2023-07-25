@@ -186,11 +186,14 @@ function Add-Profile-Script {
     )
 
     $ProfilePath = $profile.CurrentUserAllHosts
-    # [DirectoryOfProfile]/Scripts/[identifier].ps1
-    $relativePath = Join-Path "Scripts" "$identifier.ps1"
+    $ScriptsPath = Join-Path (Split-Path $ProfilePath) "Scripts"
+    $ScriptPath = Join-Path $ScriptsPath "$identifier.ps1"
 
-    $ScriptPath = Join-Path (Split-Path $ProfilePath) $relativePath
-
+    # Create the Scripts directory if it doesn't exist
+    if (-not (Test-Path -Path $ScriptsPath -PathType Container)) {
+        New-Item -ItemType Directory -Path $ScriptsPath -Force
+    }
+    
     # Write the content to the file
     # overwrite if it exists
     $scriptContent | Set-Content $ScriptPath
