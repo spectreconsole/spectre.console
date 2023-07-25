@@ -731,7 +731,7 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
-        public async Task PowershellIntegration_ToolCanBeExe()
+        public void PowershellIntegration_ToolCanBeExe()
         {
             var args = PowershellCompletionIntegration.ParseStartArgs("C:\\Users\\Tool.exe", "completion", "powershell");
 
@@ -740,7 +740,7 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
-        public async Task PowershellIntegration_ToolCanBeDotnetDll()
+        public void PowershellIntegration_ToolCanBeDotnetDll()
         {
             var args = PowershellCompletionIntegration.ParseStartArgs("dotnet", "C:\\Users\\Tool.dll", "completion", "powershell");
 

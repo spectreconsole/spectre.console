@@ -9,6 +9,8 @@ internal class PowershellCompletionIntegrationSettings : CommandSettings
     public bool Diagnostic { get; set; }
 }
 
+[SuppressMessage("ReSharper", "LocalizableElement")]
+[SuppressMessage("ReSharper", "StringLiteralTypo")]
 internal class PowershellCompletionIntegration : Command<PowershellCompletionIntegrationSettings>
 {
     public PowershellCompletionIntegration()
@@ -28,7 +30,7 @@ internal class PowershellCompletionIntegration : Command<PowershellCompletionInt
         // startCommand is either "C:\Users\jkams\Documents\PowerShell\Tools\Apget\ApGet.exe"
         // or dotnet "C:\Users\jkams\Documents\PowerShell\Tools\Apget\ApGet.dll"
         // localStartCommand should be either "./ApGet.exe" or "dotnet ./ApGet.dll"
-        
+
         var localCommand = startArgs.CommandName + startArgs.CommandExtension;
         var localStartCommand = string.IsNullOrEmpty(startArgs.Runtime)
             ? "& \".\\" + localCommand + "\""
@@ -51,7 +53,7 @@ internal class PowershellCompletionIntegration : Command<PowershellCompletionInt
             System.Console.WriteLine($"StartCommand: {startCommand}");
             System.Console.WriteLine($"Install: {settings.Install}");
 
-            var args = String.Join(" ", Environment.GetCommandLineArgs());
+            var args = string.Join(" ", Environment.GetCommandLineArgs());
             System.Console.WriteLine($"CommandLine: {args}");
             return 0;
         }
