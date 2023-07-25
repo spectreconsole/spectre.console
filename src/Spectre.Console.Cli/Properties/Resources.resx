@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,7 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PowershellIntegration_Completion_and_alias" xml:space="preserve">
-    <value>function Invoke-[APPNAME] {
+    <value>
+function Invoke-[APPNAME] {
+    if (Test-Path -PathType Leaf -Path ".\[COMMAND_LOCAL]") {
+      [RUNCOMMAND_LOCAL] $args
+      return
+    }
     return [RUNCOMMAND] $args
 }
 

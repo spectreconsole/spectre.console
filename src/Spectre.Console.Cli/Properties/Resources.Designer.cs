@@ -61,7 +61,12 @@ namespace Spectre.Console.Cli.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to function Invoke-[APPNAME] {
+        ///   Looks up a localized string similar to 
+        ///function Invoke-[APPNAME] {
+        ///    if (Test-Path -PathType Leaf -Path &quot;.\[COMMAND_LOCAL]&quot;) {
+        ///      [RUNCOMMAND_LOCAL] $args
+        ///      return
+        ///    }
         ///    return [RUNCOMMAND] $args
         ///}
         ///
@@ -75,8 +80,7 @@ namespace Spectre.Console.Cli.Properties {
         ///
         ///    Register-ArgumentCompleter -Native -CommandName $name -ScriptBlock {
         ///        param($commandName, $wordToComplete, $cursorPosition)
-        ///        $completions = [RUNCOMMAND] cli complete --position $cursorPosition &quot;$wordToComplete&quot;
-        ///        if ($completions) {        /// [rest of string was truncated]&quot;;.
+        ///      [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string PowershellIntegration_Completion_and_alias {
             get {
@@ -92,14 +96,15 @@ namespace Spectre.Console.Cli.Properties {
         ///        [string]$Line
         ///
         ///    )
-        ///    $ProfilePath = $profile.CurrentUserAllHosts
-        ///    $ProfileContent = Get-Content $ProfilePath
-        ///    
-        ///    # we need to remove Id: [identifier] and the line after it
-        ///    $IdLine = &quot;#Id: $identifier&quot;
-        ///    $IdLineIndex = $ProfileContent.IndexOf($IdLine)
-        ///    if ($IdLineIndex -ne -1) {
-        ///        $Prof [rest of string was truncated]&quot;;.
+        ///    $ProfilePath = $PROFILE.CurrentUserAllHosts
+        ///
+        ///    # If not exists: Empty string array
+        ///    $ProfileContent = @()
+        ///    if (Test-Path -Path $ProfilePath) {
+        ///        $ProfileContent = [System.IO.File]::ReadAllLines($ProfilePath)
+        ///    }
+        ///
+        ///    # we need to remove Id: [identifier] and the line afte [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string PowershellIntegration_Install {
             get {

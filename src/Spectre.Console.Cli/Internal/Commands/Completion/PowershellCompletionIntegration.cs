@@ -25,9 +25,20 @@ internal class PowershellCompletionIntegration : Command<PowershellCompletionInt
             ? "& \"" + startArgs.Command + "\""
             : "& \"" + startArgs.Runtime + "\" \"" + startArgs.Command + "\"";
 
+        // startCommand is either "C:\Users\jkams\Documents\PowerShell\Tools\Apget\ApGet.exe"
+        // or dotnet "C:\Users\jkams\Documents\PowerShell\Tools\Apget\ApGet.dll"
+        // localStartCommand should be either "./ApGet.exe" or "dotnet ./ApGet.dll"
+        
+        var localCommand = startArgs.CommandName + startArgs.CommandExtension;
+        var localStartCommand = string.IsNullOrEmpty(startArgs.Runtime)
+            ? "& \"" + localCommand + "\""
+            : "& \"" + startArgs.Runtime + "\" \"" + localCommand + "\"";
+
         var replacements = new Dictionary<string, string>
         {
             ["[RUNCOMMAND]"] = startCommand,
+            ["[RUNCOMMAND_LOCAL]"] = localStartCommand,
+            ["[COMMAND_LOCAL]"] = localCommand,
             ["[APPNAME]"] = startArgs.CommandName,
             ["[APPNAME_LowerCase]"] = startArgs.CommandName.ToLowerInvariant(),
         };
@@ -100,7 +111,10 @@ internal class PowershellCompletionIntegration : Command<PowershellCompletionInt
     {
         public string Runtime { get; }
         public string Command { get; }
+
         public string CommandName => Path.GetFileNameWithoutExtension(Command);
+
+        public string CommandExtension => Path.GetExtension(Command);
 
         public StartArgs(string runtime, string command)
         {
