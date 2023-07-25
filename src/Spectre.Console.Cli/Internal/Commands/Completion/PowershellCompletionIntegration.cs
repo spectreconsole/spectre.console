@@ -4,6 +4,9 @@ internal class PowershellCompletionIntegrationSettings : CommandSettings
 {
     [CommandOption("--install")]
     public bool Install { get; set; }
+
+    [CommandOption("--diagnostic")]
+    public bool Diagnostic { get; set; }
 }
 
 internal class PowershellCompletionIntegration : Command<PowershellCompletionIntegrationSettings>
@@ -28,6 +31,19 @@ internal class PowershellCompletionIntegration : Command<PowershellCompletionInt
             ["[APPNAME]"] = startArgs.CommandName,
             ["[APPNAME_LowerCase]"] = startArgs.CommandName.ToLowerInvariant(),
         };
+
+        if (settings.Diagnostic)
+        {
+            System.Console.WriteLine($"CommandName: {startArgs.CommandName}");
+            System.Console.WriteLine($"Command: {startArgs.Command}");
+            System.Console.WriteLine($"Runtime: {startArgs.Runtime}");
+            System.Console.WriteLine($"StartCommand: {startCommand}");
+            System.Console.WriteLine($"Install: {settings.Install}");
+
+            var args = String.Join(" ", Environment.GetCommandLineArgs());
+            System.Console.WriteLine($"CommandLine: {args}");
+            return 0;
+        }
 
         var sb = new StringBuilder();
         sb.AppendLine(GetResource("PowershellIntegration_Completion_and_alias", replacements));
