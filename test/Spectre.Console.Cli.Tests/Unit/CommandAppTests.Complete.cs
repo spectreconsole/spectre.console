@@ -1,3 +1,4 @@
+using Spectre.Console.Cli.Internal.Commands.Completion;
 using Spectre.Console.Cli.Tests.Data.Commands;
 
 namespace Spectre.Console.Tests.Unit.Cli;
@@ -727,6 +728,24 @@ public sealed partial class CommandAppTests
 
             // Then
             return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        public async Task PowershellIntegration_ToolCanBeExe()
+        {
+            var args = PowershellCompletionIntegration.ParseStartArgs("C:\\Users\\Tool.exe", "completion", "powershell");
+
+            Assert.Equal(string.Empty, args.Runtime);
+            Assert.Equal("C:\\Users\\Tool.exe", args.Command);
+        }
+
+        [Fact]
+        public async Task PowershellIntegration_ToolCanBeDotnetDll()
+        {
+            var args = PowershellCompletionIntegration.ParseStartArgs("dotnet", "C:\\Users\\Tool.dll", "completion", "powershell");
+
+            Assert.Equal("dotnet", args.Runtime);
+            Assert.Equal("C:\\Users\\Tool.dll", args.Command);
         }
     }
 }
