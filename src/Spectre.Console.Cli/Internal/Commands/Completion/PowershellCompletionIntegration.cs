@@ -30,7 +30,6 @@ internal class PowershellCompletionIntegration : Command<PowershellCompletionInt
         // startCommand is either "C:\Users\jkams\Documents\PowerShell\Tools\Apget\ApGet.exe"
         // or dotnet "C:\Users\jkams\Documents\PowerShell\Tools\Apget\ApGet.dll"
         // localStartCommand should be either "./ApGet.exe" or "dotnet ./ApGet.dll"
-
         var localCommand = startArgs.CommandName + startArgs.CommandExtension;
         var localStartCommand = string.IsNullOrEmpty(startArgs.Runtime)
             ? "& \".\\" + localCommand + "\""
