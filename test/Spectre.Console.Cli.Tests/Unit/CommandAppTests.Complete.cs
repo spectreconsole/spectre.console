@@ -730,6 +730,62 @@ public sealed partial class CommandAppTests
             return Verifier.Verify(result.Output);
         }
 
+        // "myapp user add angel --age 1 --" should not suggest --age, only --gender
+        // "myapp user add angel --age 1 --g" should not suggest --age, only --gender
+        [Fact]
+        [Expectation("Test_27")]
+        public Task Suggestion_Should_Not_Contain_Options_Which_Are_already_present()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+
+                config.AddBranch("user", feline =>
+                {
+                    feline.AddCommand<UserAddCommand>("add");
+                });
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .Append("\"myapp user add angel --age 1 --\"");
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_28")]
+        public Task Partial_Suggestion_Should_Not_Contain_Options_Which_Are_already_present()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+
+                config.AddBranch("user", feline =>
+                {
+                    feline.AddCommand<UserAddCommand>("add");
+                });
+            });
+            var commandToRun = Constants.CompleteCommand
+                   .Append("\"myapp user add angel --age 1 --g\"");
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+
+
         [Fact]
         public void PowershellIntegration_ToolCanBeExe()
         {

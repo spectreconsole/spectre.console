@@ -146,16 +146,32 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
             mappedParameters = lastContext.Mapped;
         }
 
-        return await GetCompletionsAsync(commandElements, partialElement, parent, mappedParameters);
+        return await GetCompletionsAsync(
+            commandElements,
+            partialElement,
+            //context,
+            parent,
+            mappedParameters);
     }
 
-    private async Task<string[]> GetCompletionsAsync(string[] commandElements, string partialElement, CommandInfo command, List<MappedCommandParameter> mappedParameters)
+    private async Task<string[]> GetCompletionsAsync(
+        string[] commandElements,
+        string partialElement,
+        //string context,
+        CommandInfo command,
+        List<MappedCommandParameter> mappedParameters)
     {
+        if (commandElements.LastOrDefault()?.StartsWith("--") == true)
+        {
+            var options = GetParameters(command, commandElements.LastOrDefault() ?? string.Empty, mappedParameters);
+            return options.SelectMany(x => x.Suggestions).ToArray();
+        }
+
         var childCommands = GetChildCommands(partialElement, command);
 
         childCommands = childCommands.WithGeneratedSuggestions();
 
-        var parameters = GetParameters(command, partialElement);
+        var parameters = GetParameters(command, partialElement, mappedParameters);
         var arguments = await GetCommandArgumentsAsync(command, mappedParameters, commandElements, partialElement);
 
         var allResults = parameters.Concat(arguments).Append(childCommands).ToArray();
@@ -191,8 +207,16 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
                     .ToArray();
     }
 
-    private List<CompletionResult> GetParameters(CommandInfo parent, string partialElement)
+    private List<CompletionResult> GetParameters(CommandInfo parent, string partialElement, List<MappedCommandParameter> mappedParameters)
     {
+        var mappedLongNames = mappedParameters
+                .Select(x => x.Parameter)
+                .OfType<CommandOption>()
+                .SelectMany(x => x.LongNames)
+                .Select(x => $"--{x}")
+                .ToArray()
+                ;
+
         var parameters = new List<CompletionResult>();
         foreach (var parameter in parent.Parameters)
         {
@@ -205,7 +229,18 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
                 CompletionResult completions = commandOptionParameter.LongNames
                                     .Select(l => "--" + l.ToLowerInvariant())
                                     .Where(p => p.StartsWith(partialElement))
+                                    .Where(x => !mappedLongNames.Contains(x, StringComparer.OrdinalIgnoreCase)) // ignore already mapped
                                     .ToArray();
+
+                //var options = GetParameters(command, commandElements.LastOrDefault() ?? string.Empty, mappedParameters);
+
+                //var resultOptions = options
+                //    .SelectMany(x => x.Suggestions)
+                //    .Where(x => !mappedLongNames.Contains(x, StringComparer.OrdinalIgnoreCase));
+
+                //return resultOptions.ToArray();
+                //return options.SelectMany(x => x.Suggestions).ToArray();
+
                 if (completions.Suggestions.Any())
                 {
                     parameters.Add(completions.WithGeneratedSuggestions());
