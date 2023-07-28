@@ -784,6 +784,33 @@ public sealed partial class CommandAppTests
             return Verifier.Verify(result.Output);
         }
 
+        [Fact]
+        public void Completion_Should_Not_Suggest_Anything_When_CommandArgument_Is_Dynamic_And_No_Handler_Registered()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+
+                config.AddBranch("user", feline =>
+                {
+                    feline.AddCommand<UserAddCommand>("add");
+                    feline.AddCommand<UserSuperAddCommand>("superAdd");
+                });
+            });
+            var commandToRun = Constants.CompleteCommand
+                .Append("\"myapp user superAdd \"");
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            //return Verifier.Verify(result.Output);
+            Assert.True(string.IsNullOrWhiteSpace(result.Output), "Output should be empty");
+        }
+
 
 
         [Fact]
