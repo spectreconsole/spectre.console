@@ -811,7 +811,6 @@ public sealed partial class CommandAppTests
             var result = fixture.Run(commandToRun.ToArray());
 
             // Then
-            //return Verifier.Verify(result.Output);
             Assert.True(string.IsNullOrWhiteSpace(result.Output), "Output should be empty. Actual: " + result.Output);
         }
 
@@ -842,7 +841,6 @@ public sealed partial class CommandAppTests
             var result = fixture.Run(commandToRun.ToArray());
 
             // Then
-            //return Verifier.Verify(result.Output);
             Assert.True(string.IsNullOrWhiteSpace(result.Output), "Output should be empty. Actual: " + result.Output);
         }
 

@@ -149,7 +149,6 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         return await GetCompletionsAsync(
             commandElements,
             partialElement,
-            //context,
             parent,
             mappedParameters);
     }
