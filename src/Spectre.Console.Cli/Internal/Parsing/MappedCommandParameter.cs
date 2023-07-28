@@ -14,7 +14,7 @@ internal sealed class MappedCommandParameter
     }
 
     [DebuggerHidden]
-    private string DebuggerDisplay
+    public string DebuggerDisplay
     {
         get
         {

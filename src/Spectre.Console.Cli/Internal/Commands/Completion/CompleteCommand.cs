@@ -1,5 +1,5 @@
-using System.Text.RegularExpressions;
 using Spectre.Console.Cli.Completion;
+using Spectre.Console.Cli.Internal.Commands.Completion;
 
 namespace Spectre.Console.Cli;
 
@@ -44,19 +44,10 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
             return 0;
         }
 
-        // Get all command elements and skip the application name at the start.
-        var normalizedCommand = TrimOnce(commandToComplete, '"');
+        var ctx = new CommandCompletionContextParser(_model, _configuration)
+            .Parse(settings.CommandToComplete, settings.Position);
 
-        if (!string.IsNullOrEmpty(normalizedCommand)
-            && settings.Position != null
-            && settings.Position > normalizedCommand.Length)
-        {
-            // extend the command to the position with whitespace
-            var requiredWhitespace = (settings.Position - normalizedCommand.Length) ?? 1;
-            normalizedCommand += new string(' ', requiredWhitespace);
-        }
-
-        foreach (var completion in await GetCompletionsAsync(_model, normalizedCommand))
+        foreach (var completion in await GetCompletionsAsync(ctx))
         {
             _writer.WriteLine(completion, Style.Plain);
         }
@@ -64,113 +55,37 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         return 0;
     }
 
-    private async Task<string[]> GetCompletionsAsync(CommandModel model, string command)
+    private async Task<string[]> GetCompletionsAsync(CommandCompletionContext? context)
     {
-        var commandElements = SplitBySpace(command).Skip(1).ToArray();
-
-        if (commandElements?.Length is 0 or null)
+        if (context?.ShouldReturnEarly ?? true)
         {
-            return GetSuggestions(string.Empty, model.Commands).Suggestions.ToArray();
+            return Array.Empty<string>();
         }
 
-        // Return early if the only thing we got was "".
-        if (commandElements == null ||
-           (commandElements.Length == 1 &&
-            string.IsNullOrEmpty(commandElements[0])))
+        var commandElements = context.CommandElements;
+
+        var shouldGenerateDefaultSuggestions =
+            context.ShouldSuggestMatchingInRoot
+            || commandElements?.Length is 0 or null
+            || (commandElements.Length == 1 && string.IsNullOrEmpty(commandElements[0]));  // Return early if the only thing we got was "".
+
+        if (shouldGenerateDefaultSuggestions)
         {
-            return model.Commands.Where(cmd => !cmd.IsHidden)
-                                 .Select(c => c.Name)
-                                 .ToArray();
+            return GetSuggestions(context?.PartialElement, _model.Commands).Suggestions.ToArray();
         }
 
-        // Parse the command elements to get an abstract syntax tree and some context
-        CommandTreeParserResult? parsedResult = null;
-        var parser = new CommandTreeParser(model, _configuration.Settings.CaseSensitivity);
-        var context = string.Empty;
-        var partialElement = string.Empty;
-        try
+        if (context.CommandElements.LastOrDefault()?.StartsWith("--") == true)
         {
-            parsedResult = parser.Parse(commandElements);
-            context = commandElements.LastOrDefault() ?? string.Empty;
-            if (string.IsNullOrEmpty(context))
-            {
-                // Because we support netstandard2.0, we can't use SkipLast, since it's not supported. Also negative indexes are a no go.
-                // There probably is a more elegant way to get this result that I just can't see now.
-                // context = commandElements.SkipLast(1).Last();
-                context = commandElements[commandElements.Length - 2];
-            }
-
-            // Early return when "myapp feline"
-            // but show completions for feline if "myapp feline "
-            // spacing matters
-            if (parsedResult.Tree?.Command.Name == context)
-            {
-                return Array.Empty<string>();
-            }
-        }
-        catch (CommandParseException)
-        {
-            // Assume that it's because the last commandElement was not complete, and omit that one.
-            var strippedCommandElements = commandElements.Take(commandElements.Length - 1);
-            if (strippedCommandElements.Any())
-            {
-                parsedResult = parser.Parse(strippedCommandElements);
-                context = strippedCommandElements.Last();
-            }
-
-            partialElement = commandElements.LastOrDefault()?.ToLowerInvariant() ?? string.Empty;
-        }
-
-        // Return command options based on our current context, filtered on any partial element we found.
-        // If partial element = "", the StartsWith will return all options.
-        CommandInfo parent;
-        List<MappedCommandParameter> mappedParameters;
-        if (parsedResult?.Tree == null)
-        {
-            return model.Commands.Where(cmd => !cmd.IsHidden)
-                                 .Select(c => c.Name)
-                                 .Where(n => n.StartsWith(partialElement, StringComparison.OrdinalIgnoreCase))
-                                 .ToArray();
-        }
-
-        var lastContext = FindContextInTree(parsedResult);
-
-        if (lastContext?.Command == null)
-        {
-            parent = parsedResult.Tree.Command;
-            mappedParameters = parsedResult.Tree.Mapped;
-        }
-        else
-        {
-            parent = lastContext.Command;
-            mappedParameters = lastContext.Mapped;
-        }
-
-        return await GetCompletionsAsync(
-            commandElements,
-            partialElement,
-            parent,
-            mappedParameters);
-    }
-
-    private async Task<string[]> GetCompletionsAsync(
-        string[] commandElements,
-        string partialElement,
-        CommandInfo command,
-        List<MappedCommandParameter> mappedParameters)
-    {
-        if (commandElements.LastOrDefault()?.StartsWith("--") == true)
-        {
-            var options = GetParameters(command, commandElements.LastOrDefault() ?? string.Empty, mappedParameters);
+            var options = GetParameters(context);
             return options.SelectMany(x => x.Suggestions).ToArray();
         }
 
-        var childCommands = GetChildCommands(partialElement, command);
+        var childCommands = GetChildCommands(context.PartialElement, context.Parent);
 
         childCommands = childCommands.WithGeneratedSuggestions();
 
-        var parameters = GetParameters(command, partialElement, mappedParameters);
-        var arguments = await GetCommandArgumentsAsync(command, mappedParameters, commandElements, partialElement);
+        var parameters = GetParameters(context);
+        var arguments = await GetCommandArgumentsAsync(context);
 
         var allResults = parameters.Concat(arguments).Append(childCommands).ToArray();
 
@@ -202,7 +117,7 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         return GetSuggestions(partialElement, parent.Children);
     }
 
-    private static CompletionResult GetSuggestions(string partialElement, IEnumerable<CommandInfo> commands)
+    private static CompletionResult GetSuggestions(string? partialElement, IEnumerable<CommandInfo> commands)
     {
         return commands.Where(cmd => !cmd.IsHidden)
                     .Select(c => c.Name)
@@ -210,9 +125,9 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
                     .ToArray();
     }
 
-    private List<CompletionResult> GetParameters(CommandInfo parent, string partialElement, List<MappedCommandParameter> mappedParameters)
+    private List<CompletionResult> GetParameters(CommandCompletionContext context)
     {
-        var mappedLongNames = mappedParameters
+        var mappedLongNames = context.MappedParameters
                 .Select(x => x.Parameter)
                 .OfType<CommandOption>()
                 .SelectMany(x => x.LongNames)
@@ -221,17 +136,17 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
                 ;
 
         var parameters = new List<CompletionResult>();
-        foreach (var parameter in parent.Parameters)
+        foreach (var parameter in context.Parent.Parameters)
         {
-            var startsWithDash = partialElement.StartsWith("-");
-            var isEmpty = string.IsNullOrEmpty(partialElement);
+            var startsWithDash = context.PartialElement.StartsWith("-");
+            var isEmpty = string.IsNullOrEmpty(context.PartialElement);
 
             if (parameter is CommandOption commandOptionParameter && (startsWithDash || isEmpty))
             {
                 // Add all matching long parameter names
                 CompletionResult completions = commandOptionParameter.LongNames
                                     .Select(l => "--" + l.ToLowerInvariant())
-                                    .Where(p => p.StartsWith(partialElement))
+                                    .Where(p => p.StartsWith(context.PartialElement))
                                     .Where(x => !mappedLongNames.Contains(x, StringComparer.OrdinalIgnoreCase)) // ignore already mapped
                                     .ToArray();
 
@@ -245,17 +160,17 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         return parameters;
     }
 
-    private async Task<List<CompletionResult>> GetCommandArgumentsAsync(CommandInfo parent, List<MappedCommandParameter> mapped, string[] args, string partialElement)
+    private async Task<List<CompletionResult>> GetCommandArgumentsAsync(CommandCompletionContext context)
     {
-        if (!string.IsNullOrEmpty(partialElement) && partialElement[0] == '-')
+        if (!string.IsNullOrEmpty(context.PartialElement) && context.PartialElement[0] == '-')
         {
             return new List<CompletionResult>();
         }
 
         //// Trailing space: The first empty parameter should be completed
         //// No trailing space: The last parameter should be completed
-        var hasTrailingSpace = args.LastOrDefault()?.Length == 0;
-        var lastMap = mapped.LastOrDefault();
+        var hasTrailingSpace = context.CommandElements.LastOrDefault()?.Length == 0;
+        var lastMap = context.MappedParameters?.LastOrDefault();
 
         if (!hasTrailingSpace)
         {
@@ -264,7 +179,7 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
                 return new List<CompletionResult>();
             }
 
-            var completions = await CompleteCommandOption(parent, lastMap.Parameter, lastMap.Value);
+            var completions = await CompleteCommandOption(context.Parent, lastMap.Parameter, lastMap.Value);
             if (completions == null)
             {
                 return new List<CompletionResult>();
@@ -277,7 +192,7 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         }
 
         var result = new List<CompletionResult>();
-        foreach (var parameter in mapped)
+        foreach (var parameter in context.MappedParameters)
         {
             if (!string.IsNullOrEmpty(parameter.Value))
             {
@@ -289,14 +204,13 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
                 continue;
             }
 
-            var completions = await CompleteCommandOption(parent, parameter.Parameter, parameter.Value);
+            var completions = await CompleteCommandOption(context.Parent, parameter.Parameter, parameter.Value);
             if (completions == null || !completions.Suggestions.Any())
             {
                 return new List<CompletionResult>()
                 {
                     new(Array.Empty<string>()) { PreventAll = true, PreventDefault = true, },
                 };
-                continue;
             }
 
             if (completions.Suggestions.Any() || completions.PreventDefault)
@@ -350,65 +264,6 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         }
 
         return CompletionResult.None();
-    }
-
-    private static CommandTree? FindContextInTree(CommandTreeParserResult? parsedResult)
-    {
-        var tree = parsedResult?.Tree;
-        return FindContextInTree(tree);
-    }
-
-    private static CommandTree? FindContextInTree(CommandTree? tree)
-    {
-        if (tree is null)
-        {
-            return null;
-        }
-
-        // var command = tree.Command;
-        var next = tree.Next;
-
-        if (next is null)
-        {
-            return tree;
-        }
-
-        return FindContextInTree(next) ?? tree;
-    }
-
-    private static string[] SplitBySpace(string input)
-    {
-        // Regular expression pattern to match spaces except those within double quotes
-        string pattern = @"\s+(?=(?:[^""]*""[^""]*"")*[^""]*$)";
-
-        // Split the input string using the regular expression pattern
-        string[] result = Regex.Split(input, pattern);
-
-        // Remove any leading or trailing " characters on each element
-        for (int i = 0; i < result.Length; i++)
-        {
-            result[i] = TrimOnce(result[i], '"');
-        }
-
-        return result;
-    }
-
-    /// <summary>
-    /// Trims the first character and the last character.
-    /// </summary>
-    private static string TrimOnce(string input, char character)
-    {
-        if (string.IsNullOrEmpty(input))
-        {
-            return string.Empty;
-        }
-
-        if (input[0] == character && input[input.Length - 1] == character)
-        {
-            return input.Substring(1, input.Length - 2);
-        }
-
-        return input;
     }
 
     /// <summary>
