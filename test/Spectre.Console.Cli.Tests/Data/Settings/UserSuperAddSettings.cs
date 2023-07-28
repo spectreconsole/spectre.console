@@ -1,13 +1,11 @@
 using Spectre.Console.Cli.Completion;
 
 namespace Spectre.Console.Cli.Tests.Data.Commands;
-
 // mycommand user add [name] --age [age]
-internal class UserAddSettings : CommandSettings
+internal class UserSuperAddSettings : CommandSettings
 {
     [CommandArgument(0, "<name>")]
     [Description("The name of the user.")]
-    [CompletionSuggestions("Angelika", "Arnold", "Bernd", "Cloud", "Jonas")]
     public string Name { get; set; }
 
     [CommandOption("-a|--age <age>")]

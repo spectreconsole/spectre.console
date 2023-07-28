@@ -8,12 +8,3 @@ internal class UserAddCommand : Command<UserAddSettings>
         return 0;
     }
 }
-
-[Description("The user command.")]
-internal class UserSuperAddCommand : Command<UserSuperAddSettings>
-{
-    public override int Execute(CommandContext context, UserSuperAddSettings settings)
-    {
-        return 0;
-    }
-}

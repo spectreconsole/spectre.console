@@ -815,7 +815,6 @@ public sealed partial class CommandAppTests
             Assert.True(string.IsNullOrWhiteSpace(result.Output), "Output should be empty. Actual: " + result.Output);
         }
 
-
         [Fact]
         public void Completion_Should_Not_Suggest_Anything_When_CommandOption_Is_Dynamic_And_No_Handler_Registered()
         {

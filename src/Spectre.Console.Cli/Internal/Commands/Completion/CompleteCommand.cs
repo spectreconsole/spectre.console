@@ -157,7 +157,6 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
     private async Task<string[]> GetCompletionsAsync(
         string[] commandElements,
         string partialElement,
-        //string context,
         CommandInfo command,
         List<MappedCommandParameter> mappedParameters)
     {
