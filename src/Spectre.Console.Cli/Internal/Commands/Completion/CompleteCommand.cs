@@ -176,6 +176,11 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
 
         var allResults = parameters.Concat(arguments).Append(childCommands).ToArray();
 
+        if (allResults.Any(x => x.PreventAll))
+        {
+            return Array.Empty<string>();
+        }
+
         if (allResults.Any(n => n.PreventDefault))
         {
             // Only return non-generated suggestions
@@ -232,15 +237,6 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
                                     .Where(x => !mappedLongNames.Contains(x, StringComparer.OrdinalIgnoreCase)) // ignore already mapped
                                     .ToArray();
 
-                //var options = GetParameters(command, commandElements.LastOrDefault() ?? string.Empty, mappedParameters);
-
-                //var resultOptions = options
-                //    .SelectMany(x => x.Suggestions)
-                //    .Where(x => !mappedLongNames.Contains(x, StringComparer.OrdinalIgnoreCase));
-
-                //return resultOptions.ToArray();
-                //return options.SelectMany(x => x.Suggestions).ToArray();
-
                 if (completions.Suggestions.Any())
                 {
                     parameters.Add(completions.WithGeneratedSuggestions());
@@ -296,8 +292,12 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
             }
 
             var completions = await CompleteCommandOption(parent, parameter.Parameter, parameter.Value);
-            if (completions == null)
+            if (completions == null || !completions.Suggestions.Any())
             {
+                return new List<CompletionResult>()
+                {
+                    new(Array.Empty<string>()) { PreventAll = true, PreventDefault = true, },
+                };
                 continue;
             }
 

@@ -8,7 +8,9 @@ public class CompletionResult : ICompletionResult
     /// <summary>
     /// Gets a value indicating whether or not automatic completions should be disabled.
     /// </summary>
-    public bool PreventDefault { get; }
+    public bool PreventDefault { get; internal set; }
+
+    public bool PreventAll { get; internal set; }
 
     /// <summary>
     /// Gets the suggestions.
@@ -46,6 +48,7 @@ public class CompletionResult : ICompletionResult
     {
         Suggestions = result.Suggestions;
         PreventDefault = result.PreventDefault;
+        PreventAll = (result as CompletionResult)?.PreventAll ?? false;
     }
 
     /// <summary>

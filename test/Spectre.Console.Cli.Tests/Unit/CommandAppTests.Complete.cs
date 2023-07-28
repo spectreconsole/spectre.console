@@ -800,6 +800,10 @@ public sealed partial class CommandAppTests
                     feline.AddCommand<UserSuperAddCommand>("superAdd");
                 });
             });
+
+            // We expect a name to be entered.
+            // Since no handler is registered for the command, we don't know what to suggest.
+            // So we shouldn't suggest anything.
             var commandToRun = Constants.CompleteCommand
                 .Append("\"myapp user superAdd \"");
 
@@ -808,10 +812,70 @@ public sealed partial class CommandAppTests
 
             // Then
             //return Verifier.Verify(result.Output);
-            Assert.True(string.IsNullOrWhiteSpace(result.Output), "Output should be empty");
+            Assert.True(string.IsNullOrWhiteSpace(result.Output), "Output should be empty. Actual: " + result.Output);
         }
 
 
+        [Fact]
+        public void Completion_Should_Not_Suggest_Anything_When_CommandOption_Is_Dynamic_And_No_Handler_Registered()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+
+                config.AddBranch("user", feline =>
+                {
+                    feline.AddCommand<UserAddCommand>("add");
+                    feline.AddCommand<UserSuperAddCommand>("superAdd");
+                });
+            });
+
+            // We expect a name to be entered.
+            // Since no handler is registered for the command, we don't know what to suggest.
+            // So we shouldn't suggest anything.
+            var commandToRun = Constants.CompleteCommand
+                .Append("\"myapp user superAdd Josh --gender \"");
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            //return Verifier.Verify(result.Output);
+            Assert.True(string.IsNullOrWhiteSpace(result.Output), "Output should be empty. Actual: " + result.Output);
+        }
+
+        [Fact]
+        public void Completion_Should_Suggest_Remaining_Options()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.PropagateExceptions();
+
+                config.AddBranch("user", feline =>
+                {
+                    feline.AddCommand<UserAddCommand>("add");
+                    feline.AddCommand<UserSuperAddCommand>("superAdd");
+                });
+            });
+
+            // We expect a name to be entered.
+            // Since no handler is registered for the command, we don't know what to suggest.
+            // So we shouldn't suggest anything.
+            var commandToRun = Constants.CompleteCommand
+                .Append("\"myapp user superAdd Josh --gender male \"");
+
+            // When
+            var result = fixture.Run(commandToRun.ToArray());
+
+            // Then
+            Assert.Equal("--age", result.Output);
+        }
 
         [Fact]
         public void PowershellIntegration_ToolCanBeExe()
