@@ -9,8 +9,15 @@ internal class CommandCompletionContext
 
     public string[] CommandElements { get; set; }
     public string PartialElement { get; set; }
-    public CommandInfo Parent { get; set; }
+    public CommandInfo? Parent { get; set; }
     public List<MappedCommandParameter> MappedParameters { get; set; }
+
+    public CommandCompletionContext()
+    {
+        CommandElements = Array.Empty<string>();
+        PartialElement = string.Empty;
+        MappedParameters = new List<MappedCommandParameter>();
+    }
 }
 
 internal class CommandCompletionContextParser

@@ -1,6 +1,7 @@
 using Spectre.Console.Cli.Completion;
 
 namespace Spectre.Console.Cli.Tests.Data.Commands;
+
 // mycommand user add [name] --age [age]
 internal class UserSuperAddSettings : CommandSettings
 {

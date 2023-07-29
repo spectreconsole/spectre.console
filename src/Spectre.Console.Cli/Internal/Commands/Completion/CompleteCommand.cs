@@ -71,7 +71,7 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
 
         if (shouldGenerateDefaultSuggestions)
         {
-            return GetSuggestions(context?.PartialElement, _model.Commands).Suggestions.ToArray();
+            return GetSuggestions(context.PartialElement, _model.Commands).Suggestions.ToArray();
         }
 
         if (context.CommandElements.LastOrDefault()?.StartsWith("--") == true)
@@ -112,9 +112,10 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
             .ToArray();
     }
 
-    private static CompletionResult GetChildCommands(string partialElement, CommandInfo parent)
+    private CompletionResult GetChildCommands(string partialElement, CommandInfo? parent)
     {
-        return GetSuggestions(partialElement, parent.Children);
+        var children = parent?.Children ?? _model.Commands;
+        return GetSuggestions(partialElement, children);
     }
 
     private static CompletionResult GetSuggestions(string? partialElement, IEnumerable<CommandInfo> commands)
@@ -127,6 +128,11 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
 
     private List<CompletionResult> GetParameters(CommandCompletionContext context)
     {
+        if (context.Parent == null)
+        {
+            return new List<CompletionResult>();
+        }
+
         var mappedLongNames = context.MappedParameters
                 .Select(x => x.Parameter)
                 .OfType<CommandOption>()
@@ -162,7 +168,8 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
 
     private async Task<List<CompletionResult>> GetCommandArgumentsAsync(CommandCompletionContext context)
     {
-        if (!string.IsNullOrEmpty(context.PartialElement) && context.PartialElement[0] == '-')
+        if ((!string.IsNullOrEmpty(context.PartialElement) && context.PartialElement[0] == '-')
+            || context.Parent == null)
         {
             return new List<CompletionResult>();
         }
@@ -170,10 +177,10 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         //// Trailing space: The first empty parameter should be completed
         //// No trailing space: The last parameter should be completed
         var hasTrailingSpace = context.CommandElements.LastOrDefault()?.Length == 0;
-        var lastMap = context.MappedParameters?.LastOrDefault();
 
         if (!hasTrailingSpace)
         {
+            var lastMap = context.MappedParameters.LastOrDefault();
             if (lastMap?.Parameter is null)
             {
                 return new List<CompletionResult>();
@@ -194,12 +201,7 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         var result = new List<CompletionResult>();
         foreach (var parameter in context.MappedParameters)
         {
-            if (!string.IsNullOrEmpty(parameter.Value))
-            {
-                continue;
-            }
-
-            if (parameter.Parameter is null)
+            if (parameter?.Parameter is null || !string.IsNullOrEmpty(parameter.Value))
             {
                 continue;
             }
