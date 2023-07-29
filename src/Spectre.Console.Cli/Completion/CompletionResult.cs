@@ -10,7 +10,7 @@ public class CompletionResult : ICompletionResult
     /// </summary>
     public bool PreventDefault { get; internal set; }
 
-    public bool PreventAll { get; internal set; }
+    internal bool PreventAll { get; set; }
 
     /// <summary>
     /// Gets the suggestions.

@@ -15,5 +15,5 @@ internal class UserSuperAddSettings : CommandSettings
     public int Age { get; set; }
 
     [CommandOption("-g|--gender <gender>")]
-    public string? Gender { get; set; }
+    public string Gender { get; set; }
 }

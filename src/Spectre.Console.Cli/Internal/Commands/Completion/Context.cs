@@ -38,10 +38,7 @@ internal class CommandCompletionContextParser
 
         if (commandElements?.Length is 0 or null)
         {
-            return new CommandCompletionContext
-            {
-                ShouldSuggestMatchingInRoot = true,
-            };
+            return new CommandCompletionContext { ShouldSuggestMatchingInRoot = true, };
         }
 
         var parser = new CommandTreeParser(_model, _configuration.Settings.CaseSensitivity);
@@ -179,15 +176,26 @@ internal class CommandCompletionContextParser
 
     private static string NormalizeCommand(string? commandToComplete, int? position)
     {
+        if (string.IsNullOrEmpty(commandToComplete))
+        {
+            return string.Empty;
+        }
+
         var normalizedCommand = TrimOnce(commandToComplete, '"');
 
-        if (!string.IsNullOrEmpty(normalizedCommand)
-            && position != null
-            && position > normalizedCommand.Length)
+        if (!string.IsNullOrEmpty(normalizedCommand) && position != null)
         {
-            // extend the command to the position with whitespace
-            var requiredWhitespace = (position - normalizedCommand.Length) ?? 1;
-            normalizedCommand += new string(' ', requiredWhitespace);
+            if (position > normalizedCommand.Length)
+            {
+                // extend the command to the position with whitespace
+                var requiredWhitespace = (position - normalizedCommand.Length) ?? 1;
+                normalizedCommand += new string(' ', requiredWhitespace);
+            }
+            else if (position < normalizedCommand.Length)
+            {
+                // trim the command to the position
+                normalizedCommand = normalizedCommand.Substring(0, position.Value);
+            }
         }
 
         return normalizedCommand;
