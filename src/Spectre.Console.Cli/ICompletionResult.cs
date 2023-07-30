@@ -13,5 +13,5 @@ public interface ICompletionResult
     /// <summary>
     /// Gets the suggestions.
     /// </summary>
-    IEnumerable<string> Suggestions { get; }
+    IEnumerable<CompletionResultItem> Suggestions { get; }
 }

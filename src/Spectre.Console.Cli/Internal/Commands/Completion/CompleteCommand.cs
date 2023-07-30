@@ -1,10 +1,15 @@
-using Spectre.Console.Cli.Completion;
-using Spectre.Console.Cli.Internal.Commands.Completion;
+#if NET5_0_OR_GREATER
 
-namespace Spectre.Console.Cli;
+using System.Text.Json;
+
+#endif
+
+using Spectre.Console.Cli.Completion;
+
+namespace Spectre.Console.Cli.Internal.Commands.Completion;
 
 [Description("Generates a list of completion options for the given command.")]
-internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
+internal sealed partial class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
 {
     private readonly CommandModel _model;
     private readonly ITypeResolver _typeResolver;
@@ -14,7 +19,8 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
     public CompleteCommand(
         IConfiguration configuration,
         CommandModel model,
-        ITypeResolver typeResolver)
+        ITypeResolver typeResolver
+    )
     {
         _model = model ?? throw new ArgumentNullException(nameof(model));
         _typeResolver = typeResolver;
@@ -30,36 +36,159 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         //--position
         [CommandOption("--position|-p")]
         public int? Position { get; set; }
+
+        // server
+        [CommandOption("--server|-s")]
+        public bool Server { get; set; }
+
+        [CommandOption("--format|-f")]
+        [Description("The output format (plain or json).")]
+        [DefaultValue("plain")]
+        [CompletionSuggestions("plain", "json")]
+        public string Format { get; set; } = "plain";
     }
 
-    public override async Task<int> ExecuteAsync([NotNull] CommandContext context, [NotNull] Settings settings)
+    public override async Task<int> ExecuteAsync(
+        [NotNull] CommandContext context,
+        [NotNull] Settings settings
+    )
     {
         HighjackConsoles();
 
+        if (settings.Server)
+        {
+            return await RunCompletionServer(settings);
+
+            return 0;
+        }
+
+        await RunCompletionSimple(settings);
+
+        return 0;
+    }
+
+    private async Task<int> RunCompletionServer(Settings settings)
+    {
+        if (!Debugger.IsAttached)
+        {
+            Debugger.Launch();
+        }
+
+        while (true)
+        {
+            var line = await System.Console.In.ReadLineAsync();
+            if (
+                line is null
+                || string.IsNullOrWhiteSpace(line)
+                || string.Equals(line, "exit", StringComparison.OrdinalIgnoreCase)
+            )
+            {
+                return 0;
+            }
+
+            try
+            {
+                var args = GetLineParams(line);
+                var parser = new CommandCompletionContextParser(_model, _configuration);
+                var ctx = parser.Parse(
+                    args.Command,
+                    args.CursorPosition
+                );
+
+                await RenderCompletionAsync(ctx, settings);
+            }
+            catch (Exception e)
+            {
+                // ignored
+                System.Console.WriteLine(e.ToString().Replace("\n", "\\n"));
+                return -1;
+            }
+        }
+    }
+
+    private static TabCompletionArgs GetLineParams(string line)
+    {
+        var result = new TabCompletionArgs(line);
+
+#if NET5_0_OR_GREATER
+        // When starts with { and ends with }, it's a json object
+        var normalizedLine = line.Trim(' ', '\t', '\r', '\n');
+        var couldBeJson = normalizedLine.StartsWith("{") && normalizedLine.EndsWith("}");
+        if (couldBeJson)
+        {
+            try
+            {
+                var deserialized = JsonSerializer.Deserialize<TabCompletionArgs>(line, new JsonSerializerOptions()
+                {
+                    PropertyNameCaseInsensitive = true,
+                });
+                if (deserialized != null)
+                {
+                    result = deserialized;
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        }
+#endif
+
+        return result;
+    }
+
+    private async Task RunCompletionSimple(Settings settings)
+    {
         var commandToComplete = settings.CommandToComplete;
         if (string.IsNullOrEmpty(commandToComplete))
         {
             // No command to complete, so just print the application name.
             _writer.WriteLine(_model.ApplicationName ?? string.Empty, Style.Plain);
-            return 0;
         }
 
-        var ctx = new CommandCompletionContextParser(_model, _configuration)
-            .Parse(settings.CommandToComplete, settings.Position);
+        var ctx = new CommandCompletionContextParser(_model, _configuration).Parse(
+            settings.CommandToComplete,
+            settings.Position
+        );
 
-        foreach (var completion in await GetCompletionsAsync(ctx))
-        {
-            _writer.WriteLine(completion, Style.Plain);
-        }
-
-        return 0;
+        await RenderCompletionAsync(ctx, settings);
     }
 
-    private async Task<string[]> GetCompletionsAsync(CommandCompletionContext? context)
+    private async Task RenderCompletionAsync(CommandCompletionContext? context, Settings settings)
+    {
+        var completions = await GetCompletionsAsync(context);
+
+#if NET5_0_OR_GREATER
+        if (string.Equals(settings.Format, "json", StringComparison.OrdinalIgnoreCase))
+        {
+            _writer.Write(JsonSingleLineRenderable.Create(completions));
+            _writer.WriteLine(string.Empty, Style.Plain);
+        }
+        else
+#endif
+        if (string.Equals(settings.Format, "plain", StringComparison.OrdinalIgnoreCase))
+        {
+            foreach (var completion in completions)
+            {
+                _writer.WriteLine(completion.Value, Style.Plain);
+            }
+
+            if (settings.Server)
+            {
+                _writer.WriteLine(string.Empty, Style.Plain);
+            }
+        }
+        else
+        {
+            throw new Exception("Invalid format");
+        }
+    }
+
+    private async Task<CompletionResultItem[]> GetCompletionsAsync(CommandCompletionContext? context)
     {
         if (context?.ShouldReturnEarly ?? true)
         {
-            return Array.Empty<string>();
+            return Array.Empty<CompletionResultItem>();
         }
 
         var commandElements = context.CommandElements;
@@ -67,7 +196,7 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         var shouldGenerateDefaultSuggestions =
             context.ShouldSuggestMatchingInRoot
             || commandElements?.Length is 0 or null
-            || (commandElements.Length == 1 && string.IsNullOrEmpty(commandElements[0]));  // Return early if the only thing we got was "".
+            || (commandElements.Length == 1 && string.IsNullOrEmpty(commandElements[0])); // Return early if the only thing we got was "".
 
         if (shouldGenerateDefaultSuggestions)
         {
@@ -91,7 +220,7 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
 
         if (allResults.Any(x => x.PreventAll))
         {
-            return Array.Empty<string>();
+            return Array.Empty<CompletionResultItem>();
         }
 
         if (allResults.Any(n => n.PreventDefault))
@@ -118,12 +247,22 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         return GetSuggestions(partialElement, children);
     }
 
-    private static CompletionResult GetSuggestions(string? partialElement, IEnumerable<CommandInfo> commands)
+    private static CompletionResult GetSuggestions(
+        string? partialElement,
+        IEnumerable<CommandInfo> commands
+    )
     {
-        return commands.Where(cmd => !cmd.IsHidden)
-                    .Select(c => c.Name)
-                    .Where(n => string.IsNullOrEmpty(partialElement) || n.StartsWith(partialElement, StringComparison.OrdinalIgnoreCase))
-                    .ToArray();
+        return commands
+            .Where(cmd => !cmd.IsHidden)
+            // .Select(c => c.Name)
+            .Select(c => (c.Name, c.Description))
+            .Where(
+                n =>
+                    string.IsNullOrEmpty(partialElement)
+                    || n.Name.StartsWith(partialElement, StringComparison.OrdinalIgnoreCase)
+            )
+            .Select(n => new CompletionResultItem(n.Name, n.Description))
+            .ToArray();
     }
 
     private List<CompletionResult> GetParameters(CommandCompletionContext context)
@@ -134,12 +273,11 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         }
 
         var mappedLongNames = context.MappedParameters
-                .Select(x => x.Parameter)
-                .OfType<CommandOption>()
-                .SelectMany(x => x.LongNames)
-                .Select(x => $"--{x}")
-                .ToArray()
-                ;
+            .Select(x => x.Parameter)
+            .OfType<CommandOption>()
+            .SelectMany(x => x.LongNames)
+            .Select(x => $"--{x}")
+            .ToArray();
 
         var parameters = new List<CompletionResult>();
         foreach (var parameter in context.Parent.Parameters)
@@ -150,15 +288,21 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
             if (parameter is CommandOption commandOptionParameter && (startsWithDash || isEmpty))
             {
                 // Add all matching long parameter names
-                CompletionResult completions = commandOptionParameter.LongNames
-                                    .Select(l => "--" + l.ToLowerInvariant())
-                                    .Where(p => p.StartsWith(context.PartialElement))
-                                    .Where(x => !mappedLongNames.Contains(x, StringComparer.OrdinalIgnoreCase)) // ignore already mapped
-                                    .ToArray();
+                IEnumerable<CompletionResultItem> completions = commandOptionParameter.LongNames
+                    .Select(l => "--" + l.ToLowerInvariant())
+                    .Where(p => p.StartsWith(context.PartialElement))
+                    .Where(x => !mappedLongNames.Contains(x, StringComparer.OrdinalIgnoreCase)) // ignore already mapped
+                    .Select(x => new CompletionResultItem(x, commandOptionParameter.Description));
 
-                if (completions.Suggestions.Any())
+                // new: Map (LongNames, Description)
+                //var completions = commandOptionParameter
+                //    .Select(x => new CompletionResultItem($"--{x.LongName}", x.Description))
+                //    ;
+
+                if (completions.Any())
                 {
-                    parameters.Add(completions.WithGeneratedSuggestions());
+                    var result = new CompletionResult(completions);
+                    parameters.Add(result);
                 }
             }
         }
@@ -166,10 +310,14 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         return parameters;
     }
 
-    private async Task<List<CompletionResult>> GetCommandArgumentsAsync(CommandCompletionContext context)
+    private async Task<List<CompletionResult>> GetCommandArgumentsAsync(
+        CommandCompletionContext context
+    )
     {
-        if ((!string.IsNullOrEmpty(context.PartialElement) && context.PartialElement[0] == '-')
-            || context.Parent == null)
+        if (
+            (!string.IsNullOrEmpty(context.PartialElement) && context.PartialElement[0] == '-')
+            || context.Parent == null
+        )
         {
             return new List<CompletionResult>();
         }
@@ -186,7 +334,11 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
                 return new List<CompletionResult>();
             }
 
-            var completions = await CompleteCommandOption(context.Parent, lastMap.Parameter, lastMap.Value);
+            var completions = await CompleteCommandOption(
+                context.Parent,
+                lastMap.Parameter,
+                lastMap.Value
+            );
             if (completions == null)
             {
                 return new List<CompletionResult>();
@@ -206,7 +358,11 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
                 continue;
             }
 
-            var completions = await CompleteCommandOption(context.Parent, parameter.Parameter, parameter.Value);
+            var completions = await CompleteCommandOption(
+                context.Parent,
+                parameter.Parameter,
+                parameter.Value);
+
             if (completions == null || !completions.Suggestions.Any())
             {
                 return new List<CompletionResult>()
@@ -225,18 +381,26 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
         return result;
     }
 
-    private async Task<CompletionResult?> CompleteCommandOption(CommandInfo parent, CommandParameter parameter, string? partialElement)
+    private async Task<CompletionResult?> CompleteCommandOption(
+        CommandInfo parent,
+        CommandParameter parameter,
+        string? partialElement
+    )
     {
         partialElement ??= string.Empty;
 
-        var valuesViaAttributes = parameter.Property.GetCustomAttributes<CompletionSuggestionsAttribute>();
+        var valuesViaAttributes =
+            parameter.Property.GetCustomAttributes<CompletionSuggestionsAttribute>();
         if (valuesViaAttributes?.Any() == true)
         {
             var values = valuesViaAttributes
                 .Where(x => x.Suggestions != null)
                 .SelectMany(x => x.Suggestions)
-                .Where(x => string.IsNullOrEmpty(partialElement) || x.StartsWith(partialElement, StringComparison.OrdinalIgnoreCase))
-                ;
+                .Where(
+                    x =>
+                        string.IsNullOrEmpty(partialElement)
+                        || x.StartsWith(partialElement, StringComparison.OrdinalIgnoreCase)
+                );
 
             return new(values, true);
         }
@@ -247,7 +411,9 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
             return CompletionResult.None();
         }
 
-        var implementsCompleter = commandType.GetInterfaces().Any(x => x == typeof(ICommandCompletable) || x == typeof(IAsyncCommandCompletable));
+        var implementsCompleter = commandType
+            .GetInterfaces()
+            .Any(x => x == typeof(ICommandCompletable) || x == typeof(IAsyncCommandCompletable));
 
         if (!implementsCompleter)
         {
@@ -273,15 +439,6 @@ internal sealed class CompleteCommand : AsyncCommand<CompleteCommand.Settings>
     /// </summary>
     private static void HighjackConsoles()
     {
-        try
-        {
-            System.Console.Clear();
-        }
-        catch
-        {
-            // Ignored
-        }
-
         AnsiConsole.Console = new HighjackedAnsiConsole(AnsiConsole.Console);
         System.Console.SetOut(new HighjackedTextWriter(System.Console.Out));
     }
