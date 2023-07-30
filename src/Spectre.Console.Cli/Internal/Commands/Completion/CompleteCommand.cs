@@ -1,9 +1,3 @@
-#if NET5_0_OR_GREATER
-
-using System.Text.Json;
-
-#endif
-
 using Spectre.Console.Cli.Completion;
 
 namespace Spectre.Console.Cli.Internal.Commands.Completion;
@@ -19,8 +13,7 @@ internal sealed partial class CompleteCommand : AsyncCommand<CompleteCommand.Set
     public CompleteCommand(
         IConfiguration configuration,
         CommandModel model,
-        ITypeResolver typeResolver
-    )
+        ITypeResolver typeResolver)
     {
         _model = model ?? throw new ArgumentNullException(nameof(model));
         _typeResolver = typeResolver;
@@ -46,12 +39,26 @@ internal sealed partial class CompleteCommand : AsyncCommand<CompleteCommand.Set
         [DefaultValue("plain")]
         [CompletionSuggestions("plain", "json")]
         public string Format { get; set; } = "plain";
+
+        public override ValidationResult Validate()
+        {
+#if NET5_0_OR_GREATER
+            var allowedFormats = new[] { "plain", "json", };
+#else
+            var allowedFormats = new[] { "plain", };
+#endif
+            if (!allowedFormats.Contains(Format, StringComparer.OrdinalIgnoreCase))
+            {
+                return ValidationResult.Error($"Invalid format '{Format}'");
+            }
+
+            return base.Validate();
+        }
     }
 
     public override async Task<int> ExecuteAsync(
         [NotNull] CommandContext context,
-        [NotNull] Settings settings
-    )
+        [NotNull] Settings settings)
     {
         HighjackConsoles();
 
@@ -67,76 +74,6 @@ internal sealed partial class CompleteCommand : AsyncCommand<CompleteCommand.Set
         return 0;
     }
 
-    private async Task<int> RunCompletionServer(Settings settings)
-    {
-        if (!Debugger.IsAttached)
-        {
-            Debugger.Launch();
-        }
-
-        while (true)
-        {
-            var line = await System.Console.In.ReadLineAsync();
-            if (
-                line is null
-                || string.IsNullOrWhiteSpace(line)
-                || string.Equals(line, "exit", StringComparison.OrdinalIgnoreCase)
-            )
-            {
-                return 0;
-            }
-
-            try
-            {
-                var args = GetLineParams(line);
-                var parser = new CommandCompletionContextParser(_model, _configuration);
-                var ctx = parser.Parse(
-                    args.Command,
-                    args.CursorPosition
-                );
-
-                await RenderCompletionAsync(ctx, settings);
-            }
-            catch (Exception e)
-            {
-                // ignored
-                System.Console.WriteLine(e.ToString().Replace("\n", "\\n"));
-                return -1;
-            }
-        }
-    }
-
-    private static TabCompletionArgs GetLineParams(string line)
-    {
-        var result = new TabCompletionArgs(line);
-
-#if NET5_0_OR_GREATER
-        // When starts with { and ends with }, it's a json object
-        var normalizedLine = line.Trim(' ', '\t', '\r', '\n');
-        var couldBeJson = normalizedLine.StartsWith("{") && normalizedLine.EndsWith("}");
-        if (couldBeJson)
-        {
-            try
-            {
-                var deserialized = JsonSerializer.Deserialize<TabCompletionArgs>(line, new JsonSerializerOptions()
-                {
-                    PropertyNameCaseInsensitive = true,
-                });
-                if (deserialized != null)
-                {
-                    result = deserialized;
-                }
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-        }
-#endif
-
-        return result;
-    }
-
     private async Task RunCompletionSimple(Settings settings)
     {
         var commandToComplete = settings.CommandToComplete;
@@ -146,18 +83,15 @@ internal sealed partial class CompleteCommand : AsyncCommand<CompleteCommand.Set
             _writer.WriteLine(_model.ApplicationName ?? string.Empty, Style.Plain);
         }
 
-        var ctx = new CommandCompletionContextParser(_model, _configuration).Parse(
-            settings.CommandToComplete,
-            settings.Position
-        );
+        var parser = new CommandCompletionContextParser(_model, _configuration);
+        var ctx = parser.Parse(settings.CommandToComplete, settings.Position);
 
-        await RenderCompletionAsync(ctx, settings);
+        var completions = await GetCompletionsAsync(ctx);
+        await RenderCompletionAsync(completions, settings);
     }
 
-    private async Task RenderCompletionAsync(CommandCompletionContext? context, Settings settings)
+    private async Task RenderCompletionAsync(CompletionResultItem[] completions, Settings settings)
     {
-        var completions = await GetCompletionsAsync(context);
-
 #if NET5_0_OR_GREATER
         if (string.Equals(settings.Format, "json", StringComparison.OrdinalIgnoreCase))
         {
@@ -184,7 +118,8 @@ internal sealed partial class CompleteCommand : AsyncCommand<CompleteCommand.Set
         }
     }
 
-    private async Task<CompletionResultItem[]> GetCompletionsAsync(CommandCompletionContext? context)
+    private async Task<CompletionResultItem[]> GetCompletionsAsync(
+        CommandCompletionContext? context)
     {
         if (context?.ShouldReturnEarly ?? true)
         {
@@ -249,18 +184,15 @@ internal sealed partial class CompleteCommand : AsyncCommand<CompleteCommand.Set
 
     private static CompletionResult GetSuggestions(
         string? partialElement,
-        IEnumerable<CommandInfo> commands
-    )
+        IEnumerable<CommandInfo> commands)
     {
         return commands
             .Where(cmd => !cmd.IsHidden)
-            // .Select(c => c.Name)
             .Select(c => (c.Name, c.Description))
             .Where(
                 n =>
                     string.IsNullOrEmpty(partialElement)
-                    || n.Name.StartsWith(partialElement, StringComparison.OrdinalIgnoreCase)
-            )
+                    || n.Name.StartsWith(partialElement, StringComparison.OrdinalIgnoreCase))
             .Select(n => new CompletionResultItem(n.Name, n.Description))
             .ToArray();
     }
@@ -288,16 +220,11 @@ internal sealed partial class CompleteCommand : AsyncCommand<CompleteCommand.Set
             if (parameter is CommandOption commandOptionParameter && (startsWithDash || isEmpty))
             {
                 // Add all matching long parameter names
-                IEnumerable<CompletionResultItem> completions = commandOptionParameter.LongNames
+                var completions = commandOptionParameter.LongNames
                     .Select(l => "--" + l.ToLowerInvariant())
                     .Where(p => p.StartsWith(context.PartialElement))
                     .Where(x => !mappedLongNames.Contains(x, StringComparer.OrdinalIgnoreCase)) // ignore already mapped
                     .Select(x => new CompletionResultItem(x, commandOptionParameter.Description));
-
-                // new: Map (LongNames, Description)
-                //var completions = commandOptionParameter
-                //    .Select(x => new CompletionResultItem($"--{x.LongName}", x.Description))
-                //    ;
 
                 if (completions.Any())
                 {
@@ -311,13 +238,11 @@ internal sealed partial class CompleteCommand : AsyncCommand<CompleteCommand.Set
     }
 
     private async Task<List<CompletionResult>> GetCommandArgumentsAsync(
-        CommandCompletionContext context
-    )
+        CommandCompletionContext context)
     {
         if (
             (!string.IsNullOrEmpty(context.PartialElement) && context.PartialElement[0] == '-')
-            || context.Parent == null
-        )
+            || context.Parent == null)
         {
             return new List<CompletionResult>();
         }
@@ -337,8 +262,8 @@ internal sealed partial class CompleteCommand : AsyncCommand<CompleteCommand.Set
             var completions = await CompleteCommandOption(
                 context.Parent,
                 lastMap.Parameter,
-                lastMap.Value
-            );
+                lastMap.Value);
+
             if (completions == null)
             {
                 return new List<CompletionResult>();
@@ -384,8 +309,7 @@ internal sealed partial class CompleteCommand : AsyncCommand<CompleteCommand.Set
     private async Task<CompletionResult?> CompleteCommandOption(
         CommandInfo parent,
         CommandParameter parameter,
-        string? partialElement
-    )
+        string? partialElement)
     {
         partialElement ??= string.Empty;
 
@@ -399,8 +323,7 @@ internal sealed partial class CompleteCommand : AsyncCommand<CompleteCommand.Set
                 .Where(
                     x =>
                         string.IsNullOrEmpty(partialElement)
-                        || x.StartsWith(partialElement, StringComparison.OrdinalIgnoreCase)
-                );
+                        || x.StartsWith(partialElement, StringComparison.OrdinalIgnoreCase));
 
             return new(values, true);
         }
