@@ -9,5 +9,3 @@ internal class TabCompletionArgs
         CursorPosition = cursorPosition;
     }
 }
-
-//{"cursorPosition":20,"command":"Invoke-ApGet config"}

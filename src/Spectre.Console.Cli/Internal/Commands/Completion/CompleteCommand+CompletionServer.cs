@@ -99,7 +99,7 @@ internal partial class CompleteCommand
         }
     }
 
-    private class JsonSingleLineRenderable
+    private static class JsonSingleLineRenderable
     {
         public static JsonSingleLineRenderable<T> Create<T>(T value)
         {

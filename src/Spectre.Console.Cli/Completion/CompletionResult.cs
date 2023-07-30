@@ -70,7 +70,9 @@ public class CompletionResult : ICompletionResult
     /// <summary>
     /// Initializes a new instance of the <see cref="CompletionResult"/> class.
     /// </summary>
-    public CompletionResult() { }
+    public CompletionResult()
+    {
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CompletionResult"/> class.
