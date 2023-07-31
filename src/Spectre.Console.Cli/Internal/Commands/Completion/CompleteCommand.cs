@@ -226,7 +226,7 @@ internal sealed partial class CompleteCommand : AsyncCommand<CompleteCommand.Set
 
                 if (completions.Any())
                 {
-                    var result = new CompletionResult(completions);
+                    var result = new CompletionResult(completions).WithGeneratedSuggestions();
                     parameters.Add(result);
                 }
             }
