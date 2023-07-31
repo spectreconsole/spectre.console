@@ -85,10 +85,10 @@ internal sealed partial class CompleteCommand : AsyncCommand<CompleteCommand.Set
         var ctx = parser.Parse(settings.CommandToComplete, settings.Position);
 
         var completions = await GetCompletionsAsync(ctx);
-        RenderCompletionAsync(completions, settings);
+        RenderCompletion(completions, settings);
     }
 
-    private void RenderCompletionAsync(CompletionResultItem[] completions, Settings settings)
+    private void RenderCompletion(CompletionResultItem[] completions, Settings settings)
     {
 #if NET5_0_OR_GREATER
         if (string.Equals(settings.Format, "json", StringComparison.OrdinalIgnoreCase))
