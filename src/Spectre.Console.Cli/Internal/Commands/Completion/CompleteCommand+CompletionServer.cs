@@ -35,7 +35,7 @@ internal partial class CompleteCommand
                     args.CursorPosition);
 
                 var completions = await GetCompletionsAsync(ctx);
-                await RenderCompletionAsync(completions, settings);
+                RenderCompletion(completions, settings);
             }
             catch (Exception e)
             {
@@ -67,7 +67,7 @@ internal partial class CompleteCommand
                     result = deserialized;
                 }
             }
-            catch (Exception)
+            catch
             {
                 // ignored
             }
