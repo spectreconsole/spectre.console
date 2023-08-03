@@ -62,7 +62,9 @@ public class DefaultHelpProvider : IHelpProvider
             var parameters = new List<HelpOption>();
             parameters.Add(new HelpOption("h", "help", null, null, "Prints help information", null));
 
-            // At the root?
+            // Version information applies to the entire application
+            // Include the "-v" option in the help when at the root of the command line application
+            // Don't allow the "-v" option if users have specified one or more sub-commands
             if ((command == null || command?.Parent == null) && !(command?.IsBranch ?? false))
             {
                 parameters.Add(new HelpOption("v", "version", null, null, "Prints version information", null));
@@ -190,7 +192,7 @@ public class DefaultHelpProvider : IHelpProvider
             }
             else if (command.IsBranch && command.DefaultCommand != null && command.Commands.Count > 0)
             {
-                // We are on a branch with a default commnd
+                // We are on a branch with a default command
                 // The user can optionally specify the command
                 parameters.Add("[aqua][[COMMAND]][/]");
             }
