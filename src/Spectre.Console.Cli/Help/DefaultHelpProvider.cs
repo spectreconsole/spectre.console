@@ -83,14 +83,12 @@ public class DefaultHelpProvider : IHelpProvider
     /// <summary>
     /// Initializes a new instance of the <see cref="DefaultHelpProvider"/> class.
     /// </summary>
-    /// <param name="writeOptionsDefaultValue">A boolean value indicating whether to write option default values.</param>
-    /// <param name="maxIndirectExamples">The maximum number of indirect examples to display.</param>
-    /// <param name="trimTrailingPeriod">A boolean value indicating whether to trim trailing periods from command descriptions.</param>
-    public DefaultHelpProvider(bool writeOptionsDefaultValue, int maxIndirectExamples, bool trimTrailingPeriod)
+    /// <param name="settings">The command line application settings used for configuration.</param>
+    public DefaultHelpProvider(ICommandAppSettings settings)
     {
-        this.writeOptionsDefaultValues = writeOptionsDefaultValue;
-        this.maxIndirectExamples = maxIndirectExamples;
-        this.trimTrailingPeriod = trimTrailingPeriod;
+        this.writeOptionsDefaultValues = settings.ShowOptionDefaultValues;
+        this.maxIndirectExamples = settings.MaximumIndirectExamples;
+        this.trimTrailingPeriod = settings.TrimTrailingPeriod;
     }
 
     /// <inheritdoc/>

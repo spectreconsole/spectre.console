@@ -7,13 +7,8 @@ internal class CustomHelpProvider : DefaultHelpProvider
 {
     private readonly string version;
 
-    public CustomHelpProvider()
-        : this(true, 5, true, "1.0")
-    {
-    }
-
-    public CustomHelpProvider(bool writeOptionsDefaultValue, int maxIndirectExamples, bool trimTrailingPeriod, string version)
-        : base(writeOptionsDefaultValue, maxIndirectExamples, trimTrailingPeriod)
+    public CustomHelpProvider(ICommandAppSettings settings, string version)
+        : base(settings)
     {
         this.version = version;
     }

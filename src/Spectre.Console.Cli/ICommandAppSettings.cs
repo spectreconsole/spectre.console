@@ -26,7 +26,7 @@ public interface ICommandAppSettings
     bool ShowOptionDefaultValues { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether trailing period of a description is trimmed.
+    /// Gets or sets a value indicating whether a trailing period of a command description is trimmed in the help text.
     /// </summary>
     bool TrimTrailingPeriod { get; set; }
 

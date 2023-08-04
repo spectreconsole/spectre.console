@@ -26,7 +26,7 @@ internal sealed class CommandExecutor
 
 
         // Register the default help provider
-        var defaultHelpProvider = new Help.DefaultHelpProvider(configuration.Settings.ShowOptionDefaultValues, configuration.Settings.MaximumIndirectExamples, configuration.Settings.TrimTrailingPeriod);
+        var defaultHelpProvider = new Help.DefaultHelpProvider(configuration.Settings);
         _registrar.RegisterInstance(typeof(Help.IHelpProvider), defaultHelpProvider);
 
 
