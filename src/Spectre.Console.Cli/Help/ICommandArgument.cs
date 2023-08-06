@@ -11,7 +11,7 @@ public interface ICommandArgument : ICommandParameter
     string Value { get; }
 
     /// <summary>
-    /// Gets or sets the position of the argument.
+    /// Gets the position of the argument.
     /// </summary>
-    int Position { get; set; }
+    int Position { get; }
 }
