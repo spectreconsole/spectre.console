@@ -75,7 +75,7 @@ internal sealed class CommandExecutor
             if (leaf.Command.IsBranch || leaf.ShowHelp)
             {
                 // Branches can't be executed. Show help.
-                configuration.Settings.Console.SafeRender(helpProvider.WriteCommand(model, leaf.Command));
+                configuration.Settings.Console.SafeRender(helpProvider.Write(model, leaf.Command));
                 return leaf.ShowHelp ? 0 : 1;
             }
 
@@ -83,7 +83,7 @@ internal sealed class CommandExecutor
             if (leaf.Command.IsDefaultCommand && args.Count() == 0 && leaf.Command.Parameters.Any(p => p.Required))
             {
                 // Display help for default command.
-                configuration.Settings.Console.SafeRender(helpProvider.WriteCommand(model, leaf.Command));
+                configuration.Settings.Console.SafeRender(helpProvider.Write(model, leaf.Command));
                 return 1;
             }
 

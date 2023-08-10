@@ -8,10 +8,20 @@ namespace Spectre.Console.Cli.Help;
 /// </remarks>
 public class DefaultHelpProvider : IHelpProvider
 {
-    // Help provider configuration settings.
-    private readonly bool writeOptionsDefaultValues;
-    private readonly int maxIndirectExamples;
-    private readonly bool trimTrailingPeriod;
+    /// <summary>
+    /// Gets a value indicating how many examples from direct children to show in the help text.
+    /// </summary>
+    protected virtual int MaximumIndirectExamples { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether any default values for command options are shown in the help text.
+    /// </summary>
+    protected virtual bool ShowOptionDefaultValues { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether a trailing period of a command description is trimmed in the help text.
+    /// </summary>
+    protected virtual bool TrimTrailingPeriod { get; }
 
     private sealed class HelpArgument
     {
@@ -86,33 +96,52 @@ public class DefaultHelpProvider : IHelpProvider
     /// <param name="settings">The command line application settings used for configuration.</param>
     public DefaultHelpProvider(ICommandAppSettings settings)
     {
-        this.writeOptionsDefaultValues = settings.ShowOptionDefaultValues;
-        this.maxIndirectExamples = settings.MaximumIndirectExamples;
-        this.trimTrailingPeriod = settings.TrimTrailingPeriod;
+        this.ShowOptionDefaultValues = settings.ShowOptionDefaultValues;
+        this.MaximumIndirectExamples = settings.MaximumIndirectExamples;
+        this.TrimTrailingPeriod = settings.TrimTrailingPeriod;
     }
 
     /// <inheritdoc/>
     public virtual IEnumerable<IRenderable> Write(ICommandModel model)
     {
-        return WriteCommand(model, null);
+        return Write(model, null);
     }
 
     /// <inheritdoc/>
-    public virtual IEnumerable<IRenderable> WriteCommand(ICommandModel model, ICommandInfo? command)
+    public virtual IEnumerable<IRenderable> Write(ICommandModel model, ICommandInfo? command)
     {
         var result = new List<IRenderable>();
 
-        result.AddRange(GetDescription(command));
+        result.AddRange(GetHeader(model, command));
+        result.AddRange(GetDescription(model, command));
         result.AddRange(GetUsage(model, command));
-        result.AddRange(GetExamples(model, command, maxIndirectExamples));
-        result.AddRange(GetArguments(command));
-        result.AddRange(GetOptions(command, writeOptionsDefaultValues));
-        result.AddRange(GetCommands(model, command, trimTrailingPeriod));
+        result.AddRange(GetExamples(model, command));
+        result.AddRange(GetArguments(model, command));
+        result.AddRange(GetOptions(model, command));
+        result.AddRange(GetCommands(model, command));
+        result.AddRange(GetFooter(model, command));
 
         return result;
     }
 
-    private static IEnumerable<IRenderable> GetDescription(ICommandInfo? command)
+    /// <summary>
+    /// Gets the header for the help information.
+    /// </summary>
+    /// <param name="model">The command model to write help for.</param>
+    /// <param name="command">The command for which to write help information (optional).</param>
+    /// <returns>An enumerable collection of <see cref="IRenderable"/> objects.</returns>
+    public virtual IEnumerable<IRenderable> GetHeader(ICommandModel model, ICommandInfo? command)
+    {
+        yield break;
+    }
+
+    /// <summary>
+    /// Gets the description section of the help information.
+    /// </summary>
+    /// <param name="model">The command model to write help for.</param>
+    /// <param name="command">The command for which to write help information (optional).</param>
+    /// <returns>An enumerable collection of <see cref="IRenderable"/> objects.</returns>
+    public virtual IEnumerable<IRenderable> GetDescription(ICommandModel model, ICommandInfo? command)
     {
         if (command?.Description == null)
         {
@@ -125,7 +154,13 @@ public class DefaultHelpProvider : IHelpProvider
         yield return composer.LineBreak();
     }
 
-    private static IEnumerable<IRenderable> GetUsage(ICommandModel model, ICommandInfo? command)
+    /// <summary>
+    /// Gets the usage section of the help information.
+    /// </summary>
+    /// <param name="model">The command model to write help for.</param>
+    /// <param name="command">The command for which to write help information (optional).</param>
+    /// <returns>An enumerable collection of <see cref="IRenderable"/> objects.</returns>
+    public virtual IEnumerable<IRenderable> GetUsage(ICommandModel model, ICommandInfo? command)
     {
         var composer = new Composer();
         composer.Style("yellow", "USAGE:").LineBreak();
@@ -217,13 +252,16 @@ public class DefaultHelpProvider : IHelpProvider
     }
 
     /// <summary>
-    /// Gets the examples for a command.
+    /// Gets the examples section of the help information.
     /// </summary>
+    /// <param name="model">The command model to write help for.</param>
+    /// <param name="command">The command for which to write help information (optional).</param>
+    /// <returns>An enumerable collection of <see cref="IRenderable"/> objects.</returns>
     /// <remarks>
     /// Examples from the command's direct children are used
     /// if no examples have been set on the specified command or model.
     /// </remarks>
-    private static IEnumerable<IRenderable> GetExamples(ICommandModel model, ICommandInfo? command, int maxIndirectExamples)
+    public virtual IEnumerable<IRenderable> GetExamples(ICommandModel model, ICommandInfo? command)
     {
         var maxExamples = int.MaxValue;
 
@@ -232,7 +270,7 @@ public class DefaultHelpProvider : IHelpProvider
         {
             // Since we're not checking direct examples,
             // make sure that we limit the number of examples.
-            maxExamples = maxIndirectExamples;
+            maxExamples = MaximumIndirectExamples;
 
             // Start at the current command (if exists)
             // or alternatively commence at the model.
@@ -281,7 +319,13 @@ public class DefaultHelpProvider : IHelpProvider
         return Array.Empty<IRenderable>();
     }
 
-    private static IEnumerable<IRenderable> GetArguments(ICommandInfo? command)
+    /// <summary>
+    /// Gets the arguments section of the help information.
+    /// </summary>
+    /// <param name="model">The command model to write help for.</param>
+    /// <param name="command">The command for which to write help information (optional).</param>
+    /// <returns>An enumerable collection of <see cref="IRenderable"/> objects.</returns>
+    public virtual IEnumerable<IRenderable> GetArguments(ICommandModel model, ICommandInfo? command)
     {
         var arguments = HelpArgument.Get(command);
         if (arguments.Count == 0)
@@ -319,7 +363,13 @@ public class DefaultHelpProvider : IHelpProvider
         return result;
     }
 
-    private static IEnumerable<IRenderable> GetOptions(ICommandInfo? command, bool writeOptionsDefaultValues)
+    /// <summary>
+    /// Gets the options section of the help information.
+    /// </summary>
+    /// <param name="model">The command model to write help for.</param>
+    /// <param name="command">The command for which to write help information (optional).</param>
+    /// <returns>An enumerable collection of <see cref="IRenderable"/> objects.</returns>
+    public virtual IEnumerable<IRenderable> GetOptions(ICommandModel model, ICommandInfo? command)
     {
         // Collect all options into a single structure.
         var parameters = HelpOption.Get(command);
@@ -336,7 +386,7 @@ public class DefaultHelpProvider : IHelpProvider
             };
 
         var helpOptions = parameters.ToArray();
-        var defaultValueColumn = writeOptionsDefaultValues && helpOptions.Any(e => e.DefaultValue != null);
+        var defaultValueColumn = ShowOptionDefaultValues && helpOptions.Any(e => e.DefaultValue != null);
 
         var grid = new Grid();
         grid.AddColumn(new GridColumn { Padding = new Padding(4, 4), NoWrap = true });
@@ -421,7 +471,13 @@ public class DefaultHelpProvider : IHelpProvider
         return result;
     }
 
-    private static IEnumerable<IRenderable> GetCommands(ICommandModel model, ICommandInfo? command, bool trimTrailingPeriod)
+    /// <summary>
+    /// Gets the commands section of the help information.
+    /// </summary>
+    /// <param name="model">The command model to write help for.</param>
+    /// <param name="command">The command for which to write help information (optional).</param>
+    /// <returns>An enumerable collection of <see cref="IRenderable"/> objects.</returns>
+    public virtual IEnumerable<IRenderable> GetCommands(ICommandModel model, ICommandInfo? command)
     {
         var commandContainer = command ?? (ICommandContainer)model;
         bool isDefaultCommand = command?.IsDefaultCommand ?? false;
@@ -457,7 +513,7 @@ public class DefaultHelpProvider : IHelpProvider
                 arguments.Space();
             }
 
-            if (trimTrailingPeriod)
+            if (TrimTrailingPeriod)
             {
                 grid.AddRow(
                     arguments.ToString().TrimEnd(),
@@ -474,5 +530,16 @@ public class DefaultHelpProvider : IHelpProvider
         result.Add(grid);
 
         return result;
+    }
+
+    /// <summary>
+    /// Gets the footer for the help information.
+    /// </summary>
+    /// <param name="model">The command model to write help for.</param>
+    /// <param name="command">The command for which to write help information (optional).</param>
+    /// <returns>An enumerable collection of <see cref="IRenderable"/> objects.</returns>
+    public virtual IEnumerable<IRenderable> GetFooter(ICommandModel model, ICommandInfo? command)
+    {
+        yield break;
     }
 }

@@ -7,10 +7,10 @@ internal class RedirectHelpProvider : IHelpProvider
 {
     public virtual IEnumerable<IRenderable> Write(ICommandModel model)
     {
-        return WriteCommand(model, null);
+        return Write(model, null);
     }
 #nullable enable
-    public virtual IEnumerable<IRenderable> WriteCommand(ICommandModel model, ICommandInfo? command)
+    public virtual IEnumerable<IRenderable> Write(ICommandModel model, ICommandInfo? command)
 #nullable disable
     {
         var result = new List<IRenderable>();
