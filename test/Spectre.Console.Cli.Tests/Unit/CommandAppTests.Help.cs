@@ -270,8 +270,8 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
-        [Expectation("Default_Custom_Help_Provider")]
-        public Task Should_Output_Default_Command_Custom_Help_Correctly()
+        [Expectation("Custom_Help_Registered_By_Instance")]
+        public Task Should_Output_Custom_Help_When_Registered_By_Instance()
         {
             var registrar = new DefaultTypeRegistrar();
 
@@ -282,8 +282,80 @@ public sealed partial class CommandAppTests
                 // Create the custom help provider
                 var helpProvider = new CustomHelpProvider(configurator.Settings, "1.0");
 
-                // Register the custom help provider
+                // Register the custom help provider instance
                 registrar.RegisterInstance(typeof(Spectre.Console.Cli.Help.IHelpProvider), helpProvider);
+
+                configurator.SetApplicationName("myapp");
+                configurator.AddCommand<DogCommand>("dog");
+            });
+
+            // When
+            var result = fixture.Run();
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Custom_Help_Registered_By_Type")]
+        public Task Should_Output_Custom_Help_When_Registered_By_Type()
+        {
+            var registrar = new DefaultTypeRegistrar();
+
+            // Given
+            var fixture = new CommandAppTester(registrar);
+            fixture.Configure(configurator =>
+            {
+                // Register the custom help provider type
+                registrar.Register(typeof(Spectre.Console.Cli.Help.IHelpProvider), typeof(RedirectHelpProvider));
+
+                configurator.SetApplicationName("myapp");
+                configurator.AddCommand<DogCommand>("dog");
+            });
+
+            // When
+            var result = fixture.Run();
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Custom_Help_Configured_By_Instance")]
+        public Task Should_Output_Custom_Help_When_Configured_By_Instance()
+        {
+            var registrar = new DefaultTypeRegistrar();
+
+            // Given
+            var fixture = new CommandAppTester(registrar);
+            fixture.Configure(configurator =>
+            {
+                // Configure the custom help provider instance
+                configurator.SetHelpProvider(new CustomHelpProvider(configurator.Settings, "1.0"));
+
+                configurator.SetApplicationName("myapp");
+                configurator.AddCommand<DogCommand>("dog");
+            });
+
+            // When
+            var result = fixture.Run();
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Custom_Help_Configured_By_Type")]
+        public Task Should_Output_Custom_Help_When_Configured_By_Type()
+        {
+            var registrar = new DefaultTypeRegistrar();
+
+            // Given
+            var fixture = new CommandAppTester(registrar);
+            fixture.Configure(configurator =>
+            {
+                // Configure the custom help provider type
+                configurator.SetHelpProvider<RedirectHelpProvider>();
 
                 configurator.SetApplicationName("myapp");
                 configurator.AddCommand<DogCommand>("dog");

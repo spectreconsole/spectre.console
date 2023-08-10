@@ -6,6 +6,19 @@ namespace Spectre.Console.Cli;
 public interface IConfigurator
 {
     /// <summary>
+    /// Sets the help provider for the application.
+    /// </summary>
+    /// <param name="helpProvider">The help provider to use.</param>
+    public void SetHelpProvider(Help.IHelpProvider helpProvider);
+
+    /// <summary>
+    /// Sets the help provider for the application.
+    /// </summary>
+    /// <typeparam name="T">The type of the help provider to instantiate at runtime and use.</typeparam>
+    public void SetHelpProvider<T>()
+        where T : Help.IHelpProvider;
+
+    /// <summary>
     /// Gets the command app settings.
     /// </summary>
     public ICommandAppSettings Settings { get; }
