@@ -15,20 +15,21 @@ internal class CustomHelpProvider : DefaultHelpProvider
 
     public override IEnumerable<IRenderable> GetHeader(ICommandModel model, ICommandInfo command)
     {
-        var header = new Composer();
-        header.Text("--------------------------------------").LineBreak();
-        header.Text("---      CUSTOM HELP PROVIDER      ---").LineBreak();
-        header.Text("--------------------------------------").LineBreak();
-        header.LineBreak();
-
-        return new[] { header };
+        return new[]
+        {
+            new Text("--------------------------------------"), Text.NewLine,
+            new Text("---      CUSTOM HELP PROVIDER      ---"), Text.NewLine,
+            new Text("--------------------------------------"), Text.NewLine,
+            Text.NewLine,
+        };
     }
 
     public override IEnumerable<IRenderable> GetFooter(ICommandModel model, ICommandInfo command)
     {
-        var footer = new Composer();
-        footer.LineBreak().Text($"Version {version}").LineBreak();
-
-        return new[] { footer };
+        return new[]
+        {
+            Text.NewLine,
+            new Text($"Version {version}"),
+        };
     }
 }

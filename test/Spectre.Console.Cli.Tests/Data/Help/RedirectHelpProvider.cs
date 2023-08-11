@@ -13,10 +13,10 @@ internal class RedirectHelpProvider : IHelpProvider
     public virtual IEnumerable<IRenderable> Write(ICommandModel model, ICommandInfo? command)
 #nullable disable
     {
-        var result = new List<IRenderable>();
-
-        result.AddRange(Enumerable.Repeat(new Composer().Text("Help has moved online. Please see: http://www.example.com").LineBreak(), 1));
-
-        return result;
+        return new[]
+        {
+            new Text("Help has moved online. Please see: http://www.example.com"),
+            Text.NewLine,
+        };
     }
 }
