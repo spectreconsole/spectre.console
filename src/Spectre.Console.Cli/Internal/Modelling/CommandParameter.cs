@@ -1,7 +1,6 @@
 namespace Spectre.Console.Cli;
 
-[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1124:DoNotUseRegions", Justification = "Hiding Help.ICommandParameter explicit interface implementation in a region improves readability.")]
-internal abstract class CommandParameter : ICommandParameterInfo, Spectre.Console.Cli.Help.ICommandParameter
+internal abstract class CommandParameter : ICommandParameterInfo, ICommandParameter
 {
     public Guid Id { get; }
     public Type ParameterType { get; }
@@ -20,11 +19,7 @@ internal abstract class CommandParameter : ICommandParameterInfo, Spectre.Consol
     public virtual bool WantRawValue => ParameterType.IsPairDeconstructable()
         && (PairDeconstructor != null || Converter == null);
 
-    #region Help.ICommandParameter
-
     public bool IsFlag => ParameterKind == ParameterKind.Flag;
-
-    #endregion
 
     protected CommandParameter(
         Type parameterType, ParameterKind parameterKind, PropertyInfo property,

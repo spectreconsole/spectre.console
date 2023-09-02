@@ -1,6 +1,6 @@
 namespace Spectre.Console.Cli;
 
-internal sealed class CommandOption : CommandParameter, Spectre.Console.Cli.Help.ICommandOption
+internal sealed class CommandOption : CommandParameter, ICommandOption
 {
     public IReadOnlyList<string> LongNames { get; }
     public IReadOnlyList<string> ShortNames { get; }

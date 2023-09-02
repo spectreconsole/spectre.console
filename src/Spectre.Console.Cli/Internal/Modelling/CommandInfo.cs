@@ -1,7 +1,6 @@
 namespace Spectre.Console.Cli;
 
-[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1124:DoNotUseRegions", Justification = "Hiding Help.ICommandInfo explicit interface implementation in a region improves readability.")]
-internal sealed class CommandInfo : ICommandContainer, Spectre.Console.Cli.Help.ICommandInfo
+internal sealed class CommandInfo : ICommandContainer, ICommandInfo
 {
     public string Name { get; }
     public HashSet<string> Aliases { get; }
@@ -23,14 +22,10 @@ internal sealed class CommandInfo : ICommandContainer, Spectre.Console.Cli.Help.
     public CommandInfo? DefaultCommand => IsBranch ? Children.FirstOrDefault(c => c.IsDefaultCommand) : null;
     public bool IsHidden { get; }
 
-    #region Help.ICommandInfo
-
-    IList<Help.ICommandInfo> Help.ICommandContainer.Commands => Children.Cast<Help.ICommandInfo>().ToList();
-    Help.ICommandInfo? Help.ICommandContainer.DefaultCommand => DefaultCommand;
-    IList<Help.ICommandParameter> Help.ICommandInfo.Parameters => Parameters.Cast<Help.ICommandParameter>().ToList();
-    Help.ICommandInfo? Help.ICommandInfo.Parent => Parent;
-
-    #endregion
+    IList<ICommandInfo> Help.ICommandContainer.Commands => Children.Cast<ICommandInfo>().ToList();
+    ICommandInfo? Help.ICommandContainer.DefaultCommand => DefaultCommand;
+    IList<ICommandParameter> ICommandInfo.Parameters => Parameters.Cast<ICommandParameter>().ToList();
+    ICommandInfo? ICommandInfo.Parent => Parent;
 
     public CommandInfo(CommandInfo? parent, ConfiguredCommand prototype)
     {

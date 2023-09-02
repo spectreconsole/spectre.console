@@ -1,7 +1,6 @@
 namespace Spectre.Console.Cli;
 
-[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1124:DoNotUseRegions", Justification = "Hiding Help.ICommandModel explicit interface implementation in a region improves readability.")]
-internal sealed class CommandModel : ICommandContainer, Spectre.Console.Cli.Help.ICommandModel
+internal sealed class CommandModel : ICommandContainer, ICommandModel
 {
     public string? ApplicationName { get; }
     public ParsingMode ParsingMode { get; }
@@ -10,13 +9,9 @@ internal sealed class CommandModel : ICommandContainer, Spectre.Console.Cli.Help
 
     public CommandInfo? DefaultCommand => Commands.FirstOrDefault(c => c.IsDefaultCommand);
 
-    #region Help.ICommandModel
-
-    string Help.ICommandModel.ApplicationName => GetApplicationName();
-    IList<Help.ICommandInfo> Help.ICommandContainer.Commands => Commands.Cast<Help.ICommandInfo>().ToList();
-    Help.ICommandInfo? Help.ICommandContainer.DefaultCommand => DefaultCommand;
-
-    #endregion
+    string ICommandModel.ApplicationName => GetApplicationName();
+    IList<ICommandInfo> Help.ICommandContainer.Commands => Commands.Cast<ICommandInfo>().ToList();
+    ICommandInfo? Help.ICommandContainer.DefaultCommand => DefaultCommand;
 
     public CommandModel(
         CommandAppSettings settings,

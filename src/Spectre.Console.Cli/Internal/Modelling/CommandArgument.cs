@@ -1,6 +1,6 @@
 namespace Spectre.Console.Cli;
 
-internal sealed class CommandArgument : CommandParameter, Spectre.Console.Cli.Help.ICommandArgument
+internal sealed class CommandArgument : CommandParameter, ICommandArgument
 {
     public string Value { get; }
     public int Position { get; set; }

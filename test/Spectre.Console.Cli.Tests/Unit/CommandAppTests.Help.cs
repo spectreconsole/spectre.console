@@ -283,7 +283,7 @@ public sealed partial class CommandAppTests
                 var helpProvider = new CustomHelpProvider(configurator.Settings, "1.0");
 
                 // Register the custom help provider instance
-                registrar.RegisterInstance(typeof(Spectre.Console.Cli.Help.IHelpProvider), helpProvider);
+                registrar.RegisterInstance(typeof(IHelpProvider), helpProvider);
 
                 configurator.SetApplicationName("myapp");
                 configurator.AddCommand<DogCommand>("dog");
@@ -307,7 +307,7 @@ public sealed partial class CommandAppTests
             fixture.Configure(configurator =>
             {
                 // Register the custom help provider type
-                registrar.Register(typeof(Spectre.Console.Cli.Help.IHelpProvider), typeof(RedirectHelpProvider));
+                registrar.Register(typeof(IHelpProvider), typeof(RedirectHelpProvider));
 
                 configurator.SetApplicationName("myapp");
                 configurator.AddCommand<DogCommand>("dog");
