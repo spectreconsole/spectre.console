@@ -12,10 +12,14 @@ public static class ConfiguratorExtensions
     /// <param name="configurator">The configurator.</param>
     /// <param name="helpProvider">The help provider to use.</param>
     /// <returns>A configurator that can be used to configure the application further.</returns>
-    public static IConfigurator SetHelpProvider(this IConfigurator configurator, Help.IHelpProvider helpProvider)
+    public static IConfigurator SetHelpProvider(this IConfigurator configurator, IHelpProvider helpProvider)
     {
-        configurator.SetHelpProvider(helpProvider);
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
 
+        configurator.SetHelpProvider(helpProvider);
         return configurator;
     }
 
@@ -26,10 +30,14 @@ public static class ConfiguratorExtensions
     /// <typeparam name="T">The type of the help provider to instantiate at runtime and use.</typeparam>
     /// <returns>A configurator that can be used to configure the application further.</returns>
     public static IConfigurator SetHelpProvider<T>(this IConfigurator configurator)
-        where T : Help.IHelpProvider
+        where T : IHelpProvider
     {
-        configurator.SetHelpProvider<T>();
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
 
+        configurator.SetHelpProvider<T>();
         return configurator;
     }
 
