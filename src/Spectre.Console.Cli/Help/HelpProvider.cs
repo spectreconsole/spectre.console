@@ -1,12 +1,12 @@
 namespace Spectre.Console.Cli.Help;
 
 /// <summary>
-/// The default help provider for Spectre.Console.
+/// The help provider for Spectre.Console.
 /// </summary>
 /// <remarks>
 /// Other IHelpProvider implementations can be injected into the CommandApp, if desired.
 /// </remarks>
-public class DefaultHelpProvider : IHelpProvider
+public class HelpProvider : IHelpProvider
 {
     /// <summary>
     /// Gets a value indicating how many examples from direct children to show in the help text.
@@ -91,10 +91,10 @@ public class DefaultHelpProvider : IHelpProvider
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DefaultHelpProvider"/> class.
+    /// Initializes a new instance of the <see cref="HelpProvider"/> class.
     /// </summary>
     /// <param name="settings">The command line application settings used for configuration.</param>
-    public DefaultHelpProvider(ICommandAppSettings settings)
+    public HelpProvider(ICommandAppSettings settings)
     {
         this.ShowOptionDefaultValues = settings.ShowOptionDefaultValues;
         this.MaximumIndirectExamples = settings.MaximumIndirectExamples;

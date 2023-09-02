@@ -1,4 +1,3 @@
-using Spectre.Console.Cli.Help;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console.Cli.Tests.Data.Help;

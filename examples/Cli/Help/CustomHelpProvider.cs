@@ -10,7 +10,7 @@ namespace Help;
 /// Example showing how to extend the built-in Spectre.Console help provider
 /// by rendering a custom banner at the top of the help information
 /// </summary>
-internal class CustomHelpProvider : DefaultHelpProvider
+internal class CustomHelpProvider : HelpProvider
 {
     public CustomHelpProvider(ICommandAppSettings settings)
         : base(settings)

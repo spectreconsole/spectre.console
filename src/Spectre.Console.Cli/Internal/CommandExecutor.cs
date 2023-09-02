@@ -22,8 +22,8 @@ internal sealed class CommandExecutor
         _registrar.RegisterInstance(typeof(IConfiguration), configuration);
         _registrar.RegisterLazy(typeof(IAnsiConsole), () => configuration.Settings.Console.GetConsole());
 
-        // Register the default help provider
-        var defaultHelpProvider = new Help.DefaultHelpProvider(configuration.Settings);
+        // Register the help provider
+        var defaultHelpProvider = new Help.HelpProvider(configuration.Settings);
         _registrar.RegisterInstance(typeof(Help.IHelpProvider), defaultHelpProvider);
 
         // Create the command model.

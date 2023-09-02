@@ -13,13 +13,13 @@ The help is also context aware and tailored depending on what has been specified
 
 2. When `-h` or `--help` appears immediately after a command has been specified (eg. `application.exe command --help`), then the help displayed is specific to the command and includes information about command specific switches and any default values. 
 
-`DefaultHelpProvider` is the `Spectre.Console` class responsible for determining context and preparing the help text to write to the console. It is an implementation of the public interface `IHelpProvider`.
+`HelpProvider` is the `Spectre.Console` class responsible for determining context and preparing the help text to write to the console. It is an implementation of the public interface `IHelpProvider`.
 
 ## Custom help providers
 
 Whilst it shouldn't be common place to implement your own help provider, it is however possible. 
 
-You are able to implement your own `IHelpProvider` and configure a `CommandApp` to use that instead of the default help provider. 
+You are able to implement your own `IHelpProvider` and configure a `CommandApp` to use that instead of the Spectre.Console help provider. 
 
 ```csharp
 using Spectre.Console.Cli;

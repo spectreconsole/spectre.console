@@ -1,9 +1,8 @@
-using Spectre.Console.Cli.Help;
 using Spectre.Console.Rendering;
 
 namespace Spectre.Console.Cli.Tests.Data.Help;
 
-internal class CustomHelpProvider : DefaultHelpProvider
+internal class CustomHelpProvider : HelpProvider
 {
     private readonly string version;
 
