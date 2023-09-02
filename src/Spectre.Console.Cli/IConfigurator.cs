@@ -9,14 +9,14 @@ public interface IConfigurator
     /// Sets the help provider for the application.
     /// </summary>
     /// <param name="helpProvider">The help provider to use.</param>
-    public void SetHelpProvider(Help.IHelpProvider helpProvider);
+    public void SetHelpProvider(IHelpProvider helpProvider);
 
     /// <summary>
     /// Sets the help provider for the application.
     /// </summary>
     /// <typeparam name="T">The type of the help provider to instantiate at runtime and use.</typeparam>
     public void SetHelpProvider<T>()
-        where T : Help.IHelpProvider;
+        where T : IHelpProvider;
 
     /// <summary>
     /// Gets the command app settings.

@@ -20,17 +20,17 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         Examples = new List<string[]>();
     }
 
-    public void SetHelpProvider(Help.IHelpProvider helpProvider)
+    public void SetHelpProvider(IHelpProvider helpProvider)
     {
         // Register the help provider
-        _registrar.RegisterInstance(typeof(Help.IHelpProvider), helpProvider);
+        _registrar.RegisterInstance(typeof(IHelpProvider), helpProvider);
     }
 
     public void SetHelpProvider<T>()
-        where T : Help.IHelpProvider
+        where T : IHelpProvider
     {
         // Register the help provider
-        _registrar.Register(typeof(Help.IHelpProvider), typeof(T));
+        _registrar.Register(typeof(IHelpProvider), typeof(T));
     }
 
     public void AddExample(params string[] args)
