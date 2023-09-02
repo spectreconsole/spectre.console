@@ -10,7 +10,6 @@ internal sealed class CommandExecutor
         _registrar.Register(typeof(DefaultPairDeconstructor), typeof(DefaultPairDeconstructor));
     }
 
-#pragma warning disable SA1507 // Code should not contain multiple blank lines in a row
     public async Task<int> Execute(IConfiguration configuration, IEnumerable<string> args)
     {
         if (configuration == null)
@@ -20,21 +19,17 @@ internal sealed class CommandExecutor
 
         args ??= new List<string>();
 
-
         _registrar.RegisterInstance(typeof(IConfiguration), configuration);
         _registrar.RegisterLazy(typeof(IAnsiConsole), () => configuration.Settings.Console.GetConsole());
-
 
         // Register the default help provider
         var defaultHelpProvider = new Help.DefaultHelpProvider(configuration.Settings);
         _registrar.RegisterInstance(typeof(Help.IHelpProvider), defaultHelpProvider);
 
-
         // Create the command model.
         var model = CommandModelBuilder.Build(configuration);
         _registrar.RegisterInstance(typeof(CommandModel), model);
         _registrar.RegisterDependencies(model);
-
 
         // Asking for version? Kind of a hack, but it's alright.
         // We should probably make this a bit better in the future.
@@ -45,15 +40,12 @@ internal sealed class CommandExecutor
             return 0;
         }
 
-
         // Parse and map the model against the arguments.
         var parsedResult = ParseCommandLineArguments(model, configuration.Settings, args);
-
 
         // Register the arguments with the container.
         _registrar.RegisterInstance(typeof(CommandTreeParserResult), parsedResult);
         _registrar.RegisterInstance(typeof(IRemainingArguments), parsedResult.Remaining);
-
 
         // Create the resolver.
         using (var resolver = new TypeResolverAdapter(_registrar.Build()))
@@ -87,7 +79,6 @@ internal sealed class CommandExecutor
                 return 1;
             }
 
-
             // Create the content.
             var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data);
 
@@ -95,7 +86,6 @@ internal sealed class CommandExecutor
             return await Execute(leaf, parsedResult.Tree, context, resolver, configuration).ConfigureAwait(false);
         }
     }
-#pragma warning restore SA1507 // Code should not contain multiple blank lines in a row
 
 #pragma warning disable CS8603 // Possible null reference return.
     private CommandTreeParserResult ParseCommandLineArguments(CommandModel model, CommandAppSettings settings, IEnumerable<string> args)
