@@ -10,8 +10,9 @@ internal sealed class CommandModel : ICommandContainer, ICommandModel
     public CommandInfo? DefaultCommand => Commands.FirstOrDefault(c => c.IsDefaultCommand);
 
     string ICommandModel.ApplicationName => GetApplicationName(ApplicationName);
-    IList<ICommandInfo> Help.ICommandContainer.Commands => Commands.Cast<ICommandInfo>().ToList();
+    IReadOnlyList<ICommandInfo> Help.ICommandContainer.Commands => Commands.Cast<ICommandInfo>().ToList();
     ICommandInfo? Help.ICommandContainer.DefaultCommand => DefaultCommand;
+    IReadOnlyList<string[]> Help.ICommandContainer.Examples => (IReadOnlyList<string[]>)Examples;
 
     public CommandModel(
         CommandAppSettings settings,

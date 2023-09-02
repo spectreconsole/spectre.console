@@ -8,12 +8,12 @@ public interface ICommandContainer
     /// <summary>
     /// Gets all the examples for the container.
     /// </summary>
-    IList<string[]> Examples { get; }
+    IReadOnlyList<string[]> Examples { get; }
 
     /// <summary>
     /// Gets all commands in the container.
     /// </summary>
-    IList<ICommandInfo> Commands { get; }
+    IReadOnlyList<ICommandInfo> Commands { get; }
 
     /// <summary>
     /// Gets the default command for the container.

@@ -33,7 +33,7 @@ public interface ICommandInfo : ICommandContainer
     /// <summary>
     /// Gets the parameters associated with the command.
     /// </summary>
-    IList<ICommandParameter> Parameters { get; }
+    IReadOnlyList<ICommandParameter> Parameters { get; }
 
     /// <summary>
     /// Gets the parent command, if any.

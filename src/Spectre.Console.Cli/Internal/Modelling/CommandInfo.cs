@@ -22,10 +22,11 @@ internal sealed class CommandInfo : ICommandContainer, ICommandInfo
     public CommandInfo? DefaultCommand => IsBranch ? Children.FirstOrDefault(c => c.IsDefaultCommand) : null;
     public bool IsHidden { get; }
 
-    IList<ICommandInfo> Help.ICommandContainer.Commands => Children.Cast<ICommandInfo>().ToList();
+    IReadOnlyList<ICommandInfo> Help.ICommandContainer.Commands => Children.Cast<ICommandInfo>().ToList();
     ICommandInfo? Help.ICommandContainer.DefaultCommand => DefaultCommand;
-    IList<ICommandParameter> ICommandInfo.Parameters => Parameters.Cast<ICommandParameter>().ToList();
+    IReadOnlyList<ICommandParameter> ICommandInfo.Parameters => Parameters.Cast<ICommandParameter>().ToList();
     ICommandInfo? ICommandInfo.Parent => Parent;
+    IReadOnlyList<string[]> Help.ICommandContainer.Examples => (IReadOnlyList<string[]>)Examples;
 
     public CommandInfo(CommandInfo? parent, ConfiguredCommand prototype)
     {

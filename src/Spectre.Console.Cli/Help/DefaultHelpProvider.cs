@@ -259,7 +259,7 @@ public class DefaultHelpProvider : IHelpProvider
     {
         var maxExamples = int.MaxValue;
 
-        var examples = command?.Examples ?? model.Examples ?? new List<string[]>();
+        var examples = command?.Examples?.ToList() ?? model.Examples?.ToList() ?? new List<string[]>();
         if (examples.Count == 0)
         {
             // Since we're not checking direct examples,
