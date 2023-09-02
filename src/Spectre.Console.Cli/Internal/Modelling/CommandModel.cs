@@ -9,7 +9,7 @@ internal sealed class CommandModel : ICommandContainer, ICommandModel
 
     public CommandInfo? DefaultCommand => Commands.FirstOrDefault(c => c.IsDefaultCommand);
 
-    string ICommandModel.ApplicationName => GetApplicationName();
+    string ICommandModel.ApplicationName => GetApplicationName(ApplicationName);
     IList<ICommandInfo> Help.ICommandContainer.Commands => Commands.Cast<ICommandInfo>().ToList();
     ICommandInfo? Help.ICommandContainer.DefaultCommand => DefaultCommand;
 
@@ -24,10 +24,20 @@ internal sealed class CommandModel : ICommandContainer, ICommandModel
         Examples = new List<string[]>(examples ?? Array.Empty<string[]>());
     }
 
-    public string GetApplicationName()
+    /// <summary>
+    /// Gets the name of the application.
+    /// If the provided <paramref name="applicationName"/> is not null or empty,
+    /// it is returned. Otherwise the name of the current application
+    /// is determined based on the executable file's name.
+    /// </summary>
+    /// <param name="applicationName">The optional name of the application.</param>
+    /// <returns>
+    /// The name of the application, or a default value of "?" if no valid application name can be determined.
+    /// </returns>
+    private static string GetApplicationName(string? applicationName)
     {
         return
-            ApplicationName ??
+            applicationName ??
             Path.GetFileName(GetApplicationFile()) ?? // null is propagated by GetFileName
             "?";
     }
@@ -35,6 +45,7 @@ internal sealed class CommandModel : ICommandContainer, ICommandModel
     private static string? GetApplicationFile()
     {
         var location = Assembly.GetEntryAssembly()?.Location;
+
         if (string.IsNullOrWhiteSpace(location))
         {
             // this is special case for single file executable
