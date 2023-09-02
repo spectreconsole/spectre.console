@@ -15,7 +15,7 @@ internal class CustomHelpProvider : DefaultHelpProvider
 
     public override IEnumerable<IRenderable> GetHeader(ICommandModel model, ICommandInfo command)
     {
-        return new[]
+        return new IRenderable[]
         {
             new Text("--------------------------------------"), Text.NewLine,
             new Text("---      CUSTOM HELP PROVIDER      ---"), Text.NewLine,
@@ -26,7 +26,7 @@ internal class CustomHelpProvider : DefaultHelpProvider
 
     public override IEnumerable<IRenderable> GetFooter(ICommandModel model, ICommandInfo command)
     {
-        return new[]
+        return new IRenderable[]
         {
             Text.NewLine,
             new Text($"Version {version}"),
