@@ -5,6 +5,10 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ExampleName>Help</ExampleName>
+    <ExampleDescription>Demonstrates how to extend the built-in Spectre.Console help provider to render a custom banner at the top of the help information.</ExampleDescription>
+    <ExampleGroup>Cli</ExampleGroup>
+    <ExampleVisible>false</ExampleVisible>
   </PropertyGroup>
 
   <ItemGroup>

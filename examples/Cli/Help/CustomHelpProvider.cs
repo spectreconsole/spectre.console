@@ -7,7 +7,7 @@ using Spectre.Console.Rendering;
 namespace Help;
 
 /// <summary>
-/// Example showing how to extend the built-in spectre.console help provider
+/// Example showing how to extend the built-in Spectre.Console help provider
 /// by rendering a custom banner at the top of the help information
 /// </summary>
 internal class CustomHelpProvider : DefaultHelpProvider
