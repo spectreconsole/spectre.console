@@ -1,7 +1,7 @@
 namespace Spectre.Console.Cli.Help;
 
 /// <summary>
-/// The default help provider for spectre.console.
+/// The default help provider for Spectre.Console.
 /// </summary>
 /// <remarks>
 /// Other IHelpProvider implementations can be injected into the CommandApp, if desired.
@@ -99,12 +99,6 @@ public class DefaultHelpProvider : IHelpProvider
         this.ShowOptionDefaultValues = settings.ShowOptionDefaultValues;
         this.MaximumIndirectExamples = settings.MaximumIndirectExamples;
         this.TrimTrailingPeriod = settings.TrimTrailingPeriod;
-    }
-
-    /// <inheritdoc/>
-    public virtual IEnumerable<IRenderable> Write(ICommandModel model)
-    {
-        return Write(model, null);
     }
 
     /// <inheritdoc/>

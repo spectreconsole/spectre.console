@@ -58,7 +58,7 @@ internal sealed class CommandExecutor
             if (parsedResult?.Tree == null)
             {
                 // Display help.
-                configuration.Settings.Console.SafeRender(helpProvider.Write(model));
+                configuration.Settings.Console.SafeRender(helpProvider.Write(model, null));
                 return 0;
             }
 

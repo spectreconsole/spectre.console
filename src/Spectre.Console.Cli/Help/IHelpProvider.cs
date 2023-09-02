@@ -1,7 +1,7 @@
 namespace Spectre.Console.Cli.Help;
 
 /// <summary>
-/// The help provider interface for spectre.console.
+/// The help provider interface for Spectre.Console.
 /// </summary>
 /// <remarks>
 /// Implementations of this interface are responsbile
@@ -10,13 +10,6 @@ namespace Spectre.Console.Cli.Help;
 /// </remarks>
 public interface IHelpProvider
 {
-    /// <summary>
-    /// Writes help information for the application.
-    /// </summary>
-    /// <param name="model">The command model to write help for.</param>
-    /// <returns>An enumerable collection of <see cref="IRenderable"/> objects representing the help information.</returns>
-    IEnumerable<IRenderable> Write(ICommandModel model);
-
     /// <summary>
     /// Writes help information for the application.
     /// </summary>
