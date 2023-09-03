@@ -25,12 +25,20 @@ internal interface IListPromptStrategy<T>
     public int CalculatePageSize(IAnsiConsole console, int totalItemCount, int requestedPageSize);
 
     /// <summary>
+    /// Gets the selection mode.
+    /// </summary>
+    /// <returns>The selection mode.</returns>
+    public SelectionMode GetSelectionMode();
+
+    /// <summary>
     /// Builds a <see cref="IRenderable"/> from the current state.
     /// </summary>
     /// <param name="console">The console.</param>
     /// <param name="scrollable">Whether or not the list is scrollable.</param>
     /// <param name="cursorIndex">The cursor index.</param>
     /// <param name="items">The visible items.</param>
+    /// <param name="searchFilter">The search filter.</param>
     /// <returns>A <see cref="IRenderable"/> representing the items.</returns>
-    public IRenderable Render(IAnsiConsole console, bool scrollable, int cursorIndex, IEnumerable<(int Index, ListPromptItem<T> Node)> items);
+    public IRenderable Render(IAnsiConsole console, bool scrollable, int cursorIndex,
+        IEnumerable<(int Index, ListPromptItem<T> Node)> items, string searchFilter);
 }

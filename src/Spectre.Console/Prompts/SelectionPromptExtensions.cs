@@ -183,6 +183,25 @@ public static class SelectionPromptExtensions
     }
 
     /// <summary>
+    /// Sets whether the search filter should be enabled.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="enabled">Whether the search filter should be enabled.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static SelectionPrompt<T> SearchFilter<T>(this SelectionPrompt<T> obj, bool enabled = true)
+        where T : notnull
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        obj.SearchFilterEnabled = enabled;
+        return obj;
+    }
+
+    /// <summary>
     /// Sets the highlight style of the selected choice.
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>

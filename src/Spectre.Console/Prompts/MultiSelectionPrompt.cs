@@ -222,7 +222,14 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     }
 
     /// <inheritdoc/>
-    IRenderable IListPromptStrategy<T>.Render(IAnsiConsole console, bool scrollable, int cursorIndex, IEnumerable<(int Index, ListPromptItem<T> Node)> items)
+    public SelectionMode GetSelectionMode()
+    {
+        return this.Mode;
+    }
+
+    /// <inheritdoc/>
+    IRenderable IListPromptStrategy<T>.Render(IAnsiConsole console, bool scrollable, int cursorIndex,
+        IEnumerable<(int Index, ListPromptItem<T> Node)> items, string stateSearchFilter)
     {
         var list = new List<IRenderable>();
         var highlightStyle = HighlightStyle ?? Color.Blue;

@@ -3,7 +3,7 @@ namespace Spectre.Console.Tests.Unit;
 public sealed class ListPromptStateTests
 {
     private ListPromptState<string> CreateListPromptState(int count, int pageSize, bool shouldWrap)
-        => new(Enumerable.Repeat(new ListPromptItem<string>(string.Empty), count).ToList(), pageSize, shouldWrap);
+        => new(Enumerable.Repeat(new ListPromptItem<string>(string.Empty), count).ToList(), pageSize, shouldWrap, SelectionMode.Independent);
 
     [Fact]
     public void Should_Have_Start_Index_Zero()
@@ -28,7 +28,7 @@ public sealed class ListPromptStateTests
         var index = state.Index;
 
         // When
-        state.Update(ConsoleKey.DownArrow);
+        state.Update(ConsoleKey.DownArrow.ToConsoleKeyInfo());
 
         // Then
         state.Index.ShouldBe(index + 1);
@@ -43,7 +43,7 @@ public sealed class ListPromptStateTests
         var state = CreateListPromptState(100, 10, wrap);
 
         // When
-        state.Update(ConsoleKey.End);
+        state.Update(ConsoleKey.End.ToConsoleKeyInfo());
 
         // Then
         state.Index.ShouldBe(99);
@@ -54,10 +54,10 @@ public sealed class ListPromptStateTests
     {
         // Given
         var state = CreateListPromptState(100, 10, false);
-        state.Update(ConsoleKey.End);
+        state.Update(ConsoleKey.End.ToConsoleKeyInfo());
 
         // When
-        state.Update(ConsoleKey.DownArrow);
+        state.Update(ConsoleKey.DownArrow.ToConsoleKeyInfo());
 
         // Then
         state.Index.ShouldBe(99);
@@ -68,10 +68,10 @@ public sealed class ListPromptStateTests
     {
         // Given
         var state = CreateListPromptState(100, 10, true);
-        state.Update(ConsoleKey.End);
+        state.Update(ConsoleKey.End.ToConsoleKeyInfo());
 
         // When
-        state.Update(ConsoleKey.DownArrow);
+        state.Update(ConsoleKey.DownArrow.ToConsoleKeyInfo());
 
         // Then
         state.Index.ShouldBe(0);
@@ -84,7 +84,7 @@ public sealed class ListPromptStateTests
         var state = CreateListPromptState(100, 10, true);
 
         // When
-        state.Update(ConsoleKey.UpArrow);
+        state.Update(ConsoleKey.UpArrow.ToConsoleKeyInfo());
 
         // Then
         state.Index.ShouldBe(99);
@@ -97,7 +97,7 @@ public sealed class ListPromptStateTests
         var state = CreateListPromptState(10, 100, true);
 
         // When
-        state.Update(ConsoleKey.PageUp);
+        state.Update(ConsoleKey.PageUp.ToConsoleKeyInfo());
 
         // Then
         state.Index.ShouldBe(0);
@@ -108,11 +108,11 @@ public sealed class ListPromptStateTests
     {
         // Given
         var state = CreateListPromptState(10, 100, true);
-        state.Update(ConsoleKey.End);
-        state.Update(ConsoleKey.UpArrow);
+        state.Update(ConsoleKey.End.ToConsoleKeyInfo());
+        state.Update(ConsoleKey.UpArrow.ToConsoleKeyInfo());
 
         // When
-        state.Update(ConsoleKey.PageDown);
+        state.Update(ConsoleKey.PageDown.ToConsoleKeyInfo());
 
         // Then
         state.Index.ShouldBe(8);

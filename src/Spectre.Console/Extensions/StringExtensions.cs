@@ -187,6 +187,13 @@ public static class StringExtensions
 #endif
     }
 
+#if NETSTANDARD2_0
+    internal static bool Contains(this string target, string value, System.StringComparison comparisonType)
+    {
+        return target.IndexOf(value, comparisonType) != -1;
+    }
+#endif
+
     /// <summary>
     /// "Masks" every character in a string.
     /// </summary>
