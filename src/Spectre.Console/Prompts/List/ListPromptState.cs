@@ -8,23 +8,25 @@ internal sealed class ListPromptState<T>
     public int PageSize { get; }
     public bool WrapAround { get; }
     public SelectionMode Mode { get; }
+    public bool SkipUnselectableItems { get; private set; }
     public bool SearchFilterEnabled { get; }
     public IReadOnlyList<ListPromptItem<T>> Items { get; }
     private readonly IReadOnlyList<int>? _leafIndexes;
 
     public ListPromptItem<T> Current => Items[Index];
-    public string SearchFilter { get; set; }
+    public string SearchFilter { get; private set; }
 
-    public ListPromptState(IReadOnlyList<ListPromptItem<T>> items, int pageSize, bool wrapAround, SelectionMode mode, bool searchFilterEnabled)
+    public ListPromptState(IReadOnlyList<ListPromptItem<T>> items, int pageSize, bool wrapAround, SelectionMode mode, bool skipUnselectableItems, bool searchFilterEnabled)
     {
         Items = items;
         PageSize = pageSize;
         WrapAround = wrapAround;
         Mode = mode;
+        SkipUnselectableItems = skipUnselectableItems;
         SearchFilterEnabled = searchFilterEnabled;
         SearchFilter = string.Empty;
 
-        if (mode == SelectionMode.Leaf)
+        if (SkipUnselectableItems && mode == SelectionMode.Leaf)
         {
             _leafIndexes =
                 Items
@@ -45,7 +47,7 @@ internal sealed class ListPromptState<T>
     public bool Update(ConsoleKeyInfo keyInfo)
     {
         var index = Index;
-        if (Mode == SelectionMode.Leaf)
+        if (SkipUnselectableItems && Mode == SelectionMode.Leaf)
         {
             Debug.Assert(_leafIndexes != null, nameof(_leafIndexes) + " != null");
             var currentLeafIndex = _leafIndexes.IndexOf(index);

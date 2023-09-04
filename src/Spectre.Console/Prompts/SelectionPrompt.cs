@@ -83,6 +83,9 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
         return node;
     }
 
+    /// <inheritdoc />
+    bool IListPromptStrategy<T>.ShouldSkipUnselectableItems => true;
+
     /// <inheritdoc/>
     public T Show(IAnsiConsole console)
     {
@@ -128,17 +131,20 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
             extra += 2;
         }
 
-        // Scrolling?
-        if (totalItemCount > requestedPageSize)
+        var scrollable = totalItemCount > requestedPageSize;
+        if (SearchFilterEnabled || scrollable)
         {
-            // The scrolling instructions takes up two rows
-            extra += 2;
+            extra += 1;
         }
 
         if (SearchFilterEnabled)
         {
-            // The search instructions takes up two rows
-            extra += 2;
+            extra += 1;
+        }
+
+        if (scrollable)
+        {
+            extra += 1;
         }
 
         if (requestedPageSize > console.Profile.Height - extra)
@@ -209,18 +215,22 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
 
         list.Add(grid);
 
-        if (scrollable)
+        if (SearchFilterEnabled || scrollable)
         {
-            // (Move up and down to reveal more choices)
+            // Add padding
             list.Add(Text.Empty);
-            list.Add(new Markup(MoreChoicesText ?? ListPromptConstants.MoreChoicesMarkup));
         }
 
         if (SearchFilterEnabled)
         {
-            list.Add(Text.Empty);
             list.Add(new Markup(
-                $"search: {(stateSearchFilter.Length > 0 ? stateSearchFilter.EscapeMarkup() : ListPromptConstants.SearchPlaceholderMarkup)}"));
+                stateSearchFilter.Length > 0 ? stateSearchFilter.EscapeMarkup() : ListPromptConstants.SearchPlaceholderMarkup));
+        }
+
+        if (scrollable)
+        {
+            // (Move up and down to reveal more choices)
+            list.Add(new Markup(MoreChoicesText ?? ListPromptConstants.MoreChoicesMarkup));
         }
 
         return new Rows(list);

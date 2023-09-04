@@ -8,6 +8,11 @@ internal interface IListPromptStrategy<T>
     where T : notnull
 {
     /// <summary>
+    /// Gets a value indicating whether or not the prompt should skip unselectable items.
+    /// </summary>
+    public bool ShouldSkipUnselectableItems { get; }
+
+    /// <summary>
     /// Handles any input received from the user.
     /// </summary>
     /// <param name="key">The key that was pressed.</param>

@@ -145,6 +145,9 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         return GetParents(item).LastOrDefault();
     }
 
+    /// <inheritdoc />
+    bool IListPromptStrategy<T>.ShouldSkipUnselectableItems => false;
+
     /// <inheritdoc/>
     ListPromptInputResult IListPromptStrategy<T>.HandleInput(ConsoleKeyInfo key, ListPromptState<T> state)
     {
