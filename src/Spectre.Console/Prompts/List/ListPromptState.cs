@@ -22,12 +22,15 @@ internal sealed class ListPromptState<T>
         Mode = mode;
         SearchFilter = string.Empty;
 
-        _leafIndexes = Items
-            .Select((item, index) => new { item, index })
-            .Where(x => !x.item.IsGroup)
-            .Select(x => x.index)
-            .ToList()
-            .AsReadOnly();
+        _leafIndexes =
+            mode == SelectionMode.Leaf
+                ? Items
+                    .Select((item, index) => new { item, index })
+                    .Where(x => !x.item.IsGroup)
+                    .Select(x => x.index)
+                    .ToList()
+                    .AsReadOnly()
+                : new List<int>().AsReadOnly();
 
         Index = _leafIndexes.FirstOrDefault();
     }
