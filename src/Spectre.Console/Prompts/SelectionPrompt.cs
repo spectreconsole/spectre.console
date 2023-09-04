@@ -94,7 +94,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     {
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
-        var result = await prompt.Show(_tree, cancellationToken, PageSize, WrapAround).ConfigureAwait(false);
+        var result = await prompt.Show(_tree, Mode, SearchFilterEnabled, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
 
         // Return the selected item
         return result.Items[result.Index].Data;
@@ -135,18 +135,18 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
             extra += 2;
         }
 
+        if (SearchFilterEnabled)
+        {
+            // The search instructions takes up two rows
+            extra += 2;
+        }
+
         if (requestedPageSize > console.Profile.Height - extra)
         {
             return console.Profile.Height - extra;
         }
 
         return requestedPageSize;
-    }
-
-    /// <inheritdoc/>
-    public SelectionMode GetSelectionMode()
-    {
-        return this.Mode;
     }
 
     /// <inheritdoc/>

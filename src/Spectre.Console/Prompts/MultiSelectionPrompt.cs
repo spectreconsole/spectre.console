@@ -94,7 +94,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     {
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
-        var result = await prompt.Show(Tree, cancellationToken, PageSize, WrapAround).ConfigureAwait(false);
+        var result = await prompt.Show(Tree, Mode, false, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
 
         if (Mode == SelectionMode.Leaf)
         {
@@ -219,12 +219,6 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         }
 
         return pageSize;
-    }
-
-    /// <inheritdoc/>
-    public SelectionMode GetSelectionMode()
-    {
-        return this.Mode;
     }
 
     /// <inheritdoc/>

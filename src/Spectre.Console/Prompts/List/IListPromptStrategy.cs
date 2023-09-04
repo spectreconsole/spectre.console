@@ -25,12 +25,6 @@ internal interface IListPromptStrategy<T>
     public int CalculatePageSize(IAnsiConsole console, int totalItemCount, int requestedPageSize);
 
     /// <summary>
-    /// Gets the selection mode.
-    /// </summary>
-    /// <returns>The selection mode.</returns>
-    public SelectionMode GetSelectionMode();
-
-    /// <summary>
     /// Builds a <see cref="IRenderable"/> from the current state.
     /// </summary>
     /// <param name="console">The console.</param>

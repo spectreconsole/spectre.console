@@ -8,18 +8,20 @@ internal sealed class ListPromptState<T>
     public int PageSize { get; }
     public bool WrapAround { get; }
     public SelectionMode Mode { get; }
+    public bool SearchFilterEnabled { get; }
     public IReadOnlyList<ListPromptItem<T>> Items { get; }
-    private readonly IReadOnlyList<int> _leafIndexes;
+    private readonly IReadOnlyList<int>? _leafIndexes;
 
     public ListPromptItem<T> Current => Items[Index];
     public string SearchFilter { get; set; }
 
-    public ListPromptState(IReadOnlyList<ListPromptItem<T>> items, int pageSize, bool wrapAround, SelectionMode mode)
+    public ListPromptState(IReadOnlyList<ListPromptItem<T>> items, int pageSize, bool wrapAround, SelectionMode mode, bool searchFilterEnabled)
     {
         Items = items;
         PageSize = pageSize;
         WrapAround = wrapAround;
         Mode = mode;
+        SearchFilterEnabled = searchFilterEnabled;
         SearchFilter = string.Empty;
 
         if (mode == SelectionMode.Leaf)
@@ -45,6 +47,7 @@ internal sealed class ListPromptState<T>
         var index = Index;
         if (Mode == SelectionMode.Leaf)
         {
+            Debug.Assert(_leafIndexes != null, nameof(_leafIndexes) + " != null");
             var currentLeafIndex = _leafIndexes.IndexOf(index);
             switch (keyInfo.Key)
             {
@@ -115,28 +118,31 @@ internal sealed class ListPromptState<T>
 
         var search = SearchFilter;
 
-        // If is text input, append to search filter
-        if (!char.IsControl(keyInfo.KeyChar))
+        if (SearchFilterEnabled)
         {
-            search = SearchFilter + keyInfo.KeyChar;
-            var item = Items.FirstOrDefault(x => x.Data.ToString()?.Contains(search, StringComparison.OrdinalIgnoreCase) == true && (!x.IsGroup || Mode != SelectionMode.Leaf));
-            if (item != null)
+            // If is text input, append to search filter
+            if (!char.IsControl(keyInfo.KeyChar))
             {
-                index = Items.IndexOf(item);
-            }
-        }
-
-        if (keyInfo.Key == ConsoleKey.Backspace)
-        {
-            if (search.Length > 0)
-            {
-                search = search.Substring(0, search.Length - 1);
+                search = SearchFilter + keyInfo.KeyChar;
+                var item = Items.FirstOrDefault(x => x.Data.ToString()?.Contains(search, StringComparison.OrdinalIgnoreCase) == true && (!x.IsGroup || Mode != SelectionMode.Leaf));
+                if (item != null)
+                {
+                    index = Items.IndexOf(item);
+                }
             }
 
-            var item = Items.FirstOrDefault(x => x.Data.ToString()?.Contains(search, StringComparison.OrdinalIgnoreCase) == true && (!x.IsGroup || Mode != SelectionMode.Leaf));
-            if (item != null)
+            if (keyInfo.Key == ConsoleKey.Backspace)
             {
-                index = Items.IndexOf(item);
+                if (search.Length > 0)
+                {
+                    search = search.Substring(0, search.Length - 1);
+                }
+
+                var item = Items.FirstOrDefault(x => x.Data.ToString()?.Contains(search, StringComparison.OrdinalIgnoreCase) == true && (!x.IsGroup || Mode != SelectionMode.Leaf));
+                if (item != null)
+                {
+                    index = Items.IndexOf(item);
+                }
             }
         }
 

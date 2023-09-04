@@ -3,7 +3,7 @@ namespace Spectre.Console.Tests.Unit;
 public sealed class ListPromptStateTests
 {
     private ListPromptState<string> CreateListPromptState(int count, int pageSize, bool shouldWrap)
-        => new(Enumerable.Repeat(new ListPromptItem<string>(string.Empty), count).ToList(), pageSize, shouldWrap, SelectionMode.Independent);
+        => new(Enumerable.Repeat(new ListPromptItem<string>(string.Empty), count).ToList(), pageSize, shouldWrap, SelectionMode.Independent, false);
 
     [Fact]
     public void Should_Have_Start_Index_Zero()
