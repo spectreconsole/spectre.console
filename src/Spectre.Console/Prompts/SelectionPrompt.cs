@@ -61,7 +61,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     /// <summary>
     /// Gets or sets a value indicating whether or not the search filter is enabled.
     /// </summary>
-    public bool SearchFilterEnabled { get; set; } = false;
+    public bool SearchFilterEnabled { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SelectionPrompt{T}"/> class.
