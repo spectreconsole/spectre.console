@@ -202,18 +202,11 @@ public static class StringExtensions
     /// <returns>Masked string.</returns>
     public static string Mask(this string value, char? mask)
     {
-        var output = string.Empty;
-
         if (mask is null)
         {
-            return output;
+            return string.Empty;
         }
 
-        foreach (var c in value)
-        {
-            output += mask;
-        }
-
-        return output;
+        return new string(mask.Value, value.Length);
     }
 }
