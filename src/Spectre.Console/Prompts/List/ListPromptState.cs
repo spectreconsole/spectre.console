@@ -22,17 +22,22 @@ internal sealed class ListPromptState<T>
         Mode = mode;
         SearchFilter = string.Empty;
 
-        _leafIndexes =
-            mode == SelectionMode.Leaf
-                ? Items
+        if (mode == SelectionMode.Leaf)
+        {
+            _leafIndexes =
+                Items
                     .Select((item, index) => new { item, index })
                     .Where(x => !x.item.IsGroup)
                     .Select(x => x.index)
                     .ToList()
-                    .AsReadOnly()
-                : new List<int>().AsReadOnly();
+                    .AsReadOnly();
 
-        Index = _leafIndexes.FirstOrDefault();
+            Index = _leafIndexes.FirstOrDefault();
+        }
+        else
+        {
+            Index = 0;
+        }
     }
 
     public bool Update(ConsoleKeyInfo keyInfo)
