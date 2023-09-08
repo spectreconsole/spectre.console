@@ -83,6 +83,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Json", "Console\Json\Json.c
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Console.Json", "..\src\Spectre.Console.Json\Spectre.Console.Json.csproj", "{91A5637F-1F89-48B3-A0BA-6CC629807393}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Help", "Cli\Help\Help.csproj", "{BAB490D6-FF8D-462B-B2B0-933384D629DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -549,6 +551,18 @@ Global
 		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Release|x64.Build.0 = Release|Any CPU
 		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Release|x86.ActiveCfg = Release|Any CPU
 		{91A5637F-1F89-48B3-A0BA-6CC629807393}.Release|x86.Build.0 = Release|Any CPU
+		{BAB490D6-FF8D-462B-B2B0-933384D629DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAB490D6-FF8D-462B-B2B0-933384D629DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAB490D6-FF8D-462B-B2B0-933384D629DB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BAB490D6-FF8D-462B-B2B0-933384D629DB}.Debug|x64.Build.0 = Debug|Any CPU
+		{BAB490D6-FF8D-462B-B2B0-933384D629DB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BAB490D6-FF8D-462B-B2B0-933384D629DB}.Debug|x86.Build.0 = Debug|Any CPU
+		{BAB490D6-FF8D-462B-B2B0-933384D629DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAB490D6-FF8D-462B-B2B0-933384D629DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAB490D6-FF8D-462B-B2B0-933384D629DB}.Release|x64.ActiveCfg = Release|Any CPU
+		{BAB490D6-FF8D-462B-B2B0-933384D629DB}.Release|x64.Build.0 = Release|Any CPU
+		{BAB490D6-FF8D-462B-B2B0-933384D629DB}.Release|x86.ActiveCfg = Release|Any CPU
+		{BAB490D6-FF8D-462B-B2B0-933384D629DB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -564,6 +578,7 @@ Global
 		{A127CE7D-A5A7-4745-9809-EBD7CB12CEE7} = {2571F1BD-6556-4F96-B27B-B6190E1BF13A}
 		{EFAADF6A-C77D-41EC-83F5-BBB4FFC5A6D7} = {2571F1BD-6556-4F96-B27B-B6190E1BF13A}
 		{91A5637F-1F89-48B3-A0BA-6CC629807393} = {2571F1BD-6556-4F96-B27B-B6190E1BF13A}
+		{BAB490D6-FF8D-462B-B2B0-933384D629DB} = {4682E9B7-B54C-419D-B92F-470DA4E5674C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3EE724C5-CAB4-410D-AC63-8D4260EF83ED}

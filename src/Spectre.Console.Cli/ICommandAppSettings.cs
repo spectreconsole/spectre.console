@@ -16,9 +16,19 @@ public interface ICommandAppSettings
     string? ApplicationVersion { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating how many examples from direct children to show in the help text.
+    /// </summary>
+    int MaximumIndirectExamples { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether any default values for command options are shown in the help text.
     /// </summary>
     bool ShowOptionDefaultValues { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether a trailing period of a command description is trimmed in the help text.
+    /// </summary>
+    bool TrimTrailingPeriod { get; set; }
 
     /// <summary>
     /// Gets or sets the <see cref="IAnsiConsole"/>.
@@ -40,11 +50,6 @@ public interface ICommandAppSettings
     /// Gets or sets case sensitivity.
     /// </summary>
     CaseSensitivity CaseSensitivity { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether trailing period of a description is trimmed.
-    /// </summary>
-    bool TrimTrailingPeriod { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether or not parsing is strict.
