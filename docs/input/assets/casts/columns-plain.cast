@@ -1,0 +1,13 @@
+{"version": 2, "width": 122, "height": 24, "title": "columns (plain)", "env": {"TERM": "Spectre.Console"}}
+[0, "o", "\u001B[31;40mItem 1\u001B[0m                                   \u001B[32;40mItem 2\u001B[0m                                  \u001B[34;40mItem 3\u001B[0m                                 \r\n"]
+[0.203, "o", "\u001B[31;40mItem 4\u001B[0m                                   \u001B[32;40mItem 5\u001B[0m                                  \u001B[34;40mItem 6\u001B[0m                                 \r\n"]
+[0.406, "o", "\u001B[31;40mItem 7\u001B[0m                                   \u001B[32;40mItem 8\u001B[0m                                  \u001B[34;40mItem 9\u001B[0m                                 \r\n"]
+[0.609, "o", "\u001B[31;40mItem 10\u001B[0m                                  \u001B[32;40mItem 11\u001B[0m                                 \u001B[34;40mItem 12\u001B[0m                                \r\n"]
+[0.813, "o", "\u001B[31;40mItem 13\u001B[0m                                  \u001B[32;40mItem 14\u001B[0m                                 \u001B[34;40mItem 15\u001B[0m                                \r\n"]
+[1.031, "o", "\u001B[31;40mItem 16\u001B[0m                                  \u001B[32;40mItem 17\u001B[0m                                 \u001B[34;40mItem 18\u001B[0m                                \r\n"]
+[1.234, "o", "\u001B[31;40mItem 19\u001B[0m                                  \u001B[32;40mItem 20\u001B[0m                                 \u001B[34;40mItem 21\u001B[0m                                \r\n"]
+[1.438, "o", "\u001B[31;40mItem 22\u001B[0m                                  \u001B[32;40mItem 23\u001B[0m                                 \u001B[34;40mItem 24\u001B[0m                                \r\n"]
+[1.641, "o", "\u001B[31;40mItem 25\u001B[0m                                  \u001B[32;40mItem 26\u001B[0m                                 \u001B[34;40mItem 27\u001B[0m                                \r\n"]
+[1.859, "o", "\u001B[31;40mItem 28\u001B[0m                                  \u001B[32;40mItem 29\u001B[0m                                 \u001B[34;40mItem 30\u001B[0m                                \r\n"]
+[2.063, "o", "\u001B[31;40mItem 31\u001B[0m                                  \u001B[32;40mItem 32\u001B[0m                                 \u001B[34;40mItem 33\u001B[0m                                \r\n"]
+
