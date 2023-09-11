@@ -38,6 +38,11 @@ public sealed class TextPath : IRenderable, IHasJustification
     public Justify? Justification { get; set; }
 
     /// <summary>
+    /// Gets or sets if no line break should be rendered after the path.
+    /// </summary>
+    public bool? NoLineBreak { get; set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="TextPath"/> class.
     /// </summary>
     /// <param name="path">The path to render.</param>
@@ -84,6 +89,7 @@ public sealed class TextPath : IRenderable, IHasJustification
         var separatorStyle = SeparatorStyle ?? Style.Plain;
         var stemStyle = StemStyle ?? Style.Plain;
         var leafStyle = LeafStyle ?? Style.Plain;
+        var lineBreak = NoLineBreak != true;
 
         var fitted = Fit(options, maxWidth);
         var parts = new List<Segment>();
@@ -119,8 +125,11 @@ public sealed class TextPath : IRenderable, IHasJustification
         // Align the result
         Aligner.Align(parts, Justification, maxWidth);
 
-        // Insert a line break
-        parts.Add(Segment.LineBreak);
+        // Insert a line break (if not omitted)
+        if (lineBreak)
+        {
+            parts.Add(Segment.LineBreak);
+        }
 
         return parts;
     }
