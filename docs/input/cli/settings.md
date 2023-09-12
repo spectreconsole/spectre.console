@@ -1,7 +1,7 @@
 Title: Specifying Settings
 Order: 5
 Description: "How to define command line argument settings for your *Spectre.Console.Cli* Commands"
-Reference: 
+Reference:
     - T:Spectre.Console.Cli.CommandSettings
     - T:Spectre.Console.Cli.CommandArgumentAttribute
     - T:Spectre.Console.Cli.CommandOptionAttribute
@@ -86,7 +86,9 @@ public int Count { get; set; }
 
 ## Arrays
 
-`CommandArgument` can be defined as arrays and any additional parameters will be included in the value. For example
+### Argument Vector
+
+One (exactly one) `CommandArgument` can be defined as an array, and any additional parameters will be included in the value. For example:
 
 ```csharp
 [CommandArgument(0, "[name]")]
@@ -94,6 +96,19 @@ public string[] Name { get; set; }
 ```
 
 Would allow the user to run `app.exe Dwayne Elizondo "Mountain Dew" Herbert Camacho`. The settings passed to the command would have a 5 element array consisting of Dwayne, Elizondo, Mountain Dew, Herbert and Camacho.
+
+A command can have only one argument vector, and it needs to be the last argument. (I.e. there can be no `CommandArgument` whose position is higher than that of the argument vector.)
+
+### Option Arrays
+
+A `CommandOption` can be defined as an array like the following:
+
+```csharp
+[CommandOption("-n|--name <VALUES>")]
+public string[] Names { get; set; },
+```
+
+This would allow the user to run `app.exe --name Dwayne --name Elizondo --name "Mountain Dew" --name Herbert --name Camacho` and would result in a 5 element array consisting of Dwayne, Elizondo, Mountain Dew, Herbert and Camacho.
 
 ## Constructors
 
