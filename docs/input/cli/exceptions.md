@@ -3,7 +3,7 @@ Order: 12
 Description: "Handling exceptions in *Spectre.Console.Cli*"
 ---
 
-Exceptions happen. 
+Exceptions happen.
 
 `Spectre.Console.Cli` handles exceptions, writes a user friendly message to the console and sets the exitCode
 of the application to `-1`.
@@ -49,11 +49,11 @@ namespace MyApp
 
 ## Using a custom ExceptionHandler
 
-Using the `SetErrorHandler()` during configuration it is possible to handle exceptions in a defined way.
+Using the `SetExceptionHandler()` during configuration it is possible to handle exceptions in a defined way.
 This method comes in two flavours: One that uses the default exitCode (or `return` value) of `-1` and one
 where the exitCode needs to be supplied.
 
-### Using `SetErrorHandler(Func<Exception, int> handler)`
+### Using `SetExceptionHandler(Func<Exception, int> handler)`
 
 Using this method exceptions can be handled in a custom way. The return value of the handler is used as
 the exitCode for the application.
@@ -84,9 +84,9 @@ namespace MyApp
 }
 ```
 
-### Using `SetErrorHandler(Action<Exception> handler)`
+### Using `SetExceptionHandler(Action<Exception> handler)`
 
-Using this method exceptions can be handled in a custom way, much the same as with the `SetErrorHandler(Func<Exception, int> handler)`.
+Using this method exceptions can be handled in a custom way, much the same as with the `SetExceptionHandler(Func<Exception, int> handler)`.
 Using the `Action` as the handler however, it is not possible (or required) to supply a return value.
 The exitCode for the application will be `-1`.
 
