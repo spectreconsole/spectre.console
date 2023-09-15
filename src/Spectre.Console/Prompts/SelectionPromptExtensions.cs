@@ -189,7 +189,7 @@ public static class SelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="enabled">Whether the search filter should be enabled.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static SelectionPrompt<T> SearchFilter<T>(this SelectionPrompt<T> obj, bool enabled = true)
+    public static SelectionPrompt<T> Search<T>(this SelectionPrompt<T> obj, bool enabled = true)
         where T : notnull
     {
         if (obj is null)
@@ -197,7 +197,7 @@ public static class SelectionPromptExtensions
             throw new ArgumentNullException(nameof(obj));
         }
 
-        obj.SearchFilterEnabled = enabled;
+        obj.SearchEnabled = enabled;
         return obj;
     }
 

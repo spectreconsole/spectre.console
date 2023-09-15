@@ -36,8 +36,8 @@ internal interface IListPromptStrategy<T>
     /// <param name="scrollable">Whether or not the list is scrollable.</param>
     /// <param name="cursorIndex">The cursor index.</param>
     /// <param name="items">The visible items.</param>
-    /// <param name="searchFilter">The search filter.</param>
+    /// <param name="searchText">The search text.</param>
     /// <returns>A <see cref="IRenderable"/> representing the items.</returns>
     public IRenderable Render(IAnsiConsole console, bool scrollable, int cursorIndex,
-        IEnumerable<(int Index, ListPromptItem<T> Node)> items, string searchFilter);
+        IEnumerable<(int Index, ListPromptItem<T> Node)> items, string searchText);
 }

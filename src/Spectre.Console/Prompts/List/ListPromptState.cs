@@ -9,22 +9,22 @@ internal sealed class ListPromptState<T>
     public bool WrapAround { get; }
     public SelectionMode Mode { get; }
     public bool SkipUnselectableItems { get; private set; }
-    public bool SearchFilterEnabled { get; }
+    public bool SearchEnabled { get; }
     public IReadOnlyList<ListPromptItem<T>> Items { get; }
     private readonly IReadOnlyList<int>? _leafIndexes;
 
     public ListPromptItem<T> Current => Items[Index];
-    public string SearchFilter { get; private set; }
+    public string SearchText { get; private set; }
 
-    public ListPromptState(IReadOnlyList<ListPromptItem<T>> items, int pageSize, bool wrapAround, SelectionMode mode, bool skipUnselectableItems, bool searchFilterEnabled)
+    public ListPromptState(IReadOnlyList<ListPromptItem<T>> items, int pageSize, bool wrapAround, SelectionMode mode, bool skipUnselectableItems, bool searchEnabled)
     {
         Items = items;
         PageSize = pageSize;
         WrapAround = wrapAround;
         Mode = mode;
         SkipUnselectableItems = skipUnselectableItems;
-        SearchFilterEnabled = searchFilterEnabled;
-        SearchFilter = string.Empty;
+        SearchEnabled = searchEnabled;
+        SearchText = string.Empty;
 
         if (SkipUnselectableItems && mode == SelectionMode.Leaf)
         {
@@ -118,14 +118,14 @@ internal sealed class ListPromptState<T>
             };
         }
 
-        var search = SearchFilter;
+        var search = SearchText;
 
-        if (SearchFilterEnabled)
+        if (SearchEnabled)
         {
             // If is text input, append to search filter
             if (!char.IsControl(keyInfo.KeyChar))
             {
-                search = SearchFilter + keyInfo.KeyChar;
+                search = SearchText + keyInfo.KeyChar;
                 var item = Items.FirstOrDefault(x => x.Data.ToString()?.Contains(search, StringComparison.OrdinalIgnoreCase) == true && (!x.IsGroup || Mode != SelectionMode.Leaf));
                 if (item != null)
                 {
@@ -152,10 +152,10 @@ internal sealed class ListPromptState<T>
             ? (ItemCount + (index % ItemCount)) % ItemCount
             : index.Clamp(0, ItemCount - 1);
 
-        if (index != Index || SearchFilter != search)
+        if (index != Index || SearchText != search)
         {
             Index = index;
-            SearchFilter = search;
+            SearchText = search;
             return true;
         }
 

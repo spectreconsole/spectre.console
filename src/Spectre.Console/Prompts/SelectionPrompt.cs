@@ -59,9 +59,9 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     public SelectionMode Mode { get; set; } = SelectionMode.Leaf;
 
     /// <summary>
-    /// Gets or sets a value indicating whether or not the search filter is enabled.
+    /// Gets or sets a value indicating whether or not search is enabled.
     /// </summary>
-    public bool SearchFilterEnabled { get; set; }
+    public bool SearchEnabled { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SelectionPrompt{T}"/> class.
@@ -97,7 +97,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     {
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
-        var result = await prompt.Show(_tree, Mode, SearchFilterEnabled, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
+        var result = await prompt.Show(_tree, Mode, SearchEnabled, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
 
         // Return the selected item
         return result.Items[result.Index].Data;
@@ -132,12 +132,12 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
         }
 
         var scrollable = totalItemCount > requestedPageSize;
-        if (SearchFilterEnabled || scrollable)
+        if (SearchEnabled || scrollable)
         {
             extra += 1;
         }
 
-        if (SearchFilterEnabled)
+        if (SearchEnabled)
         {
             extra += 1;
         }
@@ -157,7 +157,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
 
     /// <inheritdoc/>
     IRenderable IListPromptStrategy<T>.Render(IAnsiConsole console, bool scrollable, int cursorIndex,
-        IEnumerable<(int Index, ListPromptItem<T> Node)> items, string stateSearchFilter)
+        IEnumerable<(int Index, ListPromptItem<T> Node)> items, string searchText)
     {
         var list = new List<IRenderable>();
         var disabledStyle = DisabledStyle ?? Color.Grey;
@@ -193,14 +193,14 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
                 text = text.RemoveMarkup().EscapeMarkup();
             }
 
-            if (stateSearchFilter.Length > 0 && !(item.Node.IsGroup && Mode == SelectionMode.Leaf))
+            if (searchText.Length > 0 && !(item.Node.IsGroup && Mode == SelectionMode.Leaf))
             {
-                var index = text.IndexOf(stateSearchFilter, StringComparison.OrdinalIgnoreCase);
+                var index = text.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
                 if (index >= 0)
                 {
                     var before = text.Substring(0, index);
-                    var match = text.Substring(index, stateSearchFilter.Length);
-                    var after = text.Substring(index + stateSearchFilter.Length);
+                    var match = text.Substring(index, searchText.Length);
+                    var after = text.Substring(index + searchText.Length);
 
                     text = new StringBuilder()
                         .Append(before)
@@ -215,16 +215,16 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
 
         list.Add(grid);
 
-        if (SearchFilterEnabled || scrollable)
+        if (SearchEnabled || scrollable)
         {
             // Add padding
             list.Add(Text.Empty);
         }
 
-        if (SearchFilterEnabled)
+        if (SearchEnabled)
         {
             list.Add(new Markup(
-                stateSearchFilter.Length > 0 ? stateSearchFilter.EscapeMarkup() : ListPromptConstants.SearchPlaceholderMarkup));
+                searchText.Length > 0 ? searchText.EscapeMarkup() : ListPromptConstants.SearchPlaceholderMarkup));
         }
 
         if (scrollable)
