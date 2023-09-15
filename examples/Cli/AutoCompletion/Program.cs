@@ -10,15 +10,12 @@ namespace AutoCompletion;
 //
 // Test completing:
 // - .\AutoCompletion.exe cli complete "Li"
-internal class Program
+internal static class Program
 {
     private static void Main(string[] args)
     {
         var app = new CommandApp();
-        app.Configure(config =>
-        {
-            config.AddCommand<LionCommand>("lion");
-        });
+        app.Configure(config => config.AddCommand<LionCommand>("lion"));
 
         app.Run(args);
     }

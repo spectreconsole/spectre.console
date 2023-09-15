@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using Spectre.Console.Cli;
 using Spectre.Console.Cli.Completion;
 
@@ -21,10 +21,10 @@ public class LionSettings : CommandSettings
     [CommandOption("-d <DAY>")]
     [Description("The days the lion goes hunting.")]
     [DefaultValue(new[] { DayOfWeek.Monday, DayOfWeek.Thursday })]
-    public DayOfWeek[] HuntDays { get; set; }
+    public required DayOfWeek[] HuntDays { get; set; }
 
     [CommandOption("-n|-p|--name|--pet-name <VALUE>")]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     [CompletionSuggestions("10", "15", "20", "30")]
     public int Age { get; set; }

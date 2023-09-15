@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using Spectre.Console.Cli;
 using Spectre.Console.Cli.Completion;
 
@@ -12,8 +12,13 @@ public class LionCommand : Command<LionSettings>, IAsyncCommandCompletable
         return 0;
     }
 
-    public async Task<CompletionResult> GetSuggestionsAsync(ICommandParameterInfo parameter, string prefix)
+    public async Task<CompletionResult> GetSuggestionsAsync(ICommandParameterInfo parameter, string? prefix)
     {
+        if(string.IsNullOrEmpty(prefix))
+        {
+            return CompletionResult.None();
+        }
+
         return await AsyncSuggestionMatcher
             .Add(x => x.Legs, (prefix) =>
             {
@@ -35,7 +40,7 @@ public class LionCommand : Command<LionSettings>, IAsyncCommandCompletable
             })
             .Add(x => x.Name, prefix =>
             {
-                List<string> names = new List<string>
+                var names = new List<string>
                 {
                     "angel", "angelika", "robert",
                     "jennifer", "michael", "lucy",
