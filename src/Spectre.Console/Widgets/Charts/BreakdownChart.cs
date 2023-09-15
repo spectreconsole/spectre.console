@@ -31,6 +31,11 @@ public sealed class BreakdownChart : Renderable, IHasCulture, IExpandable
     public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
 
     /// <summary>
+    /// Gets or sets the Color in which the values will be shown.
+    /// </summary>
+    public Color ValueColor { get; set; } = Color.Grey;
+
+    /// <summary>
     /// Gets or sets a value indicating whether or not the
     /// chart and tags should be rendered in compact mode.
     /// </summary>
@@ -94,6 +99,7 @@ public sealed class BreakdownChart : Renderable, IHasCulture, IExpandable
                 Culture = Culture,
                 ShowTagValues = ShowTagValues,
                 ValueFormatter = ValueFormatter,
+                ValueColor = ValueColor,
             });
         }
 
