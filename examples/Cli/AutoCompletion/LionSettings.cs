@@ -26,6 +26,7 @@ public class LionSettings : CommandSettings
     [CommandOption("-n|-p|--name|--pet-name <VALUE>")]
     public required string Name { get; set; }
 
+    [CommandOption("-a|--age <AGE>")]
     [CompletionSuggestions("10", "15", "20", "30")]
     public int Age { get; set; }
 }
