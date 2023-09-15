@@ -7,6 +7,41 @@ namespace Spectre.Console.Cli;
 public static class ConfiguratorExtensions
 {
     /// <summary>
+    /// Sets the help provider for the application.
+    /// </summary>
+    /// <param name="configurator">The configurator.</param>
+    /// <param name="helpProvider">The help provider to use.</param>
+    /// <returns>A configurator that can be used to configure the application further.</returns>
+    public static IConfigurator SetHelpProvider(this IConfigurator configurator, IHelpProvider helpProvider)
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        configurator.SetHelpProvider(helpProvider);
+        return configurator;
+    }
+
+    /// <summary>
+    /// Sets the help provider for the application.
+    /// </summary>
+    /// <param name="configurator">The configurator.</param>
+    /// <typeparam name="T">The type of the help provider to instantiate at runtime and use.</typeparam>
+    /// <returns>A configurator that can be used to configure the application further.</returns>
+    public static IConfigurator SetHelpProvider<T>(this IConfigurator configurator)
+        where T : IHelpProvider
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        configurator.SetHelpProvider<T>();
+        return configurator;
+    }
+
+    /// <summary>
     /// Sets the name of the application.
     /// </summary>
     /// <param name="configurator">The configurator.</param>

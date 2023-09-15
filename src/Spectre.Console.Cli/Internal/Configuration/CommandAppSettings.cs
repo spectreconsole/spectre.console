@@ -4,6 +4,7 @@ internal sealed class CommandAppSettings : ICommandAppSettings
 {
     public string? ApplicationName { get; set; }
     public string? ApplicationVersion { get; set; }
+    public int MaximumIndirectExamples { get; set; }
     public bool ShowOptionDefaultValues { get; set; }
     public IAnsiConsole? Console { get; set; }
     public ICommandInterceptor? Interceptor { get; set; }
@@ -25,6 +26,7 @@ internal sealed class CommandAppSettings : ICommandAppSettings
         Registrar = new TypeRegistrar(registrar);
         CaseSensitivity = CaseSensitivity.All;
         ShowOptionDefaultValues = true;
+        MaximumIndirectExamples = 5;
     }
 
     public bool IsTrue(Func<CommandAppSettings, bool> func, string environmentVariableName)

@@ -1,0 +1,24 @@
+DESCRIPTION:
+The dog command.
+
+USAGE:
+    myapp <AGE> [LEGS] [OPTIONS]
+
+EXAMPLES:
+    myapp --name Rufus --age 12 --good-boy
+    myapp --name Luna
+    myapp --name Charlie
+    myapp --name Bella
+    myapp --name Daisy
+    myapp --name Milo
+
+ARGUMENTS:
+    <AGE>
+    [LEGS]    The number of legs
+
+OPTIONS:
+    -h, --help            Prints help information
+    -v, --version         Prints version information
+    -a, --alive           Indicates whether or not the animal is alive
+    -n, --name <VALUE>
+    -g, --good-boy

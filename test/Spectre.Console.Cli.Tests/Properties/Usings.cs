@@ -8,6 +8,7 @@ global using System.Runtime.CompilerServices;
 global using System.Threading.Tasks;
 global using Shouldly;
 global using Spectre.Console.Cli;
+global using Spectre.Console.Cli.Help;
 global using Spectre.Console.Cli.Unsafe;
 global using Spectre.Console.Testing;
 global using Spectre.Console.Tests.Data;

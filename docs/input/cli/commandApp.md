@@ -43,7 +43,7 @@ For more complex command hierarchical configurations, they can also be composed 
 
 ## Customizing Command Configurations
 
-The `Configure` method is also used to change how help for the commands is generated. This configuration will give our command an additional alias of `file-size` and a description to be used when displaying the help. Additional, an example is specified that will be parsed and displayed for users asking for help. Multiple examples can be provided. Commands can also be marked as hidden. With this option they are still executable, but will not be displayed in help screens.
+The `Configure` method is also used to change how help for the commands is generated. This configuration will give our command an additional alias of `file-size` and a description to be used when displaying the help. Additionally, an example is specified that will be parsed and displayed for users asking for help. Multiple examples can be provided. Commands can also be marked as hidden. With this option they are still executable, but will not be displayed in help screens.
 
 ``` csharp
 var app = new CommandApp();

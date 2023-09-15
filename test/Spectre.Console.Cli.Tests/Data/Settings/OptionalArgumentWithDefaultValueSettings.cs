@@ -15,7 +15,7 @@ public sealed class OptionalArgumentWithPropertyInitializerSettings : CommandSet
     [CommandOption("-c")]
     public int Count { get; set; } = 1;
 
-    [CommandOption("-v")]
+    [CommandOption("--value")]
     public int Value { get; set; } = 0;
 }
 

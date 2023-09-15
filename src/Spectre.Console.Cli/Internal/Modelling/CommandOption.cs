@@ -1,7 +1,7 @@
 namespace Spectre.Console.Cli;
 
 [DebuggerDisplay("CommandOption: {GetOptionName()}")]
-internal sealed class CommandOption : CommandParameter
+internal sealed class CommandOption : CommandParameter, ICommandOption
 {
     public IReadOnlyList<string> LongNames { get; }
     public IReadOnlyList<string> ShortNames { get; }
