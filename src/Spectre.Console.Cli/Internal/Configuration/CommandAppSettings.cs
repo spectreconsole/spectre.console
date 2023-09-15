@@ -1,3 +1,5 @@
+using Spectre.Console.Cli.Internal.Configuration;
+
 namespace Spectre.Console.Cli;
 
 internal sealed class CommandAppSettings : ICommandAppSettings
@@ -15,6 +17,7 @@ internal sealed class CommandAppSettings : ICommandAppSettings
     public bool TrimTrailingPeriod { get; set; } = true;
     public bool StrictParsing { get; set; }
     public bool ConvertFlagsToRemainingArguments { get; set; } = false;
+    public IAutoCompletionSettings AutoComplete { get; set; } = new AutoCompletionSettings();
 
     public ParsingMode ParsingMode =>
         StrictParsing ? ParsingMode.Strict : ParsingMode.Relaxed;

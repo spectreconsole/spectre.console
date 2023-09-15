@@ -81,4 +81,12 @@ public interface ICommandAppSettings
     /// <para>This handler will not be called, if <see cref="PropagateExceptions"/> is set to <c>true</c>.</para>
     /// </summary>
     public Func<Exception, int>? ExceptionHandler { get; set; }
+
+    /// <summary>
+    /// Gets the <see cref="IAutoCompletionSettings"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Use this to configure auto-completion.</para>
+    /// </remarks>
+    IAutoCompletionSettings AutoComplete { get; }
 }

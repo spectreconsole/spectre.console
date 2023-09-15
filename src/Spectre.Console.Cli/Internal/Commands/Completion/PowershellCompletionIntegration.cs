@@ -107,7 +107,6 @@ internal class PowershellCompletionIntegration : Command<PowershellCompletionInt
         return new StartArgs(string.Empty, args[0]);
     }
 
-    // private record StartArgs(string Runtime, string Command)
     internal class StartArgs
     {
         public string Runtime { get; }
