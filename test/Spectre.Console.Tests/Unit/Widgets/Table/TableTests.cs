@@ -143,6 +143,25 @@ public sealed class TableTests
     }
 
     [Fact]
+    [Expectation("Render_Row_Separators")]
+    public Task Should_Render_Table_With_Row_Separators_Correctly()
+    {
+        // Given
+        var console = new TestConsole();
+        var table = new Table();
+        table.ShowRowSeparators();
+        table.AddColumns("Foo", "Bar", "Baz");
+        table.AddRow("Qux", "Corgi", "Waldo");
+        table.AddRow("Grault", "Garply", "Fred");
+
+        // When
+        console.Write(table);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
     [Expectation("Render_EA_Character")]
     public Task Should_Render_Table_With_EA_Character_Correctly()
     {

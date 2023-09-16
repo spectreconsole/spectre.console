@@ -13,7 +13,12 @@ public abstract partial class TableBorder
     /// <summary>
     /// Gets the safe border for this border or <c>null</c> if none exist.
     /// </summary>
-    public virtual TableBorder? SafeBorder { get; }
+    public virtual TableBorder? SafeBorder { get; } = null;
+
+    /// <summary>
+    /// Gets a value indicating whether the border supports row separators or not.
+    /// </summary>
+    public virtual bool SupportsRowSeparator { get; } = true;
 
     /// <summary>
     /// Gets the string representation of a specified table border part.
@@ -80,6 +85,11 @@ public abstract partial class TableBorder
             TablePart.HeaderSeparator =>
                 (GetPart(TableBorderPart.HeaderBottomLeft), GetPart(TableBorderPart.HeaderBottom),
                 GetPart(TableBorderPart.HeaderBottomSeparator), GetPart(TableBorderPart.HeaderBottomRight)),
+
+            // Separator between header and cells
+            TablePart.RowSeparator =>
+                (GetPart(TableBorderPart.RowLeft), GetPart(TableBorderPart.RowCenter),
+                    GetPart(TableBorderPart.RowSeparator), GetPart(TableBorderPart.RowRight)),
 
             // Separator between footer and cells
             TablePart.FooterSeparator =>
