@@ -114,4 +114,24 @@ public enum TableBorderPart
     /// The bottom right part of a footer.
     /// </summary>
     FooterBottomRight,
+
+    /// <summary>
+    /// The left part of a row.
+    /// </summary>
+    RowLeft,
+
+    /// <summary>
+    /// The center part of a row.
+    /// </summary>
+    RowCenter,
+
+    /// <summary>
+    /// The separator part of a row.
+    /// </summary>
+    RowSeparator,
+
+    /// <summary>
+    /// The right part of a row.
+    /// </summary>
+    RowRight,
 }
