@@ -42,6 +42,11 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     public Style? SearchHighlightStyle { get; set; }
 
     /// <summary>
+    /// Gets or sets the text that will be displayed when no search text has been entered.
+    /// </summary>
+    public string? SearchPlaceholderText { get; set; }
+
+    /// <summary>
     /// Gets or sets the converter to get the display string for a choice. By default
     /// the corresponding <see cref="TypeConverter"/> is used.
     /// </summary>
@@ -83,9 +88,6 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
         return node;
     }
 
-    /// <inheritdoc />
-    bool IListPromptStrategy<T>.ShouldSkipUnselectableItems => true;
-
     /// <inheritdoc/>
     public T Show(IAnsiConsole console)
     {
@@ -97,7 +99,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     {
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
-        var result = await prompt.Show(_tree, Mode, SearchEnabled, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
+        var result = await prompt.Show(_tree, Mode, true, SearchEnabled, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
 
         // Return the selected item
         return result.Items[result.Index].Data;
@@ -106,7 +108,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     /// <inheritdoc/>
     ListPromptInputResult IListPromptStrategy<T>.HandleInput(ConsoleKeyInfo key, ListPromptState<T> state)
     {
-        if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.Packet)
+        if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.Spacebar || key.Key == ConsoleKey.Packet)
         {
             // Selecting a non leaf in "leaf mode" is not allowed
             if (state.Current.IsGroup && Mode == SelectionMode.Leaf)
@@ -157,7 +159,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
 
     /// <inheritdoc/>
     IRenderable IListPromptStrategy<T>.Render(IAnsiConsole console, bool scrollable, int cursorIndex,
-        IEnumerable<(int Index, ListPromptItem<T> Node)> items, string searchText)
+        IEnumerable<(int Index, ListPromptItem<T> Node)> items, bool skipUnselectableItems, string searchText)
     {
         var list = new List<IRenderable>();
         var disabledStyle = DisabledStyle ?? Color.Grey;
@@ -224,7 +226,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
         if (SearchEnabled)
         {
             list.Add(new Markup(
-                searchText.Length > 0 ? searchText.EscapeMarkup() : ListPromptConstants.SearchPlaceholderMarkup));
+                searchText.Length > 0 ? searchText.EscapeMarkup() : SearchPlaceholderText ?? ListPromptConstants.SearchPlaceholderMarkup));
         }
 
         if (scrollable)

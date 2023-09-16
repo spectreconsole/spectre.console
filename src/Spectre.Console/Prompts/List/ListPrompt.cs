@@ -15,6 +15,7 @@ internal sealed class ListPrompt<T>
     public async Task<ListPromptState<T>> Show(
         ListPromptTree<T> tree,
         SelectionMode selectionMode,
+        bool skipUnselectableItems,
         bool searchEnabled,
         int requestedPageSize,
         bool wrapAround,
@@ -40,7 +41,7 @@ internal sealed class ListPrompt<T>
         }
 
         var nodes = tree.Traverse().ToList();
-        var state = new ListPromptState<T>(nodes, _strategy.CalculatePageSize(_console, nodes.Count, requestedPageSize), wrapAround, selectionMode, _strategy.ShouldSkipUnselectableItems, searchEnabled);
+        var state = new ListPromptState<T>(nodes, _strategy.CalculatePageSize(_console, nodes.Count, requestedPageSize), wrapAround, selectionMode, skipUnselectableItems, searchEnabled);
         var hook = new ListPromptRenderHook<T>(_console, () => BuildRenderable(state));
 
         using (new RenderHookScope(_console, hook))
@@ -113,6 +114,7 @@ internal sealed class ListPrompt<T>
             scrollable, cursorIndex,
             state.Items.Skip(skip).Take(take)
                 .Select((node, index) => (index, node)),
+            state.SkipUnselectableItems,
             state.SearchText);
     }
 }

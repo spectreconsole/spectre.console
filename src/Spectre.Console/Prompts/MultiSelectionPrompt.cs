@@ -94,7 +94,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     {
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
-        var result = await prompt.Show(Tree, Mode, false, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
+        var result = await prompt.Show(Tree, Mode, false, false, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
 
         if (Mode == SelectionMode.Leaf)
         {
@@ -144,9 +144,6 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     {
         return GetParents(item).LastOrDefault();
     }
-
-    /// <inheritdoc />
-    bool IListPromptStrategy<T>.ShouldSkipUnselectableItems => false;
 
     /// <inheritdoc/>
     ListPromptInputResult IListPromptStrategy<T>.HandleInput(ConsoleKeyInfo key, ListPromptState<T> state)
@@ -226,7 +223,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
 
     /// <inheritdoc/>
     IRenderable IListPromptStrategy<T>.Render(IAnsiConsole console, bool scrollable, int cursorIndex,
-        IEnumerable<(int Index, ListPromptItem<T> Node)> items, string searchText)
+        IEnumerable<(int Index, ListPromptItem<T> Node)> items, bool skipUnselectableItems, string searchText)
     {
         var list = new List<IRenderable>();
         var highlightStyle = HighlightStyle ?? Color.Blue;
