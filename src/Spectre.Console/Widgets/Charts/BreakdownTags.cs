@@ -8,6 +8,7 @@ internal sealed class BreakdownTags : Renderable
     public CultureInfo? Culture { get; set; }
     public bool ShowTagValues { get; set; } = true;
     public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
+    public Color ValueColor { get; set; } = Color.Grey;
 
     public BreakdownTags(List<IBreakdownChartItem> data)
     {
@@ -55,8 +56,9 @@ internal sealed class BreakdownTags : Renderable
 
         if (ShowTagValues)
         {
-            return string.Format(culture, "{0} [grey]{1}[/]",
+            return string.Format(culture, "{0} [{1}]{2}[/]",
                 item.Label.EscapeMarkup(),
+                ValueColor.ToMarkup(),
                 formatter(item.Value, culture));
         }
 
