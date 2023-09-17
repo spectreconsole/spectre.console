@@ -62,6 +62,4 @@ public sealed class SelectionPromptTests
         // Then
         selection.ShouldBe("D");
     }
-
-
 }
