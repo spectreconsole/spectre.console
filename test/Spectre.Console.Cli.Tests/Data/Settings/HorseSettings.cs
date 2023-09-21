@@ -8,6 +8,7 @@ public class HorseSettings : MammalSettings
     public DayOfWeek Day { get; set; }
 
     [CommandOption("--file")]
+    [DefaultValue("food.txt")]
     public FileInfo File { get; set; }
 
     [CommandOption("--directory")]
