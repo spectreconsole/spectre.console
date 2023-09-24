@@ -5,6 +5,10 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ExampleName>AutoCompletion</ExampleName>
+    <ExampleDescription>Demonstrates the use of AutoComplete customizations</ExampleDescription>
+    <ExampleGroup>Cli</ExampleGroup>
+    <ExampleVisible>false</ExampleVisible>
   </PropertyGroup>
 
   <ItemGroup>
