@@ -2,13 +2,26 @@ Title: Using AutoCompletion
 Order: 14
 Description: "How to use the AutoCompletion feature"
 ---
-# Spectre.Console AutoCompletion Feature
+# Spectre.Console AutoCompletion
 
-Spectre.Console.Cli now includes an AutoCompletion feature. 
+Spectre.Console.Cli includes auto completion for the shell.
 It comes with suggestions for Options and Branches out of the box, but you can also add your own suggestions for option and argument values.
 
+- [Shell integrations](#shell-integrations)
+  - [PowerShell Integration](#powershell-integration)
+- [Customizations](#customizations)
+  - [Static Autocomplete for Arguments and Options](#static-autocomplete-for-arguments-and-options)
+  - [Dynamic Autocomplete for Arguments and Options](#dynamic-autocomplete-for-arguments-and-options)
+- [Disabling the Autocomplete](#disabling-the-autocomplete)
 
-## How to Add Autocomplete to PowerShell
+
+
+## Shell integrations
+1. [PowerShell](#powershell-integration)
+2. More to come...
+
+
+### PowerShell Integration
 
 You can add autocomplete to PowerShell by running your application with the `completion powershell` command, as shown below:
 
@@ -29,9 +42,13 @@ You can test the completion feature by using the `cli complete` command:
 .\AutoCompletion.exe cli complete "Li"
 ```
 
-## Adding Static Autocomplete for Arguments and Options
+## Customizations
+1. [Static Autocomplete](#static-autocomplete) 
+2. [Dynamic Autocomplete](#dynamic-autocomplete)
 
-The AutoCompletion feature in Spectre.Console allows you to specify static autocomplete suggestions for your command arguments and options. This can be done using the `CompletionSuggestions` attribute in your command settings class.
+### Static Autocomplete
+
+Spectre.Console auto completion allows you to specify static autocomplete suggestions for your command arguments and options. This can be done using the `CompletionSuggestions` attribute in your command settings class.
 
 Here's an example of how to add static autocomplete suggestions:
 
@@ -51,7 +68,7 @@ public class LionSettings : CommandSettings
 }
 ```
 
-## Adding Dynamic Autocomplete for Arguments and Options
+### Dynamic Autocomplete
 
 In addition to static autocomplete suggestions, you can also provide dynamic autocomplete suggestions based on the user's input. This can be done by implementing the `IAsyncCommandCompletable` interface in your command class and overriding the `GetSuggestionsAsync` method.
 
@@ -105,7 +122,7 @@ public class LionCommand : Command<LionSettings>, IAsyncCommandCompletable
 }
 ```
 
-## Disabling the Autocomplete Feature
+## Disabling the Module
 
 If you need to disable the autocomplete feature for any reason, you can do so by setting the `AutoCompletionModule` to `None` when configuring your application:
 
