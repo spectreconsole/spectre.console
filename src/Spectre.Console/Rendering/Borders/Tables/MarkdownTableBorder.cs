@@ -5,6 +5,9 @@ namespace Spectre.Console.Rendering;
 /// </summary>
 public sealed class MarkdownTableBorder : TableBorder
 {
+    /// <inheritdoc />
+    public override bool SupportsRowSeparator => false;
+
     /// <inheritdoc/>
     public override string GetPart(TableBorderPart part)
     {
@@ -32,6 +35,10 @@ public sealed class MarkdownTableBorder : TableBorder
             TableBorderPart.FooterBottom => " ",
             TableBorderPart.FooterBottomSeparator => " ",
             TableBorderPart.FooterBottomRight => " ",
+            TableBorderPart.RowLeft => " ",
+            TableBorderPart.RowCenter => " ",
+            TableBorderPart.RowSeparator => " ",
+            TableBorderPart.RowRight => " ",
             _ => throw new InvalidOperationException("Unknown border part."),
         };
     }

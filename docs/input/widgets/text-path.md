@@ -34,7 +34,7 @@ You can also specify styles via extension methods:
 
 ```csharp
 var path = new TextPath("C:/This/Path/Is/Too/Long/To/Fit/In/The/Area.txt")
-    .RightAligned();
+    .RightJustified();
 ```
 
 ## Styling

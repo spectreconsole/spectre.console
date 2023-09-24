@@ -17,6 +17,16 @@ public class NoConcurrentLiveRenderablesAnalyzer : SpectreAnalyzer
     /// <inheritdoc />
     protected override void AnalyzeCompilation(CompilationStartAnalysisContext compilationStartContext)
     {
+        var liveTypes = Constants.LiveRenderables
+            .Select(i => compilationStartContext.Compilation.GetTypeByMetadataName(i))
+            .Where(i => i != null)
+            .ToImmutableArray();
+
+        if (liveTypes.Length == 0)
+        {
+            return;
+        }
+
         compilationStartContext.RegisterOperationAction(
             context =>
             {
@@ -29,27 +39,21 @@ public class NoConcurrentLiveRenderablesAnalyzer : SpectreAnalyzer
                     return;
                 }
 
-                var liveTypes = Constants.LiveRenderables
-                    .Select(i => context.Compilation.GetTypeByMetadataName(i))
-                    .ToImmutableArray();
-
                 if (liveTypes.All(i => !SymbolEqualityComparer.Default.Equals(i, methodSymbol.ContainingType)))
                 {
                     return;
                 }
 
-#pragma warning disable RS1030 // Do not invoke Compilation.GetSemanticModel() method within a diagnostic analyzer
-                var model = context.Compilation.GetSemanticModel(context.Operation.Syntax.SyntaxTree);
-#pragma warning restore RS1030 // Do not invoke Compilation.GetSemanticModel() method within a diagnostic analyzer
+                var model = context.Operation.SemanticModel!;
                 var parentInvocations = invocationOperation
                     .Syntax.Ancestors()
                     .OfType<InvocationExpressionSyntax>()
-                    .Select(i => model.GetOperation(i))
+                    .Select(i => model.GetOperation(i, context.CancellationToken))
                     .OfType<IInvocationOperation>()
                     .ToList();
 
                 if (parentInvocations.All(parent =>
-                    parent.TargetMethod.Name != StartMethod || !liveTypes.Contains(parent.TargetMethod.ContainingType)))
+                    parent.TargetMethod.Name != StartMethod || !liveTypes.Contains(parent.TargetMethod.ContainingType, SymbolEqualityComparer.Default)))
                 {
                     return;
                 }

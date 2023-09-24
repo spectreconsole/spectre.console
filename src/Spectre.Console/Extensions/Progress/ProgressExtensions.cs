@@ -35,6 +35,19 @@ public static class ProgressExtensions
     }
 
     /// <summary>
+    /// Sets an optional hook to intercept rendering.
+    /// </summary>
+    /// <param name="progress">The <see cref="Progress"/> instance.</param>
+    /// <param name="renderHook">The custom render function.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Progress UseRenderHook(this Progress progress, Func<IRenderable, IReadOnlyList<ProgressTask>, IRenderable> renderHook)
+    {
+        progress.RenderHook = renderHook;
+
+        return progress;
+    }
+
+    /// <summary>
     /// Sets whether or not auto refresh is enabled.
     /// If disabled, you will manually have to refresh the progress.
     /// </summary>

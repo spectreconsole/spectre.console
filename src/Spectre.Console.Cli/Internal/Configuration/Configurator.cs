@@ -20,22 +20,36 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         Examples = new List<string[]>();
     }
 
-    public void AddExample(string[] args)
+    public void SetHelpProvider(IHelpProvider helpProvider)
+    {
+        // Register the help provider
+        _registrar.RegisterInstance(typeof(IHelpProvider), helpProvider);
+    }
+
+    public void SetHelpProvider<T>()
+        where T : IHelpProvider
+    {
+        // Register the help provider
+        _registrar.Register(typeof(IHelpProvider), typeof(T));
+    }
+
+    public void AddExample(params string[] args)
     {
         Examples.Add(args);
     }
 
-    public void SetDefaultCommand<TDefaultCommand>()
+    public ConfiguredCommand SetDefaultCommand<TDefaultCommand>()
         where TDefaultCommand : class, ICommand
     {
         DefaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(
             CliConstants.DefaultCommandName, isDefaultCommand: true);
+        return DefaultCommand;
     }
 
     public ICommandConfigurator AddCommand<TCommand>(string name)
         where TCommand : class, ICommand
     {
-        var command = Commands.AddAndReturn(ConfiguredCommand.FromType<TCommand>(name, false));
+        var command = Commands.AddAndReturn(ConfiguredCommand.FromType<TCommand>(name, isDefaultCommand: false));
         return new CommandConfigurator(command);
     }
 
@@ -43,16 +57,25 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         where TSettings : CommandSettings
     {
         var command = Commands.AddAndReturn(ConfiguredCommand.FromDelegate<TSettings>(
+            name, (context, settings) => Task.FromResult(func(context, (TSettings)settings))));
+        return new CommandConfigurator(command);
+    }
+
+    public ICommandConfigurator AddAsyncDelegate<TSettings>(string name, Func<CommandContext, TSettings, Task<int>> func)
+        where TSettings : CommandSettings
+    {
+        var command = Commands.AddAndReturn(ConfiguredCommand.FromDelegate<TSettings>(
             name, (context, settings) => func(context, (TSettings)settings)));
         return new CommandConfigurator(command);
     }
 
-    public void AddBranch<TSettings>(string name, Action<IConfigurator<TSettings>> action)
+    public IBranchConfigurator AddBranch<TSettings>(string name, Action<IConfigurator<TSettings>> action)
         where TSettings : CommandSettings
     {
         var command = ConfiguredCommand.FromBranch<TSettings>(name);
         action(new Configurator<TSettings>(command, _registrar));
-        Commands.Add(command);
+        var added = Commands.AddAndReturn(command);
+        return new BranchConfigurator(added);
     }
 
     ICommandConfigurator IUnsafeConfigurator.AddCommand(string name, Type command)
@@ -73,7 +96,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return result;
     }
 
-    void IUnsafeConfigurator.AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action)
+    IBranchConfigurator IUnsafeConfigurator.AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action)
     {
         var command = ConfiguredCommand.FromBranch(settings, name);
 
@@ -85,6 +108,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         }
 
         action(configurator);
-        Commands.Add(command);
+        var added = Commands.AddAndReturn(command);
+        return new BranchConfigurator(added);
     }
 }

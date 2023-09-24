@@ -25,11 +25,25 @@ public sealed class CommandAppTester
     /// <summary>
     /// Sets the default command.
     /// </summary>
+    /// <param name="description">The optional default command description.</param>
+    /// <param name="data">The optional default command data.</param>
     /// <typeparam name="T">The default command type.</typeparam>
-    public void SetDefaultCommand<T>()
+    public void SetDefaultCommand<T>(string? description = null, object? data = null)
         where T : class, ICommand
     {
-        _appConfiguration = (app) => app.SetDefaultCommand<T>();
+        _appConfiguration = (app) =>
+        {
+            var defaultCommandBuilder = app.SetDefaultCommand<T>();
+            if (description != null)
+            {
+                defaultCommandBuilder.WithDescription(description);
+            }
+
+            if (data != null)
+            {
+                defaultCommandBuilder.WithData(data);
+            }
+        };
     }
 
     /// <summary>
@@ -120,6 +134,52 @@ public sealed class CommandAppTester
         })));
 
         var result = app.Run(args);
+
+        var output = console.Output
+            .NormalizeLineEndings()
+            .TrimLines()
+            .Trim();
+
+        return new CommandAppResult(result, output, context, settings);
+    }
+
+    /// <summary>
+    /// Runs the command application asynchronously.
+    /// </summary>
+    /// <param name="args">The arguments.</param>
+    /// <returns>The result.</returns>
+    public async Task<CommandAppResult> RunAsync(params string[] args)
+    {
+        var console = new TestConsole().Width(int.MaxValue);
+        return await RunAsync(args, console);
+    }
+
+    private async Task<CommandAppResult> RunAsync(string[] args, TestConsole console, Action<IConfigurator>? config = null)
+    {
+        CommandContext? context = null;
+        CommandSettings? settings = null;
+
+        var app = new CommandApp(Registrar);
+        _appConfiguration?.Invoke(app);
+
+        if (_configuration != null)
+        {
+            app.Configure(_configuration);
+        }
+
+        if (config != null)
+        {
+            app.Configure(config);
+        }
+
+        app.Configure(c => c.ConfigureConsole(console));
+        app.Configure(c => c.SetInterceptor(new CallbackCommandInterceptor((ctx, s) =>
+        {
+            context = ctx;
+            settings = s;
+        })));
+
+        var result = await app.RunAsync(args);
 
         var output = console.Output
             .NormalizeLineEndings()

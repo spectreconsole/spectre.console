@@ -143,6 +143,25 @@ public sealed class TableTests
     }
 
     [Fact]
+    [Expectation("Render_Row_Separators")]
+    public Task Should_Render_Table_With_Row_Separators_Correctly()
+    {
+        // Given
+        var console = new TestConsole();
+        var table = new Table();
+        table.ShowRowSeparators();
+        table.AddColumns("Foo", "Bar", "Baz");
+        table.AddRow("Qux", "Corgi", "Waldo");
+        table.AddRow("Grault", "Garply", "Fred");
+
+        // When
+        console.Write(table);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
     [Expectation("Render_EA_Character")]
     public Task Should_Render_Table_With_EA_Character_Correctly()
     {
@@ -569,6 +588,24 @@ public sealed class TableTests
 
         // When
         console.Write(panel);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Empty_Column")]
+    public Task Should_Render_Empty_Column_Correctly()
+    {
+        // Given
+        var console = new TestConsole().Width(30);
+        var table = new Table();
+        table.AddColumns(string.Empty, string.Empty);
+        table.AddRow(string.Empty, "A");
+        table.AddRow(string.Empty, "B");
+
+        // When
+        console.Write(table);
 
         // Then
         return Verifier.Verify(console.Output);

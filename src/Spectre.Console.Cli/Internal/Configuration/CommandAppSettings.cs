@@ -4,6 +4,8 @@ internal sealed class CommandAppSettings : ICommandAppSettings
 {
     public string? ApplicationName { get; set; }
     public string? ApplicationVersion { get; set; }
+    public int MaximumIndirectExamples { get; set; }
+    public bool ShowOptionDefaultValues { get; set; }
     public IAnsiConsole? Console { get; set; }
     public ICommandInterceptor? Interceptor { get; set; }
     public ITypeRegistrarFrontend Registrar { get; set; }
@@ -12,6 +14,7 @@ internal sealed class CommandAppSettings : ICommandAppSettings
     public bool ValidateExamples { get; set; }
     public bool TrimTrailingPeriod { get; set; } = true;
     public bool StrictParsing { get; set; }
+    public bool ConvertFlagsToRemainingArguments { get; set; } = false;
 
     public ParsingMode ParsingMode =>
         StrictParsing ? ParsingMode.Strict : ParsingMode.Relaxed;
@@ -22,6 +25,8 @@ internal sealed class CommandAppSettings : ICommandAppSettings
     {
         Registrar = new TypeRegistrar(registrar);
         CaseSensitivity = CaseSensitivity.All;
+        ShowOptionDefaultValues = true;
+        MaximumIndirectExamples = 5;
     }
 
     public bool IsTrue(Func<CommandAppSettings, bool> func, string environmentVariableName)

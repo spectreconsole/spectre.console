@@ -17,7 +17,7 @@ internal sealed class XmlDocCommand : Command<XmlDocCommand.Settings>
     {
     }
 
-    public override int Execute([NotNull] CommandContext context, [NotNull] Settings settings)
+    public override int Execute(CommandContext context, Settings settings)
     {
         _writer.Write(Serialize(_model), Style.Plain);
         return 0;

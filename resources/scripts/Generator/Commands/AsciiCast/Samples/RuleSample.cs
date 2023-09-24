@@ -10,11 +10,11 @@ namespace Generator.Commands.Samples
         {
             console.Write(new Rule());
             console.WriteLine();
-            console.Write(new Rule("[blue]Left aligned[/]").LeftAligned().RuleStyle("red"));
+            console.Write(new Rule("[blue]Left aligned[/]").LeftJustified().RuleStyle("red"));
             console.WriteLine();
             console.Write(new Rule("[green]Centered[/]").Centered().RuleStyle("green"));
             console.WriteLine();
-            console.Write(new Rule("[red]Right aligned[/]").RightAligned().RuleStyle("blue"));
+            console.Write(new Rule("[red]Right aligned[/]").RightJustified().RuleStyle("blue"));
             console.WriteLine();
         }
     }

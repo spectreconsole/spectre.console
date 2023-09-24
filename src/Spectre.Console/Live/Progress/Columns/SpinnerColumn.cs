@@ -74,7 +74,7 @@ public sealed class SpinnerColumn : ProgressColumn
     /// <summary>
     /// Gets or sets the style of the spinner.
     /// </summary>
-    public Style? Style { get; set; } = new Style(foreground: Color.Yellow);
+    public Style? Style { get; set; } = Color.Yellow;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SpinnerColumn"/> class.

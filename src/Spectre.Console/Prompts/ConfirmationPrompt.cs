@@ -40,6 +40,15 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
     public bool ShowDefaultValue { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets the string comparer to use when comparing user input
+    /// against Yes/No choices.
+    /// </summary>
+    /// <remarks>
+    /// Defaults to <see cref="StringComparer.CurrentCultureIgnoreCase"/>.
+    /// </remarks>
+    public StringComparer Comparer { get; set; } = StringComparer.CurrentCultureIgnoreCase;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="ConfirmationPrompt"/> class.
     /// </summary>
     /// <param name="prompt">The prompt markup text.</param>
@@ -57,7 +66,9 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
     /// <inheritdoc/>
     public async Task<bool> ShowAsync(IAnsiConsole console, CancellationToken cancellationToken)
     {
-        var prompt = new TextPrompt<char>(_prompt)
+        var comparer = Comparer ?? StringComparer.CurrentCultureIgnoreCase;
+
+        var prompt = new TextPrompt<char>(_prompt, comparer)
             .InvalidChoiceMessage(InvalidChoiceMessage)
             .ValidationErrorMessage(InvalidChoiceMessage)
             .ShowChoices(ShowChoices)
@@ -67,6 +78,7 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
             .AddChoice(No);
 
         var result = await prompt.ShowAsync(console, cancellationToken).ConfigureAwait(false);
-        return result == Yes;
+
+        return comparer.Compare(Yes.ToString(), result.ToString()) == 0;
     }
 }

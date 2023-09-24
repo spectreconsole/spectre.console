@@ -17,9 +17,18 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         _command.Description = description;
     }
 
-    public void AddExample(string[] args)
+    public void AddExample(params string[] args)
     {
         _command.Examples.Add(args);
+    }
+
+    public void SetDefaultCommand<TDefaultCommand>()
+        where TDefaultCommand : class, ICommandLimiter<TSettings>
+    {
+        var defaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(
+            CliConstants.DefaultCommandName, isDefaultCommand: true);
+
+        _command.Children.Add(defaultCommand);
     }
 
     public void HideBranch()
@@ -30,7 +39,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
     public ICommandConfigurator AddCommand<TCommand>(string name)
         where TCommand : class, ICommandLimiter<TSettings>
     {
-        var command = ConfiguredCommand.FromType<TCommand>(name);
+        var command = ConfiguredCommand.FromType<TCommand>(name, isDefaultCommand: false);
         var configurator = new CommandConfigurator(command);
 
         _command.Children.Add(command);
@@ -41,18 +50,29 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         where TDerivedSettings : TSettings
     {
         var command = ConfiguredCommand.FromDelegate<TDerivedSettings>(
+            name, (context, settings) => Task.FromResult(func(context, (TDerivedSettings)settings)));
+
+        _command.Children.Add(command);
+        return new CommandConfigurator(command);
+    }
+
+    public ICommandConfigurator AddAsyncDelegate<TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, Task<int>> func)
+        where TDerivedSettings : TSettings
+    {
+        var command = ConfiguredCommand.FromDelegate<TDerivedSettings>(
             name, (context, settings) => func(context, (TDerivedSettings)settings));
 
         _command.Children.Add(command);
         return new CommandConfigurator(command);
     }
 
-    public void AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
+    public IBranchConfigurator AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
         where TDerivedSettings : TSettings
     {
         var command = ConfiguredCommand.FromBranch<TDerivedSettings>(name);
         action(new Configurator<TDerivedSettings>(command, _registrar));
-        _command.Children.Add(command);
+        var added = _command.Children.AddAndReturn(command);
+        return new BranchConfigurator(added);
     }
 
     ICommandConfigurator IUnsafeConfigurator.AddCommand(string name, Type command)
@@ -73,7 +93,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return result;
     }
 
-    void IUnsafeConfigurator.AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action)
+    IBranchConfigurator IUnsafeConfigurator.AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action)
     {
         var command = ConfiguredCommand.FromBranch(settings, name);
 
@@ -85,6 +105,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         }
 
         action(configurator);
-        _command.Children.Add(command);
+        var added = _command.Children.AddAndReturn(command);
+        return new BranchConfigurator(added);
     }
 }

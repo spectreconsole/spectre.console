@@ -81,6 +81,7 @@ Spectre.Console to show their support and to ensure the longevity of the project
 * [Steven Knox](https://github.com/stevenknox)
 * [David Pendray](https://github.com/dpen2000)
 * [Elmah.io](https://github.com/elmahio)
+* [Tom Kerkhove](https://github.com/tomkerkhove)
 
 We really appreciate it.  
 **Thank you very much!**

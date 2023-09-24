@@ -17,6 +17,14 @@ public class NoPromptsDuringLiveRenderablesAnalyzer : SpectreAnalyzer
     /// <inheritdoc />
     protected override void AnalyzeCompilation(CompilationStartAnalysisContext compilationStartContext)
     {
+        var ansiConsoleType = compilationStartContext.Compilation.GetTypeByMetadataName("Spectre.Console.AnsiConsole");
+        var ansiConsoleExtensionsType = compilationStartContext.Compilation.GetTypeByMetadataName("Spectre.Console.AnsiConsoleExtensions");
+
+        if (ansiConsoleType is null && ansiConsoleExtensionsType is null)
+        {
+            return;
+        }
+
         compilationStartContext.RegisterOperationAction(
             context =>
             {
@@ -31,22 +39,17 @@ public class NoPromptsDuringLiveRenderablesAnalyzer : SpectreAnalyzer
                     return;
                 }
 
-                var ansiConsoleType = context.Compilation.GetTypeByMetadataName("Spectre.Console.AnsiConsole");
-                var ansiConsoleExtensionsType = context.Compilation.GetTypeByMetadataName("Spectre.Console.AnsiConsoleExtensions");
-
                 if (!SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, ansiConsoleType) &&
                     !SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, ansiConsoleExtensionsType))
                 {
                     return;
                 }
 
-#pragma warning disable RS1030 // Do not invoke Compilation.GetSemanticModel() method within a diagnostic analyzer
-                var model = context.Compilation.GetSemanticModel(context.Operation.Syntax.SyntaxTree);
-#pragma warning restore RS1030 // Do not invoke Compilation.GetSemanticModel() method within a diagnostic analyzer
+                var model = context.Operation.SemanticModel!;
                 var parentInvocations = invocationOperation
                     .Syntax.Ancestors()
                     .OfType<InvocationExpressionSyntax>()
-                    .Select(i => model.GetOperation(i))
+                    .Select(i => model.GetOperation(i, context.CancellationToken))
                     .OfType<IInvocationOperation>()
                     .ToList();
 
@@ -56,7 +59,7 @@ public class NoPromptsDuringLiveRenderablesAnalyzer : SpectreAnalyzer
 
                 if (parentInvocations.All(parent =>
                     parent.TargetMethod.Name != "Start" ||
-                    !liveTypes.Contains(parent.TargetMethod.ContainingType)))
+                    !liveTypes.Contains(parent.TargetMethod.ContainingType, SymbolEqualityComparer.Default)))
                 {
                     return;
                 }

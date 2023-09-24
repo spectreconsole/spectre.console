@@ -122,34 +122,55 @@ internal sealed class MarkupTokenizer : IDisposable
         var encounteredClosing = false;
         while (!_reader.Eof)
         {
+            var currentStylePartCanContainMarkup =
+                builder.ToString()
+                .Split(' ')
+                .Last()
+                .StartsWith("link=", StringComparison.OrdinalIgnoreCase);
             current = _reader.Peek();
 
-            if (current == ']' && !encounteredOpening)
+            if (currentStylePartCanContainMarkup)
             {
-                if (encounteredClosing)
+                switch (current)
                 {
-                    builder.Append(_reader.Read());
-                    encounteredClosing = false;
-                    continue;
-                }
+                    case ']' when !encounteredOpening:
+                        if (encounteredClosing)
+                        {
+                            builder.Append(_reader.Read());
+                            encounteredClosing = false;
+                            continue;
+                        }
 
-                _reader.Read();
-                encounteredClosing = true;
-                continue;
+                        _reader.Read();
+                        encounteredClosing = true;
+                        continue;
+
+                    case '[' when !encounteredClosing:
+                        if (encounteredOpening)
+                        {
+                            builder.Append(_reader.Read());
+                            encounteredOpening = false;
+                            continue;
+                        }
+
+                        _reader.Read();
+                        encounteredOpening = true;
+                        continue;
+                }
             }
-
-            if (current == '[' && !encounteredClosing)
+            else
             {
-                if (encounteredOpening)
+                switch (current)
                 {
-                    builder.Append(_reader.Read());
-                    encounteredOpening = false;
-                    continue;
+                    case ']':
+                        _reader.Read();
+                        encounteredClosing = true;
+                        break;
+                    case '[':
+                        _reader.Read();
+                        encounteredOpening = true;
+                        break;
                 }
-
-                _reader.Read();
-                encounteredOpening = true;
-                continue;
             }
 
             if (encounteredClosing)

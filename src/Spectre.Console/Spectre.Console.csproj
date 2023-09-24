@@ -36,6 +36,7 @@
     </PackageReference>
   </ItemGroup>
 
+
   <PropertyGroup>
     <DefineConstants>$(DefineConstants)TRACE;WCWIDTH_VISIBILITY_INTERNAL</DefineConstants>
   </PropertyGroup>

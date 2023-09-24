@@ -78,14 +78,20 @@ internal static class CommandValueResolver
                     }
                     else
                     {
+                        object? value;
                         var converter = GetConverter(lookup, binder, resolver, mapped.Parameter);
-                        if (converter == null)
+                        var mappedValue = mapped.Value ?? string.Empty;
+                        try
                         {
-                            throw CommandRuntimeException.NoConverterFound(mapped.Parameter);
+                            value = converter.ConvertFrom(mappedValue);
+                        }
+                        catch (Exception exception) when (exception is not CommandRuntimeException)
+                        {
+                            throw CommandRuntimeException.ConversionFailed(mapped, converter.TypeConverter, exception);
                         }
 
                         // Assign the value to the parameter.
-                        binder.Bind(mapped.Parameter, resolver, converter.ConvertFromInvariantString(mapped.Value ?? string.Empty));
+                        binder.Bind(mapped.Parameter, resolver, value);
                     }
                 }
 
@@ -113,17 +119,34 @@ internal static class CommandValueResolver
         if (result != null && result.GetType() != parameter.ParameterType)
         {
             var converter = GetConverter(lookup, binder, resolver, parameter);
-            if (converter != null)
-            {
-                result = converter.ConvertFrom(result);
-            }
+            result = result is Array array ? ConvertArray(array, converter) : converter.ConvertFrom(result);
         }
 
         return result;
     }
 
+    private static Array ConvertArray(Array sourceArray, SmartConverter converter)
+    {
+        Array? targetArray = null;
+        for (var i = 0; i < sourceArray.Length; i++)
+        {
+            var item = sourceArray.GetValue(i);
+            if (item != null)
+            {
+                var converted = converter.ConvertFrom(item);
+                if (converted != null)
+                {
+                    targetArray ??= Array.CreateInstance(converted.GetType(), sourceArray.Length);
+                    targetArray.SetValue(converted, i);
+                }
+            }
+        }
+
+        return targetArray ?? sourceArray;
+    }
+
     [SuppressMessage("Style", "IDE0019:Use pattern matching", Justification = "It's OK")]
-    private static TypeConverter? GetConverter(CommandValueLookup lookup, CommandValueBinder binder, ITypeResolver resolver, CommandParameter parameter)
+    private static SmartConverter GetConverter(CommandValueLookup lookup, CommandValueBinder binder, ITypeResolver resolver, CommandParameter parameter)
     {
         if (parameter.Converter == null)
         {
@@ -136,12 +159,12 @@ internal static class CommandValueResolver
                     throw new InvalidOperationException("Could not get element type");
                 }
 
-                return TypeDescriptor.GetConverter(elementType);
+                return new SmartConverter(TypeDescriptor.GetConverter(elementType), elementType);
             }
 
             if (parameter.IsFlagValue())
             {
-                // Is the optional value instanciated?
+                // Is the optional value instantiated?
                 var value = lookup.GetValue(parameter) as IFlagValue;
                 if (value == null)
                 {
@@ -151,18 +174,56 @@ internal static class CommandValueResolver
                     value = lookup.GetValue(parameter) as IFlagValue;
                     if (value == null)
                     {
-                        throw new InvalidOperationException("Could not intialize optional value.");
+                        throw new InvalidOperationException("Could not initialize optional value.");
                     }
                 }
 
                 // Return a converter for the flag element type.
-                return TypeDescriptor.GetConverter(value.Type);
+                return new SmartConverter(TypeDescriptor.GetConverter(value.Type), value.Type);
             }
 
-            return TypeDescriptor.GetConverter(parameter.ParameterType);
+            return new SmartConverter(TypeDescriptor.GetConverter(parameter.ParameterType), parameter.ParameterType);
         }
 
         var type = Type.GetType(parameter.Converter.ConverterTypeName);
-        return resolver.Resolve(type) as TypeConverter;
+        if (type == null || resolver.Resolve(type) is not TypeConverter typeConverter)
+        {
+            throw CommandRuntimeException.NoConverterFound(parameter);
+        }
+
+        return new SmartConverter(typeConverter, type);
+    }
+
+    /// <summary>
+    /// Convert inputs using the given <see cref="TypeConverter"/> and fallback to finding a constructor taking a single argument of the input type.
+    /// </summary>
+    private readonly ref struct SmartConverter
+    {
+        public SmartConverter(TypeConverter typeConverter, Type type)
+        {
+            TypeConverter = typeConverter;
+            Type = type;
+        }
+
+        public TypeConverter TypeConverter { get; }
+        private Type Type { get; }
+
+        public object? ConvertFrom(object input)
+        {
+            try
+            {
+                return TypeConverter.ConvertFrom(null, CultureInfo.InvariantCulture, input);
+            }
+            catch (NotSupportedException)
+            {
+                var constructor = Type.GetConstructor(BindingFlags.Public | BindingFlags.Instance, null, new[] { input.GetType() }, null);
+                if (constructor == null)
+                {
+                    throw;
+                }
+
+                return constructor.Invoke(new[] { input });
+            }
+        }
     }
 }

@@ -19,5 +19,6 @@ public interface IUnsafeConfigurator
     /// <param name="name">The name of the command branch.</param>
     /// <param name="settings">The command setting type.</param>
     /// <param name="action">The command branch configurator.</param>
-    void AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action);
+    /// <returns>A branch configurator that can be used to configure the branch further.</returns>
+    IBranchConfigurator AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action);
 }

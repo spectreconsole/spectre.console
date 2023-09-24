@@ -37,10 +37,15 @@ public sealed class Rows : Renderable, IExpandable
         }
         else
         {
-            var measurements = _children.Select(c => c.Measure(options, maxWidth));
-            return new Measurement(
-                measurements.Min(c => c.Min),
-                measurements.Min(c => c.Max));
+            var measurements = _children.Select(c => c.Measure(options, maxWidth)).ToArray();
+            if (measurements.Length > 0)
+            {
+                return new Measurement(
+                    measurements.Min(c => c.Min),
+                    measurements.Min(c => c.Max));
+            }
+
+            return new Measurement(0, 0);
         }
     }
 
@@ -58,7 +63,7 @@ public sealed class Rows : Renderable, IExpandable
 
                 if (last)
                 {
-                    if (!segment.IsLineBreak)
+                    if (!segment.IsLineBreak && child is not ControlCode)
                     {
                         result.Add(Segment.LineBreak);
                     }

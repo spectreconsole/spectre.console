@@ -7,6 +7,41 @@ namespace Spectre.Console.Cli;
 public static class ConfiguratorExtensions
 {
     /// <summary>
+    /// Sets the help provider for the application.
+    /// </summary>
+    /// <param name="configurator">The configurator.</param>
+    /// <param name="helpProvider">The help provider to use.</param>
+    /// <returns>A configurator that can be used to configure the application further.</returns>
+    public static IConfigurator SetHelpProvider(this IConfigurator configurator, IHelpProvider helpProvider)
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        configurator.SetHelpProvider(helpProvider);
+        return configurator;
+    }
+
+    /// <summary>
+    /// Sets the help provider for the application.
+    /// </summary>
+    /// <param name="configurator">The configurator.</param>
+    /// <typeparam name="T">The type of the help provider to instantiate at runtime and use.</typeparam>
+    /// <returns>A configurator that can be used to configure the application further.</returns>
+    public static IConfigurator SetHelpProvider<T>(this IConfigurator configurator)
+        where T : IHelpProvider
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        configurator.SetHelpProvider<T>();
+        return configurator;
+    }
+
+    /// <summary>
     /// Sets the name of the application.
     /// </summary>
     /// <param name="configurator">The configurator.</param>
@@ -37,6 +72,23 @@ public static class ConfiguratorExtensions
         }
 
         configurator.Settings.ApplicationVersion = version;
+        return configurator;
+    }
+
+    /// <summary>
+    /// Hides the <c>DEFAULT</c> column that lists default values coming from the
+    /// <see cref="DefaultValueAttribute"/> in the options help text.
+    /// </summary>
+    /// <param name="configurator">The configurator.</param>
+    /// <returns>A configurator that can be used to configure the application further.</returns>
+    public static IConfigurator HideOptionDefaultValues(this IConfigurator configurator)
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        configurator.Settings.ShowOptionDefaultValues = false;
         return configurator;
     }
 
@@ -164,7 +216,8 @@ public static class ConfiguratorExtensions
     /// <param name="configurator">The configurator.</param>
     /// <param name="name">The name of the command branch.</param>
     /// <param name="action">The command branch configuration.</param>
-    public static void AddBranch(
+    /// <returns>A branch configurator that can be used to configure the branch further.</returns>
+    public static IBranchConfigurator AddBranch(
         this IConfigurator configurator,
         string name,
         Action<IConfigurator<CommandSettings>> action)
@@ -174,7 +227,7 @@ public static class ConfiguratorExtensions
             throw new ArgumentNullException(nameof(configurator));
         }
 
-        configurator.AddBranch(name, action);
+        return configurator.AddBranch(name, action);
     }
 
     /// <summary>
@@ -184,7 +237,8 @@ public static class ConfiguratorExtensions
     /// <param name="configurator">The configurator.</param>
     /// <param name="name">The name of the command branch.</param>
     /// <param name="action">The command branch configuration.</param>
-    public static void AddBranch<TSettings>(
+    /// <returns>A branch configurator that can be used to configure the branch further.</returns>
+    public static IBranchConfigurator AddBranch<TSettings>(
         this IConfigurator<TSettings> configurator,
         string name,
         Action<IConfigurator<TSettings>> action)
@@ -195,7 +249,7 @@ public static class ConfiguratorExtensions
             throw new ArgumentNullException(nameof(configurator));
         }
 
-        configurator.AddBranch(name, action);
+        return configurator.AddBranch(name, action);
     }
 
     /// <summary>
@@ -219,6 +273,26 @@ public static class ConfiguratorExtensions
     }
 
     /// <summary>
+    /// Adds a command without settings that executes an async delegate.
+    /// </summary>
+    /// <param name="configurator">The configurator.</param>
+    /// <param name="name">The name of the command.</param>
+    /// <param name="func">The delegate to execute as part of command execution.</param>
+    /// <returns>A command configurator that can be used to configure the command further.</returns>
+    public static ICommandConfigurator AddAsyncDelegate(
+        this IConfigurator configurator,
+        string name,
+        Func<CommandContext, Task<int>> func)
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        return configurator.AddAsyncDelegate<EmptyCommandSettings>(name, (c, _) => func(c));
+    }
+
+    /// <summary>
     /// Adds a command without settings that executes a delegate.
     /// </summary>
     /// <typeparam name="TSettings">The command setting type.</typeparam>
@@ -238,6 +312,28 @@ public static class ConfiguratorExtensions
         }
 
         return configurator.AddDelegate<TSettings>(name, (c, _) => func(c));
+    }
+
+    /// <summary>
+    /// Adds a command without settings that executes an async delegate.
+    /// </summary>
+    /// <typeparam name="TSettings">The command setting type.</typeparam>
+    /// <param name="configurator">The configurator.</param>
+    /// <param name="name">The name of the command.</param>
+    /// <param name="func">The delegate to execute as part of command execution.</param>
+    /// <returns>A command configurator that can be used to configure the command further.</returns>
+    public static ICommandConfigurator AddAsyncDelegate<TSettings>(
+        this IConfigurator<TSettings> configurator,
+        string name,
+        Func<CommandContext, Task<int>> func)
+        where TSettings : CommandSettings
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        return configurator.AddAsyncDelegate<TSettings>(name, (c, _) => func(c));
     }
 
     /// <summary>

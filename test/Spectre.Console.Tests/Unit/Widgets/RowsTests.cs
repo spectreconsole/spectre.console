@@ -51,6 +51,25 @@ public sealed class RowsTests
     }
 
     [Fact]
+    [Expectation("Render_Empty")]
+    public Task Should_Not_Throw_Exception_On_Empty_Rows()
+    {
+        // Given
+        var console = new TestConsole().Width(60);
+        var table = new Table()
+            .AddColumns("Foo", "Bar")
+            .AddRow("HELLO WORLD")
+            .AddRow(
+                new Rows(), new Text("Qux"));
+
+        // When
+        console.Write(table);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
     [Expectation("Render_Expanded_And_Nested")]
     public Task Should_Render_Rows_Correctly_Inside_Other_Widget_When_Expanded()
     {

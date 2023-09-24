@@ -131,6 +131,77 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        [Expectation("Test_7")]
+        public Task Should_Dump_Correct_Model_For_Model_With_Single_Branch_Single_Branch_Default_Command()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(configuration =>
+            {
+                configuration.AddBranch<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddBranch<MammalSettings>("mammal", mammal =>
+                    {
+                        mammal.SetDefaultCommand<HorseCommand>();
+                    });
+                });
+            });
+
+            // When
+            var result = fixture.Run(Constants.XmlDocCommand);
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_8")]
+        public Task Should_Dump_Correct_Model_For_Model_With_Single_Branch_Single_Command_Default_Command()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(configuration =>
+            {
+                configuration.AddBranch<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<DogCommand>("dog");
+
+                    animal.SetDefaultCommand<HorseCommand>();
+                });
+            });
+
+            // When
+            var result = fixture.Run(Constants.XmlDocCommand);
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Test_9")]
+        public Task Should_Dump_Correct_Model_For_Model_With_Default_Command_Single_Branch_Single_Command_Default_Command()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<EmptyCommand>();
+            fixture.Configure(configuration =>
+            {
+                configuration.AddBranch<AnimalSettings>("animal", animal =>
+                {
+                    animal.AddCommand<DogCommand>("dog");
+
+                    animal.SetDefaultCommand<HorseCommand>();
+                });
+            });
+
+            // When
+            var result = fixture.Run(Constants.XmlDocCommand);
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
         [Expectation("Hidden_Command_Options")]
         public Task Should_Not_Dump_Hidden_Options_On_A_Command()
         {

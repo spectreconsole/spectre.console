@@ -67,8 +67,8 @@ public sealed class FigletText : Renderable, IHasJustification
                 }
                 else if (alignment == Console.Justify.Center)
                 {
-                    var left = (maxWidth - lineWidth) / 2;
-                    var right = left + ((maxWidth - lineWidth) % 2);
+                    var left = Math.Max(0, maxWidth - lineWidth) / 2;
+                    var right = left + (Math.Max(0, maxWidth - lineWidth) % 2);
 
                     yield return Segment.Padding(left);
                     yield return line;

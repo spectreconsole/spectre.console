@@ -15,7 +15,7 @@ public sealed class OptionalArgumentWithPropertyInitializerSettings : CommandSet
     [CommandOption("-c")]
     public int Count { get; set; } = 1;
 
-    [CommandOption("-v")]
+    [CommandOption("--value")]
     public int Value { get; set; } = 0;
 }
 
@@ -32,4 +32,19 @@ public sealed class RequiredArgumentWithDefaultValueSettings : CommandSettings
     [CommandArgument(0, "<GREETING>")]
     [DefaultValue("Hello World")]
     public string Greeting { get; set; }
+}
+
+public sealed class OptionWithArrayOfEnumDefaultValueSettings : CommandSettings
+{
+    [CommandOption("--days")]
+    [DefaultValue(new[] { DayOfWeek.Sunday, DayOfWeek.Saturday })]
+    public DayOfWeek[] Days { get; set; }
+}
+
+public sealed class OptionWithArrayOfStringDefaultValueAndTypeConverterSettings : CommandSettings
+{
+    [CommandOption("--numbers")]
+    [DefaultValue(new[] { "2", "3" })]
+    [TypeConverter(typeof(StringToIntegerConverter))]
+    public int[] Numbers { get; set; }
 }

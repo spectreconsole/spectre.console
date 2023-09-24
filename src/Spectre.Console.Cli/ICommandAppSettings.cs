@@ -16,6 +16,21 @@ public interface ICommandAppSettings
     string? ApplicationVersion { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating how many examples from direct children to show in the help text.
+    /// </summary>
+    int MaximumIndirectExamples { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether any default values for command options are shown in the help text.
+    /// </summary>
+    bool ShowOptionDefaultValues { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether a trailing period of a command description is trimmed in the help text.
+    /// </summary>
+    bool TrimTrailingPeriod { get; set; }
+
+    /// <summary>
     /// Gets or sets the <see cref="IAnsiConsole"/>.
     /// </summary>
     IAnsiConsole? Console { get; set; }
@@ -37,14 +52,17 @@ public interface ICommandAppSettings
     CaseSensitivity CaseSensitivity { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether trailing period of a description is trimmed.
-    /// </summary>
-    bool TrimTrailingPeriod { get; set; }
-
-    /// <summary>
     /// Gets or sets a value indicating whether or not parsing is strict.
     /// </summary>
     bool StrictParsing { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not flags found on the commnd line
+    /// that would normally result in a <see cref="CommandParseException"/> being thrown
+    /// during parsing with the message "Flags cannot be assigned a value."
+    /// should instead be added to the remaining arguments collection.
+    /// </summary>
+    bool ConvertFlagsToRemainingArguments { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether or not exceptions should be propagated.
