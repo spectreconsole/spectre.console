@@ -73,10 +73,7 @@ internal sealed class ReflectionActivator : ComponentActivator
         for (var i = 0; i < _parameters.Count; i++)
         {
             var parameter = _parameters[i];
-            var isTypeResolver = parameter.ParameterType == typeof(ITypeResolver)
-                || parameter.ParameterType == typeof(DefaultTypeResolver);
-
-            if (isTypeResolver)
+            if (parameter.ParameterType == typeof(DefaultTypeResolver))
             {
                 parameters[i] = container;
             }
