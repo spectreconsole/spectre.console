@@ -8,20 +8,21 @@ Spectre.Console.Cli includes auto completion for the shell.
 It comes with suggestions for Options and Branches out of the box, but you can also add your own suggestions for option and argument values.
 
 - [Shell integrations](#shell-integrations)
-  - [PowerShell Integration](#powershell-integration)
+  - [PowerShell](#powershell)
+- [How integrations get the suggestions](#how-integrations-get-the-suggestions)
 - [Customizations](#customizations)
-  - [Static Autocomplete for Arguments and Options](#static-autocomplete-for-arguments-and-options)
-  - [Dynamic Autocomplete for Arguments and Options](#dynamic-autocomplete-for-arguments-and-options)
-- [Disabling the Autocomplete](#disabling-the-autocomplete)
+  - [Static Autocomplete](#static-autocomplete)
+  - [Dynamic Autocomplete](#dynamic-autocomplete)
+- [Disabling the Module](#disabling-the-module)
 
 
 
 ## Shell integrations
-1. [PowerShell](#powershell-integration)
-2. More to come...
+1. [PowerShell](#powershell)
+3. More to come...
 
 
-### PowerShell Integration
+### PowerShell
 
 You can add autocomplete to PowerShell by running your application with the `completion powershell` command, as shown below:
 
@@ -36,7 +37,9 @@ To add autocomplete to PowerShell permanently, use the `--install` flag:
 .\AutoCompletion.exe completion powershell --install | Out-String | Invoke-Expression
 ```
 
-You can test the completion feature by using the `cli complete` command:
+## How integrations get the suggestions
+
+The shell integration uses the `cli complete` command to get the suggestions for the current command line like this:
 
 ```powershell
 .\AutoCompletion.exe cli complete "Li"
