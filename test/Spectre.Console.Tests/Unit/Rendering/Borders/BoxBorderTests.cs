@@ -27,6 +27,22 @@ public sealed class BoxBorderTests
             // Given
             var console = new TestConsole();
             var panel = Fixture.GetPanel().NoBorder();
+            panel.Header = null;
+
+            // When
+            console.Write(panel);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("NoBorder_With_Header")]
+        public Task Should_Render_NoBorder_With_Header_As_Expected()
+        {
+            // Given
+            var console = new TestConsole();
+            var panel = Fixture.GetPanel().NoBorder();
 
             // When
             console.Write(panel);

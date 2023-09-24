@@ -20,21 +20,22 @@ public static class Program
     {
         static IRenderable CreatePanel(string name, BoxBorder border)
         {
-            return new Panel($"This is a panel with\nthe [yellow]{name}[/] border.")
-                .Header($" [blue]{name}[/] ", Justify.Center)
-                .Border(border)
-                .BorderStyle(Style.Parse("grey"));
+            return
+                new Panel($"This is a panel with\nthe [yellow]{name}[/] border.")
+                    .Header($" [blue]{name}[/] ", Justify.Center)
+                    .Border(border)
+                    .BorderStyle(Style.Parse("grey"));
         }
 
         var items = new[]
         {
-                CreatePanel("Ascii", BoxBorder.Ascii),
-                CreatePanel("Square", BoxBorder.Square),
-                CreatePanel("Rounded", BoxBorder.Rounded),
-                CreatePanel("Heavy", BoxBorder.Heavy),
-                CreatePanel("Double", BoxBorder.Double),
-                CreatePanel("None", BoxBorder.None),
-            };
+            CreatePanel("Ascii", BoxBorder.Ascii),
+            CreatePanel("Square", BoxBorder.Square),
+            CreatePanel("Rounded", BoxBorder.Rounded),
+            CreatePanel("Heavy", BoxBorder.Heavy),
+            CreatePanel("Double", BoxBorder.Double),
+            CreatePanel("None", BoxBorder.None),
+        };
 
         AnsiConsole.Write(
             new Padder(
@@ -47,6 +48,7 @@ public static class Program
         static IRenderable CreateTable(string name, TableBorder border)
         {
             var table = new Table().Border(border);
+            table.ShowRowSeparators();
             table.AddColumn("[yellow]Header 1[/]", c => c.Footer("[grey]Footer 1[/]"));
             table.AddColumn("[yellow]Header 2[/]", col => col.Footer("[grey]Footer 2[/]").RightAligned());
             table.AddRow("Cell", "Cell");
@@ -54,29 +56,23 @@ public static class Program
 
             return new Panel(table)
                 .Header($" [blue]{name}[/] ", Justify.Center)
+                .PadBottom(1)
                 .NoBorder();
         }
 
         var items = new[]
         {
-                CreateTable("Ascii", TableBorder.Ascii),
-                CreateTable("Ascii2", TableBorder.Ascii2),
-                CreateTable("AsciiDoubleHead", TableBorder.AsciiDoubleHead),
-                CreateTable("Horizontal", TableBorder.Horizontal),
-                CreateTable("Simple", TableBorder.Simple),
-                CreateTable("SimpleHeavy", TableBorder.SimpleHeavy),
-                CreateTable("Minimal", TableBorder.Minimal),
-                CreateTable("MinimalHeavyHead", TableBorder.MinimalHeavyHead),
-                CreateTable("MinimalDoubleHead", TableBorder.MinimalDoubleHead),
-                CreateTable("Square", TableBorder.Square),
-                CreateTable("Rounded", TableBorder.Rounded),
-                CreateTable("Heavy", TableBorder.Heavy),
-                CreateTable("HeavyEdge", TableBorder.HeavyEdge),
-                CreateTable("HeavyHead", TableBorder.HeavyHead),
-                CreateTable("Double", TableBorder.Double),
-                CreateTable("DoubleEdge", TableBorder.DoubleEdge),
-                CreateTable("Markdown", TableBorder.Markdown),
-            };
+            CreateTable("Ascii", TableBorder.Ascii), CreateTable("Ascii2", TableBorder.Ascii2),
+            CreateTable("AsciiDoubleHead", TableBorder.AsciiDoubleHead),
+            CreateTable("Horizontal", TableBorder.Horizontal), CreateTable("Simple", TableBorder.Simple),
+            CreateTable("SimpleHeavy", TableBorder.SimpleHeavy), CreateTable("Minimal", TableBorder.Minimal),
+            CreateTable("MinimalHeavyHead", TableBorder.MinimalHeavyHead),
+            CreateTable("MinimalDoubleHead", TableBorder.MinimalDoubleHead),
+            CreateTable("Square", TableBorder.Square), CreateTable("Rounded", TableBorder.Rounded),
+            CreateTable("Heavy", TableBorder.Heavy), CreateTable("HeavyEdge", TableBorder.HeavyEdge),
+            CreateTable("HeavyHead", TableBorder.HeavyHead), CreateTable("Double", TableBorder.Double),
+            CreateTable("DoubleEdge", TableBorder.DoubleEdge), CreateTable("Markdown", TableBorder.Markdown),
+        };
 
         AnsiConsole.Write(new Columns(items).Collapse());
     }

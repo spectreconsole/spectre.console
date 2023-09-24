@@ -989,6 +989,7 @@ public sealed partial class CommandAppTests
         {
             horse.Legs.ShouldBe(4);
             horse.Name.ShouldBe("Arkle");
+            horse.File.Name.ShouldBe("food.txt");
         });
     }
 
