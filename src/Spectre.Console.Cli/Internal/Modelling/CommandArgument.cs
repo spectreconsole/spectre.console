@@ -14,8 +14,6 @@ internal sealed class CommandArgument : CommandParameter, ICommandArgument
             : base(parameterType, parameterKind, property, description, converter, defaultValue,
                   null, valueProvider, validators, argument.IsRequired, false)
     {
-        // Teeth: 0
-        // Legs: 1
         Value = argument.ValueName;
         Position = argument.Position;
     }
