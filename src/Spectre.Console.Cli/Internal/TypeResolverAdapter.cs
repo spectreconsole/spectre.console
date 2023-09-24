@@ -2,7 +2,7 @@ namespace Spectre.Console.Cli;
 
 internal sealed class TypeResolverAdapter : ITypeResolver, IDisposable
 {
-    private readonly ITypeResolver? _resolver;
+    private ITypeResolver? _resolver;
 
     public TypeResolverAdapter(ITypeResolver? resolver)
     {
@@ -43,5 +43,15 @@ internal sealed class TypeResolverAdapter : ITypeResolver, IDisposable
         {
             disposable.Dispose();
         }
+    }
+
+    public void SetTypeResolver(ITypeResolver resolver)
+    {
+        if (_resolver is not null)
+        {
+            throw new InvalidOperationException("Cannot set type resolver more than once.");
+        }
+
+        _resolver = resolver;
     }
 }

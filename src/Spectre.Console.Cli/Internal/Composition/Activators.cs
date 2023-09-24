@@ -73,7 +73,10 @@ internal sealed class ReflectionActivator : ComponentActivator
         for (var i = 0; i < _parameters.Count; i++)
         {
             var parameter = _parameters[i];
-            if (parameter.ParameterType == typeof(DefaultTypeResolver))
+            var isTypeResolver = parameter.ParameterType == typeof(ITypeResolver)
+                || parameter.ParameterType == typeof(DefaultTypeResolver);
+
+            if (isTypeResolver)
             {
                 parameters[i] = container;
             }
@@ -82,12 +85,6 @@ internal sealed class ReflectionActivator : ComponentActivator
                 var resolved = container.Resolve(parameter.ParameterType);
                 if (resolved == null)
                 {
-                    if (parameter.ParameterType == typeof(ITypeResolver))
-                    {
-                        parameters[i] = container;
-                        continue;
-                    }
-
                     if (!parameter.IsOptional)
                     {
                         throw new InvalidOperationException($"Could not find registration for '{parameter.ParameterType.FullName}'.");
