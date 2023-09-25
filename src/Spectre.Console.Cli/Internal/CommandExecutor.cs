@@ -1,3 +1,5 @@
+using Spectre.Console.Cli.Internal;
+
 namespace Spectre.Console.Cli;
 
 internal sealed class CommandExecutor
@@ -121,26 +123,40 @@ internal sealed class CommandExecutor
             VersionHelper.GetVersion(Assembly.GetEntryAssembly());
     }
 
-    private static Task<int> Execute(
+    private static async Task<int> Execute(
         CommandTree leaf,
         CommandTree tree,
         CommandContext context,
         ITypeResolver resolver,
         IConfiguration configuration)
     {
-        // Bind the command tree against the settings.
-        var settings = CommandBinder.Bind(tree, leaf.Command.SettingsType, resolver);
-        configuration.Settings.Interceptor?.Intercept(context, settings);
-
-        // Create and validate the command.
-        var command = leaf.CreateCommand(resolver);
-        var validationResult = command.Validate(context, settings);
-        if (!validationResult.Successful)
+        try
         {
-            throw CommandRuntimeException.ValidationFailed(validationResult);
-        }
+            // Bind the command tree against the settings.
+            var settings = CommandBinder.Bind(tree, leaf.Command.SettingsType, resolver);
+            configuration.Settings.Interceptor?.Intercept(context, settings);
 
-        // Execute the command.
-        return command.Execute(context, settings);
+            // Create and validate the command.
+            var command = leaf.CreateCommand(resolver);
+            var validationResult = command.Validate(context, settings);
+            if (!validationResult.Successful)
+            {
+                throw CommandRuntimeException.ValidationFailed(validationResult);
+            }
+
+            // Execute the command.
+            return await command.Execute(context, settings);
+        }
+        catch (Exception ex)
+        {
+            var handled = CommandExceptionHandler.HandleException(leaf, context, resolver, ex);
+            if (handled)
+            {
+                return -1;
+            }
+
+            // Exception will be re-thrown and original stack trace will be preserved
+            throw;
+        }
     }
 }

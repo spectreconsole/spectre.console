@@ -37,6 +37,23 @@ internal sealed class TypeResolverAdapter : ITypeResolver, IDisposable
         }
     }
 
+    public object? TryResolve(Type? type)
+    {
+        if (type == null)
+        {
+            throw new CommandRuntimeException("Cannot resolve null type.");
+        }
+
+        try
+        {
+            return _resolver?.Resolve(type);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
     public void Dispose()
     {
         if (_resolver is IDisposable disposable)
