@@ -11,7 +11,7 @@ public sealed class VerticalBarChart : Renderable
     public List<double> Data { get; }
 
     /// <summary>
-    /// Gets the item color.
+    /// Gets or sets the item color.
     /// </summary>
     public Color? Color { get; set; }
 
@@ -51,13 +51,13 @@ public sealed class VerticalBarChart : Renderable
                 var character = (dataValue, celValue, celValue - dataValue) switch
                 {
                     (0, _, _) => ' ',
-                    ( < 0, > 0, _) => ' ',
-                    ( < 0, _, > .5) => '█',
-                    ( < 0, _, > .25) => '▀',
-                    ( > 0, < 0, _) => ' ',
-                    ( > 0, _, < -0.5) => '█',
-                    ( > 0, _, < -0.25) => '▄',
-                    (_, _, _) => ' '
+                    (< 0, > 0, _) => ' ',
+                    (< 0, _, > .5) => '█',
+                    (< 0, _, > .25) => '▀',
+                    (> 0, < 0, _) => ' ',
+                    (> 0, _, < -0.5) => '█',
+                    (> 0, _, < -0.25) => '▄',
+                    (_, _, _) => ' ',
                 };
 
                 return character;
