@@ -1,10 +1,27 @@
 namespace Spectre.Console;
 
 /// <summary>
-/// Contains extension methods for <see cref="VerticalBarChart"/>.
+/// Contains extension methods for <see cref="BarChart"/>.
 /// </summary>
 public static class VerticalBarChartExtensions
 {
+    /// <summary>
+    /// Sets the vertical bar chart Color.
+    /// </summary>
+    /// <param name="chart">The vertical bar chart.</param>
+    /// <param name="color">The color.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static VerticalBarChart SetColor(this VerticalBarChart chart, Color color)
+    {
+        if (chart is null)
+        {
+            throw new ArgumentNullException(nameof(chart));
+        }
+
+        chart.Color = color;
+        return chart;
+    }
+
     /// <summary>
     /// Sets the vertical bar chart height.
     /// </summary>

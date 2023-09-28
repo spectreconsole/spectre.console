@@ -13,7 +13,7 @@ public sealed class VerticalBarChart : Renderable
     /// <summary>
     /// Gets the item color.
     /// </summary>
-    public Color? Color { get; }
+    public Color? Color { get; set; }
 
     /// <summary>
     /// Gets or sets the width of the vertical bar chart.
@@ -91,7 +91,7 @@ public sealed class VerticalBarChart : Renderable
 
             for (var row = 0; row < Height; row++)
             {
-                var normalizedRow = row - negativeRows;
+                var normalizedRow = normalizedValue > 0 ? row - negativeRows : row - negativeRows + 1;
                 lines[row][col] = compute(normalizedRow, normalizedValue);
             }
         }
