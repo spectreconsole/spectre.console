@@ -50,40 +50,52 @@ internal sealed class CommandExecutor
         // Create the resolver.
         using (var resolver = new TypeResolverAdapter(_registrar.Build()))
         {
-            // Get the registered help provider, falling back to the default provider
-            // registered above if no custom implementations have been registered.
-            var helpProvider = resolver.Resolve(typeof(IHelpProvider)) as IHelpProvider ?? defaultHelpProvider;
-
-            // Currently the root?
-            if (parsedResult?.Tree == null)
+            try
             {
-                // Display help.
-                configuration.Settings.Console.SafeRender(helpProvider.Write(model, null));
-                return 0;
-            }
+                // Get the registered help provider, falling back to the default provider
+                // registered above if no custom implementations have been registered.
+                var helpProvider = resolver.Resolve(typeof(IHelpProvider)) as IHelpProvider ?? defaultHelpProvider;
 
-            // Get the command to execute.
-            var leaf = parsedResult.Tree.GetLeafCommand();
-            if (leaf.Command.IsBranch || leaf.ShowHelp)
+                // Currently the root?
+                if (parsedResult?.Tree == null)
+                {
+                    // Display help.
+                    configuration.Settings.Console.SafeRender(helpProvider.Write(model, null));
+                    return 0;
+                }
+
+                // Get the command to execute.
+                var leaf = parsedResult.Tree.GetLeafCommand();
+                if (leaf.Command.IsBranch || leaf.ShowHelp)
+                {
+                    // Branches can't be executed. Show help.
+                    configuration.Settings.Console.SafeRender(helpProvider.Write(model, leaf.Command));
+                    return leaf.ShowHelp ? 0 : 1;
+                }
+
+                // Is this the default and is it called without arguments when there are required arguments?
+                if (leaf.Command.IsDefaultCommand && args.Count() == 0 && leaf.Command.Parameters.Any(p => p.Required))
+                {
+                    // Display help for default command.
+                    configuration.Settings.Console.SafeRender(helpProvider.Write(model, leaf.Command));
+                    return 1;
+                }
+
+                // Create the content.
+                var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data);
+
+                // Execute the command tree.
+                return await Execute(leaf, parsedResult.Tree, context, resolver, configuration).ConfigureAwait(false);
+            }
+            catch (Exception ex)
             {
-                // Branches can't be executed. Show help.
-                configuration.Settings.Console.SafeRender(helpProvider.Write(model, leaf.Command));
-                return leaf.ShowHelp ? 0 : 1;
+                if (configuration.Settings.ExceptionHandler != null)
+                {
+                    return configuration.Settings.ExceptionHandler(ex, resolver);
+                }
+
+                throw;
             }
-
-            // Is this the default and is it called without arguments when there are required arguments?
-            if (leaf.Command.IsDefaultCommand && args.Count() == 0 && leaf.Command.Parameters.Any(p => p.Required))
-            {
-                // Display help for default command.
-                configuration.Settings.Console.SafeRender(helpProvider.Write(model, leaf.Command));
-                return 1;
-            }
-
-            // Create the content.
-            var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data);
-
-            // Execute the command tree.
-            return await Execute(leaf, parsedResult.Tree, context, resolver, configuration).ConfigureAwait(false);
         }
     }
 

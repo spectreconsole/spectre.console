@@ -9,6 +9,7 @@ public sealed class CommandApp : ICommandApp
 {
     private readonly Configurator _configurator;
     private readonly CommandExecutor _executor;
+    private ITypeRegistrar _registrar;
     private bool _executed;
 
     /// <summary>
@@ -21,6 +22,7 @@ public sealed class CommandApp : ICommandApp
 
         _configurator = new Configurator(registrar);
         _executor = new CommandExecutor(registrar);
+        _registrar = registrar;
     }
 
     /// <summary>
@@ -102,7 +104,8 @@ public sealed class CommandApp : ICommandApp
 
             if (_configurator.Settings.ExceptionHandler != null)
             {
-                return _configurator.Settings.ExceptionHandler(ex);
+                using var resolver = new TypeResolverAdapter(_registrar.Build());
+                return _configurator.Settings.ExceptionHandler(ex, resolver);
             }
 
             // Render the exception.

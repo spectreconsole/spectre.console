@@ -80,5 +80,5 @@ public interface ICommandAppSettings
     /// Gets or sets a handler for Exceptions.
     /// <para>This handler will not be called, if <see cref="PropagateExceptions"/> is set to <c>true</c>.</para>
     /// </summary>
-    public Func<Exception, int>? ExceptionHandler { get; set; }
+    public Func<Exception, ITypeResolver, int>? ExceptionHandler { get; set; }
 }
