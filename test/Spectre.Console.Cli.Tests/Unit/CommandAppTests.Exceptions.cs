@@ -88,5 +88,37 @@ public sealed partial class CommandAppTests
             result.ExitCode.ShouldBe(-99);
             exceptionHandled.ShouldBeTrue();
         }
+
+        [Fact]
+        public void Should_Handle_Exceptions_If_ExceptionHandler_Is_Set_Using_Function_And_Logger_Is_Registered()
+        {
+            ITypeRegistrar registrar = new DefaultTypeRegistrar();
+
+            var loggerGlobal = new List<string>();
+            registrar.RegisterInstance(typeof(List<string>), loggerGlobal);
+
+            // Given
+            var app = new CommandAppTester(registrar);
+            app.Configure(config =>
+            {
+                config.AddCommand<ThrowingCommand>("throw");
+                config.SetExceptionHandler((ex, resolver) =>
+                {
+                    var logger = resolver.Resolve(typeof(List<string>)) as List<string>;
+                    logger.Add(ex.Message);
+                    return -99;
+                });
+            });
+
+            // When
+            var result = app.Run(new[] { "throw" });
+
+            // Then
+            result.ExitCode.ShouldBe(-99);
+            loggerGlobal.ShouldBe(new[]
+            {
+                ThrowingCommand.Message
+            });
+        }
     }
 }
