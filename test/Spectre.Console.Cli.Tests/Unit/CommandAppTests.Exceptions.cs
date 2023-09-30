@@ -117,7 +117,7 @@ public sealed partial class CommandAppTests
             result.ExitCode.ShouldBe(-99);
             loggerGlobal.ShouldBe(new[]
             {
-                ThrowingCommand.Message
+                ThrowingCommand.Message,
             });
         }
     }
