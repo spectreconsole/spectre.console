@@ -1,3 +1,4 @@
+using Spectre.Console.Cli.Internal;
 using Spectre.Console.Cli.Internal.Configuration;
 
 namespace Spectre.Console.Cli;
@@ -8,7 +9,7 @@ namespace Spectre.Console.Cli;
 public sealed class CommandApp : ICommandApp
 {
     private readonly Configurator _configurator;
-    private readonly CommandExecutor _executor;
+    private readonly CommandExecutorFactory _executorFactory;
     private bool _executed;
 
     /// <summary>
@@ -20,7 +21,7 @@ public sealed class CommandApp : ICommandApp
         registrar ??= new DefaultTypeRegistrar();
 
         _configurator = new Configurator(registrar);
-        _executor = new CommandExecutor(registrar);
+        _executorFactory = new CommandExecutorFactory(registrar);
     }
 
     /// <summary>
@@ -81,8 +82,9 @@ public sealed class CommandApp : ICommandApp
                 _executed = true;
             }
 
-            return await _executor
-                .Execute(_configurator, args)
+            return await _executorFactory
+                .CreateCommandExecutor(_configurator, args)
+                .Execute()
                 .ConfigureAwait(false);
         }
         catch (Exception ex)
@@ -102,7 +104,11 @@ public sealed class CommandApp : ICommandApp
 
             if (_configurator.Settings.ExceptionHandler != null)
             {
-                return _configurator.Settings.ExceptionHandler(ex);
+                using var resolver = _executorFactory
+                    .CreateCommandExecutor(_configurator, args)
+                    .BuildTypeResolver();
+
+                return _configurator.Settings.ExceptionHandler(ex, resolver);
             }
 
             // Render the exception.
