@@ -1,3 +1,4 @@
+using System.Diagnostics.SymbolStore;
 using Spectre.Console.Cli.Tests.Data.Help;
 
 namespace Spectre.Console.Tests.Unit.Cli;
@@ -239,6 +240,7 @@ public sealed partial class CommandAppTests
             fixture.SetDefaultCommand<LionCommand>();
             fixture.Configure(configurator =>
             {
+                configurator.AddExample("20", "--alive");
                 configurator.SetApplicationName("myapp");
                 configurator.AddCommand<GiraffeCommand>("giraffe");
             });
@@ -248,6 +250,34 @@ public sealed partial class CommandAppTests
 
             // Then
             return Verifier.Verify(result.Output);
+        }
+
+        // Localised version of the above test, in French
+        [Theory]
+        [InlineData("fr")]
+        [InlineData("fr-FR")]
+        [Expectation("Default_Without_Args_Additional-FR")]
+        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_FR(string culture)
+        {
+            CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(culture);
+
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<LionCommand>();
+            fixture.Configure(configurator =>
+            {
+                configurator.AddExample("20", "--alive");
+                configurator.SetApplicationName("myapp");
+                configurator.AddCommand<GiraffeCommand>("giraffe");
+            });
+
+            // When
+            var result = fixture.Run();
+
+            // Then
+            var settings = new VerifySettings();
+            settings.DisableRequireUniquePrefix();
+            return Verifier.Verify(result.Output, settings);
         }
 
         [Fact]
