@@ -6,6 +6,11 @@ namespace Spectre.Console.Cli;
 public interface ICommandAppSettings
 {
     /// <summary>
+    /// Gets or sets the culture.
+    /// </summary>
+    string? CultureName { get; set; }
+
+    /// <summary>
     /// Gets or sets the application name.
     /// </summary>
     string? ApplicationName { get; set; }

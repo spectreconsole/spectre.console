@@ -42,6 +42,23 @@ public static class ConfiguratorExtensions
     }
 
     /// <summary>
+    /// Sets the culture for the application.
+    /// </summary>
+    /// <param name="configurator">The configurator.</param>
+    /// <param name="culture">The name of the culture.</param>
+    /// <returns>A configurator that can be used to configure the application further.</returns>
+    public static IConfigurator SetApplicationCulture(this IConfigurator configurator, string culture)
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        configurator.Settings.CultureName = culture;
+        return configurator;
+    }
+
+    /// <summary>
     /// Sets the name of the application.
     /// </summary>
     /// <param name="configurator">The configurator.</param>
