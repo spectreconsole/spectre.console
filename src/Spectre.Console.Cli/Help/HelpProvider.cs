@@ -104,7 +104,7 @@ public class HelpProvider : IHelpProvider
         this.MaximumIndirectExamples = settings.MaximumIndirectExamples;
         this.TrimTrailingPeriod = settings.TrimTrailingPeriod;
 
-        resources = new HelpProviderResources(settings.CultureName);
+        resources = new HelpProviderResources(settings.Culture);
     }
 
     /// <inheritdoc/>

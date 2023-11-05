@@ -117,25 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Arguments" xml:space="preserve">
+    <value>ARGUMENT</value>
+  </data>
   <data name="Command" xml:space="preserve">
-    <value>COMMANDE</value>
+    <value>KOMMANDO</value>
   </data>
   <data name="Commands" xml:space="preserve">
-    <value>COMMANDES</value>
+    <value>KOMMANDON</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>DÉFAUT</value>
+    <value>STANDARD</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>BESKRIVNING</value>
   </data>
   <data name="Examples" xml:space="preserve">
-    <value>EXEMPLES</value>
+    <value>EXEMPEL</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>VAL</value>
   </data>
   <data name="PrintHelpDescription" xml:space="preserve">
-    <value>Affiche l'aide</value>
+    <value>Skriver ut hjälpinformation</value>
   </data>
   <data name="PrintVersionDescription" xml:space="preserve">
-    <value>Affiche la version</value>
+    <value>Skriver ut versionsnummer</value>
   </data>
   <data name="Usage" xml:space="preserve">
-    <value>UTILISATION</value>
+    <value>ANVÄNDING</value>
   </data>
 </root>

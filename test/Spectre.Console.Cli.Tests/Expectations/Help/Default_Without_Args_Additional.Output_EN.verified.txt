@@ -2,9 +2,9 @@ DESCRIPTION:
 The lion command.
 
 USAGE:
-    myapp <TEETH> [LEGS] [OPTIONS] [COMMANDE]
+    myapp <TEETH> [LEGS] [OPTIONS] [COMMAND]
 
-EXEMPLES:
+EXAMPLES:
     myapp 20 --alive
 
 ARGUMENTS:
@@ -12,14 +12,14 @@ ARGUMENTS:
     [LEGS]     The number of legs
 
 OPTIONS:
-                             DÉFAUT
-    -h, --help                                   Affiche les informations d'aide
-    -v, --version                                Affiche les informations de version
+                             DEFAULT
+    -h, --help                                   Prints help information
+    -v, --version                                Prints version information
     -a, --alive                                  Indicates whether or not the animal is alive
     -n, --name <VALUE>
         --agility <VALUE>    10                  The agility between 0 and 100
     -c <CHILDREN>                                The number of children the lion has
     -d <DAY>                 Monday, Thursday    The days the lion goes hunting
 
-COMMANDES:
+COMMANDS:
     giraffe <LENGTH>    The giraffe command

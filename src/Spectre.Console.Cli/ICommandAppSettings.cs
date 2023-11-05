@@ -8,7 +8,13 @@ public interface ICommandAppSettings
     /// <summary>
     /// Gets or sets the culture.
     /// </summary>
-    string? CultureName { get; set; }
+    /// <remarks>
+    /// Text displayed by <see cref="Help.HelpProvider"/> can be localised, but defaults to English.
+    /// Setting this property informs the resource manager which culture to use when fetching strings.
+    /// English will be used when a culture has not been specified (ie. this property is null)
+    /// or a string has not been localised for the specified culture.
+    /// </remarks>
+    CultureInfo? Culture { get; set; }
 
     /// <summary>
     /// Gets or sets the application name.

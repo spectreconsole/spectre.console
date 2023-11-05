@@ -8,15 +8,15 @@ namespace Spectre.Console.Cli.Help;
 internal class HelpProviderResources
 {
     private readonly ResourceManager resourceManager = new ResourceManager("Spectre.Console.Cli.Resources.HelpProvider", typeof(HelpProvider).Assembly);
-    private readonly CultureInfo resourceCulture = CultureInfo.InvariantCulture;
+    private readonly CultureInfo? resourceCulture = null;
 
     public HelpProviderResources()
     {
     }
 
-    public HelpProviderResources(string? cultureName)
+    public HelpProviderResources(CultureInfo? culture)
     {
-        resourceCulture = string.IsNullOrEmpty(cultureName) ? CultureInfo.InvariantCulture : new CultureInfo(cultureName);
+        resourceCulture = culture;
     }
 
     /// <summary>

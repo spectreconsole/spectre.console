@@ -30,9 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Expectations\Help\Default_Without_Args_Additional.Output.verified.txt">
+    <None Update="Expectations\Help\Default_Without_Args_Additional.Output_EN.verified.txt">
       <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
-      <DependentUpon>%(ParentFile).cs</DependentUpon>
     </None>
     <None Update="Expectations\Help\Default_Greeter.Output.verified.txt">
       <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>

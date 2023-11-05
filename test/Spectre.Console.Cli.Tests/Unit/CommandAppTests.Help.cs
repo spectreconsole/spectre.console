@@ -1,4 +1,3 @@
-using System.Diagnostics.SymbolStore;
 using Spectre.Console.Cli.Tests.Data.Help;
 
 namespace Spectre.Console.Tests.Unit.Cli;
@@ -252,41 +251,20 @@ public sealed partial class CommandAppTests
             return Verifier.Verify(result.Output);
         }
 
-        // Localised version of the above test, in English
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData("en")]
-        [InlineData("en-EN")]
-        [Expectation("Default_Without_Args_Additional")]
-        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_EN(string culture)
-        {
-            // Given
-            var fixture = new CommandAppTester();
-            fixture.SetDefaultCommand<LionCommand>();
-            fixture.Configure(configurator =>
-            {
-                configurator.AddExample("20", "--alive");
-                configurator.SetApplicationCulture(culture);
-                configurator.SetApplicationName("myapp");
-                configurator.AddCommand<GiraffeCommand>("giraffe");
-            });
-
-            // When
-            var result = fixture.Run();
-
-            // Then
-            var settings = new VerifySettings();
-            settings.DisableRequireUniquePrefix();
-            return Verifier.Verify(result.Output, settings);
-        }
-
         // Localised version of the above test, in French
         [Theory]
-        [InlineData("fr")]
-        [InlineData("fr-FR")]
-        [Expectation("Default_Without_Args_Additional-FR")]
-        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_FR(string culture)
+        [InlineData(null, "EN")]
+        [InlineData("", "EN")]
+        [InlineData("en", "EN")]
+        [InlineData("en-EN", "EN")]
+        [InlineData("fr", "FR")]
+        [InlineData("fr-FR", "FR")]
+        [InlineData("sv", "SV")]
+        [InlineData("sv-SE", "SV")]
+        [InlineData("de", "DE")]
+        [InlineData("de-DE", "DE")]
+        [Expectation("Default_Without_Args_Additional")]
+        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_Localised(string culture, string expectationPrefix)
         {
             // Given
             var fixture = new CommandAppTester();
@@ -294,7 +272,7 @@ public sealed partial class CommandAppTests
             fixture.Configure(configurator =>
             {
                 configurator.AddExample("20", "--alive");
-                configurator.SetApplicationCulture(culture);
+                configurator.SetApplicationCulture(string.IsNullOrEmpty(culture) ? null : new CultureInfo(culture));
                 configurator.SetApplicationName("myapp");
                 configurator.AddCommand<GiraffeCommand>("giraffe");
             });
@@ -305,7 +283,7 @@ public sealed partial class CommandAppTests
             // Then
             var settings = new VerifySettings();
             settings.DisableRequireUniquePrefix();
-            return Verifier.Verify(result.Output, settings);
+            return Verifier.Verify(result.Output, settings).UseTextForParameters(expectationPrefix);
         }
 
         [Fact]
