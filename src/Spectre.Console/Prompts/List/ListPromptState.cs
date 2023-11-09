@@ -16,7 +16,7 @@ internal sealed class ListPromptState<T>
     public ListPromptItem<T> Current => Items[Index];
     public string SearchText { get; private set; }
 
-    public ListPromptState(IReadOnlyList<ListPromptItem<T>> items, int pageSize, bool wrapAround, SelectionMode mode, bool skipUnselectableItems, bool searchEnabled)
+    public ListPromptState(IReadOnlyList<ListPromptItem<T>> items, int pageSize, bool wrapAround, SelectionMode mode, bool skipUnselectableItems, bool searchEnabled, int initialIndex)
     {
         Items = items;
         PageSize = pageSize;
@@ -36,11 +36,18 @@ internal sealed class ListPromptState<T>
                     .ToList()
                     .AsReadOnly();
 
-            Index = _leafIndexes.FirstOrDefault();
+            if (_leafIndexes.Contains(initialIndex))
+            {
+                Index = initialIndex;
+            }
+            else
+            {
+                Index = _leafIndexes.FirstOrDefault();
+            }
         }
         else
         {
-            Index = 0;
+            Index = initialIndex;
         }
     }
 
