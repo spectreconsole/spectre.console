@@ -2,23 +2,25 @@ namespace Spectre.Console.Tests.Unit;
 
 public sealed class ListPromptStateTests
 {
-    private ListPromptState<string> CreateListPromptState(int count, int pageSize, bool shouldWrap, bool searchEnabled)
+    private ListPromptState<string> CreateListPromptState(int count, int pageSize, bool shouldWrap, bool searchEnabled, int initialIndex = 0)
         => new(
             Enumerable.Range(0, count).Select(i => new ListPromptItem<string>(i.ToString())).ToList(),
             text => text,
-            pageSize, shouldWrap, SelectionMode.Independent, true, searchEnabled);
+            pageSize, shouldWrap, SelectionMode.Independent, true, searchEnabled, initialIndex);
 
-    [Fact]
-    public void Should_Have_Start_Index_Zero()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    public void Should_Have_Specified_Start_Index(int index)
     {
         // Given
-        var state = CreateListPromptState(100, 10, false, false);
+        var state = CreateListPromptState(100, 10, false, false, initialIndex: index);
 
         // When
         /* noop */
 
         // Then
-        state.Index.ShouldBe(0);
+        state.Index.ShouldBe(index);
     }
 
     [Theory]

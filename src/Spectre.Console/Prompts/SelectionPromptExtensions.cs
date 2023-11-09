@@ -293,4 +293,23 @@ public static class SelectionPromptExtensions
         obj.Converter = displaySelector;
         return obj;
     }
+
+    /// <summary>
+    /// Sets the choice that will be selected when the prompt is first displayed.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="defaultValue">The choice to show as selected when the prompt is first displayed.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static SelectionPrompt<T> DefaultValue<T>(this SelectionPrompt<T> obj, T? defaultValue)
+        where T : notnull
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        obj.DefaultValue = defaultValue;
+        return obj;
+    }
 }
