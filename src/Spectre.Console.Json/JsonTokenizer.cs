@@ -1,5 +1,3 @@
-using System.Text;
-
 namespace Spectre.Console.Json;
 
 internal static class JsonTokenizer

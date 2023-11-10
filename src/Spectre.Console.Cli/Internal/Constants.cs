@@ -18,5 +18,9 @@ internal static class CliConstants
         public const string Version = "version";
         public const string XmlDoc = "xmldoc";
         public const string Explain = "explain";
+        public const string Complete = "complete";
+
+        public const string CompletionBranch = "completion";
+        public const string PowershellCompletion = "powershell";
     }
 }

@@ -369,4 +369,33 @@ public static class ConfiguratorExtensions
         configurator.Settings.ExceptionHandler = exceptionHandler;
         return configurator;
     }
+
+    /// <summary>
+    /// Configures the auto completion settings of the given configurator.
+    /// </summary>
+    /// <param name="configurator">The configurator to be updated.</param>
+    /// <param name="modules">The auto completion modules to be enabled. Default is <see cref="AutoCompletionModule.All"/>.</param>
+    /// <returns>The updated configurator with the specified auto completion settings.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the provided configurator is null.</exception>
+    public static IConfigurator UseAutoComplete(this IConfigurator configurator, AutoCompletionModule modules = AutoCompletionModule.All)
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        if (modules.HasFlag(AutoCompletionModule.Base))
+        {
+            configurator.Settings.AutoComplete.IsEnabled = true;
+        }
+        else
+        {
+            configurator.Settings.AutoComplete.IsEnabled = false;
+            configurator.Settings.AutoComplete.IsPowershellEnabled = false;
+            return configurator;
+        }
+
+        configurator.Settings.AutoComplete.IsPowershellEnabled = modules.HasFlag(AutoCompletionModule.Powershell);
+        return configurator;
+    }
 }

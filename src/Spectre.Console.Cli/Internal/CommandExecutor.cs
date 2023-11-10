@@ -48,7 +48,7 @@ internal sealed class CommandExecutor
         _registrar.RegisterInstance(typeof(IRemainingArguments), parsedResult.Remaining);
 
         // Create the resolver.
-        using (var resolver = new TypeResolverAdapter(_registrar.Build()))
+        using (var resolver = MakeTypeResolverAdapter(_registrar))
         {
             // Get the registered help provider, falling back to the default provider
             // registered above if no custom implementations have been registered.
@@ -115,6 +115,23 @@ internal sealed class CommandExecutor
 
         return parsedResult;
     }
+
+    /// <summary>
+    /// Builds a TypeResolver where the ITypeResolver service is registered to itself.
+    /// This only works when the DI framework is not as bad as the primitive one this library uses internally.
+    /// In case the internal one is used, we have a fallback that uses the built resolver directly.
+    /// </summary>
+    private TypeResolverAdapter MakeTypeResolverAdapter(ITypeRegistrar registrar)
+    {
+        var emptyResolver = new TypeResolverAdapter(null);
+        registrar.RegisterInstance(typeof(ITypeResolver), emptyResolver);
+
+        var builtResolver = registrar.Build();
+        emptyResolver.SetTypeResolver(builtResolver);
+
+        return emptyResolver;
+    }
+
 #pragma warning restore CS8603 // Possible null reference return.
 
     private static string ResolveApplicationVersion(IConfiguration configuration)

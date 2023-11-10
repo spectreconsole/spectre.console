@@ -91,3 +91,4 @@ Thumbs.db
 *.received.*
 
 node_modules
+*.txt.bak

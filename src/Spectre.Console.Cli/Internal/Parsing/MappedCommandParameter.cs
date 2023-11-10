@@ -1,6 +1,7 @@
 namespace Spectre.Console.Cli;
 
 // Consider removing this in favor for value tuples at some point.
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
 internal sealed class MappedCommandParameter
 {
     public CommandParameter Parameter { get; }
@@ -10,5 +11,21 @@ internal sealed class MappedCommandParameter
     {
         Parameter = parameter;
         Value = value;
+    }
+
+    [DebuggerHidden]
+    public string DebuggerDisplay
+    {
+        get
+        {
+            var value = Parameter switch
+            {
+                CommandOption option => option.GetOptionName(),
+                CommandArgument argument => argument.Value,
+                _ => Parameter.ToString(),
+            };
+
+            return $"CommandParameter {value}: {Value}";
+        }
     }
 }
