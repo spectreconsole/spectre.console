@@ -1,3 +1,5 @@
+using Spectre.Console.Cli.Resources;
+
 namespace Spectre.Console.Cli.Help;
 
 /// <summary>
@@ -8,6 +10,8 @@ namespace Spectre.Console.Cli.Help;
 /// </remarks>
 public class HelpProvider : IHelpProvider
 {
+    private HelpProviderResources resources;
+
     /// <summary>
     /// Gets a value indicating how many examples from direct children to show in the help text.
     /// </summary>
@@ -67,17 +71,17 @@ public class HelpProvider : IHelpProvider
             DefaultValue = defaultValue;
         }
 
-        public static IReadOnlyList<HelpOption> Get(ICommandInfo? command)
+        public static IReadOnlyList<HelpOption> Get(ICommandInfo? command, HelpProviderResources resources)
         {
             var parameters = new List<HelpOption>();
-            parameters.Add(new HelpOption("h", "help", null, null, "Prints help information", null));
+            parameters.Add(new HelpOption("h", "help", null, null, resources.PrintHelpDescription, null));
 
             // Version information applies to the entire application
             // Include the "-v" option in the help when at the root of the command line application
             // Don't allow the "-v" option if users have specified one or more sub-commands
             if ((command == null || command?.Parent == null) && !(command?.IsBranch ?? false))
             {
-                parameters.Add(new HelpOption("v", "version", null, null, "Prints version information", null));
+                parameters.Add(new HelpOption("v", "version", null, null, resources.PrintVersionDescription, null));
             }
 
             parameters.AddRange(command?.Parameters.OfType<ICommandOption>().Where(o => !o.IsHidden).Select(o =>
@@ -99,6 +103,8 @@ public class HelpProvider : IHelpProvider
         this.ShowOptionDefaultValues = settings.ShowOptionDefaultValues;
         this.MaximumIndirectExamples = settings.MaximumIndirectExamples;
         this.TrimTrailingPeriod = settings.TrimTrailingPeriod;
+
+        resources = new HelpProviderResources(settings.Culture);
     }
 
     /// <inheritdoc/>
@@ -143,7 +149,7 @@ public class HelpProvider : IHelpProvider
         }
 
         var composer = new Composer();
-        composer.Style("yellow", "DESCRIPTION:").LineBreak();
+        composer.Style("yellow", $"{resources.Description}:").LineBreak();
         composer.Text(command.Description).LineBreak();
         yield return composer.LineBreak();
     }
@@ -157,15 +163,15 @@ public class HelpProvider : IHelpProvider
     public virtual IEnumerable<IRenderable> GetUsage(ICommandModel model, ICommandInfo? command)
     {
         var composer = new Composer();
-        composer.Style("yellow", "USAGE:").LineBreak();
+        composer.Style("yellow", $"{resources.Usage}:").LineBreak();
         composer.Tab().Text(model.ApplicationName);
 
         var parameters = new List<string>();
 
         if (command == null)
         {
-            parameters.Add("[grey][[OPTIONS]][/]");
-            parameters.Add("[aqua]<COMMAND>[/]");
+            parameters.Add($"[grey][[{resources.Options}]][/]");
+            parameters.Add($"[aqua]<{resources.Command}>[/]");
         }
         else
         {
@@ -208,20 +214,20 @@ public class HelpProvider : IHelpProvider
 
                 if (isCurrent)
                 {
-                    parameters.Add("[grey][[OPTIONS]][/]");
+                    parameters.Add($"[grey][[{resources.Options}]][/]");
                 }
             }
 
             if (command.IsBranch && command.DefaultCommand == null)
             {
                 // The user must specify the command
-                parameters.Add("[aqua]<COMMAND>[/]");
+                parameters.Add($"[aqua]<{resources.Command}>[/]");
             }
             else if (command.IsBranch && command.DefaultCommand != null && command.Commands.Count > 0)
             {
                 // We are on a branch with a default command
                 // The user can optionally specify the command
-                parameters.Add("[aqua][[COMMAND]][/]");
+                parameters.Add($"[aqua][[{resources.Command}]][/]");
             }
             else if (command.IsDefaultCommand)
             {
@@ -231,7 +237,7 @@ public class HelpProvider : IHelpProvider
                 {
                     // Commands other than the default are present
                     // So make these optional in the usage statement
-                    parameters.Add("[aqua][[COMMAND]][/]");
+                    parameters.Add($"[aqua][[{resources.Command}]][/]");
                 }
             }
         }
@@ -298,7 +304,7 @@ public class HelpProvider : IHelpProvider
         {
             var composer = new Composer();
             composer.LineBreak();
-            composer.Style("yellow", "EXAMPLES:").LineBreak();
+            composer.Style("yellow", $"{resources.Examples}:").LineBreak();
 
             for (var index = 0; index < Math.Min(maxExamples, examples.Count); index++)
             {
@@ -330,7 +336,7 @@ public class HelpProvider : IHelpProvider
         var result = new List<IRenderable>
             {
                 new Markup(Environment.NewLine),
-                new Markup("[yellow]ARGUMENTS:[/]"),
+                new Markup($"[yellow]{resources.Arguments}:[/]"),
                 new Markup(Environment.NewLine),
             };
 
@@ -366,7 +372,7 @@ public class HelpProvider : IHelpProvider
     public virtual IEnumerable<IRenderable> GetOptions(ICommandModel model, ICommandInfo? command)
     {
         // Collect all options into a single structure.
-        var parameters = HelpOption.Get(command);
+        var parameters = HelpOption.Get(command, resources);
         if (parameters.Count == 0)
         {
             return Array.Empty<IRenderable>();
@@ -375,7 +381,7 @@ public class HelpProvider : IHelpProvider
         var result = new List<IRenderable>
             {
                 new Markup(Environment.NewLine),
-                new Markup("[yellow]OPTIONS:[/]"),
+                new Markup($"[yellow]{resources.Options}:[/]"),
                 new Markup(Environment.NewLine),
             };
 
@@ -434,7 +440,7 @@ public class HelpProvider : IHelpProvider
 
         if (defaultValueColumn)
         {
-            grid.AddRow(" ", "[lime]DEFAULT[/]", " ");
+            grid.AddRow(" ", $"[lime]{resources.Default}[/]", " ");
         }
 
         foreach (var option in helpOptions)
@@ -487,7 +493,7 @@ public class HelpProvider : IHelpProvider
         var result = new List<IRenderable>
             {
                 new Markup(Environment.NewLine),
-                new Markup("[yellow]COMMANDS:[/]"),
+                new Markup($"[yellow]{resources.Commands}:[/]"),
                 new Markup(Environment.NewLine),
             };
 

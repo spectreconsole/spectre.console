@@ -42,6 +42,29 @@ public static class ConfiguratorExtensions
     }
 
     /// <summary>
+    /// Sets the culture for the application.
+    /// </summary>
+    /// <param name="configurator">The configurator.</param>
+    /// <param name="culture">The culture.</param>
+    /// <returns>A configurator that can be used to configure the application further.</returns>
+    /// <remarks>
+    /// Text displayed by <see cref="Help.HelpProvider"/> can be localised, but defaults to English.
+    /// Setting the application culture informs the resource manager which culture to use when fetching strings.
+    /// English will be used when a culture has not been specified
+    /// or a string has not been localised for the specified culture.
+    /// </remarks>
+    public static IConfigurator SetApplicationCulture(this IConfigurator configurator, CultureInfo? culture)
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        configurator.Settings.Culture = culture;
+        return configurator;
+    }
+
+    /// <summary>
     /// Sets the name of the application.
     /// </summary>
     /// <param name="configurator">The configurator.</param>

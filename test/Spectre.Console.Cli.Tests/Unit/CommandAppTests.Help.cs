@@ -230,15 +230,27 @@ public sealed partial class CommandAppTests
             return Verifier.Verify(result.Output);
         }
 
-        [Fact]
+        [Theory]
+        [InlineData(null, "EN")]
+        [InlineData("", "EN")]
+        [InlineData("en", "EN")]
+        [InlineData("en-EN", "EN")]
+        [InlineData("fr", "FR")]
+        [InlineData("fr-FR", "FR")]
+        [InlineData("sv", "SV")]
+        [InlineData("sv-SE", "SV")]
+        [InlineData("de", "DE")]
+        [InlineData("de-DE", "DE")]
         [Expectation("Default_Without_Args_Additional")]
-        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args()
+        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_Localised(string culture, string expectationPrefix)
         {
             // Given
             var fixture = new CommandAppTester();
             fixture.SetDefaultCommand<LionCommand>();
             fixture.Configure(configurator =>
             {
+                configurator.AddExample("20", "--alive");
+                configurator.SetApplicationCulture(string.IsNullOrEmpty(culture) ? null : new CultureInfo(culture));
                 configurator.SetApplicationName("myapp");
                 configurator.AddCommand<GiraffeCommand>("giraffe");
             });
@@ -247,7 +259,9 @@ public sealed partial class CommandAppTests
             var result = fixture.Run();
 
             // Then
-            return Verifier.Verify(result.Output);
+            var settings = new VerifySettings();
+            settings.DisableRequireUniquePrefix();
+            return Verifier.Verify(result.Output, settings).UseTextForParameters(expectationPrefix);
         }
 
         [Fact]

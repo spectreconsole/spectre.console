@@ -2,6 +2,7 @@ namespace Spectre.Console.Cli;
 
 internal sealed class CommandAppSettings : ICommandAppSettings
 {
+    public CultureInfo? Culture { get; set; }
     public string? ApplicationName { get; set; }
     public string? ApplicationVersion { get; set; }
     public int MaximumIndirectExamples { get; set; }

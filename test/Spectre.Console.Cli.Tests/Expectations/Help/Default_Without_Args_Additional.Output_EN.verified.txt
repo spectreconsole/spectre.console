@@ -4,6 +4,9 @@ The lion command.
 USAGE:
     myapp <TEETH> [LEGS] [OPTIONS] [COMMAND]
 
+EXAMPLES:
+    myapp 20 --alive
+
 ARGUMENTS:
     <TEETH>    The number of teeth the lion has
     [LEGS]     The number of legs
