@@ -246,7 +246,9 @@ public sealed class TypeRegistrarBaseTests
 
     private class AnotherMockService : IMockService
     {
-        public AnotherMockService(string _){}
+        public AnotherMockService(string ignore)
+        {
+        }
     }
 
     /// <summary>
