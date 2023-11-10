@@ -40,7 +40,7 @@ public sealed class FakeTypeResolver : ITypeResolver
 
             if (_instances.TryGetValue(type, out var listInstances))
             {
-                listInstances.ForEach(i => castList.Add(i));
+                listInstances.ForEach(i => castList!.Add(i));
             }
 
             if (_registrations.TryGetValue(type, out var listRegistrations))
@@ -48,7 +48,7 @@ public sealed class FakeTypeResolver : ITypeResolver
                 listRegistrations
                     .Select<Type, object>(x => Activator.CreateInstance(x)!)
                     .ToList()
-                    .ForEach(i => castList.Add(i));
+                    .ForEach(i => castList!.Add(i));
             }
 
             return allRegistrations;
