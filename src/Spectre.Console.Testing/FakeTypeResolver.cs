@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace Spectre.Console.Testing;
 
 /// <summary>
@@ -29,9 +31,32 @@ public sealed class FakeTypeResolver : ITypeResolver
             return null;
         }
 
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+        {
+            // return all registrations
+            type = type.GenericTypeArguments[0];
+            var allRegistrations = Activator.CreateInstance(typeof(List<>).MakeGenericType(type));
+            var castList = allRegistrations as IList;
+
+            if (_instances.TryGetValue(type, out var listInstances))
+            {
+                listInstances.ForEach(i => castList.Add(i));
+            }
+
+            if (_registrations.TryGetValue(type, out var listRegistrations))
+            {
+                listRegistrations
+                    .Select<Type, object>(x => Activator.CreateInstance(x)!)
+                    .ToList()
+                    .ForEach(i => castList.Add(i));
+            }
+
+            return allRegistrations;
+        }
+
         if (_instances.TryGetValue(type, out var instances))
         {
-            return instances.FirstOrDefault();
+            return instances.LastOrDefault();
         }
 
         if (_registrations.TryGetValue(type, out var registrations))
@@ -40,7 +65,7 @@ public sealed class FakeTypeResolver : ITypeResolver
             // So call CreateInstance on the first registration rather than the type.
             return registrations.Count == 0
                 ? null
-                : Activator.CreateInstance(registrations[0]);
+                : Activator.CreateInstance(registrations.Last());
         }
 
         return null;
