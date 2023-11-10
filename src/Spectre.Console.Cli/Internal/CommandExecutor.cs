@@ -22,10 +22,6 @@ internal sealed class CommandExecutor
         _registrar.RegisterInstance(typeof(IConfiguration), configuration);
         _registrar.RegisterLazy(typeof(IAnsiConsole), () => configuration.Settings.Console.GetConsole());
 
-        // Register the help provider
-        var defaultHelpProvider = new HelpProvider(configuration.Settings);
-        _registrar.RegisterInstance(typeof(IHelpProvider), defaultHelpProvider);
-
         // Create the command model.
         var model = CommandModelBuilder.Build(configuration);
         _registrar.RegisterInstance(typeof(CommandModel), model);
@@ -51,8 +47,9 @@ internal sealed class CommandExecutor
         using (var resolver = new TypeResolverAdapter(_registrar.Build()))
         {
             // Get the registered help provider, falling back to the default provider
-            // registered above if no custom implementations have been registered.
-            var helpProvider = resolver.Resolve(typeof(IHelpProvider)) as IHelpProvider ?? defaultHelpProvider;
+            // if no custom implementations have been registered.
+            var helpProviders = resolver.Resolve(typeof(IEnumerable<IHelpProvider>)) as IEnumerable<IHelpProvider>;
+            var helpProvider = helpProviders?.LastOrDefault() ?? new HelpProvider(configuration.Settings);
 
             // Currently the root?
             if (parsedResult?.Tree == null)
