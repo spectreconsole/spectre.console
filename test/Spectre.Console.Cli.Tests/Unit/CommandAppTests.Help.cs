@@ -230,28 +230,6 @@ public sealed partial class CommandAppTests
             return Verifier.Verify(result.Output);
         }
 
-        [Fact]
-        [Expectation("Default_Without_Args_Additional")]
-        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args()
-        {
-            // Given
-            var fixture = new CommandAppTester();
-            fixture.SetDefaultCommand<LionCommand>();
-            fixture.Configure(configurator =>
-            {
-                configurator.AddExample("20", "--alive");
-                configurator.SetApplicationName("myapp");
-                configurator.AddCommand<GiraffeCommand>("giraffe");
-            });
-
-            // When
-            var result = fixture.Run();
-
-            // Then
-            return Verifier.Verify(result.Output);
-        }
-
-        // Localised version of the above test, in French
         [Theory]
         [InlineData(null, "EN")]
         [InlineData("", "EN")]

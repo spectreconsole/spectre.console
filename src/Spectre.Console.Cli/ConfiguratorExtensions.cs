@@ -53,7 +53,7 @@ public static class ConfiguratorExtensions
     /// English will be used when a culture has not been specified
     /// or a string has not been localised for the specified culture.
     /// </remarks>
-    public static IConfigurator SetApplicationCulture(this IConfigurator configurator, CultureInfo culture)
+    public static IConfigurator SetApplicationCulture(this IConfigurator configurator, CultureInfo? culture)
     {
         if (configurator == null)
         {
