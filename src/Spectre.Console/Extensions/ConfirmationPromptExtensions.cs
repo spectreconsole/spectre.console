@@ -100,18 +100,13 @@ public static class ConfirmationPromptExtensions
     /// Sets the style in which the default value is displayed.
     /// </summary>
     /// <param name="obj">The confirmation prompt.</param>
-    /// <param name="style">The default value style.</param>
+    /// <param name="style">The default value style or <see langword="null"/> to use the default style (green).</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static ConfirmationPrompt DefaultValueStyle(this ConfirmationPrompt obj, Style style)
+    public static ConfirmationPrompt DefaultValueStyle(this ConfirmationPrompt obj, Style? style)
     {
         if (obj is null)
         {
             throw new ArgumentNullException(nameof(obj));
-        }
-
-        if (style is null)
-        {
-            throw new ArgumentNullException(nameof(style));
         }
 
         obj.DefaultValueStyle = style;
