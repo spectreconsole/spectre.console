@@ -40,7 +40,7 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
     public bool ShowDefaultValue { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets the style in which the default value is displayed.
+    /// Gets or sets the style in which the default value is displayed. Defaults to green when <see langword="null"/>.
     /// </summary>
     public Style? DefaultValueStyle { get; set; }
 
