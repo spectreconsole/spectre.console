@@ -46,18 +46,13 @@ public static class ConfirmationPromptExtensions
     /// Sets the style in which the list of choices is displayed.
     /// </summary>
     /// <param name="obj">The confirmation prompt.</param>
-    /// <param name="style">The style to use for displaying the choices.</param>
+    /// <param name="style">The style to use for displaying the choices or <see langword="null"/> to use the default style (blue).</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static ConfirmationPrompt ChoicesStyle(this ConfirmationPrompt obj, Style style)
+    public static ConfirmationPrompt ChoicesStyle(this ConfirmationPrompt obj, Style? style)
     {
         if (obj is null)
         {
             throw new ArgumentNullException(nameof(obj));
-        }
-
-        if (style is null)
-        {
-            throw new ArgumentNullException(nameof(style));
         }
 
         obj.ChoicesStyle = style;
