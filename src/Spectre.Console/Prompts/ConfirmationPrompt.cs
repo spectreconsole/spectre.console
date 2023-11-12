@@ -85,7 +85,7 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
             .ChoicesStyle(ChoicesStyle)
             .ShowDefaultValue(ShowDefaultValue)
             .DefaultValue(DefaultValue ? Yes : No)
-            .DefaultValueStyle(DefaultValueStyle ?? "green")
+            .DefaultValueStyle(DefaultValueStyle)
             .AddChoice(Yes)
             .AddChoice(No);
 
