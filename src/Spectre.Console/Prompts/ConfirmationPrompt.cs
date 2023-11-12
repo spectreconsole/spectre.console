@@ -82,7 +82,7 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
             .InvalidChoiceMessage(InvalidChoiceMessage)
             .ValidationErrorMessage(InvalidChoiceMessage)
             .ShowChoices(ShowChoices)
-            .ChoicesStyle(ChoicesStyle ?? "blue")
+            .ChoicesStyle(ChoicesStyle)
             .ShowDefaultValue(ShowDefaultValue)
             .DefaultValue(DefaultValue ? Yes : No)
             .DefaultValueStyle(DefaultValueStyle ?? "green")
