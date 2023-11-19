@@ -8,12 +8,6 @@
         "dotnet-cake"
       ]
     },
-    "gpr": {
-      "version": "0.1.281",
-      "commands": [
-        "gpr"
-      ]
-    },
     "dotnet-example": {
       "version": "2.0.0",
       "commands": [

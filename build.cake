@@ -94,38 +94,6 @@ Task("Package")
     });
 });
 
-Task("Publish-GitHub")
-    .WithCriteria(ctx => BuildSystem.IsRunningOnGitHubActions, "Not running on GitHub Actions")
-    .IsDependentOn("Package")
-    .Does(context => 
-{
-    var apiKey = Argument<string>("github-key", null);
-    if(string.IsNullOrWhiteSpace(apiKey)) {
-        throw new CakeException("No GitHub API key was provided.");
-    }
-
-    // Publish to GitHub Packages
-    var exitCode = 0;
-    foreach(var file in context.GetFiles("./.artifacts/*.nupkg")) 
-    {
-        context.Information("Publishing {0}...", file.GetFilename().FullPath);
-        exitCode += StartProcess("dotnet", 
-            new ProcessSettings {
-                Arguments = new ProcessArgumentBuilder()
-                    .Append("gpr")
-                    .Append("push")
-                    .AppendQuoted(file.FullPath)
-                    .AppendSwitchSecret("-k", " ", apiKey)
-            }
-        );
-    }
-
-    if(exitCode != 0) 
-    {
-        throw new CakeException("Could not push GitHub packages.");
-    }
-});
-
 Task("Publish-NuGet")
     .WithCriteria(ctx => BuildSystem.IsRunningOnGitHubActions, "Not running on GitHub Actions")
     .IsDependentOn("Package")
@@ -152,7 +120,6 @@ Task("Publish-NuGet")
 // Targets
 
 Task("Publish")
-    .IsDependentOn("Publish-GitHub")
     .IsDependentOn("Publish-NuGet");
 
 Task("Default")
