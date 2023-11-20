@@ -45,7 +45,7 @@
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="0.14.0" />
     <PackageReference Include="Humanizer.Core" Version="2.8.26" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Scriban" Version="2.1.3" />
     <PackageReference Include="Spectre.IO" Version="0.1.0" />
   </ItemGroup>

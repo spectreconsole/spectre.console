@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{CFE7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Console.Cli", "..\..\..\src\Spectre.Console.Cli\Spectre.Console.Cli.csproj", "{18A3F32D-FECD-463B-A194-6EE74EA9E5EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spectre.Console.Json", "..\..\..\src\Spectre.Console.Json\Spectre.Console.Json.csproj", "{6C96C268-CEEE-478A-A36F-E1450AC33B73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,18 @@ Global
 		{18A3F32D-FECD-463B-A194-6EE74EA9E5EC}.Release|x64.Build.0 = Release|Any CPU
 		{18A3F32D-FECD-463B-A194-6EE74EA9E5EC}.Release|x86.ActiveCfg = Release|Any CPU
 		{18A3F32D-FECD-463B-A194-6EE74EA9E5EC}.Release|x86.Build.0 = Release|Any CPU
+		{6C96C268-CEEE-478A-A36F-E1450AC33B73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C96C268-CEEE-478A-A36F-E1450AC33B73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C96C268-CEEE-478A-A36F-E1450AC33B73}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6C96C268-CEEE-478A-A36F-E1450AC33B73}.Debug|x64.Build.0 = Debug|Any CPU
+		{6C96C268-CEEE-478A-A36F-E1450AC33B73}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6C96C268-CEEE-478A-A36F-E1450AC33B73}.Debug|x86.Build.0 = Debug|Any CPU
+		{6C96C268-CEEE-478A-A36F-E1450AC33B73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C96C268-CEEE-478A-A36F-E1450AC33B73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C96C268-CEEE-478A-A36F-E1450AC33B73}.Release|x64.ActiveCfg = Release|Any CPU
+		{6C96C268-CEEE-478A-A36F-E1450AC33B73}.Release|x64.Build.0 = Release|Any CPU
+		{6C96C268-CEEE-478A-A36F-E1450AC33B73}.Release|x86.ActiveCfg = Release|Any CPU
+		{6C96C268-CEEE-478A-A36F-E1450AC33B73}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +93,7 @@ Global
 		{F75B882A-06DB-426B-9580-A7302D32E684} = {CFE7445D-F971-429D-B6E6-9E68456AE00F}
 		{112A37CB-1EFE-4A90-BD5B-5437038BE276} = {CFE7445D-F971-429D-B6E6-9E68456AE00F}
 		{18A3F32D-FECD-463B-A194-6EE74EA9E5EC} = {CFE7445D-F971-429D-B6E6-9E68456AE00F}
+		{6C96C268-CEEE-478A-A36F-E1450AC33B73} = {CFE7445D-F971-429D-B6E6-9E68456AE00F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F37FDE3-D591-4D43-8DDE-2ED6BAB0A7B4}
