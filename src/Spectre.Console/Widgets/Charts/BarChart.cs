@@ -43,6 +43,9 @@ public sealed class BarChart : Renderable, IHasCulture
     /// <remarks>Defaults to null, which corresponds to largest value in chart.</remarks>
     public double? MaxValue { get; set; }
 
+
+    public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="BarChart"/> class.
     /// </summary>
@@ -90,6 +93,7 @@ public sealed class BarChart : Renderable, IHasCulture
                     AsciiBar = '█',
                     ShowValue = ShowValues,
                     Culture = Culture,
+                    ValueFormatter = ValueFormatter,
                 });
         }
 

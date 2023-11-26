@@ -20,6 +20,7 @@ internal sealed class ProgressBar : Renderable, IHasCulture
     public Style FinishedStyle { get; set; } = Color.Green;
     public Style RemainingStyle { get; set; } = Color.Grey;
     public Style IndeterminateStyle { get; set; } = DefaultPulseStyle;
+    public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
 
     internal static Style DefaultPulseStyle { get; } = new Style(foreground: Color.DodgerBlue1, background: Color.Grey23);
 
@@ -50,7 +51,7 @@ internal sealed class ProgressBar : Renderable, IHasCulture
         var barCount = Math.Max(0, (int)(width * (completedBarCount / MaxValue)));
 
         // Show value?
-        var value = completedBarCount.ToString(Culture ?? CultureInfo.InvariantCulture);
+        var value = ValueFormatter != null ? ValueFormatter(completedBarCount, Culture ?? CultureInfo.InvariantCulture) : completedBarCount.ToString(Culture ?? CultureInfo.InvariantCulture);
         if (ShowValue)
         {
             barCount = barCount - value.Length - 1;
