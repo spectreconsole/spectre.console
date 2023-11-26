@@ -12,6 +12,7 @@ public static class BarChartExtensions
     /// <param name="label">The item label.</param>
     /// <param name="value">The item value.</param>
     /// <param name="color">The item color.</param>
+    /// <param name="labelColor">The label color.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static BarChart AddItem(this BarChart chart, string label, double value, Color? color = null, Color? labelColor = null)
     {
@@ -116,6 +117,12 @@ public static class BarChartExtensions
         return chart;
     }
 
+    /// <summary>
+    /// Adds a value formatter to the <see cref="BarChart"/>.
+    /// </summary>
+    /// <param name="chart">The <see cref="BarChart"/> instance.</param>
+    /// <param name="func">The value formatter function.</param>
+    /// <returns>The modified <see cref="BarChart"/> instance.</returns>
     public static BarChart UseValueFormatter(this BarChart chart, Func<double, CultureInfo, string>? func)
     {
         if (chart is null)

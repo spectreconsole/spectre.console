@@ -19,6 +19,10 @@ public sealed class BarChartItem : IBarChartItem
     /// Gets the item color.
     /// </summary>
     public Color? Color { get; }
+
+    /// <summary>
+    /// Gets color of the label associated with the bar.
+    /// </summary>
     public Color? LabelColor { get; }
 
     /// <summary>
@@ -27,6 +31,7 @@ public sealed class BarChartItem : IBarChartItem
     /// <param name="label">The item label.</param>
     /// <param name="value">The item value.</param>
     /// <param name="color">The item color.</param>
+    /// <param name="labelColor">The label color.</param>
     public BarChartItem(string label, double value, Color? color = null, Color? labelColor = null)
     {
         Label = label ?? throw new ArgumentNullException(nameof(label));

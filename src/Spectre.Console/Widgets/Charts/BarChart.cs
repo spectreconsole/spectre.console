@@ -43,7 +43,6 @@ public sealed class BarChart : Renderable, IHasCulture
     /// <remarks>Defaults to null, which corresponds to largest value in chart.</remarks>
     public double? MaxValue { get; set; }
 
-
     /// <summary>
     /// Gets or sets the value formatter function.
     /// </summary>
