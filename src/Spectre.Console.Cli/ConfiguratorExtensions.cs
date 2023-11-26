@@ -367,11 +367,11 @@ public static class ConfiguratorExtensions
     /// <param name="configurator">The configurator.</param>
     /// <param name="exceptionHandler">The Action that handles the exception.</param>
     /// <returns>A configurator that can be used to configure the application further.</returns>
-    public static IConfigurator SetExceptionHandler(this IConfigurator configurator, Action<Exception> exceptionHandler)
+    public static IConfigurator SetExceptionHandler(this IConfigurator configurator, Action<Exception, ITypeResolver?> exceptionHandler)
     {
-        return configurator.SetExceptionHandler(ex =>
+        return configurator.SetExceptionHandler((ex, resolver) =>
         {
-            exceptionHandler(ex);
+            exceptionHandler(ex, resolver);
             return -1;
         });
     }
@@ -382,7 +382,7 @@ public static class ConfiguratorExtensions
     /// <param name="configurator">The configurator.</param>
     /// <param name="exceptionHandler">The Action that handles the exception.</param>
     /// <returns>A configurator that can be used to configure the application further.</returns>
-    public static IConfigurator SetExceptionHandler(this IConfigurator configurator, Func<Exception, int>? exceptionHandler)
+    public static IConfigurator SetExceptionHandler(this IConfigurator configurator, Func<Exception, ITypeResolver?, int>? exceptionHandler)
     {
         if (configurator == null)
         {

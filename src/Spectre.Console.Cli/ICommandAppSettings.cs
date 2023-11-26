@@ -90,6 +90,8 @@ public interface ICommandAppSettings
     /// <summary>
     /// Gets or sets a handler for Exceptions.
     /// <para>This handler will not be called, if <see cref="PropagateExceptions"/> is set to <c>true</c>.</para>
+    /// The <see cref="ITypeResolver"/> argument will only be not-null, when the exception occurs during execution of
+    /// a command. I.e. only when the resolver is available.
     /// </summary>
-    public Func<Exception, int>? ExceptionHandler { get; set; }
+    public Func<Exception, ITypeResolver?, int>? ExceptionHandler { get; set; }
 }

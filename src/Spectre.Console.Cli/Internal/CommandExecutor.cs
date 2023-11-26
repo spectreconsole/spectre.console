@@ -128,19 +128,26 @@ internal sealed class CommandExecutor
         ITypeResolver resolver,
         IConfiguration configuration)
     {
-        // Bind the command tree against the settings.
-        var settings = CommandBinder.Bind(tree, leaf.Command.SettingsType, resolver);
-        configuration.Settings.Interceptor?.Intercept(context, settings);
-
-        // Create and validate the command.
-        var command = leaf.CreateCommand(resolver);
-        var validationResult = command.Validate(context, settings);
-        if (!validationResult.Successful)
+        try
         {
-            throw CommandRuntimeException.ValidationFailed(validationResult);
-        }
+            // Bind the command tree against the settings.
+            var settings = CommandBinder.Bind(tree, leaf.Command.SettingsType, resolver);
+            configuration.Settings.Interceptor?.Intercept(context, settings);
 
-        // Execute the command.
-        return command.Execute(context, settings);
+            // Create and validate the command.
+            var command = leaf.CreateCommand(resolver);
+            var validationResult = command.Validate(context, settings);
+            if (!validationResult.Successful)
+            {
+                throw CommandRuntimeException.ValidationFailed(validationResult);
+            }
+
+            // Execute the command.
+            return command.Execute(context, settings);
+        }
+        catch (Exception ex) when (configuration.Settings is { ExceptionHandler: not null, PropagateExceptions: false })
+        {
+            return Task.FromResult(configuration.Settings.ExceptionHandler(ex, resolver));
+        }
     }
 }
