@@ -44,6 +44,9 @@ public sealed class BarChart : Renderable, IHasCulture
     public double? MaxValue { get; set; }
 
 
+    /// <summary>
+    /// Gets or sets the value formatter function.
+    /// </summary>
     public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
 
     /// <summary>
