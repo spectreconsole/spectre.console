@@ -19,6 +19,7 @@ public sealed class BarChartItem : IBarChartItem
     /// Gets the item color.
     /// </summary>
     public Color? Color { get; }
+    public Color? LabelColor { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BarChartItem"/> class.
@@ -26,10 +27,11 @@ public sealed class BarChartItem : IBarChartItem
     /// <param name="label">The item label.</param>
     /// <param name="value">The item value.</param>
     /// <param name="color">The item color.</param>
-    public BarChartItem(string label, double value, Color? color = null)
+    public BarChartItem(string label, double value, Color? color = null, Color? labelColor = null)
     {
         Label = label ?? throw new ArgumentNullException(nameof(label));
         Value = value;
         Color = color;
+        LabelColor = labelColor;
     }
 }
