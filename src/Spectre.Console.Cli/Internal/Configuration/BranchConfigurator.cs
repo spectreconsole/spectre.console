@@ -1,4 +1,4 @@
-﻿namespace Spectre.Console.Cli;
+namespace Spectre.Console.Cli;
 
 internal sealed class BranchConfigurator : IBranchConfigurator
 {
