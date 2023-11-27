@@ -1,4 +1,4 @@
-﻿namespace Spectre.Console.Tests;
+namespace Spectre.Console.Tests;
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 public sealed class GitHubIssueAttribute : Attribute
