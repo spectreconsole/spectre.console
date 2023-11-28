@@ -1,4 +1,4 @@
-﻿namespace Spectre.Console.Tests.Unit.Cli.Testing;
+namespace Spectre.Console.Tests.Unit.Cli.Testing;
 
 public class FakeTypeRegistrarTests
 {

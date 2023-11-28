@@ -1,4 +1,4 @@
-﻿namespace Spectre.Console;
+namespace Spectre.Console;
 
 [DebuggerDisplay("{Region,nq}")]
 internal sealed class LayoutRender

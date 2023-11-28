@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Net;
 using Docs.Utilities;
 using Microsoft.Extensions.DependencyInjection;
