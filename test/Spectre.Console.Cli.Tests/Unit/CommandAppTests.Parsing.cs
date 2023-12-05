@@ -585,6 +585,24 @@ public sealed partial class CommandAppTests
                 // Then
                 result.Output.ShouldBe("Error: Command 'dog' is missing required argument 'AGE'.");
             }
+
+            // versionableMammal -v should run VersionableMammalCommand and not display the version
+            [Fact]
+            public void Should_Allow_VersionableMammalCommand()
+            {
+                // Given
+                var app = new CommandAppTester();
+                app.Configure(configurator =>
+                {
+                    configurator.AddCommand<VersionableMammalCommand>("versionableMammal");
+                });
+
+                // When
+                var result = app.Run("versionableMammal", "-v", "1.2.5");
+
+                // Then
+                result.Output.ShouldBe("Versionable ran!");
+            }
         }
     }
 }
