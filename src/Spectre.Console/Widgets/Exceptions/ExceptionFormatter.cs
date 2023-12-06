@@ -303,15 +303,16 @@ internal static class ExceptionFormatter
             .FirstOrDefault(a =>
             {
                 var attributeType = a.GetType();
-                return attributeType.Namespace == "System.Runtime.CompilerServices" &&
+                return attributeType != null &&
+                       attributeType.Namespace == "System.Runtime.CompilerServices" &&
                        attributeType.Name == "TupleElementNamesAttribute";
             });
 
         if (tupleNameAttribute != null)
         {
             var propertyInfo = tupleNameAttribute.GetType()
-                .GetProperty("TransformNames", BindingFlags.Instance | BindingFlags.Public)!;
-            var tupleNames = propertyInfo.GetValue(tupleNameAttribute) as IList<string>;
+                .GetProperty("TransformNames", BindingFlags.Instance | BindingFlags.Public);
+            var tupleNames = propertyInfo?.GetValue(tupleNameAttribute) as IList<string>;
             if (tupleNames?.Count > 0)
             {
                 var args = parameterType.GetGenericArguments();
