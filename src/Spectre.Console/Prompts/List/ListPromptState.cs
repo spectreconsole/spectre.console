@@ -19,17 +19,50 @@ internal sealed class ListPromptState<T>
         WrapAround = wrapAround;
     }
 
-    public bool Update(ConsoleKey key)
+    public bool Update(ConsoleKey key, Func<T, string>? converter = null)
     {
-        var index = key switch
+        var index = Index;
+
+        // if user presses a letter key
+        if (key >= ConsoleKey.A && key <= ConsoleKey.Z)
         {
-            ConsoleKey.UpArrow => Index - 1,
-            ConsoleKey.DownArrow => Index + 1,
+            var keyStruck = new string((char)key, 1);
+
+            // find indexes of items that start with the letter
+            int[] matchingIndexes = Items.Select((item, idx) => (ItemToString(item, converter), idx))
+                                   .Where(k => k.Item1?.StartsWith(keyStruck, StringComparison.InvariantCultureIgnoreCase) ?? false)
+                                   .Select(k => k.idx)
+                                   .ToArray();
+
+            // if there are items beginning with this letter
+            if (matchingIndexes.Length > 0)
+            {
+                // is one of them currently selected?
+                var currentlySelected = Array.IndexOf(matchingIndexes, index);
+
+                if (currentlySelected == -1)
+                {
+                    // we are not currently selecting any item beginning with the struck key
+                    // so jump to first item in list that begins with the letter
+                    index = matchingIndexes[0];
+                }
+                else
+                {
+                    // cycle to next (circular)
+                    index = matchingIndexes[(currentlySelected + 1) % matchingIndexes.Length];
+                }
+            }
+        }
+
+        index = key switch
+        {
+            ConsoleKey.UpArrow => index - 1,
+            ConsoleKey.DownArrow => index + 1,
             ConsoleKey.Home => 0,
             ConsoleKey.End => ItemCount - 1,
-            ConsoleKey.PageUp => Index - PageSize,
-            ConsoleKey.PageDown => Index + PageSize,
-            _ => Index,
+            ConsoleKey.PageUp => index - PageSize,
+            ConsoleKey.PageDown => index + PageSize,
+            _ => index,
         };
 
         index = WrapAround
@@ -42,5 +75,10 @@ internal sealed class ListPromptState<T>
         }
 
         return false;
+    }
+
+    private string ItemToString(ListPromptItem<T> item, Func<T, string>? converter)
+    {
+        return (converter ?? TypeConverterHelper.ConvertToString)?.Invoke(item.Data) ?? item.Data.ToString() ?? "?";
     }
 }

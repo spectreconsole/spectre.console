@@ -61,7 +61,7 @@ internal sealed class ListPrompt<T>
                     break;
                 }
 
-                if (state.Update(key.Key) || result == ListPromptInputResult.Refresh)
+                if (state.Update(key.Key, _strategy.Converter) || result == ListPromptInputResult.Refresh)
                 {
                     hook.Refresh();
                 }
