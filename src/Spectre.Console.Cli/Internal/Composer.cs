@@ -72,12 +72,19 @@ internal sealed class Composer : IRenderable
         return this;
     }
 
-    public Composer Join(string separator, IEnumerable<string> composers)
+    public Composer Join(string separator, IEnumerable<Composer> composers)
     {
         if (composers != null)
         {
-            Space();
-            Text(string.Join(separator, composers));
+            foreach (var composer in composers)
+            {
+                if (_content.ToString().Length > 0)
+                {
+                    Text(separator);
+                }
+
+                Text(composer.ToString());
+            }
         }
 
         return this;
