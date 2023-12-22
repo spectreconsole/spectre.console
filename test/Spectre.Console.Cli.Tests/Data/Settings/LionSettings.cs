@@ -14,4 +14,8 @@ public class LionSettings : CatSettings
     [Description("The days the lion goes hunting.")]
     [DefaultValue(new[] { DayOfWeek.Monday, DayOfWeek.Thursday })]
     public DayOfWeek[] HuntDays { get; set; }
+
+    [CommandOption("-w|--weight [WEIGHT]")]
+    [Description("The weight of the lion, in kgs.")]
+    public FlagValue<int?> Weight { get; set; }
 }
