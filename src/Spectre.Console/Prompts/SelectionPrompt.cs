@@ -197,19 +197,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
 
             if (searchText.Length > 0 && !(item.Node.IsGroup && Mode == SelectionMode.Leaf))
             {
-                var index = text.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
-                if (index >= 0)
-                {
-                    var before = text.Substring(0, index);
-                    var match = text.Substring(index, searchText.Length);
-                    var after = text.Substring(index + searchText.Length);
-
-                    text = new StringBuilder()
-                        .Append(before)
-                        .AppendWithStyle(searchHighlightStyle, match)
-                        .Append(after)
-                        .ToString();
-                }
+                text = text.Highlight(searchText, searchHighlightStyle);
             }
 
             grid.AddRow(new Markup(indent + prompt + " " + text, style));

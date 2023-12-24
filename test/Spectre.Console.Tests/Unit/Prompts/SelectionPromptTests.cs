@@ -2,6 +2,8 @@ namespace Spectre.Console.Tests.Unit;
 
 public sealed class SelectionPromptTests
 {
+    private const string ESC = "\u001b";
+
     [Fact]
     public void Should_Not_Throw_When_Selecting_An_Item_With_Escaped_Markup()
     {
@@ -61,5 +63,27 @@ public sealed class SelectionPromptTests
 
         // Then
         selection.ShouldBe("D");
+    }
+
+    [Fact]
+    public void Should_Highlight_Search_Term()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.EmitAnsiSequences();
+        console.Input.PushText("1");
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new SelectionPrompt<string>()
+            .Title("Select one")
+            .EnableSearch()
+            .AddChoices("Item 1");
+        prompt.Show(console);
+
+        // Then
+        var consoleOutput = console.Output;
+        consoleOutput.ShouldContain($"{ESC}[38;5;12m> Item {ESC}[0m{ESC}[1;38;5;12;48;5;11m1{ESC}[0m");
     }
 }
