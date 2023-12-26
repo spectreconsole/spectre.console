@@ -116,6 +116,37 @@ public static class BarChartExtensions
         return chart;
     }
 
+    public static BarChart UseValueFormatter(this BarChart chart, Func<double, CultureInfo, string>? func)
+    {
+        if (chart is null)
+        {
+            throw new ArgumentNullException(nameof(chart));
+        }
+
+        chart.ValueFormatter = func;
+        return chart;
+    }
+
+    /// <summary>
+    /// Tags will be shown.
+    /// </summary>
+    /// <param name="chart">The breakdown chart.</param>
+    /// <param name="func">The value formatter to use.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static BarChart UseValueFormatter(this BarChart chart, Func<double, string>? func)
+    {
+        if (chart is null)
+        {
+            throw new ArgumentNullException(nameof(chart));
+        }
+
+        chart.ValueFormatter = func != null
+            ? (value, _) => func(value)
+            : null;
+
+        return chart;
+    }
+
     /// <summary>
     /// Sets the width of the bar chart.
     /// </summary>
