@@ -63,11 +63,11 @@ public sealed class BarChartTests
     }
 
     [Fact]
-    [Expectation("Label_Style")]
-    public async Task Should_Render_Correctly_WithLabelStyle()
+    [Expectation("Style")]
+    public async Task Should_Render_Correctly_WithStyle()
     {
         // Given
-        var console = new TestConsole();
+        var console = new TestConsole().EmitAnsiSequences();
 
         // When
         console.Write(new BarChart()
