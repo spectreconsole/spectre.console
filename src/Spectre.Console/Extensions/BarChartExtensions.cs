@@ -12,7 +12,7 @@ public static class BarChartExtensions
     /// <param name="label">The item label.</param>
     /// <param name="value">The item value.</param>
     /// <param name="color">The item color.</param>
-    /// <param name="labelColor">The label color.</param>
+    /// <param name="labelStyle">The label style.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static BarChart AddItem(this BarChart chart, string label, double value, Color? color = null, Style? labelStyle = null)
     {
