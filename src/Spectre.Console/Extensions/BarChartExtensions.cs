@@ -14,14 +14,14 @@ public static class BarChartExtensions
     /// <param name="color">The item color.</param>
     /// <param name="labelColor">The label color.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static BarChart AddItem(this BarChart chart, string label, double value, Color? color = null, Style? labelColor = null)
+    public static BarChart AddItem(this BarChart chart, string label, double value, Color? color = null, Style? labelStyle = null)
     {
         if (chart is null)
         {
             throw new ArgumentNullException(nameof(chart));
         }
 
-        chart.Data.Add(new BarChartItem(label, value, color, labelColor));
+        chart.Data.Add(new BarChartItem(label, value, color, labelStyle));
         return chart;
     }
 
