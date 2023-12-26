@@ -80,3 +80,13 @@ AnsiConsole.Write(new BarChart()
     .AddItem(new Fruit("Mango", 3))
     .AddItems(items));
 ```
+
+### Addd items with bar and label style
+
+```csharp
+AnsiConsole.Write(new BarChart()
+    .Width(60)
+    .Label("[green bold underline]Number of fruits[/]")
+    .CenterLabel()
+    .AddItem("Apple", 12, Color.Red, Color.Red);
+```
