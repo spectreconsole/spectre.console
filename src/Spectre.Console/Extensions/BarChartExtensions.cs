@@ -50,7 +50,7 @@ public static class BarChartExtensions
                 new BarChartItem(
                     item.Label,
                     item.Value,
-                    item.Color, item.LabelColor));
+                    item.Color, item.LabelStyle));
         }
 
         return chart;

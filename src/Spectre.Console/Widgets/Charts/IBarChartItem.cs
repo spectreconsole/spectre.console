@@ -23,5 +23,5 @@ public interface IBarChartItem
     /// <summary>
     /// Gets the label color.
     /// </summary>
-    Color? LabelColor { get; }
+    Style? LabelStyle { get; }
 }
