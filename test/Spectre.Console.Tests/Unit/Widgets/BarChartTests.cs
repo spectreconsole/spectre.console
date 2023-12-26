@@ -61,4 +61,23 @@ public sealed class BarChartTests
         // Then
         await Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    [Expectation("Label_Style")]
+    public async Task Should_Render_Correctly_WithLabelStyle()
+    {
+        // Given
+        var console = new TestConsole();
+
+        // When
+        console.Write(new BarChart()
+            .Width(60)
+            .Label("Number of fruits")
+            .AddItem("Apple", 12, Color.Red, Color.Red)
+            .AddItem("Orange", 54, Color.Orange1, Color.Orange1)
+            .AddItem("Banana", 33, Color.Yellow, Color.Yellow));
+
+        // Then
+        await Verifier.Verify(console.Output);
+    }
 }
