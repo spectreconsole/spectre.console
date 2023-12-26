@@ -14,7 +14,7 @@ public static class BarChartExtensions
     /// <param name="color">The item color.</param>
     /// <param name="labelColor">The label color.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static BarChart AddItem(this BarChart chart, string label, double value, Color? color = null, Color? labelColor = null)
+    public static BarChart AddItem(this BarChart chart, string label, double value, Color? color = null, Style? labelColor = null)
     {
         if (chart is null)
         {
