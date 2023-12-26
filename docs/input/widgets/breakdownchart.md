@@ -1,10 +1,7 @@
 Title: Breakdown Chart
 Order: 25
 Description: "Use **BreakdownChart** to render breakdown charts to the console."
-Highlights:
-    - Custom colors
-    - Labels
-    - Use your own data with a converter.
+Highlights: - Custom colors - Labels - Use your own data with a converter.
 Reference: T:Spectre.Console.BreakdownChart
 
 ---
@@ -131,4 +128,14 @@ AnsiConsole.Write(new BreakdownChart()
 .Width(60)
 .AddItem(new Fruit("Mango", 3, Color.Orange4))
 .AddItems(items));
+```
+
+### Add value formatter to chart numbers
+
+```csharp
+var chart = new BreakdownChart();
+chart.UseValueFormater(value => value.ToString("N0"));
+
+// This can be simplified as extension methods are chainable.
+var chart = new BreakdownChart().UseValueFormatter(v => v.ToString("N0"));
 ```
