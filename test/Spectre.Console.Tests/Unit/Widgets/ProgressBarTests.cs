@@ -11,10 +11,17 @@ public class ProgressBarTests
         // Given
         var console = new TestConsole();
 
-        var bar = new ProgressBar() { Width = 60, Value = 9000, MaxValue = 9000, ShowValue = true };
+        var bar = new ProgressBar()
+        {
+            Width = 60,
+            Value = 9000,
+            MaxValue = 9000,
+            ShowValue = true
+        };
 
         // When
         console.Write(bar);
+
         // Then
         await Verifier.Verify(console.Output);
     }
@@ -37,6 +44,7 @@ public class ProgressBarTests
 
         // When
         console.Write(bar);
+
         // Then
         await Verifier.Verify(console.Output);
     }
