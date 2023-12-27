@@ -264,6 +264,33 @@ public sealed partial class CommandAppTests
             return Verifier.Verify(result.Output, settings).UseTextForParameters(expectationPrefix);
         }
 
+        [Theory]
+        [InlineData(false, "Style_Default")]
+        [InlineData(true, "Style_None")]
+        [Expectation("Default_Without_Args_Additional")]
+        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_DefaultStyling(bool ignoreStyling, string expectationPrefix)
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<LionCommand>();
+            fixture.Configure(configurator =>
+            {
+                configurator.AddExample("20", "--alive");
+                configurator.Settings.RenderMarkupInline = true;
+                configurator.Settings.IgnoreStyling = ignoreStyling;
+                configurator.SetApplicationName("myapp");
+                configurator.AddCommand<GiraffeCommand>("giraffe");
+            });
+
+            // When
+            var result = fixture.Run();
+
+            // Then
+            var settings = new VerifySettings();
+            settings.DisableRequireUniquePrefix();
+            return Verifier.Verify(result.Output, settings).UseTextForParameters(expectationPrefix);
+        }
+
         [Fact]
         [Expectation("Default_Greeter")]
         public Task Should_Not_Output_Default_Command_When_Command_Has_No_Required_Parameters_And_Is_Called_Without_Args()

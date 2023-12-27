@@ -15,6 +15,8 @@ internal sealed class CommandAppSettings : ICommandAppSettings
     public bool PropagateExceptions { get; set; }
     public bool ValidateExamples { get; set; }
     public bool TrimTrailingPeriod { get; set; } = true;
+    public bool RenderMarkupInline { get; set; } = false;
+    public bool IgnoreStyling { get; set; } = false;
     public bool StrictParsing { get; set; }
     public bool ConvertFlagsToRemainingArguments { get; set; } = false;
 

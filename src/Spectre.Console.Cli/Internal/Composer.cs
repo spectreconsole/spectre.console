@@ -1,33 +1,68 @@
+using static System.Net.Mime.MediaTypeNames;
+
 namespace Spectre.Console.Cli;
 
 internal sealed class Composer : IRenderable
 {
-    private readonly StringBuilder _content;
+    private readonly StringBuilder content;
+
+    /// <summary>
+    /// Whether to emit the markup styles, inline, when rendering the content.
+    /// </summary>
+    private readonly bool renderMarkup = false;
+
+    /// <summary>
+    /// Whether to ignore styling when rendering the content.
+    /// </summary>
+    private readonly bool ignoreStyling = false;
 
     public Composer()
     {
-        _content = new StringBuilder();
+        content = new StringBuilder();
+    }
+
+    public Composer(bool renderMarkup, bool ignoreStyling)
+        : this()
+    {
+        this.renderMarkup = renderMarkup;
+        this.ignoreStyling = ignoreStyling;
     }
 
     public Composer Text(string text)
     {
-        _content.Append(text);
+        content.Append(text);
         return this;
     }
 
     public Composer Style(string style, string text)
     {
-        _content.Append('[').Append(style).Append(']');
-        _content.Append(text.EscapeMarkup());
-        _content.Append("[/]");
+        if (ignoreStyling)
+        {
+            Text(text);
+        }
+        else
+        {
+            content.Append('[').Append(style).Append(']');
+            content.Append(text.EscapeMarkup());
+            content.Append("[/]");
+        }
+
         return this;
     }
 
     public Composer Style(string style, Action<Composer> action)
     {
-        _content.Append('[').Append(style).Append(']');
-        action(this);
-        _content.Append("[/]");
+        if (ignoreStyling)
+        {
+            action(this);
+        }
+        else
+        {
+            content.Append('[').Append(style).Append(']');
+            action(this);
+            content.Append("[/]");
+        }
+
         return this;
     }
 
@@ -53,7 +88,7 @@ internal sealed class Composer : IRenderable
 
     public Composer Repeat(char character, int count)
     {
-        _content.Append(new string(character, count));
+        content.Append(new string(character, count));
         return this;
     }
 
@@ -66,7 +101,7 @@ internal sealed class Composer : IRenderable
     {
         for (var i = 0; i < count; i++)
         {
-            _content.Append(Environment.NewLine);
+            content.Append(Environment.NewLine);
         }
 
         return this;
@@ -78,7 +113,7 @@ internal sealed class Composer : IRenderable
         {
             foreach (var composer in composers)
             {
-                if (_content.ToString().Length > 0)
+                if (content.ToString().Length > 0)
                 {
                     Text(separator);
                 }
@@ -92,16 +127,30 @@ internal sealed class Composer : IRenderable
 
     public Measurement Measure(RenderOptions options, int maxWidth)
     {
-        return ((IRenderable)new Markup(_content.ToString())).Measure(options, maxWidth);
+        if (renderMarkup)
+        {
+            return ((IRenderable)new Paragraph(content.ToString())).Measure(options, maxWidth);
+        }
+        else
+        {
+            return ((IRenderable)new Markup(content.ToString())).Measure(options, maxWidth);
+        }
     }
 
     public IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        return ((IRenderable)new Markup(_content.ToString())).Render(options, maxWidth);
+        if (renderMarkup)
+        {
+            return ((IRenderable)new Paragraph(content.ToString())).Render(options, maxWidth);
+        }
+        else
+        {
+            return ((IRenderable)new Markup(content.ToString())).Render(options, maxWidth);
+        }
     }
 
     public override string ToString()
     {
-        return _content.ToString();
+        return content.ToString();
     }
 }
