@@ -1,7 +1,10 @@
 Title: Breakdown Chart
 Order: 25
 Description: "Use **BreakdownChart** to render breakdown charts to the console."
-Highlights: - Custom colors - Labels - Use your own data with a converter.
+Highlights:
+    - Custom colors
+    - Labels
+    - Use your own data with a converter.
 Reference: T:Spectre.Console.BreakdownChart
 
 ---
