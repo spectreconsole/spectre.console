@@ -16,7 +16,7 @@ public class ProgressBarTests
             Width = 60,
             Value = 9000,
             MaxValue = 9000,
-            ShowValue = true
+            ShowValue = true,
         };
 
         // When
