@@ -1,16 +1,15 @@
-Title: Testing Spectre CLI
+Title: Testing Spectre CLI Apps
 Description: "Test Spectre CLI features,functionality, output, and performance."
 ---
 
-## Introduction
-
-This document describes how to test Spectre CLI using the `CommandAppTester` class.
+The `CommandAppTester` class is used to test a Spectre CLI application.
+It should be used to test a `CommandApp` `Command`s and `CommandSetting`s.
 
 ## CommandAppTester
 
 The `CommandAppTester` class is a wrapper around the `CommandApp` object configured for testing.
 
-## Example
+### Example
 
 ```csharp
 public class Program
@@ -18,21 +17,22 @@ public class Program
     public static int Main(string[] args)
     {
         var app = new CommandApp();
-        app.Configure(config =>
-        {
-            config.AddCommand<HelloCommand>("hello");
-        });
-
+        app.Configure(appConfig);
         var result = app.Run(args);
         return result;
+    }
+    
+    public static void appConfig(IConfigurator config)
+    {
+        config.AddCommand<HelloCommand>("hello");
     }
 }
 
 public class HelloCommand : Command
 {
-    public override int Execute(CommandContext context, string[] args)
+    public override int Execute(CommandContext context)
     {
-        context.Console.WriteLine("Hello world");
+        AnsiConsole.WriteLine("Hello world");
         return 0;
     }
 }
@@ -44,17 +44,17 @@ public class ProgramTests
     {
         // Given
         var app = new CommandAppTester();
-        app.Configure(config =>
-        {
-            config.AddCommand<HelloCommand>("hello");
-        });
+        app.Configure(Program.appConfig);
 
         // When
         var result = app.Run("hello");
 
         // Then
-        result.ExitCode.ShouldBe(0);
-        result.Output.ShouldBe("Hello world");
+        Assert.Multiple(() =>
+        {
+            Assert.Equal(0, result.ExitCode);
+            Assert.Equal("Hello world", result.Output);
+        });
     }
 }
 ```
