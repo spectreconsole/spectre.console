@@ -52,6 +52,21 @@ public class HighlightTests
     }
 
     [Fact]
+    public void Should_Highlight_Only_First_Matched_Text()
+    {
+        // Given
+        var value = "Sample text with test word";
+        var searchText = "te";
+        var highlightStyle = _highlightStyle;
+
+        // When
+        var result = value.Highlight(searchText, highlightStyle);
+
+        // Then
+        result.ShouldBe("Sample [bold on yellow]te[/]xt with test word");
+    }
+
+    [Fact]
     public void Should_Not_Match_Text_Outside_Of_Text_Tokens()
     {
         // Given
