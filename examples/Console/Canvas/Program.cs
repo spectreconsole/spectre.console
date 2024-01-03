@@ -10,10 +10,6 @@ public static class Program
 {
     public static void Main()
     {
-        // Draw a mandelbrot set using a Canvas
-        var mandelbrot = Mandelbrot.Generate(32, 32);
-        Render(mandelbrot, "Mandelbrot");
-
         // Draw an image using CanvasImage powered by ImageSharp.
         // This requires the "Spectre.Console.ImageSharp" NuGet package.
         var image = new CanvasImage("cake.png");
@@ -21,7 +17,7 @@ public static class Program
         image.MaxWidth(16);
         Render(image, "Image from file (16 wide)");
 
-        // Draw image again, but without render width
+        // Draw image again, but without max width
         image.NoMaxWidth();
         image.Mutate(ctx => ctx.Grayscale().Rotate(-45).EntropyCrop());
         Render(image, "Image from file (fit, greyscale, rotated)");
