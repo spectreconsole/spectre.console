@@ -46,16 +46,6 @@ internal sealed class CommandExecutor
             }
         }
 
-        //// Asking for version? Kind of a hack, but it's alright.
-        //// We should probably make this a bit better in the future.
-        //if (args.Count() > 0 &&
-        //    (args.First().Equals("-v", StringComparison.OrdinalIgnoreCase) || args.First().Equals("--version", StringComparison.OrdinalIgnoreCase)))
-        //{
-        //    var console = configuration.Settings.Console.GetConsole();
-        //    console.WriteLine(ResolveApplicationVersion(configuration));
-        //    return 0;
-        //}
-
         // Parse and map the model against the arguments.
         var parsedResult = ParseCommandLineArguments(model, configuration.Settings, args);
 
