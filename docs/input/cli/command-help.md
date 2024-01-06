@@ -15,6 +15,36 @@ The help is also context aware and tailored depending on what has been specified
 
 `HelpProvider` is the `Spectre.Console` class responsible for determining context and preparing the help text to write to the console. It is an implementation of the public interface `IHelpProvider`.
 
+## Styling the help text
+
+Basic styling is applied to the generated help text by default, however this is configurable.
+
+There are three different themes shipped with Spectre.Console, namely `Default`, `BoldHeadings`, `None`. 
+
+You can explicitly set the theme when configuring a CommandApp, for example:
+
+```csharp
+config.Settings.HelpProviderStyles = HelpProviderStyle.BoldHeadings;
+```
+
+Implied by the name, `HelpProviderStyle.None` doesn't include any styles and is a good choice for accessibility.
+
+A custom theme can also be defined and applied, in a similar way how the HelpProviderStyle factories do it.
+
+```csharp
+HelpProviderStyle styles = default(HelpProviderStyle);
+
+styles.Description.Header.Markup = "yellow";
+styles.Usage.Header.Markup = "yellow";
+styles.Usage.CurrentCommand.Markup = "underline";
+styles.Usage.Command.Markup = "aqua";
+
+config.Settings.HelpProviderStyles = styles;
+
+```
+
+See [Markup](../markup) for information about the use of markup in Spectre.Console, and [Styles](xref:styles) for a listing of supported styles.
+
 ## Custom help providers
 
 Whilst it shouldn't be common place to implement your own help provider, it is however possible. 
