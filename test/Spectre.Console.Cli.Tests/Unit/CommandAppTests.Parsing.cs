@@ -586,5 +586,28 @@ public sealed partial class CommandAppTests
                 result.Output.ShouldBe("Error: Command 'dog' is missing required argument 'AGE'.");
             }
         }
+
+        /// <summary>
+        /// -v or --version switches should result in the Version option being set
+        /// on VersionSettings, and then VersionCommand.Execute(...) being called
+        /// </summary>
+        [InlineData("-v")]
+        [InlineData("--version")]
+        [Theory]
+        public void Should_Run_Custom_Version_Command(string versionOption)
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(configurator =>
+            {
+                configurator.AddCommand<Spectre.Console.Tests.Data.VersionCommand>("CustomVersionCommand");
+            });
+
+            // When
+            var result = app.Run("CustomVersionCommand", versionOption, "1.2.5");
+
+            // Then
+            result.Output.ShouldBe("VersionCommand ran, Version: 1.2.5");
+        }
     }
 }
