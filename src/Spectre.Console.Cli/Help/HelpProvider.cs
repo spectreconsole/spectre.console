@@ -9,7 +9,7 @@ namespace Spectre.Console.Cli.Help;
 public class HelpProvider : IHelpProvider
 {
     private readonly HelpProviderResources resources;
-    private HelpProviderStyle helpStyles;
+    private readonly HelpProviderStyle helpStyles;
 
     /// <summary>
     /// Gets a value indicating how many examples from direct children to show in the help text.
@@ -128,30 +128,9 @@ public class HelpProvider : IHelpProvider
         this.TrimTrailingPeriod = settings.TrimTrailingPeriod;
         this.RenderMarkupInline = settings.RenderMarkupInline;
         this.IgnoreStyling = settings.IgnoreStyling;
+        this.helpStyles = settings.HelpProviderStyles;
 
         resources = new HelpProviderResources(settings.Culture);
-
-        // Default HelpProvider styles
-        helpStyles.Description.Header.Markup = "yellow";
-        helpStyles.Usage.Header.Markup = "yellow";
-        helpStyles.Usage.CurrentCommand.Markup = "underline";
-        helpStyles.Usage.Command.Markup = "aqua";
-        helpStyles.Usage.Options.Markup = "grey";
-        helpStyles.Usage.RequiredArgument.Markup = "aqua";
-        helpStyles.Usage.OptionalArgument.Markup = "silver";
-        helpStyles.Examples.Header.Markup = "yellow";
-        helpStyles.Examples.Arguments.Markup = "grey";
-        helpStyles.Arguments.Header.Markup = "yellow";
-        helpStyles.Arguments.RequiredArgument.Markup = "silver";
-        helpStyles.Arguments.OptionalArgument.Markup = "silver";
-        helpStyles.Commands.Header.Markup = "yellow";
-        helpStyles.Commands.ChildCommand.Markup = "silver";
-        helpStyles.Commands.RequiredArgument.Markup = "silver";
-        helpStyles.Options.Header.Markup = "yellow";
-        helpStyles.Options.DefaultValueHeader.Markup = "lime";
-        helpStyles.Options.DefaultValue.Markup = "bold";
-        helpStyles.Options.RequiredOption.Markup = "silver";
-        helpStyles.Options.OptionalOption.Markup = "grey";
     }
 
     /// <inheritdoc/>

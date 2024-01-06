@@ -1,3 +1,4 @@
+using Spectre.Console.Cli.Help;
 using Spectre.Console.Cli.Tests.Data.Help;
 
 namespace Spectre.Console.Tests.Unit.Cli;
@@ -268,7 +269,7 @@ public sealed partial class CommandAppTests
         [InlineData(false, "Style_Default")]
         [InlineData(true, "Style_None")]
         [Expectation("Default_Without_Args_Additional")]
-        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_DefaultStyling(bool ignoreStyling, string expectationPrefix)
+        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_MarkupStyling(bool ignoreStyling, string expectationPrefix)
         {
             // Given
             var fixture = new CommandAppTester();

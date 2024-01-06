@@ -14,11 +14,12 @@ internal sealed class CommandAppSettings : ICommandAppSettings
     public CaseSensitivity CaseSensitivity { get; set; }
     public bool PropagateExceptions { get; set; }
     public bool ValidateExamples { get; set; }
-    public bool TrimTrailingPeriod { get; set; } = true;
-    public bool RenderMarkupInline { get; set; } = false;
-    public bool IgnoreStyling { get; set; } = false;
+    public bool TrimTrailingPeriod { get; set; }
+    public bool RenderMarkupInline { get; set; }
+    public bool IgnoreStyling { get; set; }
+    public HelpProviderStyle HelpProviderStyles { get; set; }
     public bool StrictParsing { get; set; }
-    public bool ConvertFlagsToRemainingArguments { get; set; } = false;
+    public bool ConvertFlagsToRemainingArguments { get; set; }
 
     public ParsingMode ParsingMode =>
         StrictParsing ? ParsingMode.Strict : ParsingMode.Relaxed;
@@ -31,6 +32,12 @@ internal sealed class CommandAppSettings : ICommandAppSettings
         CaseSensitivity = CaseSensitivity.All;
         ShowOptionDefaultValues = true;
         MaximumIndirectExamples = 5;
+        TrimTrailingPeriod = true;
+        RenderMarkupInline = false;
+        IgnoreStyling = false;
+        //HelpProviderStyles = HelpProviderStyle.Default;
+        HelpProviderStyles = HelpProviderStyle.None;
+        ConvertFlagsToRemainingArguments = false;
     }
 
     public bool IsTrue(Func<CommandAppSettings, bool> func, string environmentVariableName)

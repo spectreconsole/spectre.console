@@ -42,9 +42,16 @@ internal sealed class Composer : IRenderable
         }
         else
         {
-            content.Append('[').Append(style).Append(']');
-            content.Append(text.EscapeMarkup());
-            content.Append("[/]");
+            if (string.IsNullOrEmpty(style))
+            {
+                Text(text);
+            }
+            else
+            {
+                content.Append('[').Append(style).Append(']');
+                content.Append(text.EscapeMarkup());
+                content.Append("[/]");
+            }
         }
 
         return this;
@@ -127,7 +134,11 @@ internal sealed class Composer : IRenderable
 
     public Measurement Measure(RenderOptions options, int maxWidth)
     {
-        if (renderMarkup)
+        if (ignoreStyling)
+        {
+            return ((IRenderable)new Paragraph(content.ToString())).Measure(options, maxWidth);
+        }
+        else if (renderMarkup)
         {
             return ((IRenderable)new Paragraph(content.ToString())).Measure(options, maxWidth);
         }
@@ -139,7 +150,11 @@ internal sealed class Composer : IRenderable
 
     public IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        if (renderMarkup)
+        if (ignoreStyling)
+        {
+            return ((IRenderable)new Paragraph(content.ToString())).Render(options, maxWidth);
+        }
+        else if (renderMarkup)
         {
             return ((IRenderable)new Paragraph(content.ToString())).Render(options, maxWidth);
         }
