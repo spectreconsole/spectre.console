@@ -121,7 +121,7 @@ internal sealed class CommandExecutor
             VersionHelper.GetVersion(Assembly.GetEntryAssembly());
     }
 
-    private static Task<int> Execute(
+    private static async Task<int> Execute(
         CommandTree leaf,
         CommandTree tree,
         CommandContext context,
@@ -132,7 +132,19 @@ internal sealed class CommandExecutor
         {
             // Bind the command tree against the settings.
             var settings = CommandBinder.Bind(tree, leaf.Command.SettingsType, resolver);
-            configuration.Settings.Interceptor?.Intercept(context, settings);
+            var interceptors =
+                ((IEnumerable<ICommandInterceptor>?)resolver.Resolve(typeof(IEnumerable<ICommandInterceptor>))
+                ?? Array.Empty<ICommandInterceptor>()).ToList();
+#pragma warning disable CS0618 // Type or member is obsolete
+            if (configuration.Settings.Interceptor != null)
+            {
+                interceptors.Add(configuration.Settings.Interceptor);
+            }
+#pragma warning restore CS0618 // Type or member is obsolete
+            foreach (var interceptor in interceptors)
+            {
+                interceptor.Intercept(context, settings);
+            }
 
             // Create and validate the command.
             var command = leaf.CreateCommand(resolver);
@@ -143,7 +155,13 @@ internal sealed class CommandExecutor
             }
 
             // Execute the command.
-            return command.Execute(context, settings);
+            var result = await command.Execute(context, settings);
+            foreach (var interceptor in interceptors)
+            {
+                interceptor.InterceptResult(context, settings, ref result);
+            }
+
+            return result;
         }
         catch (Exception ex) when (configuration.Settings is { ExceptionHandler: not null, PropagateExceptions: false })
         {

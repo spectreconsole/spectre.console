@@ -50,6 +50,7 @@ public interface ICommandAppSettings
     /// Gets or sets the <see cref="ICommandInterceptor"/> used
     /// to intercept settings before it's being sent to the command.
     /// </summary>
+    [Obsolete("Register the interceptor with the ITypeRegistrar.")]
     ICommandInterceptor? Interceptor { get; set; }
 
     /// <summary>

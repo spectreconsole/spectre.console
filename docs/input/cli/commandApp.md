@@ -81,9 +81,12 @@ Hint: If you do write your own implementation of `TypeRegistrar` and `TypeResolv
 there is a utility `TypeRegistrarBaseTests` available that can be used to ensure your implementations adhere to the required implementation. Simply call `TypeRegistrarBaseTests.RunAllTests()` and expect no `TypeRegistrarBaseTests.TestFailedException` to be thrown.
 
 ## Interception
+Interceptors can be registered with the `TypeRegistrar` (or with a custom DI-Container). Alternatively, `CommandApp` also provides a `SetInterceptor` configuration.
 
-`CommandApp` also provides a `SetInterceptor` configuration. An interceptor is run before all commands are executed. This is typically used for configuring logging or other infrastructure concerns.
+All interceptors must implement `ICommandInterceptor`. Upon execution of a command, The `Intercept`-Method of an instance of your interceptor will be called with the parsed settings. This provides an opportunity for configuring any infrastructure or modifying the settings.
+When the command has been run, the `InterceptResult`-Method of the same instance is called with the result of the command.
+This provides an opportunity to modify the result and also to tear down any infrastructure in use.
 
-All interceptors must implement `ICommandInterceptor`. Upon execution of a command, an instance of your interceptor will be called with the parsed settings. This provides an opportunity for configuring any infrastructure or modifying the settings.
+The `Intercept`-Method of each interceptor is run before the command is executed and the `InterceptResult`-Method is run after it. These are typically used for configuring logging or other infrastructure concerns.
 
 For an example of using the interceptor to configure logging, see the [Serilog demo](https://github.com/spectreconsole/spectre.console/tree/main/examples/Cli/Logging).
