@@ -35,7 +35,7 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
-        public void Should_Output_Application_Version_To_The_Console_With_Command()
+        public void Should_Execute_Command_Not_Output_Application_Version_To_The_Console()
         {
             // Given
             var fixture = new CommandAppTester();
@@ -50,11 +50,12 @@ public sealed partial class CommandAppTests
             var result = fixture.Run("empty", "--version");
 
             // Then
-            result.Output.ShouldBe("1.0");
+            result.Output.ShouldBe(string.Empty);
+            result.Context.ShouldHaveRemainingArgument("version", new[] { (string)null });
         }
 
         [Fact]
-        public void Should_Output_Application_Version_To_The_Console_With_Default_Command()
+        public void Should_Execute_Default_Command_Not_Output_Application_Version_To_The_Console()
         {
             // Given
             var fixture = new CommandAppTester();
@@ -68,7 +69,8 @@ public sealed partial class CommandAppTests
             var result = fixture.Run("--version");
 
             // Then
-            result.Output.ShouldBe("1.0");
+            result.Output.ShouldBe(string.Empty);
+            result.Context.ShouldHaveRemainingArgument("version", new[] { (string)null });
         }
 
         [Fact]

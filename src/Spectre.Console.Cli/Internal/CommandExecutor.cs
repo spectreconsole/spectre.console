@@ -27,14 +27,34 @@ internal sealed class CommandExecutor
         _registrar.RegisterInstance(typeof(CommandModel), model);
         _registrar.RegisterDependencies(model);
 
-        // Asking for version? Kind of a hack, but it's alright.
-        // We should probably make this a bit better in the future.
-        if (args.Contains("-v") || args.Contains("--version"))
+        // No default command?
+        if (model.DefaultCommand == null)
         {
-            var console = configuration.Settings.Console.GetConsole();
-            console.WriteLine(ResolveApplicationVersion(configuration));
-            return 0;
+            // Got at least one argument?
+            var firstArgument = args.FirstOrDefault();
+            if (firstArgument != null)
+            {
+                // Asking for version? Kind of a hack, but it's alright.
+                // We should probably make this a bit better in the future.
+                if (firstArgument.Equals("--version", StringComparison.OrdinalIgnoreCase) ||
+                    firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase))
+                {
+                    var console = configuration.Settings.Console.GetConsole();
+                    console.WriteLine(ResolveApplicationVersion(configuration));
+                    return 0;
+                }
+            }
         }
+
+        //// Asking for version? Kind of a hack, but it's alright.
+        //// We should probably make this a bit better in the future.
+        //if (args.Count() > 0 &&
+        //    (args.First().Equals("-v", StringComparison.OrdinalIgnoreCase) || args.First().Equals("--version", StringComparison.OrdinalIgnoreCase)))
+        //{
+        //    var console = configuration.Settings.Console.GetConsole();
+        //    console.WriteLine(ResolveApplicationVersion(configuration));
+        //    return 0;
+        //}
 
         // Parse and map the model against the arguments.
         var parsedResult = ParseCommandLineArguments(model, configuration.Settings, args);
