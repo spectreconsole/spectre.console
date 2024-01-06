@@ -229,7 +229,7 @@ public static class ConfiguratorExtensions
             throw new ArgumentNullException(nameof(configurator));
         }
 
-        configurator.Settings.Interceptor = interceptor;
+        configurator.Settings.Registrar.RegisterInstance<ICommandInterceptor>(interceptor);
         return configurator;
     }
 
