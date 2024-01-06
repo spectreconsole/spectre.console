@@ -102,7 +102,7 @@ public sealed class CommandApp : ICommandApp
 
             if (_configurator.Settings.ExceptionHandler != null)
             {
-                return _configurator.Settings.ExceptionHandler(ex);
+                return _configurator.Settings.ExceptionHandler(ex, null);
             }
 
             // Render the exception.

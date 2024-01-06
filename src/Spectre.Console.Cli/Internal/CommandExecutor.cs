@@ -128,37 +128,44 @@ internal sealed class CommandExecutor
         ITypeResolver resolver,
         IConfiguration configuration)
     {
-        // Bind the command tree against the settings.
-        var settings = CommandBinder.Bind(tree, leaf.Command.SettingsType, resolver);
-        var interceptors =
-            ((IEnumerable<ICommandInterceptor>?)resolver.Resolve(typeof(IEnumerable<ICommandInterceptor>))
-            ?? Array.Empty<ICommandInterceptor>()).ToList();
+        try
+        {
+            // Bind the command tree against the settings.
+            var settings = CommandBinder.Bind(tree, leaf.Command.SettingsType, resolver);
+            var interceptors =
+                ((IEnumerable<ICommandInterceptor>?)resolver.Resolve(typeof(IEnumerable<ICommandInterceptor>))
+                ?? Array.Empty<ICommandInterceptor>()).ToList();
 #pragma warning disable CS0618 // Type or member is obsolete
-        if (configuration.Settings.Interceptor != null)
-        {
-            interceptors.Add(configuration.Settings.Interceptor);
-        }
+            if (configuration.Settings.Interceptor != null)
+            {
+                interceptors.Add(configuration.Settings.Interceptor);
+            }
 #pragma warning restore CS0618 // Type or member is obsolete
-        foreach (var interceptor in interceptors)
-        {
-            interceptor.Intercept(context, settings);
-        }
+            foreach (var interceptor in interceptors)
+            {
+                interceptor.Intercept(context, settings);
+            }
 
-        // Create and validate the command.
-        var command = leaf.CreateCommand(resolver);
-        var validationResult = command.Validate(context, settings);
-        if (!validationResult.Successful)
-        {
-            throw CommandRuntimeException.ValidationFailed(validationResult);
-        }
+            // Create and validate the command.
+            var command = leaf.CreateCommand(resolver);
+            var validationResult = command.Validate(context, settings);
+            if (!validationResult.Successful)
+            {
+                throw CommandRuntimeException.ValidationFailed(validationResult);
+            }
 
-        // Execute the command.
-        var result = await command.Execute(context, settings);
-        foreach (var interceptor in interceptors)
-        {
-            interceptor.InterceptResult(context, settings, ref result);
-        }
+            // Execute the command.
+            var result = await command.Execute(context, settings);
+            foreach (var interceptor in interceptors)
+            {
+                interceptor.InterceptResult(context, settings, ref result);
+            }
 
-        return result;
+            return result;
+        }
+        catch (Exception ex) when (configuration.Settings is { ExceptionHandler: not null, PropagateExceptions: false })
+        {
+            return configuration.Settings.ExceptionHandler(ex, resolver);
+        }
     }
 }
