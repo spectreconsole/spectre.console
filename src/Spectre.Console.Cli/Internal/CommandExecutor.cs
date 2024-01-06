@@ -165,7 +165,7 @@ internal sealed class CommandExecutor
         }
         catch (Exception ex) when (configuration.Settings is { ExceptionHandler: not null, PropagateExceptions: false })
         {
-            return Task.FromResult(configuration.Settings.ExceptionHandler(ex, resolver));
+            return configuration.Settings.ExceptionHandler(ex, resolver);
         }
     }
 }
