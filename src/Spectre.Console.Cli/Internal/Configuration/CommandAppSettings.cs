@@ -16,7 +16,6 @@ internal sealed class CommandAppSettings : ICommandAppSettings
     public bool ValidateExamples { get; set; }
     public bool TrimTrailingPeriod { get; set; }
     public bool RenderMarkupInline { get; set; }
-    public bool IgnoreStyling { get; set; }
     public HelpProviderStyle HelpProviderStyles { get; set; }
     public bool StrictParsing { get; set; }
     public bool ConvertFlagsToRemainingArguments { get; set; }
@@ -34,9 +33,7 @@ internal sealed class CommandAppSettings : ICommandAppSettings
         MaximumIndirectExamples = 5;
         TrimTrailingPeriod = true;
         RenderMarkupInline = false;
-        IgnoreStyling = false;
-        //HelpProviderStyles = HelpProviderStyle.Default;
-        HelpProviderStyles = HelpProviderStyle.None;
+        HelpProviderStyles = HelpProviderStyle.Default;
         ConvertFlagsToRemainingArguments = false;
     }
 

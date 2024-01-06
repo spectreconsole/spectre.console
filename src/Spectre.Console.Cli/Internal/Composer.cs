@@ -1,5 +1,3 @@
-using static System.Net.Mime.MediaTypeNames;
-
 namespace Spectre.Console.Cli;
 
 internal sealed class Composer : IRenderable
@@ -11,21 +9,15 @@ internal sealed class Composer : IRenderable
     /// </summary>
     private readonly bool renderMarkup = false;
 
-    /// <summary>
-    /// Whether to ignore styling when rendering the content.
-    /// </summary>
-    private readonly bool ignoreStyling = false;
-
     public Composer()
     {
         content = new StringBuilder();
     }
 
-    public Composer(bool renderMarkup, bool ignoreStyling)
+    public Composer(bool renderMarkup)
         : this()
     {
         this.renderMarkup = renderMarkup;
-        this.ignoreStyling = ignoreStyling;
     }
 
     public Composer Text(string text)
@@ -36,39 +28,18 @@ internal sealed class Composer : IRenderable
 
     public Composer Style(string style, string text)
     {
-        if (ignoreStyling)
-        {
-            Text(text);
-        }
-        else
-        {
-            if (string.IsNullOrEmpty(style))
-            {
-                Text(text);
-            }
-            else
-            {
-                content.Append('[').Append(style).Append(']');
-                content.Append(text.EscapeMarkup());
-                content.Append("[/]");
-            }
-        }
+        content.Append('[').Append(style).Append(']');
+        content.Append(text.EscapeMarkup());
+        content.Append("[/]");
 
         return this;
     }
 
     public Composer Style(string style, Action<Composer> action)
     {
-        if (ignoreStyling)
-        {
-            action(this);
-        }
-        else
-        {
-            content.Append('[').Append(style).Append(']');
-            action(this);
-            content.Append("[/]");
-        }
+        content.Append('[').Append(style).Append(']');
+        action(this);
+        content.Append("[/]");
 
         return this;
     }
@@ -134,11 +105,7 @@ internal sealed class Composer : IRenderable
 
     public Measurement Measure(RenderOptions options, int maxWidth)
     {
-        if (ignoreStyling)
-        {
-            return ((IRenderable)new Paragraph(content.ToString())).Measure(options, maxWidth);
-        }
-        else if (renderMarkup)
+        if (renderMarkup)
         {
             return ((IRenderable)new Paragraph(content.ToString())).Measure(options, maxWidth);
         }
@@ -150,11 +117,7 @@ internal sealed class Composer : IRenderable
 
     public IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        if (ignoreStyling)
-        {
-            return ((IRenderable)new Paragraph(content.ToString())).Render(options, maxWidth);
-        }
-        else if (renderMarkup)
+        if (renderMarkup)
         {
             return ((IRenderable)new Paragraph(content.ToString())).Render(options, maxWidth);
         }

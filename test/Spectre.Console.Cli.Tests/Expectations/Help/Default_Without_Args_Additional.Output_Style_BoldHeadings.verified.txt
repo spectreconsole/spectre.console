@@ -1,17 +1,17 @@
-[]DESCRIPTION:[/]
+[bold]DESCRIPTION:[/]
 The lion command.
 
-[]USAGE:[/]
+[bold]USAGE:[/]
     myapp []<TEETH>[/] [][[LEGS]][/] [][[OPTIONS]][/] [][[COMMAND]][/]
 
-[]EXAMPLES:[/]
+[bold]EXAMPLES:[/]
     myapp []20 --alive[/]
 
-[]ARGUMENTS:[/]
+[bold]ARGUMENTS:[/]
     []<TEETH>[/]     The number of teeth the lion has
     [][[LEGS]][/]    The number of legs
 
-[]OPTIONS:[/]
+[bold]OPTIONS:[/]
                                     []DEFAULT[/]
     -h, --help                                                    Prints help information
     -v, --version                                                 Prints version information
@@ -22,5 +22,5 @@ The lion command.
     -d []<DAY>[/]                   []Monday[/], []Thursday[/]    The days the lion goes hunting
     -w, --weight [][[WEIGHT]][/]                                  The weight of the lion, in kgs
 
-[]COMMANDS:[/]
+[bold]COMMANDS:[/]
     []giraffe[/] []<LENGTH>[/]    The giraffe command

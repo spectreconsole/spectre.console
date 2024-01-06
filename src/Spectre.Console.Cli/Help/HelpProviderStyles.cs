@@ -42,7 +42,7 @@ public struct HelpProviderStyle
     {
         get
         {
-            HelpProviderStyle styles;
+            HelpProviderStyle styles = default(HelpProviderStyle);
 
             styles.Description.Header.Markup = "yellow";
             styles.Usage.Header.Markup = "yellow";
@@ -70,36 +70,36 @@ public struct HelpProviderStyle
     }
 
     /// <summary>
+    /// Gets the bold heading HelpProvider styles.
+    /// </summary>
+    public static HelpProviderStyle BoldHeadings
+    {
+        get
+        {
+            HelpProviderStyle styles = default(HelpProviderStyle);
+
+            styles.Description.Header.Markup = "bold";
+            styles.Usage.Header.Markup = "bold";
+            styles.Examples.Header.Markup = "bold";
+            styles.Arguments.Header.Markup = "bold";
+            styles.Commands.Header.Markup = "bold";
+            styles.Options.Header.Markup = "bold";
+
+            return styles;
+        }
+    }
+
+    /// <summary>
     /// Gets the unstyled HelpProvider styles.
     /// </summary>
+    /// <remarks>
+    /// Black and white help text will be rendered to ensure maximum accessibility.
+    /// </remarks>
     public static HelpProviderStyle None
     {
         get
         {
-            HelpProviderStyle styles;
-
-            styles.Description.Header.Markup = string.Empty;
-            styles.Usage.Header.Markup = string.Empty;
-            styles.Usage.CurrentCommand.Markup = string.Empty;
-            styles.Usage.Command.Markup = string.Empty;
-            styles.Usage.Options.Markup = string.Empty;
-            styles.Usage.RequiredArgument.Markup = string.Empty;
-            styles.Usage.OptionalArgument.Markup = string.Empty;
-            styles.Examples.Header.Markup = string.Empty;
-            styles.Examples.Arguments.Markup = string.Empty;
-            styles.Arguments.Header.Markup = string.Empty;
-            styles.Arguments.RequiredArgument.Markup = string.Empty;
-            styles.Arguments.OptionalArgument.Markup = string.Empty;
-            styles.Commands.Header.Markup = string.Empty;
-            styles.Commands.ChildCommand.Markup = string.Empty;
-            styles.Commands.RequiredArgument.Markup = string.Empty;
-            styles.Options.Header.Markup = string.Empty;
-            styles.Options.DefaultValueHeader.Markup = string.Empty;
-            styles.Options.DefaultValue.Markup = string.Empty;
-            styles.Options.RequiredOption.Markup = string.Empty;
-            styles.Options.OptionalOption.Markup = string.Empty;
-
-            return styles;
+            return default(HelpProviderStyle);
         }
     }
 }

@@ -266,10 +266,11 @@ public sealed partial class CommandAppTests
         }
 
         [Theory]
-        [InlineData(false, "Style_Default")]
-        [InlineData(true, "Style_None")]
+        [InlineData("Default", "Style_Default")]
+        [InlineData("BoldHeadings", "Style_BoldHeadings")]
+        [InlineData("None", "Style_None")]
         [Expectation("Default_Without_Args_Additional")]
-        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_MarkupStyling(bool ignoreStyling, string expectationPrefix)
+        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_MarkupStyling(string helpProviderStyle, string expectationPrefix)
         {
             // Given
             var fixture = new CommandAppTester();
@@ -278,7 +279,13 @@ public sealed partial class CommandAppTests
             {
                 configurator.AddExample("20", "--alive");
                 configurator.Settings.RenderMarkupInline = true;
-                configurator.Settings.IgnoreStyling = ignoreStyling;
+                configurator.Settings.HelpProviderStyles = helpProviderStyle switch
+                {
+                    "Default" => HelpProviderStyle.Default,
+                    "BoldHeadings" => HelpProviderStyle.BoldHeadings,
+                    "None" => HelpProviderStyle.None,
+                    _ => HelpProviderStyle.Default,
+                };
                 configurator.SetApplicationName("myapp");
                 configurator.AddCommand<GiraffeCommand>("giraffe");
             });

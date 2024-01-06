@@ -34,17 +34,6 @@ public class HelpProvider : IHelpProvider
     /// </remarks>
     protected virtual bool RenderMarkupInline { get; }
 
-    /// <summary>
-    /// Gets a value indicating whether to ignore styling when rendering the help text.
-    /// </summary>
-    /// <remarks>
-    /// Black and white help text will be rendered when <c>true</c>, ensuring maximum accessibility.
-    /// </remarks>
-    /// <value>
-    ///   <c>true</c> if styling should be ignored; otherwise, <c>false</c>.
-    /// </value>
-    protected virtual bool IgnoreStyling { get; }
-
     private sealed class HelpArgument
     {
         public string Name { get; }
@@ -114,7 +103,7 @@ public class HelpProvider : IHelpProvider
 
     internal Composer NewComposer()
     {
-        return new Composer(RenderMarkupInline, IgnoreStyling);
+        return new Composer(RenderMarkupInline);
     }
 
     /// <summary>
@@ -127,7 +116,6 @@ public class HelpProvider : IHelpProvider
         this.MaximumIndirectExamples = settings.MaximumIndirectExamples;
         this.TrimTrailingPeriod = settings.TrimTrailingPeriod;
         this.RenderMarkupInline = settings.RenderMarkupInline;
-        this.IgnoreStyling = settings.IgnoreStyling;
         this.helpStyles = settings.HelpProviderStyles;
 
         resources = new HelpProviderResources(settings.Culture);

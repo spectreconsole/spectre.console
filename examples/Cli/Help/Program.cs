@@ -1,4 +1,5 @@
 using Spectre.Console.Cli;
+using Spectre.Console.Cli.Help;
 
 namespace Help;
 
@@ -12,6 +13,9 @@ public static class Program
         {
             // Register the custom help provider
             config.SetHelpProvider(new CustomHelpProvider(config.Settings));
+
+            // Render an unstyled help text for maximum accessibility
+            config.Settings.HelpProviderStyles = HelpProviderStyle.None;
         });
 
         return app.Run(args);
