@@ -287,6 +287,19 @@ public static class MultiSelectionPromptExtensions
         return obj;
     }
 
+    public static MultiSelectionPrompt<T> AddValidation<T>(this MultiSelectionPrompt<T> obj,
+        Func<List<T>, ValidationResult> validateFunc)
+        where T : notnull
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        obj.Validator = validateFunc;
+        return obj;
+    }
+
     /// <summary>
     /// Requires no choice to be selected.
     /// </summary>

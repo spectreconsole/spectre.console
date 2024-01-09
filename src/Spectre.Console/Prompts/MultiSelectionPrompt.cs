@@ -52,12 +52,22 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     public string? InstructionsText { get; set; }
 
     /// <summary>
+    /// Gets or sets the validation error message.
+    /// </summary>
+    public string ValidationErrorMessage { get; set; } = "[red]Invalid input[/]";
+
+    /// <summary>
     /// Gets or sets the selection mode.
     /// Defaults to <see cref="SelectionMode.Leaf"/>.
     /// </summary>
     public SelectionMode Mode { get; set; } = SelectionMode.Leaf;
 
     internal ListPromptTree<T> Tree { get; }
+
+    /// <summary>
+    /// Gets or sets the validator.
+    /// </summary>
+    public Func<List<T>, ValidationResult>? Validator { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MultiSelectionPrompt{T}"/> class.
@@ -94,21 +104,49 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     {
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
-        var result = await prompt.Show(Tree, cancellationToken, PageSize, WrapAround).ConfigureAwait(false);
-
-        if (Mode == SelectionMode.Leaf)
+        while (true)
         {
-            return result.Items
-                .Where(x => x.IsSelected && x.Children.Count == 0)
-                .Select(x => x.Data)
-                .ToList();
-        }
+            var result = await prompt.Show(Tree, cancellationToken, PageSize, WrapAround).ConfigureAwait(false);
 
-        return result.Items
-            .Where(x => x.IsSelected)
-            .Select(x => x.Data)
-            .ToList();
+            List<T> res;
+            if (Mode == SelectionMode.Leaf)
+            {
+                res = result.Items
+                    .Where(x => x.IsSelected && x.Children.Count == 0)
+                    .Select(x => x.Data)
+                    .ToList();
+            }
+            else
+            {
+                res = result.Items
+                    .Where(x => x.IsSelected)
+                    .Select(x => x.Data)
+                    .ToList();
+            }
+
+
+            if (!ValidateResult(res, out var message))
+            {
+                ErrorMessage = message;
+                continue;
+            }
+            if (Validator != null)
+            {
+                var validationResult = Validator(res);
+                if (!validationResult.Successful)
+                {
+                
+                }
+            }
+
+            return res;
+        }
     }
+
+    /// <summary>
+    /// Gets or sets the error message.
+    /// </summary>
+    public string? ErrorMessage { get; set; }
 
     /// <summary>
     /// Returns all parent items of the given <paramref name="item"/>.
@@ -274,7 +312,30 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         // Instructions
         list.Add(new Markup(InstructionsText ?? ListPromptConstants.InstructionsMarkup));
 
+        if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            list.Add(Text.Empty);
+            list.Add(new Markup(ErrorMessage));
+        }
+
         // Combine all items
         return new Rows(list);
     }
+
+    private bool ValidateResult(List<T> values, [NotNullWhen(false)] out string? message)
+    {
+        if (Validator != null)
+        {
+            var result = Validator(values);
+            if (!result.Successful)
+            {
+                message = result.Message ?? ValidationErrorMessage;
+                return false;
+            }
+        }
+
+        message = null;
+        return true;
+    }
+
 }
