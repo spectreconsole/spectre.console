@@ -23,7 +23,7 @@ app.Configure(config =>
 
 ## Multiple Commands
 
-In the previous example we have a single command that is configured. For complex command line applications, it is common for them to have multiple commands (or verbs) defined. Examples of applications like this are `git`, `dotnet` and `gh`. For example, git would have a `commit` command and along with other commits like `add` or `rebase`. Each with their own settings and validation. With `Spectre.Console.Cli` we use the `Configure` method to add these commands.
+In the previous example we have a single command that is configured. For complex command line applications, it is common for them to have multiple commands (or verbs) defined. Examples of applications like this are `git`, `dotnet` and `gh`. For example, git would have a `commit` command and along with other commands like `add` or `rebase`. Each with their own settings and validation. With `Spectre.Console.Cli` we use the `Configure` method to add these commands.
 
 For example, to add three different commands to the application:
 
