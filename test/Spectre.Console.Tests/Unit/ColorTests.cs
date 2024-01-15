@@ -4,6 +4,15 @@ public sealed class ColorTests
 {
     public sealed class TheEqualsMethod
     {
+
+        [Fact]
+        public void Initialize_Color_With_Hex()
+        {
+            var name = new Color("#800080").ToString();
+
+            name.ShouldBe("#800080 (RGB=128,0,128)");
+        }
+
         [Fact]
         public void Should_Consider_Color_And_Non_Color_Equal()
         {

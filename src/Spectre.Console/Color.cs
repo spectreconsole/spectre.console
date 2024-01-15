@@ -56,6 +56,26 @@ public partial struct Color : IEquatable<Color>
     }
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="Color"/> struct.
+    /// </summary>
+    /// <param name="hex">The hex string of color. Accepts with and without leading #.</param>
+    public Color(string hex)
+    {
+        if (hex.FirstOrDefault() == '#')
+        {
+            hex = hex.Substring(1);
+        }
+        byte r = byte.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
+        byte g = byte.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
+        byte b = byte.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
+        R = r;
+        G = g;
+        B = b;
+        IsDefault = false;
+        Number = null;
+    }
+
+    /// <summary>
     /// Blends two colors.
     /// </summary>
     /// <param name="other">The other color.</param>
