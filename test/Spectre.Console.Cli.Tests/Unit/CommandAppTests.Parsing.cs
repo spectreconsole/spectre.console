@@ -591,9 +591,9 @@ public sealed partial class CommandAppTests
         /// -v or --version switches should result in the Version option being set
         /// on VersionSettings, and then VersionCommand.Execute(...) being called
         /// </summary>
+        [Theory]
         [InlineData("-v")]
         [InlineData("--version")]
-        [Theory]
         public void Should_Run_Custom_Version_Command(string versionOption)
         {
             // Given
