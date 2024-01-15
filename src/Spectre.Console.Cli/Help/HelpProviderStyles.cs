@@ -109,49 +109,49 @@ public struct HelpProviderStyle
 
 public struct DescriptionStyle
 {
-    public Style Header;
+    public MarkupStyle Header;
 }
 
 public struct UsageStyle
 {
-    public Style Header;
-    public Style CurrentCommand;
-    public Style Command;
-    public Style Options;
-    public Style RequiredArgument;
-    public Style OptionalArgument;
+    public MarkupStyle Header;
+    public MarkupStyle CurrentCommand;
+    public MarkupStyle Command;
+    public MarkupStyle Options;
+    public MarkupStyle RequiredArgument;
+    public MarkupStyle OptionalArgument;
 }
 
 public struct ExampleStyle
 {
-    public Style Header;
-    public Style Arguments;
+    public MarkupStyle Header;
+    public MarkupStyle Arguments;
 }
 
 public struct ArgumentStyle
 {
-    public Style Header;
-    public Style RequiredArgument;
-    public Style OptionalArgument;
+    public MarkupStyle Header;
+    public MarkupStyle RequiredArgument;
+    public MarkupStyle OptionalArgument;
 }
 
 public struct CommandStyle
 {
-    public Style Header;
-    public Style ChildCommand;
-    public Style RequiredArgument;
+    public MarkupStyle Header;
+    public MarkupStyle ChildCommand;
+    public MarkupStyle RequiredArgument;
 }
 
 public struct OptionStyle
 {
-    public Style Header;
-    public Style DefaultValueHeader;
-    public Style DefaultValue;
-    public Style RequiredOption;
-    public Style OptionalOption;
+    public MarkupStyle Header;
+    public MarkupStyle DefaultValueHeader;
+    public MarkupStyle DefaultValue;
+    public MarkupStyle RequiredOption;
+    public MarkupStyle OptionalOption;
 }
 
-public struct Style
+public struct MarkupStyle
 {
     public string Markup;
 }
