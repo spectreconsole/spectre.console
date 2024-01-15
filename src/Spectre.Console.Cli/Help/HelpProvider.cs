@@ -32,7 +32,7 @@ public class HelpProvider : IHelpProvider
     /// <remarks>
     /// Useful for unit testing different styling of the same help text.
     /// </remarks>
-    protected virtual bool RenderMarkupInline { get; }
+    protected virtual bool RenderMarkupInline { get; } = false;
 
     private sealed class HelpArgument
     {
@@ -115,8 +115,7 @@ public class HelpProvider : IHelpProvider
         this.ShowOptionDefaultValues = settings.ShowOptionDefaultValues;
         this.MaximumIndirectExamples = settings.MaximumIndirectExamples;
         this.TrimTrailingPeriod = settings.TrimTrailingPeriod;
-        this.RenderMarkupInline = settings.RenderMarkupInline;
-        this.helpStyles = settings.HelpProviderStyles;
+        this.helpStyles = settings.HelpProviderStyles ?? HelpProviderStyle.Default;
 
         resources = new HelpProviderResources(settings.Culture);
     }

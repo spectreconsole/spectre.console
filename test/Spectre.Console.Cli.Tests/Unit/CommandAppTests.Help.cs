@@ -277,8 +277,9 @@ public sealed partial class CommandAppTests
             fixture.SetDefaultCommand<LionCommand>();
             fixture.Configure(configurator =>
             {
+                configurator.Settings.PropagateExceptions = true;
                 configurator.AddExample("20", "--alive");
-                configurator.Settings.RenderMarkupInline = true;
+                configurator.SetHelpProvider<NoStylesHelpProvider>();
                 configurator.Settings.HelpProviderStyles = helpProviderStyle switch
                 {
                     "Default" => HelpProviderStyle.Default,

@@ -42,17 +42,9 @@ public interface ICommandAppSettings
     bool TrimTrailingPeriod { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether to emit the markup styles, inline, when rendering the help text.
-    /// </summary>
-    /// <remarks>
-    /// Useful for unit testing different styling of the same help text.
-    /// </remarks>
-    bool RenderMarkupInline { get; set; }
-
-    /// <summary>
     /// Gets or sets the styles to used when rendering the help text.
     /// </summary>
-    HelpProviderStyle HelpProviderStyles { get; set; }
+    HelpProviderStyle? HelpProviderStyles { get; set; }
 
     /// <summary>
     /// Gets or sets the <see cref="IAnsiConsole"/>.
