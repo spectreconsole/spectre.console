@@ -67,8 +67,8 @@ public partial struct Color : IEquatable<Color>
         }
 
         var r = byte.Parse(hex[..2], NumberStyles.HexNumber);
-        var g = byte.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
-        var b = byte.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
+        var g = byte.Parse(hex[2..4], NumberStyles.HexNumber);
+        var b = byte.Parse(hex[4..6], NumberStyles.HexNumber);
 
         R = r;
         G = g;
