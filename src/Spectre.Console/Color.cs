@@ -63,11 +63,13 @@ public partial struct Color : IEquatable<Color>
     {
         if (hex.FirstOrDefault() == '#')
         {
-            hex = hex.Substring(1);
+            hex = hex[1..];
         }
-        byte r = byte.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
-        byte g = byte.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
-        byte b = byte.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
+
+        var r = byte.Parse(hex[..2], NumberStyles.HexNumber);
+        var g = byte.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
+        var b = byte.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
+
         R = r;
         G = g;
         B = b;
