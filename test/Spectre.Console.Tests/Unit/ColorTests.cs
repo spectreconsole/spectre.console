@@ -4,7 +4,6 @@ public sealed class ColorTests
 {
     public sealed class TheEqualsMethod
     {
-
         [Fact]
         public void Initialize_Color_With_Hex()
         {

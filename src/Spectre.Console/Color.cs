@@ -55,7 +55,6 @@ public partial struct Color : IEquatable<Color>
         Number = null;
     }
 
-
     /// <summary>
     /// Blends two colors.
     /// </summary>
