@@ -55,27 +55,6 @@ public partial struct Color : IEquatable<Color>
         Number = null;
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Color"/> struct.
-    /// </summary>
-    /// <param name="hex">The hex string of color. Accepts with and without leading #.</param>
-    public Color(string hex)
-    {
-        if (hex.FirstOrDefault() == '#')
-        {
-            hex = hex[1..];
-        }
-
-        var r = byte.Parse(hex[..2], NumberStyles.HexNumber);
-        var g = byte.Parse(hex[2..4], NumberStyles.HexNumber);
-        var b = byte.Parse(hex[4..6], NumberStyles.HexNumber);
-
-        R = r;
-        G = g;
-        B = b;
-        IsDefault = false;
-        Number = null;
-    }
 
     /// <summary>
     /// Blends two colors.
@@ -233,6 +212,45 @@ public partial struct Color : IEquatable<Color>
     public static Color FromInt32(int number)
     {
         return ColorTable.GetColor(number);
+    }
+
+    /// <summary>
+    /// Creates a color from a hexadecimal string representation.
+    /// </summary>
+    /// <param name="hex">The hexadecimal string representation of the color.</param>
+    /// <returns>The color created from the hexadecimal string.</returns>
+    public static Color FromHex(string hex)
+    {
+        if (hex.FirstOrDefault() == '#')
+        {
+            hex = hex[1..];
+        }
+
+        var r = byte.Parse(hex[..2], NumberStyles.HexNumber);
+        var g = byte.Parse(hex[2..4], NumberStyles.HexNumber);
+        var b = byte.Parse(hex[4..6], NumberStyles.HexNumber);
+
+        return new Color(r, g, b);
+    }
+
+    /// <summary>
+    /// Tries to convert a hexadecimal color code to a <see cref="Color"/> object.
+    /// </summary>
+    /// <param name="hex">The hexadecimal color code.</param>
+    /// <param name="color">When this method returns, contains the <see cref="Color"/> equivalent of the hexadecimal color code, if the conversion succeeded, or <see cref="Color.Default"/> if the conversion failed.</param>
+    /// <returns><c>true</c> if the conversion succeeded; otherwise, <c>false</c>.</returns>
+    public static bool TryFromHex(string hex, out Color color)
+    {
+        try
+        {
+            color = FromHex(hex);
+            return true;
+        }
+        catch
+        {
+            color = Color.Default;
+            return false;
+        }
     }
 
     /// <summary>

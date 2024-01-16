@@ -8,7 +8,7 @@ public sealed class ColorTests
         [Fact]
         public void Initialize_Color_With_Hex()
         {
-            var name = new Color("#800080").ToString();
+            var name = Color.FromHex("#800080").ToString();
 
             name.ShouldBe("#800080 (RGB=128,0,128)");
         }
