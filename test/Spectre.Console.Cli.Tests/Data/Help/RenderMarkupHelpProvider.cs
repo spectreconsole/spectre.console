@@ -1,10 +1,10 @@
 namespace Spectre.Console.Cli.Tests.Data.Help;
 
-internal class NoStylesHelpProvider : HelpProvider
+internal class RenderMarkupHelpProvider : HelpProvider
 {
     protected override bool RenderMarkupInline { get; } = true;
 
-    public NoStylesHelpProvider(ICommandAppSettings settings)
+    public RenderMarkupHelpProvider(ICommandAppSettings settings)
         : base(settings)
     {
     }

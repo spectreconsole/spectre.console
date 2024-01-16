@@ -68,40 +68,6 @@ public struct HelpProviderStyle
             return styles;
         }
     }
-
-    /// <summary>
-    /// Gets the bold heading HelpProvider styles.
-    /// </summary>
-    public static HelpProviderStyle BoldHeadings
-    {
-        get
-        {
-            HelpProviderStyle styles = default(HelpProviderStyle);
-
-            styles.Description.Header.Markup = "bold";
-            styles.Usage.Header.Markup = "bold";
-            styles.Examples.Header.Markup = "bold";
-            styles.Arguments.Header.Markup = "bold";
-            styles.Commands.Header.Markup = "bold";
-            styles.Options.Header.Markup = "bold";
-
-            return styles;
-        }
-    }
-
-    /// <summary>
-    /// Gets the unstyled HelpProvider styles.
-    /// </summary>
-    /// <remarks>
-    /// Black and white help text will be rendered to ensure maximum accessibility.
-    /// </remarks>
-    public static HelpProviderStyle None
-    {
-        get
-        {
-            return default(HelpProviderStyle);
-        }
-    }
 }
 
 #pragma warning disable SA1600 // XML documentation for public members
