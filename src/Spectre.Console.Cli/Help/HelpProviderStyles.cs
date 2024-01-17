@@ -5,6 +5,8 @@ namespace Spectre.Console.Cli.Help;
 /// </summary>
 public class HelpProviderStyle
 {
+    private static HelpProviderStyle? defaultStyle;
+
     /// <summary>
     /// Gets or sets the style for describing the purpose or details of a command.
     /// </summary>
@@ -42,47 +44,52 @@ public class HelpProviderStyle
     {
         get
         {
-            return new HelpProviderStyle()
+            if (defaultStyle == null)
             {
-                Description = new DescriptionStyle()
+                defaultStyle = new HelpProviderStyle()
                 {
-                    Header = "yellow",
-                },
-                Usage = new UsageStyle()
-                {
-                    Header = "yellow",
-                    CurrentCommand = "underline",
-                    Command = "aqua",
-                    Options = "grey",
-                    RequiredArgument = "aqua",
-                    OptionalArgument = "silver",
-                },
-                Examples = new ExampleStyle()
-                {
-                    Header = "yellow",
-                    Arguments = "grey",
-                },
-                Arguments = new ArgumentStyle()
-                {
-                    Header = "yellow",
-                    RequiredArgument = "silver",
-                    OptionalArgument = "silver",
-                },
-                Commands = new CommandStyle()
-                {
-                    Header = "yellow",
-                    ChildCommand = "silver",
-                    RequiredArgument = "silver",
-                },
-                Options = new OptionStyle()
-                {
-                    Header = "yellow",
-                    DefaultValueHeader = "lime",
-                    DefaultValue = "bold",
-                    RequiredOption = "silver",
-                    OptionalOption = "grey",
-                },
-            };
+                    Description = new DescriptionStyle()
+                    {
+                        Header = "yellow",
+                    },
+                    Usage = new UsageStyle()
+                    {
+                        Header = "yellow",
+                        CurrentCommand = "underline",
+                        Command = "aqua",
+                        Options = "grey",
+                        RequiredArgument = "aqua",
+                        OptionalArgument = "silver",
+                    },
+                    Examples = new ExampleStyle()
+                    {
+                        Header = "yellow",
+                        Arguments = "grey",
+                    },
+                    Arguments = new ArgumentStyle()
+                    {
+                        Header = "yellow",
+                        RequiredArgument = "silver",
+                        OptionalArgument = "silver",
+                    },
+                    Commands = new CommandStyle()
+                    {
+                        Header = "yellow",
+                        ChildCommand = "silver",
+                        RequiredArgument = "silver",
+                    },
+                    Options = new OptionStyle()
+                    {
+                        Header = "yellow",
+                        DefaultValueHeader = "lime",
+                        DefaultValue = "bold",
+                        RequiredOption = "silver",
+                        OptionalOption = "grey",
+                    },
+                };
+            }
+
+            return defaultStyle;
         }
     }
 }
