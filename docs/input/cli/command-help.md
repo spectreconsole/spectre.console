@@ -19,28 +19,26 @@ The help is also context aware and tailored depending on what has been specified
 
 Basic styling is applied to the generated help text by default, however this is configurable.
 
-There are three different themes shipped with Spectre.Console, namely `Default`, `BoldHeadings`, `None`. 
+`HelpProviderStyle` is the `Spectre.Console` class that holds the style information for the help text.
 
-You can explicitly set the theme when configuring a CommandApp, for example:
+The default theme shipped with Spectre.Console is provided by a factory method, `HelpProviderStyle.Default`.
+
+However, you can explicitly set a custom theme when configuring a CommandApp, for example:
 
 ```csharp
-config.Settings.HelpProviderStyles = HelpProviderStyle.BoldHeadings;
+config.Settings.HelpProviderStyles = new HelpProviderStyle()
+{
+    Description = new DescriptionStyle()
+    {
+        Header = "bold",
+    },
+};
 ```
 
-Implied by the name, `HelpProviderStyle.None` doesn't include any styles and is a good choice for accessibility.
-
-A custom theme can also be defined and applied, in a similar way how the HelpProviderStyle factories do it.
+Removing all styling from help text is also possible, a good choice for ensuring maximum accessibility. This is configured by clearing the style provider entirely:
 
 ```csharp
-HelpProviderStyle styles = default(HelpProviderStyle);
-
-styles.Description.Header.Markup = "yellow";
-styles.Usage.Header.Markup = "yellow";
-styles.Usage.CurrentCommand.Markup = "underline";
-styles.Usage.Command.Markup = "aqua";
-
-config.Settings.HelpProviderStyles = styles;
-
+config.Settings.HelpProviderStyles = null;
 ```
 
 See [Markup](../markup) for information about the use of markup in Spectre.Console, and [Styles](xref:styles) for a listing of supported styles.

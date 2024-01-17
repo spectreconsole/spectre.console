@@ -3,37 +3,37 @@ namespace Spectre.Console.Cli.Help;
 /// <summary>
 /// Styles for the HelpProvider to use when rendering help text.
 /// </summary>
-public struct HelpProviderStyle
+public class HelpProviderStyle
 {
     /// <summary>
-    /// The style for describing the purpose or details of a command.
+    /// Gets or sets the style for describing the purpose or details of a command.
     /// </summary>
-    public DescriptionStyle Description;
+    public DescriptionStyle? Description { get; set; }
 
     /// <summary>
-    /// The style for specifying the usage format of a command.
+    /// Gets or sets the style for specifying the usage format of a command.
     /// </summary>
-    public UsageStyle Usage;
+    public UsageStyle? Usage { get; set; }
 
     /// <summary>
-    /// The style for providing examples of command usage.
+    /// Gets or sets the style for providing examples of command usage.
     /// </summary>
-    public ExampleStyle Examples;
+    public ExampleStyle? Examples { get; set; }
 
     /// <summary>
-    /// The style for specifying arguments in a command.
+    /// Gets or sets the style for specifying arguments in a command.
     /// </summary>
-    public ArgumentStyle Arguments;
+    public ArgumentStyle? Arguments { get; set; }
 
     /// <summary>
-    /// The style for specifying options or flags in a command.
+    /// Gets or sets the style for specifying options or flags in a command.
     /// </summary>
-    public OptionStyle Options;
+    public OptionStyle? Options { get; set; }
 
     /// <summary>
-    /// The style for specifying subcommands or nested commands.
+    /// Gets or sets the style for specifying subcommands or nested commands.
     /// </summary>
-    public CommandStyle Commands;
+    public CommandStyle? Commands { get; set; }
 
     /// <summary>
     /// Gets the default HelpProvider styles.
@@ -42,85 +42,183 @@ public struct HelpProviderStyle
     {
         get
         {
-            HelpProviderStyle styles = default(HelpProviderStyle);
-
-            styles.Description.Header.Markup = "yellow";
-            styles.Usage.Header.Markup = "yellow";
-            styles.Usage.CurrentCommand.Markup = "underline";
-            styles.Usage.Command.Markup = "aqua";
-            styles.Usage.Options.Markup = "grey";
-            styles.Usage.RequiredArgument.Markup = "aqua";
-            styles.Usage.OptionalArgument.Markup = "silver";
-            styles.Examples.Header.Markup = "yellow";
-            styles.Examples.Arguments.Markup = "grey";
-            styles.Arguments.Header.Markup = "yellow";
-            styles.Arguments.RequiredArgument.Markup = "silver";
-            styles.Arguments.OptionalArgument.Markup = "silver";
-            styles.Commands.Header.Markup = "yellow";
-            styles.Commands.ChildCommand.Markup = "silver";
-            styles.Commands.RequiredArgument.Markup = "silver";
-            styles.Options.Header.Markup = "yellow";
-            styles.Options.DefaultValueHeader.Markup = "lime";
-            styles.Options.DefaultValue.Markup = "bold";
-            styles.Options.RequiredOption.Markup = "silver";
-            styles.Options.OptionalOption.Markup = "grey";
-
-            return styles;
+            return new HelpProviderStyle()
+            {
+                Description = new DescriptionStyle()
+                {
+                    Header = "yellow",
+                },
+                Usage = new UsageStyle()
+                {
+                    Header = "yellow",
+                    CurrentCommand = "underline",
+                    Command = "aqua",
+                    Options = "grey",
+                    RequiredArgument = "aqua",
+                    OptionalArgument = "silver",
+                },
+                Examples = new ExampleStyle()
+                {
+                    Header = "yellow",
+                    Arguments = "grey",
+                },
+                Arguments = new ArgumentStyle()
+                {
+                    Header = "yellow",
+                    RequiredArgument = "silver",
+                    OptionalArgument = "silver",
+                },
+                Commands = new CommandStyle()
+                {
+                    Header = "yellow",
+                    ChildCommand = "silver",
+                    RequiredArgument = "silver",
+                },
+                Options = new OptionStyle()
+                {
+                    Header = "yellow",
+                    DefaultValueHeader = "lime",
+                    DefaultValue = "bold",
+                    RequiredOption = "silver",
+                    OptionalOption = "grey",
+                },
+            };
         }
     }
 }
 
-#pragma warning disable SA1600 // XML documentation for public members
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-
-public struct DescriptionStyle
+/// <summary>
+/// Defines styles for describing the purpose or details of a command.
+/// </summary>
+public class DescriptionStyle
 {
-    public MarkupStyle Header;
+    /// <summary>
+    /// Gets or sets the style for the header in the description.
+    /// </summary>
+    public Style? Header { get; set; }
 }
 
-public struct UsageStyle
+/// <summary>
+/// Defines styles for specifying the usage format of a command.
+/// </summary>
+public class UsageStyle
 {
-    public MarkupStyle Header;
-    public MarkupStyle CurrentCommand;
-    public MarkupStyle Command;
-    public MarkupStyle Options;
-    public MarkupStyle RequiredArgument;
-    public MarkupStyle OptionalArgument;
+    /// <summary>
+    /// Gets or sets the style for the header in the usage.
+    /// </summary>
+    public Style? Header { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style for the current command in the usage.
+    /// </summary>
+    public Style? CurrentCommand { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style for general commands in the usage.
+    /// </summary>
+    public Style? Command { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style for options in the usage.
+    /// </summary>
+    public Style? Options { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style for required arguments in the usage.
+    /// </summary>
+    public Style? RequiredArgument { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style for optional arguments in the usage.
+    /// </summary>
+    public Style? OptionalArgument { get; set; }
 }
 
-public struct ExampleStyle
+/// <summary>
+/// Defines styles for providing examples of command usage.
+/// </summary>
+public class ExampleStyle
 {
-    public MarkupStyle Header;
-    public MarkupStyle Arguments;
+    /// <summary>
+    /// Gets or sets the style for the header in the examples.
+    /// </summary>
+    public Style? Header { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style for arguments in the examples.
+    /// </summary>
+    public Style? Arguments { get; set; }
 }
 
-public struct ArgumentStyle
+/// <summary>
+/// Defines styles for specifying arguments in a command.
+/// </summary>
+public class ArgumentStyle
 {
-    public MarkupStyle Header;
-    public MarkupStyle RequiredArgument;
-    public MarkupStyle OptionalArgument;
+    /// <summary>
+    /// Gets or sets the style for the header in the arguments.
+    /// </summary>
+    public Style? Header { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style for required arguments.
+    /// </summary>
+    public Style? RequiredArgument { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style for optional arguments.
+    /// </summary>
+    public Style? OptionalArgument { get; set; }
 }
 
-public struct CommandStyle
+/// <summary>
+/// Defines styles for specifying subcommands or nested commands.
+/// </summary>
+public class CommandStyle
 {
-    public MarkupStyle Header;
-    public MarkupStyle ChildCommand;
-    public MarkupStyle RequiredArgument;
+    /// <summary>
+    /// Gets or sets the style for the header in the command section.
+    /// </summary>
+    public Style? Header { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style for child commands in the command section.
+    /// </summary>
+    public Style? ChildCommand { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style for required arguments in the command section.
+    /// </summary>
+    public Style? RequiredArgument { get; set; }
 }
 
-public struct OptionStyle
+/// <summary>
+/// Defines styles for specifying options or flags in a command.
+/// </summary>
+public class OptionStyle
 {
-    public MarkupStyle Header;
-    public MarkupStyle DefaultValueHeader;
-    public MarkupStyle DefaultValue;
-    public MarkupStyle RequiredOption;
-    public MarkupStyle OptionalOption;
-}
+    /// <summary>
+    /// Gets or sets the style for the header in the options.
+    /// </summary>
+    public Style? Header { get; set; }
 
-public struct MarkupStyle
-{
-    public string Markup;
-}
+    /// <summary>
+    /// Gets or sets the style for the header of default values in the options.
+    /// </summary>
+    public Style? DefaultValueHeader { get; set; }
 
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-#pragma warning restore SA1600 // XML documentation for public members
+    /// <summary>
+    /// Gets or sets the style for default values in the options.
+    /// </summary>
+    public Style? DefaultValue { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style for required options.
+    /// </summary>
+    public Style? RequiredOption { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style for optional options.
+    /// </summary>
+    public Style? OptionalOption { get; set; }
+}

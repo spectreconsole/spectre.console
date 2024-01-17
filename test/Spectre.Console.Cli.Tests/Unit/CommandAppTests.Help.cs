@@ -1,4 +1,3 @@
-using Spectre.Console.Cli.Help;
 using Spectre.Console.Cli.Tests.Data.Help;
 
 namespace Spectre.Console.Tests.Unit.Cli;
@@ -291,14 +290,32 @@ public sealed partial class CommandAppTests
         [Expectation("Default_Without_Args_Additional_Style_BoldHeadings")]
         public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_Style_BoldHeadings()
         {
-            // Bold all the headings in the help text
-            var styles = default(HelpProviderStyle);
-            styles.Description.Header.Markup = "bold";
-            styles.Usage.Header.Markup = "bold";
-            styles.Examples.Header.Markup = "bold";
-            styles.Arguments.Header.Markup = "bold";
-            styles.Commands.Header.Markup = "bold";
-            styles.Options.Header.Markup = "bold";
+            // Bold headings in the help text
+            var styles = new HelpProviderStyle()
+            {
+                Description = new DescriptionStyle()
+                {
+                    Header = "bold",
+                },
+                Usage = new UsageStyle()
+                {
+                    Header = "bold",
+                },
+                Examples = new ExampleStyle()
+                {
+                    Header = "bold",
+                },
+                Arguments = new ArgumentStyle()
+                {
+                    Header = "bold",
+                },
+                Commands = new CommandStyle()
+                {
+                    Header = "bold",
+                },
+
+                // Omit OptionStyle to ensure coverage of at least one null style class
+            };
 
             // Given
             var fixture = new CommandAppTester();

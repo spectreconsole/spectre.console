@@ -26,6 +26,15 @@ internal sealed class Composer : IRenderable
         return this;
     }
 
+    public Composer Style(Style style, string text)
+    {
+        content.Append('[').Append(style.ToMarkup()).Append(']');
+        content.Append(text.EscapeMarkup());
+        content.Append("[/]");
+
+        return this;
+    }
+
     public Composer Style(string style, string text)
     {
         content.Append('[').Append(style).Append(']');

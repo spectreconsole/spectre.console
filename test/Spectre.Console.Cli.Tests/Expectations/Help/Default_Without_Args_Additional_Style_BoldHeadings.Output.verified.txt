@@ -11,7 +11,7 @@ The lion command.
     []<TEETH>[/]     The number of teeth the lion has
     [][[LEGS]][/]    The number of legs
 
-[bold]OPTIONS:[/]
+[]OPTIONS:[/]
                                     []DEFAULT[/]
     -h, --help                                                    Prints help information
     -v, --version                                                 Prints version information

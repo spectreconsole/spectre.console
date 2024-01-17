@@ -15,7 +15,7 @@ public static class Program
             config.SetHelpProvider(new CustomHelpProvider(config.Settings));
 
             // Render an unstyled help text for maximum accessibility
-            config.Settings.HelpProviderStyles = HelpProviderStyle.None;
+            config.Settings.HelpProviderStyles = null;
         });
 
         return app.Run(args);
