@@ -3,10 +3,8 @@ namespace Spectre.Console.Cli.Help;
 /// <summary>
 /// Styles for the HelpProvider to use when rendering help text.
 /// </summary>
-public class HelpProviderStyle
+public sealed class HelpProviderStyle
 {
-    private static HelpProviderStyle? defaultStyle;
-
     /// <summary>
     /// Gets or sets the style for describing the purpose or details of a command.
     /// </summary>
@@ -40,64 +38,54 @@ public class HelpProviderStyle
     /// <summary>
     /// Gets the default HelpProvider styles.
     /// </summary>
-    public static HelpProviderStyle Default
-    {
-        get
+    public static HelpProviderStyle Default { get; } =
+        new HelpProviderStyle()
         {
-            if (defaultStyle == null)
+            Description = new DescriptionStyle()
             {
-                defaultStyle = new HelpProviderStyle()
-                {
-                    Description = new DescriptionStyle()
-                    {
-                        Header = "yellow",
-                    },
-                    Usage = new UsageStyle()
-                    {
-                        Header = "yellow",
-                        CurrentCommand = "underline",
-                        Command = "aqua",
-                        Options = "grey",
-                        RequiredArgument = "aqua",
-                        OptionalArgument = "silver",
-                    },
-                    Examples = new ExampleStyle()
-                    {
-                        Header = "yellow",
-                        Arguments = "grey",
-                    },
-                    Arguments = new ArgumentStyle()
-                    {
-                        Header = "yellow",
-                        RequiredArgument = "silver",
-                        OptionalArgument = "silver",
-                    },
-                    Commands = new CommandStyle()
-                    {
-                        Header = "yellow",
-                        ChildCommand = "silver",
-                        RequiredArgument = "silver",
-                    },
-                    Options = new OptionStyle()
-                    {
-                        Header = "yellow",
-                        DefaultValueHeader = "lime",
-                        DefaultValue = "bold",
-                        RequiredOption = "silver",
-                        OptionalOption = "grey",
-                    },
-                };
-            }
-
-            return defaultStyle;
-        }
-    }
+                Header = "yellow",
+            },
+            Usage = new UsageStyle()
+            {
+                Header = "yellow",
+                CurrentCommand = "underline",
+                Command = "aqua",
+                Options = "grey",
+                RequiredArgument = "aqua",
+                OptionalArgument = "silver",
+            },
+            Examples = new ExampleStyle()
+            {
+                Header = "yellow",
+                Arguments = "grey",
+            },
+            Arguments = new ArgumentStyle()
+            {
+                Header = "yellow",
+                RequiredArgument = "silver",
+                OptionalArgument = "silver",
+            },
+            Commands = new CommandStyle()
+            {
+                Header = "yellow",
+                ChildCommand = "silver",
+                RequiredArgument = "silver",
+            },
+            Options = new OptionStyle()
+            {
+                Header = "yellow",
+                DefaultValueHeader = "lime",
+                DefaultValue = "bold",
+                RequiredOption = "silver",
+                OptionalOption = "grey",
+            },
+        };
 }
 
 /// <summary>
 /// Defines styles for describing the purpose or details of a command.
 /// </summary>
-public class DescriptionStyle
+public sealed class DescriptionStyle
 {
     /// <summary>
     /// Gets or sets the style for the header in the description.
@@ -108,7 +96,7 @@ public class DescriptionStyle
 /// <summary>
 /// Defines styles for specifying the usage format of a command.
 /// </summary>
-public class UsageStyle
+public sealed class UsageStyle
 {
     /// <summary>
     /// Gets or sets the style for the header in the usage.
@@ -144,7 +132,7 @@ public class UsageStyle
 /// <summary>
 /// Defines styles for providing examples of command usage.
 /// </summary>
-public class ExampleStyle
+public sealed class ExampleStyle
 {
     /// <summary>
     /// Gets or sets the style for the header in the examples.
@@ -160,7 +148,7 @@ public class ExampleStyle
 /// <summary>
 /// Defines styles for specifying arguments in a command.
 /// </summary>
-public class ArgumentStyle
+public sealed class ArgumentStyle
 {
     /// <summary>
     /// Gets or sets the style for the header in the arguments.
@@ -181,7 +169,7 @@ public class ArgumentStyle
 /// <summary>
 /// Defines styles for specifying subcommands or nested commands.
 /// </summary>
-public class CommandStyle
+public sealed class CommandStyle
 {
     /// <summary>
     /// Gets or sets the style for the header in the command section.
@@ -202,7 +190,7 @@ public class CommandStyle
 /// <summary>
 /// Defines styles for specifying options or flags in a command.
 /// </summary>
-public class OptionStyle
+public sealed class OptionStyle
 {
     /// <summary>
     /// Gets or sets the style for the header in the options.
