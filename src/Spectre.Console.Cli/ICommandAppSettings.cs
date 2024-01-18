@@ -42,6 +42,11 @@ public interface ICommandAppSettings
     bool TrimTrailingPeriod { get; set; }
 
     /// <summary>
+    /// Gets or sets the styles to used when rendering the help text.
+    /// </summary>
+    HelpProviderStyle? HelpProviderStyles { get; set; }
+
+    /// <summary>
     /// Gets or sets the <see cref="IAnsiConsole"/>.
     /// </summary>
     IAnsiConsole? Console { get; set; }

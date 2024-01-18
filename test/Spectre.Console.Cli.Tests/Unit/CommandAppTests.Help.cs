@@ -265,6 +265,101 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        [Expectation("Default_Without_Args_Additional_Style_Default")]
+        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_Style_Default()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<LionCommand>();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+                configurator.AddExample("20", "--alive");
+                configurator.AddCommand<GiraffeCommand>("giraffe");
+                configurator.SetHelpProvider(new RenderMarkupHelpProvider(configurator.Settings));
+            });
+
+            // When
+            var result = fixture.Run();
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Default_Without_Args_Additional_Style_BoldHeadings")]
+        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_Style_BoldHeadings()
+        {
+            // Bold headings in the help text
+            var styles = new HelpProviderStyle()
+            {
+                Description = new DescriptionStyle()
+                {
+                    Header = "bold",
+                },
+                Usage = new UsageStyle()
+                {
+                    Header = "bold",
+                },
+                Examples = new ExampleStyle()
+                {
+                    Header = "bold",
+                },
+                Arguments = new ArgumentStyle()
+                {
+                    Header = "bold",
+                },
+                Commands = new CommandStyle()
+                {
+                    Header = "bold",
+                },
+
+                // Omit OptionStyle to ensure coverage of at least one null style class
+            };
+
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<LionCommand>();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+                configurator.AddExample("20", "--alive");
+                configurator.AddCommand<GiraffeCommand>("giraffe");
+                configurator.Settings.HelpProviderStyles = styles;
+                configurator.SetHelpProvider(new RenderMarkupHelpProvider(configurator.Settings));
+            });
+
+            // When
+            var result = fixture.Run();
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Default_Without_Args_Additional_Style_None")]
+        public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_Style_None()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<LionCommand>();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+                configurator.AddExample("20", "--alive");
+                configurator.AddCommand<GiraffeCommand>("giraffe");
+                configurator.Settings.HelpProviderStyles = null;
+                configurator.SetHelpProvider(new RenderMarkupHelpProvider(configurator.Settings));
+            });
+
+            // When
+            var result = fixture.Run();
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
         [Expectation("Default_Greeter")]
         public Task Should_Not_Output_Default_Command_When_Command_Has_No_Required_Parameters_And_Is_Called_Without_Args()
         {
