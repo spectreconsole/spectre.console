@@ -2,53 +2,53 @@ namespace Spectre.Console.Cli;
 
 internal sealed class Composer : IRenderable
 {
-    private readonly StringBuilder content;
+    private readonly StringBuilder _content;
 
     /// <summary>
     /// Whether to emit the markup styles, inline, when rendering the content.
     /// </summary>
-    private readonly bool renderMarkup = false;
+    private readonly bool _renderMarkup = false;
 
     public Composer()
     {
-        content = new StringBuilder();
+        _content = new StringBuilder();
     }
 
     public Composer(bool renderMarkup)
         : this()
     {
-        this.renderMarkup = renderMarkup;
+        _renderMarkup = renderMarkup;
     }
 
     public Composer Text(string text)
     {
-        content.Append(text);
+        _content.Append(text);
         return this;
     }
 
     public Composer Style(Style style, string text)
     {
-        content.Append('[').Append(style.ToMarkup()).Append(']');
-        content.Append(text.EscapeMarkup());
-        content.Append("[/]");
+        _content.Append('[').Append(style.ToMarkup()).Append(']');
+        _content.Append(text.EscapeMarkup());
+        _content.Append("[/]");
 
         return this;
     }
 
     public Composer Style(string style, string text)
     {
-        content.Append('[').Append(style).Append(']');
-        content.Append(text.EscapeMarkup());
-        content.Append("[/]");
+        _content.Append('[').Append(style).Append(']');
+        _content.Append(text.EscapeMarkup());
+        _content.Append("[/]");
 
         return this;
     }
 
     public Composer Style(string style, Action<Composer> action)
     {
-        content.Append('[').Append(style).Append(']');
+        _content.Append('[').Append(style).Append(']');
         action(this);
-        content.Append("[/]");
+        _content.Append("[/]");
 
         return this;
     }
@@ -75,7 +75,7 @@ internal sealed class Composer : IRenderable
 
     public Composer Repeat(char character, int count)
     {
-        content.Append(new string(character, count));
+        _content.Append(new string(character, count));
         return this;
     }
 
@@ -88,7 +88,7 @@ internal sealed class Composer : IRenderable
     {
         for (var i = 0; i < count; i++)
         {
-            content.Append(Environment.NewLine);
+            _content.Append(Environment.NewLine);
         }
 
         return this;
@@ -100,7 +100,7 @@ internal sealed class Composer : IRenderable
         {
             foreach (var composer in composers)
             {
-                if (content.ToString().Length > 0)
+                if (_content.ToString().Length > 0)
                 {
                     Text(separator);
                 }
@@ -114,30 +114,30 @@ internal sealed class Composer : IRenderable
 
     public Measurement Measure(RenderOptions options, int maxWidth)
     {
-        if (renderMarkup)
+        if (_renderMarkup)
         {
-            return ((IRenderable)new Paragraph(content.ToString())).Measure(options, maxWidth);
+            return ((IRenderable)new Paragraph(_content.ToString())).Measure(options, maxWidth);
         }
         else
         {
-            return ((IRenderable)new Markup(content.ToString())).Measure(options, maxWidth);
+            return ((IRenderable)new Markup(_content.ToString())).Measure(options, maxWidth);
         }
     }
 
     public IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        if (renderMarkup)
+        if (_renderMarkup)
         {
-            return ((IRenderable)new Paragraph(content.ToString())).Render(options, maxWidth);
+            return ((IRenderable)new Paragraph(_content.ToString())).Render(options, maxWidth);
         }
         else
         {
-            return ((IRenderable)new Markup(content.ToString())).Render(options, maxWidth);
+            return ((IRenderable)new Markup(_content.ToString())).Render(options, maxWidth);
         }
     }
 
     public override string ToString()
     {
-        return content.ToString();
+        return _content.ToString();
     }
 }
