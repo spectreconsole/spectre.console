@@ -220,14 +220,14 @@ public partial struct Color : IEquatable<Color>
     /// <returns>The color created from the hexadecimal string.</returns>
     public static Color FromHex(string hex)
     {
-        if (hex.FirstOrDefault() == '#')
+        if (hex.StartsWith('#'))
         {
-            hex = hex[1..];
+            hex = hex.Substring(1);
         }
 
-        var r = byte.Parse(hex[..2], NumberStyles.HexNumber);
-        var g = byte.Parse(hex[2..4], NumberStyles.HexNumber);
-        var b = byte.Parse(hex[4..6], NumberStyles.HexNumber);
+        var r = byte.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
+        var g = byte.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
+        var b = byte.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
 
         return new Color(r, g, b);
     }
