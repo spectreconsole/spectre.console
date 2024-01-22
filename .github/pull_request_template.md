@@ -7,7 +7,7 @@ fixes #
 
 <!-- formalities. These are not optional. -->
 
-- [ ] I have read the [Contribution Guidelines](../CONTRIBUTING.md)
+- [ ] I have read the [Contribution Guidelines](https://github.com/spectreconsole/spectre.console/blob/main/CONTRIBUTING.md)
 - [ ] I have commented on the issue above and discussed the intended changes
 - [ ] A maintainer has signed off on the changes and the issue was assigned to me
 - [ ] All newly added code is adequately covered by tests
