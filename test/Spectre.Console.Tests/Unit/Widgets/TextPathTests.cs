@@ -93,4 +93,22 @@ public sealed class TextPathTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Theory]
+    [InlineData("C:/Foo/Bar/Baz.txt", "Path:\nC:/Foo/Bar/Baz.txt")]
+    [InlineData("/Foo/Bar/Baz.txt", "Path:\n/Foo/Bar/Baz.txt")]
+    [InlineData("Foo/Bar/Baz.txt", "Path:\nFoo/Bar/Baz.txt")]
+    public void Should_Render_Full_Path_With_Text_If_Possible(string input, string expected)
+    {
+        // Given
+        var console = new TestConsole().Width(40);
+
+        // When
+        console.Write(
+            new Text("Path:\n"),
+            new TextPath(input));
+
+        // Then
+        console.Output.ShouldBe(expected);
+    }
 }
