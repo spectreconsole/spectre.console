@@ -28,4 +28,21 @@ public static partial class AnsiConsole
 
         Console.Write(renderable);
     }
+
+    /// <summary>
+    /// Renders the specified <see cref="IRenderable"/> to the console.
+    /// </summary>
+    /// <param name="renderables">The objects to render.</param>
+    public static void Write(params IRenderable[] renderables)
+    {
+        if (renderables is null)
+        {
+            throw new ArgumentNullException(nameof(renderables));
+        }
+
+        foreach (var renderable in renderables)
+        {
+            Console.Write(renderable);
+        }
+    }
 }

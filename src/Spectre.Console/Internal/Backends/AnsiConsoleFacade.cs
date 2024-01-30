@@ -50,4 +50,22 @@ internal sealed class AnsiConsoleFacade : IAnsiConsole
 
         return _legacyBackend;
     }
+
+    public void Write(params IRenderable[] renderables)
+    {
+        lock (_renderLock)
+        {
+            var backend = GetBackend();
+            renderables.ForEach(renderable => backend.Write(renderable));
+        }
+    }
+
+    public void Write(IEnumerable<IRenderable> renderables)
+    {
+        lock (_renderLock)
+        {
+            var backend = GetBackend();
+            renderables.ForEach(renderable => backend.Write(renderable));
+        }
+    }
 }

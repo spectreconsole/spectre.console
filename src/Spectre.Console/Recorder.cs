@@ -80,4 +80,30 @@ public class Recorder : IAnsiConsole, IDisposable
 
         return encoder.Encode(_console, _recorded);
     }
+
+    /// <inheritdoc/>
+    public void Write(params IRenderable[] renderables)
+    {
+        if (renderables is null)
+        {
+            throw new ArgumentNullException(nameof(renderables));
+        }
+
+        renderables.ForEach(renderable => _recorded.Add(renderable));
+
+        renderables.ForEach(renderable => _console.Write(renderable));
+    }
+
+    /// <inheritdoc/>
+    public void Write(IEnumerable<IRenderable> renderables)
+    {
+        if (renderables is null)
+        {
+            throw new ArgumentNullException(nameof(renderables));
+        }
+
+        renderables.ForEach(renderable => _recorded.Add(renderable));
+
+        renderables.ForEach(renderable => _console.Write(renderable));
+    }
 }
