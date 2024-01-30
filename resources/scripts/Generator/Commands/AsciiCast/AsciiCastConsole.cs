@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Spectre.Console;
 using Spectre.Console.Rendering;
 
@@ -35,6 +36,24 @@ namespace Generator.Commands
         public void Write(IRenderable renderable)
         {
             _console.Write(renderable);
+        }
+
+        /// <inheritdoc/>
+        public void Write(params IRenderable[] renderables)
+        {
+            foreach (var renderable in renderables)
+            {
+                Write(renderable);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Write(IEnumerable<IRenderable> renderables)
+        {
+            foreach (var renderable in renderables)
+            {
+                Write(renderable);
+            }
         }
     }
 }
