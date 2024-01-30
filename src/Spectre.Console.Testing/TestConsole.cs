@@ -112,4 +112,22 @@ public sealed class TestConsole : IAnsiConsole, IDisposable
     {
         _cursor = cursor;
     }
+
+    /// <inheritdoc/>
+    public void Write(params IRenderable[] renderables)
+    {
+        foreach (var renderable in renderables)
+        {
+            Write(renderable);
+        }
+    }
+
+    /// <inheritdoc/>
+    public void Write(IEnumerable<IRenderable> renderables)
+    {
+        foreach (var renderable in renderables)
+        {
+            Write(renderable);
+        }
+    }
 }
