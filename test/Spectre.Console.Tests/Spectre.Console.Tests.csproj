@@ -12,16 +12,8 @@
     <EmbeddedResource Include="Data\starwars.flf" />
     <None Remove="Data\poison.flf" />
     <EmbeddedResource Include="Data\poison.flf" />
-    <None Update="Expectations\Widgets\BarChart\RenderWithText.Output.verified.txt">
-      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
-      <DependentUpon>%(ParentFile).cs</DependentUpon>
-    </None>
     <None Update="Expectations\Widgets\Rows\Render_Empty.Output.verified.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Expectations\Widgets\Table\RenderWithText.Output.verified.txt">
-      <ParentFile>$([System.String]::Copy('%(FileName)').Split('.')[0])</ParentFile>
-      <DependentUpon>%(ParentFile).cs</DependentUpon>
     </None>
   </ItemGroup>
 
@@ -45,7 +37,6 @@
     <ProjectReference Include="..\..\src\Spectre.Console.Json\Spectre.Console.Json.csproj" />
     <ProjectReference Include="..\..\src\Spectre.Console.Testing\Spectre.Console.Testing.csproj" />
     <ProjectReference Include="..\..\src\Spectre.Console\Spectre.Console.csproj" />
-    <ProjectReference Include="..\..\src\teste\teste.csproj" />
   </ItemGroup>
 
 </Project>
