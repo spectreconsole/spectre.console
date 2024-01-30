@@ -41,4 +41,16 @@ public interface IAnsiConsole
     /// </summary>
     /// <param name="renderable">The <see cref="IRenderable"/> to write.</param>
     void Write(IRenderable renderable);
+
+    /// <summary>
+    /// Writes a <see cref="IRenderable"/> items to the console.
+    /// </summary>
+    /// <param name="renderables">The <see cref="IRenderable"/> items to write.</param>
+    void Write(params IRenderable[] renderables);
+
+    /// <summary>
+    /// Writes a <see cref="IRenderable"/> items to the console.
+    /// </summary>
+    /// <param name="renderables">The <see cref="IRenderable"/> items to write.</param>
+    void Write(IEnumerable<IRenderable> renderables);
 }
