@@ -15,6 +15,7 @@ internal sealed class ProgressBar : Renderable, IHasCulture
     public bool ShowValue { get; set; }
     public bool IsIndeterminate { get; set; }
     public CultureInfo? Culture { get; set; }
+    public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
 
     public Style CompletedStyle { get; set; } = Color.Yellow;
     public Style FinishedStyle { get; set; } = Color.Green;
@@ -50,7 +51,7 @@ internal sealed class ProgressBar : Renderable, IHasCulture
         var barCount = Math.Max(0, (int)(width * (completedBarCount / MaxValue)));
 
         // Show value?
-        var value = completedBarCount.ToString(Culture ?? CultureInfo.InvariantCulture);
+        var value = ValueFormatter != null ? ValueFormatter(completedBarCount, Culture ?? CultureInfo.InvariantCulture) : completedBarCount.ToString(Culture ?? CultureInfo.InvariantCulture);
         if (ShowValue)
         {
             barCount = barCount - value.Length - 1;
