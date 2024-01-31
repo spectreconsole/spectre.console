@@ -53,7 +53,11 @@ Using the `SetExceptionHandler()` during configuration it is possible to handle 
 This method comes in two flavours: One that uses the default exitCode (or `return` value) of `-1` and one
 where the exitCode needs to be supplied.
 
-### Using `SetExceptionHandler(Func<Exception, int> handler)`
+The `ITypeResolver?` parameter will be null, when the exception occurs while no `ITypeResolver` is available.
+(Basically the `ITypeResolver` will be set, when the exception occurs during a command execution, but not
+during the parsing phase and construction of the command.)
+
+### Using `SetExceptionHandler(Func<Exception, ITypeResolver?, int> handler)`
 
 Using this method exceptions can be handled in a custom way. The return value of the handler is used as
 the exitCode for the application.
@@ -71,7 +75,7 @@ namespace MyApp
 
             app.Configure(config =>
             {
-                config.SetExceptionHandler(ex =>
+                config.SetExceptionHandler((ex, resolver) =>
                 {
                     AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything);
                     return -99;
@@ -84,9 +88,9 @@ namespace MyApp
 }
 ```
 
-### Using `SetExceptionHandler(Action<Exception> handler)`
+### Using `SetExceptionHandler(Action<Exception, ITypeResolver?> handler)`
 
-Using this method exceptions can be handled in a custom way, much the same as with the `SetExceptionHandler(Func<Exception, int> handler)`.
+Using this method exceptions can be handled in a custom way, much the same as with the `SetExceptionHandler(Func<Exception, ITypeResolver?, int> handler)`.
 Using the `Action` as the handler however, it is not possible (or required) to supply a return value.
 The exitCode for the application will be `-1`.
 
@@ -103,7 +107,7 @@ namespace MyApp
 
             app.Configure(config =>
             {
-                config.SetExceptionHandler(ex =>
+                config.SetExceptionHandler((ex, resolver) =>
                 {
                     AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything);
                 });

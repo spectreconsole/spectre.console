@@ -48,6 +48,7 @@ internal sealed class ListPrompt<T>
 
             while (true)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 var rawKey = await _console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
                 if (rawKey == null)
                 {
@@ -89,10 +90,10 @@ internal sealed class ListPrompt<T>
             skip = Math.Max(0, state.Index - middleOfList);
             take = Math.Min(pageSize, state.ItemCount - skip);
 
-            if (state.ItemCount - state.Index < middleOfList)
+            if (take < pageSize)
             {
-                // Pointer should be below the end of the list
-                var diff = middleOfList - (state.ItemCount - state.Index);
+                // Pointer should be below the middle of the (visual) list
+                var diff = pageSize - take;
                 skip -= diff;
                 take += diff;
                 cursorIndex = middleOfList + diff;

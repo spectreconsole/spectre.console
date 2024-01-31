@@ -27,13 +27,23 @@ internal sealed class CommandExecutor
         _registrar.RegisterInstance(typeof(CommandModel), model);
         _registrar.RegisterDependencies(model);
 
-        // Asking for version? Kind of a hack, but it's alright.
-        // We should probably make this a bit better in the future.
-        if (args.Contains("-v") || args.Contains("--version"))
+        // No default command?
+        if (model.DefaultCommand == null)
         {
-            var console = configuration.Settings.Console.GetConsole();
-            console.WriteLine(ResolveApplicationVersion(configuration));
-            return 0;
+            // Got at least one argument?
+            var firstArgument = args.FirstOrDefault();
+            if (firstArgument != null)
+            {
+                // Asking for version? Kind of a hack, but it's alright.
+                // We should probably make this a bit better in the future.
+                if (firstArgument.Equals("--version", StringComparison.OrdinalIgnoreCase) ||
+                    firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase))
+                {
+                    var console = configuration.Settings.Console.GetConsole();
+                    console.WriteLine(ResolveApplicationVersion(configuration));
+                    return 0;
+                }
+            }
         }
 
         // Parse and map the model against the arguments.
@@ -121,26 +131,51 @@ internal sealed class CommandExecutor
             VersionHelper.GetVersion(Assembly.GetEntryAssembly());
     }
 
-    private static Task<int> Execute(
+    private static async Task<int> Execute(
         CommandTree leaf,
         CommandTree tree,
         CommandContext context,
         ITypeResolver resolver,
         IConfiguration configuration)
     {
-        // Bind the command tree against the settings.
-        var settings = CommandBinder.Bind(tree, leaf.Command.SettingsType, resolver);
-        configuration.Settings.Interceptor?.Intercept(context, settings);
-
-        // Create and validate the command.
-        var command = leaf.CreateCommand(resolver);
-        var validationResult = command.Validate(context, settings);
-        if (!validationResult.Successful)
+        try
         {
-            throw CommandRuntimeException.ValidationFailed(validationResult);
-        }
+            // Bind the command tree against the settings.
+            var settings = CommandBinder.Bind(tree, leaf.Command.SettingsType, resolver);
+            var interceptors =
+                ((IEnumerable<ICommandInterceptor>?)resolver.Resolve(typeof(IEnumerable<ICommandInterceptor>))
+                ?? Array.Empty<ICommandInterceptor>()).ToList();
+#pragma warning disable CS0618 // Type or member is obsolete
+            if (configuration.Settings.Interceptor != null)
+            {
+                interceptors.Add(configuration.Settings.Interceptor);
+            }
+#pragma warning restore CS0618 // Type or member is obsolete
+            foreach (var interceptor in interceptors)
+            {
+                interceptor.Intercept(context, settings);
+            }
 
-        // Execute the command.
-        return command.Execute(context, settings);
+            // Create and validate the command.
+            var command = leaf.CreateCommand(resolver);
+            var validationResult = command.Validate(context, settings);
+            if (!validationResult.Successful)
+            {
+                throw CommandRuntimeException.ValidationFailed(validationResult);
+            }
+
+            // Execute the command.
+            var result = await command.Execute(context, settings);
+            foreach (var interceptor in interceptors)
+            {
+                interceptor.InterceptResult(context, settings, ref result);
+            }
+
+            return result;
+        }
+        catch (Exception ex) when (configuration.Settings is { ExceptionHandler: not null, PropagateExceptions: false })
+        {
+            return configuration.Settings.ExceptionHandler(ex, resolver);
+        }
     }
 }

@@ -26,7 +26,7 @@ internal static class MarkupParser
 
             if (token.Kind == MarkupTokenKind.Open)
             {
-                var parsedStyle = StyleParser.Parse(token.Value);
+                var parsedStyle = string.IsNullOrEmpty(token.Value) ? Style.Plain : StyleParser.Parse(token.Value);
                 stack.Push(parsedStyle);
             }
             else if (token.Kind == MarkupTokenKind.Close)

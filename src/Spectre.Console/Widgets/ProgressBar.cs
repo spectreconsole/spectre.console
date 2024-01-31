@@ -15,6 +15,7 @@ internal sealed class ProgressBar : Renderable, IHasCulture
     public bool ShowValue { get; set; }
     public bool IsIndeterminate { get; set; }
     public CultureInfo? Culture { get; set; }
+    public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
 
     public Style CompletedStyle { get; set; } = Color.Yellow;
     public Style FinishedStyle { get; set; } = Color.Green;

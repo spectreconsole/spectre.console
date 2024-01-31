@@ -42,6 +42,11 @@ public interface ICommandAppSettings
     bool TrimTrailingPeriod { get; set; }
 
     /// <summary>
+    /// Gets or sets the styles to used when rendering the help text.
+    /// </summary>
+    HelpProviderStyle? HelpProviderStyles { get; set; }
+
+    /// <summary>
     /// Gets or sets the <see cref="IAnsiConsole"/>.
     /// </summary>
     IAnsiConsole? Console { get; set; }
@@ -50,6 +55,7 @@ public interface ICommandAppSettings
     /// Gets or sets the <see cref="ICommandInterceptor"/> used
     /// to intercept settings before it's being sent to the command.
     /// </summary>
+    [Obsolete("Register the interceptor with the ITypeRegistrar.")]
     ICommandInterceptor? Interceptor { get; set; }
 
     /// <summary>
@@ -90,6 +96,8 @@ public interface ICommandAppSettings
     /// <summary>
     /// Gets or sets a handler for Exceptions.
     /// <para>This handler will not be called, if <see cref="PropagateExceptions"/> is set to <c>true</c>.</para>
+    /// The <see cref="ITypeResolver"/> argument will only be not-null, when the exception occurs during execution of
+    /// a command. I.e. only when the resolver is available.
     /// </summary>
-    public Func<Exception, int>? ExceptionHandler { get; set; }
+    public Func<Exception, ITypeResolver?, int>? ExceptionHandler { get; set; }
 }
