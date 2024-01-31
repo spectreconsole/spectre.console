@@ -104,4 +104,17 @@ public static partial class AnsiConsoleExtensions
 
         console.Write(text + Environment.NewLine, style);
     }
+
+    /// <summary>
+    /// Writes a <see cref="IRenderable"/> items to the console.
+    /// </summary>
+    /// <param name="console">The console to write to.</param>
+    /// <param name="renderables">The <see cref="IRenderable"/> items to write.</param>
+    public static void Write(this IAnsiConsole console, params IRenderable[] renderables)
+    {
+        foreach (var renderable in renderables)
+        {
+            console.Write(renderable);
+        }
+    }
 }
