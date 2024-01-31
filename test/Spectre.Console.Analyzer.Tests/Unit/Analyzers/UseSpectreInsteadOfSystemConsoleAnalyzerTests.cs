@@ -13,15 +13,14 @@ public class UseSpectreInsteadOfSystemConsoleAnalyzerTests
 using System;
 
 class TestClass {
-    void TestMethod() 
+    void TestMethod()
     {
         var s = Console.ReadLine();
-    } 
+    }
 }";
 
         await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-            .VerifyAnalyzerAsync(Source)
-            .ConfigureAwait(false);
+            .VerifyAnalyzerAsync(Source);
     }
 
     [Fact]
@@ -31,15 +30,14 @@ class TestClass {
 using System;
 
 class TestClass {
-    void TestMethod() 
+    void TestMethod()
     {
         Console.Write(""Hello, World"");
-    } 
+    }
 }";
 
         await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(7, 9))
-            .ConfigureAwait(false);
+            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(7, 9));
     }
 
     [Fact]
@@ -48,7 +46,7 @@ class TestClass {
         const string Source = @"
 using System;
 
-class TestClass 
+class TestClass
 {
     void TestMethod() {
         Console.WriteLine(""Hello, World"");
@@ -56,7 +54,6 @@ class TestClass
 }";
 
         await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(7, 9))
-            .ConfigureAwait(false);
+            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(7, 9));
     }
 }

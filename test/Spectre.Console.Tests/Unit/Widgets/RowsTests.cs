@@ -1,6 +1,5 @@
 namespace Spectre.Console.Tests.Unit;
 
-[UsesVerify]
 [ExpectationPath("Widgets/Rows")]
 public sealed class RowsTests
 {

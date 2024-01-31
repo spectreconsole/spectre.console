@@ -1,6 +1,5 @@
 namespace Spectre.Console.Tests.Unit;
 
-[UsesVerify]
 [ExpectationPath("Widgets/Table")]
 public sealed class TableTests
 {
@@ -101,7 +100,6 @@ public sealed class TableTests
         }
     }
 
-    [UsesVerify]
     public sealed class TheAddEmptyRowMethod
     {
         [Fact]

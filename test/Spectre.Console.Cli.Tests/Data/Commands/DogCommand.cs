@@ -25,7 +25,6 @@ public class DogCommand : AnimalCommand<DogSettings>
 
     public override int Execute(CommandContext context, DogSettings settings)
     {
-        DumpSettings(context, settings);
         return 0;
     }
 }

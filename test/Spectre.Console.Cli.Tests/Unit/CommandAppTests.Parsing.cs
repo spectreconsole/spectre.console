@@ -2,11 +2,9 @@ namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed partial class CommandAppTests
 {
-    [UsesVerify]
     [ExpectationPath("Parsing")]
     public sealed class Parsing
     {
-        [UsesVerify]
         [ExpectationPath("UnknownCommand")]
         public sealed class UnknownCommand
         {
@@ -167,7 +165,6 @@ public sealed partial class CommandAppTests
             }
         }
 
-        [UsesVerify]
         [ExpectationPath("CannotAssignValueToFlag")]
         public sealed class CannotAssignValueToFlag
         {
@@ -208,7 +205,6 @@ public sealed partial class CommandAppTests
             }
         }
 
-        [UsesVerify]
         [ExpectationPath("NoValueForOption")]
         public sealed class NoValueForOption
         {
@@ -249,7 +245,6 @@ public sealed partial class CommandAppTests
             }
         }
 
-        [UsesVerify]
         [ExpectationPath("NoMatchingArgument")]
         public sealed class NoMatchingArgument
         {
@@ -272,7 +267,6 @@ public sealed partial class CommandAppTests
             }
         }
 
-        [UsesVerify]
         [ExpectationPath("UnexpectedOption")]
         public sealed class UnexpectedOption
         {
@@ -313,7 +307,6 @@ public sealed partial class CommandAppTests
             }
         }
 
-        [UsesVerify]
         [ExpectationPath("UnknownOption")]
         public sealed class UnknownOption
         {
@@ -356,7 +349,6 @@ public sealed partial class CommandAppTests
             }
         }
 
-        [UsesVerify]
         [ExpectationPath("OptionWithoutName")]
         public sealed class OptionWithoutName
         {
@@ -451,7 +443,6 @@ public sealed partial class CommandAppTests
             }
         }
 
-        [UsesVerify]
         [ExpectationPath("InvalidShortOptionName")]
         public sealed class InvalidShortOptionName
         {
@@ -474,7 +465,6 @@ public sealed partial class CommandAppTests
             }
         }
 
-        [UsesVerify]
         [ExpectationPath("LongOptionNameIsOneCharacter")]
         public sealed class LongOptionNameIsOneCharacter
         {
@@ -497,7 +487,6 @@ public sealed partial class CommandAppTests
             }
         }
 
-        [UsesVerify]
         [ExpectationPath("LongOptionNameIsMissing")]
         public sealed class LongOptionNameIsMissing
         {
@@ -520,7 +509,6 @@ public sealed partial class CommandAppTests
             }
         }
 
-        [UsesVerify]
         [ExpectationPath("LongOptionNameStartWithDigit")]
         public sealed class LongOptionNameStartWithDigit
         {
@@ -543,7 +531,6 @@ public sealed partial class CommandAppTests
             }
         }
 
-        [UsesVerify]
         [ExpectationPath("LongOptionNameContainSymbol")]
         public sealed class LongOptionNameContainSymbol
         {

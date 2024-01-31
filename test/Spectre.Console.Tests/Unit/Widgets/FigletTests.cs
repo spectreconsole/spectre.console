@@ -1,6 +1,5 @@
 namespace Spectre.Console.Tests.Unit;
 
-[UsesVerify]
 [ExpectationPath("Widgets/Figlet")]
 public sealed class FigletTests
 {

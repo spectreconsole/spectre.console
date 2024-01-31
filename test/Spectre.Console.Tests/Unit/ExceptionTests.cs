@@ -1,6 +1,5 @@
 namespace Spectre.Console.Tests.Unit;
 
-[UsesVerify]
 [ExpectationPath("Exception")]
 public sealed class ExceptionTests
 {

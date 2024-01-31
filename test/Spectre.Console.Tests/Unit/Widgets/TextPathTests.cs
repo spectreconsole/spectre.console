@@ -1,6 +1,5 @@
 namespace Spectre.Console.Tests.Unit;
 
-[UsesVerify]
 [ExpectationPath("Widgets/TextPath")]
 public sealed class TextPathTests
 {

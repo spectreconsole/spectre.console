@@ -13,7 +13,7 @@
     <Compile Include="..\Spectre.Console\Internal\Extensions\EnumerableExtensions.cs" Link="Internal\EnumerableExtensions.cs" />
     <Compile Include="..\Spectre.Console\Internal\Text\StringBuffer.cs" Link="Internal\StringBuffer.cs" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="Properties/stylecop.json" />
     <None Include="../../resources/gfx/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />

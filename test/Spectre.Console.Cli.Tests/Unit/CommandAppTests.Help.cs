@@ -4,7 +4,6 @@ namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed partial class CommandAppTests
 {
-    [UsesVerify]
     [ExpectationPath("Help")]
     public class Help
     {

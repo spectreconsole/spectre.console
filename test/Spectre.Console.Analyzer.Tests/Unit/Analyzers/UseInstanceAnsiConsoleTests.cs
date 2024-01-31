@@ -24,8 +24,7 @@ internal sealed class Foo
 ";
 
         await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
-            .VerifyAnalyzerAsync(Source)
-            .ConfigureAwait(false);
+            .VerifyAnalyzerAsync(Source);
     }
 
     [Fact]
@@ -34,19 +33,18 @@ internal sealed class Foo
         const string Source = @"
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
-    IAnsiConsole _ansiConsole = AnsiConsole.Console;    
+    IAnsiConsole _ansiConsole = AnsiConsole.Console;
 
-    void TestMethod() 
+    void TestMethod()
     {
         _ansiConsole.Write(""this is fine"");
-    } 
+    }
 }";
 
         await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
-            .VerifyAnalyzerAsync(Source)
-            .ConfigureAwait(false);
+            .VerifyAnalyzerAsync(Source);
     }
 
     [Fact]
@@ -55,17 +53,16 @@ class TestClass
         const string Source = @"
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
-    void TestMethod() 
+    void TestMethod()
     {
         AnsiConsole.Write(""this is fine"");
-    } 
+    }
 }";
 
         await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
-            .VerifyAnalyzerAsync(Source)
-            .ConfigureAwait(false);
+            .VerifyAnalyzerAsync(Source);
     }
 
     [Fact]
@@ -74,19 +71,18 @@ class TestClass
         const string Source = @"
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
-    IAnsiConsole _ansiConsole = AnsiConsole.Console;    
+    IAnsiConsole _ansiConsole = AnsiConsole.Console;
 
-    void TestMethod() 
+    void TestMethod()
     {
         _ansiConsole.Write(""this is fine"");
         AnsiConsole.Write(""Hello, World"");
-    } 
+    }
 }";
 
         await SpectreAnalyzerVerifier<FavorInstanceAnsiConsoleOverStaticAnalyzer>
-            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(11, 9))
-            .ConfigureAwait(false);
+            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(11, 9));
     }
 }

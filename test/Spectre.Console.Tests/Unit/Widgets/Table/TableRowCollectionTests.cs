@@ -3,7 +3,6 @@ namespace Spectre.Console.Tests.Unit;
 [ExpectationPath("Widgets/Table/Rows")]
 public sealed class TableRowCollectionTests
 {
-    [UsesVerify]
     public sealed class TheAddMethod
     {
         [Fact]
@@ -69,7 +68,6 @@ public sealed class TableRowCollectionTests
         }
     }
 
-    [UsesVerify]
     public sealed class TheInsertMethod
     {
         [Fact]
@@ -137,7 +135,6 @@ public sealed class TableRowCollectionTests
         }
     }
 
-    [UsesVerify]
     public sealed class TheRemoveMethod
     {
         [Fact]
@@ -215,7 +212,6 @@ public sealed class TableRowCollectionTests
         }
     }
 
-    [UsesVerify]
     public sealed class TheUpdateMethod
     {
         [Fact]

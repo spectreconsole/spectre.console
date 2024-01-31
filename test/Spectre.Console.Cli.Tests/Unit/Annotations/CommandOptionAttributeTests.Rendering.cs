@@ -3,7 +3,6 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations;
 [ExpectationPath("Arguments")]
 public sealed partial class CommandOptionAttributeTests
 {
-    [UsesVerify]
     public sealed class UnexpectedCharacter
     {
         public sealed class Settings : CommandSettings
@@ -25,7 +24,6 @@ public sealed partial class CommandOptionAttributeTests
         }
     }
 
-    [UsesVerify]
     public sealed class UnterminatedValueName
     {
         public sealed class Settings : CommandSettings
@@ -47,7 +45,6 @@ public sealed partial class CommandOptionAttributeTests
         }
     }
 
-    [UsesVerify]
     public sealed class OptionsMustHaveName
     {
         public sealed class Settings : CommandSettings
@@ -69,7 +66,6 @@ public sealed partial class CommandOptionAttributeTests
         }
     }
 
-    [UsesVerify]
     public sealed class OptionNamesCannotStartWithDigit
     {
         public sealed class Settings : CommandSettings
@@ -91,7 +87,6 @@ public sealed partial class CommandOptionAttributeTests
         }
     }
 
-    [UsesVerify]
     public sealed class InvalidCharacterInOptionName
     {
         public sealed class Settings : CommandSettings
@@ -113,7 +108,6 @@ public sealed partial class CommandOptionAttributeTests
         }
     }
 
-    [UsesVerify]
     public sealed class LongOptionMustHaveMoreThanOneCharacter
     {
         public sealed class Settings : CommandSettings
@@ -135,7 +129,6 @@ public sealed partial class CommandOptionAttributeTests
         }
     }
 
-    [UsesVerify]
     public sealed class ShortOptionMustOnlyBeOneCharacter
     {
         public sealed class Settings : CommandSettings
@@ -157,7 +150,6 @@ public sealed partial class CommandOptionAttributeTests
         }
     }
 
-    [UsesVerify]
     public sealed class MultipleOptionValuesAreNotSupported
     {
         public sealed class Settings : CommandSettings
@@ -179,7 +171,6 @@ public sealed partial class CommandOptionAttributeTests
         }
     }
 
-    [UsesVerify]
     public sealed class InvalidCharacterInValueName
     {
         public sealed class Settings : CommandSettings
@@ -201,7 +192,6 @@ public sealed partial class CommandOptionAttributeTests
         }
     }
 
-    [UsesVerify]
     public sealed class MissingLongAndShortName
     {
         public sealed class Settings : CommandSettings
