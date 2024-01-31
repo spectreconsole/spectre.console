@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup Label="Settings">
     <Deterministic>true</Deterministic>
-    <LangVersion>10</LangVersion>
+    <LangVersion>12</LangVersion>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>embedded</DebugType>
     <MinVerSkip Condition="'$(Configuration)' == 'Debug'">true</MinVerSkip>
@@ -15,8 +15,8 @@
 
   <PropertyGroup Label="Package Information">
     <Description>A library that makes it easier to create beautiful console applications.</Description>
-    <Copyright>Patrik Svensson, Phil Scott, Nils Andresen</Copyright>
-    <Authors>Patrik Svensson, Phil Scott, Nils Andresen</Authors>
+    <Copyright>Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi, Frank Ray</Copyright>
+    <Authors>Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi, Frank Ray</Authors>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/spectreconsole/spectre.console</RepositoryUrl>
     <PackageIcon>small-logo.png</PackageIcon>
@@ -33,12 +33,12 @@
 
   <!-- Allow folks to build with minimal dependencies (though they will need to provide their own Version data) -->
   <ItemGroup Label="Build Tools Package References" Condition="'$(UseBuildTimeTools)' != 'false'">
-    <PackageReference Include="MinVer" PrivateAssets="All" Version="4.2.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="1.1.1" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+    <PackageReference Include="MinVer" PrivateAssets="All" Version="4.3.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="8.0.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Roslynator.Analyzers" Version="4.1.2">
+    <PackageReference Include="Roslynator.Analyzers" Version="4.10.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
   </ItemGroup>

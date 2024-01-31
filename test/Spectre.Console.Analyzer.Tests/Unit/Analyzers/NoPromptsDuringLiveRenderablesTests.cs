@@ -12,7 +12,7 @@ public class NoPromptsDuringLiveRenderablesTests
         const string Source = @"
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
     void Go()
     {
@@ -21,8 +21,7 @@ class TestClass
 }";
 
         await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
-            .VerifyAnalyzerAsync(Source)
-            .ConfigureAwait(false);
+            .VerifyAnalyzerAsync(Source);
     }
 
     [Fact]
@@ -31,7 +30,7 @@ class TestClass
         const string Source = @"
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
     public IAnsiConsole _console = AnsiConsole.Console;
 
@@ -45,8 +44,7 @@ class TestClass
 }";
 
         await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
-            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(12, 26))
-            .ConfigureAwait(false);
+            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(12, 26));
     }
 
     [Fact]
@@ -55,7 +53,7 @@ class TestClass
         const string Source = @"
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
     void Go()
     {
@@ -67,8 +65,7 @@ class TestClass
 }";
 
         await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
-            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(10, 13))
-            .ConfigureAwait(false);
+            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(10, 13));
     }
 
     [Fact]
@@ -92,7 +89,6 @@ class Program
 }";
 
         await SpectreAnalyzerVerifier<NoPromptsDuringLiveRenderablesAnalyzer>
-            .VerifyAnalyzerAsync(Source)
-            .ConfigureAwait(false);
+            .VerifyAnalyzerAsync(Source);
     }
 }

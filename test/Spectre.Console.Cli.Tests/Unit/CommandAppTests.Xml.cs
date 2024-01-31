@@ -2,7 +2,6 @@ namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed partial class CommandAppTests
 {
-    [UsesVerify]
     [ExpectationPath("Xml")]
     public sealed class Xml
     {

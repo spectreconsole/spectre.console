@@ -2,7 +2,6 @@ namespace Spectre.Console.Tests.Unit;
 
 public sealed class SegmentTests
 {
-    [UsesVerify]
     public sealed class TheSplitMethod
     {
         [Theory]
@@ -44,7 +43,6 @@ public sealed class SegmentTests
         }
     }
 
-    [UsesVerify]
     public sealed class TheSplitLinesMethod
     {
         [Fact]

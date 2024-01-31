@@ -1,6 +1,5 @@
 namespace Spectre.Console.Tests.Unit;
 
-[UsesVerify]
 [ExpectationPath("AlternateScreen")]
 public sealed class AlternateScreenTests
 {

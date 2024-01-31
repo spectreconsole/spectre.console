@@ -12,7 +12,7 @@ public class NoCurrentLiveRenderablesTests
         const string Source = @"
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
     void Go()
     {
@@ -24,8 +24,7 @@ class TestClass
 }";
 
         await SpectreAnalyzerVerifier<NoConcurrentLiveRenderablesAnalyzer>
-            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(10, 13))
-            .ConfigureAwait(false);
+            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(10, 13));
     }
 
     [Fact]
@@ -48,8 +47,7 @@ class Child
 }";
 
         await SpectreAnalyzerVerifier<NoConcurrentLiveRenderablesAnalyzer>
-            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(12, 13))
-            .ConfigureAwait(false);
+            .VerifyAnalyzerAsync(Source, _expectedDiagnostics.WithLocation(12, 13));
     }
 
     [Fact]
@@ -69,7 +67,6 @@ class Program
 }";
 
         await SpectreAnalyzerVerifier<NoConcurrentLiveRenderablesAnalyzer>
-            .VerifyAnalyzerAsync(Source)
-            .ConfigureAwait(false);
+            .VerifyAnalyzerAsync(Source);
     }
 }

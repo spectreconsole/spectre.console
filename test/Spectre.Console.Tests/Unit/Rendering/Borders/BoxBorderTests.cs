@@ -1,10 +1,8 @@
 namespace Spectre.Console.Tests.Unit;
 
-[UsesVerify]
 [ExpectationPath("Rendering/Borders/Box")]
 public sealed class BoxBorderTests
 {
-    [UsesVerify]
     public sealed class NoBorder
     {
         public sealed class TheSafeGetBorderMethod
@@ -52,7 +50,6 @@ public sealed class BoxBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class AsciiBorder
     {
         public sealed class TheSafeGetBorderMethod
@@ -84,7 +81,6 @@ public sealed class BoxBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class DoubleBorder
     {
         public sealed class TheSafeGetBorderMethod
@@ -116,7 +112,6 @@ public sealed class BoxBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class HeavyBorder
     {
         public sealed class TheSafeGetBorderMethod
@@ -148,7 +143,6 @@ public sealed class BoxBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class RoundedBorder
     {
         [Fact]
@@ -177,7 +171,6 @@ public sealed class BoxBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class SquareBorder
     {
         [Fact]

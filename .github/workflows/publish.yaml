@@ -15,26 +15,13 @@ env:
 jobs:
 
   ###################################################
-  # BUILD
+  # PUBLISH
   ###################################################
 
   build:
-    name: Build
-    if: |
-      (!startsWith(github.event.head_commit.message, 'skip-ci') 
-      && !startsWith(github.event.head_commit.message, 'chore:'))
-      || startsWith(github.ref, 'refs/tags/')
-    strategy:
-      matrix:
-        kind: ['linux', 'windows', 'macOS']
-        include:
-          - kind: linux
-            os: ubuntu-latest
-          - kind: windows
-            os: windows-latest
-          - kind: macOS
-            os: macos-latest
-    runs-on: ${{ matrix.os }}
+    name: Publish NuGet Packages
+    if: "!contains(github.event.head_commit.message, 'skip-ci') || startsWith(github.ref, 'refs/tags/')"
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -43,12 +30,19 @@ jobs:
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            6.0.x
+            7.0.x
+            8.0.x
 
-      - name: Build
+      - name: Publish
         shell: bash
         run: |
           dotnet tool restore
-          dotnet cake
+          dotnet cake --target="publish" \
+            --nuget-key="${{secrets.NUGET_API_KEY}}" \
+            --github-key="${{secrets.GITHUB_TOKEN}}"
 
   ###################################################
   # DOCS
@@ -89,34 +83,3 @@ jobs:
         cd docs
         dotnet tool restore
         dotnet run --configuration Release -- deploy
-
-  ###################################################
-  # PUBLISH
-  ###################################################
-
-  publish:
-    name: Publish NuGet Packages
-    needs: [build]
-    if: "!contains(github.event.head_commit.message, 'skip-ci') || startsWith(github.ref, 'refs/tags/')"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: |
-            6.0.x
-            7.0.x
-            8.0.x
-
-      - name: Publish
-        shell: bash
-        run: |
-          dotnet tool restore
-          dotnet cake --target="publish" \
-            --nuget-key="${{secrets.NUGET_API_KEY}}" \
-            --github-key="${{secrets.GITHUB_TOKEN}}"
