@@ -81,7 +81,7 @@ AnsiConsole.Write(new BarChart()
     .AddItems(items));
 ```
 
-### Addd items with bar and label style
+### Add items with bar and label style
 
 ```csharp
 AnsiConsole.Write(new BarChart()
