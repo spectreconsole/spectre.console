@@ -83,7 +83,7 @@ public sealed class BarChart : Renderable, IHasCulture
         foreach (var item in Data)
         {
             grid.AddRow(
-                item.LabelStyle != null ? new Text(item.Label, item.LabelStyle) : new Markup(item.Label),
+                item.LabelStyle != null ? new Markup(item.Label, item.LabelStyle) : new Markup(item.Label),
                 new ProgressBar()
                 {
                     Value = item.Value,
