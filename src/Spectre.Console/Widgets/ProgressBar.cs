@@ -16,12 +16,10 @@ internal sealed class ProgressBar : Renderable, IHasCulture
     public bool IsIndeterminate { get; set; }
     public CultureInfo? Culture { get; set; }
     public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
-
     public Style CompletedStyle { get; set; } = Color.Yellow;
     public Style FinishedStyle { get; set; } = Color.Green;
     public Style RemainingStyle { get; set; } = Color.Grey;
     public Style IndeterminateStyle { get; set; } = DefaultPulseStyle;
-    public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
 
     internal static Style DefaultPulseStyle { get; } = new Style(foreground: Color.DodgerBlue1, background: Color.Grey23);
 
