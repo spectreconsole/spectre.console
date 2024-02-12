@@ -249,6 +249,25 @@ public sealed class TextPromptTests
     }
 
     [Fact]
+    [Expectation("SecretValueBackspaceNullMask")]
+    public Task Should_Not_Erase_Prompt_Text_On_Backspace_If_Prompt_Is_Secret_And_Mask_Is_Null()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Input.PushText("Bananas");
+        console.Input.PushKey(ConsoleKey.Backspace);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        console.Prompt(
+            new TextPrompt<string>("Favorite fruit?")
+                .Secret(null));
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
     [Expectation("SecretDefaultValueCustomMask")]
     public Task Should_Choose_Custom_Masked_Default_Value_If_Nothing_Is_Entered_And_Prompt_Is_Secret_And_Mask_Is_Custom()
     {

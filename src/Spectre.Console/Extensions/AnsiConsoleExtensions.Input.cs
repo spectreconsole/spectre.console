@@ -53,7 +53,11 @@ public static partial class AnsiConsoleExtensions
                 if (text.Length > 0)
                 {
                     text = text.Substring(0, text.Length - 1);
-                    console.Write("\b \b");
+
+                    if (mask != null)
+                    {
+                        console.Write("\b \b");
+                    }
                 }
 
                 continue;
