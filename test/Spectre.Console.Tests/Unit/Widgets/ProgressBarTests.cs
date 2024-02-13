@@ -38,7 +38,7 @@ public class ProgressBarTests
             Value = 9000,
             MaxValue = 9000,
             ShowValue = true,
-            ValueFormatter = (value, _) => value.ToString("N0"),
+            ValueFormatter = (value, _) => value.ToString("N0", CultureInfo.InvariantCulture),
         };
 
         // When
