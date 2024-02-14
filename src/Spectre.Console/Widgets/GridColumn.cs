@@ -6,7 +6,7 @@ namespace Spectre.Console;
 public sealed class GridColumn : IColumn, IHasDirtyState
 {
     private bool _isDirty;
-    private int? _width;
+    private ColumnWidth _width = ColumnWidth.SizeToContent();
     private bool _noWrap;
     private Padding? _padding;
     private Justify? _alignment;
@@ -16,9 +16,9 @@ public sealed class GridColumn : IColumn, IHasDirtyState
 
     /// <summary>
     /// Gets or sets the width of the column.
-    /// If <c>null</c>, the column will adapt to its contents.
+    /// By default it is set to <see cref="ColumnWidth.SizeToContent"/>.
     /// </summary>
-    public int? Width
+    public ColumnWidth Width
     {
         get => _width;
         set => MarkAsDirty(() => _width = value);

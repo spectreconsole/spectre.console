@@ -54,7 +54,7 @@ internal sealed class TableMeasurer : TableAccessor
     /// <returns>A list of column widths.</returns>
     public List<int> CalculateColumnWidths(int maxWidth)
     {
-        var width_ranges = Columns.Select(column => MeasureColumn(column, maxWidth)).ToArray();
+        var width_ranges = MeasureColumns(maxWidth);
         var widths = width_ranges.Select(range => range.Max).ToList();
 
         var tableWidth = widths.Sum();
@@ -64,11 +64,11 @@ internal sealed class TableMeasurer : TableAccessor
             widths = CollapseWidths(widths, wrappable, maxWidth);
             tableWidth = widths.Sum();
 
-            // last resort, reduce columns evenly
+            // Last resort, reduce columns evenly
             if (tableWidth > maxWidth)
             {
                 var excessWidth = tableWidth - maxWidth;
-                widths = Ratio.Reduce(excessWidth, widths.Select(_ => 1).ToList(), widths, widths);
+                widths = Ratio.Reduce(excessWidth, widths.ConvertAll(_ => 1), widths, widths);
                 tableWidth = widths.Sum();
             }
         }
@@ -82,12 +82,45 @@ internal sealed class TableMeasurer : TableAccessor
         return widths;
     }
 
-    public Measurement MeasureColumn(TableColumn column, int maxWidth)
+    internal Measurement[] MeasureColumns(int maxWidth)
+    {
+        IEnumerable<(int Index, Measurement Measurement)> MeasureStarColumns(IEnumerable<(TableColumn Column, int Index)> starColumns, int totalWidthForStar)
+        {
+            var sumStarWeight = starColumns.Sum(x => x.Column.Width.Value);
+            var ratio = totalWidthForStar / sumStarWeight;
+            foreach (var x in starColumns)
+            {
+                var starWidth = (int)Math.Round(x.Column.Width.Value * ratio);
+
+                yield return (x.Index, new Measurement(starWidth, starWidth));
+            }
+        }
+
+        // Index and separate columns
+        var indexColumns = Columns.Select((column, index) => (column, index)).ToList();
+        var fixedColumns = indexColumns.Where(x => !x.column.IsProportionalWidth());
+        var starColumns = indexColumns.Where(x => x.column.IsProportionalWidth());
+
+        // First calculate fixed cells
+        var fixedWidth_ranges = fixedColumns.Select(x => (x.index, measurement: MeasureColumn(x.column, maxWidth))).ToList();
+
+        // Get remainder
+        var consumedWidth = fixedWidth_ranges.Sum(x => x.measurement.Max);
+        var totalWidthForStar = Math.Max(0, maxWidth - consumedWidth);
+
+        // And apportioned to the remainder
+        var starWidth_ranges = MeasureStarColumns(starColumns, totalWidthForStar);
+        var width_ranges = fixedWidth_ranges.Concat(starWidth_ranges).OrderBy(x => x.Item1).Select(x => x.Item2);
+
+        return width_ranges.ToArray();
+    }
+
+    private Measurement MeasureColumn(TableColumn column, int maxWidth)
     {
         // Predetermined width?
-        if (column.Width != null)
+        if (column.IsFixedWidth())
         {
-            return new Measurement(column.Width.Value, column.Width.Value);
+            return new Measurement((int)column.Width.Value, (int)column.Width.Value);
         }
 
         var columnIndex = Columns.IndexOf(column);
