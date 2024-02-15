@@ -557,7 +557,7 @@ public sealed partial class CommandAppTests
 
         // Then
         registrar.Registrations.ContainsKey(typeof(DogSettings)).ShouldBeTrue();
-        registrar.Registrations[typeof(DogSettings)].Count.ShouldBe(1);
+        registrar.Registrations[typeof(DogSettings)].Count.ShouldBe(2);
         registrar.Registrations[typeof(DogSettings)].ShouldContain(typeof(DogSettings));
     }
 
@@ -587,7 +587,7 @@ public sealed partial class CommandAppTests
 
         // Then
         registrar.Registrations.ContainsKey(typeof(DogSettings)).ShouldBeTrue();
-        registrar.Registrations[typeof(DogSettings)].Count.ShouldBe(1);
+        registrar.Registrations[typeof(DogSettings)].Count.ShouldBe(2);
         registrar.Registrations[typeof(DogSettings)].ShouldContain(typeof(DogSettings));
         registrar.Registrations.ContainsKey(typeof(MammalSettings)).ShouldBeTrue();
         registrar.Registrations[typeof(MammalSettings)].Count.ShouldBe(1);

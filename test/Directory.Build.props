@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup Label="Settings">
-    <LangVersion>10</LangVersion>
+    <LangVersion>12</LangVersion>
     <IsPackable>false</IsPackable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
