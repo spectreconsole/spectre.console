@@ -42,11 +42,12 @@ public sealed class ProgressContext
     /// <returns>The newly created task.</returns>
     public ProgressTask AddTask(string description, bool autoStart = true, double maxValue = 100)
     {
-        return AddTask(description, new ProgressTaskSettings
+        lock (_taskLock)
         {
-            AutoStart = autoStart,
-            MaxValue = maxValue,
-        });
+            var settings = new ProgressTaskSettings { AutoStart = autoStart, MaxValue = maxValue, };
+
+            return AddTaskAtInternal(description, settings, _tasks.Count);
+        }
     }
 
     /// <summary>
@@ -61,11 +62,9 @@ public sealed class ProgressContext
     {
         lock (_taskLock)
         {
-            return AddTaskAtInternal(description, new ProgressTaskSettings
-            {
-                AutoStart = autoStart,
-                MaxValue = maxValue,
-            }, index);
+            var settings = new ProgressTaskSettings { AutoStart = autoStart, MaxValue = maxValue, };
+
+            return AddTaskAtInternal(description, settings, index);
         }
     }
 
@@ -79,11 +78,13 @@ public sealed class ProgressContext
     /// <returns>The newly created task.</returns>
     public ProgressTask AddTaskBefore(string description, ProgressTask referenceProgressTask, bool autoStart = true, double maxValue = 100)
     {
-        return AddTaskBefore(description, new ProgressTaskSettings
+        lock (_taskLock)
         {
-            AutoStart = autoStart,
-            MaxValue = maxValue,
-        }, referenceProgressTask);
+            var settings = new ProgressTaskSettings { AutoStart = autoStart, MaxValue = maxValue, };
+            var indexOfReference = _tasks.IndexOf(referenceProgressTask);
+
+            return AddTaskAtInternal(description, settings, indexOfReference);
+        }
     }
 
     /// <summary>
@@ -96,11 +97,13 @@ public sealed class ProgressContext
     /// <returns>The newly created task.</returns>
     public ProgressTask AddTaskAfter(string description, ProgressTask referenceProgressTask, bool autoStart = true, double maxValue = 100)
     {
-        return AddTaskAfter(description, new ProgressTaskSettings
+        lock (_taskLock)
         {
-            AutoStart = autoStart,
-            MaxValue = maxValue,
-        }, referenceProgressTask);
+            var settings = new ProgressTaskSettings { AutoStart = autoStart, MaxValue = maxValue, };
+            var indexOfReference = _tasks.IndexOf(referenceProgressTask);
+
+            return AddTaskAtInternal(description, settings, indexOfReference + 1);
+        }
     }
 
     /// <summary>
