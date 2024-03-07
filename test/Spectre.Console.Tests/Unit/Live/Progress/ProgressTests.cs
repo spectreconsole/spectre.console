@@ -263,4 +263,82 @@ public sealed class ProgressTests
         // Then
         task.RemainingTime.ShouldBe(TimeSpan.MaxValue);
     }
+
+    [Fact]
+    public void Should_Render_Tasks_Added_Before_And_After_Correctly()
+    {
+        // Given
+        var console = new TestConsole()
+            .Width(10)
+            .Interactive()
+            .EmitAnsiSequences();
+
+        var progress = new Progress(console)
+            .Columns(new TaskDescriptionColumn())
+            .AutoRefresh(false)
+            .AutoClear(true);
+
+        // When
+        progress.Start(ctx =>
+        {
+            var foo1 = ctx.AddTask("foo1");
+            var foo2 = ctx.AddTask("foo2");
+            var foo3 = ctx.AddTask("foo3");
+
+            var afterFoo1 = ctx.AddTaskAfter("afterFoo1", foo1);
+            var beforeFoo3 = ctx.AddTaskBefore("beforeFoo3", foo3);
+        });
+
+        // Then
+        console.Output.SplitLines().Select(x => x.Trim()).ToArray()
+            .ShouldBeEquivalentTo(new[]
+                {
+                    "[?25l",
+                    "foo1",
+                    "afterFoo1",
+                    "foo2",
+                    "beforeFoo3",
+                    "foo3",
+                    "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h",
+                });
+    }
+
+    [Fact]
+    public void Should_Render_Tasks_At_Specified_Indexes_Correctly()
+    {
+        // Given
+        var console = new TestConsole()
+            .Width(10)
+            .Interactive()
+            .EmitAnsiSequences();
+
+        var progress = new Progress(console)
+            .Columns(new TaskDescriptionColumn())
+            .AutoRefresh(false)
+            .AutoClear(true);
+
+        // When
+        progress.Start(ctx =>
+        {
+            var foo1 = ctx.AddTask("foo1");
+            var foo2 = ctx.AddTask("foo2");
+            var foo3 = ctx.AddTask("foo3");
+
+            var afterFoo1 = ctx.AddTaskAt("afterFoo1", 1);
+            var beforeFoo3 = ctx.AddTaskAt("beforeFoo3", 3);
+        });
+
+        // Then
+        console.Output.SplitLines().Select(x => x.Trim()).ToArray()
+            .ShouldBeEquivalentTo(new[]
+            {
+                "[?25l",
+                "foo1",
+                "afterFoo1",
+                "foo2",
+                "beforeFoo3",
+                "foo3",
+                "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h",
+            });
+    }
 }
