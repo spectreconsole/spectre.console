@@ -3,7 +3,7 @@
 _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.console.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_ _[![Spectre.Console CLI NuGet Version](https://img.shields.io/nuget/v/spectre.console.cli.svg?style=flat&label=NuGet%3A%20Spectre.Console.Cli)](https://www.nuget.org/packages/spectre.console.cli)_ [![Netlify Status](https://api.netlify.com/api/v1/badges/1eaf215a-eb9c-45e4-8c64-c90b62963149/deploy-status)](https://app.netlify.com/sites/spectreconsole/deploys)
 
 A .NET library that makes it easier to create beautiful, cross platform, console applications.  
-It is heavily inspired by the excellent Python library, [Rich](https://github.com/willmcgugan/rich). Detailed instructions for using `Spectre.Console` are located on the project website, https://spectreconsole.net.
+It is heavily inspired by the excellent Python library, [Rich](https://github.com/willmcgugan/rich). Detailed instructions for using `Spectre.Console` are located on the project website, https://spectreconsole.net
 
 ## Table of Contents
 
@@ -27,8 +27,12 @@ It is heavily inspired by the excellent Python library, [Rich](https://github.co
   The library will detect the capabilities of the current terminal 
   and downgrade colors as needed.  
 
-
 ![Example](docs/input/assets/images/example.png)
+
+## Important Notices
+
+> [!IMPORTANT]\
+> We're a small team, and to prioritize, we rely on upvotes :+1:. We use the [Top Issues Dashboard]() for tracking community demand. Do not hesitate to upvote the issues and pull requests you are interested in. We work on the most upvoted first.
 
 ## Installing
 
