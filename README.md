@@ -18,14 +18,14 @@ It is heavily inspired by the excellent Python library, [Rich](https://github.co
 
 ## Features
 
-* Written with unit testing in mind.
 * Supports tables, grids, panels, and a [Rich](https://github.com/willmcgugan/rich) inspired markup language.
 * Supports the most common SRG parameters when it comes to text 
   styling such as bold, dim, italic, underline, strikethrough, 
   and blinking text.
 * Supports 3/4/8/24-bit colors in the terminal.  
   The library will detect the capabilities of the current terminal 
-  and downgrade colors as needed.  
+  and downgrade colors as needed.
+* Written with unit testing in mind.
 
 ![Example](docs/input/assets/images/example.png)
 
