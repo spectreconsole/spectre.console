@@ -108,6 +108,21 @@ public sealed class ExceptionTests
         return Verifier.Verify(result);
     }
 
+    [Fact]
+    [Expectation("NoStackTrace")]
+    public Task Should_Write_Exception_With_No_StackTrace()
+    {
+        // Given
+        var console = new TestConsole().Width(1024);
+        var dex = GetException(() => TestExceptions.ThrowWithInnerException());
+
+        // When
+        var result = console.WriteNormalizedException(dex, ExceptionFormats.NoStackTrace);
+
+        // Then
+        return Verifier.Verify(result);
+    }
+
     public static Exception GetException(Action action)
     {
         try
