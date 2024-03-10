@@ -32,7 +32,7 @@ It is heavily inspired by the excellent Python library, [Rich](https://github.co
 ## Important Notices
 
 > [!IMPORTANT]\
-> We're a small team, and to prioritize, we rely on upvotes :+1:. We use the [Top Issues Dashboard]() for tracking community demand. Do not hesitate to upvote the issues and pull requests you are interested in. We work on the most upvoted first.
+> We use the [Top Issues Dashboard]() for tracking community demand. Please upvote :+1: the issues and pull requests you are interested in.
 
 ## Installing
 
