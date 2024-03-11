@@ -15,10 +15,7 @@ internal class ConsoleSizeEnricher : IProfileEnricher
 
     public void Enrich(Profile profile)
     {
-        if (_environmentVariables is null)
-        {
-            return;
-        }
+        _environmentVariables ??= GetEnvironmentVariables(null);
 
         if (_environmentVariables.TryGetValue("CONSOLE_WIDTH", out var width)
             && int.TryParse(width, out var w))
@@ -31,5 +28,29 @@ internal class ConsoleSizeEnricher : IProfileEnricher
         {
             profile.Height = h;
         }
+    }
+
+    private static IDictionary<string, string> GetEnvironmentVariables(IDictionary<string, string>? variables)
+    {
+        if (variables != null)
+        {
+            return new Dictionary<string, string>(variables, StringComparer.OrdinalIgnoreCase);
+        }
+
+        return Environment.GetEnvironmentVariables()
+            .Cast<System.Collections.DictionaryEntry>()
+            .Aggregate(
+                new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase),
+                (dictionary, entry) =>
+                {
+                    var key = (string)entry.Key;
+                    if (!dictionary.TryGetValue(key, out _))
+                    {
+                        dictionary.Add(key, entry.Value as string ?? string.Empty);
+                    }
+
+                    return dictionary;
+                },
+                dictionary => dictionary);
     }
 }
