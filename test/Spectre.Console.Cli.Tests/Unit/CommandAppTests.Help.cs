@@ -29,6 +29,27 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        [Expectation("Root_Command")]
+        public Task Should_Output_Root_Command_Correctly()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+                configurator.AddCommand<DogCommand>("dog");
+                configurator.AddCommand<HorseCommand>("horse");
+                configurator.AddCommand<GiraffeCommand>("giraffe");
+            });
+
+            // When
+            var result = fixture.Run("horse", "--help");
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
         [Expectation("Hidden_Commands")]
         public Task Should_Skip_Hidden_Commands()
         {
