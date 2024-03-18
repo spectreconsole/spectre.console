@@ -124,7 +124,7 @@ internal static class TemplateParser
                 foreach (var character in token.Value)
                 {
                     if (!char.IsLetterOrDigit(character) &&
-                        character != '=' && character != '-' && character != '_')
+                        character != '=' && character != '-' && character != '_' && character != '|')
                     {
                         throw CommandTemplateException.InvalidCharacterInValueName(template, token, character);
                     }

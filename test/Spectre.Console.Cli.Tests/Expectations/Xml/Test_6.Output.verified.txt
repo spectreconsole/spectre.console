@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Model>
   <!--DEFAULT COMMAND-->
   <Command Name="__default_command" IsBranch="false" IsDefault="true" ClrType="Spectre.Console.Tests.Data.DogCommand" Settings="Spectre.Console.Tests.Data.DogSettings">
@@ -31,7 +31,7 @@
       <Option Short="a" Long="alive,not-dead" Value="NULL" Required="false" Kind="flag" ClrType="System.Boolean">
         <Description>Indicates whether or not the animal is alive.</Description>
       </Option>
-      <Option Short="d" Long="day" Value="NULL" Required="false" Kind="scalar" ClrType="System.DayOfWeek" />
+      <Option Short="d" Long="day" Value="MON|TUE" Required="false" Kind="scalar" ClrType="System.DayOfWeek" />
       <Option Short="" Long="directory" Value="NULL" Required="false" Kind="scalar" ClrType="System.IO.DirectoryInfo" />
       <Option Short="" Long="file" Value="NULL" Required="false" Kind="scalar" ClrType="System.IO.FileInfo" />
       <Option Short="n,p" Long="name,pet-name" Value="VALUE" Required="false" Kind="scalar" ClrType="System.String" />
