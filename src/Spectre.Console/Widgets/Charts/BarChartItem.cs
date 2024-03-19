@@ -21,15 +21,22 @@ public sealed class BarChartItem : IBarChartItem
     public Color? Color { get; }
 
     /// <summary>
+    /// Gets color of the label associated with the bar.
+    /// </summary>
+    public Style? LabelStyle { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="BarChartItem"/> class.
     /// </summary>
     /// <param name="label">The item label.</param>
     /// <param name="value">The item value.</param>
     /// <param name="color">The item color.</param>
-    public BarChartItem(string label, double value, Color? color = null)
+    /// <param name="labelStyle">The label color.</param>
+    public BarChartItem(string label, double value, Color? color = null, Style? labelStyle = null)
     {
         Label = label ?? throw new ArgumentNullException(nameof(label));
         Value = value;
         Color = color;
+        LabelStyle = labelStyle;
     }
 }
