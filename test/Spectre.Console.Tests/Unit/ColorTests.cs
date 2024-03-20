@@ -1,3 +1,5 @@
+using System.Drawing;
+
 namespace Spectre.Console.Tests.Unit;
 
 public sealed class ColorTests
@@ -5,11 +7,56 @@ public sealed class ColorTests
     public sealed class TheEqualsMethod
     {
         [Fact]
-        public void Initialize_Color_With_Hex()
+        public void Should_Consider_Color_And_Color_From_Hex_Equal()
         {
-            var name = Color.FromHex("#800080").ToString();
+            // Given
+            var color1 = new Color(128, 0, 128);
 
-            name.ShouldBe("#800080 (RGB=128,0,128)");
+            // When
+            var color2 = Color.FromHex("#800080");
+
+            // Then
+            color2.ShouldBe(color1);
+        }
+
+        [Fact]
+        public void Should_Consider_Color_And_Color_Try_From_Hex_Equal()
+        {
+            // Given
+            var color1 = new Color(128, 0, 128);
+
+            // When
+            var result = Color.TryFromHex("#800080", out var color2);
+
+            // Then
+            result.ShouldBeTrue();
+            color2.ShouldBe(color1);
+        }
+
+        [Fact]
+        public void Should_Not_Parse_Non_Color_From_Hex()
+        {
+            // Given, When
+            var result = Record.Exception(() => Color.FromHex("FOO"));
+
+            // Then
+            result.ShouldBeOfType<FormatException>();
+#if NET7_0_OR_GREATER
+            result.Message.ShouldBe("The input string 'FO' was not in a correct format.");
+#else
+            result.Message.ShouldBe("Input string was not in a correct format.");
+#endif
+        }
+
+        [Fact]
+        public void Should_Not_Parse_Non_Color_Try_From_Hex()
+        {
+            // Given, When
+            var result = Color.TryFromHex("FOO", out var color);
+
+            // Then
+            result.ShouldBeFalse();
+            color.ShouldBe(Color.Default);
         }
 
         [Fact]
