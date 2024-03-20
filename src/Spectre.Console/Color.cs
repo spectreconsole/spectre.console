@@ -220,6 +220,11 @@ public partial struct Color : IEquatable<Color>
     /// <returns>The color created from the hexadecimal string.</returns>
     public static Color FromHex(string hex)
     {
+        if (hex is null)
+        {
+            throw new ArgumentNullException(nameof(hex));
+        }
+
         if (hex.StartsWith("#"))
         {
             hex = hex.Substring(1);
