@@ -27,11 +27,42 @@ public static partial class AnsiConsoleExtensions
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>
     /// <param name="console">The console.</param>
+    /// <param name="prompt">The prompt to display.</param>
+    /// <returns>The prompt input result.</returns>
+    public static T? PromptNullable<T>(this IAnsiConsole console, INullablePrompt<T> prompt)
+    {
+        if (prompt is null)
+        {
+            throw new ArgumentNullException(nameof(prompt));
+        }
+
+        return prompt.ShowNullable(console);
+    }
+
+    /// <summary>
+    /// Displays a prompt to the user.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="console">The console.</param>
     /// <param name="prompt">The prompt markup text.</param>
     /// <returns>The prompt input result.</returns>
     public static T Ask<T>(this IAnsiConsole console, string prompt)
     {
         return new TextPrompt<T>(prompt).Show(console);
+    }
+
+    /// <summary>
+    /// Displays a prompt to the user.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="console">The console.</param>
+    /// <param name="prompt">The prompt markup text.</param>
+    /// <returns>The prompt input result.</returns>
+    public static T? AskNullable<T>(this IAnsiConsole console, string prompt)
+    {
+        return new TextPrompt<T>(prompt)
+            .AllowEmpty()
+            .ShowNullable(console);
     }
 
     /// <summary>
@@ -47,6 +78,22 @@ public static partial class AnsiConsoleExtensions
         var textPrompt = new TextPrompt<T>(prompt);
         textPrompt.Culture = culture;
         return textPrompt.Show(console);
+    }
+
+    /// <summary>
+    /// Displays a prompt to the user.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="console">The console.</param>
+    /// <param name="prompt">The prompt markup text.</param>
+    /// <param name="culture">Specific CultureInfo to use when converting input.</param>
+    /// <returns>The prompt input result.</returns>
+    public static T? AskNullable<T>(this IAnsiConsole console, string prompt, CultureInfo? culture)
+    {
+        var textPrompt = new TextPrompt<T>(prompt);
+        textPrompt.AllowEmpty();
+        textPrompt.Culture = culture;
+        return textPrompt.ShowNullable(console);
     }
 
     /// <summary>
