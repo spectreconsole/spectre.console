@@ -196,9 +196,10 @@ public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorde
         {
             if (weekdays[currentDay - 1] == weekday)
             {
-                if (_calendarEvents.Any(e => e.Month == Month && e.Day == currentDay))
+                var todayEvent = _calendarEvents.LastOrDefault(e => e.Month == Month && e.Day == currentDay);
+                if (todayEvent != null)
                 {
-                    row.Add(new Markup(currentDay.ToString(CultureInfo.InvariantCulture) + "*", _highlightStyle));
+                    row.Add(new Markup(currentDay.ToString(CultureInfo.InvariantCulture) + "*", todayEvent.CustomHighlightStyle ?? _highlightStyle));
                 }
                 else
                 {
