@@ -84,6 +84,13 @@ internal sealed class XmlDocCommand : Command<XmlDocCommand.Settings>
 
         node.SetNullableAttribute("Settings", command.SettingsType?.FullName);
 
+        if (!string.IsNullOrWhiteSpace(command.Description))
+        {
+            var descriptionNode = doc.CreateElement("Description");
+            descriptionNode.InnerText = command.Description;
+            node.AppendChild(descriptionNode);
+        }
+
         // Parameters
         if (command.Parameters.Count > 0)
         {
@@ -102,6 +109,27 @@ internal sealed class XmlDocCommand : Command<XmlDocCommand.Settings>
             node.AppendChild(doc.CreateComment(childCommand.Name.ToUpperInvariant()));
             node.AppendChild(CreateCommandNode(doc, childCommand));
         }
+
+        // Examples
+        if (command.Examples.Count > 0)
+        {
+            var exampleRootNode = doc.CreateElement("Examples");
+            foreach (var example in command.Examples.SelectMany(static x => x))
+            {
+                var exampleNode = CreateExampleNode(doc, example);
+                exampleRootNode.AppendChild(exampleNode);
+            }
+
+            node.AppendChild(exampleRootNode);
+        }
+
+        return node;
+    }
+
+    private static XmlNode CreateExampleNode(XmlDocument document, string example)
+    {
+        var node = document.CreateElement("Example");
+        node.SetAttribute("commandLine", example);
 
         return node;
     }

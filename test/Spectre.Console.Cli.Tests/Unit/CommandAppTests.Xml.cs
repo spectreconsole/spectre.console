@@ -111,6 +111,26 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        [Expectation("Test_10")]
+        public Task Should_Dump_Correct_Model_For_Case_6()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(config =>
+            {
+                config.AddCommand<DogCommand>("dog")
+                    .WithExample("dog -g")
+                    .WithExample("dog --good-boy");
+            });
+
+            // When
+            var result = fixture.Run(Constants.XmlDocCommand);
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
         [Expectation("Test_6")]
         public Task Should_Dump_Correct_Model_For_Model_With_Default_Command()
         {
