@@ -2,6 +2,7 @@
 <Model>
   <!--DEFAULT COMMAND-->
   <Command Name="__default_command" IsBranch="false" IsDefault="true" ClrType="Spectre.Console.Tests.Data.DogCommand" Settings="Spectre.Console.Tests.Data.DogSettings">
+    <Description>The dog command.</Description>
     <Parameters>
       <Argument Name="LEGS" Position="0" Required="false" Kind="scalar" ClrType="System.Int32">
         <Description>The number of legs.</Description>
@@ -20,6 +21,7 @@
   </Command>
   <!--HORSE-->
   <Command Name="horse" IsBranch="false" ClrType="Spectre.Console.Tests.Data.HorseCommand" Settings="Spectre.Console.Tests.Data.HorseSettings">
+    <Description>The horse command.</Description>
     <Parameters>
       <Argument Name="LEGS" Position="0" Required="false" Kind="scalar" ClrType="System.Int32">
         <Description>The number of legs.</Description>

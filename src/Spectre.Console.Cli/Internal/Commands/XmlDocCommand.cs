@@ -84,6 +84,13 @@ internal sealed class XmlDocCommand : Command<XmlDocCommand.Settings>
 
         node.SetNullableAttribute("Settings", command.SettingsType?.FullName);
 
+        if (!string.IsNullOrWhiteSpace(command.Description))
+        {
+            var descriptionNode = doc.CreateElement("Description");
+            descriptionNode.InnerText = command.Description;
+            node.AppendChild(descriptionNode);
+        }
+
         // Parameters
         if (command.Parameters.Count > 0)
         {
