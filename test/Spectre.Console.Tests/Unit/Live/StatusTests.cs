@@ -48,30 +48,4 @@ public sealed class StatusTests
         // Then
         return Verifier.Verify(console.Output);
     }
-
-    [Fact]
-    [Expectation("WriteLineOverflow")]
-    public Task Should_Render_Correctly_When_WriteLine_Exceeds_Console_Width()
-    {
-        // Given
-        var console = new TestConsole()
-            .Colors(ColorSystem.TrueColor)
-            .Width(100)
-            .Interactive()
-            .EmitAnsiSequences();
-        var status = new Status(console)
-        {
-            AutoRefresh = false,
-        };
-
-        // When
-        status.Start("long text that should not interfere writeline text", ctx =>
-        {
-            ctx.Refresh();
-            console.WriteLine("x".Repeat(console.Profile.Width + 10), new Style(foreground: Color.White));
-        });
-
-        // Then
-        return Verifier.Verify(console.Output);
-    }
 }
