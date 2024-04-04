@@ -13,6 +13,9 @@ internal static class ConfigurationHelper
         return null;
     }
 
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2070", Justification = TrimWarnings.SuppressMessage)]
+#endif
     private static bool GetGenericTypeArguments(Type? type, Type genericType,
         [NotNullWhen(true)] out Type[]? genericTypeArguments)
     {

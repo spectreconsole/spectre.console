@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
@@ -18,7 +19,7 @@ public sealed class TypeRegistrar : ITypeRegistrar
         return new TypeResolver(_builder.BuildServiceProvider());
     }
 
-    public void Register(Type service, Type implementation)
+    public void Register(Type service, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type implementation)
     {
         _builder.AddSingleton(service, implementation);
     }

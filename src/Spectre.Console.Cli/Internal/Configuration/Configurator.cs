@@ -26,7 +26,14 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         _registrar.RegisterInstance(typeof(IHelpProvider), helpProvider);
     }
 
-    public void SetHelpProvider<T>()
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072", Justification = TrimWarnings.SuppressMessage)]
+#endif
+    public void SetHelpProvider<
+#if NET6_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+        T>()
         where T : IHelpProvider
     {
         // Register the help provider
@@ -38,7 +45,11 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         Examples.Add(args);
     }
 
-    public ConfiguredCommand SetDefaultCommand<TDefaultCommand>()
+    public ConfiguredCommand SetDefaultCommand<
+#if NET6_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
+        TDefaultCommand>()
         where TDefaultCommand : class, ICommand
     {
         DefaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(
@@ -53,7 +64,32 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return new CommandConfigurator(command);
     }
 
-    public ICommandConfigurator AddDelegate<TSettings>(string name, Func<CommandContext, TSettings, int> func)
+#if NET6_0_OR_GREATER
+    /// <summary>
+    /// Adds a command.
+    /// </summary>
+    /// <typeparam name="TCommand">The command type.</typeparam>
+    /// <typeparam name="TSettings">The command settings type.</typeparam>
+    /// <param name="name">The name of the command.</param>
+    /// <returns>A command configurator that can be used to configure the command further.</returns>
+    public ICommandConfigurator AddCommand<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TCommand,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TSettings
+    >(string name)
+        where TCommand : class, ICommand
+        where TSettings : CommandSettings
+    {
+        var command = Commands.AddAndReturn(ConfiguredCommand.FromType<TCommand, TSettings>(name, isDefaultCommand: false));
+        return new CommandConfigurator(command);
+    }
+#endif
+
+    public ICommandConfigurator AddDelegate<
+#if NET6_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
+        TSettings
+    >(string name, Func<CommandContext, TSettings, int> func)
         where TSettings : CommandSettings
     {
         var command = Commands.AddAndReturn(ConfiguredCommand.FromDelegate<TSettings>(
@@ -61,7 +97,12 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return new CommandConfigurator(command);
     }
 
-    public ICommandConfigurator AddAsyncDelegate<TSettings>(string name, Func<CommandContext, TSettings, Task<int>> func)
+    public ICommandConfigurator AddAsyncDelegate<
+#if NET6_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
+        TSettings
+    >(string name, Func<CommandContext, TSettings, Task<int>> func)
         where TSettings : CommandSettings
     {
         var command = Commands.AddAndReturn(ConfiguredCommand.FromDelegate<TSettings>(
@@ -69,7 +110,12 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return new CommandConfigurator(command);
     }
 
-    public IBranchConfigurator AddBranch<TSettings>(string name, Action<IConfigurator<TSettings>> action)
+    public IBranchConfigurator AddBranch<
+#if NET6_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
+        TSettings
+    >(string name, Action<IConfigurator<TSettings>> action)
         where TSettings : CommandSettings
     {
         var command = ConfiguredCommand.FromBranch<TSettings>(name);
@@ -78,9 +124,12 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return new BranchConfigurator(added);
     }
 
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2060")]
+#endif
     ICommandConfigurator IUnsafeConfigurator.AddCommand(string name, Type command)
     {
-        var method = GetType().GetMethod("AddCommand");
+        var method = GetType().GetMethods().FirstOrDefault(i => i.Name == "AddCommand" && i.GetGenericArguments().Length == 1);
         if (method == null)
         {
             throw new CommandConfigurationException("Could not find AddCommand by reflection.");

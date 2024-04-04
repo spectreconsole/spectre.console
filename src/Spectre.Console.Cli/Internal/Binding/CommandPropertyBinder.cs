@@ -24,6 +24,10 @@ internal static class CommandPropertyBinder
         return settings;
     }
 
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2067",
+        Justification = TrimWarnings.SuppressMessage)]
+#endif
     private static CommandSettings CreateSettings(ITypeResolver resolver, Type settingsType)
     {
         if (resolver.Resolve(settingsType) is CommandSettings settings)

@@ -59,6 +59,12 @@ internal sealed class ConfiguredCommand
         return new ConfiguredCommand(name, typeof(TCommand), settingsType, null, isDefaultCommand);
     }
 
+    public static ConfiguredCommand FromType<TCommand, TSetting>(string name, bool isDefaultCommand = false)
+        where TCommand : class, ICommand
+    {
+        return new ConfiguredCommand(name, typeof(TCommand), typeof(TSetting), null, isDefaultCommand);
+    }
+
     public static ConfiguredCommand FromDelegate<TSettings>(
         string name, Func<CommandContext, CommandSettings, Task<int>>? @delegate = null)
         where TSettings : CommandSettings

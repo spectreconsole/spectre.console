@@ -43,6 +43,9 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
         IsHidden = isHidden;
     }
 
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2075", Justification = TrimWarnings.SuppressMessage)]
+#endif
     public bool IsFlagValue()
     {
         return ParameterType.GetInterfaces().Any(i => i == typeof(IFlagValue));
@@ -53,6 +56,9 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
         return CommandParameterComparer.ByBackingProperty.Equals(this, other);
     }
 
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072", Justification = TrimWarnings.SuppressMessage)]
+#endif
     public void Assign(CommandSettings settings, ITypeResolver resolver, object? value)
     {
         // Is the property pair deconstructable?

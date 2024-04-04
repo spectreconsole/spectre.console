@@ -2,6 +2,9 @@ namespace Spectre.Console.Cli;
 
 internal static class CommandBinder
 {
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2070", Justification = TrimWarnings.SuppressMessage)]
+#endif
     public static CommandSettings Bind(CommandTree? tree, Type settingsType, ITypeResolver resolver)
     {
         var lookup = CommandValueResolver.GetParameterValues(tree, resolver);

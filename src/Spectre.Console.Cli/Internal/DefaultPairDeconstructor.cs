@@ -1,6 +1,10 @@
 namespace Spectre.Console.Cli;
 
 [SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes")]
+#if NET6_0_OR_GREATER
+[UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2067",
+    Justification = TrimWarnings.SuppressMessage)]
+#endif
 internal sealed class DefaultPairDeconstructor : IPairDeconstructor
 {
     /// <inheritdoc/>
@@ -58,6 +62,10 @@ internal sealed class DefaultPairDeconstructor : IPairDeconstructor
         }
     }
 
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026", Justification = TrimWarnings.TypeConverterWarningsCanBeIgnored)]
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2067", Justification = TrimWarnings.TypeConverterWarningsCanBeIgnored)]
+#endif
     private static TypeConverter GetConverter(Type type)
     {
         var converter = TypeDescriptor.GetConverter(type);

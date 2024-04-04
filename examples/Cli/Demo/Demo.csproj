@@ -9,7 +9,10 @@
     <ExampleGroup>Cli</ExampleGroup>
     <ExampleVisible>false</ExampleVisible>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <PublishAot>true</PublishAot>
+    <TrimmerSingleWarn>false</TrimmerSingleWarn>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Spectre.Console.Cli\Spectre.Console.Cli.csproj" />
   </ItemGroup>

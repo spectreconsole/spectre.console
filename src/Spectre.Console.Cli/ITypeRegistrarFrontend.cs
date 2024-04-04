@@ -10,7 +10,12 @@ public interface ITypeRegistrarFrontend
     /// </summary>
     /// <typeparam name="TService">The exposed service type.</typeparam>
     /// <typeparam name="TImplementation">The implementing type.</typeparam>
-    void Register<TService, TImplementation>()
+    void Register<
+        TService,
+#if NET6_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+        TImplementation>()
         where TImplementation : TService;
 
     /// <summary>

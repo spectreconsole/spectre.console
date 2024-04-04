@@ -70,6 +70,10 @@ internal static class CommandModelBuilder
         return info;
     }
 
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2075",
+        Justification = TrimWarnings.SuppressMessage)]
+#endif
     private static IEnumerable<CommandParameter> GetParameters(CommandInfo command)
     {
         var result = new List<CommandParameter>();

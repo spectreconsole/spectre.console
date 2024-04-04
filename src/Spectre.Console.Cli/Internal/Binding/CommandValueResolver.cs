@@ -2,6 +2,10 @@ namespace Spectre.Console.Cli;
 
 internal static class CommandValueResolver
 {
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2070", Justification = TrimWarnings.SuppressMessage)]
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072", Justification = TrimWarnings.SuppressMessage)]
+#endif
     public static CommandValueLookup GetParameterValues(CommandTree? tree, ITypeResolver resolver)
     {
         var lookup = new CommandValueLookup();
@@ -125,6 +129,9 @@ internal static class CommandValueResolver
         return result;
     }
 
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050", Justification = TrimWarnings.SuppressMessage)]
+#endif
     private static Array ConvertArray(Array sourceArray, SmartConverter converter)
     {
         Array? targetArray = null;
@@ -146,6 +153,11 @@ internal static class CommandValueResolver
     }
 
     [SuppressMessage("Style", "IDE0019:Use pattern matching", Justification = "It's OK")]
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026", Justification = TrimWarnings.TypeConverterWarningsCanBeIgnored)]
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2087", Justification = TrimWarnings.TypeConverterWarningsCanBeIgnored)]
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072", Justification = TrimWarnings.TypeConverterWarningsCanBeIgnored)]
+#endif
     private static SmartConverter GetConverter(CommandValueLookup lookup, CommandValueBinder binder, ITypeResolver resolver, CommandParameter parameter)
     {
         if (parameter.Converter == null)
@@ -197,6 +209,9 @@ internal static class CommandValueResolver
     /// <summary>
     /// Convert inputs using the given <see cref="TypeConverter"/> and fallback to finding a constructor taking a single argument of the input type.
     /// </summary>
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2075", Justification = TrimWarnings.SuppressMessage)]
+#endif
     private readonly ref struct SmartConverter
     {
         public SmartConverter(TypeConverter typeConverter, Type type)

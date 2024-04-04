@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Demo.Commands;
 using Demo.Commands.Add;
 using Demo.Commands.Run;
@@ -6,6 +7,7 @@ using Spectre.Console.Cli;
 
 namespace Demo;
 
+
 public static class Program
 {
     public static int Main(string[] args)
@@ -13,23 +15,24 @@ public static class Program
         var app = new CommandApp();
         app.Configure(config =>
         {
+            config.PropagateExceptions();
             config.SetApplicationName("fake-dotnet");
             config.ValidateExamples();
             config.AddExample("run", "--no-build");
 
             // Run
-            config.AddCommand<RunCommand>("run");
+            config.AddCommand<RunCommand, RunCommand.Settings>("run");
 
             // Add
             config.AddBranch<AddSettings>("add", add =>
             {
                 add.SetDescription("Add a package or reference to a .NET project");
-                add.AddCommand<AddPackageCommand>("package");
-                add.AddCommand<AddReferenceCommand>("reference");
+                add.AddCommand<AddPackageCommand, AddPackageCommand.Settings>("package");
+                add.AddCommand<AddReferenceCommand, AddReferenceCommand.Settings>("reference");
             });
 
             // Serve
-            config.AddCommand<ServeCommand>("serve")
+            config.AddCommand<ServeCommand, ServeCommand.Settings>("serve")
                 .WithExample("serve", "-o", "firefox")
                 .WithExample("serve", "--port", "80", "-o", "firefox");
             });

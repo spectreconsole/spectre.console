@@ -3,7 +3,7 @@ namespace Spectre.Console.Cli;
 /// <summary>
 /// Implementation of a flag with an optional value.
 /// </summary>
-/// <typeparam name="T">The flag's element type.</typeparam>
+/// <typeparam name="T">The flag's element type.</typeparam>]
 public sealed class FlagValue<T> : IFlagValue
 {
     /// <summary>

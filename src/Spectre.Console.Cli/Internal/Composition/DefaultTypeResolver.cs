@@ -1,5 +1,8 @@
 namespace Spectre.Console.Cli;
 
+#if NET6_0_OR_GREATER
+[UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050", Justification = TrimWarnings.SuppressMessage)]
+#endif
 internal sealed class DefaultTypeResolver : IDisposable, ITypeResolver
 {
     public ComponentRegistry Registry { get; }

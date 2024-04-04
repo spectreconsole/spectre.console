@@ -31,6 +31,16 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         _command.Children.Add(defaultCommand);
     }
 
+    public void SetDefaultCommand<TDefaultCommand, TDefaultSettings>()
+        where TDefaultCommand : class, ICommandLimiter<TSettings>
+        where TDefaultSettings : CommandSettings
+    {
+        var defaultCommand = ConfiguredCommand.FromType<TDefaultCommand, TDefaultSettings>(
+            CliConstants.DefaultCommandName, isDefaultCommand: true);
+
+        _command.Children.Add(defaultCommand);
+    }
+
     public void HideBranch()
     {
         _command.IsHidden = true;
@@ -46,7 +56,27 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return configurator;
     }
 
-    public ICommandConfigurator AddDelegate<TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, int> func)
+#if NET6_0_OR_GREATER
+    public ICommandConfigurator AddCommand<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TCommand,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TSetting
+    >(string name)
+        where TCommand : class, ICommandLimiter<TSettings>
+        where TSetting : CommandSettings
+    {
+        var command = ConfiguredCommand.FromType<TCommand, TSetting>(name, isDefaultCommand: false);
+        var configurator = new CommandConfigurator(command);
+
+        _command.Children.Add(command);
+        return configurator;
+    }
+#endif
+
+    public ICommandConfigurator AddDelegate<
+#if NET6_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
+        TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, int> func)
         where TDerivedSettings : TSettings
     {
         var command = ConfiguredCommand.FromDelegate<TDerivedSettings>(
@@ -56,7 +86,11 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return new CommandConfigurator(command);
     }
 
-    public ICommandConfigurator AddAsyncDelegate<TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, Task<int>> func)
+    public ICommandConfigurator AddAsyncDelegate<
+#if NET6_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
+        TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, Task<int>> func)
         where TDerivedSettings : TSettings
     {
         var command = ConfiguredCommand.FromDelegate<TDerivedSettings>(
@@ -66,7 +100,11 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return new CommandConfigurator(command);
     }
 
-    public IBranchConfigurator AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
+    public IBranchConfigurator AddBranch<
+#if NET6_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+#endif
+        TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
         where TDerivedSettings : TSettings
     {
         var command = ConfiguredCommand.FromBranch<TDerivedSettings>(name);
@@ -75,9 +113,12 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return new BranchConfigurator(added);
     }
 
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2060")]
+#endif
     ICommandConfigurator IUnsafeConfigurator.AddCommand(string name, Type command)
     {
-        var method = GetType().GetMethod("AddCommand");
+        var method = GetType().GetMethods().FirstOrDefault(i => i.Name == "AddCommand" && i.GetGenericArguments().Length == 1);
         if (method == null)
         {
             throw new CommandConfigurationException("Could not find AddCommand by reflection.");

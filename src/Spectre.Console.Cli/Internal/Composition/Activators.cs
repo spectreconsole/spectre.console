@@ -104,6 +104,9 @@ internal sealed class ReflectionActivator : ComponentActivator
         return new ReflectionActivator(_type);
     }
 
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2070", Justification = TrimWarnings.SuppressMessage)]
+#endif
     private static ConstructorInfo GetGreediestConstructor(Type type)
     {
         ConstructorInfo? current = null;

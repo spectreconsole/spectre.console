@@ -10,7 +10,12 @@ public interface ITypeRegistrar
     /// </summary>
     /// <param name="service">The service.</param>
     /// <param name="implementation">The implementation.</param>
-    void Register(Type service, Type implementation);
+    void Register(
+        Type service,
+#if NET6_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+#endif
+        Type implementation);
 
     /// <summary>
     /// Registers the specified instance.

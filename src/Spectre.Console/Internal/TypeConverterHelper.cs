@@ -2,6 +2,8 @@ namespace Spectre.Console;
 
 internal static class TypeConverterHelper
 {
+    private const string TypeConverterWarningsCanBeIgnored = "Type converter warnings can be ignored. Intrinsic types are always included.";
+
     public static string ConvertToString<T>(T input)
     {
         var result = GetTypeConverter<T>().ConvertToInvariantString(input);
@@ -49,6 +51,10 @@ internal static class TypeConverterHelper
         }
     }
 
+#if NET6_0_OR_GREATER
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026", Justification = TypeConverterWarningsCanBeIgnored)]
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2087", Justification = TypeConverterWarningsCanBeIgnored)]
+#endif
     public static TypeConverter GetTypeConverter<T>()
     {
         var converter = TypeDescriptor.GetConverter(typeof(T));
