@@ -37,6 +37,13 @@ public sealed class VerbosityConverter : TypeConverter
 
     public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
     {
+        // NativeAOT will pass an integer when using the DefaultValue and an enum, so we need to manually convert
+        // that back to the enum
+        if (value is int intValue && Enum.IsDefined(typeof(Verbosity), intValue))
+        {
+            return (Verbosity)intValue;
+        }
+
         if (value is string stringValue)
         {
             var result = _lookup.TryGetValue(stringValue, out var verbosity);
