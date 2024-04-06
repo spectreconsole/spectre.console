@@ -6,7 +6,7 @@ internal static class TrimWarnings
         "Commands and settings should be marked with DynamicallyAccessed when building the commands.";
 
     public const string AddCommandShouldBeExplicitAboutSettings =
-        "When trimming is enabled, use the AddCommand method with two generic parameters to explicitly include the settings.";
+        "When trimming is enabled, use the AddCommand method with two generic parameters to explicitly include the settings. Commands with no settings should use EmptyCommandSettings explicitly.";
 
     public const string TypeConverterWarningsCanBeIgnored = "Type converter warnings can be ignored. Intrinsic types are always included.";
 }

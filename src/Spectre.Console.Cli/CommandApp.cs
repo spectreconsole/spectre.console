@@ -72,6 +72,7 @@ public sealed class CommandApp : ICommandApp
     // we have a handful of helper classes that we create dynamically, make sure we mark them
     // as dynamic dependencies to force their inclusion.
     [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(FlagValue<>))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(EmptyCommandSettings))]
 #endif
     public async Task<int> RunAsync(IEnumerable<string> args)
     {
