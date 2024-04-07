@@ -150,9 +150,9 @@ internal static class TableRenderer
                 result.Add(Segment.LineBreak);
             }
 
-            // Show row separator?
+            // Show row separator, if headers are hidden show separator after the first row
             if (context.Border.SupportsRowSeparator && context.ShowRowSeparators
-                                                    && !isFirstRow && !isLastRow)
+                                                    && (!isFirstRow || (isFirstRow && !context.ShowHeaders)) && !isLastRow)
             {
                 var hasVisibleFootes = context is { ShowFooters: true, HasFooters: true };
                 var isNextLastLine = index == context.Rows.Count - 2;
