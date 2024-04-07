@@ -318,21 +318,28 @@ public static class ConfiguratorExtensions
     /// <summary>
     /// Adds a command without settings that executes a delegate.
     /// </summary>
+    /// <typeparam name="TSettings">The command setting type.</typeparam>
     /// <param name="configurator">The configurator.</param>
     /// <param name="name">The name of the command.</param>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
-    public static ICommandConfigurator AddDelegate(
-        this IConfigurator<EmptyCommandSettings> configurator,
+    public static ICommandConfigurator AddDelegate<TSettings>(
+        this IConfigurator<TSettings>? configurator,
         string name,
         Func<CommandContext, int> func)
+        where TSettings : CommandSettings
     {
+        if (typeof(TSettings).IsAbstract)
+        {
+            AddDelegate(configurator as IConfigurator<EmptyCommandSettings>, name, func);
+        }
+
         if (configurator == null)
         {
             throw new ArgumentNullException(nameof(configurator));
         }
 
-        return configurator.AddDelegate<EmptyCommandSettings>(name, (c, _) => func(c));
+        return configurator.AddDelegate<TSettings>(name, (c, _) => func(c));
     }
 
     /// <summary>
