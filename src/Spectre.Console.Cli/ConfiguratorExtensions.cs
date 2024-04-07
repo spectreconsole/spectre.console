@@ -324,11 +324,16 @@ public static class ConfiguratorExtensions
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
     public static ICommandConfigurator AddDelegate<TSettings>(
-        this IConfigurator<TSettings> configurator,
+        this IConfigurator<TSettings>? configurator,
         string name,
         Func<CommandContext, int> func)
-            where TSettings : CommandSettings
+        where TSettings : CommandSettings
     {
+        if (typeof(TSettings).IsAbstract)
+        {
+            AddDelegate(configurator as IConfigurator<EmptyCommandSettings>, name, func);
+        }
+
         if (configurator == null)
         {
             throw new ArgumentNullException(nameof(configurator));
