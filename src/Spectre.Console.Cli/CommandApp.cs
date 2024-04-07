@@ -42,10 +42,26 @@ public sealed class CommandApp : ICommandApp
     /// </summary>
     /// <typeparam name="TCommand">The command type.</typeparam>
     /// <returns>A <see cref="DefaultCommandConfigurator"/> that can be used to configure the default command.</returns>
-    public DefaultCommandConfigurator SetDefaultCommand<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TCommand>()
+    [RequiresUnreferencedCode(TrimWarnings.AddCommandShouldBeExplicitAboutSettings)]
+    public DefaultCommandConfigurator SetDefaultCommand<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TCommand>()
         where TCommand : class, ICommand
     {
         return new DefaultCommandConfigurator(GetConfigurator().SetDefaultCommand<TCommand>());
+    }
+
+    /// <summary>
+    /// Sets the default command.
+    /// </summary>
+    /// <typeparam name="TCommand">The command type.</typeparam>
+    /// <typeparam name="TSettings">The command's default setting type.</typeparam>
+    /// <returns>A <see cref="DefaultCommandConfigurator"/> that can be used to configure the default command.</returns>
+    public DefaultCommandConfigurator SetDefaultCommand<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TCommand,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TSettings
+        >()
+        where TCommand : class, ICommand
+    {
+        return new DefaultCommandConfigurator(GetConfigurator().SetDefaultCommand<TCommand, TSettings>());
     }
 
     /// <summary>

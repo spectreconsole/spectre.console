@@ -203,16 +203,19 @@ internal static class CommandValueResolver
     /// <summary>
     /// Convert inputs using the given <see cref="TypeConverter"/> and fallback to finding a constructor taking a single argument of the input type.
     /// </summary>
-    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2075", Justification = TrimWarnings.SuppressMessage)]
     private readonly ref struct SmartConverter
     {
-        public SmartConverter(TypeConverter typeConverter, Type type)
+        public SmartConverter(
+            TypeConverter typeConverter,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type type)
         {
             TypeConverter = typeConverter;
             Type = type;
         }
 
         public TypeConverter TypeConverter { get; }
+
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
         private Type Type { get; }
 
         public object? ConvertFrom(object input)

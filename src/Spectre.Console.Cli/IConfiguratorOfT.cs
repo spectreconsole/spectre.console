@@ -4,7 +4,7 @@ namespace Spectre.Console.Cli;
 /// Represents a configurator for specific settings.
 /// </summary>
 /// <typeparam name="TSettings">The command setting type.</typeparam>
-public interface IConfigurator<in TSettings>
+public interface IConfigurator<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] in TSettings>
     where TSettings : CommandSettings
 {
     /// <summary>
@@ -28,8 +28,8 @@ public interface IConfigurator<in TSettings>
     /// arguments, flags or option values.
     /// </remarks>
     /// <typeparam name="TDefaultCommand">The default command type.</typeparam>
-    [RequiresDynamicCode(TrimWarnings.AddCommandShouldBeExplicitAboutSettings)]
-    void SetDefaultCommand<TDefaultCommand>()
+    [RequiresUnreferencedCode(TrimWarnings.AddCommandShouldBeExplicitAboutSettings)]
+    void SetDefaultCommand<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TDefaultCommand>()
         where TDefaultCommand : class, ICommandLimiter<TSettings>;
 
     /// <summary>
@@ -42,7 +42,8 @@ public interface IConfigurator<in TSettings>
     /// </remarks>
     /// <typeparam name="TDefaultCommand">The default command type.</typeparam>
     /// <typeparam name="TDefaultCommandSettings">The default command settings type.</typeparam>
-    void SetDefaultCommand<TDefaultCommand, TDefaultCommandSettings>()
+    void SetDefaultCommand<TDefaultCommand,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TDefaultCommandSettings>()
         where TDefaultCommand : class, ICommandLimiter<TSettings>
         where TDefaultCommandSettings : CommandSettings
     ;
@@ -60,8 +61,8 @@ public interface IConfigurator<in TSettings>
     /// <typeparam name="TCommand">The command type.</typeparam>
     /// <param name="name">The name of the command.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
-    [RequiresDynamicCode(TrimWarnings.AddCommandShouldBeExplicitAboutSettings)]
-    ICommandConfigurator AddCommand<TCommand>(string name)
+    [RequiresUnreferencedCode(TrimWarnings.AddCommandShouldBeExplicitAboutSettings)]
+    ICommandConfigurator AddCommand<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TCommand>(string name)
         where TCommand : class, ICommandLimiter<TSettings>;
 
     /// <summary>
@@ -72,8 +73,8 @@ public interface IConfigurator<in TSettings>
     /// <param name="name">The name of the command.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
     ICommandConfigurator AddCommand<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TCommand,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TCommandSettings
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TCommand,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TCommandSettings
     >(string name)
         where TCommand : class, ICommandLimiter<TSettings>
         where TCommandSettings : CommandSettings
@@ -87,7 +88,7 @@ public interface IConfigurator<in TSettings>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
     ICommandConfigurator AddDelegate<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TDerivedSettings
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TDerivedSettings
     >(string name, Func<CommandContext, TDerivedSettings, int> func)
         where TDerivedSettings : TSettings;
 
@@ -99,7 +100,7 @@ public interface IConfigurator<in TSettings>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
     ICommandConfigurator AddAsyncDelegate<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TDerivedSettings
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TDerivedSettings
     >(string name, Func<CommandContext, TDerivedSettings, Task<int>> func)
         where TDerivedSettings : TSettings;
 
@@ -111,7 +112,7 @@ public interface IConfigurator<in TSettings>
     /// <param name="action">The command branch configuration.</param>
     /// <returns>A branch configurator that can be used to configure the branch further.</returns>
     IBranchConfigurator AddBranch<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TDerivedSettings
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TDerivedSettings
     >(string name, Action<IConfigurator<TDerivedSettings>> action)
         where TDerivedSettings : TSettings;
 }

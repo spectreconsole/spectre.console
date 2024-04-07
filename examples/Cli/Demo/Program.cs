@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Demo.Commands;
 using Demo.Commands.Add;
@@ -35,8 +36,10 @@ public static class Program
             config.AddCommand<ServeCommand, ServeCommand.Settings>("serve")
                 .WithExample("serve", "-o", "firefox")
                 .WithExample("serve", "--port", "80", "-o", "firefox");
-            });
+        });
 
-        return app.Run(args);
+        app.Run(args);
+
+        return 0;
     }
 }

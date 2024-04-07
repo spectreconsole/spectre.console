@@ -17,7 +17,7 @@ public class Program
 
         // Create a new command app with the registrar
         // and run it with the provided arguments.
-        var app = new CommandApp<DefaultCommand>(registrar);
+        var app = new CommandApp<DefaultCommand, DefaultCommand.Settings>(registrar);
         return app.Run(args);
     }
 }

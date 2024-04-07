@@ -2,8 +2,13 @@ namespace Spectre.Console.Cli;
 
 internal abstract class CommandParameter : ICommandParameterInfo, ICommandParameter
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+    private readonly Type _parameterType;
     public Guid Id { get; }
-    public Type ParameterType { get; }
+
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+    public Type ParameterType => _parameterType;
+
     public ParameterKind ParameterKind { get; }
     public PropertyInfo Property { get; }
     public string? Description { get; }
@@ -22,7 +27,9 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
     public bool IsFlag => ParameterKind == ParameterKind.Flag;
 
     protected CommandParameter(
-        Type parameterType, ParameterKind parameterKind, PropertyInfo property,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type parameterType,
+        ParameterKind parameterKind,
+        PropertyInfo property,
         string? description, TypeConverterAttribute? converter,
         DefaultValueAttribute? defaultValue,
         PairDeconstructorAttribute? deconstructor,
@@ -30,7 +37,7 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
         IEnumerable<ParameterValidationAttribute> validators, bool required, bool isHidden)
     {
         Id = Guid.NewGuid();
-        ParameterType = parameterType;
+        _parameterType = parameterType;
         ParameterKind = parameterKind;
         Property = property;
         Description = description;
@@ -54,6 +61,7 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
         return CommandParameterComparer.ByBackingProperty.Equals(this, other);
     }
 
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2062", Justification = TrimWarnings.SuppressMessage)]
     [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072", Justification = TrimWarnings.SuppressMessage)]
     [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050", Justification = TrimWarnings.SuppressMessage)]
     public void Assign(CommandSettings settings, ITypeResolver resolver, object? value)

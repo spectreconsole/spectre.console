@@ -38,7 +38,8 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         Examples.Add(args);
     }
 
-    public ConfiguredCommand SetDefaultCommand<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TDefaultCommand>()
+    [RequiresUnreferencedCode(TrimWarnings.AddCommandShouldBeExplicitAboutSettings)]
+    public ConfiguredCommand SetDefaultCommand<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TDefaultCommand>()
         where TDefaultCommand : class, ICommand
     {
         DefaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(
@@ -46,8 +47,18 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return DefaultCommand;
     }
 
-    [RequiresDynamicCode(TrimWarnings.AddCommandShouldBeExplicitAboutSettings)]
-    public ICommandConfigurator AddCommand<TCommand>(string name)
+    public ConfiguredCommand SetDefaultCommand<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TDefaultCommand,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TDefaultSettings>()
+        where TDefaultCommand : class, ICommand
+    {
+        DefaultCommand = ConfiguredCommand.FromType<TDefaultCommand, TDefaultSettings>(
+            CliConstants.DefaultCommandName, isDefaultCommand: true);
+        return DefaultCommand;
+    }
+
+    [RequiresUnreferencedCode(TrimWarnings.AddCommandShouldBeExplicitAboutSettings)]
+    public ICommandConfigurator AddCommand<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TCommand>(string name)
         where TCommand : class, ICommand
     {
         var command = Commands.AddAndReturn(ConfiguredCommand.FromType<TCommand>(name, isDefaultCommand: false));
@@ -62,8 +73,8 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
     /// <param name="name">The name of the command.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
     public ICommandConfigurator AddCommand<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TCommand,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TSettings
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TCommand,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TSettings
     >(string name)
         where TCommand : class, ICommand
         where TSettings : CommandSettings
@@ -73,7 +84,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
     }
 
     public ICommandConfigurator AddDelegate<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TSettings
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TSettings
     >(string name, Func<CommandContext, TSettings, int> func)
         where TSettings : CommandSettings
     {
@@ -83,7 +94,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
     }
 
     public ICommandConfigurator AddAsyncDelegate<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TSettings
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TSettings
     >(string name, Func<CommandContext, TSettings, Task<int>> func)
         where TSettings : CommandSettings
     {
@@ -93,7 +104,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
     }
 
     public IBranchConfigurator AddBranch<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TSettings
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TSettings
     >(string name, Action<IConfigurator<TSettings>> action)
         where TSettings : CommandSettings
     {
@@ -105,7 +116,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
 
     [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2060", Justification = TrimWarnings.SuppressMessage)]
     [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050", Justification = TrimWarnings.SuppressMessage)]
-    ICommandConfigurator IUnsafeConfigurator.AddCommand(string name, Type command)
+    ICommandConfigurator IUnsafeConfigurator.AddCommand(string name, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type command)
     {
         var method = GetType().GetMethods().FirstOrDefault(i => i.Name == "AddCommand" && i.GetGenericArguments().Length == 1);
         if (method == null)
@@ -124,7 +135,10 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
     }
 
     [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050", Justification = TrimWarnings.SuppressMessage)]
-    IBranchConfigurator IUnsafeConfigurator.AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action)
+    IBranchConfigurator IUnsafeConfigurator.AddBranch(
+        string name,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] Type settings,
+        Action<IUnsafeBranchConfigurator> action)
     {
         var command = ConfiguredCommand.FromBranch(settings, name);
 

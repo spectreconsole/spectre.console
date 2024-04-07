@@ -173,6 +173,7 @@ internal static class CommandModelBuilder
         return result;
     }
 
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072", Justification = TrimWarnings.SuppressMessage)]
     private static CommandOption BuildOptionParameter(PropertyInfo property, CommandOptionAttribute attribute)
     {
         var description = property.GetCustomAttribute<DescriptionAttribute>();
@@ -195,6 +196,7 @@ internal static class CommandModelBuilder
             attribute.ValueIsOptional);
     }
 
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072", Justification = TrimWarnings.SuppressMessage)]
     private static CommandArgument BuildArgumentParameter(PropertyInfo property, CommandArgumentAttribute attribute)
     {
         var description = property.GetCustomAttribute<DescriptionAttribute>();

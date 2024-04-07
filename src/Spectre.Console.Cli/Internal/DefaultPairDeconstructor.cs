@@ -1,14 +1,13 @@
 namespace Spectre.Console.Cli;
 
 [SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes")]
-[UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2067", Justification = TrimWarnings.SuppressMessage)]
 internal sealed class DefaultPairDeconstructor : IPairDeconstructor
 {
     /// <inheritdoc/>
     (object? Key, object? Value) IPairDeconstructor.Deconstruct(
         ITypeResolver resolver,
         Type keyType,
-        Type valueType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type valueType,
         string? value)
     {
         if (value == null)

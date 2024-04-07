@@ -2,12 +2,17 @@ namespace Spectre.Console.Cli;
 
 internal sealed class CommandInfo : ICommandContainer, ICommandInfo
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)]
+    private readonly Type _settingsType;
     public string Name { get; }
     public HashSet<string> Aliases { get; }
     public string? Description { get; }
     public object? Data { get; }
     public Type? CommandType { get; }
-    public Type SettingsType { get; }
+
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)]
+    public Type SettingsType => _settingsType;
+
     public Func<CommandContext, CommandSettings, Task<int>>? Delegate { get; }
     public bool IsDefaultCommand { get; }
     public CommandInfo? Parent { get; }
@@ -37,7 +42,7 @@ internal sealed class CommandInfo : ICommandContainer, ICommandInfo
         Description = prototype.Description;
         Data = prototype.Data;
         CommandType = prototype.CommandType;
-        SettingsType = prototype.SettingsType;
+        _settingsType = prototype.SettingsType;
         Delegate = prototype.Delegate;
         IsDefaultCommand = prototype.IsDefaultCommand;
         IsHidden = prototype.IsHidden;
