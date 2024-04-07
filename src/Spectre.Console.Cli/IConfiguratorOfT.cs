@@ -28,13 +28,10 @@ public interface IConfigurator<in TSettings>
     /// arguments, flags or option values.
     /// </remarks>
     /// <typeparam name="TDefaultCommand">The default command type.</typeparam>
-#if NET7_0_OR_GREATER
     [RequiresDynamicCode(TrimWarnings.AddCommandShouldBeExplicitAboutSettings)]
-#endif
     void SetDefaultCommand<TDefaultCommand>()
         where TDefaultCommand : class, ICommandLimiter<TSettings>;
 
-#if NET6_0_OR_GREATER
     /// <summary>
     /// Adds a default command.
     /// </summary>
@@ -49,7 +46,6 @@ public interface IConfigurator<in TSettings>
         where TDefaultCommand : class, ICommandLimiter<TSettings>
         where TDefaultCommandSettings : CommandSettings
     ;
-#endif
 
     /// <summary>
     /// Marks the branch as hidden.
@@ -64,13 +60,10 @@ public interface IConfigurator<in TSettings>
     /// <typeparam name="TCommand">The command type.</typeparam>
     /// <param name="name">The name of the command.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
-#if NET7_0_OR_GREATER
     [RequiresDynamicCode(TrimWarnings.AddCommandShouldBeExplicitAboutSettings)]
-#endif
     ICommandConfigurator AddCommand<TCommand>(string name)
         where TCommand : class, ICommandLimiter<TSettings>;
 
-#if NET6_0_OR_GREATER
     /// <summary>
     /// Adds a command.
     /// </summary>
@@ -80,11 +73,11 @@ public interface IConfigurator<in TSettings>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
     ICommandConfigurator AddCommand<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TCommand,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TCommandSettings>(string name)
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TCommandSettings
+    >(string name)
         where TCommand : class, ICommandLimiter<TSettings>
         where TCommandSettings : CommandSettings
     ;
-#endif
 
     /// <summary>
     /// Adds a command that executes a delegate.
@@ -94,10 +87,8 @@ public interface IConfigurator<in TSettings>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
     ICommandConfigurator AddDelegate<
-#if NET6_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-#endif
-        TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, int> func)
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TDerivedSettings
+    >(string name, Func<CommandContext, TDerivedSettings, int> func)
         where TDerivedSettings : TSettings;
 
     /// <summary>
@@ -108,10 +99,8 @@ public interface IConfigurator<in TSettings>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
     ICommandConfigurator AddAsyncDelegate<
-#if NET6_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-#endif
-        TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, Task<int>> func)
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TDerivedSettings
+    >(string name, Func<CommandContext, TDerivedSettings, Task<int>> func)
         where TDerivedSettings : TSettings;
 
     /// <summary>
@@ -122,9 +111,7 @@ public interface IConfigurator<in TSettings>
     /// <param name="action">The command branch configuration.</param>
     /// <returns>A branch configurator that can be used to configure the branch further.</returns>
     IBranchConfigurator AddBranch<
-#if NET6_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-#endif
-        TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TDerivedSettings
+    >(string name, Action<IConfigurator<TDerivedSettings>> action)
         where TDerivedSettings : TSettings;
 }

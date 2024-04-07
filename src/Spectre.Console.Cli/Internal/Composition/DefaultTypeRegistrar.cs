@@ -23,10 +23,7 @@ internal sealed class DefaultTypeRegistrar : ITypeRegistrar
 
     public void Register(
         Type service,
-#if NET6_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
-#endif
-        Type implementation)
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type implementation)
     {
         var registration = new ComponentRegistration(implementation, new ReflectionActivator(implementation), new[] { service });
         _registry.Enqueue(registry => registry.Register(registration));

@@ -2,10 +2,7 @@ namespace Spectre.Console.Cli;
 
 internal static class CommandConstructorBinder
 {
-#if NET6_0_OR_GREATER
-    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072",
-        Justification = TrimWarnings.SuppressMessage)]
-#endif
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072", Justification = TrimWarnings.SuppressMessage)]
     public static CommandSettings CreateSettings(CommandValueLookup lookup, ConstructorInfo constructor, ITypeResolver resolver)
     {
         if (constructor.DeclaringType == null)

@@ -3,9 +3,7 @@ namespace Spectre.Console;
 /// <summary>
 /// Contains extension methods for <see cref="Exception"/>.
 /// </summary>
-#if NET6_0_OR_GREATER
 [RequiresUnreferencedCode("Exception formatter relies on reflection and isn't guaranteed to have valid results when trimming.")]
-#endif
 public static class ExceptionExtensions
 {
     internal const string UnreferencedWarning =

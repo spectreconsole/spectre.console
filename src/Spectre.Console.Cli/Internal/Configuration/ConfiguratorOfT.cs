@@ -22,6 +22,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         _command.Examples.Add(args);
     }
 
+    [RequiresDynamicCode(TrimWarnings.AddCommandShouldBeExplicitAboutSettings)]
     public void SetDefaultCommand<TDefaultCommand>()
         where TDefaultCommand : class, ICommandLimiter<TSettings>
     {
@@ -46,6 +47,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         _command.IsHidden = true;
     }
 
+    [RequiresDynamicCode(TrimWarnings.AddCommandShouldBeExplicitAboutSettings)]
     public ICommandConfigurator AddCommand<TCommand>(string name)
         where TCommand : class, ICommandLimiter<TSettings>
     {
@@ -56,7 +58,6 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return configurator;
     }
 
-#if NET6_0_OR_GREATER
     public ICommandConfigurator AddCommand<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TCommand,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TSetting
@@ -70,13 +71,10 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         _command.Children.Add(command);
         return configurator;
     }
-#endif
 
     public ICommandConfigurator AddDelegate<
-#if NET6_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-#endif
-        TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, int> func)
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TDerivedSettings
+    >(string name, Func<CommandContext, TDerivedSettings, int> func)
         where TDerivedSettings : TSettings
     {
         var command = ConfiguredCommand.FromDelegate<TDerivedSettings>(
@@ -87,10 +85,8 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
     }
 
     public ICommandConfigurator AddAsyncDelegate<
-#if NET6_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-#endif
-        TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, Task<int>> func)
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TDerivedSettings
+    >(string name, Func<CommandContext, TDerivedSettings, Task<int>> func)
         where TDerivedSettings : TSettings
     {
         var command = ConfiguredCommand.FromDelegate<TDerivedSettings>(
@@ -101,10 +97,8 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
     }
 
     public IBranchConfigurator AddBranch<
-#if NET6_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-#endif
-        TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TDerivedSettings
+    >(string name, Action<IConfigurator<TDerivedSettings>> action)
         where TDerivedSettings : TSettings
     {
         var command = ConfiguredCommand.FromBranch<TDerivedSettings>(name);
@@ -113,9 +107,8 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return new BranchConfigurator(added);
     }
 
-#if NET6_0_OR_GREATER
-    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2060")]
-#endif
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2060", Justification = TrimWarnings.SuppressMessage)]
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050", Justification = TrimWarnings.SuppressMessage)]
     ICommandConfigurator IUnsafeConfigurator.AddCommand(string name, Type command)
     {
         var method = GetType().GetMethods().FirstOrDefault(i => i.Name == "AddCommand" && i.GetGenericArguments().Length == 1);
@@ -134,6 +127,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return result;
     }
 
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050", Justification = TrimWarnings.SuppressMessage)]
     IBranchConfigurator IUnsafeConfigurator.AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action)
     {
         var command = ConfiguredCommand.FromBranch(settings, name);

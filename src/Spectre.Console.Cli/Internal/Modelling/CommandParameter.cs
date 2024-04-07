@@ -43,9 +43,7 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
         IsHidden = isHidden;
     }
 
-#if NET6_0_OR_GREATER
     [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2075", Justification = TrimWarnings.SuppressMessage)]
-#endif
     public bool IsFlagValue()
     {
         return ParameterType.GetInterfaces().Any(i => i == typeof(IFlagValue));
@@ -56,9 +54,8 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
         return CommandParameterComparer.ByBackingProperty.Equals(this, other);
     }
 
-#if NET6_0_OR_GREATER
     [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072", Justification = TrimWarnings.SuppressMessage)]
-#endif
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050", Justification = TrimWarnings.SuppressMessage)]
     public void Assign(CommandSettings settings, ITypeResolver resolver, object? value)
     {
         // Is the property pair deconstructable?
@@ -70,6 +67,8 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
             var multimap = (IMultiMap?)Property.GetValue(settings);
             if (multimap == null)
             {
+                // since we are creating multimap dynamically, make sure CommandApp.Run is marked as requiring it with a
+                // DynamicDependency attribute.
                 multimap = Activator.CreateInstance(typeof(MultiMap<,>).MakeGenericType(genericTypes[0], genericTypes[1])) as IMultiMap;
                 if (multimap == null)
                 {

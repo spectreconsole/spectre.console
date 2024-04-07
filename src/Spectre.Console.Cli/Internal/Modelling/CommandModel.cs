@@ -43,9 +43,7 @@ internal sealed class CommandModel : ICommandContainer, ICommandModel
             "?";
     }
 
-#if NET6_0_OR_GREATER
     [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3000", Justification = "If trimmed we fall back appropriately.")]
-#endif
     private static string? GetApplicationFile()
     {
         var location = Assembly.GetEntryAssembly()?.Location;

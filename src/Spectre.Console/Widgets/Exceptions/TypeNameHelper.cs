@@ -47,6 +47,7 @@ internal static class TypeNameHelper
         return builder.ToString();
     }
 
+    [UnconditionalSuppressMessage("SingleFile", "IL3002:Avoid calling members marked with 'RequiresAssemblyFilesAttribute' when publishing as a single-file", Justification = "We can fallback with a type name")]
     private static void ProcessType(StringBuilder builder, Type type, DisplayNameOptions options)
     {
         if (type.IsGenericType)
@@ -120,6 +121,7 @@ internal static class TypeNameHelper
         }
     }
 
+    [UnconditionalSuppressMessage("SingleFile", "IL3002:Avoid calling members marked with 'RequiresAssemblyFilesAttribute' when publishing as a single-file", Justification = "We can fallback with a type name")]
     private static void ProcessGenericType(StringBuilder builder, Type type, Type[] genericArguments, int length,
         DisplayNameOptions options)
     {

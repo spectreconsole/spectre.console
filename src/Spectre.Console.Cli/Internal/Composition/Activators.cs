@@ -104,9 +104,9 @@ internal sealed class ReflectionActivator : ComponentActivator
         return new ReflectionActivator(_type);
     }
 
-#if NET6_0_OR_GREATER
+    // we should only be activating types that were registered via the TypeRegistrar which
+    // is marked to ensure constructors are not trimmed.
     [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2070", Justification = TrimWarnings.SuppressMessage)]
-#endif
     private static ConstructorInfo GetGreediestConstructor(Type type)
     {
         ConstructorInfo? current = null;

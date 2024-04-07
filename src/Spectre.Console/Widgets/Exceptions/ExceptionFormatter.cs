@@ -1,13 +1,10 @@
 namespace Spectre.Console;
 
-#if NET6_0_OR_GREATER
 [RequiresUnreferencedCode("Exception formatter relies on reflection and isn't guaranteed to have valid results when trimming.")]
-#endif
 internal static class ExceptionFormatter
 {
     public static IRenderable Format(Exception exception, ExceptionSettings settings)
     {
-#if NET6_0_OR_GREATER
         // AOT won't have the methods in the stack trace we need in the normal path,
         // so for now if the user ignores the warnings that WriteException isn't supported
         // then give them the default ToString implementation. We can check the stack trace
@@ -22,7 +19,6 @@ internal static class ExceptionFormatter
         {
             return new Text(exception.ToString());
         }
-#endif
 
         if (exception is null)
         {

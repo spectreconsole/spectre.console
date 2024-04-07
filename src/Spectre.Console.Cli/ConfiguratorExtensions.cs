@@ -30,10 +30,8 @@ public static class ConfiguratorExtensions
     /// <typeparam name="T">The type of the help provider to instantiate at runtime and use.</typeparam>
     /// <returns>A configurator that can be used to configure the application further.</returns>
     public static IConfigurator SetHelpProvider<
-#if NET6_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
-#endif
-        T>(this IConfigurator configurator)
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T
+    >(this IConfigurator configurator)
         where T : IHelpProvider
     {
         if (configurator == null)
@@ -265,11 +263,7 @@ public static class ConfiguratorExtensions
     /// <param name="name">The name of the command branch.</param>
     /// <param name="action">The command branch configuration.</param>
     /// <returns>A branch configurator that can be used to configure the branch further.</returns>
-    public static IBranchConfigurator AddBranch<
-#if NET6_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-#endif
-        TSettings>(
+    public static IBranchConfigurator AddBranch<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TSettings>(
         this IConfigurator<TSettings> configurator,
         string name,
         Action<IConfigurator<TSettings>> action)
@@ -331,11 +325,7 @@ public static class ConfiguratorExtensions
     /// <param name="name">The name of the command.</param>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
-    public static ICommandConfigurator AddDelegate<
-#if NET6_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-#endif
-        TSettings>(
+    public static ICommandConfigurator AddDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TSettings>(
         this IConfigurator<TSettings>? configurator,
         string name,
         Func<CommandContext, int> func)
@@ -362,11 +352,7 @@ public static class ConfiguratorExtensions
     /// <param name="name">The name of the command.</param>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
-    public static ICommandConfigurator AddAsyncDelegate<
-#if NET6_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-#endif
-        TSettings>(
+    public static ICommandConfigurator AddAsyncDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TSettings>(
         this IConfigurator<TSettings> configurator,
         string name,
         Func<CommandContext, Task<int>> func)

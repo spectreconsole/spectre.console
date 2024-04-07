@@ -42,12 +42,7 @@ public sealed class CommandApp : ICommandApp
     /// </summary>
     /// <typeparam name="TCommand">The command type.</typeparam>
     /// <returns>A <see cref="DefaultCommandConfigurator"/> that can be used to configure the default command.</returns>
-    public DefaultCommandConfigurator SetDefaultCommand<
-#if NET6_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-#endif
-        TCommand
-    >()
+    public DefaultCommandConfigurator SetDefaultCommand<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TCommand>()
         where TCommand : class, ICommand
     {
         return new DefaultCommandConfigurator(GetConfigurator().SetDefaultCommand<TCommand>());
@@ -68,12 +63,11 @@ public sealed class CommandApp : ICommandApp
     /// </summary>
     /// <param name="args">The arguments.</param>
     /// <returns>The exit code from the executed command.</returns>
-#if NET6_0_OR_GREATER
     // we have a handful of helper classes that we create dynamically, make sure we mark them
     // as dynamic dependencies to force their inclusion.
     [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(FlagValue<>))]
     [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(EmptyCommandSettings))]
-#endif
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(MultiMap<,>))]
     public async Task<int> RunAsync(IEnumerable<string> args)
     {
         try
@@ -84,17 +78,9 @@ public sealed class CommandApp : ICommandApp
                 _configurator.AddBranch(CliConstants.Commands.Branch, cli =>
                 {
                     cli.HideBranch();
-
-                    // need to explicitly add the settings for NET6 or greater to support trimming
-#if NET6_0_OR_GREATER
                     cli.AddCommand<VersionCommand, VersionCommand.Settings>(CliConstants.Commands.Version);
                     cli.AddCommand<XmlDocCommand, XmlDocCommand.Settings>(CliConstants.Commands.XmlDoc);
                     cli.AddCommand<ExplainCommand, ExplainCommand.Settings>(CliConstants.Commands.Explain);
-#else
-                    cli.AddCommand<VersionCommand>(CliConstants.Commands.Version);
-                    cli.AddCommand<XmlDocCommand>(CliConstants.Commands.XmlDoc);
-                    cli.AddCommand<ExplainCommand>(CliConstants.Commands.Explain);
-#endif
                 });
 
                 _executed = true;

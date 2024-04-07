@@ -1,8 +1,9 @@
 namespace Spectre.Console.Cli;
 
-#if NET6_0_OR_GREATER
+// any types being asked to be resolved here will be added via the DefaultTypeRegistrar, which marks
+// types added as DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors.
+//
 [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050", Justification = TrimWarnings.SuppressMessage)]
-#endif
 internal sealed class DefaultTypeResolver : IDisposable, ITypeResolver
 {
     public ComponentRegistry Registry { get; }

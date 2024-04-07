@@ -19,7 +19,10 @@ public sealed class TypeRegistrar : ITypeRegistrar
         return new TypeResolver(_builder.BuildServiceProvider());
     }
 
-    public void Register(Type service, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type implementation)
+    public void Register(
+        Type service,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type implementation
+    )
     {
         _builder.AddSingleton(service, implementation);
     }

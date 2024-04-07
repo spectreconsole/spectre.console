@@ -12,10 +12,7 @@ public interface ITypeRegistrarFrontend
     /// <typeparam name="TImplementation">The implementing type.</typeparam>
     void Register<
         TService,
-#if NET6_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
-#endif
-        TImplementation>()
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TImplementation>()
         where TImplementation : TService;
 
     /// <summary>

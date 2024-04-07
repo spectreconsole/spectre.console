@@ -51,10 +51,8 @@ internal static class TypeConverterHelper
         }
     }
 
-#if NET6_0_OR_GREATER
     [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026", Justification = TypeConverterWarningsCanBeIgnored)]
     [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2087", Justification = TypeConverterWarningsCanBeIgnored)]
-#endif
     public static TypeConverter GetTypeConverter<T>()
     {
         var converter = TypeDescriptor.GetConverter(typeof(T));

@@ -12,9 +12,7 @@ public interface ITypeRegistrar
     /// <param name="implementation">The implementation.</param>
     void Register(
         Type service,
-#if NET6_0_OR_GREATER
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
-#endif
         Type implementation);
 
     /// <summary>

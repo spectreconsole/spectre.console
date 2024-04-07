@@ -54,8 +54,15 @@ internal static class DecorationTable
     {
         var result = new List<string>();
 
-        Enum.GetValues(typeof(Decoration))
-            .Cast<Decoration>()
+    #if NET6_0_OR_GREATER
+        var values = Enum.GetValues<Decoration>();
+
+    #else
+        var values = Enum.GetValues(typeof(Decoration))
+            .Cast<Decoration>();
+    #endif
+
+        values
             .Where(flag => (decoration & flag) != 0)
             .ForEach(flag =>
             {
