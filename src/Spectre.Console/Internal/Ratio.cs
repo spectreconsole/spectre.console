@@ -9,7 +9,17 @@ internal static class Ratio
     {
         static (int Div, float Mod) DivMod(float x, float y)
         {
-            return ((int)(x / y), x % y);
+            var (div, mod) = ((int)(x / y), x % y);
+
+            // If remainder is withing .0001 of 1 then we round up
+            if (!(mod > 0.9999))
+            {
+                return (div, mod);
+            }
+
+            div++;
+            mod = 0;
+            return (div, mod);
         }
 
         static int? GetEdgeWidth(IRatioResolvable edge)
@@ -46,7 +56,8 @@ internal static class Ratio
                     .ToList();
             }
 
-            var portion = (float)remaining / flexibleEdges.Sum(x => Math.Max(1, x.Edge.Ratio));
+            var r = flexibleEdges.Sum(x => Math.Max(1, x.Edge.Ratio));
+            var portion = (float)remaining / r;
 
             var invalidate = false;
             foreach (var (index, size, edge) in flexibleEdges)

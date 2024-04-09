@@ -463,8 +463,14 @@ public class Segment
         var result = new List<Segment>();
 
         var segmentBuilder = (SegmentBuilder?)null;
+        var c = 0;
         foreach (var segment in segments)
         {
+            if (c == 163)
+            {
+                System.Console.Write("test");
+            }
+            c++;
             if (segmentBuilder == null)
             {
                 segmentBuilder = new SegmentBuilder(segment);
