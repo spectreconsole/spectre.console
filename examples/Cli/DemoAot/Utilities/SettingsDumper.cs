@@ -1,17 +1,19 @@
+using System.Diagnostics.CodeAnalysis;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace Demo.Utilities;
+namespace DemoAot.Utilities;
 
 public static class SettingsDumper
 {
-    public static void Dump(CommandSettings settings)
+    public static void Dump<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] T>(T settings)
+        where T : CommandSettings
     {
         var table = new Table().RoundedBorder();
         table.AddColumn("[grey]Name[/]");
         table.AddColumn("[grey]Value[/]");
 
-        var properties = settings.GetType().GetProperties();
+        var properties = typeof(T).GetProperties();
         foreach (var property in properties)
         {
             var value = property.GetValue(settings)

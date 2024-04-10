@@ -1,10 +1,10 @@
 using System;
 using System.ComponentModel;
-using Demo.Utilities;
+using DemoAot.Utilities;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace Demo.Commands.Serve;
+namespace DemoAot.Commands.Serve;
 
 [Description("Launches a web server in the current working directory and serves all files in it.")]
 public sealed class ServeCommand : Command<ServeCommand.Settings>
