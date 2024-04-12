@@ -14,7 +14,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Shouldly" Version="4.2.1" />
     <PackageReference Include="Spectre.Verify.Extensions" Version="22.3.1" />
-    <PackageReference Include="Verify.Xunit" Version="23.2.0" />
+    <PackageReference Include="Verify.Xunit" Version="24.0.0" />
     <PackageReference Include="xunit" Version="2.6.6" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
       <PrivateAssets>all</PrivateAssets>
