@@ -161,55 +161,6 @@ public sealed partial class CommandAppTests
     }
 
     [Fact]
-    public void Should_Pass_Case_7()
-    {
-        // Given
-        var app = new CommandAppTester();
-        app.Configure(cfg =>
-        {
-            cfg.AddBranch("a", d =>
-            {
-                d.AddDelegate("b", _ =>
-                {
-                    AnsiConsole.MarkupLine("[red]Complete[/]");
-                    return 0;
-                });
-            });
-        });
-
-        // When
-        var result = app.Run([
-            "a", "b"
-        ]);
-
-        // Then
-        result.ExitCode.ShouldBe(0);
-    }
-
-    [Fact]
-    public void Should_Pass_Case_8()
-    {
-        // Given
-        var app = new CommandAppTester();
-        app.Configure(cfg =>
-        {
-            cfg.AddDelegate("a", _ =>
-            {
-                AnsiConsole.MarkupLine("[red]Complete[/]");
-                return 0;
-            });
-        });
-
-        // When
-        var result = app.Run([
-            "a"
-        ]);
-
-        // Then
-        result.ExitCode.ShouldBe(0);
-    }
-
-    [Fact]
     public void Should_Pass_Case_3()
     {
         // Given
@@ -1183,6 +1134,55 @@ public sealed partial class CommandAppTests
             dog.Age.ShouldBe(12);
             dog.Legs.ShouldBe(4);
             data.ShouldBe(2);
+        }
+
+        [Fact]
+        public void Should_Execute_Nested_Delegate_Empty_Command()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(cfg =>
+            {
+                cfg.AddBranch("a", d =>
+                {
+                    d.AddDelegate("b", _ =>
+                    {
+                        AnsiConsole.MarkupLine("[red]Complete[/]");
+                        return 0;
+                    });
+                });
+            });
+
+            // When
+            var result = app.Run([
+                "a", "b"
+            ]);
+
+            // Then
+            result.ExitCode.ShouldBe(0);
+        }
+
+        [Fact]
+        public void Should_Execute_Delegate_Empty_Command_At_Root_Level()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(cfg =>
+            {
+                cfg.AddDelegate("a", _ =>
+                {
+                    AnsiConsole.MarkupLine("[red]Complete[/]");
+                    return 0;
+                });
+            });
+
+            // When
+            var result = app.Run([
+                "a"
+            ]);
+
+            // Then
+            result.ExitCode.ShouldBe(0);
         }
 
         [Fact]
