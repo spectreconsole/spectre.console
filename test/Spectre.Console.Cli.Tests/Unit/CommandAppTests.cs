@@ -1137,6 +1137,55 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        public void Should_Execute_Nested_Delegate_Empty_Command()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(cfg =>
+            {
+                cfg.AddBranch("a", d =>
+                {
+                    d.AddDelegate("b", _ =>
+                    {
+                        AnsiConsole.MarkupLine("[red]Complete[/]");
+                        return 0;
+                    });
+                });
+            });
+
+            // When
+            var result = app.Run([
+                "a", "b"
+            ]);
+
+            // Then
+            result.ExitCode.ShouldBe(0);
+        }
+
+        [Fact]
+        public void Should_Execute_Delegate_Empty_Command_At_Root_Level()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(cfg =>
+            {
+                cfg.AddDelegate("a", _ =>
+                {
+                    AnsiConsole.MarkupLine("[red]Complete[/]");
+                    return 0;
+                });
+            });
+
+            // When
+            var result = app.Run([
+                "a"
+            ]);
+
+            // Then
+            result.ExitCode.ShouldBe(0);
+        }
+
+        [Fact]
         public async void Should_Execute_Async_Delegate_Command_At_Root_Level()
         {
             // Given
