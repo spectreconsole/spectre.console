@@ -32,7 +32,7 @@ internal static class Ratio
             return edge.Size;
         }
 
-        var sizes = edges.Select(x => GetEdgeWidth(x)).ToArray();
+        var sizes = edges.Select(GetEdgeWidth).ToArray();
 
         while (sizes.Any(s => s == null))
         {
@@ -56,8 +56,7 @@ internal static class Ratio
                     .ToList();
             }
 
-            var r = flexibleEdges.Sum(x => Math.Max(1, x.Edge.Ratio));
-            var portion = (float)remaining / r;
+            var portion = (float)remaining / flexibleEdges.Sum(x => Math.Max(1, x.Edge.Ratio));
 
             var invalidate = false;
             foreach (var (index, size, edge) in flexibleEdges)
