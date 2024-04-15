@@ -32,7 +32,7 @@ It is heavily inspired by the excellent Python library, [Rich](https://github.co
 ## Important Notices
 
 > [!IMPORTANT]\
-> We use the [Top Issues Dashboard]() for tracking community demand. Please upvote :+1: the issues and pull requests you are interested in.
+> We use the [Top Issues Dashboard](https://github.com/spectreconsole/spectre.console/issues/1517) for tracking community demand. Please upvote :+1: the issues and pull requests you are interested in.
 
 ## Installing
 
