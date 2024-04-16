@@ -15,6 +15,10 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Spectre.Console.Cli\Spectre.Console.Cli.csproj" />
+    <TrimmerRootAssembly Include="Spectre.Console" />
+    <TrimmerRootAssembly Include="Spectre.Console.Cli" />
+    
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

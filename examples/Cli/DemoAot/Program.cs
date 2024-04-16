@@ -1,13 +1,22 @@
 using System;
+using DemoAot;
 using DemoAot.Commands.Add;
 using DemoAot.Commands.Run;
 using DemoAot.Commands.Serve;
+using DemoAot.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
 try
 {
-    var app = new CommandApp();
+    var services = new ServiceCollection();
+    services.AddSingleton<GreetingService>();
+
+// add extra services to the container here
+    using var registrar = new DependencyInjectionRegistrar(services);
+
+    var app = new CommandApp(registrar);
     app.Configure(config =>
     {
         config.PropagateExceptions();
@@ -17,6 +26,7 @@ try
 
         // Run
         config.AddCommand<RunCommand, RunCommand.Settings>("run");
+        config.AddCommand<InfoCommand, InfoCommand.Settings>("info");
 
         // Add
         config.AddBranch<AddSettings>("add", add =>
