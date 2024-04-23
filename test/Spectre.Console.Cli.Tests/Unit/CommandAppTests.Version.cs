@@ -51,7 +51,7 @@ public sealed partial class CommandAppTests
 
             // Then
             result.Output.ShouldBe(string.Empty);
-            result.Context.ShouldHaveRemainingArgument("version", new[] { (string)null });
+            result.Context.ShouldHaveRemainingArgument("--version", new[] { (string)null });
         }
 
         [Fact]
@@ -70,7 +70,7 @@ public sealed partial class CommandAppTests
 
             // Then
             result.Output.ShouldBe(string.Empty);
-            result.Context.ShouldHaveRemainingArgument("version", new[] { (string)null });
+            result.Context.ShouldHaveRemainingArgument("--version", new[] { (string)null });
         }
 
         [Fact]

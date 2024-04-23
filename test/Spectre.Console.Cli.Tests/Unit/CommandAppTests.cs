@@ -215,7 +215,7 @@ public sealed partial class CommandAppTests
             dog.Name.ShouldBe("\" -Rufus --' ");
         });
         result.Context.Remaining.Parsed.Count.ShouldBe(1);
-        result.Context.ShouldHaveRemainingArgument("order-by", values: new[] { "\"-size\"", " ", string.Empty });
+        result.Context.ShouldHaveRemainingArgument("--order-by", values: new[] { "\"-size\"", " ", string.Empty });
     }
 
     [Fact]
@@ -844,7 +844,7 @@ public sealed partial class CommandAppTests
         // Then
         result.Context.ShouldNotBeNull();
         result.Context.Remaining.Parsed.Count.ShouldBe(1);
-        result.Context.ShouldHaveRemainingArgument("foo", values: new[] { "bar" });
+        result.Context.ShouldHaveRemainingArgument("--foo", values: new[] { "bar" });
     }
 
     [Fact]
@@ -875,8 +875,8 @@ public sealed partial class CommandAppTests
         // Then
         result.Context.ShouldNotBeNull();
         result.Context.Remaining.Parsed.Count.ShouldBe(2);
-        result.Context.ShouldHaveRemainingArgument("foo", values: new[] { "bar" });
-        result.Context.ShouldHaveRemainingArgument("f", values: new[] { "baz" });
+        result.Context.ShouldHaveRemainingArgument("--foo", values: new[] { "bar" });
+        result.Context.ShouldHaveRemainingArgument("-f", values: new[] { "baz" });
         result.Context.Remaining.Raw.Count.ShouldBe(5);
         result.Context.Remaining.Raw.ShouldBe(new[]
         {
@@ -909,7 +909,7 @@ public sealed partial class CommandAppTests
         // Then
         result.Context.ShouldNotBeNull();
         result.Context.Remaining.Parsed.Count.ShouldBe(1);
-        result.Context.ShouldHaveRemainingArgument("foo", values: new[] { (string)null });
+        result.Context.ShouldHaveRemainingArgument("--foo", values: new[] { (string)null });
     }
 
     [Fact]

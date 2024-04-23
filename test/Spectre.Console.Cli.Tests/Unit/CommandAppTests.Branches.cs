@@ -89,7 +89,7 @@ public sealed partial class CommandAppTests
                 //cat.Name.ShouldBe("Kitty"); //<-- Should normally be correct, but instead name will be added to the remaining arguments (see below).
             });
             result.Context.Remaining.Parsed.Count.ShouldBe(1);
-            result.Context.ShouldHaveRemainingArgument("name", values: new[] { "Kitty", });
+            result.Context.ShouldHaveRemainingArgument("--name", values: new[] { "Kitty", });
         }
 
         [Fact]
