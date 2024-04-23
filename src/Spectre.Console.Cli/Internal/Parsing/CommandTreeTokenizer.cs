@@ -171,7 +171,7 @@ internal static class CommandTreeTokenizer
             }
 
             // Encountered a separator?
-            if (current == '=' || current == ':')
+            if (current is '=' or ':')
             {
                 break;
             }
@@ -184,7 +184,7 @@ internal static class CommandTreeTokenizer
                 var value = current.ToString(CultureInfo.InvariantCulture);
                 result.Add(result.Count == 0
                     ? new CommandTreeToken(CommandTreeToken.Kind.ShortOption, position, value, $"-{value}")
-                    : new CommandTreeToken(CommandTreeToken.Kind.ShortOption, position + result.Count, value, value));
+                    : new CommandTreeToken(CommandTreeToken.Kind.ShortOption, position + result.Count, value, $"-{value}"));
             }
             else if (result.Count == 0 && char.IsDigit(current))
             {

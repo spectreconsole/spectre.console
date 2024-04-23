@@ -56,7 +56,7 @@ public sealed partial class CommandAppTests
 
             // Then
             result.Context.Remaining.Parsed.Count.ShouldBe(1);
-            result.Context.ShouldHaveRemainingArgument(unknownFlag.TrimStart('-'), values: new[] { (string)null });
+            result.Context.ShouldHaveRemainingArgument(unknownFlag, values: new[] { (string)null });
             result.Context.Remaining.Raw.Count.ShouldBe(0);
         }
 
@@ -80,7 +80,7 @@ public sealed partial class CommandAppTests
 
             // Then
             result.Context.Remaining.Parsed.Count.ShouldBe(1);
-            result.Context.ShouldHaveRemainingArgument("r", values: new[] { (string)null });
+            result.Context.ShouldHaveRemainingArgument("-r", values: new[] { (string)null });
             result.Context.Remaining.Raw.Count.ShouldBe(0);
         }
 
@@ -189,10 +189,10 @@ public sealed partial class CommandAppTests
 
             // Then
             result.Context.Remaining.Parsed.Count.ShouldBe(4);
-            result.Context.ShouldHaveRemainingArgument("foo", values: new[] { "bar", "baz" });
-            result.Context.ShouldHaveRemainingArgument("b", values: new[] { (string)null });
-            result.Context.ShouldHaveRemainingArgument("a", values: new[] { (string)null });
-            result.Context.ShouldHaveRemainingArgument("r", values: new[] { (string)null });
+            result.Context.ShouldHaveRemainingArgument("--foo", values: new[] { "bar", "baz" });
+            result.Context.ShouldHaveRemainingArgument("-b", values: new[] { (string)null });
+            result.Context.ShouldHaveRemainingArgument("-a", values: new[] { (string)null });
+            result.Context.ShouldHaveRemainingArgument("-r", values: new[] { (string)null });
         }
 
         [Fact]
@@ -280,7 +280,7 @@ public sealed partial class CommandAppTests
 
             // Then
             result.Context.Remaining.Parsed.Count.ShouldBe(1);
-            result.Context.ShouldHaveRemainingArgument("good-boy", values: new[] { "Please be good Rufus!" });
+            result.Context.ShouldHaveRemainingArgument("--good-boy", values: new[] { "Please be good Rufus!" });
 
             result.Context.Remaining.Raw.Count.ShouldBe(0); // nb. there are no "raw" remaining arguments on the command line
         }
