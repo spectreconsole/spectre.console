@@ -82,7 +82,7 @@ public static class ConfiguratorExtensions
     }
 
     /// <summary>
-    /// Overrides the auto-detected version of the application.
+    /// Sets the version of the application.
     /// </summary>
     /// <param name="configurator">The configurator.</param>
     /// <param name="version">The version of application.</param>
@@ -95,6 +95,25 @@ public static class ConfiguratorExtensions
         }
 
         configurator.Settings.ApplicationVersion = version;
+        return configurator;
+    }
+
+    /// <summary>
+    /// Uses the version retrieved from the <see cref="AssemblyInformationalVersionAttribute"/>
+    /// as the application's version.
+    /// </summary>
+    /// <param name="configurator">The configurator.</param>
+    /// <returns>A configurator that can be used to configure the application further.</returns>
+    public static IConfigurator UseAssemblyInformationalVersion(this IConfigurator configurator)
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        configurator.Settings.ApplicationVersion =
+            VersionHelper.GetVersion(Assembly.GetEntryAssembly());
+
         return configurator;
     }
 
