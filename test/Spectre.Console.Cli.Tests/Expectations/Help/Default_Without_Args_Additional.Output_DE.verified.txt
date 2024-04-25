@@ -1,4 +1,4 @@
-BESCHREIBUNG:
+﻿BESCHREIBUNG:
 The lion command.
 
 VERWENDUNG:
@@ -14,7 +14,6 @@ ARGUMENTE:
 OPTIONEN:
                              STANDARDWERT
     -h, --help                                   Zeigt Hilfe an
-    -v, --version                                Zeigt Versionsinformationen an
     -a, --alive                                  Indicates whether or not the animal is alive
     -n, --name <VALUE>
         --agility <VALUE>    10                  The agility between 0 and 100

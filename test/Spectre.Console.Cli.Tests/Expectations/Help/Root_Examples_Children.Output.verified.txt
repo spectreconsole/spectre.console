@@ -1,4 +1,4 @@
-USAGE:
+﻿USAGE:
     myapp [OPTIONS] <COMMAND>
 
 EXAMPLES:
@@ -9,8 +9,7 @@ EXAMPLES:
     myapp dog --name Daisy
 
 OPTIONS:
-    -h, --help       Prints help information
-    -v, --version    Prints version information
+    -h, --help    Prints help information
 
 COMMANDS:
     dog <AGE>    The dog command

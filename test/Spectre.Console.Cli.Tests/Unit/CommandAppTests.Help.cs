@@ -951,6 +951,45 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        [Expectation("NoVersion")]
+        public Task Should_Not_Include_Application_Version_If_Not_Set()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<GenericCommand<ArgumentOrderSettings>>();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+            });
+
+            // When
+            var result = fixture.Run("--help");
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Version")]
+        public Task Should_Include_Application_Version_If_Set()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<GenericCommand<ArgumentOrderSettings>>();
+            fixture.Configure(config =>
+            {
+                config.SetApplicationName("myapp");
+                config.SetApplicationVersion("0.49.1");
+            });
+
+            // When
+            var result = fixture.Run("--help");
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
         [Expectation("Hidden_Command_Options")]
         public Task Should_Not_Show_Hidden_Command_Options()
         {

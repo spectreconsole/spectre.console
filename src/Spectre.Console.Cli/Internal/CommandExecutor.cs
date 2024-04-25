@@ -39,9 +39,12 @@ internal sealed class CommandExecutor
                 if (firstArgument.Equals("--version", StringComparison.OrdinalIgnoreCase) ||
                     firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase))
                 {
-                    var console = configuration.Settings.Console.GetConsole();
-                    console.WriteLine(ResolveApplicationVersion(configuration));
-                    return 0;
+                    if (configuration.Settings.ApplicationVersion != null)
+                    {
+                        var console = configuration.Settings.Console.GetConsole();
+                        console.MarkupLine(configuration.Settings.ApplicationVersion);
+                        return 0;
+                    }
                 }
             }
         }
@@ -124,13 +127,6 @@ internal sealed class CommandExecutor
         }
 
         return parsedResult;
-    }
-
-    private static string ResolveApplicationVersion(IConfiguration configuration)
-    {
-        return
-            configuration.Settings.ApplicationVersion ?? // potential override
-            VersionHelper.GetVersion(Assembly.GetEntryAssembly());
     }
 
     private static async Task<int> Execute(
