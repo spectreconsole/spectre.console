@@ -1,4 +1,4 @@
-DESCRIPTION:
+﻿DESCRIPTION:
 The dog command.
 
 USAGE:
@@ -18,7 +18,6 @@ ARGUMENTS:
 
 OPTIONS:
     -h, --help            Prints help information
-    -v, --version         Prints version information
     -a, --alive           Indicates whether or not the animal is alive
     -n, --name <VALUE>
     -g, --good-boy

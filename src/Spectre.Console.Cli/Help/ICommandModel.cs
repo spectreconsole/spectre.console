@@ -9,4 +9,9 @@ public interface ICommandModel : ICommandContainer
     /// Gets the name of the application.
     /// </summary>
     string ApplicationName { get; }
+
+    /// <summary>
+    /// Gets the version of the application.
+    /// </summary>
+    string? ApplicationVersion { get; }
 }

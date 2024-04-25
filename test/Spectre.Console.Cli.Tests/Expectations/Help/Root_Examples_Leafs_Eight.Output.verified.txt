@@ -12,8 +12,7 @@ EXAMPLES:
     myapp animal horse --name Sugar --IsAlive false
 
 OPTIONS:
-    -h, --help       Prints help information
-    -v, --version    Prints version information
+    -h, --help    Prints help information
 
 COMMANDS:
     animal    The animal command

@@ -9,4 +9,5 @@ ARGUMENTS:
     [QUX]
 
 OPTIONS:
-    -h, --help    Prints help information
+    -h, --help       Prints help information
+    -v, --version    Prints version information

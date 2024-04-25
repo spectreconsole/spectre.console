@@ -1,4 +1,4 @@
-[]DESCRIPTION:[/]
+﻿[]DESCRIPTION:[/]
 The lion command.
 
 []USAGE:[/]
@@ -14,7 +14,6 @@ The lion command.
 []OPTIONS:[/]
                                     []DEFAULT[/]
     -h, --help                                                    Prints help information
-    -v, --version                                                 Prints version information
     -a, --alive                                                   Indicates whether or not the animal is alive
     -n, --name []<VALUE>[/]
         --agility []<VALUE>[/]      []10[/]                       The agility between 0 and 100

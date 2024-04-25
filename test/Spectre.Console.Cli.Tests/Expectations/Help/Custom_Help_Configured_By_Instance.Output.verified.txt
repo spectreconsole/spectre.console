@@ -1,4 +1,4 @@
---------------------------------------
+﻿--------------------------------------
 ---      CUSTOM HELP PROVIDER      ---
 --------------------------------------
 
@@ -6,8 +6,7 @@ USAGE:
     myapp [OPTIONS] <COMMAND>
 
 OPTIONS:
-    -h, --help       Prints help information
-    -v, --version    Prints version information
+    -h, --help    Prints help information
 
 COMMANDS:
     dog <AGE>    The dog command

@@ -35,6 +35,24 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        public void Should_Not_Display_Version_If_Not_Specified()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(configurator =>
+            {
+                configurator.AddCommand<EmptyCommand>("empty");
+            });
+
+            // When
+            var result = fixture.Run("--version");
+
+            // Then
+            result.ExitCode.ShouldNotBe(0);
+            result.Output.ShouldStartWith("Error: Unexpected option 'version'");
+        }
+
+        [Fact]
         public void Should_Execute_Command_Not_Output_Application_Version_To_The_Console()
         {
             // Given
@@ -42,7 +60,6 @@ public sealed partial class CommandAppTests
             fixture.Configure(configurator =>
             {
                 configurator.SetApplicationVersion("1.0");
-
                 configurator.AddCommand<EmptyCommand>("empty");
             });
 
@@ -81,7 +98,6 @@ public sealed partial class CommandAppTests
             fixture.Configure(configurator =>
             {
                 configurator.SetApplicationVersion("1.0");
-
                 configurator.AddBranch<EmptyCommandSettings>("branch", branch =>
                 {
                     branch.SetDefaultCommand<EmptyCommand>();
