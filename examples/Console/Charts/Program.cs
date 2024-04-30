@@ -23,6 +23,7 @@ public static class Program
             .FullSize()
             .Width(60)
             .ShowPercentage()
+            .WithValueColor(Color.Orange1)
             .AddItem("SCSS", 37, Color.Red)
             .AddItem("HTML", 28.3, Color.Blue)
             .AddItem("C#", 22.6, Color.Green)

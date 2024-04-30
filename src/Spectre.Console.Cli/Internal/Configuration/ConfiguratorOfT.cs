@@ -17,7 +17,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         _command.Description = description;
     }
 
-    public void AddExample(string[] args)
+    public void AddExample(params string[] args)
     {
         _command.Examples.Add(args);
     }

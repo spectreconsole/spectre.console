@@ -12,6 +12,7 @@ public interface IRemainingArguments
 
     /// <summary>
     /// Gets the raw, non-parsed remaining arguments.
+    /// This is normally everything after the `--` delimiter.
     /// </summary>
     IReadOnlyList<string> Raw { get; }
 }

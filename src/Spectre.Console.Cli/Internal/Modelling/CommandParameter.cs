@@ -1,6 +1,6 @@
 namespace Spectre.Console.Cli;
 
-internal abstract class CommandParameter : ICommandParameterInfo
+internal abstract class CommandParameter : ICommandParameterInfo, ICommandParameter
 {
     public Guid Id { get; }
     public Type ParameterType { get; }
@@ -18,6 +18,8 @@ internal abstract class CommandParameter : ICommandParameterInfo
 
     public virtual bool WantRawValue => ParameterType.IsPairDeconstructable()
         && (PairDeconstructor != null || Converter == null);
+
+    public bool IsFlag => ParameterKind == ParameterKind.Flag;
 
     protected CommandParameter(
         Type parameterType, ParameterKind parameterKind, PropertyInfo property,

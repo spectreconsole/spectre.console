@@ -28,10 +28,10 @@ public sealed class AnsiConsoleOutput : IAnsiConsoleOutput
     }
 
     /// <inheritdoc/>
-    public int Width => ConsoleHelper.GetSafeWidth(Constants.DefaultTerminalWidth);
+    public int Width => ConsoleHelper.GetSafeWidth();
 
     /// <inheritdoc/>
-    public int Height => ConsoleHelper.GetSafeHeight(Constants.DefaultTerminalWidth);
+    public int Height => ConsoleHelper.GetSafeHeight();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AnsiConsoleOutput"/> class.

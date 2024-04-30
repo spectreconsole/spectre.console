@@ -10,6 +10,7 @@ internal sealed class TableRendererContext : TableAccessor
     public TableBorder Border { get; }
     public Style BorderStyle { get; }
     public bool ShowBorder { get; }
+    public bool ShowRowSeparators { get; }
     public bool HasRows { get; }
     public bool HasFooters { get; }
 
@@ -47,6 +48,7 @@ internal sealed class TableRendererContext : TableAccessor
         HasFooters = Rows.Any(column => column.IsFooter);
         Border = table.Border.GetSafeBorder(!options.Unicode && table.UseSafeBorder);
         BorderStyle = table.BorderStyle ?? Style.Plain;
+        ShowRowSeparators = table.ShowRowSeparators;
 
         TableWidth = tableWidth;
         MaxWidth = maxWidth;

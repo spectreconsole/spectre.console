@@ -15,7 +15,7 @@ internal sealed class VersionCommand : Command<VersionCommand.Settings>
     {
     }
 
-    public override int Execute([NotNull] CommandContext context, [NotNull] Settings settings)
+    public override int Execute(CommandContext context, Settings settings)
     {
         _writer.MarkupLine(
             "[yellow]Spectre.Cli[/] version [aqua]{0}[/]",

@@ -49,7 +49,7 @@ internal sealed class LiveRenderable : Renderable
             }
 
             var linesToMoveUp = _shape.Value.Height - 1;
-            return new ControlCode("\r" + (EL(2) + CUU(1)).Repeat(linesToMoveUp));
+            return new ControlCode("\r" + CUU(linesToMoveUp));
         }
     }
 

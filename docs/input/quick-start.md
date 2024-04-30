@@ -8,9 +8,10 @@ to install the NuGet package.
 
 ```text
 > dotnet add package Spectre.Console
+> dotnet add package Spectre.Console.Cli
 ```
 
-After that you will need to reference the `Spectre.Console` namespace.
+After that you will need to reference the `Spectre.Console` and `Spectre.Console.Cli` namespaces.
 Once that is done, you can start using all the available features.
 
 ```csharp

@@ -50,6 +50,11 @@ internal static class ExceptionFormatter
         }
 
         // Stack frames
+        if ((settings.Format & ExceptionFormats.NoStackTrace) != 0)
+        {
+            return grid;
+        }
+
         var stackTrace = new StackTrace(ex, fNeedFileInfo: true);
         var frames = stackTrace
             .GetFrames()

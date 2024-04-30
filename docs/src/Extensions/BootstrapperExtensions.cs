@@ -1,4 +1,4 @@
-﻿using Statiq.App;
+using Statiq.App;
 using Statiq.Common;
 using Statiq.Web;
 

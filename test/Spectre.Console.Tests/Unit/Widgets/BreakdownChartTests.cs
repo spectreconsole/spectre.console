@@ -1,6 +1,5 @@
 namespace Spectre.Console.Tests.Unit;
 
-[UsesVerify]
 [ExpectationPath("Widgets/BreakdownChart")]
 public sealed class BreakdownChartTests
 {
@@ -119,6 +118,21 @@ public sealed class BreakdownChartTests
         // Given
         var console = new TestConsole().EmitAnsiSequences();
         var chart = Fixture.GetChart().Width(60).FullSize();
+
+        // When
+        console.Write(chart);
+
+        // Then
+        await Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("ValueColor")]
+    public async Task Should_Render_Correct_ValueColor()
+    {
+        // Given
+        var console = new TestConsole().EmitAnsiSequences();
+        var chart = Fixture.GetChart().Width(60).WithValueColor(Color.Red);
 
         // When
         console.Write(chart);

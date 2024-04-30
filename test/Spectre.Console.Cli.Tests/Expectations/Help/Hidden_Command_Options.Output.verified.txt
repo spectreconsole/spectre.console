@@ -1,4 +1,4 @@
-USAGE:
+﻿USAGE:
     myapp <FOO> [OPTIONS]
 
 ARGUMENTS:

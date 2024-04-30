@@ -2,13 +2,17 @@ namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed partial class CommandAppTests
 {
-    public sealed class Injection
+    public sealed partial class Injection
     {
         public sealed class FakeDependency
         {
         }
 
-        public sealed class InjectSettings : CommandSettings
+        public abstract class BaseInjectSettings : CommandSettings
+        {
+        }
+
+        public sealed class InjectSettings : BaseInjectSettings
         {
             public FakeDependency Fake { get; set; }
 

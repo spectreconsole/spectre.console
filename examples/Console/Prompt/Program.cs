@@ -110,6 +110,7 @@ namespace Prompt
             {
                 fruit = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
+                        .EnableSearch()
                         .Title("Ok, but if you could only choose [green]one[/]?")
                         .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
                         .AddChoices(favorites));

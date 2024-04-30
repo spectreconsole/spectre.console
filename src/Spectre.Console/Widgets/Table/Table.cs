@@ -32,6 +32,11 @@ public sealed class Table : Renderable, IHasTableBorder, IExpandable, IAlignable
     public bool ShowHeaders { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets a value indicating whether or not row separators should be shown.
+    /// </summary>
+    public bool ShowRowSeparators { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether or not table footers should be shown.
     /// </summary>
     public bool ShowFooters { get; set; } = true;

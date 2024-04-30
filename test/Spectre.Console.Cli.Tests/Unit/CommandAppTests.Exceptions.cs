@@ -51,7 +51,7 @@ public sealed partial class CommandAppTests
             app.Configure(config =>
             {
                 config.AddCommand<ThrowingCommand>("throw");
-                config.SetExceptionHandler(_ =>
+                config.SetExceptionHandler((_, _) =>
                 {
                     exceptionHandled = true;
                 });
@@ -74,7 +74,7 @@ public sealed partial class CommandAppTests
             app.Configure(config =>
             {
                 config.AddCommand<ThrowingCommand>("throw");
-                config.SetExceptionHandler(_ =>
+                config.SetExceptionHandler((_, _) =>
                 {
                     exceptionHandled = true;
                     return -99;
@@ -87,6 +87,50 @@ public sealed partial class CommandAppTests
             // Then
             result.ExitCode.ShouldBe(-99);
             exceptionHandled.ShouldBeTrue();
+        }
+
+        [Fact]
+        public void Should_Have_Resolver_Set_When_Exception_Occurs_In_Command_Execution()
+        {
+            // Given
+            ITypeResolver resolver = null;
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.AddCommand<ThrowingCommand>("throw");
+                config.SetExceptionHandler((_, r) =>
+                {
+                    resolver = r;
+                });
+            });
+
+            // When
+            app.Run(new[] { "throw" });
+
+            // Then
+            resolver.ShouldNotBeNull();
+        }
+
+        [Fact]
+        public void Should_Not_Have_Resolver_Set_When_Exception_Occurs_Before_Command_Execution()
+        {
+            // Given
+            ITypeResolver resolver = null;
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.AddCommand<DogCommand>("Лайка");
+                config.SetExceptionHandler((_, r) =>
+                {
+                    resolver = r;
+                });
+            });
+
+            // When
+            app.Run(new[] { "throw", "on", "arg", "parsing" });
+
+            // Then
+            resolver.ShouldBeNull();
         }
     }
 }

@@ -1,0 +1,14 @@
+﻿--------------------------------------
+---      CUSTOM HELP PROVIDER      ---
+--------------------------------------
+
+USAGE:
+    myapp [OPTIONS] <COMMAND>
+
+OPTIONS:
+    -h, --help    Prints help information
+
+COMMANDS:
+    dog <AGE>    The dog command
+
+Version 1.0

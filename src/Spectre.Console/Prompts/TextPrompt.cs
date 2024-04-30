@@ -75,12 +75,12 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     public Func<T, ValidationResult>? Validator { get; set; }
 
     /// <summary>
-    /// Gets or sets the style in which the default value is displayed.
+    /// Gets or sets the style in which the default value is displayed. Defaults to green when <see langword="null"/>.
     /// </summary>
     public Style? DefaultValueStyle { get; set; }
 
     /// <summary>
-    /// Gets or sets the style in which the list of choices is displayed.
+    /// Gets or sets the style in which the list of choices is displayed. Defaults to blue when <see langword="null"/>.
     /// </summary>
     public Style? ChoicesStyle { get; set; }
 

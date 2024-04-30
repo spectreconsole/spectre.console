@@ -31,12 +31,11 @@ internal static class EnumerableExtensions
     }
 
     public static int IndexOf<T>(this IEnumerable<T> source, T item)
-        where T : class
     {
         var index = 0;
         foreach (var candidate in source)
         {
-            if (candidate == item)
+            if (Equals(candidate, item))
             {
                 return index;
             }

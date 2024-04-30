@@ -1,4 +1,4 @@
-﻿namespace Spectre.Console.Tests.Data;
+namespace Spectre.Console.Tests.Data;
 
 public class ReptileSettings : AnimalSettings
 {

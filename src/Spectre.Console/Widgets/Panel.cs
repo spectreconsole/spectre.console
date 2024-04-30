@@ -132,6 +132,15 @@ public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, 
         {
             AddTopBorder(result, options, border, borderStyle, panelWidth);
         }
+        else
+        {
+            // Not showing border, but we have a header text?
+            // Use a invisible border to draw the top border
+            if (Header?.Text != null)
+            {
+                AddTopBorder(result, options, BoxBorder.None, borderStyle, panelWidth);
+            }
+        }
 
         // Split the child segments into lines.
         var childSegments = ((IRenderable)child).Render(options with { Height = height }, innerWidth);

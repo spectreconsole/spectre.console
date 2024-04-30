@@ -2,29 +2,37 @@ namespace Spectre.Console.Cli;
 
 internal sealed class CommandAppSettings : ICommandAppSettings
 {
+    public CultureInfo? Culture { get; set; }
     public string? ApplicationName { get; set; }
     public string? ApplicationVersion { get; set; }
+    public int MaximumIndirectExamples { get; set; }
     public bool ShowOptionDefaultValues { get; set; }
     public IAnsiConsole? Console { get; set; }
+    [Obsolete("Register the interceptor with the ITypeRegistrar.")]
     public ICommandInterceptor? Interceptor { get; set; }
     public ITypeRegistrarFrontend Registrar { get; set; }
     public CaseSensitivity CaseSensitivity { get; set; }
     public bool PropagateExceptions { get; set; }
     public bool ValidateExamples { get; set; }
-    public bool TrimTrailingPeriod { get; set; } = true;
+    public bool TrimTrailingPeriod { get; set; }
+    public HelpProviderStyle? HelpProviderStyles { get; set; }
     public bool StrictParsing { get; set; }
-    public bool ConvertFlagsToRemainingArguments { get; set; } = false;
+    public bool ConvertFlagsToRemainingArguments { get; set; }
 
     public ParsingMode ParsingMode =>
         StrictParsing ? ParsingMode.Strict : ParsingMode.Relaxed;
 
-    public Func<Exception, int>? ExceptionHandler { get; set; }
+    public Func<Exception, ITypeResolver?, int>? ExceptionHandler { get; set; }
 
     public CommandAppSettings(ITypeRegistrar registrar)
     {
         Registrar = new TypeRegistrar(registrar);
         CaseSensitivity = CaseSensitivity.All;
         ShowOptionDefaultValues = true;
+        MaximumIndirectExamples = 5;
+        TrimTrailingPeriod = true;
+        HelpProviderStyles = HelpProviderStyle.Default;
+        ConvertFlagsToRemainingArguments = false;
     }
 
     public bool IsTrue(Func<CommandAppSettings, bool> func, string environmentVariableName)

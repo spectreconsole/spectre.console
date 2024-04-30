@@ -2,11 +2,9 @@ using Spectre.Console.Extensions;
 
 namespace Spectre.Console.Tests.Unit;
 
-[UsesVerify]
 [ExpectationPath("Widgets/Align")]
 public sealed class AlignTests
 {
-    [UsesVerify]
     public sealed class Left
     {
         [Fact]
@@ -55,7 +53,6 @@ public sealed class AlignTests
         }
     }
 
-    [UsesVerify]
     public sealed class Center
     {
         [Fact]
@@ -104,7 +101,6 @@ public sealed class AlignTests
         }
     }
 
-    [UsesVerify]
     public sealed class Right
     {
         [Fact]

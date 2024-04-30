@@ -6,6 +6,17 @@ namespace Spectre.Console.Cli;
 public interface ICommandAppSettings
 {
     /// <summary>
+    /// Gets or sets the culture.
+    /// </summary>
+    /// <remarks>
+    /// Text displayed by <see cref="Help.HelpProvider"/> can be localised, but defaults to English.
+    /// Setting this property informs the resource manager which culture to use when fetching strings.
+    /// English will be used when a culture has not been specified (ie. this property is null)
+    /// or a string has not been localised for the specified culture.
+    /// </remarks>
+    CultureInfo? Culture { get; set; }
+
+    /// <summary>
     /// Gets or sets the application name.
     /// </summary>
     string? ApplicationName { get; set; }
@@ -16,9 +27,24 @@ public interface ICommandAppSettings
     string? ApplicationVersion { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating how many examples from direct children to show in the help text.
+    /// </summary>
+    int MaximumIndirectExamples { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether any default values for command options are shown in the help text.
     /// </summary>
     bool ShowOptionDefaultValues { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether a trailing period of a command description is trimmed in the help text.
+    /// </summary>
+    bool TrimTrailingPeriod { get; set; }
+
+    /// <summary>
+    /// Gets or sets the styles to used when rendering the help text.
+    /// </summary>
+    HelpProviderStyle? HelpProviderStyles { get; set; }
 
     /// <summary>
     /// Gets or sets the <see cref="IAnsiConsole"/>.
@@ -29,6 +55,7 @@ public interface ICommandAppSettings
     /// Gets or sets the <see cref="ICommandInterceptor"/> used
     /// to intercept settings before it's being sent to the command.
     /// </summary>
+    [Obsolete("Register the interceptor with the ITypeRegistrar.")]
     ICommandInterceptor? Interceptor { get; set; }
 
     /// <summary>
@@ -40,11 +67,6 @@ public interface ICommandAppSettings
     /// Gets or sets case sensitivity.
     /// </summary>
     CaseSensitivity CaseSensitivity { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether trailing period of a description is trimmed.
-    /// </summary>
-    bool TrimTrailingPeriod { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether or not parsing is strict.
@@ -74,6 +96,8 @@ public interface ICommandAppSettings
     /// <summary>
     /// Gets or sets a handler for Exceptions.
     /// <para>This handler will not be called, if <see cref="PropagateExceptions"/> is set to <c>true</c>.</para>
+    /// The <see cref="ITypeResolver"/> argument will only be not-null, when the exception occurs during execution of
+    /// a command. I.e. only when the resolver is available.
     /// </summary>
-    public Func<Exception, int>? ExceptionHandler { get; set; }
+    public Func<Exception, ITypeResolver?, int>? ExceptionHandler { get; set; }
 }

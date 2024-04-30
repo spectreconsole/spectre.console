@@ -17,6 +17,12 @@ internal static class TypeRegistrarExtensions
                 throw new InvalidOperationException("Command setting type cannot be null.");
             }
 
+            if (command.SettingsType is { IsAbstract: false, IsClass: true })
+            {
+                // Register the settings type
+                registrar?.Register(command.SettingsType, command.SettingsType);
+            }
+
             if (command.CommandType != null)
             {
                 registrar?.Register(command.CommandType, command.CommandType);

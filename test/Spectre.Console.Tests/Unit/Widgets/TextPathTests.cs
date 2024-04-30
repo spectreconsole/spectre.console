@@ -1,5 +1,6 @@
 namespace Spectre.Console.Tests.Unit;
 
+[ExpectationPath("Widgets/TextPath")]
 public sealed class TextPathTests
 {
     [Theory]
@@ -14,8 +15,7 @@ public sealed class TextPathTests
         console.Write(new TextPath(input));
 
         // Then
-        console.Output.TrimEnd()
-            .ShouldBe(expected);
+        console.Output.ShouldBe(expected);
     }
 
     [Theory]
@@ -31,8 +31,7 @@ public sealed class TextPathTests
         console.Write(new TextPath(input));
 
         // Then
-        console.Output.TrimEnd()
-            .ShouldBe(expected);
+        console.Output.ShouldBe(expected);
     }
 
     [Theory]
@@ -48,26 +47,7 @@ public sealed class TextPathTests
         console.Write(new TextPath(input));
 
         // Then
-        console.Output.TrimEnd()
-            .ShouldBe(expected);
-    }
-
-    [Theory]
-    [InlineData("C:/My documents/Bar/Baz.txt")]
-    [InlineData("/My documents/Bar/Baz.txt")]
-    [InlineData("My documents/Bar/Baz.txt")]
-    [InlineData("Bar/Baz.txt")]
-    [InlineData("Baz.txt")]
-    public void Should_Insert_Line_Break_At_End_Of_Path(string input)
-    {
-        // Given
-        var console = new TestConsole().Width(80);
-
-        // When
-        console.Write(new TextPath(input));
-
-        // Then
-        console.Output.ShouldEndWith("\n");
+        console.Output.ShouldBe(expected);
     }
 
     [Fact]
@@ -80,8 +60,7 @@ public sealed class TextPathTests
         console.Write(new TextPath("C:/My documents/Bar/Baz.txt").RightJustified());
 
         // Then
-        console.Output.TrimEnd('\n')
-            .ShouldBe("             C:/My documents/Bar/Baz.txt");
+        console.Output.ShouldBe("             C:/My documents/Bar/Baz.txt");
     }
 
     [Fact]
@@ -94,7 +73,24 @@ public sealed class TextPathTests
         console.Write(new TextPath("C:/My documents/Bar/Baz.txt").Centered());
 
         // Then
-        console.Output.TrimEnd('\n')
-            .ShouldBe("      C:/My documents/Bar/Baz.txt       ");
+        console.Output.ShouldBe("      C:/My documents/Bar/Baz.txt       ");
+    }
+
+    [Fact]
+    [Expectation("GH-1307")]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/1307")]
+    public Task Should_Behave_As_Expected_When_Rendering_Inside_Panel_Columns()
+    {
+        // Given
+        var console = new TestConsole().Width(40);
+
+        // When
+        console.Write(
+            new Columns(
+                new Panel(new Text("Baz")),
+                new Panel(new TextPath("Qux"))));
+
+        // Then
+        return Verifier.Verify(console.Output);
     }
 }

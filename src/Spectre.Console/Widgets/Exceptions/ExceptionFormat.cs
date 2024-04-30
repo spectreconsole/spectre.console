@@ -35,4 +35,9 @@ public enum ExceptionFormats
     /// Shortens everything that can be shortened.
     /// </summary>
     ShortenEverything = ShortenMethods | ShortenTypes | ShortenPaths,
+
+    /// <summary>
+    /// Whether or not to show the exception stack trace.
+    /// </summary>
+    NoStackTrace = 16,
 }

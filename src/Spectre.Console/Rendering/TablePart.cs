@@ -16,6 +16,11 @@ public enum TablePart
     HeaderSeparator,
 
     /// <summary>
+    /// The separator between the rows.
+    /// </summary>
+    RowSeparator,
+
+    /// <summary>
     /// The separator between the footer and the cells.
     /// </summary>
     FooterSeparator,

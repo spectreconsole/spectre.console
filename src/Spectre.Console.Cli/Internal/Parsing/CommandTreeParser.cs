@@ -302,11 +302,7 @@ internal class CommandTreeParser
         var valueToken = stream.Peek();
         if (valueToken?.TokenKind == CommandTreeToken.Kind.String)
         {
-            var parseValue = true;
-            if (token.TokenKind == CommandTreeToken.Kind.ShortOption && token.IsGrouped)
-            {
-                parseValue = false;
-            }
+            bool parseValue = token is not { TokenKind: CommandTreeToken.Kind.ShortOption, IsGrouped: true };
 
             if (context.State == State.Normal && parseValue)
             {
@@ -333,7 +329,7 @@ internal class CommandTreeParser
                                     {
                                         value = stream.Consume(CommandTreeToken.Kind.String)?.Value;
 
-                                        context.AddRemainingArgument(token.Value, value);
+                                        context.AddRemainingArgument(token.Representation, value);
 
                                         // Prevent the option and it's non-boolean value from being added to
                                         // mapped parameters (otherwise an exception will be thrown later
@@ -364,14 +360,14 @@ internal class CommandTreeParser
                         // In relaxed parsing mode?
                         if (context.ParsingMode == ParsingMode.Relaxed)
                         {
-                            context.AddRemainingArgument(token.Value, value);
+                            context.AddRemainingArgument(token.Representation, value);
                         }
                     }
                 }
             }
             else
             {
-                context.AddRemainingArgument(token.Value, parseValue ? valueToken.Value : null);
+                context.AddRemainingArgument(token.Representation, parseValue ? valueToken.Value : null);
             }
         }
         else
@@ -379,7 +375,7 @@ internal class CommandTreeParser
             if (parameter == null && // Only add tokens which have not been matched to a command parameter
                 (context.State == State.Remaining || context.ParsingMode == ParsingMode.Relaxed))
             {
-                context.AddRemainingArgument(token.Value, null);
+                context.AddRemainingArgument(token.Representation, null);
             }
         }
 

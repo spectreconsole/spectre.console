@@ -1,10 +1,8 @@
 namespace Spectre.Console.Tests.Unit;
 
-[UsesVerify]
 [ExpectationPath("Rendering/Borders/Table")]
 public sealed class TableBorderTests
 {
-    [UsesVerify]
     public sealed class NoBorder
     {
         [Fact]
@@ -46,7 +44,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class AsciiBorder
     {
         [Fact]
@@ -88,7 +85,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class Ascii2Border
     {
         [Fact]
@@ -130,7 +126,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class AsciiDoubleHeadBorder
     {
         [Fact]
@@ -172,7 +167,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class SquareBorder
     {
         [Fact]
@@ -214,7 +208,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class RoundedBorder
     {
         [Fact]
@@ -256,7 +249,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class MinimalBorder
     {
         [Fact]
@@ -298,7 +290,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class MinimalHeavyHeadBorder
     {
         [Fact]
@@ -340,7 +331,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class MinimalDoubleHeadBorder
     {
         [Fact]
@@ -382,7 +372,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class SimpleBorder
     {
         [Fact]
@@ -424,7 +413,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class HorizontalBorder
     {
         [Fact]
@@ -466,7 +454,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class SimpleHeavyBorder
     {
         [Fact]
@@ -508,7 +495,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class HeavyBorder
     {
         [Fact]
@@ -550,7 +536,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class HeavyEdgeBorder
     {
         [Fact]
@@ -592,7 +577,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class HeavyHeadBorder
     {
         [Fact]
@@ -634,7 +618,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class DoubleBorder
     {
         [Fact]
@@ -676,7 +659,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class DoubleEdgeBorder
     {
         [Fact]
@@ -718,7 +700,6 @@ public sealed class TableBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class MarkdownBorder
     {
         [Fact]

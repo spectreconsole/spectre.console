@@ -1,6 +1,5 @@
 namespace Spectre.Console.Tests.Unit;
 
-[UsesVerify]
 [ExpectationPath("Prompts/Text")]
 public sealed class TextPromptTests
 {
@@ -244,6 +243,25 @@ public sealed class TextPromptTests
             new TextPrompt<string>("Favorite fruit?")
                 .Secret()
                 .DefaultValue("Banana"));
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("SecretValueBackspaceNullMask")]
+    public Task Should_Not_Erase_Prompt_Text_On_Backspace_If_Prompt_Is_Secret_And_Mask_Is_Null()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Input.PushText("Bananas");
+        console.Input.PushKey(ConsoleKey.Backspace);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        console.Prompt(
+            new TextPrompt<string>("Favorite fruit?")
+                .Secret(null));
 
         // Then
         return Verifier.Verify(console.Output);

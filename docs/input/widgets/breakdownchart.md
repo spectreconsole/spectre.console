@@ -132,3 +132,13 @@ AnsiConsole.Write(new BreakdownChart()
 .AddItem(new Fruit("Mango", 3, Color.Orange4))
 .AddItems(items));
 ```
+
+### Add value formatter to chart numbers
+
+```csharp
+var chart = new BreakdownChart();
+chart.UseValueFormater(value => value.ToString("N0"));
+
+// This can be simplified as extension methods are chainable.
+var chart = new BreakdownChart().UseValueFormatter(v => v.ToString("N0"));
+```

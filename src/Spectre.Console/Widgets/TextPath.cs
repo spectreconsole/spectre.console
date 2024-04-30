@@ -74,7 +74,7 @@ public sealed class TextPath : IRenderable, IHasJustification
 
         return new Measurement(
             Math.Min(length, maxWidth),
-            Math.Max(length, maxWidth));
+            Math.Min(length, maxWidth));
     }
 
     /// <inheritdoc/>
@@ -119,9 +119,6 @@ public sealed class TextPath : IRenderable, IHasJustification
         // Align the result
         Aligner.Align(parts, Justification, maxWidth);
 
-        // Insert a line break
-        parts.Add(Segment.LineBreak);
-
         return parts;
     }
 
@@ -134,7 +131,7 @@ public sealed class TextPath : IRenderable, IHasJustification
         }
 
         // Will it fit as is?
-        if (_parts.Sum(p => Cell.GetCellLength(p)) + (_parts.Length - 1) < maxWidth)
+        if (_parts.Sum(Cell.GetCellLength) + (_parts.Length - 1) <= maxWidth)
         {
             return _parts;
         }
@@ -159,7 +156,7 @@ public sealed class TextPath : IRenderable, IHasJustification
                 var queueWidth =
                         rootLength // Root (if rooted)
                         + ellipsisLength // Ellipsis
-                        + queue.Sum(p => Cell.GetCellLength(p)) // Middle
+                        + queue.Sum(Cell.GetCellLength) // Middle
                         + Cell.GetCellLength(_parts.Last()) // Last
                         + queue.Count + separatorCount; // Separators
 

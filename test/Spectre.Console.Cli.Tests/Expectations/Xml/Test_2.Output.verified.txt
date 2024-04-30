@@ -2,6 +2,7 @@
 <Model>
   <!--DOG-->
   <Command Name="dog" IsBranch="false" ClrType="Spectre.Console.Tests.Data.DogCommand" Settings="Spectre.Console.Tests.Data.DogSettings">
+    <Description>The dog command.</Description>
     <Parameters>
       <Argument Name="LEGS" Position="0" Required="false" Kind="scalar" ClrType="System.Int32">
         <Description>The number of legs.</Description>

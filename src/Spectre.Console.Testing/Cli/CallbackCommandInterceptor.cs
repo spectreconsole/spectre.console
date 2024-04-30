@@ -21,4 +21,11 @@ public sealed class CallbackCommandInterceptor : ICommandInterceptor
     {
         _callback(context, settings);
     }
+
+#if NETSTANDARD2_0
+    /// <inheritdoc/>
+    public void InterceptResult(CommandContext context, CommandSettings settings, ref int result)
+    {
+    }
+#endif
 }

@@ -335,6 +335,38 @@ public static class TableExtensions
     }
 
     /// <summary>
+    /// Shows row separators.
+    /// </summary>
+    /// <param name="table">The table.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Table ShowRowSeparators(this Table table)
+    {
+        if (table is null)
+        {
+            throw new ArgumentNullException(nameof(table));
+        }
+
+        table.ShowRowSeparators = true;
+        return table;
+    }
+
+    /// <summary>
+    /// Hides row separators.
+    /// </summary>
+    /// <param name="table">The table.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Table HideRowSeparators(this Table table)
+    {
+        if (table is null)
+        {
+            throw new ArgumentNullException(nameof(table));
+        }
+
+        table.ShowRowSeparators = false;
+        return table;
+    }
+
+    /// <summary>
     /// Shows table footers.
     /// </summary>
     /// <param name="table">The table.</param>

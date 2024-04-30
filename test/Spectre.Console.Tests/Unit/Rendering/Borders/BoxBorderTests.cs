@@ -1,10 +1,8 @@
 namespace Spectre.Console.Tests.Unit;
 
-[UsesVerify]
 [ExpectationPath("Rendering/Borders/Box")]
 public sealed class BoxBorderTests
 {
-    [UsesVerify]
     public sealed class NoBorder
     {
         public sealed class TheSafeGetBorderMethod
@@ -27,6 +25,22 @@ public sealed class BoxBorderTests
             // Given
             var console = new TestConsole();
             var panel = Fixture.GetPanel().NoBorder();
+            panel.Header = null;
+
+            // When
+            console.Write(panel);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("NoBorder_With_Header")]
+        public Task Should_Render_NoBorder_With_Header_As_Expected()
+        {
+            // Given
+            var console = new TestConsole();
+            var panel = Fixture.GetPanel().NoBorder();
 
             // When
             console.Write(panel);
@@ -36,7 +50,6 @@ public sealed class BoxBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class AsciiBorder
     {
         public sealed class TheSafeGetBorderMethod
@@ -68,7 +81,6 @@ public sealed class BoxBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class DoubleBorder
     {
         public sealed class TheSafeGetBorderMethod
@@ -100,7 +112,6 @@ public sealed class BoxBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class HeavyBorder
     {
         public sealed class TheSafeGetBorderMethod
@@ -132,7 +143,6 @@ public sealed class BoxBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class RoundedBorder
     {
         [Fact]
@@ -161,7 +171,6 @@ public sealed class BoxBorderTests
         }
     }
 
-    [UsesVerify]
     public sealed class SquareBorder
     {
         [Fact]

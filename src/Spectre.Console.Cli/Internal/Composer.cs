@@ -4,9 +4,20 @@ internal sealed class Composer : IRenderable
 {
     private readonly StringBuilder _content;
 
+    /// <summary>
+    /// Whether to emit the markup styles, inline, when rendering the content.
+    /// </summary>
+    private readonly bool _renderMarkup = false;
+
     public Composer()
     {
         _content = new StringBuilder();
+    }
+
+    public Composer(bool renderMarkup)
+        : this()
+    {
+        _renderMarkup = renderMarkup;
     }
 
     public Composer Text(string text)
@@ -15,11 +26,21 @@ internal sealed class Composer : IRenderable
         return this;
     }
 
+    public Composer Style(Style style, string text)
+    {
+        _content.Append('[').Append(style.ToMarkup()).Append(']');
+        _content.Append(text.EscapeMarkup());
+        _content.Append("[/]");
+
+        return this;
+    }
+
     public Composer Style(string style, string text)
     {
         _content.Append('[').Append(style).Append(']');
         _content.Append(text.EscapeMarkup());
         _content.Append("[/]");
+
         return this;
     }
 
@@ -28,6 +49,7 @@ internal sealed class Composer : IRenderable
         _content.Append('[').Append(style).Append(']');
         action(this);
         _content.Append("[/]");
+
         return this;
     }
 
@@ -72,12 +94,19 @@ internal sealed class Composer : IRenderable
         return this;
     }
 
-    public Composer Join(string separator, IEnumerable<string> composers)
+    public Composer Join(string separator, IEnumerable<Composer> composers)
     {
         if (composers != null)
         {
-            Space();
-            Text(string.Join(separator, composers));
+            foreach (var composer in composers)
+            {
+                if (_content.ToString().Length > 0)
+                {
+                    Text(separator);
+                }
+
+                Text(composer.ToString());
+            }
         }
 
         return this;
@@ -85,12 +114,26 @@ internal sealed class Composer : IRenderable
 
     public Measurement Measure(RenderOptions options, int maxWidth)
     {
-        return ((IRenderable)new Markup(_content.ToString())).Measure(options, maxWidth);
+        if (_renderMarkup)
+        {
+            return ((IRenderable)new Paragraph(_content.ToString())).Measure(options, maxWidth);
+        }
+        else
+        {
+            return ((IRenderable)new Markup(_content.ToString())).Measure(options, maxWidth);
+        }
     }
 
     public IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        return ((IRenderable)new Markup(_content.ToString())).Render(options, maxWidth);
+        if (_renderMarkup)
+        {
+            return ((IRenderable)new Paragraph(_content.ToString())).Render(options, maxWidth);
+        }
+        else
+        {
+            return ((IRenderable)new Markup(_content.ToString())).Render(options, maxWidth);
+        }
     }
 
     public override string ToString()

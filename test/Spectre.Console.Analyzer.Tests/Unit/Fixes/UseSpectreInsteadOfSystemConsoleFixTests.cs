@@ -12,9 +12,9 @@ public class UseSpectreInsteadOfSystemConsoleFixTests
         const string Source = @"
 using System;
 
-class TestClass 
+class TestClass
 {
-    void TestMethod() 
+    void TestMethod()
     {
         Console.WriteLine(""Hello, World"");
     }
@@ -24,17 +24,16 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
-    void TestMethod() 
+    void TestMethod()
     {
         AnsiConsole.WriteLine(""Hello, World"");
     }
 }";
 
         await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(8, 9), FixedSource)
-            .ConfigureAwait(false);
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(8, 9), FixedSource);
     }
 
     [Fact]
@@ -43,9 +42,9 @@ class TestClass
         const string Source = @"
 using System;
 
-class TestClass 
+class TestClass
 {
-    void TestMethod() 
+    void TestMethod()
     {
         Console.WriteLine(""Hello, World"");
     }
@@ -55,17 +54,16 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
-    void TestMethod() 
+    void TestMethod()
     {
         AnsiConsole.WriteLine(""Hello, World"");
     }
 }";
 
         await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(8, 9), FixedSource)
-            .ConfigureAwait(false);
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(8, 9), FixedSource);
     }
 
     [Fact]
@@ -75,11 +73,11 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
     IAnsiConsole _ansiConsole;
 
-    void TestMethod() 
+    void TestMethod()
     {
         Console.WriteLine(""Hello, World"");
     }
@@ -89,19 +87,18 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
     IAnsiConsole _ansiConsole;
 
-    void TestMethod() 
+    void TestMethod()
     {
         _ansiConsole.WriteLine(""Hello, World"");
     }
 }";
 
         await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource)
-            .ConfigureAwait(false);
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource);
     }
 
     [Fact]
@@ -111,9 +108,9 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
-    void TestMethod() 
+    void TestMethod()
     {
         IAnsiConsole ansiConsole = null;
         Console.WriteLine(""Hello, World"");
@@ -124,9 +121,9 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
-    void TestMethod() 
+    void TestMethod()
     {
         IAnsiConsole ansiConsole = null;
         ansiConsole.WriteLine(""Hello, World"");
@@ -134,8 +131,7 @@ class TestClass
 }";
 
         await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(10, 9), FixedSource)
-            .ConfigureAwait(false);
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(10, 9), FixedSource);
     }
 
     [Fact]
@@ -145,9 +141,9 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
-    void TestMethod() 
+    void TestMethod()
     {
         Console.WriteLine(""Hello, World"");
         IAnsiConsole ansiConsole;
@@ -158,9 +154,9 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
-    void TestMethod() 
+    void TestMethod()
     {
         AnsiConsole.WriteLine(""Hello, World"");
         IAnsiConsole ansiConsole;
@@ -168,8 +164,7 @@ class TestClass
 }";
 
         await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(9, 9), FixedSource)
-            .ConfigureAwait(false);
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(9, 9), FixedSource);
     }
 
     [Fact]
@@ -179,11 +174,11 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
     static IAnsiConsole _ansiConsole;
 
-    static void TestMethod() 
+    static void TestMethod()
     {
         Console.WriteLine(""Hello, World"");
     }
@@ -193,19 +188,18 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
     static IAnsiConsole _ansiConsole;
 
-    static void TestMethod() 
+    static void TestMethod()
     {
         _ansiConsole.WriteLine(""Hello, World"");
     }
 }";
 
         await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource)
-            .ConfigureAwait(false);
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource);
     }
 
     [Fact]
@@ -215,11 +209,11 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
     IAnsiConsole _ansiConsole;
 
-    static void TestMethod() 
+    static void TestMethod()
     {
         Console.WriteLine(""Hello, World"");
     }
@@ -229,19 +223,18 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
     IAnsiConsole _ansiConsole;
 
-    static void TestMethod() 
+    static void TestMethod()
     {
         AnsiConsole.WriteLine(""Hello, World"");
     }
 }";
 
         await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource)
-            .ConfigureAwait(false);
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(11, 9), FixedSource);
     }
 
     [Fact]
@@ -251,9 +244,9 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
-    static void TestMethod() 
+    static void TestMethod()
     {
         static void LocalFunction(IAnsiConsole ansiConsole) => Console.WriteLine(""Hello, World"");
     }
@@ -263,17 +256,16 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
-    static void TestMethod() 
+    static void TestMethod()
     {
         static void LocalFunction(IAnsiConsole ansiConsole) => ansiConsole.WriteLine(""Hello, World"");
     }
 }";
 
         await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(9, 64), FixedSource)
-            .ConfigureAwait(false);
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(9, 64), FixedSource);
     }
 
     [Fact]
@@ -283,9 +275,9 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
-    static void TestMethod() 
+    static void TestMethod()
     {
         IAnsiConsole ansiConsole = null;
         static void LocalFunction() => Console.WriteLine(""Hello, World"");
@@ -296,9 +288,9 @@ class TestClass
 using System;
 using Spectre.Console;
 
-class TestClass 
+class TestClass
 {
-    static void TestMethod() 
+    static void TestMethod()
     {
         IAnsiConsole ansiConsole = null;
         static void LocalFunction() => AnsiConsole.WriteLine(""Hello, World"");
@@ -306,8 +298,7 @@ class TestClass
 }";
 
         await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(10, 40), FixedSource)
-            .ConfigureAwait(false);
+            .VerifyCodeFixAsync(Source, _expectedDiagnostic.WithLocation(10, 40), FixedSource);
     }
 
     [Fact]
@@ -327,7 +318,7 @@ AnsiConsole.WriteLine(""Hello, World"");
 ";
 
         await SpectreAnalyzerVerifier<UseSpectreInsteadOfSystemConsoleAnalyzer>
-            .VerifyCodeFixAsync(Source, OutputKind.ConsoleApplication, _expectedDiagnostic.WithLocation(4, 1), FixedSource)
-            .ConfigureAwait(false);
+            .VerifyCodeFixAsync(Source, OutputKind.ConsoleApplication, _expectedDiagnostic.WithLocation(4, 1),
+                FixedSource);
     }
 }

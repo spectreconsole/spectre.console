@@ -1,6 +1,5 @@
 namespace Spectre.Console.Tests.Unit;
 
-[UsesVerify]
 [ExpectationPath("Widgets/Grid")]
 public sealed class GridTests
 {
@@ -70,7 +69,6 @@ public sealed class GridTests
         }
     }
 
-    [UsesVerify]
     [ExpectationPath("AddEmptyRow")]
     public sealed class TheAddEmptyRowMethod
     {

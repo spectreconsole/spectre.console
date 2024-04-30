@@ -9,7 +9,7 @@ namespace Generator.Commands.Samples
     {
         public abstract void Run(IAnsiConsole console);
         public virtual string Name() => PascalToKebab(GetType().Name.Replace("Sample",""));
-        public virtual (int Cols, int Rows) ConsoleSize => (120, 24);
+        public virtual (int Cols, int Rows) ConsoleSize => (82, 24);
         public virtual IEnumerable<(string Name, Action<Capabilities> CapabilitiesAction)> GetCapabilities()
         {
             return new (string Name, Action<Capabilities> CapabilitiesAction)[]

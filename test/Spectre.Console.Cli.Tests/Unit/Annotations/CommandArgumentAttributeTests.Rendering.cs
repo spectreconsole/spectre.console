@@ -3,7 +3,6 @@ namespace Spectre.Console.Tests.Unit.Cli.Annotations;
 [ExpectationPath("Arguments")]
 public sealed partial class CommandArgumentAttributeTests
 {
-    [UsesVerify]
     public sealed class ArgumentCannotContainOptions
     {
         public sealed class Settings : CommandSettings
@@ -24,7 +23,6 @@ public sealed partial class CommandArgumentAttributeTests
         }
     }
 
-    [UsesVerify]
     public sealed class MultipleValuesAreNotSupported
     {
         public sealed class Settings : CommandSettings
@@ -45,7 +43,6 @@ public sealed partial class CommandArgumentAttributeTests
         }
     }
 
-    [UsesVerify]
     public sealed class ValuesMustHaveName
     {
         public sealed class Settings : CommandSettings

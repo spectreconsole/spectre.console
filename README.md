@@ -3,8 +3,7 @@
 _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.console.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_ _[![Spectre.Console CLI NuGet Version](https://img.shields.io/nuget/v/spectre.console.cli.svg?style=flat&label=NuGet%3A%20Spectre.Console.Cli)](https://www.nuget.org/packages/spectre.console.cli)_ [![Netlify Status](https://api.netlify.com/api/v1/badges/1eaf215a-eb9c-45e4-8c64-c90b62963149/deploy-status)](https://app.netlify.com/sites/spectreconsole/deploys)
 
 A .NET library that makes it easier to create beautiful, cross platform, console applications.  
-It is heavily inspired by the excellent [Rich library](https://github.com/willmcgugan/rich) 
-for Python. For detailed usage instructions, [please refer to the documentation at https://spectreconsole.net/.](https://spectreconsole.net/)
+It is heavily inspired by the excellent Python library, [Rich](https://github.com/willmcgugan/rich). Detailed instructions for using `Spectre.Console` are located on the project website, https://spectreconsole.net
 
 ## Table of Contents
 
@@ -19,17 +18,21 @@ for Python. For detailed usage instructions, [please refer to the documentation 
 
 ## Features
 
-* Written with unit testing in mind.
-* Supports tables, grids, panels, and a [rich](https://github.com/willmcgugan/rich) inspired markup language.
+* Supports tables, grids, panels, and a [Rich](https://github.com/willmcgugan/rich) inspired markup language.
 * Supports the most common SRG parameters when it comes to text 
   styling such as bold, dim, italic, underline, strikethrough, 
   and blinking text.
 * Supports 3/4/8/24-bit colors in the terminal.  
   The library will detect the capabilities of the current terminal 
-  and downgrade colors as needed.  
-
+  and downgrade colors as needed.
+* Written with unit testing in mind.
 
 ![Example](docs/input/assets/images/example.png)
+
+## Important Notices
+
+> [!IMPORTANT]\
+> We use the [Top Issues Dashboard](https://github.com/spectreconsole/spectre.console/issues/1517) for tracking community demand. Please upvote :+1: the issues and pull requests you are interested in.
 
 ## Installing
 
@@ -42,7 +45,7 @@ dotnet add package Spectre.Console
 ## Documentation
 
 The documentation for `Spectre.Console` can be found at
-https://spectreconsole.net/
+https://spectreconsole.net
 
 ## Examples
 
@@ -69,7 +72,7 @@ And to run an example:
 ## Sponsors
 
 The following people are [sponsoring](https://github.com/sponsors/patriksvensson)
-Spectre.Console to show their support and to ensure the longevity of the project.
+`Spectre.Console` to show their support and to ensure the longevity of the project.
 
 * [Rodney Littles II](https://github.com/RLittlesII)
 * [Martin Björkström](https://github.com/bjorkstromm)
@@ -99,6 +102,6 @@ This project is supported by the [.NET Foundation](https://dotnetfoundation.org)
 
 Copyright © Patrik Svensson, Phil Scott, Nils Andresen
 
-Spectre.Console is provided as-is under the MIT license. For more information see LICENSE.
+`Spectre.Console` is provided as-is under the MIT license. For more information see LICENSE.
 
-* SixLabors.ImageSharp, a library which Spectre.Console relies upon, is licensed under Apache 2.0 when distributed as part of Spectre.Console. The Six Labors Split License covers all other usage, see: https://github.com/SixLabors/ImageSharp/blob/master/LICENSE 
+* SixLabors.ImageSharp, a library which `Spectre.Console` relies upon, is licensed under Apache 2.0 when distributed as part of `Spectre.Console`. The Six Labors Split License covers all other usage, see: https://github.com/SixLabors/ImageSharp/blob/master/LICENSE 

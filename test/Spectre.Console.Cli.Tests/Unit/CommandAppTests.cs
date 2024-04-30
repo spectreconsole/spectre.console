@@ -215,7 +215,7 @@ public sealed partial class CommandAppTests
             dog.Name.ShouldBe("\" -Rufus --' ");
         });
         result.Context.Remaining.Parsed.Count.ShouldBe(1);
-        result.Context.ShouldHaveRemainingArgument("order-by", values: new[] { "\"-size\"", " ", string.Empty });
+        result.Context.ShouldHaveRemainingArgument("--order-by", values: new[] { "\"-size\"", " ", string.Empty });
     }
 
     [Fact]
@@ -362,7 +362,7 @@ public sealed partial class CommandAppTests
         });
 
         // When
-        var result = app.Run("-c", "0", "-v", "50", "ABBA", "Herreys");
+        var result = app.Run("-c", "0", "--value", "50", "ABBA", "Herreys");
 
         // Then
         result.ExitCode.ShouldBe(0);
@@ -557,7 +557,7 @@ public sealed partial class CommandAppTests
 
         // Then
         registrar.Registrations.ContainsKey(typeof(DogSettings)).ShouldBeTrue();
-        registrar.Registrations[typeof(DogSettings)].Count.ShouldBe(1);
+        registrar.Registrations[typeof(DogSettings)].Count.ShouldBe(2);
         registrar.Registrations[typeof(DogSettings)].ShouldContain(typeof(DogSettings));
     }
 
@@ -587,7 +587,7 @@ public sealed partial class CommandAppTests
 
         // Then
         registrar.Registrations.ContainsKey(typeof(DogSettings)).ShouldBeTrue();
-        registrar.Registrations[typeof(DogSettings)].Count.ShouldBe(1);
+        registrar.Registrations[typeof(DogSettings)].Count.ShouldBe(2);
         registrar.Registrations[typeof(DogSettings)].ShouldContain(typeof(DogSettings));
         registrar.Registrations.ContainsKey(typeof(MammalSettings)).ShouldBeTrue();
         registrar.Registrations[typeof(MammalSettings)].Count.ShouldBe(1);
@@ -844,7 +844,7 @@ public sealed partial class CommandAppTests
         // Then
         result.Context.ShouldNotBeNull();
         result.Context.Remaining.Parsed.Count.ShouldBe(1);
-        result.Context.ShouldHaveRemainingArgument("foo", values: new[] { "bar" });
+        result.Context.ShouldHaveRemainingArgument("--foo", values: new[] { "bar" });
     }
 
     [Fact]
@@ -875,8 +875,8 @@ public sealed partial class CommandAppTests
         // Then
         result.Context.ShouldNotBeNull();
         result.Context.Remaining.Parsed.Count.ShouldBe(2);
-        result.Context.ShouldHaveRemainingArgument("foo", values: new[] { "bar" });
-        result.Context.ShouldHaveRemainingArgument("f", values: new[] { "baz" });
+        result.Context.ShouldHaveRemainingArgument("--foo", values: new[] { "bar" });
+        result.Context.ShouldHaveRemainingArgument("-f", values: new[] { "baz" });
         result.Context.Remaining.Raw.Count.ShouldBe(5);
         result.Context.Remaining.Raw.ShouldBe(new[]
         {
@@ -909,7 +909,7 @@ public sealed partial class CommandAppTests
         // Then
         result.Context.ShouldNotBeNull();
         result.Context.Remaining.Parsed.Count.ShouldBe(1);
-        result.Context.ShouldHaveRemainingArgument("foo", values: new[] { (string)null });
+        result.Context.ShouldHaveRemainingArgument("--foo", values: new[] { (string)null });
     }
 
     [Fact]
@@ -989,6 +989,7 @@ public sealed partial class CommandAppTests
         {
             horse.Legs.ShouldBe(4);
             horse.Name.ShouldBe("Arkle");
+            horse.File.Name.ShouldBe("food.txt");
         });
     }
 
@@ -1133,6 +1134,55 @@ public sealed partial class CommandAppTests
             dog.Age.ShouldBe(12);
             dog.Legs.ShouldBe(4);
             data.ShouldBe(2);
+        }
+
+        [Fact]
+        public void Should_Execute_Nested_Delegate_Empty_Command()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(cfg =>
+            {
+                cfg.AddBranch("a", d =>
+                {
+                    d.AddDelegate("b", _ =>
+                    {
+                        AnsiConsole.MarkupLine("[red]Complete[/]");
+                        return 0;
+                    });
+                });
+            });
+
+            // When
+            var result = app.Run([
+                "a", "b"
+            ]);
+
+            // Then
+            result.ExitCode.ShouldBe(0);
+        }
+
+        [Fact]
+        public void Should_Execute_Delegate_Empty_Command_At_Root_Level()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(cfg =>
+            {
+                cfg.AddDelegate("a", _ =>
+                {
+                    AnsiConsole.MarkupLine("[red]Complete[/]");
+                    return 0;
+                });
+            });
+
+            // When
+            var result = app.Run([
+                "a"
+            ]);
+
+            // Then
+            result.ExitCode.ShouldBe(0);
         }
 
         [Fact]

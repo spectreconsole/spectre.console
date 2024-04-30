@@ -14,8 +14,21 @@ Task("Build")
     .IsDependentOn("Clean")
     .Does(context => 
 {
+    Information("Compiling generator...");
+    DotNetBuild("./resources/scripts/Generator/Generator.sln", new DotNetBuildSettings {
+        Configuration = configuration,
+        Verbosity = DotNetVerbosity.Minimal,
+        NoLogo = true,
+        NoIncremental = context.HasArgument("rebuild"),
+        MSBuildSettings = new DotNetMSBuildSettings()
+            .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
+    });
+
+    Information("\nCompiling Spectre.Console...");
     DotNetBuild("./src/Spectre.Console.sln", new DotNetBuildSettings {
         Configuration = configuration,
+        Verbosity = DotNetVerbosity.Minimal,
+        NoLogo = true,
         NoIncremental = context.HasArgument("rebuild"),
         MSBuildSettings = new DotNetMSBuildSettings()
             .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
@@ -28,6 +41,8 @@ Task("Build-Analyzer")
 {
     DotNetBuild("./src/Spectre.Console.Analyzer.sln", new DotNetBuildSettings {
         Configuration = configuration,
+        Verbosity = DotNetVerbosity.Minimal,
+        NoLogo = true,
         NoIncremental = context.HasArgument("rebuild"),
         MSBuildSettings = new DotNetMSBuildSettings()
             .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
@@ -40,6 +55,8 @@ Task("Build-Examples")
 {
     DotNetBuild("./examples/Examples.sln", new DotNetBuildSettings {
         Configuration = configuration,
+        Verbosity = DotNetVerbosity.Minimal,
+        NoLogo = true,
         NoIncremental = context.HasArgument("rebuild"),
         MSBuildSettings = new DotNetMSBuildSettings()
             .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
@@ -54,18 +71,24 @@ Task("Test")
 {
     DotNetTest("./test/Spectre.Console.Tests/Spectre.Console.Tests.csproj", new DotNetTestSettings {
         Configuration = configuration,
+        Verbosity = DotNetVerbosity.Minimal,
+        NoLogo = true,
         NoRestore = true,
         NoBuild = true,
     });
 
     DotNetTest("./test/Spectre.Console.Cli.Tests/Spectre.Console.Cli.Tests.csproj", new DotNetTestSettings {
         Configuration = configuration,
+        Verbosity = DotNetVerbosity.Minimal,
+        NoLogo = true,
         NoRestore = true,
         NoBuild = true,
     });
 
     DotNetTest("./test/Spectre.Console.Analyzer.Tests/Spectre.Console.Analyzer.Tests.csproj", new DotNetTestSettings {
         Configuration = configuration,
+        Verbosity = DotNetVerbosity.Minimal,
+        NoLogo = true,
         NoRestore = true,
         NoBuild = true,
     });
@@ -77,6 +100,8 @@ Task("Package")
 {
     context.DotNetPack($"./src/Spectre.Console.sln", new DotNetPackSettings {
         Configuration = configuration,
+        Verbosity = DotNetVerbosity.Minimal,
+        NoLogo = true,
         NoRestore = true,
         NoBuild = true,
         OutputDirectory = "./.artifacts",
@@ -86,44 +111,14 @@ Task("Package")
 
     context.DotNetPack($"./src/Spectre.Console.Analyzer.sln", new DotNetPackSettings {
         Configuration = configuration,
+        Verbosity = DotNetVerbosity.Minimal,
+        NoLogo = true,
         NoRestore = true,
         NoBuild = true,
         OutputDirectory = "./.artifacts",
         MSBuildSettings = new DotNetMSBuildSettings()
             .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
     });
-});
-
-Task("Publish-GitHub")
-    .WithCriteria(ctx => BuildSystem.IsRunningOnGitHubActions, "Not running on GitHub Actions")
-    .IsDependentOn("Package")
-    .Does(context => 
-{
-    var apiKey = Argument<string>("github-key", null);
-    if(string.IsNullOrWhiteSpace(apiKey)) {
-        throw new CakeException("No GitHub API key was provided.");
-    }
-
-    // Publish to GitHub Packages
-    var exitCode = 0;
-    foreach(var file in context.GetFiles("./.artifacts/*.nupkg")) 
-    {
-        context.Information("Publishing {0}...", file.GetFilename().FullPath);
-        exitCode += StartProcess("dotnet", 
-            new ProcessSettings {
-                Arguments = new ProcessArgumentBuilder()
-                    .Append("gpr")
-                    .Append("push")
-                    .AppendQuoted(file.FullPath)
-                    .AppendSwitchSecret("-k", " ", apiKey)
-            }
-        );
-    }
-
-    if(exitCode != 0) 
-    {
-        throw new CakeException("Could not push GitHub packages.");
-    }
 });
 
 Task("Publish-NuGet")
@@ -152,7 +147,6 @@ Task("Publish-NuGet")
 // Targets
 
 Task("Publish")
-    .IsDependentOn("Publish-GitHub")
     .IsDependentOn("Publish-NuGet");
 
 Task("Default")

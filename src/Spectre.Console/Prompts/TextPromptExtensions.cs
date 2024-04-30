@@ -330,18 +330,13 @@ public static class TextPromptExtensions
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>
     /// <param name="obj">The prompt.</param>
-    /// <param name="style">The default value style.</param>
+    /// <param name="style">The default value style or <see langword="null"/> to use the default style (green).</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> DefaultValueStyle<T>(this TextPrompt<T> obj, Style style)
+    public static TextPrompt<T> DefaultValueStyle<T>(this TextPrompt<T> obj, Style? style)
     {
         if (obj is null)
         {
             throw new ArgumentNullException(nameof(obj));
-        }
-
-        if (style is null)
-        {
-            throw new ArgumentNullException(nameof(style));
         }
 
         obj.DefaultValueStyle = style;
@@ -353,18 +348,13 @@ public static class TextPromptExtensions
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>
     /// <param name="obj">The prompt.</param>
-    /// <param name="style">The style to use for displaying the choices.</param>
+    /// <param name="style">The style to use for displaying the choices or <see langword="null"/> to use the default style (blue).</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> ChoicesStyle<T>(this TextPrompt<T> obj, Style style)
+    public static TextPrompt<T> ChoicesStyle<T>(this TextPrompt<T> obj, Style? style)
     {
         if (obj is null)
         {
             throw new ArgumentNullException(nameof(obj));
-        }
-
-        if (style is null)
-        {
-            throw new ArgumentNullException(nameof(style));
         }
 
         obj.ChoicesStyle = style;

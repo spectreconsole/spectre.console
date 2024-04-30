@@ -2,10 +2,10 @@
 The lion command.
 
 USAGE:
-    myapp <TEETH> [LEGS] [OPTIONS]
+    myapp <TEETH> [LEGS] [OPTIONS] [COMMAND]
 
 EXAMPLES:
-    myapp 12 -c 3
+    myapp 20 --alive
 
 ARGUMENTS:
     <TEETH>    The number of teeth the lion has
@@ -19,3 +19,7 @@ OPTIONS:
         --agility <VALUE>    10                  The agility between 0 and 100
     -c <CHILDREN>                                The number of children the lion has
     -d <DAY>                 Monday, Thursday    The days the lion goes hunting
+    -w, --weight [WEIGHT]                        The weight of the lion, in kgs
+
+COMMANDS:
+    giraffe <LENGTH>    The giraffe command

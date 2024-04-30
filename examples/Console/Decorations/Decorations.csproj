@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ExampleTitle>Decorations</ExampleTitle>
+    <ExampleDescription>Demonstrates how to [italic]use[/] [bold]decorations[/] [dim]in[/] the console.</ExampleDescription>
+    <ExampleGroup>Misc</ExampleGroup>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Shared.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -23,14 +23,16 @@ public sealed partial class CommandOptionAttributeTests
     }
 
     [Theory]
-    [InlineData("<VALUE>")]
-    public void Should_Parse_Value_Correctly(string value)
+    [InlineData("<VALUE>", "VALUE")]
+    [InlineData("<VALUE1>", "VALUE1")]
+    [InlineData("<VALUE1|VALUE2>", "VALUE1|VALUE2")]
+    public void Should_Parse_Value_Correctly(string value, string expected)
     {
         // Given, When
         var option = new CommandOptionAttribute($"-o|--option {value}");
 
         // Then
-        option.ValueName.ShouldBe("VALUE");
+        option.ValueName.ShouldBe(expected);
     }
 
     [Fact]
