@@ -29,6 +29,27 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
+        [Expectation("Root", "QuestionMark")]
+        public Task Should_Output_Root_Correctly_QuestionMark()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+                configurator.AddCommand<DogCommand>("dog");
+                configurator.AddCommand<HorseCommand>("horse");
+                configurator.AddCommand<GiraffeCommand>("giraffe");
+            });
+
+            // When
+            var result = fixture.Run("-?");
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
         [Expectation("Root_Command")]
         public Task Should_Output_Root_Command_Correctly()
         {
@@ -44,6 +65,27 @@ public sealed partial class CommandAppTests
 
             // When
             var result = fixture.Run("horse", "--help");
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Root_Command", "QuestionMark")]
+        public Task Should_Output_Root_Command_Correctly_QuestionMark()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+                configurator.AddCommand<DogCommand>("dog");
+                configurator.AddCommand<HorseCommand>("horse");
+                configurator.AddCommand<GiraffeCommand>("giraffe");
+            });
+
+            // When
+            var result = fixture.Run("horse", "-?");
 
             // Then
             return Verifier.Verify(result.Output);

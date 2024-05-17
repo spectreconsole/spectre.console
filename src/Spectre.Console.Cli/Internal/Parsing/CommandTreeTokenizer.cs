@@ -176,7 +176,7 @@ internal static class CommandTreeTokenizer
                 break;
             }
 
-            if (char.IsLetter(current))
+            if (char.IsLetter(current) || current is '?')
             {
                 context.AddRemaining(current);
                 reader.Read(); // Consume
