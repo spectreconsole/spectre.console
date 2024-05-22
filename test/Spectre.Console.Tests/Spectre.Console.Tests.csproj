@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
     <PackageReference Include="Shouldly" Version="4.2.1" />
     <PackageReference Include="Spectre.Verify.Extensions" Version="22.3.1" />
     <PackageReference Include="Verify.Xunit" Version="23.2.0" />
