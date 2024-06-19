@@ -12,6 +12,7 @@
       </Argument>
       <Option Short="a" Long="alive,not-dead" Value="NULL" Required="false" Kind="flag" ClrType="System.Boolean">
         <Description>Indicates whether or not the animal is alive.</Description>
+        <DefaultValue>False</DefaultValue>
       </Option>
     </Parameters>
     <!--MAMMAL-->
@@ -25,7 +26,9 @@
         <Parameters>
           <Option Short="d" Long="day" Value="MON|TUE" Required="false" Kind="scalar" ClrType="System.DayOfWeek" />
           <Option Short="" Long="directory" Value="NULL" Required="false" Kind="scalar" ClrType="System.IO.DirectoryInfo" />
-          <Option Short="" Long="file" Value="NULL" Required="false" Kind="scalar" ClrType="System.IO.FileInfo" />
+          <Option Short="" Long="file" Value="NULL" Required="false" Kind="scalar" ClrType="System.IO.FileInfo">
+            <DefaultValue>food.txt</DefaultValue>
+          </Option>
         </Parameters>
       </Command>
     </Command>

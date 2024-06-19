@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Model>
-  <!--DOG-->
-  <Command Name="dog" IsBranch="false" ClrType="Spectre.Console.Tests.Data.DogCommand" Settings="Spectre.Console.Tests.Data.DogSettings">
-    <Description>The dog command.</Description>
+  <!--CAT-->
+  <Command Name="cat" IsBranch="false" ClrType="Spectre.Console.Tests.Data.CatCommand" Settings="Spectre.Console.Tests.Data.CatSettings">
     <Parameters>
       <Argument Name="LEGS" Position="0" Required="false" Kind="scalar" ClrType="System.Int32">
         <Description>The number of legs.</Description>
@@ -11,12 +10,12 @@
           <Validator ClrType="Spectre.Console.Tests.Data.PositiveNumberValidatorAttribute" Message="Number of legs must be greater than 0." />
         </Validators>
       </Argument>
-      <Argument Name="AGE" Position="1" Required="true" Kind="scalar" ClrType="System.Int32" />
+      <Option Short="" Long="agility" Value="VALUE" Required="false" Kind="scalar" ClrType="System.Int32">
+        <Description>The agility between 0 and 100.</Description>
+        <DefaultValue>10</DefaultValue>
+      </Option>
       <Option Short="a" Long="alive,not-dead" Value="NULL" Required="false" Kind="flag" ClrType="System.Boolean">
         <Description>Indicates whether or not the animal is alive.</Description>
-        <DefaultValue>False</DefaultValue>
-      </Option>
-      <Option Short="g" Long="good-boy" Value="NULL" Required="false" Kind="flag" ClrType="System.Boolean">
         <DefaultValue>False</DefaultValue>
       </Option>
       <Option Short="n,p" Long="name,pet-name" Value="VALUE" Required="false" Kind="scalar" ClrType="System.String" />

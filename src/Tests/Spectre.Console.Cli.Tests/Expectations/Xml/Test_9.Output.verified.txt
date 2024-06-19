@@ -14,6 +14,7 @@
       </Argument>
       <Option Short="a" Long="alive,not-dead" Value="NULL" Required="false" Kind="flag" ClrType="System.Boolean">
         <Description>Indicates whether or not the animal is alive.</Description>
+        <DefaultValue>False</DefaultValue>
       </Option>
     </Parameters>
     <!--DOG-->
@@ -21,7 +22,9 @@
       <Description>The dog command.</Description>
       <Parameters>
         <Argument Name="AGE" Position="0" Required="true" Kind="scalar" ClrType="System.Int32" />
-        <Option Short="g" Long="good-boy" Value="NULL" Required="false" Kind="flag" ClrType="System.Boolean" />
+        <Option Short="g" Long="good-boy" Value="NULL" Required="false" Kind="flag" ClrType="System.Boolean">
+          <DefaultValue>False</DefaultValue>
+        </Option>
         <Option Short="n,p" Long="name,pet-name" Value="VALUE" Required="false" Kind="scalar" ClrType="System.String" />
       </Parameters>
     </Command>
@@ -31,7 +34,9 @@
       <Parameters>
         <Option Short="d" Long="day" Value="MON|TUE" Required="false" Kind="scalar" ClrType="System.DayOfWeek" />
         <Option Short="" Long="directory" Value="NULL" Required="false" Kind="scalar" ClrType="System.IO.DirectoryInfo" />
-        <Option Short="" Long="file" Value="NULL" Required="false" Kind="scalar" ClrType="System.IO.FileInfo" />
+        <Option Short="" Long="file" Value="NULL" Required="false" Kind="scalar" ClrType="System.IO.FileInfo">
+          <DefaultValue>food.txt</DefaultValue>
+        </Option>
         <Option Short="n,p" Long="name,pet-name" Value="VALUE" Required="false" Kind="scalar" ClrType="System.String" />
       </Parameters>
     </Command>
