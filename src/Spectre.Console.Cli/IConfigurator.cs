@@ -15,7 +15,7 @@ public interface IConfigurator
     /// Sets the help provider for the application.
     /// </summary>
     /// <typeparam name="T">The type of the help provider to instantiate at runtime and use.</typeparam>
-    public void SetHelpProvider<T>()
+    public void SetHelpProvider<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>()
         where T : IHelpProvider;
 
     /// <summary>
@@ -35,8 +35,23 @@ public interface IConfigurator
     /// <typeparam name="TCommand">The command type.</typeparam>
     /// <param name="name">The name of the command.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
-    ICommandConfigurator AddCommand<TCommand>(string name)
+    [RequiresUnreferencedCode(TrimWarnings.AddCommandShouldBeExplicitAboutSettings)]
+    ICommandConfigurator AddCommand<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TCommand>(string name)
         where TCommand : class, ICommand;
+
+    /// <summary>
+    /// Adds a command.
+    /// </summary>
+    /// <typeparam name="TCommand">The command type.</typeparam>
+    /// <typeparam name="TSettings">The command settings type.</typeparam>
+    /// <param name="name">The name of the command.</param>
+    /// <returns>A command configurator that can be used to configure the command further.</returns>
+    ICommandConfigurator AddCommand<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TCommand,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(string name)
+        where TCommand : class, ICommand
+        where TSettings : CommandSettings
+    ;
 
     /// <summary>
     /// Adds a command that executes a delegate.
@@ -45,7 +60,9 @@ public interface IConfigurator
     /// <param name="name">The name of the command.</param>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
-    ICommandConfigurator AddDelegate<TSettings>(string name, Func<CommandContext, TSettings, int> func)
+    ICommandConfigurator AddDelegate<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TSettings
+    >(string name, Func<CommandContext, TSettings, int> func)
         where TSettings : CommandSettings;
 
     /// <summary>
@@ -55,7 +72,9 @@ public interface IConfigurator
     /// <param name="name">The name of the command.</param>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
-    ICommandConfigurator AddAsyncDelegate<TSettings>(string name, Func<CommandContext, TSettings, Task<int>> func)
+    ICommandConfigurator AddAsyncDelegate<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TSettings
+    >(string name, Func<CommandContext, TSettings, Task<int>> func)
         where TSettings : CommandSettings;
 
     /// <summary>
@@ -65,6 +84,8 @@ public interface IConfigurator
     /// <param name="name">The name of the command branch.</param>
     /// <param name="action">The command branch configurator.</param>
     /// <returns>A branch configurator that can be used to configure the branch further.</returns>
-    IBranchConfigurator AddBranch<TSettings>(string name, Action<IConfigurator<TSettings>> action)
+    IBranchConfigurator AddBranch<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TSettings
+    >(string name, Action<IConfigurator<TSettings>> action)
         where TSettings : CommandSettings;
 }

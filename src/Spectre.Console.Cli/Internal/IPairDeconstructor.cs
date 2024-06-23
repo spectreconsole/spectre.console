@@ -16,6 +16,6 @@ internal interface IPairDeconstructor
     (object? Key, object? Value) Deconstruct(
         ITypeResolver resolver,
         Type keyType,
-        Type valueType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type valueType,
         string? value);
 }

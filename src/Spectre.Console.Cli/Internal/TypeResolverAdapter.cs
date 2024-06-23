@@ -9,6 +9,9 @@ internal sealed class TypeResolverAdapter : ITypeResolver, IDisposable
         _resolver = resolver;
     }
 
+    // any type we are trying to resolve should be added via the type registrar which marks the types
+    // to ensure their constructors are not trimmed.
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2067", Justification = TrimWarnings.SuppressMessage)]
     public object? Resolve(Type? type)
     {
         if (type == null)

@@ -7,7 +7,7 @@ internal sealed class DefaultPairDeconstructor : IPairDeconstructor
     (object? Key, object? Value) IPairDeconstructor.Deconstruct(
         ITypeResolver resolver,
         Type keyType,
-        Type valueType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type valueType,
         string? value)
     {
         if (value == null)
@@ -58,6 +58,8 @@ internal sealed class DefaultPairDeconstructor : IPairDeconstructor
         }
     }
 
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026", Justification = TrimWarnings.TypeConverterWarningsCanBeIgnored)]
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2067", Justification = TrimWarnings.TypeConverterWarningsCanBeIgnored)]
     private static TypeConverter GetConverter(Type type)
     {
         var converter = TypeDescriptor.GetConverter(type);

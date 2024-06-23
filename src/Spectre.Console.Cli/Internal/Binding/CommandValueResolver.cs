@@ -2,6 +2,8 @@ namespace Spectre.Console.Cli;
 
 internal static class CommandValueResolver
 {
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2070", Justification = TrimWarnings.SuppressMessage)]
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072", Justification = TrimWarnings.SuppressMessage)]
     public static CommandValueLookup GetParameterValues(CommandTree? tree, ITypeResolver resolver)
     {
         var lookup = new CommandValueLookup();
@@ -125,6 +127,7 @@ internal static class CommandValueResolver
         return result;
     }
 
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050", Justification = TrimWarnings.SuppressMessage)]
     private static Array ConvertArray(Array sourceArray, SmartConverter converter)
     {
         Array? targetArray = null;
@@ -146,6 +149,9 @@ internal static class CommandValueResolver
     }
 
     [SuppressMessage("Style", "IDE0019:Use pattern matching", Justification = "It's OK")]
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026", Justification = TrimWarnings.TypeConverterWarningsCanBeIgnored)]
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2087", Justification = TrimWarnings.TypeConverterWarningsCanBeIgnored)]
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072", Justification = TrimWarnings.TypeConverterWarningsCanBeIgnored)]
     private static SmartConverter GetConverter(CommandValueLookup lookup, CommandValueBinder binder, ITypeResolver resolver, CommandParameter parameter)
     {
         if (parameter.Converter == null)
@@ -199,13 +205,17 @@ internal static class CommandValueResolver
     /// </summary>
     private readonly ref struct SmartConverter
     {
-        public SmartConverter(TypeConverter typeConverter, Type type)
+        public SmartConverter(
+            TypeConverter typeConverter,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type type)
         {
             TypeConverter = typeConverter;
             Type = type;
         }
 
         public TypeConverter TypeConverter { get; }
+
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
         private Type Type { get; }
 
         public object? ConvertFrom(object input)

@@ -42,10 +42,26 @@ public sealed class CommandApp : ICommandApp
     /// </summary>
     /// <typeparam name="TCommand">The command type.</typeparam>
     /// <returns>A <see cref="DefaultCommandConfigurator"/> that can be used to configure the default command.</returns>
-    public DefaultCommandConfigurator SetDefaultCommand<TCommand>()
+    [RequiresUnreferencedCode(TrimWarnings.AddCommandShouldBeExplicitAboutSettings)]
+    public DefaultCommandConfigurator SetDefaultCommand<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TCommand>()
         where TCommand : class, ICommand
     {
         return new DefaultCommandConfigurator(GetConfigurator().SetDefaultCommand<TCommand>());
+    }
+
+    /// <summary>
+    /// Sets the default command.
+    /// </summary>
+    /// <typeparam name="TCommand">The command type.</typeparam>
+    /// <typeparam name="TSettings">The command's default setting type.</typeparam>
+    /// <returns>A <see cref="DefaultCommandConfigurator"/> that can be used to configure the default command.</returns>
+    public DefaultCommandConfigurator SetDefaultCommand<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TCommand,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)] TSettings
+        >()
+        where TCommand : class, ICommand
+    {
+        return new DefaultCommandConfigurator(GetConfigurator().SetDefaultCommand<TCommand, TSettings>());
     }
 
     /// <summary>
@@ -63,6 +79,11 @@ public sealed class CommandApp : ICommandApp
     /// </summary>
     /// <param name="args">The arguments.</param>
     /// <returns>The exit code from the executed command.</returns>
+    // we have a handful of helper classes that we create dynamically, make sure we mark them
+    // as dynamic dependencies to force their inclusion.
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(FlagValue<>))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(EmptyCommandSettings))]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(MultiMap<,>))]
     public async Task<int> RunAsync(IEnumerable<string> args)
     {
         try
@@ -73,9 +94,9 @@ public sealed class CommandApp : ICommandApp
                 _configurator.AddBranch(CliConstants.Commands.Branch, cli =>
                 {
                     cli.HideBranch();
-                    cli.AddCommand<VersionCommand>(CliConstants.Commands.Version);
-                    cli.AddCommand<XmlDocCommand>(CliConstants.Commands.XmlDoc);
-                    cli.AddCommand<ExplainCommand>(CliConstants.Commands.Explain);
+                    cli.AddCommand<VersionCommand, VersionCommand.Settings>(CliConstants.Commands.Version);
+                    cli.AddCommand<XmlDocCommand, XmlDocCommand.Settings>(CliConstants.Commands.XmlDoc);
+                    cli.AddCommand<ExplainCommand, ExplainCommand.Settings>(CliConstants.Commands.Explain);
                 });
 
                 _executed = true;

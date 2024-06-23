@@ -18,7 +18,7 @@ internal static class CommandParameterComparer
                 return true;
             }
 
-            return x.Property.MetadataToken == y.Property.MetadataToken;
+            return x.Property == y.Property;
         }
 
         public int GetHashCode(CommandParameter? obj)

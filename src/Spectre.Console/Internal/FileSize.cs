@@ -67,7 +67,14 @@ internal struct FileSize
 
     private static FileSizeUnit Detect(double bytes)
     {
-        foreach (var unit in (FileSizeUnit[])Enum.GetValues(typeof(FileSizeUnit)))
+#if NET6_0_OR_GREATER
+        var values = Enum.GetValues<FileSizeUnit>();
+#else
+        var values = Enum.GetValues(typeof(FileSizeUnit))
+            .Cast<FileSizeUnit>();
+#endif
+
+        foreach (var unit in values)
         {
             if (bytes < (GetBase(unit) * 1024))
             {

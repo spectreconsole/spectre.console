@@ -2,6 +2,7 @@ namespace Spectre.Console.Cli;
 
 internal static class TypeRegistrarExtensions
 {
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072", Justification = TrimWarnings.SuppressMessage)]
     public static void RegisterDependencies(this ITypeRegistrar registrar, CommandModel model)
     {
         var stack = new Stack<CommandInfo>();
