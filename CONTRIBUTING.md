@@ -39,7 +39,7 @@ What is generally considered trivial:
 ### Code style
 
 Normal .NET coding guidelines apply.
-See the [Framework Design Guidelines](https://msdn.microsoft.com/en-us/library/ms229042%28v=vs.110%29.aspx) for more information.
+See the [Framework Design Guidelines](https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/) for more information.
 
 ### Dependencies
 
