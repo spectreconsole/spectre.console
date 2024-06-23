@@ -38,7 +38,7 @@
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Roslynator.Analyzers" Version="4.12.2">
+    <PackageReference Include="Roslynator.Analyzers" Version="4.12.4">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
