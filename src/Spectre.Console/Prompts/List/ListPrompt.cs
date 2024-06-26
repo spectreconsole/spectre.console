@@ -41,7 +41,14 @@ internal sealed class ListPrompt<T>
         }
 
         var nodes = tree.Traverse().ToList();
-        var state = new ListPromptState<T>(nodes, _strategy.CalculatePageSize(_console, nodes.Count, requestedPageSize), wrapAround, selectionMode, skipUnselectableItems, searchEnabled);
+        var state = new ListPromptState<T>(
+            nodes,
+            _strategy.CalculatePageSize(_console, nodes.Count, requestedPageSize),
+            wrapAround,
+            selectionMode,
+            skipUnselectableItems,
+            searchEnabled,
+            _strategy.CalculateInitialIndex(nodes));
         var hook = new ListPromptRenderHook<T>(_console, () => BuildRenderable(state));
 
         using (new RenderHookScope(_console, hook))

@@ -278,4 +278,10 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         // Combine all items
         return new Rows(list);
     }
+
+    /// <inheritdoc/>
+    int IListPromptStrategy<T>.CalculateInitialIndex(IReadOnlyList<ListPromptItem<T>> nodes)
+    {
+        return 0;
+    }
 }
