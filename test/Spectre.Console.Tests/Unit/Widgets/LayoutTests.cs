@@ -264,4 +264,37 @@ public sealed class LayoutTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    [Expectation("Render_Layout_With_Three_And_One_Columns")]
+    public Task Should_Render_Layout_With_Three_And_One_Columns()
+    {
+        // Given
+        var console = new TestConsole().Size(new Size(40, 17));
+        var layout = new Layout();
+        var col1 = new Layout();
+        var col1Row1 = new Layout();
+        var col1Row2 = new Layout();
+        var col1Row3 = new Layout();
+
+        col1.SplitRows(col1Row1, col1Row2, col1Row3);
+
+        var col2 = new Layout();
+
+        layout.SplitColumns(col1, col2);
+
+        var panel = new Panel("Hello, World!") { Expand = true };
+
+        List<Layout> layouts = [col1Row1, col1Row2, col1Row3, col2];
+        foreach (var l in layouts)
+        {
+            l.Update(panel);
+        }
+
+        // When
+        console.Write(layout);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
 }
