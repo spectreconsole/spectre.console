@@ -141,6 +141,26 @@ public sealed class TableTests
     }
 
     [Fact]
+    [Expectation("RenderWithText")]
+    public Task Should_Render_Table_Correctly_With_Text()
+    {
+        // Given
+        var console = new TestConsole();
+        var table = new Table();
+        table.AddColumns("Foo", "Bar", "Baz");
+        table.AddRow("Qux", "Corgi", "Waldo");
+        table.AddRow("Grault", "Garply", "Fred");
+
+        // When
+        console.Write(
+            new Text("Table\n"),
+            table);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
     [Expectation("Render_Row_Separators")]
     public Task Should_Render_Table_With_Row_Separators_Correctly()
     {

@@ -105,6 +105,38 @@ public partial class AnsiConsoleTests
             // Then
             console.Output.ShouldBe("\u001b[90;47mHello\u001b[0m");
         }
+
+        [Fact]
+        public void Should_Display_All_IRenderable_Itens_In_Line()
+        {
+            // Given
+            var console = new TestConsole()
+                .Colors(ColorSystem.Standard);
+
+            // When
+            console.Write(
+                new Text("Hello "),
+                new Text("World!"));
+
+            // Then
+            console.Output.ShouldBe("Hello World!");
+        }
+
+        [Fact]
+        public void Should_Display_All_IRenderable_Itens_In_Line2()
+        {
+            // Given
+            var console = new TestConsole()
+                .Colors(ColorSystem.Standard);
+
+            // When
+            console.Write(
+                new Text("Hello "),
+                new TextPath(@"C:\Test"));
+
+            // Then
+            console.Output.ShouldBe(@"Hello C:/Test");
+        }
     }
 
     public sealed class WriteLine
