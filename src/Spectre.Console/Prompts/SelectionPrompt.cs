@@ -172,7 +172,8 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
         }
 
         var grid = new Grid();
-        grid.AddColumn(new GridColumn().Padding(0, 0, 1, 0).NoWrap());
+        grid.AddColumns(new GridColumn().Padding(0, 0, 1, 0).NoWrap(),
+                        new GridColumn().Padding(0, 0, 1, 0));
 
         if (Title != null)
         {
@@ -200,7 +201,8 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
                 text = text.Highlight(searchText, searchHighlightStyle);
             }
 
-            grid.AddRow(new Markup(indent + prompt + " " + text, style));
+            grid.AddRow(new Markup(indent + prompt, style),
+                        new Markup(text, style));
         }
 
         list.Add(grid);

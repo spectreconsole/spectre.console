@@ -234,7 +234,8 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         }
 
         var grid = new Grid();
-        grid.AddColumn(new GridColumn().Padding(0, 0, 1, 0).NoWrap());
+        grid.AddColumns(new GridColumn().Padding(0, 0, 1, 0).NoWrap(),
+                        new GridColumn().Padding(0, 0, 1, 0));
 
         if (Title != null)
         {
@@ -260,7 +261,9 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
                     ? ListPromptConstants.GroupSelectedCheckbox : ListPromptConstants.SelectedCheckbox)
                 : ListPromptConstants.Checkbox;
 
-            grid.AddRow(new Markup(indent + prompt + " " + checkbox + " " + text, style));
+            //grid.AddRow(new Markup(indent + prompt + " " + checkbox + " " + text, style));
+            grid.AddRow(new Markup(indent + prompt + " " + checkbox, style),
+                        new Markup(text, style));
         }
 
         list.Add(grid);
