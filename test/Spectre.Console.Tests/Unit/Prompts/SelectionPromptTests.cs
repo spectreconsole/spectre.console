@@ -83,6 +83,6 @@ public sealed class SelectionPromptTests
         prompt.Show(console);
 
         // Then
-        console.Output.ShouldContain($"{ESC}[38;5;12m> Item {ESC}[0m{ESC}[1;38;5;12;48;5;11m1{ESC}[0m");
+        console.Output.ShouldContain($"{ESC}[38;5;12m>{ESC}[0m {ESC}[38;5;12mItem {ESC}[0m{ESC}[1;38;5;12;48;5;11m1{ESC}[0m");
     }
 }
