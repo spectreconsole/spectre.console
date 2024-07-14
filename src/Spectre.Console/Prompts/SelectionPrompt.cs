@@ -158,7 +158,6 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     }
 
     private static readonly GridColumn[] _columns = [new GridColumn().Padding(0, 0, 1, 0), new GridColumn().Padding(0, 0, 1, 0)];
-    private static readonly Text _emptyLine = new(string.Empty);
 
     /// <inheritdoc/>
     IRenderable IListPromptStrategy<T>.Render(IAnsiConsole console, bool scrollable, int cursorIndex,
@@ -176,7 +175,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
 
         if (Title != null)
         {
-            list.Add(_emptyLine);
+            list.Add(Text.Empty);
         }
 
         foreach (var item in items)
