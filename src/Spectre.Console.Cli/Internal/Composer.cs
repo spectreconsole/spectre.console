@@ -9,6 +9,11 @@ internal sealed class Composer : IRenderable
     /// </summary>
     private readonly bool _renderMarkup = false;
 
+    /// <summary>
+    /// Whether to avoid all styling in the output.
+    /// </summary>
+    private readonly bool _noColor = Environment.GetEnvironmentVariables().Contains("NO_COLOR");
+
     public Composer()
     {
         _content = new StringBuilder();
@@ -22,12 +27,24 @@ internal sealed class Composer : IRenderable
 
     public Composer Text(string text)
     {
+        if (_noColor && !string.IsNullOrWhiteSpace(text))
+        {
+            _content.Append(text.RemoveMarkup());
+            return this;
+        }
+
         _content.Append(text);
         return this;
     }
 
     public Composer Style(Style style, string text)
     {
+        if (_noColor)
+        {
+            _content.Append(text.EscapeMarkup());
+            return this;
+        }
+
         _content.Append('[').Append(style.ToMarkup()).Append(']');
         _content.Append(text.EscapeMarkup());
         _content.Append("[/]");
@@ -37,6 +54,12 @@ internal sealed class Composer : IRenderable
 
     public Composer Style(string style, string text)
     {
+        if (_noColor)
+        {
+            _content.Append(text.EscapeMarkup());
+            return this;
+        }
+
         _content.Append('[').Append(style).Append(']');
         _content.Append(text.EscapeMarkup());
         _content.Append("[/]");
@@ -46,6 +69,12 @@ internal sealed class Composer : IRenderable
 
     public Composer Style(string style, Action<Composer> action)
     {
+        if (_noColor)
+        {
+            action(this);
+            return this;
+        }
+
         _content.Append('[').Append(style).Append(']');
         action(this);
         _content.Append("[/]");
@@ -114,7 +143,7 @@ internal sealed class Composer : IRenderable
 
     public Measurement Measure(RenderOptions options, int maxWidth)
     {
-        if (_renderMarkup)
+        if (_renderMarkup || _noColor)
         {
             return ((IRenderable)new Paragraph(_content.ToString())).Measure(options, maxWidth);
         }
@@ -126,7 +155,7 @@ internal sealed class Composer : IRenderable
 
     public IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        if (_renderMarkup)
+        if (_renderMarkup || _noColor)
         {
             return ((IRenderable)new Paragraph(_content.ToString())).Render(options, maxWidth);
         }
