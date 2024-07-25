@@ -98,7 +98,7 @@ internal sealed class HtmlEncoder : IAnsiConsoleEncoder
             css.Add("font-weight: bold");
         }
 
-        if ((style.Decoration & Decoration.Bold) != 0)
+        if ((style.Decoration & Decoration.Italic) != 0)
         {
             css.Add("font-style: italic");
         }
