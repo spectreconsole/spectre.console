@@ -23,6 +23,27 @@ public sealed class BarChartTests
     }
 
     [Fact]
+    [Expectation("RenderWithText")]
+    public async Task Should_Render_Correctly_With_Text()
+    {
+        // Given
+        var console = new TestConsole();
+
+        // When
+        console.Write(
+            new Text("BarChart\n"),
+            new BarChart()
+            .Width(60)
+            .Label("Number of fruits")
+            .AddItem("Apple", 12)
+            .AddItem("Orange", 54)
+            .AddItem("Banana", 33));
+
+        // Then
+        await Verifier.Verify(console.Output);
+    }
+
+    [Fact]
     [Expectation("Zero_Value")]
     public async Task Should_Render_Correctly_2()
     {
