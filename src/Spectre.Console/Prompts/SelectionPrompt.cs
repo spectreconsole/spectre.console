@@ -157,6 +157,8 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
         return requestedPageSize;
     }
 
+    private static readonly GridColumn[] _columns = [new GridColumn().Padding(0, 0, 1, 0), new GridColumn().Padding(0, 0, 1, 0)];
+
     /// <inheritdoc/>
     IRenderable IListPromptStrategy<T>.Render(IAnsiConsole console, bool scrollable, int cursorIndex,
         IEnumerable<(int Index, ListPromptItem<T> Node)> items, bool skipUnselectableItems, string searchText)
@@ -171,12 +173,9 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
             list.Add(new Markup(Title));
         }
 
-        var grid = new Grid();
-        grid.AddColumn(new GridColumn().Padding(0, 0, 1, 0).NoWrap());
-
         if (Title != null)
         {
-            grid.AddEmptyRow();
+            list.Add(Text.Empty);
         }
 
         foreach (var item in items)
@@ -200,10 +199,35 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
                 text = text.Highlight(searchText, searchHighlightStyle);
             }
 
-            grid.AddRow(new Markup(indent + prompt + " " + text, style));
-        }
+            if (item.Node.IsGroup)
+            {
+                list.Add(new Text(indent + prompt + " " + text, style));
+            }
+            else
+            {
+                IRenderable[] rows = [
+                    new Markup(indent + prompt, style),
+                    new Markup(text, style)
+                ];
 
-        list.Add(grid);
+                var last = list.LastOrDefault();
+                Grid grid;
+
+                // Optimization to not create a new Grid for each option.
+                if (last is not Grid)
+                {
+                    grid = new Grid()
+                        .AddColumns(_columns);
+                    list.Add(grid);
+                }
+                else
+                {
+                    grid = (Grid)last;
+                }
+
+                grid.AddRow(rows);
+            }
+        }
 
         if (SearchEnabled || scrollable)
         {
