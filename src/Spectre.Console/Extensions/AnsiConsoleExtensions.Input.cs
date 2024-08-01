@@ -52,11 +52,19 @@ public static partial class AnsiConsoleExtensions
             {
                 if (text.Length > 0)
                 {
+                    var lastChar = text.Last();
                     text = text.Substring(0, text.Length - 1);
 
                     if (mask != null)
                     {
-                        console.Write("\b \b");
+                        if (UnicodeCalculator.GetWidth(lastChar) == 1)
+                        {
+                            console.Write("\b \b");
+                        }
+                        else if (UnicodeCalculator.GetWidth(lastChar) == 2)
+                        {
+                            console.Write("\b \b\b \b");
+                        }
                     }
                 }
 
