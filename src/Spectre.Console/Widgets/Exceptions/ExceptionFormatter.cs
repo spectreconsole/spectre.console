@@ -1,9 +1,25 @@
 namespace Spectre.Console;
 
+[RequiresUnreferencedCode("Exception formatter relies on reflection and isn't guaranteed to have valid results when trimming.")]
 internal static class ExceptionFormatter
 {
     public static IRenderable Format(Exception exception, ExceptionSettings settings)
     {
+        // AOT won't have the methods in the stack trace we need in the normal path,
+        // so for now if the user ignores the warnings that WriteException isn't supported
+        // then give them the default ToString implementation. We can check the stack trace
+        // first frame to see if it has a method associated, if not we wouldn't be able to build
+        // the stack trace up, so we'll use the default ToString.
+        // here's the source for the AOT implementation from the runtime
+        // if someone wants to port it over - https://github.com/dotnet/runtime/blob/main/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Diagnostics/StackTrace.NativeAot.cs
+        var stackTrace = new StackTrace(false);
+        var isAot = stackTrace.GetFrame(0)?.GetMethod() is null;
+
+        if (isAot)
+        {
+            return new Text(exception.ToString());
+        }
+
         if (exception is null)
         {
             throw new ArgumentNullException(nameof(exception));

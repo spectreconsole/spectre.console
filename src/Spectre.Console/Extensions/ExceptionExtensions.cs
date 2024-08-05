@@ -3,8 +3,12 @@ namespace Spectre.Console;
 /// <summary>
 /// Contains extension methods for <see cref="Exception"/>.
 /// </summary>
+[RequiresUnreferencedCode("Exception formatter relies on reflection and isn't guaranteed to have valid results when trimming.")]
 public static class ExceptionExtensions
 {
+    internal const string UnreferencedWarning =
+        "Exception formatter relies on reflection. Results will not be formatted.";
+
     /// <summary>
     /// Gets a <see cref="IRenderable"/> representation of the exception.
     /// </summary>

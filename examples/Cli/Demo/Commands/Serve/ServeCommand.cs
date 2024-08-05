@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using Demo.Utilities;
+using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace Demo.Commands.Serve;
@@ -11,6 +12,7 @@ public sealed class ServeCommand : Command<ServeCommand.Settings>
     public sealed class Settings : CommandSettings
     {
         [CommandOption("-p|--port <PORT>")]
+        [DefaultValue(8080)]
         [Description("Port to use. Defaults to [grey]8080[/]. Use [grey]0[/] for a dynamic port.")]
         public int Port { get; set; }
 
@@ -26,11 +28,11 @@ public sealed class ServeCommand : Command<ServeCommand.Settings>
             var browser = settings.OpenBrowser.Value;
             if (browser != null)
             {
-                Console.WriteLine($"Open in {browser}");
+                AnsiConsole.WriteLine($"Open in {browser}");
             }
             else
             {
-                Console.WriteLine($"Open in default browser.");
+                AnsiConsole.WriteLine($"Open in default browser.");
             }
         }
 

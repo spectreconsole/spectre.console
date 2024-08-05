@@ -16,7 +16,7 @@ public static class SettingsDumper
         {
             var value = property.GetValue(settings)
                 ?.ToString()
-                ?.Replace("[", "[[");
+                ?.EscapeMarkup();
 
             table.AddRow(
                 property.Name,

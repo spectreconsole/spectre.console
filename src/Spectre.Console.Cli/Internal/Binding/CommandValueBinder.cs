@@ -27,6 +27,10 @@ internal sealed class CommandValueBinder
         _lookup.SetValue(parameter, value);
     }
 
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2062", Justification = TrimWarnings.SuppressMessage)]
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072", Justification = TrimWarnings.SuppressMessage)]
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050", Justification = TrimWarnings.SuppressMessage)]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(MultiMap<,>))]
     private object GetLookup(CommandParameter parameter, ITypeResolver resolver, object? value)
     {
         var genericTypes = parameter.Property.PropertyType.GetGenericArguments();
@@ -63,6 +67,7 @@ internal sealed class CommandValueBinder
         return multimap;
     }
 
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050", Justification = TrimWarnings.SuppressMessage)]
     private object GetArray(CommandParameter parameter, object? value)
     {
         if (value is Array)
@@ -94,6 +99,8 @@ internal sealed class CommandValueBinder
         return newArray;
     }
 
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2067", Justification = TrimWarnings.SuppressMessage)]
+    [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2072", Justification = TrimWarnings.SuppressMessage)]
     private object GetFlag(CommandParameter parameter, object? value)
     {
         var flagValue = (IFlagValue?)_lookup.GetValue(parameter);
