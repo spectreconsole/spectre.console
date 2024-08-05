@@ -99,3 +99,6 @@ dotnet_diagnostic.RCS1047.severity = none
 
 # RCS1090: Call 'ConfigureAwait(false)'.
 dotnet_diagnostic.RCS1090.severity = warning
+
+# The file header is missing or not located at the top of the file
+dotnet_diagnostic.SA1633.severity = none

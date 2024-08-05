@@ -35,41 +35,11 @@ Task("Build")
     });
 });
 
-Task("Build-Analyzer")
-    .IsDependentOn("Build")
-    .Does(context => 
-{
-    DotNetBuild("./src/Spectre.Console.Analyzer.sln", new DotNetBuildSettings {
-        Configuration = configuration,
-        Verbosity = DotNetVerbosity.Minimal,
-        NoLogo = true,
-        NoIncremental = context.HasArgument("rebuild"),
-        MSBuildSettings = new DotNetMSBuildSettings()
-            .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
-    });
-});
-
-Task("Build-Examples")
-    .IsDependentOn("Build")
-    .Does(context => 
-{
-    DotNetBuild("./examples/Examples.sln", new DotNetBuildSettings {
-        Configuration = configuration,
-        Verbosity = DotNetVerbosity.Minimal,
-        NoLogo = true,
-        NoIncremental = context.HasArgument("rebuild"),
-        MSBuildSettings = new DotNetMSBuildSettings()
-            .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
-    });
-});
-
 Task("Test")
     .IsDependentOn("Build")
-    .IsDependentOn("Build-Analyzer")
-    .IsDependentOn("Build-Examples")
     .Does(context => 
 {
-    DotNetTest("./test/Spectre.Console.Tests/Spectre.Console.Tests.csproj", new DotNetTestSettings {
+    DotNetTest("./src/Tests/Spectre.Console.Tests/Spectre.Console.Tests.csproj", new DotNetTestSettings {
         Configuration = configuration,
         Verbosity = DotNetVerbosity.Minimal,
         NoLogo = true,
@@ -77,15 +47,7 @@ Task("Test")
         NoBuild = true,
     });
 
-    DotNetTest("./test/Spectre.Console.Cli.Tests/Spectre.Console.Cli.Tests.csproj", new DotNetTestSettings {
-        Configuration = configuration,
-        Verbosity = DotNetVerbosity.Minimal,
-        NoLogo = true,
-        NoRestore = true,
-        NoBuild = true,
-    });
-
-    DotNetTest("./test/Spectre.Console.Analyzer.Tests/Spectre.Console.Analyzer.Tests.csproj", new DotNetTestSettings {
+    DotNetTest("./src/Tests/Spectre.Console.Cli.Tests/Spectre.Console.Cli.Tests.csproj", new DotNetTestSettings {
         Configuration = configuration,
         Verbosity = DotNetVerbosity.Minimal,
         NoLogo = true,
@@ -99,17 +61,6 @@ Task("Package")
     .Does(context => 
 {
     context.DotNetPack($"./src/Spectre.Console.sln", new DotNetPackSettings {
-        Configuration = configuration,
-        Verbosity = DotNetVerbosity.Minimal,
-        NoLogo = true,
-        NoRestore = true,
-        NoBuild = true,
-        OutputDirectory = "./.artifacts",
-        MSBuildSettings = new DotNetMSBuildSettings()
-            .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
-    });
-
-    context.DotNetPack($"./src/Spectre.Console.Analyzer.sln", new DotNetPackSettings {
         Configuration = configuration,
         Verbosity = DotNetVerbosity.Minimal,
         NoLogo = true,

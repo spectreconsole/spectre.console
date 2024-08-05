@@ -2,22 +2,22 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.0</TargetFrameworks>
-    <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
-    <NoWarn>SA1633</NoWarn>
+    <DefineConstants>$(DefineConstants)TRACE;WCWIDTH_VISIBILITY_INTERNAL</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup>
-    <AdditionalFiles Include="..\stylecop.json" Link="Properties/stylecop.json" />
-    <EmbeddedResource Include="Widgets\Figlet\Fonts\Standard.flf" />
-    <None Remove="Widgets\Figlet\Fonts\Standard.flf" />
-    <None Include="../../resources/gfx/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
-    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+  <ItemGroup Label="REMOVE THIS">
+    <InternalsVisibleTo Include="$(AssemblyName).Tests"/>
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="System.Memory" Version="4.5.5" />
-    <PackageReference Include="Wcwidth.Sources" Version="2.0.0">
+  <ItemGroup Label="Standard Figlet font">
+    <EmbeddedResource Include="Widgets\Figlet\Fonts\Standard.flf"/>
+    <None Remove="Widgets\Figlet\Fonts\Standard.flf"/>
+  </ItemGroup>
+
+  <ItemGroup Label="Dependencies">
+    <PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="System.Memory"/>
+    <PackageReference Include="Wcwidth.Sources">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
@@ -28,17 +28,12 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="TunnelVisionLabs.ReferenceAssemblyAnnotator" Version="1.0.0-alpha.160" PrivateAssets="all" />
-    <PackageDownload Include="Microsoft.NETCore.App.Ref" Version="[$(AnnotatedReferenceAssemblyVersion)]" />
-    <PackageReference Include="Nullable" Version="1.3.1">
+    <PackageReference Include="TunnelVisionLabs.ReferenceAssemblyAnnotator" PrivateAssets="all"/>
+    <PackageDownload Include="Microsoft.NETCore.App.Ref" Version="[$(AnnotatedReferenceAssemblyVersion)]"/>
+    <PackageReference Include="Nullable">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
-
-  <PropertyGroup>
-    <DefineConstants>$(DefineConstants)TRACE;WCWIDTH_VISIBILITY_INTERNAL</DefineConstants>
-  </PropertyGroup>
 
 </Project>

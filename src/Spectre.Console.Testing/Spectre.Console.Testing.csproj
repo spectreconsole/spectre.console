@@ -3,19 +3,13 @@
   <PropertyGroup>
     <TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
     <IsTestProject>false</IsTestProject>
-    <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
     <Description>Contains testing utilities for Spectre.Console.</Description>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Label="REMOVE THIS">
     <InternalsVisibleTo Include="Spectre.Console.Tests" />
     <InternalsVisibleTo Include="Spectre.Console.Cli.Tests" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="..\stylecop.json" Link="Properties/stylecop.json" />
-    <None Include="../../resources/gfx/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
   </ItemGroup>
 
   <ItemGroup Label="Project References">

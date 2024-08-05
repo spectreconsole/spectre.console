@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup Label="Settings">
+    <LangVersion>12</LangVersion>
+    <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)/../stylecop.json" Link="Properties/stylecop.json"/>
+  </ItemGroup>
+</Project>
