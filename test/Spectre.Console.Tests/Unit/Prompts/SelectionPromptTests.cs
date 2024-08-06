@@ -85,4 +85,28 @@ public sealed class SelectionPromptTests
         // Then
         console.Output.ShouldContain($"{ESC}[38;5;12m> Item {ESC}[0m{ESC}[1;38;5;12;48;5;11m1{ESC}[0m");
     }
+
+    [Fact]
+    public void Should_Append_Space_To_Search_If_Search_Is_Enabled()
+    {
+        /// Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.EmitAnsiSequences();
+        console.Input.PushText("Item");
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new SelectionPrompt<string>()
+            .Title("Search for something with space")
+            .EnableSearch()
+            .AddChoices("Item1")
+            .AddChoices("Item 2");
+        string result = prompt.Show(console);
+
+        // Then
+        result.ShouldBe("Item 2");
+        console.Output.ShouldContain($"{ESC}[38;5;12m> {ESC}[0m{ESC}[1;38;5;12;48;5;11mItem {ESC}[0m{ESC}[38;5;12m2{ESC}[0m ");
+    }
 }
