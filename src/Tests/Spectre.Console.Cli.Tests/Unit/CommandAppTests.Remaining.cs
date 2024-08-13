@@ -4,6 +4,129 @@ public sealed partial class CommandAppTests
 {
     public sealed class Remaining
     {
+        [Fact]
+        public void Should_Add_Unknown_Flags_To_Remaining_Arguments_Default_Command()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.SetDefaultCommand<EmptyCommand>();
+
+            // When
+            var result = app.Run("--felix");
+
+            // Then
+            result.Output.ShouldBe(string.Empty);
+            result.Context.ShouldHaveRemainingArgument("--felix", new[] { (string)null });
+        }
+
+        [Fact]
+        public void Should_Add_Unknown_Flags_To_Remaining_Arguments_Command()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.AddCommand<EmptyCommand>("empty");
+            });
+
+            // When
+            var result = app.Run("empty", "--felix");
+
+            // Then
+            result.Output.ShouldBe(string.Empty);
+            result.Context.ShouldHaveRemainingArgument("--felix", new[] { (string)null });
+        }
+
+        [Fact]
+        public void Should_Add_Unknown_Flags_To_Remaining_Arguments_Branch_Default_Command()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.AddBranch<EmptyCommandSettings>("branch", branch =>
+                {
+                    branch.SetDefaultCommand<EmptyCommand>();
+                });
+            });
+
+            // When
+            var result = app.Run("branch", "--felix");
+
+            // Then
+            result.Output.ShouldBe(string.Empty);
+            result.Context.ShouldHaveRemainingArgument("--felix", new[] { (string)null });
+        }
+
+        [Fact]
+        public void Should_Add_Unknown_Flags_To_Remaining_Arguments_Branch_Command()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.AddBranch<EmptyCommandSettings>("branch", branch =>
+                {
+                    branch.AddCommand<EmptyCommand>("hello");
+                });
+            });
+
+            // When
+            var result = app.Run("branch", "hello", "--felix");
+
+            // Then
+            result.Output.ShouldBe(string.Empty);
+            result.Context.ShouldHaveRemainingArgument("--felix", new[] { (string)null });
+        }
+
+        [Fact]
+        public void Should_Add_Unknown_Flags_To_Remaining_Arguments_Branch_Branch_Default_Command()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.AddBranch<EmptyCommandSettings>("branch", branch =>
+                {
+                    branch.AddBranch<EmptyCommandSettings>("hello", hello =>
+                    {
+                        hello.SetDefaultCommand<EmptyCommand>();
+                    });
+                });
+            });
+
+            // When
+            var result = app.Run("branch", "hello", "--felix");
+
+            // Then
+            result.Output.ShouldBe(string.Empty);
+            result.Context.ShouldHaveRemainingArgument("--felix", new[] { (string)null });
+        }
+
+        [Fact]
+        public void Should_Add_Unknown_Flags_To_Remaining_Arguments_Branch_Branch_Command()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.AddBranch<EmptyCommandSettings>("branch", branch =>
+                {
+                    branch.AddBranch<EmptyCommandSettings>("hello", hello =>
+                    {
+                        hello.AddCommand<EmptyCommand>("world");
+                    });
+                });
+            });
+
+            // When
+            var result = app.Run("branch", "hello", "world", "--felix");
+
+            // Then
+            result.Output.ShouldBe(string.Empty);
+            result.Context.ShouldHaveRemainingArgument("--felix", new[] { (string)null });
+        }
+
         [Theory]
         [InlineData("-a")]
         [InlineData("--alive")]
