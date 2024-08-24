@@ -67,7 +67,7 @@ registrations.AddSingleton<IGreeter, HelloWorldGreeter>();
 
 // Create a type registrar and register any dependencies.
 // A type registrar is an adapter for a DI framework.
-var registrar = new TypeRegistrar(registrations);
+var registrar = new MyTypeRegistrar(registrations);
 
 // Create a new command app with the registrar
 // and run it with the provided arguments.
@@ -76,7 +76,7 @@ return app.Run(args);
 ```
 
 <?# Alert ?>
-  `TypeRegistrar` is a custom class that implements [ITypeRegistrar](xref:T:Spectre.Console.Cli.ITypeRegistrar) and must be provided by the user.
+  `MyTypeRegistrar` is a custom class that implements [ITypeRegistrar](xref:T:Spectre.Console.Cli.ITypeRegistrar) and must be provided by the user.
 <?#/ Alert ?>
 
 There is a working [example of dependency injection](https://github.com/spectreconsole/examples/tree/main/examples/Cli/Injection) that uses `Microsoft.Extensions.DependencyInjection` as the container. Example implementations of `ITypeRegistrar` and `ITypeResolver` are provided, which you can copy and paste to your application for dependency injection.
