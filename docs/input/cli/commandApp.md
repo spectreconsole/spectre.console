@@ -75,10 +75,13 @@ var app = new CommandApp<DefaultCommand>(registrar);
 return app.Run(args);
 ```
 
-`TypeRegistrar` is a custom class that must be created by the user. This [example using `Microsoft.Extensions.DependencyInjection` as the container](https://github.com/spectreconsole/examples/tree/main/examples/Cli/Injection) provides an example `TypeRegistrar` and `TypeResolver` that can be added to your application with small adjustments for your DI container.
+<?# Alert ?>
+  `TypeRegistrar` is a custom class that implements [ITypeRegistrar](xref:T:Spectre.Console.Cli.ITypeRegistrar) and must be provided by the user.
+<?#/ Alert ?>
 
-Hint: If you do write your own implementation of `TypeRegistrar` and `TypeResolver` and you have some form of unit tests in place for your project,
-there is a utility `TypeRegistrarBaseTests` available that can be used to ensure your implementations adhere to the required implementation. Simply call `TypeRegistrarBaseTests.RunAllTests()` and expect no `TypeRegistrarBaseTests.TestFailedException` to be thrown.
+There is a working [example of dependency injection](https://github.com/spectreconsole/examples/tree/main/examples/Cli/Injection) that uses `Microsoft.Extensions.DependencyInjection` as the container. Example implementations of `TypeRegistrar` and `TypeResolver` are provided, which you can copy and paste to your application for dependency injection.
+
+Unit testing your `TypeRegistrar` and `TypeResolver` implementations is done using the utility `TypeRegistrarBaseTests` included in `Spectre.Console.Testing`. Simply call `TypeRegistrarBaseTests.RunAllTests()` and expect no `TypeRegistrarBaseTests.TestFailedException` to be thrown.
 
 ## Interception
 Interceptors can be registered with the `TypeRegistrar` (or with a custom DI-Container). Alternatively, `CommandApp` also provides a `SetInterceptor` configuration.
