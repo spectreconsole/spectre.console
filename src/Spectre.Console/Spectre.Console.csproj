@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup Label="REMOVE THIS">
-    <InternalsVisibleTo Include="$(AssemblyName).Tests"/>
+    <InternalsVisibleTo Include="$(AssemblyName).Tests, PublicKey=$(SnkPublicKey)"/>
   </ItemGroup>
 
   <ItemGroup Label="Standard Figlet font">

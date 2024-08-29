@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup Label="REMOVE THIS">
-    <InternalsVisibleTo Include="Spectre.Console.Tests" />
-    <InternalsVisibleTo Include="Spectre.Console.Cli.Tests" />
+    <InternalsVisibleTo Include="Spectre.Console.Tests, PublicKey=$(SnkPublicKey)" />
+    <InternalsVisibleTo Include="Spectre.Console.Cli.Tests, PublicKey=$(SnkPublicKey)" />
   </ItemGroup>
 
   <ItemGroup Label="Project References">
