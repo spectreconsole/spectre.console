@@ -60,8 +60,8 @@ jobs:
 
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.302
+      with:
+        dotnet-version: 8.0.302
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
