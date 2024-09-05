@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup Label="REMOVE THIS">
-    <InternalsVisibleTo Include="Spectre.Console.Cli.Tests, PublicKey=$(SnkPublicKey)" />
+    <InternalsVisibleTo Include="Spectre.Console.Cli.Tests" />
   </ItemGroup>
 
   <ItemGroup>
