@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Model>
+  <!--CAT-->
+  <Command Name="cat" IsBranch="false" ClrType="Spectre.Console.Tests.Data.CatCommand" Settings="Spectre.Console.Tests.Data.CatSettings">
+    <Parameters>
+      <Argument Name="LEGS" Position="0" Required="false" Kind="scalar" ClrType="System.Int32">
+        <Description>The number of legs.</Description>
+        <Validators>
+          <Validator ClrType="Spectre.Console.Tests.Data.EvenNumberValidatorAttribute" Message="Animals must have an even number of legs." />
+          <Validator ClrType="Spectre.Console.Tests.Data.PositiveNumberValidatorAttribute" Message="Number of legs must be greater than 0." />
+        </Validators>
+      </Argument>
+      <Option Short="" Long="agility" Value="VALUE" Required="false" Kind="scalar" ClrType="System.Int32">
+        <Description>The agility between 0 and 100.</Description>
+        <DefaultValue>10</DefaultValue>
+      </Option>
+      <Option Short="a" Long="alive,not-dead" Value="NULL" Required="false" Kind="flag" ClrType="System.Boolean">
+        <Description>Indicates whether or not the animal is alive.</Description>
+        <DefaultValue>False</DefaultValue>
+      </Option>
+      <Option Short="n,p" Long="name,pet-name" Value="VALUE" Required="false" Kind="scalar" ClrType="System.String" />
+    </Parameters>
+  </Command>
+</Model>
