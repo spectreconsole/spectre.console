@@ -32,7 +32,7 @@ The `CommandAppTester` is a test implementation of `CommandApp` that's configure
 
         public override int Execute(CommandContext context)
         {
-            _console.WriteLine("Hellow world.");
+            _console.WriteLine("Hello world.");
             return 0;
         }
     }
