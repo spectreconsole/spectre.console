@@ -85,4 +85,45 @@ public sealed class SelectionPromptTests
         // Then
         console.Output.ShouldContain($"{ESC}[38;5;12m> Item {ESC}[0m{ESC}[1;38;5;12;48;5;11m1{ESC}[0m");
     }
+
+    [Fact]
+    public void Should_Search_In_Remapped_Result()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.EmitAnsiSequences();
+        console.Input.PushText("2");
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var choices = new List<CustomSelectionItem>
+        {
+            new(33, "Item 1"),
+            new(34, "Item 2"),
+        };
+
+        var prompt = new SelectionPrompt<CustomSelectionItem>()
+            .Title("Select one")
+            .EnableSearch()
+            .UseConverter(o => o.Name)
+            .AddChoices(choices);
+
+        // When
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe(choices[1]);
+    }
+}
+
+file sealed class CustomSelectionItem
+{
+    public int Value { get; }
+    public string Name { get; }
+
+    public CustomSelectionItem(int value, string name)
+    {
+        Value = value;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+    }
 }

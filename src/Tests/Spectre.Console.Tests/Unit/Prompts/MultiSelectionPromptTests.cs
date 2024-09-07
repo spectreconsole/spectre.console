@@ -2,25 +2,6 @@ namespace Spectre.Console.Tests.Unit;
 
 public sealed class MultiSelectionPromptTests
 {
-    private class CustomItem
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-
-        public class Comparer : IEqualityComparer<CustomItem>
-        {
-            public bool Equals(CustomItem x, CustomItem y)
-            {
-                return x.X == y.X && x.Y == y.Y;
-            }
-
-            public int GetHashCode(CustomItem obj)
-            {
-                throw new NotSupportedException();
-            }
-        }
-    }
-
     [Fact]
     public void Should_Not_Mark_Item_As_Selected_By_Default()
     {
@@ -145,5 +126,24 @@ public sealed class MultiSelectionPromptTests
 
         // Then
         action.ShouldThrow<ArgumentOutOfRangeException>();
+    }
+}
+
+file sealed class CustomItem
+{
+    public int X { get; set; }
+    public int Y { get; set; }
+
+    public class Comparer : IEqualityComparer<CustomItem>
+    {
+        public bool Equals(CustomItem x, CustomItem y)
+        {
+            return x.X == y.X && x.Y == y.Y;
+        }
+
+        public int GetHashCode(CustomItem obj)
+        {
+            throw new NotSupportedException();
+        }
     }
 }
