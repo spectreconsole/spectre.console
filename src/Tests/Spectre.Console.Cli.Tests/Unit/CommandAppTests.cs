@@ -1117,7 +1117,7 @@ public sealed partial class CommandAppTests
             {
                 config.PropagateExceptions();
                 config.AddDelegate<DogSettings>(
-                    "foo", (context, settings) =>
+                    "foo", (context, settings, _) =>
                     {
                         dog = settings;
                         data = (int)context.Data;
@@ -1145,7 +1145,7 @@ public sealed partial class CommandAppTests
             {
                 cfg.AddBranch("a", d =>
                 {
-                    d.AddDelegate("b", _ => 0);
+                    d.AddDelegate("b", (_, _) => 0);
                 });
             });
 
@@ -1165,7 +1165,7 @@ public sealed partial class CommandAppTests
             var app = new CommandAppTester();
             app.Configure(cfg =>
             {
-                cfg.AddDelegate("a", _ => 0);
+                cfg.AddDelegate("a", (_, _) => 0);
             });
 
             // When
@@ -1189,7 +1189,7 @@ public sealed partial class CommandAppTests
             {
                 config.PropagateExceptions();
                 config.AddAsyncDelegate<DogSettings>(
-                    "foo", (context, settings) =>
+                    "foo", (context, settings, _) =>
                     {
                         dog = settings;
                         data = (int)context.Data;
@@ -1222,7 +1222,7 @@ public sealed partial class CommandAppTests
                 config.AddBranch<AnimalSettings>("foo", foo =>
                 {
                     foo.AddDelegate<DogSettings>(
-                        "bar", (context, settings) =>
+                        "bar", (context, settings, _) =>
                         {
                             dog = settings;
                             data = (int)context.Data;
@@ -1256,7 +1256,7 @@ public sealed partial class CommandAppTests
                 config.AddBranch<AnimalSettings>("foo", foo =>
                 {
                     foo.AddAsyncDelegate<DogSettings>(
-                        "bar", (context, settings) =>
+                        "bar", (context, settings, _) =>
                         {
                             dog = settings;
                             data = (int)context.Data;

@@ -11,7 +11,7 @@ public sealed class InteractiveCommandTests
             _console = console;
         }
 
-        public override int Execute(CommandContext context)
+        public override int Execute(CommandContext context, CancellationToken cancellationToken)
         {
             var fruits = _console.Prompt(
                 new MultiSelectionPrompt<string>()

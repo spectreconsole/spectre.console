@@ -26,10 +26,7 @@ public sealed class CommandApp : ICommandApp
         _executor = new CommandExecutor(registrar);
     }
 
-    /// <summary>
-    /// Configures the command line application.
-    /// </summary>
-    /// <param name="configuration">The configuration.</param>
+    /// <inheritdoc/>
     public void Configure(Action<IConfigurator> configuration)
     {
         if (configuration == null)
@@ -51,22 +48,14 @@ public sealed class CommandApp : ICommandApp
         return new DefaultCommandConfigurator(GetConfigurator().SetDefaultCommand<TCommand>());
     }
 
-    /// <summary>
-    /// Runs the command line application with specified arguments.
-    /// </summary>
-    /// <param name="args">The arguments.</param>
-    /// <returns>The exit code from the executed command.</returns>
-    public int Run(IEnumerable<string> args)
+    /// <inheritdoc/>
+    public int Run(IEnumerable<string> args, CancellationToken cancellationToken = default)
     {
-        return RunAsync(args).GetAwaiter().GetResult();
+        return RunAsync(args, cancellationToken).GetAwaiter().GetResult();
     }
 
-    /// <summary>
-    /// Runs the command line application with specified arguments.
-    /// </summary>
-    /// <param name="args">The arguments.</param>
-    /// <returns>The exit code from the executed command.</returns>
-    public async Task<int> RunAsync(IEnumerable<string> args)
+    /// <inheritdoc/>
+    public async Task<int> RunAsync(IEnumerable<string> args, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -86,7 +75,7 @@ public sealed class CommandApp : ICommandApp
             }
 
             return await _executor
-                .Execute(_configurator, args)
+                .ExecuteAsync(_configurator, args, cancellationToken)
                 .ConfigureAwait(false);
         }
         catch (Exception ex)
@@ -107,6 +96,11 @@ public sealed class CommandApp : ICommandApp
             if (_configurator.Settings.ExceptionHandler != null)
             {
                 return _configurator.Settings.ExceptionHandler(ex, null);
+            }
+
+            if (ex is OperationCanceledException)
+            {
+                return _configurator.Settings.CancellationExitCode;
             }
 
             // Render the exception.

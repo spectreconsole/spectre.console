@@ -13,7 +13,7 @@ internal sealed class OpenCliGeneratorCommand : Command, IBuiltInCommand
         _model = model ?? throw new ArgumentNullException(nameof(model));
     }
 
-    public override int Execute(CommandContext context)
+    public override int Execute(CommandContext context, CancellationToken cancellationToken)
     {
         var document = new OpenCliDocument
         {

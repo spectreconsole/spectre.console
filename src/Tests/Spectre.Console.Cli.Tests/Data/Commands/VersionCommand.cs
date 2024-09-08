@@ -9,7 +9,7 @@ public sealed class VersionCommand : Command<VersionSettings>
         _console = console;
     }
 
-    public override int Execute(CommandContext context, VersionSettings settings)
+    public override int Execute(CommandContext context, VersionSettings settings, CancellationToken cancellationToken)
     {
         _console.WriteLine($"VersionCommand ran, Version: {settings.Version ?? string.Empty}");
 

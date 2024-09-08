@@ -28,12 +28,12 @@ public sealed partial class CommandAppTests
 
     public class NullableCommand : Command<NullableSettings>
     {
-        public override int Execute(CommandContext context, NullableSettings settings) => 0;
+        public override int Execute(CommandContext context, NullableSettings settings, CancellationToken cancellationToken) => 0;
     }
 
     public class NullableWithInitCommand : Command<NullableWithInitSettings>
     {
-        public override int Execute(CommandContext context, NullableWithInitSettings settings) => 0;
+        public override int Execute(CommandContext context, NullableWithInitSettings settings, CancellationToken cancellationToken) => 0;
     }
 
     [Fact]

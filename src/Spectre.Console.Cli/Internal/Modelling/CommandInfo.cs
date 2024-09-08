@@ -8,7 +8,7 @@ internal sealed class CommandInfo : ICommandContainer, ICommandInfo
     public object? Data { get; }
     public Type? CommandType { get; }
     public Type SettingsType { get; }
-    public Func<CommandContext, CommandSettings, Task<int>>? Delegate { get; }
+    public Func<CommandContext, CommandSettings, CancellationToken, Task<int>>? Delegate { get; }
     public bool IsDefaultCommand { get; }
     public CommandInfo? Parent { get; }
     public IList<CommandInfo> Children { get; }

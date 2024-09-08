@@ -19,7 +19,7 @@ public sealed partial class CommandAppTests
                     _dep = dep;
                 }
 
-                public override int Execute(CommandContext context, CustomInheritedCommandSettings settings)
+                public override int Execute(CommandContext context, CustomInheritedCommandSettings settings, CancellationToken cancellationToken)
                 {
                     return 0;
                 }

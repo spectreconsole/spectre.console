@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using Generator.Models;
 using Scriban;
 using Spectre.Console.Cli;
@@ -16,7 +17,7 @@ namespace Generator.Commands
             _fileSystem = new FileSystem();
         }
 
-        public override int Execute(CommandContext context, GeneratorSettings settings)
+        public override int Execute(CommandContext context, GeneratorSettings settings, CancellationToken cancellationToken)
         {
             // Read the spinner model.
             var spinners = new List<Spinner>();

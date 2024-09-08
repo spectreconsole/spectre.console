@@ -5,7 +5,7 @@ public sealed class NoDescriptionCommand : Command<EmptyCommandSettings>
     [CommandOption("-f|--foo <VALUE>")]
     public int Foo { get; set; }
 
-    public override int Execute(CommandContext context, EmptyCommandSettings settings)
+    public override int Execute(CommandContext context, EmptyCommandSettings settings, CancellationToken cancellationToken)
     {
         return 0;
     }

@@ -202,6 +202,24 @@ public static class ConfiguratorExtensions
     }
 
     /// <summary>
+    /// Tells the command line application to return the specified exit code when it's aborted through the <see cref="CancellationToken"/>.
+    /// The default cancellation exit code is 130.
+    /// </summary>
+    /// <param name="configurator">The configurator.</param>
+    /// <param name="exitCode">The exit code to return in case of cancellation.</param>
+    /// <returns>A configurator that can be used to configure the application further.</returns>
+    public static IConfigurator CancellationExitCode(this IConfigurator configurator, int exitCode)
+    {
+        if (configurator == null)
+        {
+            throw new ArgumentNullException(nameof(configurator));
+        }
+
+        configurator.Settings.CancellationExitCode = exitCode;
+        return configurator;
+    }
+
+    /// <summary>
     /// Configures case sensitivity.
     /// </summary>
     /// <param name="configurator">The configuration.</param>
@@ -304,14 +322,14 @@ public static class ConfiguratorExtensions
     public static ICommandConfigurator AddDelegate(
         this IConfigurator configurator,
         string name,
-        Func<CommandContext, int> func)
+        Func<CommandContext, CancellationToken, int> func)
     {
         if (configurator == null)
         {
             throw new ArgumentNullException(nameof(configurator));
         }
 
-        return configurator.AddDelegate<EmptyCommandSettings>(name, (c, _) => func(c));
+        return configurator.AddDelegate<EmptyCommandSettings>(name, (c, _, ct) => func(c, ct));
     }
 
     /// <summary>
@@ -324,14 +342,14 @@ public static class ConfiguratorExtensions
     public static ICommandConfigurator AddAsyncDelegate(
         this IConfigurator configurator,
         string name,
-        Func<CommandContext, Task<int>> func)
+        Func<CommandContext, CancellationToken, Task<int>> func)
     {
         if (configurator == null)
         {
             throw new ArgumentNullException(nameof(configurator));
         }
 
-        return configurator.AddAsyncDelegate<EmptyCommandSettings>(name, (c, _) => func(c));
+        return configurator.AddAsyncDelegate<EmptyCommandSettings>(name, (c, _, ct) => func(c, ct));
     }
 
     /// <summary>
@@ -345,7 +363,7 @@ public static class ConfiguratorExtensions
     public static ICommandConfigurator AddDelegate<TSettings>(
         this IConfigurator<TSettings>? configurator,
         string name,
-        Func<CommandContext, int> func)
+        Func<CommandContext, CancellationToken, int> func)
         where TSettings : CommandSettings
     {
         if (typeof(TSettings).IsAbstract)
@@ -358,7 +376,7 @@ public static class ConfiguratorExtensions
             throw new ArgumentNullException(nameof(configurator));
         }
 
-        return configurator.AddDelegate<TSettings>(name, (c, _) => func(c));
+        return configurator.AddDelegate<TSettings>(name, (c, _, ct) => func(c, ct));
     }
 
     /// <summary>
@@ -372,7 +390,7 @@ public static class ConfiguratorExtensions
     public static ICommandConfigurator AddAsyncDelegate<TSettings>(
         this IConfigurator<TSettings> configurator,
         string name,
-        Func<CommandContext, Task<int>> func)
+        Func<CommandContext, CancellationToken, Task<int>> func)
         where TSettings : CommandSettings
     {
         if (configurator == null)
@@ -380,7 +398,7 @@ public static class ConfiguratorExtensions
             throw new ArgumentNullException(nameof(configurator));
         }
 
-        return configurator.AddAsyncDelegate<TSettings>(name, (c, _) => func(c));
+        return configurator.AddAsyncDelegate<TSettings>(name, (c, _, ct) => func(c, ct));
     }
 
     /// <summary>

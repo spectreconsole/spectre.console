@@ -53,7 +53,7 @@ public sealed partial class CommandAppTests
             });
 
             // When
-            var result = await Record.ExceptionAsync(async () =>
+            var exception = await Record.ExceptionAsync(async () =>
                     await app.RunAsync(new[]
                         {
                         "--ThrowException",
@@ -61,10 +61,64 @@ public sealed partial class CommandAppTests
                         }));
 
             // Then
-            result.ShouldBeOfType<Exception>().And(ex =>
+            exception.ShouldBeOfType<Exception>().And(ex =>
             {
                 ex.Message.ShouldBe("Throwing exception asynchronously");
             });
+        }
+
+        [Fact]
+        public async Task Should_Throw_OperationCanceledException_When_Propagated_And_Cancelled()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.SetDefaultCommand<AsynchronousCommand>();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+            });
+
+            // When
+            var exception = await Record.ExceptionAsync(async () =>
+                await app.RunAsync(cancellationToken: new CancellationToken(canceled: true)));
+
+            // Then
+            exception.ShouldNotBeNull();
+            exception.ShouldBeAssignableTo<OperationCanceledException>();
+        }
+
+        [Fact]
+        public async Task Should_Return_Default_Exit_Code_When_Cancelled()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.SetDefaultCommand<AsynchronousCommand>();
+
+            // When
+            var result = await app.RunAsync(cancellationToken: new CancellationToken(canceled: true));
+
+            // Then
+            result.ExitCode.ShouldBe(130);
+            result.Output.ShouldBeEmpty();
+        }
+
+        [Fact]
+        public async Task Should_Return_Custom_Exit_Code_When_Cancelled()
+        {
+            // Given
+            var app = new CommandAppTester();
+            app.SetDefaultCommand<AsynchronousCommand>();
+            app.Configure(config =>
+            {
+                config.CancellationExitCode(123);
+            });
+
+            // When
+            var result = await app.RunAsync(cancellationToken: new CancellationToken(canceled: true));
+
+            // Then
+            result.ExitCode.ShouldBe(123);
+            result.Output.ShouldBeEmpty();
         }
     }
 }

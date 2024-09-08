@@ -10,19 +10,20 @@ public abstract class Command : ICommand<EmptyCommandSettings>
     /// Executes the command.
     /// </summary>
     /// <param name="context">The command context.</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> that can be used to abort the command.</param>
     /// <returns>An integer indicating whether or not the command executed successfully.</returns>
-    public abstract int Execute(CommandContext context);
+    public abstract int Execute(CommandContext context, CancellationToken cancellationToken);
 
     /// <inheritdoc/>
-    Task<int> ICommand<EmptyCommandSettings>.Execute(CommandContext context, EmptyCommandSettings settings)
+    Task<int> ICommand<EmptyCommandSettings>.ExecuteAsync(CommandContext context, EmptyCommandSettings settings, CancellationToken cancellationToken)
     {
-        return Task.FromResult(Execute(context));
+        return Task.FromResult(Execute(context, cancellationToken));
     }
 
     /// <inheritdoc/>
-    Task<int> ICommand.Execute(CommandContext context, CommandSettings settings)
+    Task<int> ICommand.ExecuteAsync(CommandContext context, CommandSettings settings, CancellationToken cancellationToken)
     {
-        return Task.FromResult(Execute(context));
+        return Task.FromResult(Execute(context, cancellationToken));
     }
 
     /// <inheritdoc/>
