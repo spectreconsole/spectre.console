@@ -56,19 +56,19 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return new CommandConfigurator(command);
     }
 
-    public ICommandConfigurator AddDelegate<TSettings>(string name, Func<CommandContext, TSettings, int> func)
+    public ICommandConfigurator AddDelegate<TSettings>(string name, Func<CommandContext, TSettings, CancellationToken, int> func)
         where TSettings : CommandSettings
     {
         var command = Commands.AddAndReturn(ConfiguredCommand.FromDelegate<TSettings>(
-            name, (context, settings) => Task.FromResult(func(context, (TSettings)settings))));
+            name, (context, settings, cancellationToken) => Task.FromResult(func(context, (TSettings)settings, cancellationToken))));
         return new CommandConfigurator(command);
     }
 
-    public ICommandConfigurator AddAsyncDelegate<TSettings>(string name, Func<CommandContext, TSettings, Task<int>> func)
+    public ICommandConfigurator AddAsyncDelegate<TSettings>(string name, Func<CommandContext, TSettings, CancellationToken, Task<int>> func)
         where TSettings : CommandSettings
     {
         var command = Commands.AddAndReturn(ConfiguredCommand.FromDelegate<TSettings>(
-            name, (context, settings) => func(context, (TSettings)settings)));
+            name, (context, settings, cancellationToken) => func(context, (TSettings)settings, cancellationToken)));
         return new CommandConfigurator(command);
     }
 

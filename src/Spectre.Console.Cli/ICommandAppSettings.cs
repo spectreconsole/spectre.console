@@ -89,6 +89,12 @@ public interface ICommandAppSettings
     bool PropagateExceptions { get; set; }
 
     /// <summary>
+    /// Gets or sets the value used as the application exit code when it's aborted through the <see cref="CancellationToken"/>.
+    /// The default cancellation exit code is 130.
+    /// </summary>
+    int CancellationExitCode { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether or not examples should be validated.
     /// </summary>
     bool ValidateExamples { get; set; }

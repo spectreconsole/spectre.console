@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Generator.Commands.Samples;
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -38,7 +39,7 @@ namespace Generator.Commands
             _console = new AsciiCastConsole(console);
         }
 
-        public override int Execute([NotNull] CommandContext context, [NotNull] Settings settings)
+        public override int Execute([NotNull] CommandContext context, [NotNull] Settings settings, CancellationToken cancellationToken)
         {
             var samples = typeof(BaseSample).Assembly
                 .GetTypes()

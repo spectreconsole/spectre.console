@@ -98,7 +98,7 @@ public sealed class CommandAppTester
     {
         try
         {
-            Run(args, Console, c => c.PropagateExceptions());
+            RunAsync(args, Console, c => c.PropagateExceptions()).GetAwaiter().GetResult();
             throw new InvalidOperationException("Expected an exception to be thrown, but there was none.");
         }
         catch (T ex)
@@ -129,53 +129,21 @@ public sealed class CommandAppTester
     /// <returns>The result.</returns>
     public CommandAppResult Run(params string[] args)
     {
-        return Run(args, Console);
-    }
-
-    private CommandAppResult Run(string[] args, TestConsole console, Action<IConfigurator>? config = null)
-    {
-        CommandContext? context = null;
-        CommandSettings? settings = null;
-
-        var app = new CommandApp(Registrar);
-        _appConfiguration?.Invoke(app);
-
-        if (_configuration != null)
-        {
-            app.Configure(_configuration);
-        }
-
-        if (config != null)
-        {
-            app.Configure(config);
-        }
-
-        app.Configure(c => c.ConfigureConsole(console));
-        app.Configure(c => c.SetInterceptor(new CallbackCommandInterceptor((ctx, s) =>
-        {
-            context = ctx;
-            settings = s;
-        })));
-
-        var result = app.Run(args);
-
-        var output = console.Output.NormalizeLineEndings();
-        output = TestSettings.TrimConsoleOutput ? output.TrimLines().Trim() : output;
-
-        return new CommandAppResult(result, output, context, settings);
+        return RunAsync(args, Console).GetAwaiter().GetResult();
     }
 
     /// <summary>
     /// Runs the command application asynchronously.
     /// </summary>
     /// <param name="args">The arguments.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>The result.</returns>
-    public async Task<CommandAppResult> RunAsync(params string[] args)
+    public async Task<CommandAppResult> RunAsync(string[]? args = null, CancellationToken cancellationToken = default)
     {
-        return await RunAsync(args, Console);
+        return await RunAsync(args ?? [], Console, cancellationToken: cancellationToken);
     }
 
-    private async Task<CommandAppResult> RunAsync(string[] args, TestConsole console, Action<IConfigurator>? config = null)
+    private async Task<CommandAppResult> RunAsync(string[] args, TestConsole console, Action<IConfigurator>? config = null, CancellationToken cancellationToken = default)
     {
         CommandContext? context = null;
         CommandSettings? settings = null;
@@ -200,7 +168,7 @@ public sealed class CommandAppTester
             settings = s;
         })));
 
-        var result = await app.RunAsync(args);
+        var result = await app.RunAsync(args, cancellationToken);
 
         var output = console.Output.NormalizeLineEndings();
         output = TestSettings.TrimConsoleOutput ? output.TrimLines().Trim() : output;

@@ -18,6 +18,7 @@ public interface ICommand
     /// </summary>
     /// <param name="context">The command context.</param>
     /// <param name="settings">The settings.</param>
+    /// <param name="cancellationToken">A <see cref="CancellationToken"/> that can be used to abort the command.</param>
     /// <returns>The validation result.</returns>
-    Task<int> Execute(CommandContext context, CommandSettings settings);
+    Task<int> ExecuteAsync(CommandContext context, CommandSettings settings, CancellationToken cancellationToken);
 }

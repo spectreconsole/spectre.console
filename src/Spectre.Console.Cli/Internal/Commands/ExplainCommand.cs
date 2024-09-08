@@ -27,7 +27,7 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>, IBuiltI
         public bool IncludeHidden { get; set; }
     }
 
-    public override int Execute(CommandContext context, Settings settings)
+    public override int Execute(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         var tree = new Tree("CLI Configuration");
         tree.AddNode(ValueMarkup("Application Name", _commandModel.ApplicationName, "no application name"));

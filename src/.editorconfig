@@ -100,5 +100,8 @@ dotnet_diagnostic.RCS1047.severity = none
 # RCS1090: Call 'ConfigureAwait(false)'.
 dotnet_diagnostic.RCS1090.severity = warning
 
-# The file header is missing or not located at the top of the file
+# SA1633: The file header is missing or not located at the top of the file
 dotnet_diagnostic.SA1633.severity = none
+
+# CA2016: Forward the CancellationToken parameter to methods that take one
+dotnet_diagnostic.CA2016.severity = warning

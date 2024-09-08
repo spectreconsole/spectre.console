@@ -23,7 +23,7 @@ public class DogCommand : AnimalCommand<DogSettings>
         return base.Validate(context, settings);
     }
 
-    public override int Execute(CommandContext context, DogSettings settings)
+    public override int Execute(CommandContext context, DogSettings settings, CancellationToken cancellationToken)
     {
         return 0;
     }

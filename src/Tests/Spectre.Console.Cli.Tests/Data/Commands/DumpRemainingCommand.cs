@@ -9,7 +9,7 @@ public sealed class DumpRemainingCommand : Command<EmptyCommandSettings>
         _console = console;
     }
 
-    public override int Execute(CommandContext context, EmptyCommandSettings settings)
+    public override int Execute(CommandContext context, EmptyCommandSettings settings, CancellationToken cancellationToken)
     {
         if (context.Remaining.Raw.Count > 0)
         {

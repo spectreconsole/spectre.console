@@ -25,33 +25,22 @@ public sealed class CommandApp<TDefaultCommand> : ICommandApp
         _defaultCommandConfigurator = _app.SetDefaultCommand<TDefaultCommand>();
     }
 
-    /// <summary>
-    /// Configures the command line application.
-    /// </summary>
-    /// <param name="configuration">The configuration.</param>
+    /// <inheritdoc/>
     public void Configure(Action<IConfigurator> configuration)
     {
         _app.Configure(configuration);
     }
 
-    /// <summary>
-    /// Runs the command line application with specified arguments.
-    /// </summary>
-    /// <param name="args">The arguments.</param>
-    /// <returns>The exit code from the executed command.</returns>
-    public int Run(IEnumerable<string> args)
+    /// <inheritdoc/>
+    public int Run(IEnumerable<string> args, CancellationToken cancellationToken = default)
     {
-        return _app.Run(args);
+        return _app.Run(args, cancellationToken);
     }
 
-    /// <summary>
-    /// Runs the command line application with specified arguments.
-    /// </summary>
-    /// <param name="args">The arguments.</param>
-    /// <returns>The exit code from the executed command.</returns>
-    public Task<int> RunAsync(IEnumerable<string> args)
+    /// <inheritdoc/>
+    public Task<int> RunAsync(IEnumerable<string> args, CancellationToken cancellationToken = default)
     {
-        return _app.RunAsync(args);
+        return _app.RunAsync(args, cancellationToken);
     }
 
     internal Configurator GetConfigurator()

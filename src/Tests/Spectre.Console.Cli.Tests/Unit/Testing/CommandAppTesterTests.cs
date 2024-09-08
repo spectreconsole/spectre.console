@@ -14,7 +14,7 @@ public sealed class CommandAppTesterTests
             _console = console;
         }
 
-        public override int Execute(CommandContext context, OptionalArgumentWithDefaultValueSettings settings)
+        public override int Execute(CommandContext context, OptionalArgumentWithDefaultValueSettings settings, CancellationToken cancellationToken)
         {
             _console.Write(settings.Greeting);
             return 0;

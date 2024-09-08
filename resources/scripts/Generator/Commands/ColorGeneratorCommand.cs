@@ -1,4 +1,5 @@
 using System.IO;
+using System.Threading;
 using Generator.Models;
 using Scriban;
 using Spectre.Console.Cli;
@@ -21,7 +22,7 @@ namespace Generator.Commands
             public string Input { get; set; }
         }
 
-        public override int Execute(CommandContext context, Settings settings)
+        public override int Execute(CommandContext context, Settings settings, CancellationToken cancellationToken)
         {
             var templates = new FilePath[]
             {
