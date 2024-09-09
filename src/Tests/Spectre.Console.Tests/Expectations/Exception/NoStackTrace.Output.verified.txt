@@ -1,0 +1,2 @@
+﻿System.InvalidOperationException: Something threw!
+   System.InvalidOperationException: Throwing!

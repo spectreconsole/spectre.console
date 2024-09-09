@@ -23,18 +23,95 @@ public sealed class TypeRegistrarBaseTests
     /// <exception cref="TestFailedException">This exception is raised, if a test fails.</exception>
     public void RunAllTests()
     {
-        var testCases = new Action<ITypeRegistrar>[]
+        var testCases = new[]
         {
                 RegistrationsCanBeResolved,
                 InstanceRegistrationsCanBeResolved,
                 LazyRegistrationsCanBeResolved,
                 ResolvingNotRegisteredServiceReturnsNull,
                 ResolvingNullTypeReturnsNull,
+                ResolvingSingleInstanceOfMultipleRegistrationsResolvesTheFirstOne,
+                ResolvingAnEnumerableOfInstancesDoesNotReturnNull,
+                ResolvingAnEnumerableOfInstancesOfMultipleRegistrationsResolvesAllRegistrations,
         };
 
         foreach (var test in testCases)
         {
             test(_registrarFactory());
+        }
+    }
+
+    private void ResolvingAnEnumerableOfInstancesDoesNotReturnNull(ITypeRegistrar registrar)
+    {
+        // Given
+        var resolver = registrar.Build();
+
+        // When
+        var actual = resolver.Resolve(typeof(IEnumerable<IMockService>)) as IEnumerable<IMockService>;
+
+        // Then
+        if (actual == null)
+        {
+            throw new TestFailedException(
+                "Expected an IEnumerable never to resolve to null.");
+        }
+    }
+
+    private void ResolvingAnEnumerableOfInstancesOfMultipleRegistrationsResolvesAllRegistrations(ITypeRegistrar registrar)
+    {
+        // Given
+        var theLastRegistration = new AnotherMockService("last");
+        registrar.RegisterLazy(typeof(IMockService), () => new AnotherMockService("first"));
+        registrar.Register(typeof(IMockService), typeof(MockService));
+        registrar.RegisterInstance(typeof(IMockService), theLastRegistration);
+        var resolver = registrar.Build();
+
+        // When
+        var actual = (resolver.Resolve(typeof(IEnumerable<IMockService>)) as IEnumerable<IMockService>)!.ToList();
+
+        // Then
+        if (actual.Count != 3)
+        {
+            throw new TestFailedException(
+                "Expected the resolver to resolve a list with exactly 3 elements.");
+        }
+
+        if (actual.Count(x => x.GetType() == typeof(AnotherMockService)) != 2)
+        {
+            throw new TestFailedException(
+                $"Expected the resolver to resolve a list with exactly 2 elements of type {nameof(AnotherMockService)}.");
+        }
+
+        if (actual.Count(x => x.GetType() == typeof(MockService)) != 1)
+        {
+            throw new TestFailedException(
+                $"Expected the resolver to resolve a list with exactly one element of type {nameof(MockService)}.");
+        }
+
+        if (!actual.Contains(theLastRegistration))
+        {
+            throw new TestFailedException(
+                "Expected the resolver to resolve the known instance that was registered.");
+        }
+    }
+
+    private void ResolvingSingleInstanceOfMultipleRegistrationsResolvesTheFirstOne(ITypeRegistrar registrar)
+    {
+        // Given
+        var theLastRegistration = new AnotherMockService("last");
+        registrar.RegisterLazy(typeof(IMockService), () => new AnotherMockService("first"));
+        registrar.Register(typeof(IMockService), typeof(MockService));
+        registrar.RegisterInstance(typeof(IMockService), theLastRegistration);
+        var resolver = registrar.Build();
+
+        // When
+        var actual = resolver.Resolve(typeof(IMockService));
+
+        // Then
+        if (!ReferenceEquals(actual, theLastRegistration))
+        {
+            throw new TestFailedException(
+                "Expected the resolver to resolve the first registered instance of multiple registrations.");
         }
     }
 
@@ -165,6 +242,13 @@ public sealed class TypeRegistrarBaseTests
 
     private class MockService : IMockService
     {
+    }
+
+    private class AnotherMockService : IMockService
+    {
+        public AnotherMockService(string ignore)
+        {
+        }
     }
 
     /// <summary>

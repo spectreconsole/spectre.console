@@ -1,0 +1,8 @@
+﻿USAGE:
+    myapp [OPTIONS] <COMMAND>
+
+OPTIONS:
+    -h, --help    Prints help information
+
+COMMANDS:
+    bar

@@ -14,9 +14,13 @@ internal sealed class ListPrompt<T>
 
     public async Task<ListPromptState<T>> Show(
         ListPromptTree<T> tree,
-        CancellationToken cancellationToken,
-        int requestedPageSize = 15,
-        bool wrapAround = false)
+        Func<T, string> converter,
+        SelectionMode selectionMode,
+        bool skipUnselectableItems,
+        bool searchEnabled,
+        int requestedPageSize,
+        bool wrapAround,
+        CancellationToken cancellationToken = default)
     {
         if (tree is null)
         {
@@ -38,7 +42,7 @@ internal sealed class ListPrompt<T>
         }
 
         var nodes = tree.Traverse().ToList();
-        var state = new ListPromptState<T>(nodes, _strategy.CalculatePageSize(_console, nodes.Count, requestedPageSize), wrapAround);
+        var state = new ListPromptState<T>(nodes, converter, _strategy.CalculatePageSize(_console, nodes.Count, requestedPageSize), wrapAround, selectionMode, skipUnselectableItems, searchEnabled);
         var hook = new ListPromptRenderHook<T>(_console, () => BuildRenderable(state));
 
         using (new RenderHookScope(_console, hook))
@@ -48,6 +52,7 @@ internal sealed class ListPrompt<T>
 
             while (true)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 var rawKey = await _console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
                 if (rawKey == null)
                 {
@@ -61,7 +66,7 @@ internal sealed class ListPrompt<T>
                     break;
                 }
 
-                if (state.Update(key.Key) || result == ListPromptInputResult.Refresh)
+                if (state.Update(key) || result == ListPromptInputResult.Refresh)
                 {
                     hook.Refresh();
                 }
@@ -89,10 +94,10 @@ internal sealed class ListPrompt<T>
             skip = Math.Max(0, state.Index - middleOfList);
             take = Math.Min(pageSize, state.ItemCount - skip);
 
-            if (state.ItemCount - state.Index < middleOfList)
+            if (take < pageSize)
             {
-                // Pointer should be below the end of the list
-                var diff = middleOfList - (state.ItemCount - state.Index);
+                // Pointer should be below the middle of the (visual) list
+                var diff = pageSize - take;
                 skip -= diff;
                 take += diff;
                 cursorIndex = middleOfList + diff;
@@ -109,6 +114,8 @@ internal sealed class ListPrompt<T>
             _console,
             scrollable, cursorIndex,
             state.Items.Skip(skip).Take(take)
-                .Select((node, index) => (index, node)));
+                .Select((node, index) => (index, node)),
+            state.SkipUnselectableItems,
+            state.SearchText);
     }
 }

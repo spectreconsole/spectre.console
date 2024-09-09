@@ -23,7 +23,7 @@ app.Configure(config =>
 
 ## Multiple Commands
 
-In the previous example we have a single command that is configured. For complex command line applications, it is common for them to have multiple commands (or verbs) defined. Examples of applications like this are `git`, `dotnet` and `gh`. For example, git would have a `commit` command and along with other commits like `add` or `rebase`. Each with their own settings and validation. With `Spectre.Console.Cli` we use the `Configure` method to add these commands.
+In the previous example we have a single command that is configured. For complex command line applications, it is common for them to have multiple commands (or verbs) defined. Examples of applications like this are `git`, `dotnet` and `gh`. For example, git would have a `commit` command and along with other commands like `add` or `rebase`. Each with their own settings and validation. With `Spectre.Console.Cli` we use the `Configure` method to add these commands.
 
 For example, to add three different commands to the application:
 
@@ -43,7 +43,7 @@ For more complex command hierarchical configurations, they can also be composed 
 
 ## Customizing Command Configurations
 
-The `Configure` method is also used to change how help for the commands is generated. This configuration will give our command an additional alias of `file-size` and a description to be used when displaying the help. Additional, an example is specified that will be parsed and displayed for users asking for help. Multiple examples can be provided. Commands can also be marked as hidden. With this option they are still executable, but will not be displayed in help screens.
+The `Configure` method is also used to change how help for the commands is generated. This configuration will give our command an additional alias of `file-size` and a description to be used when displaying the help. Additionally, an example is specified that will be parsed and displayed for users asking for help. Multiple examples can be provided. Commands can also be marked as hidden. With this option they are still executable, but will not be displayed in help screens.
 
 ``` csharp
 var app = new CommandApp();
@@ -81,9 +81,12 @@ Hint: If you do write your own implementation of `TypeRegistrar` and `TypeResolv
 there is a utility `TypeRegistrarBaseTests` available that can be used to ensure your implementations adhere to the required implementation. Simply call `TypeRegistrarBaseTests.RunAllTests()` and expect no `TypeRegistrarBaseTests.TestFailedException` to be thrown.
 
 ## Interception
+Interceptors can be registered with the `TypeRegistrar` (or with a custom DI-Container). Alternatively, `CommandApp` also provides a `SetInterceptor` configuration.
 
-`CommandApp` also provides a `SetInterceptor` configuration. An interceptor is run before all commands are executed. This is typically used for configuring logging or other infrastructure concerns.
+All interceptors must implement `ICommandInterceptor`. Upon execution of a command, The `Intercept`-Method of an instance of your interceptor will be called with the parsed settings. This provides an opportunity for configuring any infrastructure or modifying the settings.
+When the command has been run, the `InterceptResult`-Method of the same instance is called with the result of the command.
+This provides an opportunity to modify the result and also to tear down any infrastructure in use.
 
-All interceptors must implement `ICommandInterceptor`. Upon execution of a command, an instance of your interceptor will be called with the parsed settings. This provides an opportunity for configuring any infrastructure or modifying the settings.
+The `Intercept`-Method of each interceptor is run before the command is executed and the `InterceptResult`-Method is run after it. These are typically used for configuring logging or other infrastructure concerns.
 
 For an example of using the interceptor to configure logging, see the [Serilog demo](https://github.com/spectreconsole/spectre.console/tree/main/examples/Cli/Logging).

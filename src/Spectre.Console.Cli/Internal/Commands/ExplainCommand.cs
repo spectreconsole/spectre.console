@@ -15,26 +15,19 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
 
     public sealed class Settings : CommandSettings
     {
-        public Settings(string[]? commands, bool? detailed, bool includeHidden)
-        {
-            Commands = commands;
-            Detailed = detailed;
-            IncludeHidden = includeHidden;
-        }
-
         [CommandArgument(0, "[command]")]
-        public string[]? Commands { get; }
+        public string[]? Commands { get; set; }
 
         [Description("Include detailed information about the commands.")]
         [CommandOption("-d|--detailed")]
-        public bool? Detailed { get; }
+        public bool? Detailed { get; set; }
 
         [Description("Include hidden commands and options.")]
         [CommandOption("--hidden")]
-        public bool IncludeHidden { get; }
+        public bool IncludeHidden { get; set; }
     }
 
-    public override int Execute([NotNull] CommandContext context, [NotNull] Settings settings)
+    public override int Execute(CommandContext context, Settings settings)
     {
         var tree = new Tree("CLI Configuration");
         tree.AddNode(ValueMarkup("Application Name", _commandModel.ApplicationName, "no application name"));

@@ -1,4 +1,4 @@
-﻿using Statiq.Common;
+using Statiq.Common;
 using Statiq.Web.GitHub;
 using Statiq.Web.Netlify;
 

@@ -39,7 +39,7 @@ What is generally considered trivial:
 ### Code style
 
 Normal .NET coding guidelines apply.
-See the [Framework Design Guidelines](https://msdn.microsoft.com/en-us/library/ms229042%28v=vs.110%29.aspx) for more information.
+See the [Framework Design Guidelines](https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/) for more information.
 
 ### Dependencies
 
@@ -59,7 +59,7 @@ Any new code should also have reasonable unit test coverage.
      information and a link back to the discussion.
   * Once you get a nod from someone in the Spectre.Console Team, you can start on the feature.
   * Alternatively, if a feature is on the issues list with the
-   [Up For Grabs](https://github.com/spectreconsole/spectre.console/labels/up-for-grabs) label,
+   [good first issue](https://github.com/spectreconsole/spectre.console/labels/good%20first%20issue) label,
    it is open for a community member (contributor) to patch. You should comment that you are signing up for it on
    the issue so someone else doesn't also sign up for the work.
 
