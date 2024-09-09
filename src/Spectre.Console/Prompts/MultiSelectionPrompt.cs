@@ -257,8 +257,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             }
 
             var checkbox = item.Node.IsSelected
-                ? (item.Node.IsGroup && Mode == SelectionMode.Leaf
-                    ? ListPromptConstants.GroupSelectedCheckbox : ListPromptConstants.SelectedCheckbox)
+                ? ListPromptConstants.GetSelectedCheckbox(item.Node.IsGroup, Mode, HighlightStyle)
                 : ListPromptConstants.Checkbox;
 
             grid.AddRow(new Markup(indent + prompt + " " + checkbox + " " + text, style));
