@@ -127,6 +127,23 @@ public sealed class MultiSelectionPromptTests
         // Then
         action.ShouldThrow<ArgumentOutOfRangeException>();
     }
+
+    [Fact] public void Should_Throw_Meaningful_Exception_For_Empty_Prompt()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+
+        var prompt = new MultiSelectionPrompt<string>();
+
+        // When
+        Action action = () => prompt.Show(console);
+
+        // Then
+        var exception = action.ShouldThrow<InvalidOperationException>();
+        exception.Message.ShouldBe("Cannot show an empty selection prompt. Please call the AddChoice() method to configure the prompt.");
+    }
 }
 
 file sealed class CustomItem
