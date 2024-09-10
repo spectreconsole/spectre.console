@@ -69,7 +69,7 @@ What's your age? 37
 var name = AnsiConsole.Prompt(
     new TextPrompt<string>("What's your name?"));
 var age = AnsiConsole.Prompt(
-    new TextPrompt<short>("What's your age?"));
+    new TextPrompt<int>("What's your age?"));
 
 // Echo the name and age back to the terminal
 AnsiConsole.WriteLine($"So you're {name} and you're {age} years old");
@@ -80,7 +80,7 @@ Otherwise it is possible to use the `Ask` method
 ```csharp
 // Ask the user a couple of simple questions
 var name = AnsiConsole.Ask<string>("What's your name?");
-var age = AnsiConsole.Ask<short>("What's your age?");
+var age = AnsiConsole.Ask<int>("What's your age?");
 
 // Echo the name and age back to the terminal
 AnsiConsole.WriteLine($"So you're {name} and you're {age} years old");
