@@ -12,7 +12,7 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.0"/>
     <PackageVersion Include="Shouldly" Version="4.2.1"/>
     <PackageVersion Include="Spectre.Verify.Extensions" Version="22.3.2-preview.0.1"/>
-    <PackageVersion Include="Verify.Xunit" Version="26.2.0"/>
+    <PackageVersion Include="Verify.Xunit" Version="26.4.4"/>
     <PackageVersion Include="xunit" Version="2.9.0"/>
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2"/>
     <PackageVersion Include="System.Memory" Version="4.5.5" />
