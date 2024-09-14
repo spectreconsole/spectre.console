@@ -154,7 +154,7 @@ var password = AnsiConsole.Prompt(
         .Secret());
 
 // Echo the password back to the terminal
-Console.WriteLine($"Joking is not a secret that your password is {password}");
+Console.WriteLine($"Your password is {password}");
 ```
 
 ## Masks
@@ -183,7 +183,7 @@ var password = AnsiConsole.Prompt(
         .Secret('-'));
 
 // Echo the password back to the terminal
-Console.WriteLine($"Joking is not a secret that your password is {password}");
+Console.WriteLine($"Your password is {password}");
 ```
 
 ## Optional
