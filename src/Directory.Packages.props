@@ -24,7 +24,7 @@
 
   <ItemGroup Label="Static Analysis">
     <PackageVersion Include="StyleCop.Analyzers" PrivateAssets="All" Version="1.2.0-beta.556"/>
-    <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="4.12.4"/>
+    <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="4.12.5"/>
   </ItemGroup>
 
 </Project>
