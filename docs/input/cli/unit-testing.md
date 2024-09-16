@@ -1,6 +1,7 @@
 Title: Unit Testing
 Order: 14
 Description: Instructions for unit testing a Spectre.Console application.
+Reference: T:Spectre.Console.Testing.CommandAppTester
 ---
 
 `Spectre.Console` has a separate project that contains test harnesses for unit testing your own console applications. 
@@ -15,8 +16,12 @@ The fastest way of getting started is to install the `Spectre.Console.Testing` N
 
 The `CommandAppTester` is a test implementation of `CommandApp` that's configured in a similar manner but designed for unit testing.
 
+The following example validates the exit code and terminal output of a `Spectre.Console` command:
 
 ```csharp
+    /// <summary>
+    /// A Spectre.Console Command
+    /// </summary>
     public class HelloWorldCommand : Command
     {
         private readonly IAnsiConsole _console;
@@ -37,7 +42,7 @@ The `CommandAppTester` is a test implementation of `CommandApp` that's configure
         }
     }
 
-    [Fact]
+    [TestMethod]
     public void Should_Output_Hello_World()
     {
         // Given
@@ -48,7 +53,7 @@ The `CommandAppTester` is a test implementation of `CommandApp` that's configure
         var result = app.Run();
 
         // Then
-        result.ExitCode.ShouldBe(0);
-        result.Output.ShouldBe("Hello world.");
+        Assert.AreEqual(result.ExitCode, 0);
+        Assert.AreEqual(result.Output, "Hello world.");
     }
 ```
