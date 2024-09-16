@@ -23,7 +23,7 @@ Spectre.Console.AnsiConsole has been heavily inspired by the excellent [Rich](ht
 
 ## Spectre.Console.Testing
 
-* Spectre.Console has been developed with unit testing in mind. The Spectre.Console library itself is covered by an extensive test suite, project maintainers require test coverage for all new commits, and the same extension points and test harnesses used internally are made available to you.
+* Spectre.Console has been developed with unit testing in mind. The Spectre.Console library itself is covered by an extensive test suite, project maintainers require test coverage for all new commits, and the same extension points and test harnesses used internally for testing are available to you.
 
 * The [Unit Testing](cli/unit-testing) page provides instructions for testing a Spectre.Console application.
 
@@ -39,3 +39,4 @@ Spectre.Console.AnsiConsole has been heavily inspired by the excellent [Rich](ht
     Sorry, your browser doesn't support embedded videos.
 </video>
 
+The Spectre.Console [examples repository](https://github.com/spectreconsole/examples) contains many other examples.
