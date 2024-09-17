@@ -52,6 +52,18 @@ internal sealed class ListPrompt<T>
 
         using (new RenderHookScope(_console, hook))
         {
+            Action disposal = () => { };
+            foreach (var item in tree.Traverse())
+            {
+                if (!(item.Data is INotifyPropertyChanged npc))
+                {
+                    continue;
+                }
+
+                npc.PropertyChanged += (sender, args) => hook.Refresh();
+                disposal += () => npc.PropertyChanged -= (sender, args) => hook.Refresh();
+            }
+
             _console.Cursor.Hide();
             hook.Refresh();
 
@@ -76,6 +88,8 @@ internal sealed class ListPrompt<T>
                     hook.Refresh();
                 }
             }
+
+            disposal?.Invoke();
         }
 
         hook.Clear();
