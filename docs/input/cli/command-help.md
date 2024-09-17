@@ -71,5 +71,5 @@ public static class Program
 }
 ```
 
-There is a working [example of a custom help provider](https://github.com/spectreconsole/spectre.console/tree/main/examples/Cli/Help) demonstrating this.
+There is a working [example of a custom help provider](https://github.com/spectreconsole/examples/tree/main/examples/Cli/Help) demonstrating this.
 
