@@ -13,6 +13,7 @@ public sealed class SpinnerColumn : ProgressColumn
     private int? _maxWidth;
     private string? _completed;
     private string? _pending;
+    private string? _failedText;
 
     /// <inheritdoc/>
     protected internal override bool NoWrap => true;
@@ -49,6 +50,20 @@ public sealed class SpinnerColumn : ProgressColumn
 
     /// <summary>
     /// Gets or sets the text that should be shown instead
+    /// of the spinner once a task was marked as failed.
+    /// </summary>
+    public string? FailedText
+    {
+        get => _failedText;
+        set
+        {
+            _failedText = value;
+            _maxWidth = null;
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the text that should be shown instead
     /// of the spinner before a task begins.
     /// </summary>
     public string? PendingText
@@ -77,6 +92,11 @@ public sealed class SpinnerColumn : ProgressColumn
     public Style? Style { get; set; } = Color.Yellow;
 
     /// <summary>
+    /// Gets or sets the failed style.
+    /// </summary>
+    public Style? FailedStyle { get; set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="SpinnerColumn"/> class.
     /// </summary>
     public SpinnerColumn()
@@ -103,6 +123,11 @@ public sealed class SpinnerColumn : ProgressColumn
         if (!task.IsStarted)
         {
             return new Markup(PendingText ?? " ", PendingStyle ?? Style.Plain);
+        }
+
+        if (task.IsFailed)
+        {
+            return new Markup(FailedText ?? " ", FailedStyle ?? Style.Plain);
         }
 
         if (task.IsFinished)

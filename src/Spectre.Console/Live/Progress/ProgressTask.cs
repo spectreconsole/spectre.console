@@ -96,6 +96,11 @@ public sealed class ProgressTask : IProgress<double>
     public bool IsIndeterminate { get; set; }
 
     /// <summary>
+    /// Gets a value indicating whether the task execution failed.
+    /// </summary>
+    public bool IsFailed { get; private set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="ProgressTask"/> class.
     /// </summary>
     /// <param name="id">The task ID.</param>
@@ -149,6 +154,22 @@ public sealed class ProgressTask : IProgress<double>
             StartTime ??= now;
 
             StopTime = now;
+        }
+    }
+
+    /// <summary>
+    /// Stops and marks the task as failed.
+    /// </summary>
+    public void StopTaskWithFailure()
+    {
+        lock (_lock)
+        {
+            var now = DateTime.Now;
+            StartTime ??= now;
+
+            StopTime = now;
+
+            IsFailed = true;
         }
     }
 
