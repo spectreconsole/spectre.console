@@ -85,7 +85,7 @@ on the main thread.
 ### Unit Testing Best Practices
 
 For testing of console output, Spectre.Console has [`IAnsiConsole`](xref:T:Spectre.Console.IAnsiConsole) that can be
-injected into your application. The [Spectre.Console.Test](https://www.nuget.org/packages/Spectre.Console.Testing/) 
+injected into your application. The [Spectre.Console.Test](https://www.nuget.org/packages/Spectre.Console.Testing/)
 NuGet package contains utilities for capturing the console output for verification. See the [Unit Testing](cli/unit-testing) page for further guidance.
 
 ### Analyzer for Best Practices
