@@ -14,5 +14,5 @@ public interface IColumn : IAlignable, IPaddable
     /// <summary>
     /// Gets or sets the width of the column.
     /// </summary>
-    int? Width { get; set; }
+    ColumnWidth Width { get; set; }
 }
