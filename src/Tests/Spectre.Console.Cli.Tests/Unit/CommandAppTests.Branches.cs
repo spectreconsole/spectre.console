@@ -59,7 +59,7 @@ public sealed partial class CommandAppTests
         [SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1515:SingleLineCommentMustBePrecededByBlankLine", Justification = "Helps to illustrate the expected behaviour of this unit test.")]
         [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1005:SingleLineCommentsMustBeginWithSingleSpace", Justification = "Helps to illustrate the expected behaviour of this unit test.")]
         [Fact]
-        public void Should_Be_Unable_To_Parse_Default_Command_Arguments_Relaxed_Parsing()
+        public void Should_Parse_Default_Command_Arguments_Relaxed_Parsing()
         {
             // Given
             var app = new CommandAppTester();
@@ -75,7 +75,7 @@ public sealed partial class CommandAppTests
             // When
             var result = app.Run(new[]
             {
-                // The CommandTreeParser should be unable to determine which command line
+                // The CommandTreeParser should determine which command line
                 // arguments belong to the branch and which belong to the branch's
                 // default command (once inserted).
                 "animal", "4", "--name", "Kitty",
@@ -86,10 +86,9 @@ public sealed partial class CommandAppTests
             result.Settings.ShouldBeOfType<CatSettings>().And(cat =>
             {
                 cat.Legs.ShouldBe(4);
-                //cat.Name.ShouldBe("Kitty"); //<-- Should normally be correct, but instead name will be added to the remaining arguments (see below).
+                cat.Name.ShouldBe("Kitty");
             });
-            result.Context.Remaining.Parsed.Count.ShouldBe(1);
-            result.Context.ShouldHaveRemainingArgument("--name", values: new[] { "Kitty", });
+            result.Context.Remaining.Parsed.Count.ShouldBe(0);
         }
 
         [Fact]
@@ -112,9 +111,12 @@ public sealed partial class CommandAppTests
             {
                 app.Run(new[]
                 {
-                    // The CommandTreeParser should be unable to determine which command line
-                    // arguments belong to the branch and which belong to the branch's
-                    // default command (once inserted).
+                    // The CommandTreeParser should error when parsing the following
+                    // command line arguments in strict mode because 'Name' is a property
+                    // on MammalSettings, which CatSettings inherits from, whilst the
+                    // 'animal' branch is restricted to AnimalSettings. A parse exception
+                    // should be thrown on the first pass, preventing the CommandExecutor
+                    // from inserting the default command into arguments and trying again.
                     "animal", "4", "--name", "Kitty",
                 });
             });

@@ -115,11 +115,19 @@ internal sealed class CommandExecutor
             lastParsedCommand.IsBranch && !lastParsedLeaf.ShowHelp &&
             lastParsedCommand.DefaultCommand != null)
         {
+            // Adjust for any parsed remaining arguments by
+            // inserting the the default command ahead of them.
+            var position = tokenizerResult.Tokens.Position;
+            foreach (var parsedRemaining in parsedResult.Remaining.Parsed)
+            {
+                position--;
+                position -= parsedRemaining.Count(value => value != null);
+            }
+
             // Insert this branch's default command into the command line
             // arguments and try again to see if it will parse.
             var argsWithDefaultCommand = new List<string>(args);
-
-            argsWithDefaultCommand.Insert(tokenizerResult.Tokens.Position, lastParsedCommand.DefaultCommand.Name);
+            argsWithDefaultCommand.Insert(position, lastParsedCommand.DefaultCommand.Name);
 
             parserContext = new CommandTreeParserContext(argsWithDefaultCommand, settings.ParsingMode);
             tokenizerResult = CommandTreeTokenizer.Tokenize(argsWithDefaultCommand);
