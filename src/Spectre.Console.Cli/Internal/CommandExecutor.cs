@@ -1,3 +1,5 @@
+using static Spectre.Console.Cli.CommandTreeTokenizer;
+
 namespace Spectre.Console.Cli;
 
 internal sealed class CommandExecutor
@@ -101,13 +103,16 @@ internal sealed class CommandExecutor
         }
     }
 
+    /// <summary>
+    /// Parse the command line arguments using the specified <see cref="CommandModel"/> and <see cref="CommandAppSettings"/>.
+    /// </summary>
+    /// <returns>The parser result.</returns>
     private CommandTreeParserResult ParseCommandLineArguments(CommandModel model, CommandAppSettings settings, IReadOnlyList<string> args)
     {
-        var parser = new CommandTreeParser(model, settings.CaseSensitivity, settings.ParsingMode, settings.ConvertFlagsToRemainingArguments);
+        CommandTreeParserResult parsedResult;
+        CommandTreeTokenizerResult tokenizerResult;
 
-        var parserContext = new CommandTreeParserContext(args, settings.ParsingMode);
-        var tokenizerResult = CommandTreeTokenizer.Tokenize(args);
-        var parsedResult = parser.Parse(parserContext, tokenizerResult);
+        (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, args);
 
         var lastParsedLeaf = parsedResult.Tree?.GetLeafCommand();
         var lastParsedCommand = lastParsedLeaf?.Command;
@@ -129,12 +134,26 @@ internal sealed class CommandExecutor
             var argsWithDefaultCommand = new List<string>(args);
             argsWithDefaultCommand.Insert(position, lastParsedCommand.DefaultCommand.Name);
 
-            parserContext = new CommandTreeParserContext(argsWithDefaultCommand, settings.ParsingMode);
-            tokenizerResult = CommandTreeTokenizer.Tokenize(argsWithDefaultCommand);
-            parsedResult = parser.Parse(parserContext, tokenizerResult);
+            (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, argsWithDefaultCommand);
         }
 
         return parsedResult;
+    }
+
+    /// <summary>
+    /// Parse the command line arguments using the specified <see cref="CommandModel"/> and <see cref="CommandAppSettings"/>,
+    /// returning the parser and tokenizer results as a tuple.
+    /// </summary>
+    /// <returns>The parser and tokenizer results as a tuple.</returns>
+    private (CommandTreeParserResult ParserResult, CommandTreeTokenizerResult TokenizerResult) InternalParseCommandLineArguments(CommandModel model, CommandAppSettings settings, IReadOnlyList<string> args)
+    {
+        var parser = new CommandTreeParser(model, settings.CaseSensitivity, settings.ParsingMode, settings.ConvertFlagsToRemainingArguments);
+
+        var parserContext = new CommandTreeParserContext(args, settings.ParsingMode);
+        var tokenizerResult = CommandTreeTokenizer.Tokenize(args);
+        var parsedResult = parser.Parse(parserContext, tokenizerResult);
+
+        return (parsedResult, tokenizerResult);
     }
 
     private static async Task<int> Execute(
