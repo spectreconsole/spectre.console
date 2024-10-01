@@ -76,17 +76,21 @@ public sealed partial class CommandAppTests
                 // The CommandTreeParser should determine which command line
                 // arguments belong to the branch and which belong to the branch's
                 // default command (once inserted).
-                "animal", "4", "--name", "Kitty",
+                "animal", "4", "-a", "false", "--name", "Kitty", "--agility", "four", "--nick-name", "Felix"
             });
 
             // Then
             result.ExitCode.ShouldBe(0);
             result.Settings.ShouldBeOfType<CatSettings>().And(cat =>
             {
+                cat.IsAlive.ShouldBeFalse();
                 cat.Legs.ShouldBe(4);
                 cat.Name.ShouldBe("Kitty");
+                cat.Agility.ShouldBe(4);
             });
-            result.Context.Remaining.Parsed.Count.ShouldBe(0);
+            result.Context.Remaining.Parsed.Count.ShouldBe(1);
+            result.Context.ShouldHaveRemainingArgument("--nick-name", values: new[] { "Felix" });
+            result.Context.Remaining.Raw.Count.ShouldBe(0);
         }
 
         [Fact]
@@ -110,17 +114,21 @@ public sealed partial class CommandAppTests
                 // The CommandTreeParser should determine which command line
                 // arguments belong to the branch and which belong to the branch's
                 // default command (once inserted).
-                "animal", "4", "--name", "Kitty",
+                "animal", "4", "-a", "false", "--name", "Kitty", "--agility", "four", "--", "--nick-name", "Felix"
             });
 
             // Then
             result.ExitCode.ShouldBe(0);
             result.Settings.ShouldBeOfType<CatSettings>().And(cat =>
             {
+                cat.IsAlive.ShouldBeFalse();
                 cat.Legs.ShouldBe(4);
                 cat.Name.ShouldBe("Kitty");
+                cat.Agility.ShouldBe(4);
             });
-            result.Context.Remaining.Parsed.Count.ShouldBe(0);
+            result.Context.Remaining.Parsed.Count.ShouldBe(1);
+            result.Context.ShouldHaveRemainingArgument("--nick-name", values: new[] { "Felix" });
+            result.Context.Remaining.Raw.Count.ShouldBe(2);
         }
 
         [Fact]
