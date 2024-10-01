@@ -92,7 +92,7 @@ public sealed partial class CommandAppTests
         }
 
         [Fact]
-        public void Should_Be_Unable_To_Parse_Default_Command_Arguments_Strict_Parsing()
+        public void Should_Parse_Default_Command_Arguments_Strict_Parsing()
         {
             // Given
             var app = new CommandAppTester();
@@ -107,25 +107,22 @@ public sealed partial class CommandAppTests
             });
 
             // When
-            var result = Record.Exception(() =>
+            var result = app.Run(new[]
             {
-                app.Run(new[]
-                {
-                    // The CommandTreeParser should error when parsing the following
-                    // command line arguments in strict mode because 'Name' is a property
-                    // on MammalSettings, which CatSettings inherits from, whilst the
-                    // 'animal' branch is restricted to AnimalSettings. A parse exception
-                    // should be thrown on the first pass, preventing the CommandExecutor
-                    // from inserting the default command into arguments and trying again.
-                    "animal", "4", "--name", "Kitty",
-                });
+                // The CommandTreeParser should determine which command line
+                // arguments belong to the branch and which belong to the branch's
+                // default command (once inserted).
+                "animal", "4", "--name", "Kitty",
             });
 
             // Then
-            result.ShouldBeOfType<CommandParseException>().And(ex =>
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<CatSettings>().And(cat =>
             {
-                ex.Message.ShouldBe("Unknown option 'name'.");
+                cat.Legs.ShouldBe(4);
+                cat.Name.ShouldBe("Kitty");
             });
+            result.Context.Remaining.Parsed.Count.ShouldBe(0);
         }
 
         [Fact]
