@@ -103,44 +103,52 @@ internal sealed class CommandExecutor
         }
     }
 
+    [SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1513:Closing brace should be followed by blank line", Justification = "Improves code readability")]
     private CommandTreeParserResult ParseCommandLineArguments(CommandModel model, CommandAppSettings settings, IReadOnlyList<string> args)
     {
-        CommandTreeParserResult? parsedResult;
+        CommandTreeParserResult? parsedResult = null;
         CommandTreeTokenizerResult tokenizerResult;
 
-        (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, args, swallowParseExceptions: true);
-
-        if (parsedResult == null)
+        if (settings.ParsingMode == ParsingMode.Strict)
         {
-            // CASE: Failed to parse in Strict Mode.
-
-            for (int i = 0; i < args.Count; i++)
+            try
             {
-                // Insert this branch's default command into the command line
-                // arguments and try again to see if it will parse.
-                // Try this for every position of the arguments.
-                // A brute force approach is required.
-                var argsWithDefaultCommand = new List<string>(args);
-                argsWithDefaultCommand.Insert(args.Count - i, "__default_command");
-
-                (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, argsWithDefaultCommand, swallowParseExceptions: true);
-
-                if (parsedResult != null)
+                (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, args);
+            }
+            catch (CommandParseException)
+            {
+                // The parsing exception might be resolved by adding in the default command,
+                // but we can't know for sure. Take a brute force approach and try this for
+                // every position between the arguments.
+                for (int i = 0; i < args.Count; i++)
                 {
-                    break;
+                    var argsWithDefaultCommand = new List<string>(args);
+                    argsWithDefaultCommand.Insert(args.Count - i, "__default_command");
+
+                    try
+                    {
+                        (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, argsWithDefaultCommand);
+
+                        break;
+                    }
+                    catch (CommandParseException)
+                    {
+                        // Continue.
+                    }
+                }
+
+                if (parsedResult == null)
+                {
+                    // Failed to parse having inserted the default command between each argument.
+                    // Repeat the parsing of the original arguments to throw the correct exception.
+                    InternalParseCommandLineArguments(model, settings, args);
                 }
             }
-
-            if (parsedResult == null)
-            {
-                // CASE: Failed to parse in Strict Mode after inserting the default command.
-                // Repeat the parsing of the original arguments to throw the correct exception.
-                // I expect the following line to always throw an exception.
-                (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, args, swallowParseExceptions: false);
-            }
         }
-        else
+        else // if (settings.ParsingMode == ParsingMode.Relaxed)
         {
+            (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, args);
+
             var lastParsedLeaf = parsedResult.Tree?.GetLeafCommand();
             var lastParsedCommand = lastParsedLeaf?.Command;
 
@@ -163,49 +171,34 @@ internal sealed class CommandExecutor
                 var argsWithDefaultCommand = new List<string>(args);
                 argsWithDefaultCommand.Insert(position, lastParsedCommand.DefaultCommand.Name);
 
-                (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, argsWithDefaultCommand, swallowParseExceptions: false);
+                (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, argsWithDefaultCommand);
             }
         }
 
         if (parsedResult == null)
         {
-            // The arguments failed to parse
-            // despite everything we tried above.
-
-            // I don't expect the following line to run, given the logic above.
-            // However, it's provided as the ultimate backstop
-            // and to avoid the compiler from complaining.
+            // The arguments failed to parse despite everything we tried above.
+            // Exceptions should be thrown above before ever getting this far,
+            // however the following is the ulimately backstop and avoids
+            // the compiler from complaining.
             throw CommandParseException.UnknownParsingError();
         }
 
         return parsedResult;
     }
 
-    private (CommandTreeParserResult? ParserResult, CommandTreeTokenizerResult TokenizerResult) InternalParseCommandLineArguments(CommandModel model, CommandAppSettings settings, IReadOnlyList<string> args, bool swallowParseExceptions)
+    /// <summary>
+    /// Parse the command line arguments using the specified <see cref="CommandModel"/> and <see cref="CommandAppSettings"/>,
+    /// returning the parser and tokenizer results as a tuple.
+    /// </summary>
+    /// <returns>The parser and tokenizer results as a tuple.</returns>
+    private (CommandTreeParserResult ParserResult, CommandTreeTokenizerResult TokenizerResult) InternalParseCommandLineArguments(CommandModel model, CommandAppSettings settings, IReadOnlyList<string> args)
     {
         var parser = new CommandTreeParser(model, settings.CaseSensitivity, settings.ParsingMode, settings.ConvertFlagsToRemainingArguments);
 
         var parserContext = new CommandTreeParserContext(args, settings.ParsingMode);
         var tokenizerResult = CommandTreeTokenizer.Tokenize(args);
-
-        CommandTreeParserResult? parsedResult = null;
-        try
-        {
-            parsedResult = parser.Parse(parserContext, tokenizerResult);
-        }
-        catch (CommandParseException) when (settings.ParsingMode == ParsingMode.Strict)
-        {
-            // If a parsing exception is thrown in strict mode, it might be
-            // resolved by added in the default command (if one exists) and
-            // trying again. But we can't know if that will work until
-            // the calling method, ParseCommandLineArguments, performs
-            // a second pass.
-
-            if (!swallowParseExceptions)
-            {
-                throw;
-            }
-        }
+        var parsedResult = parser.Parse(parserContext, tokenizerResult);
 
         return (parsedResult, tokenizerResult);
     }
