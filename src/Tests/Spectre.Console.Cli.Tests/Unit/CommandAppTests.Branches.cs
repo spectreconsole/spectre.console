@@ -56,8 +56,6 @@ public sealed partial class CommandAppTests
             });
         }
 
-        [SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1515:SingleLineCommentMustBePrecededByBlankLine", Justification = "Helps to illustrate the expected behaviour of this unit test.")]
-        [SuppressMessage("StyleCop.CSharp.SpacingRules", "SA1005:SingleLineCommentsMustBeginWithSingleSpace", Justification = "Helps to illustrate the expected behaviour of this unit test.")]
         [Fact]
         public void Should_Parse_Default_Command_Arguments_Relaxed_Parsing()
         {

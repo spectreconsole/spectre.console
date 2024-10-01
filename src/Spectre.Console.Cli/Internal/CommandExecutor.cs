@@ -114,23 +114,28 @@ internal sealed class CommandExecutor
         {
             // CASE: Failed to parse in Strict Mode.
 
-            // Adjust for any parsed remaining arguments by
-            // inserting the the default command ahead of them.
-            var position = tokenizerResult.Tokens.Position - 1;
-            position = position < 0 ? 0 : position;
+            for (int i = 0; i < args.Count; i++)
+            {
+                // Insert this branch's default command into the command line
+                // arguments and try again to see if it will parse.
+                // Try this for every position of the arguments.
+                // A brute force approach is required.
+                var argsWithDefaultCommand = new List<string>(args);
+                argsWithDefaultCommand.Insert(args.Count - i, "__default_command");
 
-            // Insert this branch's default command into the command line
-            // arguments and try again to see if it will parse.
-            var argsWithDefaultCommand = new List<string>(args);
-            argsWithDefaultCommand.Insert(position, "__default_command");
+                (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, argsWithDefaultCommand, swallowParseExceptions: true);
 
-            (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, argsWithDefaultCommand, swallowParseExceptions: true);
+                if (parsedResult != null)
+                {
+                    break;
+                }
+            }
 
             if (parsedResult == null)
             {
                 // CASE: Failed to parse in Strict Mode after inserting the default command.
                 // Repeat the parsing of the original arguments to throw the correct exception.
-                // nb. I expect the following line to always throw an exception.
+                // I expect the following line to always throw an exception.
                 (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, args, swallowParseExceptions: false);
             }
         }
