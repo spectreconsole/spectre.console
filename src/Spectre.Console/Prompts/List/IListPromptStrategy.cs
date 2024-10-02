@@ -16,6 +16,13 @@ internal interface IListPromptStrategy<T>
     ListPromptInputResult HandleInput(ConsoleKeyInfo key, ListPromptState<T> state);
 
     /// <summary>
+    /// Calculates the state's initial index.
+    /// </summary>
+    /// <param name="nodes">The nodes that will be shown in the list.</param>
+    /// <returns>The initial index that should be used.</returns>
+    public int CalculateInitialIndex(IReadOnlyList<ListPromptItem<T>> nodes);
+
+    /// <summary>
     /// Calculates the page size.
     /// </summary>
     /// <param name="console">The console.</param>
