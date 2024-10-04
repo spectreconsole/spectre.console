@@ -4,13 +4,16 @@ public sealed partial class CommandAppTests
 {
     public sealed class Branches
     {
-        [Fact]
-        public void Should_Run_The_Default_Command_On_Branch()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Should_Run_The_Default_Command_On_Branch(bool strictParsing)
         {
             // Given
             var app = new CommandAppTester();
             app.Configure(config =>
             {
+                config.Settings.StrictParsing = strictParsing;
                 config.PropagateExceptions();
                 config.AddBranch<AnimalSettings>("animal", animal =>
                 {
@@ -29,13 +32,16 @@ public sealed partial class CommandAppTests
             result.Settings.ShouldBeOfType<CatSettings>();
         }
 
-        [Fact]
-        public void Should_Throw_When_No_Default_Command_On_Branch()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Should_Throw_When_No_Default_Command_On_Branch(bool strictParsing)
         {
             // Given
             var app = new CommandAppTester();
             app.Configure(config =>
             {
+                config.Settings.StrictParsing = strictParsing;
                 config.PropagateExceptions();
                 config.AddBranch<AnimalSettings>("animal", animal => { });
             });
@@ -126,13 +132,16 @@ public sealed partial class CommandAppTests
             });
         }
 
-        [Fact]
-        public void Should_Run_The_Default_Command_On_Branch_On_Branch()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Should_Run_The_Default_Command_On_Branch_On_Branch(bool strictParsing)
         {
             // Given
             var app = new CommandAppTester();
             app.Configure(config =>
             {
+                config.Settings.StrictParsing = strictParsing;
                 config.PropagateExceptions();
                 config.AddBranch<AnimalSettings>("animal", animal =>
                 {
@@ -154,13 +163,16 @@ public sealed partial class CommandAppTests
             result.Settings.ShouldBeOfType<CatSettings>();
         }
 
-        [Fact]
-        public void Should_Run_The_Default_Command_On_Branch_On_Branch_With_Arguments()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Should_Run_The_Default_Command_On_Branch_On_Branch_With_Arguments(bool strictParsing)
         {
             // Given
             var app = new CommandAppTester();
             app.Configure(config =>
             {
+                config.Settings.StrictParsing = strictParsing;
                 config.PropagateExceptions();
                 config.AddBranch<AnimalSettings>("animal", animal =>
                 {
@@ -186,13 +198,16 @@ public sealed partial class CommandAppTests
             });
         }
 
-        [Fact]
-        public void Should_Run_The_Default_Command_Not_The_Named_Command_On_Branch()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Should_Run_The_Default_Command_Not_The_Named_Command_On_Branch(bool strictParsing)
         {
             // Given
             var app = new CommandAppTester();
             app.Configure(config =>
             {
+                config.Settings.StrictParsing = strictParsing;
                 config.PropagateExceptions();
                 config.AddBranch<AnimalSettings>("animal", animal =>
                 {
@@ -213,13 +228,16 @@ public sealed partial class CommandAppTests
             result.Settings.ShouldBeOfType<CatSettings>();
         }
 
-        [Fact]
-        public void Should_Run_The_Named_Command_Not_The_Default_Command_On_Branch()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Should_Run_The_Named_Command_Not_The_Default_Command_On_Branch(bool strictParsing)
         {
             // Given
             var app = new CommandAppTester();
             app.Configure(config =>
             {
+                config.Settings.StrictParsing = strictParsing;
                 config.PropagateExceptions();
                 config.AddBranch<AnimalSettings>("animal", animal =>
                 {
@@ -246,13 +264,16 @@ public sealed partial class CommandAppTests
             });
         }
 
-        [Fact]
-        public void Should_Allow_Multiple_Branches_Multiple_Commands()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Should_Allow_Multiple_Branches_Multiple_Commands(bool strictParsing)
         {
             // Given
             var app = new CommandAppTester();
             app.Configure(config =>
             {
+                config.Settings.StrictParsing = strictParsing;
                 config.PropagateExceptions();
                 config.AddBranch<AnimalSettings>("animal", animal =>
                 {
@@ -282,13 +303,16 @@ public sealed partial class CommandAppTests
             });
         }
 
-        [Fact]
-        public void Should_Allow_Single_Branch_Multiple_Commands()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Should_Allow_Single_Branch_Multiple_Commands(bool strictParsing)
         {
             // Given
             var app = new CommandAppTester();
             app.Configure(config =>
             {
+                config.Settings.StrictParsing = strictParsing;
                 config.PropagateExceptions();
                 config.AddBranch<AnimalSettings>("animal", animal =>
                 {
@@ -315,13 +339,16 @@ public sealed partial class CommandAppTests
             });
         }
 
-        [Fact]
-        public void Should_Allow_Single_Branch_Single_Command()
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Should_Allow_Single_Branch_Single_Command(bool strictParsing)
         {
             // Given
             var app = new CommandAppTester();
             app.Configure(config =>
             {
+                config.Settings.StrictParsing = strictParsing;
                 config.PropagateExceptions();
                 config.AddBranch<AnimalSettings>("animal", animal =>
                 {
