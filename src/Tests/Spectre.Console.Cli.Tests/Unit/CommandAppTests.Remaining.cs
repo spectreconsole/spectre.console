@@ -382,14 +382,14 @@ public sealed partial class CommandAppTests
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
-        public void Should_Convert_Flags_To_Remaining_Arguments_If_Cannot_Be_Assigned(bool useStrictParsing)
+        public void Should_Convert_Flags_To_Remaining_Arguments_If_Cannot_Be_Assigned(bool strictParsing)
         {
             // Given
             var app = new CommandAppTester();
             app.Configure(config =>
             {
                 config.Settings.ConvertFlagsToRemainingArguments = true;
-                config.Settings.StrictParsing = useStrictParsing;
+                config.Settings.StrictParsing = strictParsing;
                 config.PropagateExceptions();
                 config.AddCommand<DogCommand>("dog");
             });
