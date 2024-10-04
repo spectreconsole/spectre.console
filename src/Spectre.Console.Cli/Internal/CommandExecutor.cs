@@ -1,3 +1,5 @@
+using static Spectre.Console.Cli.CommandTreeTokenizer;
+
 namespace Spectre.Console.Cli;
 
 internal sealed class CommandExecutor
@@ -101,7 +103,89 @@ internal sealed class CommandExecutor
         }
     }
 
+    [SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1513:Closing brace should be followed by blank line", Justification = "Improves code readability by grouping together related statements into a block")]
     private CommandTreeParserResult ParseCommandLineArguments(CommandModel model, CommandAppSettings settings, IReadOnlyList<string> args)
+    {
+        CommandTreeParserResult? parsedResult = null;
+        CommandTreeTokenizerResult tokenizerResult;
+
+        try
+        {
+            (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, args);
+
+            var lastParsedLeaf = parsedResult.Tree?.GetLeafCommand();
+            var lastParsedCommand = lastParsedLeaf?.Command;
+
+            if (lastParsedLeaf != null && lastParsedCommand != null &&
+            lastParsedCommand.IsBranch && !lastParsedLeaf.ShowHelp &&
+            lastParsedCommand.DefaultCommand != null)
+            {
+                // Adjust for any parsed remaining arguments by
+                // inserting the the default command ahead of them.
+                var position = tokenizerResult.Tokens.Position;
+                foreach (var parsedRemaining in parsedResult.Remaining.Parsed)
+                {
+                    position--;
+                    position -= parsedRemaining.Count(value => value != null);
+                }
+                position = position < 0 ? 0 : position;
+
+                // Insert this branch's default command into the command line
+                // arguments and try again to see if it will parse.
+                var argsWithDefaultCommand = new List<string>(args);
+                argsWithDefaultCommand.Insert(position, lastParsedCommand.DefaultCommand.Name);
+
+                (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, argsWithDefaultCommand);
+            }
+        }
+        catch (CommandParseException) when (parsedResult == null && settings.ParsingMode == ParsingMode.Strict)
+        {
+            // The parsing exception might be resolved by adding in the default command,
+            // but we can't know for sure. Take a brute force approach and try this for
+            // every position between the arguments.
+            for (int i = 0; i < args.Count; i++)
+            {
+                var argsWithDefaultCommand = new List<string>(args);
+                argsWithDefaultCommand.Insert(args.Count - i, "__default_command");
+
+                try
+                {
+                    (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, argsWithDefaultCommand);
+
+                    break;
+                }
+                catch (CommandParseException)
+                {
+                    // Continue.
+                }
+            }
+
+            if (parsedResult == null)
+            {
+                // Failed to parse having inserted the default command between each argument.
+                // Repeat the parsing of the original arguments to throw the correct exception.
+                InternalParseCommandLineArguments(model, settings, args);
+            }
+        }
+
+        if (parsedResult == null)
+        {
+            // The arguments failed to parse despite everything we tried above.
+            // Exceptions should be thrown above before ever getting this far,
+            // however the following is the ulimately backstop and avoids
+            // the compiler from complaining about returning null.
+            throw CommandParseException.UnknownParsingError();
+        }
+
+        return parsedResult;
+    }
+
+    /// <summary>
+    /// Parse the command line arguments using the specified <see cref="CommandModel"/> and <see cref="CommandAppSettings"/>,
+    /// returning the parser and tokenizer results.
+    /// </summary>
+    /// <returns>The parser and tokenizer results as a tuple.</returns>
+    private (CommandTreeParserResult ParserResult, CommandTreeTokenizerResult TokenizerResult) InternalParseCommandLineArguments(CommandModel model, CommandAppSettings settings, IReadOnlyList<string> args)
     {
         var parser = new CommandTreeParser(model, settings.CaseSensitivity, settings.ParsingMode, settings.ConvertFlagsToRemainingArguments);
 
@@ -109,24 +193,7 @@ internal sealed class CommandExecutor
         var tokenizerResult = CommandTreeTokenizer.Tokenize(args);
         var parsedResult = parser.Parse(parserContext, tokenizerResult);
 
-        var lastParsedLeaf = parsedResult.Tree?.GetLeafCommand();
-        var lastParsedCommand = lastParsedLeaf?.Command;
-        if (lastParsedLeaf != null && lastParsedCommand != null &&
-            lastParsedCommand.IsBranch && !lastParsedLeaf.ShowHelp &&
-            lastParsedCommand.DefaultCommand != null)
-        {
-            // Insert this branch's default command into the command line
-            // arguments and try again to see if it will parse.
-            var argsWithDefaultCommand = new List<string>(args);
-
-            argsWithDefaultCommand.Insert(tokenizerResult.Tokens.Position, lastParsedCommand.DefaultCommand.Name);
-
-            parserContext = new CommandTreeParserContext(argsWithDefaultCommand, settings.ParsingMode);
-            tokenizerResult = CommandTreeTokenizer.Tokenize(argsWithDefaultCommand);
-            parsedResult = parser.Parse(parserContext, tokenizerResult);
-        }
-
-        return parsedResult;
+        return (parsedResult, tokenizerResult);
     }
 
     private static async Task<int> Execute(
