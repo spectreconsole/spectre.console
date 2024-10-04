@@ -109,43 +109,7 @@ internal sealed class CommandExecutor
         CommandTreeParserResult? parsedResult = null;
         CommandTreeTokenizerResult tokenizerResult;
 
-        if (settings.ParsingMode == ParsingMode.Strict)
-        {
-            try
-            {
-                (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, args);
-            }
-            catch (CommandParseException)
-            {
-                // The parsing exception might be resolved by adding in the default command,
-                // but we can't know for sure. Take a brute force approach and try this for
-                // every position between the arguments.
-                for (int i = 0; i < args.Count; i++)
-                {
-                    var argsWithDefaultCommand = new List<string>(args);
-                    argsWithDefaultCommand.Insert(args.Count - i, "__default_command");
-
-                    try
-                    {
-                        (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, argsWithDefaultCommand);
-
-                        break;
-                    }
-                    catch (CommandParseException)
-                    {
-                        // Continue.
-                    }
-                }
-
-                if (parsedResult == null)
-                {
-                    // Failed to parse having inserted the default command between each argument.
-                    // Repeat the parsing of the original arguments to throw the correct exception.
-                    InternalParseCommandLineArguments(model, settings, args);
-                }
-            }
-        }
-        else // if (settings.ParsingMode == ParsingMode.Relaxed)
+        try
         {
             (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, args);
 
@@ -174,13 +138,42 @@ internal sealed class CommandExecutor
                 (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, argsWithDefaultCommand);
             }
         }
+        catch (CommandParseException) when (parsedResult == null && settings.ParsingMode == ParsingMode.Strict)
+        {
+            // The parsing exception might be resolved by adding in the default command,
+            // but we can't know for sure. Take a brute force approach and try this for
+            // every position between the arguments.
+            for (int i = 0; i < args.Count; i++)
+            {
+                var argsWithDefaultCommand = new List<string>(args);
+                argsWithDefaultCommand.Insert(args.Count - i, "__default_command");
+
+                try
+                {
+                    (parsedResult, tokenizerResult) = InternalParseCommandLineArguments(model, settings, argsWithDefaultCommand);
+
+                    break;
+                }
+                catch (CommandParseException)
+                {
+                    // Continue.
+                }
+            }
+
+            if (parsedResult == null)
+            {
+                // Failed to parse having inserted the default command between each argument.
+                // Repeat the parsing of the original arguments to throw the correct exception.
+                InternalParseCommandLineArguments(model, settings, args);
+            }
+        }
 
         if (parsedResult == null)
         {
             // The arguments failed to parse despite everything we tried above.
             // Exceptions should be thrown above before ever getting this far,
             // however the following is the ulimately backstop and avoids
-            // the compiler from complaining.
+            // the compiler from complaining about returning null.
             throw CommandParseException.UnknownParsingError();
         }
 
