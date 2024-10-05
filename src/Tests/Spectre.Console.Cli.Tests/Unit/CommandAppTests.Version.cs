@@ -2,7 +2,7 @@ namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed partial class CommandAppTests
 {
-    public sealed class Version
+    public sealed partial class Version
     {
         [Fact]
         public void Should_Output_CLI_Version_To_The_Console()
