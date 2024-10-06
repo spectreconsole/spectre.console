@@ -27,24 +27,20 @@ internal sealed class CommandExecutor
         _registrar.RegisterInstance(typeof(CommandModel), model);
         _registrar.RegisterDependencies(model);
 
-        // No default command?
-        if (model.DefaultCommand == null)
+        // Got at least one argument?
+        var firstArgument = arguments.FirstOrDefault();
+        if (firstArgument != null)
         {
-            // Got at least one argument?
-            var firstArgument = arguments.FirstOrDefault();
-            if (firstArgument != null)
+            // Asking for version? Kind of a hack, but it's alright.
+            // We should probably make this a bit better in the future.
+            if (firstArgument.Equals("--version", StringComparison.OrdinalIgnoreCase) ||
+                firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase))
             {
-                // Asking for version? Kind of a hack, but it's alright.
-                // We should probably make this a bit better in the future.
-                if (firstArgument.Equals("--version", StringComparison.OrdinalIgnoreCase) ||
-                    firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase))
+                if (configuration.Settings.ApplicationVersion != null)
                 {
-                    if (configuration.Settings.ApplicationVersion != null)
-                    {
-                        var console = configuration.Settings.Console.GetConsole();
-                        console.MarkupLine(configuration.Settings.ApplicationVersion);
-                        return 0;
-                    }
+                    var console = configuration.Settings.Console.GetConsole();
+                    console.MarkupLine(configuration.Settings.ApplicationVersion);
+                    return 0;
                 }
             }
         }
