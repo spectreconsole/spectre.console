@@ -34,34 +34,9 @@ public sealed partial class CommandAppTests
             {
                 // Given
                 var fixture = new CommandAppTester();
-                fixture.Configure(configurator =>
-                {
-                    configurator.AddCommand<EmptyCommand>("empty");
-                });
 
                 // When
                 var result = fixture.Run(helpOption);
-
-                // Then
-                result.Output.ShouldNotContain("-v, --version    Prints version information");
-            }
-
-            [Theory]
-            [InlineData("-?")]
-            [InlineData("-h")]
-            [InlineData("--help")]
-            public void Help_Should_Not_Include_Application_Version_Flag_For_Command(string helpOption)
-            {
-                // Given
-                var fixture = new CommandAppTester();
-                fixture.Configure(configurator =>
-                {
-                    configurator.SetApplicationVersion("1.0");
-                    configurator.AddCommand<EmptyCommand>("empty");
-                });
-
-                // When
-                var result = fixture.Run("empty", helpOption);
 
                 // Then
                 result.Output.ShouldNotContain("-v, --version    Prints version information");
@@ -86,6 +61,27 @@ public sealed partial class CommandAppTests
 
                 // Then
                 result.Output.ShouldContain("-v, --version    Prints version information");
+            }
+
+            [Theory]
+            [InlineData("-?")]
+            [InlineData("-h")]
+            [InlineData("--help")]
+            public void Help_Should_Not_Include_Application_Version_Flag_For_Command(string helpOption)
+            {
+                // Given
+                var fixture = new CommandAppTester();
+                fixture.Configure(configurator =>
+                {
+                    configurator.SetApplicationVersion("1.0");
+                    configurator.AddCommand<EmptyCommand>("empty");
+                });
+
+                // When
+                var result = fixture.Run("empty", helpOption);
+
+                // Then
+                result.Output.ShouldNotContain("-v, --version    Prints version information");
             }
 
             [Theory]
@@ -125,36 +121,14 @@ public sealed partial class CommandAppTests
                     configurator.SetApplicationVersion("1.0");
                     configurator.AddBranch<EmptyCommandSettings>("branch", branch =>
                     {
-                        branch.AddCommand<EmptyCommand>("hello");
+                        branch.AddCommand<EmptyCommand>("empty");
                     });
                 });
 
                 // When
-                var result = fixture.Run("branch", "hello", helpOption);
+                var result = fixture.Run("branch", "empty", helpOption);
 
                 // Then
-                result.Output.ShouldNotContain("-v, --version    Prints version information");
-            }
-
-            [Theory]
-            [InlineData("-?")]
-            [InlineData("-h")]
-            [InlineData("--help")]
-            public void Help_Should_Include_Command_Version_Flag_For_Command(string helpOption)
-            {
-                // Given
-                var fixture = new CommandAppTester();
-                fixture.Configure(configurator =>
-                {
-                    configurator.SetApplicationVersion("1.0");
-                    configurator.AddCommand<Spectre.Console.Tests.Data.VersionCommand>("empty");
-                });
-
-                // When
-                var result = fixture.Run("empty", helpOption);
-
-                // Then
-                result.Output.ShouldContain("-v, --version    The command version");
                 result.Output.ShouldNotContain("-v, --version    Prints version information");
             }
 
@@ -180,6 +154,28 @@ public sealed partial class CommandAppTests
 
                 // When
                 var result = fixture.Run(helpOption);
+
+                // Then
+                result.Output.ShouldContain("-v, --version    The command version");
+                result.Output.ShouldNotContain("-v, --version    Prints version information");
+            }
+
+            [Theory]
+            [InlineData("-?")]
+            [InlineData("-h")]
+            [InlineData("--help")]
+            public void Help_Should_Include_Command_Version_Flag_For_Command(string helpOption)
+            {
+                // Given
+                var fixture = new CommandAppTester();
+                fixture.Configure(configurator =>
+                {
+                    configurator.SetApplicationVersion("1.0");
+                    configurator.AddCommand<Spectre.Console.Tests.Data.VersionCommand>("hello");
+                });
+
+                // When
+                var result = fixture.Run("hello", helpOption);
 
                 // Then
                 result.Output.ShouldContain("-v, --version    The command version");
@@ -235,8 +231,6 @@ public sealed partial class CommandAppTests
                 result.Output.ShouldContain("-v, --version    The command version");
                 result.Output.ShouldNotContain("-v, --version    Prints version information");
             }
-
-
         }
     }
 }
