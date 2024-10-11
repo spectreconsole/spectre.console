@@ -14,6 +14,8 @@ internal sealed class CommandExecutor
 
     public async Task<int> Execute(IConfiguration configuration, IEnumerable<string> args)
     {
+        CommandTreeParserResult parsedResult;
+
         if (configuration == null)
         {
             throw new ArgumentNullException(nameof(configuration));
@@ -33,22 +35,43 @@ internal sealed class CommandExecutor
         var firstArgument = arguments.FirstOrDefault();
         if (firstArgument != null)
         {
-            // Asking for version? Kind of a hack, but it's alright.
-            // We should probably make this a bit better in the future.
+            // Asking for version?
             if (firstArgument.Equals("--version", StringComparison.OrdinalIgnoreCase) ||
                 firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase))
             {
                 if (configuration.Settings.ApplicationVersion != null)
                 {
-                    var console = configuration.Settings.Console.GetConsole();
-                    console.MarkupLine(configuration.Settings.ApplicationVersion);
-                    return 0;
+                    // We need to check if the command has a version option on its setting class.
+                    // Do this by first parsing the command line args and checking the remaining args.
+                    try
+                    {
+                        // Parse and map the model against the arguments.
+                        parsedResult = ParseCommandLineArguments(model, configuration.Settings, arguments);
+                    }
+                    catch (Exception)
+                    {
+                        // Something went wrong with parsing the command line arguments,
+                        // however we know the first argument is a version option.
+                        var console = configuration.Settings.Console.GetConsole();
+                        console.MarkupLine(configuration.Settings.ApplicationVersion);
+                        return 0;
+                    }
+
+                    // Check the parsed remaining args for the version options.
+                    if ((firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase) && parsedResult.Remaining.Parsed.Contains("-v")) ||
+                        (firstArgument.Equals("--version", StringComparison.OrdinalIgnoreCase) && parsedResult.Remaining.Parsed.Contains("--version")))
+                    {
+                        // The version option is not a member of the command settings.
+                        var console = configuration.Settings.Console.GetConsole();
+                        console.MarkupLine(configuration.Settings.ApplicationVersion);
+                        return 0;
+                    }
                 }
             }
         }
 
         // Parse and map the model against the arguments.
-        var parsedResult = ParseCommandLineArguments(model, configuration.Settings, arguments);
+        parsedResult = ParseCommandLineArguments(model, configuration.Settings, arguments);
 
         // Register the arguments with the container.
         _registrar.RegisterInstance(typeof(CommandTreeParserResult), parsedResult);
