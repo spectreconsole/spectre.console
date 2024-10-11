@@ -4,11 +4,17 @@ public sealed partial class CommandAppTests
 {
     public sealed class Version
     {
-        [Fact]
-        public void Should_Output_CLI_Version_To_The_Console()
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void Should_Output_CLI_Version_To_The_Console(bool strictParsing)
         {
             // Given
             var fixture = new CommandAppTester();
+            fixture.Configure(configurator =>
+            {
+                configurator.Settings.StrictParsing = strictParsing;
+            });
 
             // When
             var result = fixture.Run(Constants.VersionCommand);
@@ -18,14 +24,17 @@ public sealed partial class CommandAppTests
         }
 
         [Theory]
-        [InlineData("-v")]
-        [InlineData("--version")]
-        public void Should_Output_Application_Version_To_The_Console_With_No_Command(string versionOption)
+        [InlineData("-v", false)]
+        [InlineData("-v", true)]
+        [InlineData("--version", false)]
+        [InlineData("--version", true)]
+        public void Should_Output_Application_Version_To_The_Console_With_No_Command(string versionOption, bool strictParsing)
         {
             // Given
             var fixture = new CommandAppTester();
             fixture.Configure(configurator =>
             {
+                configurator.Settings.StrictParsing = strictParsing;
                 configurator.SetApplicationVersion("1.0");
             });
 
@@ -37,12 +46,18 @@ public sealed partial class CommandAppTests
         }
 
         [Theory]
-        [InlineData("-v")]
-        [InlineData("--version")]
-        public void Should_Not_Display_Version_If_Not_Specified(string versionOption)
+        [InlineData("-v", false)]
+        [InlineData("-v", true)]
+        [InlineData("--version", false)]
+        [InlineData("--version", true)]
+        public void Should_Not_Display_Version_If_Not_Specified(string versionOption, bool strictParsing)
         {
             // Given
             var fixture = new CommandAppTester();
+            fixture.Configure(configurator =>
+            {
+                configurator.Settings.StrictParsing = strictParsing;
+            });
 
             // When
             var result = fixture.Run(versionOption);
@@ -53,15 +68,18 @@ public sealed partial class CommandAppTests
         }
 
         [Theory]
-        [InlineData("-v")]
-        [InlineData("--version")]
-        public void Should_Output_Application_Version_To_The_Console_With_Default_Command(string versionOption)
+        [InlineData("-v", false)]
+        [InlineData("-v", true)]
+        [InlineData("--version", false)]
+        [InlineData("--version", true)]
+        public void Should_Output_Application_Version_To_The_Console_With_Default_Command(string versionOption, bool strictParsing)
         {
             // Given
             var fixture = new CommandAppTester();
             fixture.SetDefaultCommand<EmptyCommand>();
             fixture.Configure(configurator =>
             {
+                configurator.Settings.StrictParsing = strictParsing;
                 configurator.SetApplicationVersion("1.0");
             });
 
@@ -73,14 +91,17 @@ public sealed partial class CommandAppTests
         }
 
         [Theory]
-        [InlineData("-v")]
-        [InlineData("--version")]
-        public void Should_Execute_Command_Not_Output_Application_Version_To_The_Console(string versionOption)
+        [InlineData("-v", false)]
+        [InlineData("-v", true)]
+        [InlineData("--version", false)]
+        [InlineData("--version", true)]
+        public void Should_Execute_Command_Not_Output_Application_Version_To_The_Console(string versionOption, bool strictParsing)
         {
             // Given
             var fixture = new CommandAppTester();
             fixture.Configure(configurator =>
             {
+                configurator.Settings.StrictParsing = strictParsing;
                 configurator.SetApplicationVersion("1.0");
                 configurator.AddCommand<EmptyCommand>("empty");
             });
@@ -94,14 +115,17 @@ public sealed partial class CommandAppTests
         }
 
         [Theory]
-        [InlineData("-v")]
-        [InlineData("--version")]
-        public void Should_Output_Application_Version_To_The_Console_With_Branch_Default_Command(string versionOption)
+        [InlineData("-v", false)]
+        [InlineData("-v", true)]
+        [InlineData("--version", false)]
+        [InlineData("--version", true)]
+        public void Should_Output_Application_Version_To_The_Console_With_Branch_Default_Command(string versionOption, bool strictParsing)
         {
             // Given
             var fixture = new CommandAppTester();
             fixture.Configure(configurator =>
             {
+                configurator.Settings.StrictParsing = strictParsing;
                 configurator.SetApplicationVersion("1.0");
                 configurator.AddBranch<EmptyCommandSettings>("branch", branch =>
                 {
@@ -117,14 +141,17 @@ public sealed partial class CommandAppTests
         }
 
         [Theory]
-        [InlineData("-v")]
-        [InlineData("--version")]
-        public void Should_Execute_Branch_Default_Command_Not_Output_Application_Version_To_The_Console(string versionOption)
+        [InlineData("-v", false)]
+        [InlineData("-v", true)]
+        [InlineData("--version", false)]
+        [InlineData("--version", true)]
+        public void Should_Execute_Branch_Default_Command_Not_Output_Application_Version_To_The_Console(string versionOption, bool strictParsing)
         {
             // Given
             var fixture = new CommandAppTester();
             fixture.Configure(configurator =>
             {
+                configurator.Settings.StrictParsing = strictParsing;
                 configurator.SetApplicationVersion("1.0");
                 configurator.AddBranch<EmptyCommandSettings>("branch", branch =>
                 {
@@ -141,14 +168,17 @@ public sealed partial class CommandAppTests
         }
 
         [Theory]
-        [InlineData("-v")]
-        [InlineData("--version")]
-        public void Should_Execute_Branch_Command_Not_Output_Application_Version_To_The_Console(string versionOption)
+        [InlineData("-v", false)]
+        [InlineData("-v", true)]
+        [InlineData("--version", false)]
+        [InlineData("--version", true)]
+        public void Should_Execute_Branch_Command_Not_Output_Application_Version_To_The_Console(string versionOption, bool strictParsing)
         {
             // Given
             var fixture = new CommandAppTester();
             fixture.Configure(configurator =>
             {
+                configurator.Settings.StrictParsing = strictParsing;
                 configurator.SetApplicationVersion("1.0");
                 configurator.AddBranch<EmptyCommandSettings>("branch", branch =>
                 {
@@ -169,15 +199,18 @@ public sealed partial class CommandAppTests
         /// then execute this command instead of displaying the explicitly set Application Version.
         /// </summary>
         [Theory]
-        [InlineData("-v")]
-        [InlineData("--version")]
-        public void Should_Execute_Default_VersionCommand_Not_Output_Application_Version_To_The_Console(string versionOption)
+        [InlineData("-v", false)]
+        [InlineData("-v", true)]
+        [InlineData("--version", false)]
+        [InlineData("--version", true)]
+        public void Should_Execute_Default_VersionCommand_Not_Output_Application_Version_To_The_Console(string versionOption, bool strictParsing)
         {
             // Given
             var fixture = new CommandAppTester();
             fixture.SetDefaultCommand<Spectre.Console.Tests.Data.VersionCommand>();
             fixture.Configure(configurator =>
             {
+                configurator.Settings.StrictParsing = strictParsing;
                 configurator.SetApplicationVersion("1.0");
             });
 
@@ -189,14 +222,17 @@ public sealed partial class CommandAppTests
         }
 
         [Theory]
-        [InlineData("-v")]
-        [InlineData("--version")]
-        public void Should_Execute_VersionCommand_Not_Output_Application_Version_To_The_Console(string versionOption)
+        [InlineData("-v", false)]
+        [InlineData("-v", true)]
+        [InlineData("--version", false)]
+        [InlineData("--version", true)]
+        public void Should_Execute_VersionCommand_Not_Output_Application_Version_To_The_Console(string versionOption, bool strictParsing)
         {
             // Given
             var fixture = new CommandAppTester();
             fixture.Configure(configurator =>
             {
+                configurator.Settings.StrictParsing = strictParsing;
                 configurator.SetApplicationVersion("1.0");
                 configurator.AddCommand<Spectre.Console.Tests.Data.VersionCommand>("hello");
             });
@@ -209,14 +245,17 @@ public sealed partial class CommandAppTests
         }
 
         [Theory]
-        [InlineData("-v")]
-        [InlineData("--version")]
-        public void Should_Execute_Branch_Default_VersionCommand_Not_Output_Application_Version_To_The_Console(string versionOption)
+        [InlineData("-v", false)]
+        [InlineData("-v", true)]
+        [InlineData("--version", false)]
+        [InlineData("--version", true)]
+        public void Should_Execute_Branch_Default_VersionCommand_Not_Output_Application_Version_To_The_Console(string versionOption, bool strictParsing)
         {
             // Given
             var fixture = new CommandAppTester();
             fixture.Configure(configurator =>
             {
+                configurator.Settings.StrictParsing = strictParsing;
                 configurator.SetApplicationVersion("1.0");
                 configurator.AddBranch<VersionSettings>("branch", branch =>
                 {
@@ -232,14 +271,17 @@ public sealed partial class CommandAppTests
         }
 
         [Theory]
-        [InlineData("-v")]
-        [InlineData("--version")]
-        public void Should_Execute_Branch_VersionCommand_Not_Output_Application_Version_To_The_Console(string versionOption)
+        [InlineData("-v", false)]
+        [InlineData("-v", true)]
+        [InlineData("--version", false)]
+        [InlineData("--version", true)]
+        public void Should_Execute_Branch_VersionCommand_Not_Output_Application_Version_To_The_Console(string versionOption, bool strictParsing)
         {
             // Given
             var fixture = new CommandAppTester();
             fixture.Configure(configurator =>
             {
+                configurator.Settings.StrictParsing = strictParsing;
                 configurator.SetApplicationVersion("1.0");
                 configurator.AddBranch<VersionSettings>("branch", branch =>
                 {
