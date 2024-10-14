@@ -93,7 +93,7 @@ public sealed partial class CommandAppTests
         [Theory]
         [InlineData("-v")]
         [InlineData("--version")]
-        public void Should_Execute_Command_Not_Output_Application_Version_To_The_Console(string versionOption)
+        public void Should_Execute_Command_Not_Output_Application_Version_To_The_Console_Relaxed_Parsing(string versionOption)
         {
             // Given
             var fixture = new CommandAppTester();
@@ -140,7 +140,7 @@ public sealed partial class CommandAppTests
         [Theory]
         [InlineData("-v")]
         [InlineData("--version")]
-        public void Should_Execute_Branch_Default_Command_Not_Output_Application_Version_To_The_Console(string versionOption)
+        public void Should_Execute_Branch_Default_Command_Not_Output_Application_Version_To_The_Console_Relaxed_Parsing(string versionOption)
         {
             // Given
             var fixture = new CommandAppTester();
@@ -164,7 +164,7 @@ public sealed partial class CommandAppTests
         [Theory]
         [InlineData("-v")]
         [InlineData("--version")]
-        public void Should_Execute_Branch_Command_Not_Output_Application_Version_To_The_Console(string versionOption)
+        public void Should_Execute_Branch_Command_Not_Output_Application_Version_To_The_Console_Relaxed_Parsing(string versionOption)
         {
             // Given
             var fixture = new CommandAppTester();
