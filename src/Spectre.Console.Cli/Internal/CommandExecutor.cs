@@ -36,8 +36,8 @@ internal sealed class CommandExecutor
         if (firstArgument != null)
         {
             // Asking for version?
-            if (firstArgument.Equals("--version", StringComparison.OrdinalIgnoreCase) ||
-                firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase))
+            if (firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase) ||
+                firstArgument.Equals("--version", StringComparison.OrdinalIgnoreCase))
             {
                 if (configuration.Settings.ApplicationVersion != null)
                 {
