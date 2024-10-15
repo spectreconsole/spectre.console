@@ -88,16 +88,27 @@ public class HelpProvider : IHelpProvider
                 new HelpOption("h", "help", null, null, resources.PrintHelpDescription, null),
             };
 
-            // Version information applies to the entire application
-            // Include the "-v" option in the help when at the root of the command line application
-            // Don't allow the "-v" option if users have specified one or more sub-commands
-            if ((command?.Parent == null) && !(command?.IsBranch ?? false))
+            // Version information applies to the entire CLI application.
+            // Whether to show the "-v|--version" option in the help is determined as per:
+            // - If an application version has been set, and
+            // -- When at the root of the application, or
+            // -- When at the root of the application with a default command, unless
+            // --- The default command has a version option in its settings
+            if ((command?.Parent == null) && !(command?.IsBranch ?? false) && (command?.IsDefaultCommand ?? true))
             {
-                // Only show the version command if there is an
-                // application version set.
-                if (model.ApplicationVersion != null)
+                // Check whether the default command has a version option in its settings.
+                var versionCommandOption = command?.Parameters?.OfType<CommandOption>()?.FirstOrDefault(o =>
+                    (o.ShortNames.FirstOrDefault(v => v.Equals("v", StringComparison.OrdinalIgnoreCase)) != null) ||
+                    (o.LongNames.FirstOrDefault(v => v.Equals("version", StringComparison.OrdinalIgnoreCase)) != null));
+
+                // Only show the version option if the default command doesn't have a version option in its settings.
+                if (versionCommandOption == null)
                 {
-                    parameters.Add(new HelpOption("v", "version", null, null, resources.PrintVersionDescription, null));
+                    // Only show the version option if there is an application version set.
+                    if (model.ApplicationVersion != null)
+                    {
+                        parameters.Add(new HelpOption("v", "version", null, null, resources.PrintVersionDescription, null));
+                    }
                 }
             }
 
