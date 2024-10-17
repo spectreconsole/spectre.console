@@ -75,7 +75,7 @@ var app = new CommandApp<DefaultCommand>(registrar);
 return app.Run(args);
 ```
 
-`TypeRegistrar` is a custom class that must be created by the user. This [example using `Microsoft.Extensions.DependencyInjection` as the container](https://github.com/spectreconsole/spectre.console/tree/main/examples/Cli/Injection) provides an example `TypeRegistrar` and `TypeResolver` that can be added to your application with small adjustments for your DI container.
+`TypeRegistrar` is a custom class that must be created by the user. This [example using `Microsoft.Extensions.DependencyInjection` as the container](https://github.com/spectreconsole/examples/tree/main/examples/Cli/Injection) provides an example `TypeRegistrar` and `TypeResolver` that can be added to your application with small adjustments for your DI container.
 
 Hint: If you do write your own implementation of `TypeRegistrar` and `TypeResolver` and you have some form of unit tests in place for your project,
 there is a utility `TypeRegistrarBaseTests` available that can be used to ensure your implementations adhere to the required implementation. Simply call `TypeRegistrarBaseTests.RunAllTests()` and expect no `TypeRegistrarBaseTests.TestFailedException` to be thrown.
@@ -89,4 +89,4 @@ This provides an opportunity to modify the result and also to tear down any infr
 
 The `Intercept`-Method of each interceptor is run before the command is executed and the `InterceptResult`-Method is run after it. These are typically used for configuring logging or other infrastructure concerns.
 
-For an example of using the interceptor to configure logging, see the [Serilog demo](https://github.com/spectreconsole/spectre.console/tree/main/examples/Cli/Logging).
+For an example of using the interceptor to configure logging, see the [Serilog demo](https://github.com/spectreconsole/examples/tree/main/examples/Cli/Logging).
