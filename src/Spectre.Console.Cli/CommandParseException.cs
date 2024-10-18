@@ -113,4 +113,9 @@ public sealed class CommandParseException : CommandRuntimeException
         var text = $"[red]Error:[/] The value '[white]{value}[/]' is not in a correct format";
         return new CommandParseException("Could not parse value", new Markup(text));
     }
+
+    internal static CommandParseException UnknownParsingError()
+    {
+        return new CommandParseException("An unknown error occured when parsing the arguments.");
+    }
 }
