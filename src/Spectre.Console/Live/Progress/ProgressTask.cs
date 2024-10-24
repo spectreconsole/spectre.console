@@ -201,6 +201,7 @@ public sealed class ProgressTask : IProgress<double>
             if (_value > _maxValue)
             {
                 _value = _maxValue;
+                StopTime ??= DateTime.Now;
             }
 
             var timestamp = DateTime.Now;
