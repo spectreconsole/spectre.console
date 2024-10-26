@@ -92,4 +92,4 @@ This provides an opportunity to modify the result and also to tear down any infr
 
 The `Intercept`-Method of each interceptor is run before the command is executed and the `InterceptResult`-Method is run after it. These are typically used for configuring logging or other infrastructure concerns.
 
-For an example of using the interceptor to configure logging, see the [Serilog demo](https://github.com/spectreconsole/examples/tree/main/examples/Cli/Logging).
+For an example of using the interceptor to configure logging, see the [Serilog demo](https://github.com/spectreconsole/examples/tree/main/examples/Cli/Logging)
