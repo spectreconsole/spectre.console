@@ -11,7 +11,7 @@ internal static class Ratio
         {
             var (div, mod) = ((int)(x / y), x % y);
 
-            // If remainder is withing .0001 of 1 then we round up
+            // If remainder is within .0001 of 1 then we round up
             if (!(mod > 0.9999))
             {
                 return (div, mod);
