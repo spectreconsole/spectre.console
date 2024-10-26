@@ -17,7 +17,7 @@ internal sealed class CommandExecutor
             throw new ArgumentNullException(nameof(configuration));
         }
 
-        args ??= new List<string>();
+        var arguments = args.ToSafeReadOnlyList();
 
         _registrar.RegisterInstance(typeof(IConfiguration), configuration);
         _registrar.RegisterLazy(typeof(IAnsiConsole), () => configuration.Settings.Console.GetConsole());
@@ -31,7 +31,7 @@ internal sealed class CommandExecutor
         if (model.DefaultCommand == null)
         {
             // Got at least one argument?
-            var firstArgument = args.FirstOrDefault();
+            var firstArgument = arguments.FirstOrDefault();
             if (firstArgument != null)
             {
                 // Asking for version? Kind of a hack, but it's alright.
@@ -39,15 +39,18 @@ internal sealed class CommandExecutor
                 if (firstArgument.Equals("--version", StringComparison.OrdinalIgnoreCase) ||
                     firstArgument.Equals("-v", StringComparison.OrdinalIgnoreCase))
                 {
-                    var console = configuration.Settings.Console.GetConsole();
-                    console.WriteLine(ResolveApplicationVersion(configuration));
-                    return 0;
+                    if (configuration.Settings.ApplicationVersion != null)
+                    {
+                        var console = configuration.Settings.Console.GetConsole();
+                        console.MarkupLine(configuration.Settings.ApplicationVersion);
+                        return 0;
+                    }
                 }
             }
         }
 
         // Parse and map the model against the arguments.
-        var parsedResult = ParseCommandLineArguments(model, configuration.Settings, args);
+        var parsedResult = ParseCommandLineArguments(model, configuration.Settings, arguments);
 
         // Register the arguments with the container.
         _registrar.RegisterInstance(typeof(CommandTreeParserResult), parsedResult);
@@ -79,7 +82,7 @@ internal sealed class CommandExecutor
             }
 
             // Is this the default and is it called without arguments when there are required arguments?
-            if (leaf.Command.IsDefaultCommand && args.Count() == 0 && leaf.Command.Parameters.Any(p => p.Required))
+            if (leaf.Command.IsDefaultCommand && arguments.Count == 0 && leaf.Command.Parameters.Any(p => p.Required))
             {
                 // Display help for default command.
                 configuration.Settings.Console.SafeRender(helpProvider.Write(model, leaf.Command));
@@ -87,15 +90,18 @@ internal sealed class CommandExecutor
             }
 
             // Create the content.
-            var context = new CommandContext(parsedResult.Remaining, leaf.Command.Name, leaf.Command.Data);
+            var context = new CommandContext(
+                arguments,
+                parsedResult.Remaining,
+                leaf.Command.Name,
+                leaf.Command.Data);
 
             // Execute the command tree.
             return await Execute(leaf, parsedResult.Tree, context, resolver, configuration).ConfigureAwait(false);
         }
     }
 
-#pragma warning disable CS8603 // Possible null reference return.
-    private CommandTreeParserResult ParseCommandLineArguments(CommandModel model, CommandAppSettings settings, IEnumerable<string> args)
+    private CommandTreeParserResult ParseCommandLineArguments(CommandModel model, CommandAppSettings settings, IReadOnlyList<string> args)
     {
         var parser = new CommandTreeParser(model, settings.CaseSensitivity, settings.ParsingMode, settings.ConvertFlagsToRemainingArguments);
 
@@ -103,7 +109,7 @@ internal sealed class CommandExecutor
         var tokenizerResult = CommandTreeTokenizer.Tokenize(args);
         var parsedResult = parser.Parse(parserContext, tokenizerResult);
 
-        var lastParsedLeaf = parsedResult?.Tree?.GetLeafCommand();
+        var lastParsedLeaf = parsedResult.Tree?.GetLeafCommand();
         var lastParsedCommand = lastParsedLeaf?.Command;
         if (lastParsedLeaf != null && lastParsedCommand != null &&
             lastParsedCommand.IsBranch && !lastParsedLeaf.ShowHelp &&
@@ -121,14 +127,6 @@ internal sealed class CommandExecutor
         }
 
         return parsedResult;
-    }
-#pragma warning restore CS8603 // Possible null reference return.
-
-    private static string ResolveApplicationVersion(IConfiguration configuration)
-    {
-        return
-            configuration.Settings.ApplicationVersion ?? // potential override
-            VersionHelper.GetVersion(Assembly.GetEntryAssembly());
     }
 
     private static async Task<int> Execute(

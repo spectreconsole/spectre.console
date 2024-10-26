@@ -105,7 +105,7 @@ A `CommandOption` can be defined as an array like the following:
 
 ```csharp
 [CommandOption("-n|--name <VALUES>")]
-public string[] Names { get; set; },
+public string[] Names { get; set; }
 ```
 
 This would allow the user to run `app.exe --name Dwayne --name Elizondo --name "Mountain Dew" --name Herbert --name Camacho` and would result in a 5 element array consisting of Dwayne, Elizondo, Mountain Dew, Herbert and Camacho.

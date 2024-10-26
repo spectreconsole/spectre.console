@@ -41,7 +41,7 @@ public class HelpProvider : IHelpProvider
         public bool Required { get; }
         public string? Description { get; }
 
-        public HelpArgument(string name, int position, bool required, string? description)
+        private HelpArgument(string name, int position, bool required, string? description)
         {
             Name = name;
             Position = position;
@@ -68,7 +68,7 @@ public class HelpProvider : IHelpProvider
         public string? Description { get; }
         public object? DefaultValue { get; }
 
-        public HelpOption(string? @short, string? @long, string? @value, bool? valueIsOptional, string? description, object? defaultValue)
+        private HelpOption(string? @short, string? @long, string? @value, bool? valueIsOptional, string? description, object? defaultValue)
         {
             Short = @short;
             Long = @long;
@@ -78,17 +78,27 @@ public class HelpProvider : IHelpProvider
             DefaultValue = defaultValue;
         }
 
-        public static IReadOnlyList<HelpOption> Get(ICommandInfo? command, HelpProviderResources resources)
+        public static IReadOnlyList<HelpOption> Get(
+            ICommandModel model,
+            ICommandInfo? command,
+            HelpProviderResources resources)
         {
-            var parameters = new List<HelpOption>();
-            parameters.Add(new HelpOption("h", "help", null, null, resources.PrintHelpDescription, null));
+            var parameters = new List<HelpOption>
+            {
+                new HelpOption("h", "help", null, null, resources.PrintHelpDescription, null),
+            };
 
             // Version information applies to the entire application
             // Include the "-v" option in the help when at the root of the command line application
             // Don't allow the "-v" option if users have specified one or more sub-commands
-            if ((command == null || command?.Parent == null) && !(command?.IsBranch ?? false))
+            if ((command?.Parent == null) && !(command?.IsBranch ?? false))
             {
-                parameters.Add(new HelpOption("v", "version", null, null, resources.PrintVersionDescription, null));
+                // Only show the version command if there is an
+                // application version set.
+                if (model.ApplicationVersion != null)
+                {
+                    parameters.Add(new HelpOption("v", "version", null, null, resources.PrintVersionDescription, null));
+                }
             }
 
             parameters.AddRange(command?.Parameters.OfType<ICommandOption>().Where(o => !o.IsHidden).Select(o =>
@@ -99,11 +109,6 @@ public class HelpProvider : IHelpProvider
                 ?? Array.Empty<HelpOption>());
             return parameters;
         }
-    }
-
-    internal Composer NewComposer()
-    {
-        return new Composer(RenderMarkupInline);
     }
 
     /// <summary>
@@ -383,7 +388,7 @@ public class HelpProvider : IHelpProvider
     public virtual IEnumerable<IRenderable> GetOptions(ICommandModel model, ICommandInfo? command)
     {
         // Collect all options into a single structure.
-        var parameters = HelpOption.Get(command, resources);
+        var parameters = HelpOption.Get(model, command, resources);
         if (parameters.Count == 0)
         {
             return Array.Empty<IRenderable>();
@@ -420,7 +425,7 @@ public class HelpProvider : IHelpProvider
 
             if (defaultValueColumn)
             {
-                columns.Add(GetOptionDefaultValue(option.DefaultValue));
+                columns.Add(GetDefaultValueForOption(option.DefaultValue));
             }
 
             columns.Add(NewComposer().Text(option.Description?.TrimEnd('.') ?? " "));
@@ -431,60 +436,6 @@ public class HelpProvider : IHelpProvider
         result.Add(grid);
 
         return result;
-    }
-
-    private IRenderable GetOptionParts(HelpOption option)
-    {
-        var composer = NewComposer();
-
-        if (option.Short != null)
-        {
-            composer.Text("-").Text(option.Short);
-            if (option.Long != null)
-            {
-                composer.Text(", ");
-            }
-        }
-        else
-        {
-            composer.Text("  ");
-            if (option.Long != null)
-            {
-                composer.Text("  ");
-            }
-        }
-
-        if (option.Long != null)
-        {
-            composer.Text("--").Text(option.Long);
-        }
-
-        if (option.Value != null)
-        {
-            composer.Text(" ");
-            if (option.ValueIsOptional ?? false)
-            {
-                composer.Style(helpStyles?.Options?.OptionalOption ?? Style.Plain, $"[{option.Value}]");
-            }
-            else
-            {
-                composer.Style(helpStyles?.Options?.RequiredOption ?? Style.Plain, $"<{option.Value}>");
-            }
-        }
-
-        return composer;
-    }
-
-    private IRenderable GetOptionDefaultValue(object? defaultValue)
-    {
-        return defaultValue switch
-        {
-            null => NewComposer().Text(" "),
-            "" => NewComposer().Text(" "),
-            Array { Length: 0 } => NewComposer().Text(" "),
-            Array array => NewComposer().Join(", ", array.Cast<object>().Select(o => NewComposer().Style(helpStyles?.Options?.DefaultValue ?? Style.Plain, o.ToString() ?? string.Empty))),
-            _ => NewComposer().Style(helpStyles?.Options?.DefaultValue ?? Style.Plain, defaultValue?.ToString() ?? string.Empty),
-        };
     }
 
     /// <summary>
@@ -555,5 +506,64 @@ public class HelpProvider : IHelpProvider
     public virtual IEnumerable<IRenderable> GetFooter(ICommandModel model, ICommandInfo? command)
     {
         yield break;
+    }
+
+    private Composer NewComposer()
+    {
+        return new Composer(RenderMarkupInline);
+    }
+
+    private IRenderable GetOptionParts(HelpOption option)
+    {
+        var composer = NewComposer();
+
+        if (option.Short != null)
+        {
+            composer.Text("-").Text(option.Short);
+            if (option.Long != null)
+            {
+                composer.Text(", ");
+            }
+        }
+        else
+        {
+            composer.Text("  ");
+            if (option.Long != null)
+            {
+                composer.Text("  ");
+            }
+        }
+
+        if (option.Long != null)
+        {
+            composer.Text("--").Text(option.Long);
+        }
+
+        if (option.Value != null)
+        {
+            composer.Text(" ");
+            if (option.ValueIsOptional ?? false)
+            {
+                composer.Style(helpStyles?.Options?.OptionalOption ?? Style.Plain, $"[{option.Value}]");
+            }
+            else
+            {
+                composer.Style(helpStyles?.Options?.RequiredOption ?? Style.Plain, $"<{option.Value}>");
+            }
+        }
+
+        return composer;
+    }
+
+    private Composer GetDefaultValueForOption(object? defaultValue)
+    {
+        return defaultValue switch
+        {
+            null => NewComposer().Text(" "),
+            "" => NewComposer().Text(" "),
+            Array { Length: 0 } => NewComposer().Text(" "),
+            Array array => NewComposer().Join(", ", array.Cast<object>().Select(o => NewComposer().Style(helpStyles?.Options?.DefaultValue ?? Style.Plain, o.ToString() ?? string.Empty))),
+            _ => NewComposer().Style(helpStyles?.Options?.DefaultValue ?? Style.Plain, defaultValue?.ToString() ?? string.Empty),
+        };
     }
 }

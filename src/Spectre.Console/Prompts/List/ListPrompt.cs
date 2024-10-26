@@ -14,6 +14,7 @@ internal sealed class ListPrompt<T>
 
     public async Task<ListPromptState<T>> Show(
         ListPromptTree<T> tree,
+        Func<T, string> converter,
         SelectionMode selectionMode,
         bool skipUnselectableItems,
         bool searchEnabled,
@@ -41,7 +42,12 @@ internal sealed class ListPrompt<T>
         }
 
         var nodes = tree.Traverse().ToList();
-        var state = new ListPromptState<T>(nodes, _strategy.CalculatePageSize(_console, nodes.Count, requestedPageSize), wrapAround, selectionMode, skipUnselectableItems, searchEnabled);
+        if (nodes.Count == 0)
+        {
+            throw new InvalidOperationException("Cannot show an empty selection prompt. Please call the AddChoice() method to configure the prompt.");
+        }
+
+        var state = new ListPromptState<T>(nodes, converter, _strategy.CalculatePageSize(_console, nodes.Count, requestedPageSize), wrapAround, selectionMode, skipUnselectableItems, searchEnabled);
         var hook = new ListPromptRenderHook<T>(_console, () => BuildRenderable(state));
 
         using (new RenderHookScope(_console, hook))
