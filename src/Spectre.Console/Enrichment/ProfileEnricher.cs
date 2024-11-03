@@ -5,6 +5,7 @@ internal static class ProfileEnricher
     private static readonly List<IProfileEnricher> _defaultEnrichers = new List<IProfileEnricher>
         {
             new AppVeyorEnricher(),
+            new AzurePipelinesEnricher(),
             new BambooEnricher(),
             new BitbucketEnricher(),
             new BitriseEnricher(),
