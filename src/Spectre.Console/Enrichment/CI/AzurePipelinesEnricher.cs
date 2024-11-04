@@ -7,7 +7,7 @@ internal sealed class AzurePipelinesEnricher : IProfileEnricher
     public bool Enabled(IDictionary<string, string> environmentVariables)
     {
         environmentVariables.TryGetValue("TF_BUILD", out var environmentValue);
-        return string.IsNullOrWhiteSpace(environmentValue);
+        return !string.IsNullOrWhiteSpace(environmentValue);
     }
 
     public void Enrich(Profile profile)
