@@ -9,7 +9,17 @@ internal static class Ratio
     {
         static (int Div, float Mod) DivMod(float x, float y)
         {
-            return ((int)(x / y), x % y);
+            var (div, mod) = ((int)(x / y), x % y);
+
+            // If remainder is within .0001 of 1 then we round up
+            if (!(mod > 0.9999))
+            {
+                return (div, mod);
+            }
+
+            div++;
+            mod = 0;
+            return (div, mod);
         }
 
         static int? GetEdgeWidth(IRatioResolvable edge)
@@ -22,7 +32,7 @@ internal static class Ratio
             return edge.Size;
         }
 
-        var sizes = edges.Select(x => GetEdgeWidth(x)).ToArray();
+        var sizes = edges.Select(GetEdgeWidth).ToArray();
 
         while (sizes.Any(s => s == null))
         {

@@ -3,6 +3,7 @@ namespace Spectre.Console.Cli;
 internal sealed class CommandModel : ICommandContainer, ICommandModel
 {
     public string? ApplicationName { get; }
+    public string? ApplicationVersion { get; }
     public ParsingMode ParsingMode { get; }
     public IList<CommandInfo> Commands { get; }
     public IList<string[]> Examples { get; }
@@ -20,9 +21,10 @@ internal sealed class CommandModel : ICommandContainer, ICommandModel
         IEnumerable<string[]> examples)
     {
         ApplicationName = settings.ApplicationName;
+        ApplicationVersion = settings.ApplicationVersion;
         ParsingMode = settings.ParsingMode;
-        Commands = new List<CommandInfo>(commands ?? Array.Empty<CommandInfo>());
-        Examples = new List<string[]>(examples ?? Array.Empty<string[]>());
+        Commands = new List<CommandInfo>(commands);
+        Examples = new List<string[]>(examples);
     }
 
     /// <summary>

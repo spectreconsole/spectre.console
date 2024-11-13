@@ -43,24 +43,8 @@ https://spectreconsole.net/
 
 ## Exemplos
 
-Para ver o `Spectre.Console` em ação, instale a ferramenta global 
-[dotnet-example](https://github.com/patriksvensson/dotnet-example).
-
-```
-> dotnet tool restore
-```
-
-Agora você pode listar os exemplos disponíveis neste repositório:
-
-```
-> dotnet example
-```
-
-E para executar um exemplo:
-
-```
-> dotnet example tables
-```
+To see `Spectre.Console` in action, please see the 
+[examples repository](https://github.com/spectreconsole/examples).
 
 ## Patrocinadores
 
@@ -83,7 +67,7 @@ Eu estou muito agradecido.
 
 ## Licença
 
-Copyright © Patrik Svensson, Phil Scott, Nils Andresen
+Copyright © Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi, Frank Ray
 
 Spectre.Console é fornecido no estado em que se encontra sob a licença do MIT. Para obter mais informações, consulte o arquivo [LICENSE](LICENSE.md).
 

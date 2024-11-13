@@ -39,23 +39,8 @@ https://spectreconsole.net/
 
 ## 例子
 
-如果想直接运行`Spectre.Console`的例子，则需要安装[dotnet-example](https://github.com/patriksvensson/dotnet-example)工具。
-
-```
-> dotnet tool restore
-```
-
-然后你可以列出仓库里的所有例子：
-
-```
-> dotnet example
-```
-
-跑一个看看效果：
-
-```
-> dotnet example tables
-```
+To see `Spectre.Console` in action, please see the 
+[examples repository](https://github.com/spectreconsole/examples).
 
 ## Sponsors
 
@@ -77,7 +62,7 @@ https://spectreconsole.net/
 
 ## 开源许可
 
-版权所有 © Patrik Svensson, Phil Scott, Nils Andresen
+版权所有 © Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi, Frank Ray
 
 Spectre.Console 基于 MIT 协议提供。查看 LICENSE 文件了解更多信息。
 

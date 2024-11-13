@@ -3,6 +3,8 @@ namespace Spectre.Console;
 internal sealed class ListPromptState<T>
     where T : notnull
 {
+    private readonly Func<T, string> _converter;
+
     public int Index { get; private set; }
     public int ItemCount => Items.Count;
     public int PageSize { get; }
@@ -16,8 +18,15 @@ internal sealed class ListPromptState<T>
     public ListPromptItem<T> Current => Items[Index];
     public string SearchText { get; private set; }
 
-    public ListPromptState(IReadOnlyList<ListPromptItem<T>> items, int pageSize, bool wrapAround, SelectionMode mode, bool skipUnselectableItems, bool searchEnabled)
+    public ListPromptState(
+        IReadOnlyList<ListPromptItem<T>> items,
+        Func<T, string> converter,
+        int pageSize, bool wrapAround,
+        SelectionMode mode,
+        bool skipUnselectableItems,
+        bool searchEnabled)
     {
+        _converter = converter ?? throw new ArgumentNullException(nameof(converter));
         Items = items;
         PageSize = pageSize;
         WrapAround = wrapAround;
@@ -126,7 +135,11 @@ internal sealed class ListPromptState<T>
             if (!char.IsControl(keyInfo.KeyChar))
             {
                 search = SearchText + keyInfo.KeyChar;
-                var item = Items.FirstOrDefault(x => x.Data.ToString()?.Contains(search, StringComparison.OrdinalIgnoreCase) == true && (!x.IsGroup || Mode != SelectionMode.Leaf));
+
+                var item = Items.FirstOrDefault(x =>
+                    _converter.Invoke(x.Data).Contains(search, StringComparison.OrdinalIgnoreCase)
+                    && (!x.IsGroup || Mode != SelectionMode.Leaf));
+
                 if (item != null)
                 {
                     index = Items.IndexOf(item);
@@ -140,7 +153,10 @@ internal sealed class ListPromptState<T>
                     search = search.Substring(0, search.Length - 1);
                 }
 
-                var item = Items.FirstOrDefault(x => x.Data.ToString()?.Contains(search, StringComparison.OrdinalIgnoreCase) == true && (!x.IsGroup || Mode != SelectionMode.Leaf));
+                var item = Items.FirstOrDefault(x =>
+                    _converter.Invoke(x.Data).Contains(search, StringComparison.OrdinalIgnoreCase) &&
+                    (!x.IsGroup || Mode != SelectionMode.Leaf));
+
                 if (item != null)
                 {
                     index = Items.IndexOf(item);

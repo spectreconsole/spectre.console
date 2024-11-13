@@ -1,0 +1,10 @@
+<pre style="font-size:90%;font-family:consolas,'Courier New',monospace">
+<span>┌─────────────────┬───────┬─────┐</span>
+<span>│</span><span> </span><span style="color: #FF0000;background-color: #000000">Foo</span><span>            </span><span> </span><span>│</span><span> </span><span style="color: #008000;font-weight: bold">Bar</span><span>  </span><span> </span><span>│</span><span> </span><span style="color: #0000FF;font-style: italic">Qux</span><span> </span><span>│</span>
+<span>├─────────────────┼───────┼─────┤</span>
+<span>│</span><span> </span><span style="text-decoration: underline">Corgi</span><span>          </span><span> </span><span>│</span><span> </span><span style="font-weight: bold;text-decoration: line-through">Waldo</span><span> </span><span>│</span><span> </span><span style="color: #7F7F7F">Zap</span><span> </span><span>│</span>
+<span>│</span><span> </span><span style="color: #FF0000">╭</span><span style="color: #FF0000">─────────────</span><span style="color: #FF0000">╮</span><span> </span><span>│</span><span> </span><span>     </span><span> </span><span>│</span><span> </span><span>   </span><span> </span><span>│</span>
+<span>│</span><span> </span><span style="color: #FF0000">│</span><span> </span><span style="color: #0000FF">Hello</span><span style="color: #0000FF"> </span><span style="color: #0000FF">World</span><span> </span><span style="color: #FF0000">│</span><span> </span><span>│</span><span> </span><span>     </span><span> </span><span>│</span><span> </span><span>   </span><span> </span><span>│</span>
+<span>│</span><span> </span><span style="color: #FF0000">╰</span><span style="color: #FF0000">─────────────</span><span style="color: #FF0000">╯</span><span> </span><span>│</span><span> </span><span>     </span><span> </span><span>│</span><span> </span><span>   </span><span> </span><span>│</span>
+<span>└─────────────────┴───────┴─────┘</span>
+</pre>
