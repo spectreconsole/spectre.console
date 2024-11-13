@@ -16,7 +16,7 @@ public sealed class TransferSpeedColumn : ProgressColumn
     public FileSizeBase Base { get; set; } = FileSizeBase.Binary;
 
     /// <summary>
-    /// Gets or sets a value indicating whether or not to display the transfer speed in bits.
+    /// Gets or sets a value indicating whether to display the transfer speed in bits.
     /// </summary>
     public bool DisplayBits { get; set; }
 

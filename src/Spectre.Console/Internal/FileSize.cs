@@ -12,7 +12,7 @@ internal struct FileSize
     /// <summary>
     /// If enabled, will display the output in bits, rather than bytes.
     /// </summary>
-    private readonly bool _displayBits = false;
+    private readonly bool _showBits = false;
 
     public string Suffix => GetSuffix();
 
@@ -29,11 +29,11 @@ internal struct FileSize
         Prefix = DetectPrefix(bytes);
     }
 
-    public FileSize(double bytes, FileSizeBase prefix, bool displayBits)
+    public FileSize(double bytes, FileSizeBase prefix, bool showBits)
     {
         Bytes = bytes;
         _prefixBase = prefix;
-        _displayBits = displayBits;
+        _showBits = showBits;
         Prefix = DetectPrefix(bytes);
     }
 
@@ -47,7 +47,7 @@ internal struct FileSize
     {
         var unitBase = Math.Pow((int)_prefixBase, (int)Prefix);
 
-        if (_displayBits)
+        if (_showBits)
         {
             var bits = Bits / unitBase;
             return Prefix == FileSizePrefix.None ?
@@ -78,7 +78,7 @@ internal struct FileSize
 
     private string GetSuffix()
     {
-        return (Bytes, Unit: Prefix, PrefixBase: _prefixBase, DisplayBits: _displayBits) switch
+        return (Bytes, Unit: Prefix, PrefixBase: _prefixBase, ShowBits: _showBits) switch
         {
             (_, FileSizePrefix.Kilo, FileSizeBase.Binary, false) => "KiB",
             (_, FileSizePrefix.Mega, FileSizeBase.Binary, false) => "MiB",
@@ -125,7 +125,7 @@ internal struct FileSize
 
     private FileSizePrefix DetectPrefix(double bytes)
     {
-        if (_displayBits)
+        if (_showBits)
         {
             bytes *= 8;
         }

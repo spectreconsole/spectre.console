@@ -10,10 +10,20 @@ public sealed class DownloadedColumn : ProgressColumn
     /// </summary>
     public CultureInfo? Culture { get; set; }
 
+    /// <summary>
+    /// Gets or sets the <see cref="FileSizeBase"/> to use.
+    /// </summary>
+    public FileSizeBase Base { get; set; } = FileSizeBase.Binary;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to display the transfer speed in bits.
+    /// </summary>
+    public bool DisplayBits { get; set; }
+
     /// <inheritdoc/>
     public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
     {
-        var total = new FileSize(task.MaxValue);
+        var total = new FileSize(task.MaxValue, Base, DisplayBits);
 
         if (task.IsFinished)
         {
