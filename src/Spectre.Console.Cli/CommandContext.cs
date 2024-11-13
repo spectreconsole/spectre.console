@@ -14,7 +14,7 @@ public sealed class CommandContext
     public IRemainingArguments Remaining { get; }
 
     /// <summary>
-    /// Gets all the arguments that were passed to the applicaton.
+    /// Gets all the arguments that were passed to the application.
     /// </summary>
     public IReadOnlyList<string> Arguments { get; }
 

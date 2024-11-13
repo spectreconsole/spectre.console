@@ -74,7 +74,7 @@ public interface ICommandAppSettings
     bool StrictParsing { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether or not flags found on the commnd line
+    /// Gets or sets a value indicating whether or not flags found on the command line
     /// that would normally result in a <see cref="CommandParseException"/> being thrown
     /// during parsing with the message "Flags cannot be assigned a value."
     /// should instead be added to the remaining arguments collection.
