@@ -22,24 +22,34 @@ internal struct FileSize
         Prefix = DetectPrefix(bytes);
     }
 
-    public FileSize(double bytes, FileSizeBase prefix)
+    public FileSize(double bytes, FileSizeBase @base)
     {
         Bytes = bytes;
-        _prefixBase = prefix;
+        _prefixBase = @base;
         Prefix = DetectPrefix(bytes);
     }
 
-    public FileSize(double bytes, FileSizeBase prefix, bool showBits)
+    public FileSize(double bytes, FileSizeBase @base, bool showBits)
     {
         Bytes = bytes;
-        _prefixBase = prefix;
         _showBits = showBits;
+
+        _prefixBase = @base;
         Prefix = DetectPrefix(bytes);
     }
 
     public FileSize(double bytes, FileSizePrefix prefix)
     {
         Bytes = bytes;
+        Prefix = prefix;
+    }
+
+    public FileSize(double bytes, FileSizePrefix prefix, FileSizeBase @base, bool showBits)
+    {
+        Bytes = bytes;
+        _showBits = showBits;
+
+        _prefixBase = @base;
         Prefix = prefix;
     }
 

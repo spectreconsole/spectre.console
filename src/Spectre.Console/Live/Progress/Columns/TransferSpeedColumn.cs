@@ -18,7 +18,7 @@ public sealed class TransferSpeedColumn : ProgressColumn
     /// <summary>
     /// Gets or sets a value indicating whether to display the transfer speed in bits.
     /// </summary>
-    public bool DisplayBits { get; set; }
+    public bool ShowBits { get; set; }
 
     /// <inheritdoc/>
     public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
@@ -28,7 +28,7 @@ public sealed class TransferSpeedColumn : ProgressColumn
             return new Text("?/s");
         }
 
-        var size = new FileSize(task.Speed.Value, Base, DisplayBits);
+        var size = new FileSize(task.Speed.Value, Base, ShowBits);
         return new Markup(string.Format("{0}/s", size.ToString(suffix: true, Culture)));
     }
 }

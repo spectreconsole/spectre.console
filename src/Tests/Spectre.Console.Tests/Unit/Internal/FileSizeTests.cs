@@ -34,7 +34,7 @@ public sealed class FileSizeTests
     public void Binary_Unit_In_Bits_Should_Return_Expected(double bytes, string expected)
     {
         // Given
-        var filesize = new FileSize(bytes, FileSizeBase.Binary, displayBits: true);
+        var filesize = new FileSize(bytes, FileSizeBase.Binary, showBits: true);
 
         // When
         var result = filesize.ToString();
@@ -74,7 +74,7 @@ public sealed class FileSizeTests
     public void Decimal_Unit_In_Bits_Should_Return_Expected(double bytes, string expected)
     {
         // Given
-        var filesize = new FileSize(bytes, FileSizeBase.Decimal, displayBits: true);
+        var filesize = new FileSize(bytes, FileSizeBase.Decimal, showBits: true);
 
         // When
         var result = filesize.ToString();
