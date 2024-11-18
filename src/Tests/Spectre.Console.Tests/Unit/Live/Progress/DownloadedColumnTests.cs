@@ -44,7 +44,7 @@ public sealed class DownloadedColumnTests
     }
 
     [Theory]
-    [InlineData(500 , 1000, "0.5/1.0 KB")]
+    [InlineData(500, 1000, "0.5/1.0 KB")]
     [InlineData(1000, 1000, "1.0 KB")]
     public void Decimal_Unit_In_Bytes_Should_Return_Expected(double value, double total, string expected)
     {

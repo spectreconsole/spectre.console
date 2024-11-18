@@ -28,7 +28,14 @@ public sealed class TransferSpeedColumn : ProgressColumn
             return new Text("?/s");
         }
 
-        var size = new FileSize(task.Speed.Value, Base, ShowBits);
-        return new Markup(string.Format("{0}/s", size.ToString(suffix: true, Culture)));
+        if (task.IsFinished)
+        {
+            return new Markup(string.Empty, Style.Plain);
+        }
+        else
+        {
+            var size = new FileSize(task.Speed.Value, Base, ShowBits);
+            return new Markup(string.Format("{0}/s", size.ToString(suffix: true, Culture)));
+        }
     }
 }
