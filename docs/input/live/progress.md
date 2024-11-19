@@ -85,6 +85,8 @@ AnsiConsole.Progress()
         new PercentageColumn(),         // Percentage
         new RemainingTimeColumn(),      // Remaining time
         new SpinnerColumn(),            // Spinner
+        new DownloadedColumn(),         // Downloaded
+        new TransferSpeedColumn(),      // Transfer speed
     })
     .Start(ctx =>
     {
