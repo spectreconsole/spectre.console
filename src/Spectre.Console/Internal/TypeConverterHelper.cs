@@ -82,12 +82,17 @@ internal static class TypeConverterHelper
         [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026", Justification = "Feature switches are not currently supported in the analyzer")]
         static TypeConverter? GetConverter()
         {
-            if (!IsGetConverterSupported)
+            if (IsGetConverterSupported)
             {
-                return GetIntrinsicConverter(typeof(T));
+                // Spectre.Console.TypeConverterHelper.IsGetConverterSupported has been set so
+                // fallback to original behavior
+                return TypeDescriptor.GetConverter(typeof(T));
             }
 
-            return TypeDescriptor.GetConverter(typeof(T));
+            // otherwise try and use the intrinsic converter. if we can't find one, then
+            // try and use GetConverter.
+            var intrinsicConverter = GetIntrinsicConverter(typeof(T));
+            return intrinsicConverter ?? TypeDescriptor.GetConverter(typeof(T));
         }
     }
 
