@@ -140,7 +140,7 @@ internal struct FileSize
             bytes *= 8;
         }
 
-        foreach (var prefix in (FileSizePrefix[])Enum.GetValues(typeof(FileSizePrefix)))
+        foreach (var prefix in EnumUtils.GetValues<FileSizePrefix>())
         {
             // Trying to find the largest unit, that the number of bytes can fit under. Ex. 40kb < 1mb
             if (bytes < Math.Pow((int)_prefixBase, (int)prefix + 1))
