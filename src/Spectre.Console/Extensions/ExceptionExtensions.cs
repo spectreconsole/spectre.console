@@ -11,6 +11,7 @@ public static class ExceptionExtensions
     /// <param name="exception">The exception to format.</param>
     /// <param name="format">The exception format options.</param>
     /// <returns>A <see cref="IRenderable"/> representing the exception.</returns>
+    [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
     public static IRenderable GetRenderable(this Exception exception, ExceptionFormats format = ExceptionFormats.Default)
     {
         if (exception is null)
@@ -30,6 +31,7 @@ public static class ExceptionExtensions
     /// <param name="exception">The exception to format.</param>
     /// <param name="settings">The exception settings.</param>
     /// <returns>A <see cref="IRenderable"/> representing the exception.</returns>
+    [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
     public static IRenderable GetRenderable(this Exception exception, ExceptionSettings settings)
     {
         if (exception is null)
