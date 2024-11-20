@@ -1,12 +1,15 @@
 namespace Spectre.Console;
 
-#pragma warning disable IL2026,IL2070,IL2075,IL3050
-
+// ExceptionFormatter relies heavily on reflection of types unknown until runtime.
+// We'll suppress these warnings, but alert the user this method is not supported.
+[UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode")]
+[UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2070:RequiresUnreferencedCode")]
+[UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2075:RequiresUnreferencedCode")]
+[RequiresDynamicCode(AotWarning)]
 internal static class ExceptionFormatter
 {
     public const string AotWarning = "ExceptionFormatter is currently not supported for AOT.";
 
-    [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
     public static IRenderable Format(Exception exception, ExceptionSettings settings)
     {
         if (exception is null)
