@@ -27,6 +27,13 @@ internal static class ExceptionFormatter
             throw new ArgumentNullException(nameof(exception));
         }
 
+        // fallback to default ToString() if someone in an AOT is insisting on using this method
+        var stackTrace = new StackTrace(exception, fNeedFileInfo: false);
+        if (stackTrace.GetFrame(0)?.GetMethod() is null)
+        {
+            return new Text(exception.ToString());
+        }
+
         return new Rows(GetMessage(exception, settings), GetStackFrames(exception, settings)).Expand();
     }
 
