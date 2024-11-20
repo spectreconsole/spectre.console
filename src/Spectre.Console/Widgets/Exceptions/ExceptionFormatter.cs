@@ -1,7 +1,12 @@
 namespace Spectre.Console;
 
+#pragma warning disable IL2026,IL2070,IL2075,IL3050
+
 internal static class ExceptionFormatter
 {
+    public const string AotWarning = "ExceptionFormatter is currently not supported for AOT.";
+
+    [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
     public static IRenderable Format(Exception exception, ExceptionSettings settings)
     {
         if (exception is null)
@@ -398,6 +403,7 @@ internal static class ExceptionFormatter
         return builder.ToString();
     }
 
+    [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
     private static bool TryResolveStateMachineMethod(ref MethodBase method, out Type declaringType)
     {
         // https://github.com/dotnet/runtime/blob/v6.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L400-L455
