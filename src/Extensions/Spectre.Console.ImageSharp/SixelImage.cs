@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing.Processors.Transforms;
 using Spectre.Console.ImageSharp.Sixels;
 using Spectre.Console.ImageSharp.Sixels.Models;
 using Spectre.Console.Rendering;
@@ -33,15 +33,49 @@ public sealed class SixelImage : Renderable
     /// </summary>
     public int PixelWidth { get; } = 1;
 
+    /// <summary>
+    /// Gets a value indicating whether the image should be animated.
+    /// </summary>
+    public bool AnimationDisabled { get; init; }
+
+    /// <summary>
+    /// Gets or sets the current frame of the image.
+    /// </summary>
+    public int FrameToRender
+    {
+        get
+        {
+            return _frameToRender;
+        }
+        set
+        {
+            if (value < 0)
+            {
+                throw new InvalidOperationException("Frame to render must be greater than zero.");
+            }
+
+            if (value >= Image.Frames.Count)
+            {
+                throw new InvalidOperationException("Frame to render must be less than the total number of frames in the image.");
+            }
+
+            _frameToRender = value;
+        }
+    }
+
     internal SixLabors.ImageSharp.Image<Rgba32> Image { get; }
+    private readonly Dictionary<int, Sixel> _cachedSixels = [];
+    private int _frameToRender;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SixelImage"/> class.
     /// </summary>
     /// <param name="filename">The image filename.</param>
-    public SixelImage(string filename)
+    /// <param name="animationDisabled">Whether the image should have animation disabled.</param>
+    public SixelImage(string filename, bool animationDisabled = false)
     {
         Image = SixLabors.ImageSharp.Image.Load<Rgba32>(filename);
+        AnimationDisabled = animationDisabled;
     }
 
     /// <inheritdoc/>
@@ -70,12 +104,13 @@ public sealed class SixelImage : Renderable
             maxWidth = MaxWidth.Value;
         }
 
-        // Write the sixel data as a control segment which returns the cursor to the top left cell of the sixel after render.
-        var sixel = SixelParser.ImageToSixel(Image, maxWidth);
-        var segments = new List<Segment>
+        // Write the sixel data as a control segment.
+        // Parsing is expensive, cache the result for the current width.
+        if (!_cachedSixels.TryGetValue(maxWidth, out var sixel))
         {
-            Segment.Control(sixel.SixelString),
-        };
+            sixel = SixelParser.ImageToSixel(Image, maxWidth, AnimationDisabled);
+            _cachedSixels.Add(maxWidth, sixel);
+        }
 
         // Draw a transparent renderable to take up the space the sixel is drawn in.
         // This allows Spectre.Console to render the image and not write overtop of it with space characters while padding panel borders etc.
@@ -86,30 +121,18 @@ public sealed class SixelImage : Renderable
             Scale = false,
         };
 
-        // TODO remove this, it's for drawing a red and transparent checkerboard pattern to debug sixel positioning
-        if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("SPECTRE_CONSOLE_DEBUG")))
-        {
-            for (var y = 0; y < sixel.CellHeight; y++)
-            {
-                for (var x = 0; x < sixel.CellWidth; x++)
-                {
-                    if (y % 2 == 0)
-                    {
-                        if (x % 2 == 0)
-                        {
-                            canvas.SetPixel(x, y, new Color(255, 0, 0));
-                        }
-                    }
-                    else if (x % 2 != 0)
-                    {
-                        canvas.SetPixel(x, y, new Color(255, 0, 0));
-                    }
-                }
-            }
-        }
+        // The segment list is a transparent canvas followed by a couple of zero-width control segments for sixel data output.
+        // Rendering the sixel data after the canvas allows the canvas to be truncated in a layout without destroying the layout.
+        var segments = ((IRenderable)canvas).Render(options, maxWidth).ToList();
 
-        // A combination of a zero-width control segment for sixel data and a transparent canvas.
-        segments.AddRange(((IRenderable)canvas).Render(options, maxWidth));
+        // After rendering the canvas, send the cursor to the top left of the canvas to render the sixel data.
+        segments.Add(Segment.Control($"{Constants.ESC}[{sixel.CellHeight}A"));
+
+        // Render the sixel data.
+        segments.Add(Segment.Control(sixel.SixelStrings[FrameToRender]));
+
+        // Update animation frame.
+        FrameToRender = (FrameToRender + 1) % sixel.SixelStrings.Length;
 
         return segments;
     }

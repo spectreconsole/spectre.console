@@ -10,8 +10,8 @@ namespace Spectre.Console.ImageSharp.Sixels.Models;
 /// <param name="pixelHeight">The height of a sixel image in pixels.</param>
 /// <param name="cellHeight">The height of a sixel image in terminal cells.</param>
 /// <param name="cellWidth">The width of a sixel image in terminal cells.</param>
-/// <param name="sixelString">The Sixel string.</param>
-public class Sixel(int pixelWidth, int pixelHeight, int cellHeight, int cellWidth, string sixelString)
+/// <param name="sixelStrings">The Sixel strings representing each frame of the image.</param>
+public class Sixel(int pixelWidth, int pixelHeight, int cellHeight, int cellWidth, string[] sixelStrings)
 {
     /// <summary>
     /// Gets the width of a sixel image in pixels.
@@ -37,5 +37,5 @@ public class Sixel(int pixelWidth, int pixelHeight, int cellHeight, int cellWidt
     /// Gets the Sixel string.
     /// </summary>
     /// <returns>The Sixel string.</returns>
-    public string SixelString { get; init; } = sixelString;
+    public string[] SixelStrings { get; init; } = sixelStrings;
 }

@@ -21,10 +21,9 @@ public static class SixelParser
     /// </summary>
     /// <param name="image">The image to convert.</param>
     /// <param name="cellWidth">The width of the cell in terminal cells.</param>
-    /// <param name="frame">The frame to convert for animated image formats, defaults to zero so gifs show the first frame.</param>
-    /// <param name="returnCursorToTopLeft">Whether to return the cursor to the top left after rendering the image.</param>
+    /// <param name="disableAnimation">Whether to disable animation for the image and only load the first frame.</param>
     /// <returns>The Sixel object.</returns>
-    public static Sixel ImageToSixel(Image<Rgba32> image, int cellWidth, int frame = 0, bool returnCursorToTopLeft = true)
+    public static Sixel ImageToSixel(Image<Rgba32> image, int cellWidth, bool disableAnimation = false)
     {
         // We're going to resize the image when it's rendered, so use a copy to leave the original untouched.
         var imageClone = image.Clone();
@@ -50,22 +49,31 @@ public static class SixelParser
             }));
         });
 
-        var targetFrame = imageClone.Frames[frame];
+        var firstFrame = imageClone.Frames[0];
         var cellPixelHeight = Compatibility.GetCellSize().PixelHeight;
         var cellHeight = (int)Math.Ceiling((double)pixelHeight / cellPixelHeight);
+        var sixelStrings = new List<string>();
 
-        var sixelString = FrameToSixelString(
-            targetFrame,
-            cellHeight,
-            cellPixelHeight,
-            returnCursorToTopLeft);
+        for (var i = 0; i < imageClone.Frames.Count; i++)
+        {
+            sixelStrings.Add(
+                FrameToSixelString(
+                    imageClone.Frames[i],
+                    cellHeight,
+                    cellPixelHeight));
+
+            if (disableAnimation)
+            {
+                break;
+            }
+        }
 
         return new Sixel(
             pixelWidth,
             pixelHeight,
             cellHeight,
             cellWidth,
-            sixelString);
+            sixelStrings.ToArray());
     }
 
     /// <summary>
@@ -74,9 +82,8 @@ public static class SixelParser
     /// <param name="frame">The image frame to convert.</param>
     /// <param name="cellHeight">The height of the cell in terminal cells.</param>
     /// <param name="cellPixelHeight">The height of in individual cell in pixels.</param>
-    /// <param name="returnCursorToTopLeft">Whether to return the cursor to the top left after rendering the image.</param>
     /// <returns>The Sixel string.</returns>
-    private static string FrameToSixelString(ImageFrame<Rgba32> frame, int cellHeight, int cellPixelHeight, bool returnCursorToTopLeft)
+    private static string FrameToSixelString(ImageFrame<Rgba32> frame, int cellHeight, int cellPixelHeight)
     {
         var sixelBuilder = new StringBuilder();
         var palette = new Dictionary<Rgba32, int>();
@@ -151,12 +158,6 @@ public static class SixelParser
         });
 
         sixelBuilder.AppendExitSixel();
-
-        if (returnCursorToTopLeft)
-        {
-            // Can't use AnsiSequences.CUU(int n) from Spectre.Console.ImageSharp because it's not public.
-            sixelBuilder.Append($"{Constants.ESC}[{cellHeight}A");
-        }
 
         return sixelBuilder.ToString();
     }
