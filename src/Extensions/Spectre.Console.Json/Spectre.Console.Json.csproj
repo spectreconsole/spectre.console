@@ -1,12 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net9.0;net8.0;netstandard2.0</TargetFrameworks> 
+    <TargetFrameworks>net9.0;net8.0;netstandard2.0</TargetFrameworks>
     <ImplicitUsings>true</ImplicitUsings>
     <IsPackable>true</IsPackable>
     <Description>A library that extends Spectre.Console with JSON superpowers.</Description>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'" >true</IsAotCompatible>
+    <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\Spectre.Console\Internal\Extensions\CharExtensions.cs" Link="Internal\CharExtensions.cs" />
     <Compile Include="..\..\Spectre.Console\Internal\Extensions\EnumerableExtensions.cs" Link="Internal\EnumerableExtensions.cs" />
