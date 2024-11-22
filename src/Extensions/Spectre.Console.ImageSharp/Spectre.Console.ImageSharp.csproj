@@ -5,7 +5,10 @@
     <IsPackable>true</IsPackable>
     <Description>A library that extends Spectre.Console with ImageSharp superpowers.</Description>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'" >true</IsAotCompatible>
+    <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SixLabors.ImageSharp" />
   </ItemGroup>
