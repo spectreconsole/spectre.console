@@ -1,11 +1,10 @@
 namespace Spectre.Console;
 
 // ExceptionFormatter relies heavily on reflection of types unknown until runtime.
-// We'll suppress these warnings, but alert the user this method is not supported.
 [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode")]
 [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2070:RequiresUnreferencedCode")]
 [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2075:RequiresUnreferencedCode")]
-[RequiresDynamicCode(AotWarning)]
+[UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050:RequiresUnreferencedCode")]
 internal static class ExceptionFormatter
 {
     public const string AotWarning = "ExceptionFormatter is currently not supported for AOT.";
@@ -25,13 +24,6 @@ internal static class ExceptionFormatter
         if (exception is null)
         {
             throw new ArgumentNullException(nameof(exception));
-        }
-
-        // fallback to default ToString() if someone in an AOT is insisting on using this method
-        var stackTrace = new StackTrace(exception, fNeedFileInfo: false);
-        if (stackTrace.GetFrame(0)?.GetMethod() is null)
-        {
-            return new Text(exception.ToString());
         }
 
         return new Rows(GetMessage(exception, settings), GetStackFrames(exception, settings)).Expand();
@@ -71,8 +63,16 @@ internal static class ExceptionFormatter
         }
 
         var stackTrace = new StackTrace(ex, fNeedFileInfo: true);
-        var frames = stackTrace
-            .GetFrames()
+        var allFrames = stackTrace.GetFrames();
+        if (allFrames[0]?.GetMethod() == null)
+        {
+            // if we can't easily get the method for the frame, then we are in AOT
+            // fallback to using ToString method of each frame.
+            WriteAotFrames(grid, stackTrace.GetFrames(), styles);
+            return grid;
+        }
+
+        var frames = allFrames
             .FilterStackFrames()
             .ToList();
 
@@ -131,6 +131,23 @@ internal static class ExceptionFormatter
         }
 
         return grid;
+    }
+
+    private static void WriteAotFrames(Grid grid, StackFrame?[] frames, ExceptionStyle styles)
+    {
+        foreach (var stackFrame in frames)
+        {
+            if (stackFrame == null)
+            {
+                continue;
+            }
+
+            var s = stackFrame.ToString();
+            s = s.Replace(" in file:line:column <filename unknown>:0:0", string.Empty).TrimEnd();
+            grid.AddRow(
+                $"[{styles.Dimmed.ToMarkup()}]at[/]",
+                s.EscapeMarkup());
+        }
     }
 
     private static void AppendParameters(StringBuilder builder, MethodBase? method, ExceptionSettings settings)
