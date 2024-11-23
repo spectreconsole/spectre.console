@@ -10,7 +10,7 @@ For all available spinners, see https://jsfiddle.net/sindresorhus/2eLtsbey/embed
 
 ## Usage
 
-Spinners can be used with [Progress](xref:progress) and [Status](xref:status).
+Spinners can be used with [Progress](xref:live-progress) and [Status](xref:live-status).
 
 ```csharp
 AnsiConsole.Status()

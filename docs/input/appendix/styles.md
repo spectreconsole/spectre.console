@@ -6,6 +6,7 @@ Highlights:
     - Dim, Invert
     - Conceal, slowblink, rapidblink
     - Links
+Xref: appendix-styles
 ---
 
 Note that what styles that can be used is defined by the system or your terminal software, and may not appear as they should.
@@ -48,7 +49,7 @@ Note that what styles that can be used is defined by the system or your terminal
         <td>Shows text with a horizontal line through the center</td>
     </tr>
     <tr>
-        <td><code>link</link></td>
+        <td><code>link</code></td>
         <td>Creates a clickable link within text</td>
     </tr>
 </table>
