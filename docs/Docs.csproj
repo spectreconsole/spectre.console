@@ -7,6 +7,11 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);output\**;.gitignore</DefaultItemExcludes>
     <NoWarn>MVC1000</NoWarn>
     <MinVerSkip>true</MinVerSkip>
+    <!-- 
+    Disable NuGetAudit for now, there is an in progress PR with Statiq regarding these packages,
+    but since since this is just a generator we are safe to ignore this for now.
+     -->
+    <NuGetAudit>false</NuGetAudit>
   </PropertyGroup>
 
   <ItemGroup>
