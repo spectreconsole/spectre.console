@@ -9,6 +9,7 @@ Highlights:
 Reference: 
     - T:Spectre.Console.Progress
     - M:Spectre.Console.AnsiConsole.Progress
+Xref: live-progress
 ---
 
 Spectre.Console can display information about long running tasks in the console. 

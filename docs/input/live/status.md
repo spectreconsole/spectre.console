@@ -8,6 +8,7 @@ Highlights:
 Reference:
     - T:Spectre.Console.Status
     - M:Spectre.Console.AnsiConsole.Status
+Xref: live-status
 ---
 
 Spectre.Console can display information about long running tasks in the console. 

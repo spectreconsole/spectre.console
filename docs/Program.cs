@@ -23,8 +23,8 @@ namespace Docs
                 {
                     "../../src/Spectre.Console/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
                     "../../src/Spectre.Console.Cli/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
-                    "../../src/Spectre.Console.ImageSharp/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
-                    "../../src/Spectre.Console.Json/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs"
+                    "../../src/Extensions/Spectre.Console.ImageSharp/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs",
+                    "../../src/Extensions/Spectre.Console.Json/**/{!bin,!obj,!packages,!*.Tests,}/**/*.cs"
                 })
                 .AddSetting(Constants.ExampleSourceFiles, new List<string>
                     {
