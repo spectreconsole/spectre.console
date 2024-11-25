@@ -242,7 +242,15 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             grid.AddEmptyRow();
         }
 
-        foreach (var item in items)
+        // Filter items based on search text
+        var filteredItems = items
+            .Where(item =>
+            {
+                var text = (Converter ?? TypeConverterHelper.ConvertToString)?.Invoke(item.Node.Data) ?? item.Node.Data.ToString() ?? "?";
+                return string.IsNullOrWhiteSpace(searchText) || text.Contains(searchText, StringComparison.OrdinalIgnoreCase);
+            });
+
+        foreach (var item in filteredItems)
         {
             var current = item.Index == cursorIndex;
             var style = current ? highlightStyle : Style.Plain;
