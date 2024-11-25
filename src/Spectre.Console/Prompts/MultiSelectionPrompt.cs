@@ -171,7 +171,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             return ListPromptInputResult.Submit;
         }
 
-        if (key.Key == ConsoleKey.Spacebar || key.Key == ConsoleKey.Packet)
+        if ((key.Key == ConsoleKey.Spacebar && key.Modifiers.HasFlag(ConsoleModifiers.Control)) || key.Key == ConsoleKey.Packet)
         {
             var current = state.Items[state.Index];
             var select = !current.IsSelected;
@@ -310,7 +310,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         }
 
         // Instructions
-        list.Add(new Markup(InstructionsText ?? ListPromptConstants.InstructionsMarkup));
+        list.Add(new Markup(InstructionsText ?? (SearchEnabled ? ListPromptConstants.InstructionsSearchMarkup : ListPromptConstants.InstructionsMarkup)));
 
         // Combine all items
         return new Rows(list);
