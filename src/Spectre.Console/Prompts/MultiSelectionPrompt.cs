@@ -57,6 +57,16 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     /// </summary>
     public SelectionMode Mode { get; set; } = SelectionMode.Leaf;
 
+    /// <summary>
+    /// Gets or sets a value indicating whether or not search is enabled.
+    /// </summary>
+    public bool SearchEnabled { get; set; }
+
+    /// <summary>
+    /// Gets or sets the text that will be displayed when no search text has been entered.
+    /// </summary>
+    public string? SearchPlaceholderText { get; set; }
+
     internal ListPromptTree<T> Tree { get; }
 
     /// <summary>
@@ -95,7 +105,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
         var converter = Converter ?? TypeConverterHelper.ConvertToString;
-        var result = await prompt.Show(Tree, converter, Mode, false, false, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
+        var result = await prompt.Show(Tree, converter, Mode, false, SearchEnabled, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
 
         if (Mode == SelectionMode.Leaf)
         {
@@ -213,6 +223,12 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             extra++;
         }
 
+        if (SearchEnabled)
+        {
+            // Search input takes up one row
+            extra++;
+        }
+
         var pageSize = requestedPageSize;
         if (pageSize > console.Profile.Height - extra)
         {
@@ -228,6 +244,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     {
         var list = new List<IRenderable>();
         var highlightStyle = HighlightStyle ?? Color.Blue;
+        var searchHighlightStyle = new Style(foreground: Color.Default, background: Color.Yellow, Decoration.Bold);
 
         if (Title != null)
         {
@@ -264,6 +281,11 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
                 text = text.RemoveMarkup().EscapeMarkup();
             }
 
+            if (searchText.Length > 0)
+            {
+                text = text.Highlight(searchText, searchHighlightStyle);
+            }
+
             var checkbox = item.Node.IsSelected
                 ? ListPromptConstants.GetSelectedCheckbox(item.Node.IsGroup, Mode, HighlightStyle)
                 : ListPromptConstants.Checkbox;
@@ -278,6 +300,13 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         {
             // There are more choices
             list.Add(new Markup(MoreChoicesText ?? ListPromptConstants.MoreChoicesMarkup));
+        }
+
+        if (SearchEnabled)
+        {
+            // Add search text input
+            list.Add(new Markup(
+                searchText.Length > 0 ? searchText.EscapeMarkup() : SearchPlaceholderText ?? ListPromptConstants.SearchPlaceholderMarkup));
         }
 
         // Instructions
