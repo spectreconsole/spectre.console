@@ -9,7 +9,7 @@ internal sealed class TypeRegistrar : ITypeRegistrarFrontend
         _registrar = registrar ?? throw new ArgumentNullException(nameof(registrar));
     }
 
-    public void Register<TService, TImplementation>()
+    public void Register<TService, [DynamicallyAccessedMembers(PublicConstructors | PublicProperties)] TImplementation>()
         where TImplementation : TService
     {
         _registrar.Register(typeof(TService), typeof(TImplementation));

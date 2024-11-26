@@ -4,7 +4,7 @@ namespace Spectre.Console.Cli;
 /// Represents a command.
 /// </summary>
 /// <typeparam name="TSettings">The settings type.</typeparam>
-public interface ICommand<TSettings> : ICommandLimiter<TSettings>
+public interface ICommand<[DynamicallyAccessedMembers(PublicConstructors)] TSettings> : ICommandLimiter<TSettings>
     where TSettings : CommandSettings
 {
     /// <summary>

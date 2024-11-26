@@ -28,9 +28,7 @@ internal sealed class DefaultPairDeconstructor : IPairDeconstructor
             // Got a default constructor?
             if (valueType.IsValueType)
             {
-                // Get the string variant of a default instance.
-                // Should not get null here, but compiler doesn't know that.
-                stringValue = Activator.CreateInstance(valueType)?.ToString() ?? string.Empty;
+                stringValue = TypeConverterHelper.GetDefaultValueOfType(valueType);
             }
             else
             {
@@ -48,7 +46,7 @@ internal sealed class DefaultPairDeconstructor : IPairDeconstructor
     {
         try
         {
-            var converter = GetConverter(targetType);
+            var converter = TypeConverterHelper.GetTypeConverter(targetType);
             return converter.ConvertFrom(value);
         }
         catch
@@ -56,16 +54,5 @@ internal sealed class DefaultPairDeconstructor : IPairDeconstructor
             // Can't convert something. Just give up and tell the user.
             throw CommandParseException.ValueIsNotInValidFormat(value);
         }
-    }
-
-    private static TypeConverter GetConverter(Type type)
-    {
-        var converter = TypeDescriptor.GetConverter(type);
-        if (converter != null)
-        {
-            return converter;
-        }
-
-        throw new CommandConfigurationException($"Could find a type converter for '{type.FullName}'.");
     }
 }

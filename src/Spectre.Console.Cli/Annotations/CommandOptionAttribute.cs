@@ -7,6 +7,9 @@ namespace Spectre.Console.Cli;
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 public sealed class CommandOptionAttribute : Attribute
 {
+    [DynamicallyAccessedMembers(PublicConstructors)]
+    internal Type? OptionType { get; }
+
     /// <summary>
     /// Gets the long names of the option.
     /// </summary>
@@ -39,7 +42,8 @@ public sealed class CommandOptionAttribute : Attribute
     /// Initializes a new instance of the <see cref="CommandOptionAttribute"/> class.
     /// </summary>
     /// <param name="template">The option template.</param>
-    public CommandOptionAttribute(string template)
+    /// <param name="optionType">The type of the parameter. Required for AOT scenarios.</param>
+    public CommandOptionAttribute(string template, [DynamicallyAccessedMembers(PublicConstructors)] Type? optionType = null)
     {
         if (template == null)
         {
@@ -54,6 +58,14 @@ public sealed class CommandOptionAttribute : Attribute
         ShortNames = result.ShortNames;
         ValueName = result.Value;
         ValueIsOptional = result.ValueIsOptional;
+
+        // if someone was explicit about the type of option, then we need to register an
+        // explicit builder for this type to be used.
+        OptionType = optionType;
+        if (OptionType != null)
+        {
+            CreateInstanceHelpers.RegisterNewInstanceBuilder(OptionType);
+        }
     }
 
     internal bool IsMatch(string name)

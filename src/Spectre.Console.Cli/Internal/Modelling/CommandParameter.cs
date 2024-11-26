@@ -3,7 +3,13 @@ namespace Spectre.Console.Cli;
 internal abstract class CommandParameter : ICommandParameterInfo, ICommandParameter
 {
     public Guid Id { get; }
-    public Type ParameterType { get; }
+
+    public Type ParameterType
+    {
+        [return: DynamicallyAccessedMembers(PublicConstructors | Interfaces)]
+        get;
+    }
+
     public ParameterKind ParameterKind { get; }
     public PropertyInfo Property { get; }
     public string? Description { get; }
@@ -64,7 +70,7 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
             var multimap = (IMultiMap?)Property.GetValue(settings);
             if (multimap == null)
             {
-                multimap = Activator.CreateInstance(typeof(MultiMap<,>).MakeGenericType(genericTypes[0], genericTypes[1])) as IMultiMap;
+                multimap = CreateInstanceHelpers.CreateMultiMapInstance(genericTypes[0], genericTypes[1]);
                 if (multimap == null)
                 {
                     throw new InvalidOperationException("Could not create multimap");
@@ -98,19 +104,13 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
             var array = (Array?)Property.GetValue(settings);
             Array newArray;
 
-            var elementType = Property.PropertyType.GetElementType();
-            if (elementType == null)
-            {
-                throw new InvalidOperationException("Could not get property type.");
-            }
-
             if (array == null)
             {
-                newArray = Array.CreateInstance(elementType, 1);
+                newArray = CreateInstanceHelpers.CreateArrayInstance(Property.PropertyType, 1);
             }
             else
             {
-                newArray = Array.CreateInstance(elementType, array.Length + 1);
+                newArray = CreateInstanceHelpers.CreateArrayInstance(Property.PropertyType, array.Length + 1);
                 array.CopyTo(newArray, 0);
             }
 

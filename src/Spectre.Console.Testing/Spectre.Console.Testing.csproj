@@ -10,6 +10,7 @@
   <ItemGroup Label="REMOVE THIS">
     <InternalsVisibleTo Include="Spectre.Console.Tests" />
     <InternalsVisibleTo Include="Spectre.Console.Cli.Tests" />
+    <InternalsVisibleTo Include="Spectre.Console.TrimTest" />
   </ItemGroup>
 
   <ItemGroup Label="Project References">

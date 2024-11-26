@@ -10,7 +10,7 @@ public interface ITypeRegistrar
     /// </summary>
     /// <param name="service">The service.</param>
     /// <param name="implementation">The implementation.</param>
-    void Register(Type service, Type implementation);
+    void Register(Type service, [DynamicallyAccessedMembers(PublicConstructors)] Type implementation);
 
     /// <summary>
     /// Registers the specified instance.

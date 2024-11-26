@@ -25,7 +25,12 @@ internal sealed class TypeResolverAdapter : ITypeResolver, IDisposable
             }
 
             // Fall back to use the activator.
-            return Activator.CreateInstance(type);
+            if (CreateInstanceHelpers.TryGetInstance(type, [], out var instance))
+            {
+                return instance;
+            }
+
+            throw CommandRuntimeException.CouldNotResolveType(type);
         }
         catch (CommandAppException)
         {

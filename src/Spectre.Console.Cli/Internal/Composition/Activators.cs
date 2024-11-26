@@ -51,11 +51,12 @@ internal sealed class InstanceActivator : ComponentActivator
 
 internal sealed class ReflectionActivator : ComponentActivator
 {
+    [DynamicallyAccessedMembers(PublicConstructors)]
     private readonly Type _type;
     private readonly ConstructorInfo _constructor;
     private readonly List<ParameterInfo> _parameters;
 
-    public ReflectionActivator(Type type)
+    public ReflectionActivator([DynamicallyAccessedMembers(PublicConstructors)] Type type)
     {
         _type = type;
         _constructor = GetGreediestConstructor(type);
@@ -104,7 +105,8 @@ internal sealed class ReflectionActivator : ComponentActivator
         return new ReflectionActivator(_type);
     }
 
-    private static ConstructorInfo GetGreediestConstructor(Type type)
+    private static ConstructorInfo GetGreediestConstructor([DynamicallyAccessedMembers(PublicConstructors)]
+        Type type)
     {
         ConstructorInfo? current = null;
         var count = -1;

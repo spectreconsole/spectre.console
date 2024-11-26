@@ -154,6 +154,17 @@ internal sealed class MultiMap<TKey, TValue> : IMultiMap, ILookup<TKey, TValue>,
         return _dictionary.GetEnumerator();
     }
 
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        foreach (var key in _dictionary.Keys)
+        {
+            sb.AppendLine($"{key}={_dictionary[key]}");
+        }
+
+        return sb.ToString();
+    }
+
     public void Add((object? Key, object? Value) pair)
     {
         if (pair.Key != null)
