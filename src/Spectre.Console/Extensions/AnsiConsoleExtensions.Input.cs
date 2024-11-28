@@ -19,6 +19,7 @@ public static partial class AnsiConsoleExtensions
 
         while (true)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var rawKey = await console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
             if (rawKey == null)
             {
@@ -51,8 +52,20 @@ public static partial class AnsiConsoleExtensions
             {
                 if (text.Length > 0)
                 {
+                    var lastChar = text.Last();
                     text = text.Substring(0, text.Length - 1);
-                    console.Write("\b \b");
+
+                    if (mask != null)
+                    {
+                        if (UnicodeCalculator.GetWidth(lastChar) == 1)
+                        {
+                            console.Write("\b \b");
+                        }
+                        else if (UnicodeCalculator.GetWidth(lastChar) == 2)
+                        {
+                            console.Write("\b \b\b \b");
+                        }
+                    }
                 }
 
                 continue;

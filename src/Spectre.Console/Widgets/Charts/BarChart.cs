@@ -44,6 +44,11 @@ public sealed class BarChart : Renderable, IHasCulture
     public double? MaxValue { get; set; }
 
     /// <summary>
+    /// Gets or sets the function used to format the values of the bar chart.
+    /// </summary>
+    public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="BarChart"/> class.
     /// </summary>
     public BarChart()
@@ -90,6 +95,7 @@ public sealed class BarChart : Renderable, IHasCulture
                     AsciiBar = '█',
                     ShowValue = ShowValues,
                     Culture = Culture,
+                    ValueFormatter = ValueFormatter,
                 });
         }
 

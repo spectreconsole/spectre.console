@@ -9,73 +9,25 @@ env:
 jobs:
 
   ###################################################
-  # DOCS
-  ###################################################
-
-  docs:
-    name: Documentation
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@master
-
-    - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v3
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-
-    - name: Cache dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.npm
-        key: npm-${{ hashFiles('package-lock.json') }}
-        restore-keys: npm-
-
-    - name: Build
-      shell: bash
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        cd docs
-        dotnet tool restore
-        dotnet run --configuration Release
-
-    - name: Archive doc generation
-      uses: actions/upload-artifact@v3
-      with:
-        name: documentation-output
-        path: docs/output/
-        retention-days: 5
-
-  ###################################################
   # BUILD
   ###################################################
 
   build:
     name: Build
     if: "!contains(github.event.head_commit.message, 'skip-ci')"
-    strategy:
-      matrix:
-        kind: ['linux', 'windows', 'macOS']
-        include:
-          - kind: linux
-            os: ubuntu-latest
-          - kind: windows
-            os: windows-latest
-          - kind: macOS
-            os: macos-latest
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
 
       - name: Build
         shell: bash
@@ -85,7 +37,7 @@ jobs:
 
       - name: Upload Verify Test Results
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: verify-test-results
           path: |

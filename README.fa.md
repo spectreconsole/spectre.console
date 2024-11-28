@@ -44,30 +44,13 @@ https://spectreconsole.net/
 
 <h2 id="examples">مثال‌ها</h2>
 
-برای بررسی `Spectre.Console` در عمل، ابزار سراسری
-[dotnet-example](https://github.com/patriksvensson/dotnet-example)
-را نصب کنید.
-
-<pre dir="ltr">
-> dotnet tool restore
-</pre>
-
-حالا شما می‌توانید مثال‌های موجود در این مخزن را لیست کنید:
-
-<pre dir="ltr">
-> dotnet example
-</pre>
-
-و برای اجرای مثال:
-
-<pre dir="ltr">
-> dotnet example tables
-</pre>
+To see `Spectre.Console` in action, please see the 
+[examples repository](https://github.com/spectreconsole/examples).
 
 <h2 id="license">مجوز</h2>
 
 <div dir="ltr">
-Copyright © Patrik Svensson, Phil Scott
+Copyright © Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi, Frank Ray
 </div>
 
 همانطور که Spectre.Console تحت مجوز MIT ارائه شده است؛ برای کسب اطلاعات بیشتر به مجوز مراجعه کنید.

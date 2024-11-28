@@ -1,3 +1,5 @@
+using static Spectre.Console.Cli.CommandTreeTokenizer;
+
 namespace Spectre.Console.Cli;
 
 internal class CommandTreeParser
@@ -5,6 +7,7 @@ internal class CommandTreeParser
     private readonly CommandModel _configuration;
     private readonly ParsingMode _parsingMode;
     private readonly CommandOptionAttribute _help;
+    private readonly bool _convertFlagsToRemainingArguments;
 
     public CaseSensitivity CaseSensitivity { get; }
 
@@ -14,25 +17,26 @@ internal class CommandTreeParser
         Remaining = 1,
     }
 
-    public CommandTreeParser(CommandModel configuration, ICommandAppSettings settings, ParsingMode? parsingMode = null)
+    public CommandTreeParser(CommandModel configuration, CaseSensitivity caseSensitivity, ParsingMode? parsingMode = null, bool? convertFlagsToRemainingArguments = null)
     {
-        if (settings is null)
-        {
-            throw new ArgumentNullException(nameof(settings));
-        }
-
-        _configuration = configuration;
+        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         _parsingMode = parsingMode ?? _configuration.ParsingMode;
-        _help = new CommandOptionAttribute("-h|--help");
+        _help = new CommandOptionAttribute("-?|-h|--help");
+        _convertFlagsToRemainingArguments = convertFlagsToRemainingArguments ?? false;
 
-        CaseSensitivity = settings.CaseSensitivity;
+        CaseSensitivity = caseSensitivity;
     }
 
     public CommandTreeParserResult Parse(IEnumerable<string> args)
     {
-        var context = new CommandTreeParserContext(args, _parsingMode);
+        var parserContext = new CommandTreeParserContext(args, _parsingMode);
+        var tokenizerResult = CommandTreeTokenizer.Tokenize(args);
 
-        var tokenizerResult = CommandTreeTokenizer.Tokenize(context.Arguments);
+        return Parse(parserContext, tokenizerResult);
+    }
+
+    public CommandTreeParserResult Parse(CommandTreeParserContext context, CommandTreeTokenizerResult tokenizerResult)
+    {
         var tokens = tokenizerResult.Tokens;
         var rawRemaining = tokenizerResult.Remaining;
 
@@ -255,9 +259,7 @@ internal class CommandTreeParser
             var option = node.FindOption(token.Value, isLongOption, CaseSensitivity);
             if (option != null)
             {
-                node.Mapped.Add(new MappedCommandParameter(
-                    option, ParseOptionValue(context, stream, token, node, option)));
-
+                ParseOptionValue(context, stream, token, node, option);
                 return;
             }
 
@@ -271,7 +273,7 @@ internal class CommandTreeParser
 
         if (context.State == State.Remaining)
         {
-            ParseOptionValue(context, stream, token, node, null);
+            ParseOptionValue(context, stream, token, node);
             return;
         }
 
@@ -281,28 +283,26 @@ internal class CommandTreeParser
         }
         else
         {
-            ParseOptionValue(context, stream, token, node, null);
+            ParseOptionValue(context, stream, token, node);
         }
     }
 
-    private string? ParseOptionValue(
+    private void ParseOptionValue(
         CommandTreeParserContext context,
         CommandTreeTokenStream stream,
         CommandTreeToken token,
         CommandTree current,
-        CommandParameter? parameter)
+        CommandParameter? parameter = null)
     {
+        bool addToMappedCommandParameters = parameter != null;
+
         var value = default(string);
 
         // Parse the value of the token (if any).
         var valueToken = stream.Peek();
         if (valueToken?.TokenKind == CommandTreeToken.Kind.String)
         {
-            var parseValue = true;
-            if (token.TokenKind == CommandTreeToken.Kind.ShortOption && token.IsGrouped)
-            {
-                parseValue = false;
-            }
+            bool parseValue = token is not { TokenKind: CommandTreeToken.Kind.ShortOption, IsGrouped: true };
 
             if (context.State == State.Normal && parseValue)
             {
@@ -325,7 +325,21 @@ internal class CommandTreeParser
                                 else
                                 {
                                     // Flags cannot be assigned a value.
-                                    throw CommandParseException.CannotAssignValueToFlag(context.Arguments, token);
+                                    if (_convertFlagsToRemainingArguments)
+                                    {
+                                        value = stream.Consume(CommandTreeToken.Kind.String)?.Value;
+
+                                        context.AddRemainingArgument(token.Representation, value);
+
+                                        // Prevent the option and it's non-boolean value from being added to
+                                        // mapped parameters (otherwise an exception will be thrown later
+                                        // when binding the value to the flag in the comand settings)
+                                        addToMappedCommandParameters = false;
+                                    }
+                                    else
+                                    {
+                                        throw CommandParseException.CannotAssignValueToFlag(context.Arguments, token);
+                                    }
                                 }
                             }
                             else
@@ -346,21 +360,22 @@ internal class CommandTreeParser
                         // In relaxed parsing mode?
                         if (context.ParsingMode == ParsingMode.Relaxed)
                         {
-                            context.AddRemainingArgument(token.Value, value);
+                            context.AddRemainingArgument(token.Representation, value);
                         }
                     }
                 }
             }
             else
             {
-                context.AddRemainingArgument(token.Value, parseValue ? valueToken.Value : null);
+                context.AddRemainingArgument(token.Representation, parseValue ? valueToken.Value : null);
             }
         }
         else
         {
-            if (context.State == State.Remaining || context.ParsingMode == ParsingMode.Relaxed)
+            if (parameter == null && // Only add tokens which have not been matched to a command parameter
+                (context.State == State.Remaining || context.ParsingMode == ParsingMode.Relaxed))
             {
-                context.AddRemainingArgument(token.Value, null);
+                context.AddRemainingArgument(token.Representation, null);
             }
         }
 
@@ -379,10 +394,12 @@ internal class CommandTreeParser
                     {
                         if (parameter.IsFlagValue())
                         {
-                            return null;
+                            value = null;
                         }
-
-                        throw CommandParseException.OptionHasNoValue(context.Arguments, token, option);
+                        else
+                        {
+                            throw CommandParseException.OptionHasNoValue(context.Arguments, token, option);
+                        }
                     }
                     else
                     {
@@ -394,6 +411,9 @@ internal class CommandTreeParser
             }
         }
 
-        return value;
+        if (parameter != null && addToMappedCommandParameters)
+        {
+            current.Mapped.Add(new MappedCommandParameter(parameter, value));
+        }
     }
 }

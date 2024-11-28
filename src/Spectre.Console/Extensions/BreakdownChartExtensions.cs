@@ -297,4 +297,21 @@ public static class BreakdownChartExtensions
         chart.Compact = compact;
         return chart;
     }
+
+    /// <summary>
+    /// Sets the <see cref="BreakdownChart.ValueColor"/>.
+    /// </summary>
+    /// <param name="chart">The breakdown chart.</param>
+    /// <param name="color">The <see cref="Color"/> to set.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static BreakdownChart WithValueColor(this BreakdownChart chart, Color color)
+    {
+        if (chart is null)
+        {
+            throw new ArgumentNullException(nameof(chart));
+        }
+
+        chart.ValueColor = color;
+        return chart;
+    }
 }

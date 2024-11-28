@@ -44,6 +44,10 @@ public sealed class FakeTypeRegistrar : ITypeRegistrar
         {
             Instances.Add(service, new List<object> { implementation });
         }
+        else
+        {
+            Instances[service].Add(implementation);
+        }
     }
 
     /// <inheritdoc/>
@@ -57,6 +61,10 @@ public sealed class FakeTypeRegistrar : ITypeRegistrar
         if (!Instances.ContainsKey(service))
         {
             Instances.Add(service, new List<object> { factory() });
+        }
+        else
+        {
+            Instances[service].Add(factory());
         }
     }
 

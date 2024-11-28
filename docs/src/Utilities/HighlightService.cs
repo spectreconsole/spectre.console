@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -58,21 +58,31 @@ internal static class HighlightService
         }
 
         var text = await syntaxReference.SyntaxTree.GetTextAsync();
-        // we need a workspace, but it seems it is only used to resolve a few services and nothing else so an empty one will suffice
-        return HighlightElement(_emptyWorkspace, model, text, textSpan, indent);
+
+        // we need a document for the syntax highlighter, so create a temporary solution and project to hold it.
+        var workspace = new AdhocWorkspace();
+        var solution = workspace.CurrentSolution
+            .AddProject("TempProject", "TempProject", "C#")
+            .AddDocument("TempDocument", await syntaxReference.SyntaxTree.GetTextAsync());
+
+        var document = solution.Project.Documents.First();
+
+        var highlightElement = await HighlightElement(document, text, textSpan, indent);
+        return highlightElement;
     }
 
     private static int GetIndent(SyntaxTriviaList leadingTrivia)
     {
-        var whitespace = leadingTrivia.FirstOrDefault(i => i.Kind() == SyntaxKind.WhitespaceTrivia);
+        var whitespace = leadingTrivia.FirstOrDefault(i => i.IsKind(SyntaxKind.WhitespaceTrivia));
         return whitespace == default ? 0 : whitespace.Span.Length;
     }
 
-    private static string HighlightElement(Workspace workspace, SemanticModel semanticModel, SourceText fullSourceText,
+    private static async Task<string> HighlightElement(Document document,
+        SourceText fullSourceText,
         TextSpan textSpan, int indent)
     {
 
-        var classifiedSpans = Classifier.GetClassifiedSpans(semanticModel, textSpan, workspace);
+        var classifiedSpans = await Classifier.GetClassifiedSpansAsync(document, textSpan);
         return HighlightElement(classifiedSpans, fullSourceText, indent);
     }
 

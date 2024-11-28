@@ -94,7 +94,8 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     {
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
-        var result = await prompt.Show(Tree, cancellationToken, PageSize, WrapAround).ConfigureAwait(false);
+        var converter = Converter ?? TypeConverterHelper.ConvertToString;
+        var result = await prompt.Show(Tree, converter, Mode, false, false, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
 
         if (Mode == SelectionMode.Leaf)
         {
@@ -222,10 +223,11 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     }
 
     /// <inheritdoc/>
-    IRenderable IListPromptStrategy<T>.Render(IAnsiConsole console, bool scrollable, int cursorIndex, IEnumerable<(int Index, ListPromptItem<T> Node)> items)
+    IRenderable IListPromptStrategy<T>.Render(IAnsiConsole console, bool scrollable, int cursorIndex,
+        IEnumerable<(int Index, ListPromptItem<T> Node)> items, bool skipUnselectableItems, string searchText)
     {
         var list = new List<IRenderable>();
-        var highlightStyle = HighlightStyle ?? new Style(foreground: Color.Blue);
+        var highlightStyle = HighlightStyle ?? Color.Blue;
 
         if (Title != null)
         {
@@ -255,8 +257,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             }
 
             var checkbox = item.Node.IsSelected
-                ? (item.Node.IsGroup && Mode == SelectionMode.Leaf
-                    ? ListPromptConstants.GroupSelectedCheckbox : ListPromptConstants.SelectedCheckbox)
+                ? ListPromptConstants.GetSelectedCheckbox(item.Node.IsGroup, Mode, HighlightStyle)
                 : ListPromptConstants.Checkbox;
 
             grid.AddRow(new Markup(indent + prompt + " " + checkbox + " " + text, style));

@@ -2,13 +2,13 @@ namespace Spectre.Console;
 
 internal static class TableRenderer
 {
-    private static readonly Style _defaultHeadingStyle = new Style(Color.Silver);
-    private static readonly Style _defaultCaptionStyle = new Style(Color.Grey);
+    private static readonly Style _defaultHeadingStyle = Color.Silver;
+    private static readonly Style _defaultCaptionStyle = Color.Grey;
 
     public static List<Segment> Render(TableRendererContext context, List<int> columnWidths)
     {
         // Can't render the table?
-        if (context.TableWidth <= 0 || context.TableWidth > context.MaxWidth || columnWidths.Any(c => c <= 0))
+        if (context.TableWidth <= 0 || context.TableWidth > context.MaxWidth || columnWidths.Any(c => c < 0))
         {
             return new List<Segment>(new[] { new Segment("…", context.BorderStyle ?? Style.Plain) });
         }
@@ -23,12 +23,12 @@ internal static class TableRenderer
 
             // Get the list of cells for the row and calculate the cell height
             var cells = new List<List<SegmentLine>>();
-            foreach (var (columnIndex, _, _, (rowWidth, cell)) in columnWidths.Zip(row).Enumerate())
+            foreach (var (columnIndex, _, _, (columnWidth, cell)) in columnWidths.Zip(row).Enumerate())
             {
                 var justification = context.Columns[columnIndex].Alignment;
                 var childContext = context.Options with { Justification = justification };
 
-                var lines = Segment.SplitLines(cell.Render(childContext, rowWidth));
+                var lines = Segment.SplitLines(cell.Render(childContext, columnWidth));
                 cellHeight = Math.Max(cellHeight, lines.Count);
                 cells.Add(lines);
             }
@@ -36,7 +36,9 @@ internal static class TableRenderer
             // Show top of header?
             if (isFirstRow && context.ShowBorder)
             {
-                var separator = Aligner.Align(context.Border.GetColumnRow(TablePart.Top, columnWidths, context.Columns), context.Alignment, context.MaxWidth);
+                var separator = Aligner.Align(
+                    context.Border.GetColumnRow(TablePart.Top, columnWidths, context.Columns),
+                    context.Alignment, context.MaxWidth);
                 result.Add(new Segment(separator, context.BorderStyle));
                 result.Add(Segment.LineBreak);
             }
@@ -66,7 +68,9 @@ internal static class TableRenderer
                     if (isFirstCell && context.ShowBorder)
                     {
                         // Show left column edge
-                        var part = isFirstRow && context.ShowHeaders ? TableBorderPart.HeaderLeft : TableBorderPart.CellLeft;
+                        var part = isFirstRow && context.ShowHeaders
+                            ? TableBorderPart.HeaderLeft
+                            : TableBorderPart.CellLeft;
                         rowResult.Add(new Segment(context.Border.GetPart(part), context.BorderStyle));
                     }
 
@@ -91,7 +95,8 @@ internal static class TableRenderer
                     }
 
                     // Pad column on the right side
-                    if (context.ShowBorder || (context.HideBorder && !isLastCell) || (context.HideBorder && isLastCell && context.IsGrid && context.PadRightCell))
+                    if (context.ShowBorder || (context.HideBorder && !isLastCell) ||
+                        (context.HideBorder && isLastCell && context.IsGrid && context.PadRightCell))
                     {
                         var rightPadding = context.Columns[cellIndex].Padding.GetRightSafe();
                         if (rightPadding > 0)
@@ -103,13 +108,17 @@ internal static class TableRenderer
                     if (isLastCell && context.ShowBorder)
                     {
                         // Add right column edge
-                        var part = isFirstRow && context.ShowHeaders ? TableBorderPart.HeaderRight : TableBorderPart.CellRight;
+                        var part = isFirstRow && context.ShowHeaders
+                            ? TableBorderPart.HeaderRight
+                            : TableBorderPart.CellRight;
                         rowResult.Add(new Segment(context.Border.GetPart(part), context.BorderStyle));
                     }
                     else if (context.ShowBorder)
                     {
                         // Add column separator
-                        var part = isFirstRow && context.ShowHeaders ? TableBorderPart.HeaderSeparator : TableBorderPart.CellSeparator;
+                        var part = isFirstRow && context.ShowHeaders
+                            ? TableBorderPart.HeaderSeparator
+                            : TableBorderPart.CellSeparator;
                         rowResult.Add(new Segment(context.Border.GetPart(part), context.BorderStyle));
                     }
                 }
@@ -133,15 +142,40 @@ internal static class TableRenderer
             // Show header separator?
             if (isFirstRow && context.ShowBorder && context.ShowHeaders && context.HasRows)
             {
-                var separator = Aligner.Align(context.Border.GetColumnRow(TablePart.HeaderSeparator, columnWidths, context.Columns), context.Alignment, context.MaxWidth);
+                var separator =
+                    Aligner.Align(
+                        context.Border.GetColumnRow(TablePart.HeaderSeparator, columnWidths, context.Columns),
+                        context.Alignment, context.MaxWidth);
                 result.Add(new Segment(separator, context.BorderStyle));
                 result.Add(Segment.LineBreak);
+            }
+
+            // Show row separator, if headers are hidden show separator after the first row
+            if (context.Border.SupportsRowSeparator && context.ShowRowSeparators
+                                                    && (!isFirstRow || (isFirstRow && !context.ShowHeaders)) && !isLastRow)
+            {
+                var hasVisibleFootes = context is { ShowFooters: true, HasFooters: true };
+                var isNextLastLine = index == context.Rows.Count - 2;
+
+                var isRenderingFooter = hasVisibleFootes && isNextLastLine;
+                if (!isRenderingFooter)
+                {
+                    var separator =
+                        Aligner.Align(
+                            context.Border.GetColumnRow(TablePart.RowSeparator, columnWidths, context.Columns),
+                            context.Alignment, context.MaxWidth);
+                    result.Add(new Segment(separator, context.BorderStyle));
+                    result.Add(Segment.LineBreak);
+                }
             }
 
             // Show bottom of footer?
             if (isLastRow && context.ShowBorder)
             {
-                var separator = Aligner.Align(context.Border.GetColumnRow(TablePart.Bottom, columnWidths, context.Columns), context.Alignment, context.MaxWidth);
+                var separator =
+                    Aligner.Align(
+                        context.Border.GetColumnRow(TablePart.Bottom, columnWidths, context.Columns),
+                        context.Alignment, context.MaxWidth);
                 result.Add(new Segment(separator, context.BorderStyle));
                 result.Add(Segment.LineBreak);
             }
@@ -151,7 +185,8 @@ internal static class TableRenderer
         return result;
     }
 
-    private static IEnumerable<Segment> RenderAnnotation(TableRendererContext context, TableTitle? header, Style defaultStyle)
+    private static IEnumerable<Segment> RenderAnnotation(TableRendererContext context, TableTitle? header,
+        Style defaultStyle)
     {
         if (header == null)
         {

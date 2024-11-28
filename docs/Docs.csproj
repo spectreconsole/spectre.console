@@ -2,11 +2,16 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
     <DefaultItemExcludes>$(DefaultItemExcludes);output\**;.gitignore</DefaultItemExcludes>
     <NoWarn>MVC1000</NoWarn>
     <MinVerSkip>true</MinVerSkip>
+    <!-- 
+    Disable NuGetAudit for now, there is an in progress PR with Statiq regarding these packages,
+    but since since this is just a generator we are safe to ignore this for now.
+     -->
+    <NuGetAudit>false</NuGetAudit>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,13 +38,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Playwright" Version="1.19.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Statiq.CodeAnalysis" Version="1.0.0-beta.58" />
-    <PackageReference Include="Statiq.Common" Version="1.0.0-beta.58" />
-    <PackageReference Include="Statiq.Web" Version="1.0.0-beta.44" />
-    <PackageReference Include="MinVer" PrivateAssets="All" Version="2.5.0" />
-    <PackageReference Include="Statiq.Web.Netlify" Version="1.0.0-beta.44" />
+    <PackageReference Include="Microsoft.Playwright" Version="1.49.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Statiq.CodeAnalysis" Version="1.0.0-beta.72" />
+    <PackageReference Include="Statiq.Common" Version="1.0.0-beta.72" />
+    <PackageReference Include="Statiq.Web" Version="1.0.0-beta.60" />
+    <PackageReference Include="MinVer" PrivateAssets="All" Version="6.0.0" />
+    <PackageReference Include="Statiq.Web.Netlify" Version="1.0.0-beta.60" />
   </ItemGroup>
 
   <ItemGroup>

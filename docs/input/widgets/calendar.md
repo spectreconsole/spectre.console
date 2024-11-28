@@ -1,4 +1,4 @@
-﻿Title: Calendar
+Title: Calendar
 Order: 40
 RedirectFrom: calendar
 Description: "The **Calendar** is used to render a calendar to the terminal."

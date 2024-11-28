@@ -1,47 +1,41 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
-    <Nullable>enable</Nullable>
+    <TargetFrameworks>net9.0;net8.0;netstandard2.0</TargetFrameworks>
     <IsPackable>true</IsPackable>
-    <NoWarn>SA1633</NoWarn>
+    <DefineConstants>$(DefineConstants)TRACE;WCWIDTH_VISIBILITY_INTERNAL</DefineConstants>
   </PropertyGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="..\stylecop.json" Link="Properties/stylecop.json" />
-    <EmbeddedResource Include="Widgets\Figlet\Fonts\Standard.flf" />
-    <None Remove="Widgets\Figlet\Fonts\Standard.flf" />
-    <None Include="../../resources/gfx/small-logo.png" Pack="true" PackagePath="\" Link="Properties/small-logo.png" />
-    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+  <PropertyGroup>
+    <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'" >true</IsAotCompatible>
+    <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
+  </PropertyGroup>
+  <ItemGroup Label="REMOVE THIS">
+    <InternalsVisibleTo Include="$(AssemblyName).Tests"/>
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.5.5" />
-    <PackageReference Include="Wcwidth.Sources" Version="1.0.0">
+  <ItemGroup Label="Standard Figlet font">
+    <EmbeddedResource Include="Widgets\Figlet\Fonts\Standard.flf"/>
+    <None Remove="Widgets\Figlet\Fonts\Standard.flf"/>
+  </ItemGroup>
+
+  <ItemGroup Label="Dependencies">
+    <PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="System.Memory"/>
+    <PackageReference Include="Wcwidth.Sources">
       <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="PolySharp">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <AnnotatedReferenceAssemblyVersion>3.0.0</AnnotatedReferenceAssemblyVersion>
-    <GenerateNullableAttributes>False</GenerateNullableAttributes>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="TunnelVisionLabs.ReferenceAssemblyAnnotator" Version="1.0.0-alpha.160" PrivateAssets="all" />
-    <PackageDownload Include="Microsoft.NETCore.App.Ref" Version="[$(AnnotatedReferenceAssemblyVersion)]" />
-    <PackageReference Include="Nullable" Version="1.3.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="TunnelVisionLabs.ReferenceAssemblyAnnotator" PrivateAssets="all"/>
+    <PackageDownload Include="Microsoft.NETCore.App.Ref" Version="[$(AnnotatedReferenceAssemblyVersion)]"/>
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Widgets\Json\" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <DefineConstants>$(DefineConstants)TRACE;WCWIDTH_VISIBILITY_INTERNAL</DefineConstants>
-  </PropertyGroup>
 
 </Project>

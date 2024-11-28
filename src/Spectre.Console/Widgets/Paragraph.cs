@@ -4,7 +4,6 @@ namespace Spectre.Console;
 /// A paragraph of text where different parts
 /// of the paragraph can have individual styling.
 /// </summary>
-[DebuggerDisplay("{_text,nq}")]
 public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
 {
     private readonly List<SegmentLine> _lines;
@@ -68,8 +67,6 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
 
         foreach (var (_, first, last, part) in text.SplitLines().Enumerate())
         {
-            var current = part;
-
             if (first)
             {
                 var line = _lines.LastOrDefault();
@@ -79,13 +76,13 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
                     line = _lines.Last();
                 }
 
-                if (string.IsNullOrEmpty(current))
+                if (string.IsNullOrEmpty(part))
                 {
                     line.Add(Segment.Empty);
                 }
                 else
                 {
-                    foreach (var span in current.SplitWords())
+                    foreach (var span in part.SplitWords())
                     {
                         line.Add(new Segment(span, style ?? Style.Plain));
                     }
@@ -95,13 +92,13 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
             {
                 var line = new SegmentLine();
 
-                if (string.IsNullOrEmpty(current))
+                if (string.IsNullOrEmpty(part))
                 {
                     line.Add(Segment.Empty);
                 }
                 else
                 {
-                    foreach (var span in current.SplitWords())
+                    foreach (var span in part.SplitWords())
                     {
                         line.Add(new Segment(span, style ?? Style.Plain));
                     }
@@ -198,13 +195,11 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
         var lines = new List<SegmentLine>();
         var line = new SegmentLine();
 
-        var newLine = true;
-
         using var iterator = new SegmentLineIterator(_lines);
         var queue = new Queue<Segment>();
         while (true)
         {
-            var current = (Segment?)null;
+            Segment? current;
             if (queue.Count == 0)
             {
                 if (!iterator.MoveNext())
@@ -224,13 +219,12 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
                 throw new InvalidOperationException("Iterator returned empty segment.");
             }
 
-            newLine = false;
+            var newLine = false;
 
             if (current.IsLineBreak)
             {
                 lines.Add(line);
                 line = new SegmentLine();
-                newLine = true;
                 continue;
             }
 
@@ -246,7 +240,6 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
                     {
                         lines.Add(line);
                         line = new SegmentLine();
-                        newLine = true;
 
                         segments.ForEach(s => queue.Enqueue(s));
                         continue;
@@ -275,8 +268,6 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
             {
                 continue;
             }
-
-            newLine = false;
 
             line.Add(current);
         }

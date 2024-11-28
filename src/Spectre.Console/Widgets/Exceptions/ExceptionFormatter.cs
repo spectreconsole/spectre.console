@@ -1,7 +1,14 @@
 namespace Spectre.Console;
 
+// ExceptionFormatter relies heavily on reflection of types unknown until runtime.
+[UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode")]
+[UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2070:RequiresUnreferencedCode")]
+[UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2075:RequiresUnreferencedCode")]
+[UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050:RequiresUnreferencedCode")]
 internal static class ExceptionFormatter
 {
+    public const string AotWarning = "ExceptionFormatter is currently not supported for AOT.";
+
     public static IRenderable Format(Exception exception, ExceptionSettings settings)
     {
         if (exception is null)
@@ -50,9 +57,22 @@ internal static class ExceptionFormatter
         }
 
         // Stack frames
+        if ((settings.Format & ExceptionFormats.NoStackTrace) != 0)
+        {
+            return grid;
+        }
+
         var stackTrace = new StackTrace(ex, fNeedFileInfo: true);
-        var frames = stackTrace
-            .GetFrames()
+        var allFrames = stackTrace.GetFrames();
+        if (allFrames[0]?.GetMethod() == null)
+        {
+            // if we can't easily get the method for the frame, then we are in AOT
+            // fallback to using ToString method of each frame.
+            WriteAotFrames(grid, stackTrace.GetFrames(), styles);
+            return grid;
+        }
+
+        var frames = allFrames
             .FilterStackFrames()
             .ToList();
 
@@ -111,6 +131,23 @@ internal static class ExceptionFormatter
         }
 
         return grid;
+    }
+
+    private static void WriteAotFrames(Grid grid, StackFrame?[] frames, ExceptionStyle styles)
+    {
+        foreach (var stackFrame in frames)
+        {
+            if (stackFrame == null)
+            {
+                continue;
+            }
+
+            var s = stackFrame.ToString();
+            s = s.Replace(" in file:line:column <filename unknown>:0:0", string.Empty).TrimEnd();
+            grid.AddRow(
+                $"[{styles.Dimmed.ToMarkup()}]at[/]",
+                s.EscapeMarkup());
+        }
     }
 
     private static void AppendParameters(StringBuilder builder, MethodBase? method, ExceptionSettings settings)
@@ -393,6 +430,7 @@ internal static class ExceptionFormatter
         return builder.ToString();
     }
 
+    [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
     private static bool TryResolveStateMachineMethod(ref MethodBase method, out Type declaringType)
     {
         // https://github.com/dotnet/runtime/blob/v6.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L400-L455

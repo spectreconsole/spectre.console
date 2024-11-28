@@ -82,7 +82,7 @@ public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorde
     /// <summary>
     /// Gets or sets the calendar's highlight <see cref="Style"/>.
     /// </summary>
-    public Style HightlightStyle
+    public Style HighlightStyle
     {
         get => _highlightStyle;
         set => MarkAsDirty(() => _highlightStyle = value);
@@ -153,9 +153,9 @@ public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorde
         _useSafeBorder = true;
         _borderStyle = null;
         _culture = CultureInfo.InvariantCulture;
-        _highlightStyle = new Style(foreground: Color.Blue);
+        _highlightStyle = Color.Blue;
         _showHeader = true;
-        _calendarEvents = new ListWithCallback<CalendarEvent>(() => MarkAsDirty());
+        _calendarEvents = new ListWithCallback<CalendarEvent>(MarkAsDirty);
     }
 
     /// <inheritdoc/>
@@ -196,9 +196,10 @@ public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorde
         {
             if (weekdays[currentDay - 1] == weekday)
             {
-                if (_calendarEvents.Any(e => e.Month == Month && e.Day == currentDay))
+                var todayEvent = _calendarEvents.LastOrDefault(e => e.Month == Month && e.Day == currentDay);
+                if (todayEvent != null)
                 {
-                    row.Add(new Markup(currentDay.ToString(CultureInfo.InvariantCulture) + "*", _highlightStyle));
+                    row.Add(new Markup(currentDay.ToString(CultureInfo.InvariantCulture) + "*", todayEvent.CustomHighlightStyle ?? _highlightStyle));
                 }
                 else
                 {

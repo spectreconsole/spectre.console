@@ -6,6 +6,7 @@ internal sealed class CommandTreeTokenStream : IReadOnlyList<CommandTreeToken>
     private int _position;
 
     public int Count => _tokens.Count;
+    public int Position => _position;
 
     public CommandTreeToken this[int index] => _tokens[index];
 

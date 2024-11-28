@@ -183,6 +183,61 @@ public static class SelectionPromptExtensions
     }
 
     /// <summary>
+    /// Enables search for the prompt.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static SelectionPrompt<T> EnableSearch<T>(this SelectionPrompt<T> obj)
+        where T : notnull
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        obj.SearchEnabled = true;
+        return obj;
+    }
+
+    /// <summary>
+    /// Disables search for the prompt.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static SelectionPrompt<T> DisableSearch<T>(this SelectionPrompt<T> obj)
+        where T : notnull
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        obj.SearchEnabled = false;
+        return obj;
+    }
+
+    /// <summary>
+    /// Sets the text that will be displayed when no search text has been entered.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="text">The text to display.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static SelectionPrompt<T> SearchPlaceholderText<T>(this SelectionPrompt<T> obj, string? text)
+        where T : notnull
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        obj.SearchPlaceholderText = text;
+        return obj;
+    }
+
+    /// <summary>
     /// Sets the highlight style of the selected choice.
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>

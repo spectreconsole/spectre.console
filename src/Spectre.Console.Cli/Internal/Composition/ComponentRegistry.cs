@@ -36,6 +36,7 @@ internal sealed class ComponentRegistry : IDisposable
         {
             if (!_registrations.ContainsKey(type))
             {
+                // Only add each registration type once.
                 _registrations.Add(type, new HashSet<ComponentRegistration>());
             }
 

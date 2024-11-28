@@ -1,8 +1,8 @@
 Title: Introduction
 Order: 1
 Description: "*Spectre.Console.Cli* is a modern library for parsing command line arguments. While it's extremely
-opinionated in what it does, it tries to follow established industry conventions, and draws
-its inspiration from applications you use everyday."
+             opinionated in what it does, it tries to follow established industry conventions, and draws
+             its inspiration from applications you use everyday."
 ---
 
 `Spectre.Console.Cli` is a modern library for parsing command line arguments. While it's extremely

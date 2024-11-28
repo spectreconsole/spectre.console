@@ -41,7 +41,7 @@ You can set the rule's title alignment.
 
 ```csharp
 var rule = new Rule("[red]Hello[/]");
-rule.Alignment = Justify.Left;
+rule.Justification = Justify.Left;
 AnsiConsole.Write(rule);
 ```
 

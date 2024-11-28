@@ -37,6 +37,16 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     public Style? DisabledStyle { get; set; }
 
     /// <summary>
+    /// Gets or sets the style of highlighted search matches.
+    /// </summary>
+    public Style? SearchHighlightStyle { get; set; }
+
+    /// <summary>
+    /// Gets or sets the text that will be displayed when no search text has been entered.
+    /// </summary>
+    public string? SearchPlaceholderText { get; set; }
+
+    /// <summary>
     /// Gets or sets the converter to get the display string for a choice. By default
     /// the corresponding <see cref="TypeConverter"/> is used.
     /// </summary>
@@ -52,6 +62,11 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     /// Defaults to <see cref="SelectionMode.Leaf"/>.
     /// </summary>
     public SelectionMode Mode { get; set; } = SelectionMode.Leaf;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not search is enabled.
+    /// </summary>
+    public bool SearchEnabled { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SelectionPrompt{T}"/> class.
@@ -84,7 +99,8 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     {
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
-        var result = await prompt.Show(_tree, cancellationToken, PageSize, WrapAround).ConfigureAwait(false);
+        var converter = Converter ?? TypeConverterHelper.ConvertToString;
+        var result = await prompt.Show(_tree, converter, Mode, true, SearchEnabled, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
 
         // Return the selected item
         return result.Items[result.Index].Data;
@@ -118,11 +134,20 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
             extra += 2;
         }
 
-        // Scrolling?
-        if (totalItemCount > requestedPageSize)
+        var scrollable = totalItemCount > requestedPageSize;
+        if (SearchEnabled || scrollable)
         {
-            // The scrolling instructions takes up two rows
-            extra += 2;
+            extra += 1;
+        }
+
+        if (SearchEnabled)
+        {
+            extra += 1;
+        }
+
+        if (scrollable)
+        {
+            extra += 1;
         }
 
         if (requestedPageSize > console.Profile.Height - extra)
@@ -134,11 +159,13 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     }
 
     /// <inheritdoc/>
-    IRenderable IListPromptStrategy<T>.Render(IAnsiConsole console, bool scrollable, int cursorIndex, IEnumerable<(int Index, ListPromptItem<T> Node)> items)
+    IRenderable IListPromptStrategy<T>.Render(IAnsiConsole console, bool scrollable, int cursorIndex,
+        IEnumerable<(int Index, ListPromptItem<T> Node)> items, bool skipUnselectableItems, string searchText)
     {
         var list = new List<IRenderable>();
-        var disabledStyle = DisabledStyle ?? new Style(foreground: Color.Grey);
-        var highlightStyle = HighlightStyle ?? new Style(foreground: Color.Blue);
+        var disabledStyle = DisabledStyle ?? Color.Grey;
+        var highlightStyle = HighlightStyle ?? Color.Blue;
+        var searchHighlightStyle = SearchHighlightStyle ?? new Style(foreground: Color.Default, background: Color.Yellow, Decoration.Bold);
 
         if (Title != null)
         {
@@ -169,15 +196,31 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
                 text = text.RemoveMarkup().EscapeMarkup();
             }
 
+            if (searchText.Length > 0 && !(item.Node.IsGroup && Mode == SelectionMode.Leaf))
+            {
+                text = text.Highlight(searchText, searchHighlightStyle);
+            }
+
             grid.AddRow(new Markup(indent + prompt + " " + text, style));
         }
 
         list.Add(grid);
 
+        if (SearchEnabled || scrollable)
+        {
+            // Add padding
+            list.Add(Text.Empty);
+        }
+
+        if (SearchEnabled)
+        {
+            list.Add(new Markup(
+                searchText.Length > 0 ? searchText.EscapeMarkup() : SearchPlaceholderText ?? ListPromptConstants.SearchPlaceholderMarkup));
+        }
+
         if (scrollable)
         {
             // (Move up and down to reveal more choices)
-            list.Add(Text.Empty);
             list.Add(new Markup(MoreChoicesText ?? ListPromptConstants.MoreChoicesMarkup));
         }
 

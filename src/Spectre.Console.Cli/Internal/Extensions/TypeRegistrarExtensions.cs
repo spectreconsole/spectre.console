@@ -6,10 +6,6 @@ internal static class TypeRegistrarExtensions
     {
         var stack = new Stack<CommandInfo>();
         model.Commands.ForEach(c => stack.Push(c));
-        if (model.DefaultCommand != null)
-        {
-            stack.Push(model.DefaultCommand);
-        }
 
         while (stack.Count > 0)
         {
@@ -19,6 +15,12 @@ internal static class TypeRegistrarExtensions
             {
                 // TODO: Error message
                 throw new InvalidOperationException("Command setting type cannot be null.");
+            }
+
+            if (command.SettingsType is { IsAbstract: false, IsClass: true })
+            {
+                // Register the settings type
+                registrar?.Register(command.SettingsType, command.SettingsType);
             }
 
             if (command.CommandType != null)

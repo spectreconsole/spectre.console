@@ -5,6 +5,9 @@ namespace Spectre.Console.Cli;
 /// <summary>
 /// The entry point for a command line application.
 /// </summary>
+#if !NETSTANDARD2_0
+[RequiresDynamicCode("Spectre.Console.Cli relies on reflection. Use during trimming and AOT compilation is not supported and may result in unexpected behaviors.")]
+#endif
 public sealed class CommandApp : ICommandApp
 {
     private readonly Configurator _configurator;
@@ -102,7 +105,7 @@ public sealed class CommandApp : ICommandApp
 
             if (_configurator.Settings.ExceptionHandler != null)
             {
-                return _configurator.Settings.ExceptionHandler(ex);
+                return _configurator.Settings.ExceptionHandler(ex, null);
             }
 
             // Render the exception.

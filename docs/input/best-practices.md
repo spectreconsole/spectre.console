@@ -60,7 +60,7 @@ Spectre.Console will tell your terminal to use the color that is configured in t
 If you are using an 8 or 24-bit color for the foreground text, it is recommended that you also set an appropriate
 background color to match.
 
-**Do** escape data when outputting any user input or any external data via Markup using the [`EscapeMarkup`](xref:M:Spectre.Console.Markup.Escape(System.String)) method on the data. Any user input containing `[` or `]` will likely cause a runtime error while rendering otherwise.
+**Do** escape data when outputting any user input or any external data via Markup using the [`Markup.Escape`](xref:M:Spectre.Console.Markup.Escape(System.String)) method on the data. Any user input containing `[` or `]` will likely cause a runtime error while rendering otherwise.
 
 **Consider** replacing `Markup` and `MarkupLine` with [`MarkupInterpolated`](xref:M:Spectre.Console.AnsiConsole.MarkupInterpolated(System.FormattableString)) and [`MarkupLineInterpolated`](xref:M:Spectre.Console.AnsiConsole.MarkupLineInterpolated(System.FormattableString)). Both these methods will automatically escape all data in the interpolated string holes. When working with widgets such as the Table and Tree, consider using [`Markup.FromInterpolated`](xref:M:Spectre.Console.Markup.FromInterpolated(System.FormattableString,Spectre.Console.Style)) to generate an `IRenderable` from an interpolated string.
 
@@ -95,6 +95,31 @@ as [Verify](https://github.com/VerifyTests/Verify).
 Spectre.Console has an [analyzer](https://www.nuget.org/packages/Spectre.Console.Analyzer) that helps prevent some
 common errors in writing console output from above such as using multiple live rendering widgets simultaneously,
 or using the static `AnsiConsole` class when `IAnsiConsole` is available.
+
+### Native AOT Support
+
+Publishing your app as Native AOT with Spectre.Console produces an app that's self-contained and has been ahead-of-time (AOT) compiled to native code. Native AOT apps have faster startup time and smaller memory footprints. These apps can run on machines that don't have the .NET runtime installed.
+
+To enable AOT support on your application, Add `<PublishAot>true</PublishAot>` to your project file.
+
+```xml
+<PropertyGroup>
+    <PublishAot>true</PublishAot>
+</PropertyGroup>
+```
+
+Current Spectre.Console support for AOT:
+
+* &#9745;&#65039; Spectre.Console
+* &#10060; Spectre.Console.Cli
+* &#9745;&#65039; Spectre.Console.Json
+* &#9745;&#65039; Spectre.Console.ImageSharp
+
+Spectre.Console.Cli relies on reflection and discovering types at runtime, preventing it from currently supporting AOT.
+
+Spectre.Console supports AOT, but with the following limitations
+
+* `WriteException` will output a simple stacktrace and ignore any `ExceptionFormats` set.
 
 ### Configuring the Windows Terminal For Unicode and Emoji Support
 

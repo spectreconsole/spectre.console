@@ -1,4 +1,4 @@
-﻿namespace Spectre.Console;
+namespace Spectre.Console;
 
 internal static class TypeNameHelper
 {
@@ -75,7 +75,7 @@ internal static class TypeNameHelper
         {
             builder.Append(type.Name);
         }
-        else if (type.Assembly.ManifestModule.Name == "FSharp.Core.dll"
+        else if (type.Assembly.GetName().Name == "FSharp.Core.dll"
                  && FSharpTypeNames.TryGetValue(type.Name, out builtInName))
         {
             builder.Append(builtInName);
@@ -150,7 +150,7 @@ internal static class TypeNameHelper
             return;
         }
 
-        if (type.Assembly.ManifestModule.Name == "FSharp.Core.dll"
+        if (type.Assembly.GetName().Name == "FSharp.Core.dll"
             && FSharpTypeNames.TryGetValue(type.Name, out var builtInName))
         {
             builder.Append(builtInName);
