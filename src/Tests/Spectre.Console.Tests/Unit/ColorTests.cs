@@ -68,6 +68,23 @@ public sealed class ColorTests
             color.ShouldBe(Color.Default);
         }
 
+        [Theory]
+        [InlineData("ffffff")]
+        [InlineData("#ffffff")]
+        [InlineData("fff")]
+        [InlineData("#fff")]
+        public void Should_Parse_3_Digit_Hex_Colors_From_Hex(string color)
+        {
+            // Given
+            var expected = new Color(255, 255, 255);
+
+            // When
+            var result = Color.FromHex(color);
+
+            // Then
+            result.ShouldBe(expected);
+        }
+
         [Fact]
         public void Should_Consider_Color_And_Non_Color_Equal()
         {
