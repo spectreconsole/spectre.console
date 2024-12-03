@@ -230,6 +230,11 @@ public partial struct Color : IEquatable<Color>
             hex = hex.Substring(1);
         }
 
+        if (hex.Length == 3)
+        {
+            hex = string.Concat(hex.Select(c => new string(c, 2)));
+        }
+
         var r = byte.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
         var g = byte.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
         var b = byte.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
