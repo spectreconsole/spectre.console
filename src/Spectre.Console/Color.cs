@@ -230,6 +230,13 @@ public partial struct Color : IEquatable<Color>
             hex = hex.Substring(1);
         }
 
+        // 3 digit hex codes are expanded to 6 digits
+        // by doubling each digit, conform to CSS color codes
+        if (hex.Length == 3)
+        {
+            hex = string.Concat(hex.Select(c => new string(c, 2)));
+        }
+
         var r = byte.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
         var g = byte.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
         var b = byte.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
