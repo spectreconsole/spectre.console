@@ -29,7 +29,7 @@ public static class ConfiguratorExtensions
     /// <param name="configurator">The configurator.</param>
     /// <typeparam name="T">The type of the help provider to instantiate at runtime and use.</typeparam>
     /// <returns>A configurator that can be used to configure the application further.</returns>
-    public static IConfigurator SetHelpProvider<T>(this IConfigurator configurator)
+    public static IConfigurator SetHelpProvider<[DynamicallyAccessedMembers(PublicConstructors | PublicProperties)] T>(this IConfigurator configurator)
         where T : IHelpProvider
     {
         if (configurator == null)

@@ -18,12 +18,12 @@ internal static class CommandParameterComparer
                 return true;
             }
 
-            return x.Property.MetadataToken == y.Property.MetadataToken;
+            return x.Property.Equals(y.Property);
         }
 
         public int GetHashCode(CommandParameter? obj)
         {
-            return obj?.Property?.MetadataToken.GetHashCode() ?? 0;
+            return obj?.Property?.GetHashCode() ?? 0;
         }
     }
 }

@@ -15,7 +15,7 @@ public interface IConfigurator
     /// Sets the help provider for the application.
     /// </summary>
     /// <typeparam name="T">The type of the help provider to instantiate at runtime and use.</typeparam>
-    public void SetHelpProvider<T>()
+    public void SetHelpProvider<[DynamicallyAccessedMembers(PublicConstructors | PublicProperties)] T>()
         where T : IHelpProvider;
 
     /// <summary>
@@ -35,7 +35,7 @@ public interface IConfigurator
     /// <typeparam name="TCommand">The command type.</typeparam>
     /// <param name="name">The name of the command.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
-    ICommandConfigurator AddCommand<TCommand>(string name)
+    ICommandConfigurator AddCommand<[DynamicallyAccessedMembers(PublicConstructors | Interfaces)] TCommand>(string name)
         where TCommand : class, ICommand;
 
     /// <summary>

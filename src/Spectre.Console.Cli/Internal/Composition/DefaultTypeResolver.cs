@@ -41,7 +41,12 @@ internal sealed class DefaultTypeResolver : IDisposable, ITypeResolver
         {
             if (isEnumerable)
             {
-                var result = Array.CreateInstance(type, registrations.Count);
+                if (type.IsValueType)
+                {
+                    throw new InvalidOperationException($"The type {type.FullName} is a value type and not supported to be created as an array for dependency injection.");
+                }
+
+                var result = CreateInstanceHelpers.CreateArrayInstanceFromElementType(type, registrations.Count);
                 for (var index = 0; index < registrations.Count; index++)
                 {
                     var registration = registrations.ElementAt(index);

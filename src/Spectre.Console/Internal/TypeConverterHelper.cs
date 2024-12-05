@@ -2,7 +2,7 @@ namespace Spectre.Console;
 
 internal static class TypeConverterHelper
 {
-    internal const DynamicallyAccessedMemberTypes ConverterAnnotation = DynamicallyAccessedMemberTypes.PublicParameterlessConstructor | DynamicallyAccessedMemberTypes.PublicFields;
+    internal const DynamicallyAccessedMemberTypes ConverterAnnotation = DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields;
 
     internal static bool IsGetConverterSupported =>
         !AppContext.TryGetSwitch("Spectre.Console.TypeConverterHelper.IsGetConverterSupported ", out var enabled) || enabled;
@@ -96,9 +96,7 @@ internal static class TypeConverterHelper
         }
     }
 
-    private delegate TypeConverter FuncWithDam([DynamicallyAccessedMembers(ConverterAnnotation)] Type type);
-
-    private static readonly Dictionary<Type, FuncWithDam> _intrinsicConverters;
+    private static readonly Dictionary<Type, Func<Type, TypeConverter>> _intrinsicConverters;
 
     static TypeConverterHelper()
     {
@@ -140,7 +138,7 @@ internal static class TypeConverterHelper
     }
 
     [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2111", Justification = "Delegate reflection is safe for all usages in this type.")]
-    private static FuncWithDam CreateEnumConverter() => ([DynamicallyAccessedMembers(ConverterAnnotation)] Type type) => new EnumConverter(type);
+    private static Func<Type, TypeConverter> CreateEnumConverter() => ([DynamicallyAccessedMembers(ConverterAnnotation)] Type type) => new EnumConverter(type);
 
     /// <summary>
     /// A highly-constrained version of <see cref="TypeDescriptor.GetConverter(Type)" /> that only returns intrinsic converters.

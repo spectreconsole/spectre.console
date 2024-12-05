@@ -14,3 +14,4 @@ global using System.Xml;
 global using Spectre.Console.Cli.Help;
 global using Spectre.Console.Cli.Unsafe;
 global using Spectre.Console.Rendering;
+global using static System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes;

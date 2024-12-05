@@ -5,11 +5,12 @@
     <IsPackable>true</IsPackable>
   </PropertyGroup>
   <PropertyGroup>
-    <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'" >false</IsAotCompatible>
-    <IsTrimmable>false</IsTrimmable>
+    <IsAotCompatible Condition="'$(TargetFramework)' == 'net9.0'" >true</IsAotCompatible>
+    <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
   </PropertyGroup>
   <ItemGroup Label="REMOVE THIS">
     <InternalsVisibleTo Include="Spectre.Console.Cli.Tests" />
+    <InternalsVisibleTo Include="Spectre.Console.TrimTest" />
   </ItemGroup>
 
   <ItemGroup>

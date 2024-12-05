@@ -5,9 +5,6 @@ namespace Spectre.Console.Cli;
 /// <summary>
 /// The entry point for a command line application.
 /// </summary>
-#if !NETSTANDARD2_0
-[RequiresDynamicCode("Spectre.Console.Cli relies on reflection. Use during trimming and AOT compilation is not supported and may result in unexpected behaviors.")]
-#endif
 public sealed class CommandApp : ICommandApp
 {
     private readonly Configurator _configurator;
@@ -45,7 +42,7 @@ public sealed class CommandApp : ICommandApp
     /// </summary>
     /// <typeparam name="TCommand">The command type.</typeparam>
     /// <returns>A <see cref="DefaultCommandConfigurator"/> that can be used to configure the default command.</returns>
-    public DefaultCommandConfigurator SetDefaultCommand<TCommand>()
+    public DefaultCommandConfigurator SetDefaultCommand<[DynamicallyAccessedMembers(PublicConstructors | Interfaces)] TCommand>()
         where TCommand : class, ICommand
     {
         return new DefaultCommandConfigurator(GetConfigurator().SetDefaultCommand<TCommand>());

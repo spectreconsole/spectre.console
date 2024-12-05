@@ -7,7 +7,13 @@ internal sealed class ConfiguredCommand
     public string? Description { get; set; }
     public object? Data { get; set; }
     public Type? CommandType { get; }
-    public Type SettingsType { get; }
+
+    public Type SettingsType
+    {
+        [return: DynamicallyAccessedMembers(PublicConstructors | PublicProperties)]
+        get;
+    }
+
     public Func<CommandContext, CommandSettings, Task<int>>? Delegate { get; }
     public bool IsDefaultCommand { get; }
     public bool IsHidden { get; set; }
@@ -47,7 +53,7 @@ internal sealed class ConfiguredCommand
         return new ConfiguredCommand(name, null, typeof(TSettings), null, false);
     }
 
-    public static ConfiguredCommand FromType<TCommand>(string name, bool isDefaultCommand = false)
+    public static ConfiguredCommand FromType<[DynamicallyAccessedMembers(Interfaces)] TCommand>(string name, bool isDefaultCommand = false)
         where TCommand : class, ICommand
     {
         var settingsType = ConfigurationHelper.GetSettingsType(typeof(TCommand));

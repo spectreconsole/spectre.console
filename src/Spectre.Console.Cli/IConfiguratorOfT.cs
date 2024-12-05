@@ -28,7 +28,7 @@ public interface IConfigurator<in TSettings>
     /// arguments, flags or option values.
     /// </remarks>
     /// <typeparam name="TDefaultCommand">The default command type.</typeparam>
-    void SetDefaultCommand<TDefaultCommand>()
+    void SetDefaultCommand<[DynamicallyAccessedMembers(PublicConstructors | Interfaces)] TDefaultCommand>()
         where TDefaultCommand : class, ICommandLimiter<TSettings>;
 
     /// <summary>
@@ -44,7 +44,7 @@ public interface IConfigurator<in TSettings>
     /// <typeparam name="TCommand">The command type.</typeparam>
     /// <param name="name">The name of the command.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
-    ICommandConfigurator AddCommand<TCommand>(string name)
+    ICommandConfigurator AddCommand<[DynamicallyAccessedMembers(PublicConstructors | Interfaces)] TCommand>(string name)
         where TCommand : class, ICommandLimiter<TSettings>;
 
     /// <summary>

@@ -7,6 +7,9 @@ namespace Spectre.Console.Cli;
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 public sealed class CommandArgumentAttribute : Attribute
 {
+    [DynamicallyAccessedMembers(PublicConstructors)]
+    internal Type? ArgumentType { get; }
+
     /// <summary>
     /// Gets the argument position.
     /// </summary>
@@ -32,7 +35,8 @@ public sealed class CommandArgumentAttribute : Attribute
     /// </summary>
     /// <param name="position">The argument position.</param>
     /// <param name="template">The argument template. Wrap in &lt;&gt; for required arguments, [] for optional ones. For example "[MyArgument]".</param>
-    public CommandArgumentAttribute(int position, string template)
+    /// <param name="argumentType">The type of the parameter. Required for AOT scenarios.</param>
+    public CommandArgumentAttribute(int position, string template, [DynamicallyAccessedMembers(PublicConstructors)] Type? argumentType = null)
     {
         if (template == null)
         {
@@ -46,5 +50,13 @@ public sealed class CommandArgumentAttribute : Attribute
         Position = position;
         ValueName = result.Value;
         IsRequired = result.Required;
+
+        // if someone was explicit about the type of option, then we need to register an
+        // explicit builder for this type to be used.
+        ArgumentType = argumentType;
+        if (ArgumentType != null)
+        {
+            CreateInstanceHelpers.RegisterNewInstanceBuilder(ArgumentType);
+        }
     }
 }

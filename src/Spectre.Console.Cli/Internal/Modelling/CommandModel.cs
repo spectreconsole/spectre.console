@@ -47,7 +47,7 @@ internal sealed class CommandModel : ICommandContainer, ICommandModel
 
     private static string? GetApplicationFile()
     {
-        var location = Assembly.GetEntryAssembly()?.Location;
+        var location = AppContext.BaseDirectory;
 
         if (string.IsNullOrWhiteSpace(location))
         {

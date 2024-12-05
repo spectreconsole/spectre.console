@@ -34,7 +34,7 @@ internal sealed class CommandValueBinder
         var multimap = (IMultiMap?)_lookup.GetValue(parameter);
         if (multimap == null)
         {
-            multimap = Activator.CreateInstance(typeof(MultiMap<,>).MakeGenericType(genericTypes[0], genericTypes[1])) as IMultiMap;
+            multimap = CreateInstanceHelpers.CreateMultiMapInstance(genericTypes[0], genericTypes[1]);
             if (multimap == null)
             {
                 throw new InvalidOperationException("Could not create multimap");
@@ -82,11 +82,11 @@ internal sealed class CommandValueBinder
 
         if (array == null)
         {
-            newArray = Array.CreateInstance(elementType, 1);
+            newArray = CreateInstanceHelpers.CreateArrayInstance(parameter.Property.PropertyType, 1);
         }
         else
         {
-            newArray = Array.CreateInstance(elementType, array.Length + 1);
+            newArray = CreateInstanceHelpers.CreateArrayInstance(parameter.Property.PropertyType, array.Length + 1);
             array.CopyTo(newArray, 0);
         }
 
