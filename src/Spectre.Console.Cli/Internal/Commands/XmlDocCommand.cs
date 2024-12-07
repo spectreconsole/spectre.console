@@ -197,6 +197,13 @@ internal sealed class XmlDocCommand : Command<XmlDocCommand.Settings>
                 node.AppendChild(descriptionNode);
             }
 
+            if (option.DefaultValue != null && option.DefaultValue.Value != null)
+            {
+                var defaultValueNode = document.CreateElement("DefaultValue");
+                defaultValueNode.InnerText = option.DefaultValue.Value.ToString()!;
+                node.AppendChild(defaultValueNode);
+            }
+
             yield return node;
         }
     }
