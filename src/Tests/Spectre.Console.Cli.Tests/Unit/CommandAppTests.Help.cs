@@ -303,6 +303,18 @@ public sealed partial class CommandAppTests
         [InlineData("sv-SE", "SV")]
         [InlineData("de", "DE")]
         [InlineData("de-DE", "DE")]
+        [InlineData("it", "IT")]
+        [InlineData("it-IT", "IT")]
+        [InlineData("ja", "JA")]
+        [InlineData("ja-JP", "JA")]
+        [InlineData("ko", "KO")]
+        [InlineData("ko-KR", "KO")]
+        [InlineData("pt", "PT")]
+        [InlineData("pt-BR", "PT")]
+        [InlineData("ru", "RU")]
+        [InlineData("ru-RU", "RU")]
+        [InlineData("zh-Hans", "ZH-HANS")]
+        [InlineData("zh-Hans-CN", "ZH-HANS")]
         [Expectation("Default_Without_Args_Additional")]
         public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_Localised(string culture, string expectationPrefix)
         {
