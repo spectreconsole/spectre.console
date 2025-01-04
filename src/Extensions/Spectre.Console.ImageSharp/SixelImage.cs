@@ -125,11 +125,25 @@ public sealed class SixelImage : Renderable
         // Rendering the sixel data after the canvas allows the canvas to be truncated in a layout without destroying the layout.
         var segments = ((IRenderable)canvas).Render(options, maxWidth).ToList();
 
+        // Remove the final line break from the canvas so the sixel data can be rendered relative to the top left of the canvas.
+        // Leaving the line break in means when this is rendered with IAlignable the cursor position after the canvas is in the wrong location.
+        var finalSegment = segments.TakeLast(1).First();
+        if (finalSegment.IsLineBreak)
+        {
+            segments.RemoveAt(segments.Count - 1);
+        }
+
         // After rendering the canvas, send the cursor to the top left of the canvas to render the sixel data.
-        segments.Add(Segment.Control($"{Constants.ESC}[{sixel.CellHeight}A"));
+        segments.Add(Segment.Control($"{Constants.ESC}[{sixel.CellHeight - 1}A{Constants.ESC}[{sixel.CellWidth}D"));
 
         // Render the sixel data.
         segments.Add(Segment.Control(sixel.SixelStrings[FrameToRender]));
+
+        // Reposition the cursor to the bottom right of the canvas after the sixel rendering leaves it at the bottom left.
+        segments.Add(Segment.Control($"{Constants.ESC}[1A{Constants.ESC}[{sixel.CellWidth}C"));
+
+        // Add the line break stolen from the canvas.
+        segments.Add(Segment.LineBreak);
 
         // Update animation frame.
         FrameToRender = (FrameToRender + 1) % sixel.SixelStrings.Length;
