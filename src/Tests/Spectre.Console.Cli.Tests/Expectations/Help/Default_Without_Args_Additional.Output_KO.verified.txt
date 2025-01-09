@@ -14,6 +14,7 @@ The lion command.
 옵션:
                              기본값
     -h, --help                                   도움말 정보를 출력
+    -v, --version                                버전 정보를 출력
     -a, --alive                                  Indicates whether or not the animal is alive
     -n, --name <VALUE>
         --agility <VALUE>    10                  The agility between 0 and 100

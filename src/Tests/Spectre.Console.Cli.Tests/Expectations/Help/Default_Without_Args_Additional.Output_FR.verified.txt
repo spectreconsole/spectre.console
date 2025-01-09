@@ -14,6 +14,7 @@ ARGUMENTS:
 OPTIONS:
                              DÉFAUT
     -h, --help                                   Affiche l'aide
+    -v, --version                                Affiche la version
     -a, --alive                                  Indicates whether or not the animal is alive
     -n, --name <VALUE>
         --agility <VALUE>    10                  The agility between 0 and 100

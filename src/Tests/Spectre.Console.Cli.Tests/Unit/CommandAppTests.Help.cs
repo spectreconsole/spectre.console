@@ -326,6 +326,7 @@ public sealed partial class CommandAppTests
                 configurator.AddExample("20", "--alive");
                 configurator.SetApplicationCulture(string.IsNullOrEmpty(culture) ? null : new CultureInfo(culture));
                 configurator.SetApplicationName("myapp");
+                configurator.SetApplicationVersion("1.0.0");
                 configurator.AddCommand<GiraffeCommand>("giraffe");
             });
 

@@ -14,6 +14,7 @@ The lion command.
 选项:
                              默认
     -h, --help                                   显示帮助信息
+    -v, --version                                显示版本信息
     -a, --alive                                  Indicates whether or not the animal is alive
     -n, --name <VALUE>
         --agility <VALUE>    10                  The agility between 0 and 100
