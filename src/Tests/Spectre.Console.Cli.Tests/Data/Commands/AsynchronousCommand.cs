@@ -20,7 +20,7 @@ public sealed class AsynchronousCommand : AsyncCommand<AsynchronousCommandSettin
         }
         else
         {
-            _console.WriteLine($"Finished executing asynchronously");
+            _console.Write($"Finished executing asynchronously");
         }
 
         return 0;
