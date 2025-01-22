@@ -132,7 +132,7 @@ public sealed partial class CommandAppTests
             });
 
             // When
-            var result = fixture.Run("--help");
+            var result = fixture.Run("dog", "--help");
 
             // Then
             return Verifier.Verify(result.Output);

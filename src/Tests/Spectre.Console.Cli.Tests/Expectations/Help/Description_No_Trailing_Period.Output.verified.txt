@@ -1,9 +1,15 @@
-﻿USAGE:
-    myapp [OPTIONS] <COMMAND>
+﻿DESCRIPTION:
+The dog command.
+
+USAGE:
+    myapp dog <AGE> [LEGS] [OPTIONS]
+
+ARGUMENTS:
+    <AGE>
+    [LEGS]    The number of legs
 
 OPTIONS:
-    -h, --help    Prints help information
-
-COMMANDS:
-    dog <AGE>    The dog command.
-    horse        The horse command.
+    -h, --help            Prints help information
+    -a, --alive           Indicates whether or not the animal is alive
+    -n, --name <VALUE>
+    -g, --good-boy
