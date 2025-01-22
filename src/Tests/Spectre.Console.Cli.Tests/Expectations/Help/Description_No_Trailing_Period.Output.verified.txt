@@ -9,7 +9,7 @@ ARGUMENTS:
     [LEGS]    The number of legs.
 
 OPTIONS:
-    -h, --help            Prints help information
+    -h, --help            Prints help information.
     -a, --alive           Indicates whether or not the animal is alive.
     -n, --name <VALUE>
     -g, --good-boy
