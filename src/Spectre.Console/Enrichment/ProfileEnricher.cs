@@ -10,6 +10,7 @@ internal static class ProfileEnricher
             new BitbucketEnricher(),
             new BitriseEnricher(),
             new ContinuaEnricher(),
+            new GiteaEnricher(),
             new GitHubEnricher(),
             new GitLabEnricher(),
             new GoCDEnricher(),
@@ -21,8 +22,8 @@ internal static class ProfileEnricher
         };
 
     public static void Enrich(
-        Profile profile,
-        ProfileEnrichment settings,
+        Profile? profile,
+        ProfileEnrichment? settings,
         IDictionary<string, string>? environmentVariables)
     {
         if (profile is null)
@@ -73,7 +74,7 @@ internal static class ProfileEnricher
         }
 
         return Environment.GetEnvironmentVariables()
-            .Cast<System.Collections.DictionaryEntry>()
+            .Cast<DictionaryEntry>()
             .Aggregate(
                 new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase),
                 (dictionary, entry) =>
