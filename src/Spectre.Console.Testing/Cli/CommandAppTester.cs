@@ -9,18 +9,34 @@ public sealed class CommandAppTester
     private Action<IConfigurator>? _configuration;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CommandAppTester"/> class.
-    /// </summary>
-    /// <param name="registrar">The registrar.</param>
-    public CommandAppTester(ITypeRegistrar? registrar = null)
-    {
-        Registrar = registrar;
-    }
-
-    /// <summary>
     /// Gets or sets the Registrar to use in the CommandApp.
     /// </summary>
     public ITypeRegistrar? Registrar { get; set; }
+
+    /// <summary>
+    /// Gets or sets the settings for the <see cref="CommandAppTester"/>.
+    /// </summary>
+    public CommandAppTesterSettings TestSettings { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CommandAppTester"/> class.
+    /// </summary>
+    /// <param name="registrar">The registrar.</param>
+    /// <param name="settings">The settings.</param>
+    public CommandAppTester(ITypeRegistrar? registrar = null, CommandAppTesterSettings? settings = null)
+    {
+        Registrar = registrar;
+        TestSettings = settings ?? new CommandAppTesterSettings();
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CommandAppTester"/> class.
+    /// </summary>
+    /// <param name="settings">The settings.</param>
+    public CommandAppTester(CommandAppTesterSettings settings)
+    {
+        TestSettings = settings;
+    }
 
     /// <summary>
     /// Sets the default command.
@@ -135,10 +151,8 @@ public sealed class CommandAppTester
 
         var result = app.Run(args);
 
-        var output = console.Output
-            .NormalizeLineEndings()
-            .TrimLines()
-            .Trim();
+        var output = console.Output.NormalizeLineEndings();
+        output = TestSettings.TrimConsoleOutput ? output.TrimLines().Trim() : output;
 
         return new CommandAppResult(result, output, context, settings);
     }
@@ -181,10 +195,8 @@ public sealed class CommandAppTester
 
         var result = await app.RunAsync(args);
 
-        var output = console.Output
-            .NormalizeLineEndings()
-            .TrimLines()
-            .Trim();
+        var output = console.Output.NormalizeLineEndings();
+        output = TestSettings.TrimConsoleOutput ? output.TrimLines().Trim() : output;
 
         return new CommandAppResult(result, output, context, settings);
     }
