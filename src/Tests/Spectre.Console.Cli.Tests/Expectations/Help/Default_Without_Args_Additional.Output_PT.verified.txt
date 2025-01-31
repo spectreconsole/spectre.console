@@ -1,20 +1,20 @@
-﻿BESKRIVNING:
+﻿DESCRIÇÃO:
 The lion command.
 
-ANVÄNDING:
-    myapp <TEETH> [LEGS] [VAL] [KOMMANDO]
+USO:
+    myapp <TEETH> [LEGS] [OPÇÕES] [COMANDO]
 
-EXEMPEL:
+EXEMPLOS:
     myapp 20 --alive
 
-ARGUMENT:
+ARGUMENTOS:
     <TEETH>    The number of teeth the lion has
     [LEGS]     The number of legs
 
-VAL:
-                             STANDARD
-    -h, --help                                   Skriver ut hjälpinformation
-    -v, --version                                Skriver ut versionsnummer
+OPÇÕES:
+                             PADRÃO
+    -h, --help                                   Exibe informações de ajuda
+    -v, --version                                Exibe informações de versão
     -a, --alive                                  Indicates whether or not the animal is alive
     -n, --name <VALUE>
         --agility <VALUE>    10                  The agility between 0 and 100
@@ -22,5 +22,5 @@ VAL:
     -d <DAY>                 Monday, Thursday    The days the lion goes hunting
     -w, --weight [WEIGHT]                        The weight of the lion, in kgs
 
-KOMMANDON:
+COMANDOS:
     giraffe <LENGTH>    The giraffe command

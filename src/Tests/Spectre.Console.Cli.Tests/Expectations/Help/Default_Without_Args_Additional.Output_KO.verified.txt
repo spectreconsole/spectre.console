@@ -1,20 +1,20 @@
-﻿BESKRIVNING:
+﻿설명:
 The lion command.
 
-ANVÄNDING:
-    myapp <TEETH> [LEGS] [VAL] [KOMMANDO]
+사용법:
+    myapp <TEETH> [LEGS] [옵션] [명령]
 
-EXEMPEL:
+예시:
     myapp 20 --alive
 
-ARGUMENT:
+인수:
     <TEETH>    The number of teeth the lion has
     [LEGS]     The number of legs
 
-VAL:
-                             STANDARD
-    -h, --help                                   Skriver ut hjälpinformation
-    -v, --version                                Skriver ut versionsnummer
+옵션:
+                             기본값
+    -h, --help                                   도움말 정보를 출력
+    -v, --version                                버전 정보를 출력
     -a, --alive                                  Indicates whether or not the animal is alive
     -n, --name <VALUE>
         --agility <VALUE>    10                  The agility between 0 and 100
@@ -22,5 +22,5 @@ VAL:
     -d <DAY>                 Monday, Thursday    The days the lion goes hunting
     -w, --weight [WEIGHT]                        The weight of the lion, in kgs
 
-KOMMANDON:
+명령어:
     giraffe <LENGTH>    The giraffe command

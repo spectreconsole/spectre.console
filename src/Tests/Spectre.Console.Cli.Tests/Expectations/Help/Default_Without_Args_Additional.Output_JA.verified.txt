@@ -1,20 +1,20 @@
-﻿BESKRIVNING:
+﻿説明:
 The lion command.
 
-ANVÄNDING:
-    myapp <TEETH> [LEGS] [VAL] [KOMMANDO]
+使用法:
+    myapp <TEETH> [LEGS] [オプション] [コマンド]
 
-EXEMPEL:
+例:
     myapp 20 --alive
 
-ARGUMENT:
+引数:
     <TEETH>    The number of teeth the lion has
     [LEGS]     The number of legs
 
-VAL:
-                             STANDARD
-    -h, --help                                   Skriver ut hjälpinformation
-    -v, --version                                Skriver ut versionsnummer
+オプション:
+                             デフォルト
+    -h, --help                                   ヘルプ情報を表示
+    -v, --version                                バージョン情報を表示
     -a, --alive                                  Indicates whether or not the animal is alive
     -n, --name <VALUE>
         --agility <VALUE>    10                  The agility between 0 and 100
@@ -22,5 +22,5 @@ VAL:
     -d <DAY>                 Monday, Thursday    The days the lion goes hunting
     -w, --weight [WEIGHT]                        The weight of the lion, in kgs
 
-KOMMANDON:
+コマンド群:
     giraffe <LENGTH>    The giraffe command
