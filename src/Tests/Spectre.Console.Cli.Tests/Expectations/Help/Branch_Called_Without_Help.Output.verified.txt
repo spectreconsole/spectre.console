@@ -1,5 +1,5 @@
 DESCRIPTION:
-Contains settings for a cat.
+Contains settings for a cat
 
 USAGE:
     myapp cat [LEGS] [OPTIONS] <COMMAND>

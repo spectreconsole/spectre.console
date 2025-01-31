@@ -1,5 +1,5 @@
 ﻿BESKRIVNING:
-The lion command.
+The lion command
 
 ANVÄNDING:
     myapp <TEETH> [LEGS] [VAL] [KOMMANDO]

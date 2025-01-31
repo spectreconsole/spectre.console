@@ -1,5 +1,5 @@
 DESCRIPTION:
-The lion command.
+The lion command
 
 USAGE:
     myapp cat [LEGS] lion <TEETH> [OPTIONS]

@@ -171,7 +171,7 @@ public class HelpProvider : IHelpProvider
 
         var composer = NewComposer();
         composer.Style(helpStyles?.Description?.Header ?? Style.Plain, $"{resources.Description}:").LineBreak();
-        composer.Text(command.Description).LineBreak();
+        composer.Text(NormalizeDescription(command.Description)).LineBreak();
         yield return composer.LineBreak();
     }
 

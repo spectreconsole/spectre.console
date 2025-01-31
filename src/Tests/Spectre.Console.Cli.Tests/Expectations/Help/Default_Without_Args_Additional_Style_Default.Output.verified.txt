@@ -1,5 +1,5 @@
 ﻿[yellow]DESCRIPTION:[/]
-The lion command.
+The lion command
 
 [yellow]USAGE:[/]
     myapp [aqua]<TEETH>[/] [silver][[LEGS]][/] [grey][[OPTIONS]][/] [aqua][[COMMAND]][/]
