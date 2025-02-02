@@ -1,5 +1,5 @@
 ﻿描述:
-The lion command.
+The lion command
 
 用法:
     myapp <TEETH> [LEGS] [选项] [命令]
