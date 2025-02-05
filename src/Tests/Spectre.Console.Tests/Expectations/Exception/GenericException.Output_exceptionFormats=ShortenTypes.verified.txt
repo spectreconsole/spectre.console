@@ -1,0 +1,4 @@
+﻿[38;5;15mGenericException<IAnsiConsole>[0m: [1;38;5;9mThrowing![0m
+  [38;5;8mat[0m [38;5;12mbool[0m [38;5;7mSpectre.Console.Tests.Data.TestExceptions.[0m[38;5;11mMethodThatThrowsGenericException<T>[0m[38;5;7m()[0m [38;5;8min[0m [38;5;7m{ProjectDirectory}Data/[0m[1;38;5;11mExceptions.cs[0m[38;5;8m:[0m[38;5;12m9[0m
+  [38;5;8mat[0m [38;5;12mvoid[0m [38;5;7mSpectre.Console.Tests.Unit.ExceptionTests.<>c.[0m[38;5;11m<Should_Write_GenericException>b__8_0[0m[38;5;7m()[0m [38;5;8min[0m [38;5;7m{ProjectDirectory}Unit/[0m[1;38;5;11mExceptionTests.cs[0m[38;5;8m:[0m[38;5;12m134[0m
+  [38;5;8mat[0m [38;5;12mException[0m [38;5;7mSpectre.Console.Tests.Unit.ExceptionTests.[0m[38;5;11mGetException[0m[38;5;7m([0m[38;5;12mAction[0m [38;5;7maction)[0m [38;5;8min[0m [38;5;7m{ProjectDirectory}Unit/[0m[1;38;5;11mExceptionTests.cs[0m[38;5;8m:[0m[38;5;12m147[0m

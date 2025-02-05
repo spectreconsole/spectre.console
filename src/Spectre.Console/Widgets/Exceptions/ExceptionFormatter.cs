@@ -33,11 +33,12 @@ internal static class ExceptionFormatter
     {
         var shortenTypes = (settings.Format & ExceptionFormats.ShortenTypes) != 0;
         var exceptionType = ex.GetType();
-        var exceptionTypeFullName = exceptionType.FullName ?? exceptionType.Name;
-        var type = Emphasize(exceptionTypeFullName, new[] { '.' }, settings.Style.Exception, shortenTypes, settings);
+        var exceptionTypeName = TypeNameHelper.GetTypeDisplayName(exceptionType, fullName: !shortenTypes, includeSystemNamespace: true);
+        var type = new StringBuilder();
+        Emphasize(type, exceptionTypeName, new[] { '.' }, settings.Style.Exception, shortenTypes, settings, limit: '<');
 
         var message = $"[{settings.Style.Message.ToMarkup()}]{ex.Message.EscapeMarkup()}[/]";
-        return new Markup(string.Concat(type, ": ", message));
+        return new Markup($"{type}: {message}");
     }
 
     private static Grid GetStackFrames(Exception ex, ExceptionSettings settings)
@@ -101,7 +102,7 @@ internal static class ExceptionFormatter
                 builder.Append(' ');
             }
 
-            builder.Append(Emphasize(methodName, new[] { '.' }, styles.Method, shortenMethods, settings));
+            Emphasize(builder, methodName, new[] { '.' }, styles.Method, shortenMethods, settings);
             builder.AppendWithStyle(styles.Parenthesis, "(");
             AppendParameters(builder, method, settings);
             builder.AppendWithStyle(styles.Parenthesis, ")");
@@ -168,7 +169,7 @@ internal static class ExceptionFormatter
         void AppendPath()
         {
             var shortenPaths = (settings.Format & ExceptionFormats.ShortenPaths) != 0;
-            builder.Append(Emphasize(path, new[] { '/', '\\' }, settings.Style.Path, shortenPaths, settings));
+            Emphasize(builder, path, new[] { '/', '\\' }, settings.Style.Path, shortenPaths, settings);
         }
 
         if ((settings.Format & ExceptionFormats.ShowLinks) != 0)
@@ -192,32 +193,25 @@ internal static class ExceptionFormatter
         }
     }
 
-    private static string Emphasize(string input, char[] separators, Style color, bool compact,
-        ExceptionSettings settings)
+    private static void Emphasize(StringBuilder builder, string input, char[] separators, Style color, bool compact,
+        ExceptionSettings settings, char? limit = null)
     {
-        var builder = new StringBuilder();
+        var limitIndex = limit.HasValue ? input.IndexOf(limit.Value) : -1;
 
-        var type = input;
-        var index = type.LastIndexOfAny(separators);
+        var index = limitIndex != -1 ? input[..limitIndex].LastIndexOfAny(separators) : input.LastIndexOfAny(separators);
         if (index != -1)
         {
             if (!compact)
             {
-                builder.AppendWithStyle(
-                    settings.Style.NonEmphasized,
-                    type.Substring(0, index + 1));
+                builder.AppendWithStyle(settings.Style.NonEmphasized, input[..(index + 1)]);
             }
 
-            builder.AppendWithStyle(
-                color,
-                type.Substring(index + 1, type.Length - index - 1));
+            builder.AppendWithStyle(color, input[(index + 1)..]);
         }
         else
         {
-            builder.Append(type.EscapeMarkup());
+            builder.AppendWithStyle(color, input);
         }
-
-        return builder.ToString();
     }
 
     private static bool ShowInStackTrace(StackFrame frame)
