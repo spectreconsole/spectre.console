@@ -226,6 +226,11 @@ public sealed class Style : IEquatable<Style>
             builder.Add("on " + Background.ToMarkup());
         }
 
+        if (Link?.ToString() != null)
+        {
+            builder.Add($"link={Link.ToString()}");
+        }
+
         return string.Join(" ", builder);
     }
 
