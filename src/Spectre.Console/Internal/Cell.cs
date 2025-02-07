@@ -2,7 +2,21 @@ namespace Spectre.Console;
 
 internal static class Cell
 {
-    private static readonly int?[] _runeWidthCache = new int?[char.MaxValue];
+    private const sbyte Sentinel = -2;
+    /// <summary>
+    /// UnicodeCalculator.GetWidth documents the width as (-1, 0, 1, 2). We only need space for these values and a sentinel for uninitialized values.
+    /// This is only five values in total so we are storing one byte per value. We could store 2 per byte but that would add more logic to the retrieval.
+    /// We should add one to char.MaxValue because the total number of characters includes \0 too so there are 65536 valid chars.
+    /// </summary>
+    private static readonly sbyte[] _runeWidthCache = new sbyte[char.MaxValue + 1];
+
+    static Cell()
+    {
+        for (var i = 0; i < _runeWidthCache.Length; i++)
+        {
+            _runeWidthCache[i] = Sentinel;
+        }
+    }
 
     public static int GetCellLength(string text)
     {
@@ -29,6 +43,13 @@ internal static class Cell
             return 1;
         }
 
-        return _runeWidthCache[rune] ??= UnicodeCalculator.GetWidth(rune);
+        var width = _runeWidthCache[rune];
+        if (width == Sentinel)
+        {
+            _runeWidthCache[rune] = (sbyte)UnicodeCalculator.GetWidth(rune);
+            return _runeWidthCache[rune];
+        }
+
+        return _runeWidthCache[rune];
     }
 }
