@@ -3,6 +3,7 @@ namespace Spectre.Console;
 internal static class Cell
 {
     private const sbyte Sentinel = -2;
+
     /// <summary>
     /// UnicodeCalculator.GetWidth documents the width as (-1, 0, 1, 2). We only need space for these values and a sentinel for uninitialized values.
     /// This is only five values in total so we are storing one byte per value. We could store 2 per byte but that would add more logic to the retrieval.
