@@ -139,10 +139,10 @@
     <value>OPÇÕES</value>
   </data>
   <data name="PrintHelpDescription" xml:space="preserve">
-    <value>Exibe informações de ajuda</value>
+    <value>Exibe informações de ajuda.</value>
   </data>
   <data name="PrintVersionDescription" xml:space="preserve">
-    <value>Exibe informações de versão</value>
+    <value>Exibe informações de versão.</value>
   </data>
   <data name="Usage" xml:space="preserve">
     <value>USO</value>

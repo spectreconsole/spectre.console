@@ -139,10 +139,10 @@
     <value>ОПЦИИ</value>
   </data>
   <data name="PrintHelpDescription" xml:space="preserve">
-    <value>Выводит информацию о помощи</value>
+    <value>Выводит информацию о помощи.</value>
   </data>
   <data name="PrintVersionDescription" xml:space="preserve">
-    <value>Выводит информацию о версии</value>
+    <value>Выводит информацию о версии.</value>
   </data>
   <data name="Usage" xml:space="preserve">
     <value>ИСПОЛЬЗОВАНИЕ</value>

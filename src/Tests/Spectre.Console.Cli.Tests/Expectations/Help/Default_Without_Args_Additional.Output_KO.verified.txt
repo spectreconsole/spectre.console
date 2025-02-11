@@ -1,5 +1,5 @@
 ﻿설명:
-The lion command.
+The lion command
 
 사용법:
     myapp <TEETH> [LEGS] [옵션] [명령]

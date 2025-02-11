@@ -1,5 +1,5 @@
 DESCRIPTION:
-The horse command.
+The horse command
 
 USAGE:
     myapp horse [LEGS] [OPTIONS]
