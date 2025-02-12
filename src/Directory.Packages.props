@@ -12,9 +12,9 @@
     <PackageVersion Include="PolySharp" Version="1.15.0" />
     <PackageVersion Include="Shouldly" Version="4.2.1" />
     <PackageVersion Include="Spectre.Verify.Extensions" Version="22.3.2-preview.0.1" />
-    <PackageVersion Include="Verify.Xunit" Version="28.2.1" />
-    <PackageVersion Include="xunit" Version="2.9.2" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageVersion Include="Verify.XunitV3" Version="28.10.1" />
+    <PackageVersion Include="xunit.v3" Version="1.1.0" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.2" />
     <PackageVersion Include="System.Memory" Version="4.6.0" />
     <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.5" />
     <PackageVersion Include="TunnelVisionLabs.ReferenceAssemblyAnnotator" Version="1.0.0-alpha.160" />

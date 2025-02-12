@@ -19,7 +19,7 @@ public partial class AnsiConsoleTests
             bool result;
             if (async)
             {
-                result = await console.ConfirmAsync("Want some prompt?", defaultValue);
+                result = await console.ConfirmAsync("Want some prompt?", defaultValue, cancellationToken: TestContext.Current.CancellationToken);
             }
             else
             {
@@ -46,7 +46,7 @@ public partial class AnsiConsoleTests
             DateTime dateTime;
             if (async)
             {
-                dateTime = await console.AskAsync<DateTime>(string.Empty, CultureInfo.GetCultureInfo("pl-PL"));
+                dateTime = await console.AskAsync<DateTime>(string.Empty, CultureInfo.GetCultureInfo("pl-PL"), cancellationToken: TestContext.Current.CancellationToken);
             }
             else
             {
@@ -70,7 +70,7 @@ public partial class AnsiConsoleTests
             DateTime dateTime;
             if (async)
             {
-                dateTime = await console.AskAsync<DateTime>(string.Empty, CultureInfo.GetCultureInfo("en-US"));
+                dateTime = await console.AskAsync<DateTime>(string.Empty, CultureInfo.GetCultureInfo("en-US"), cancellationToken: TestContext.Current.CancellationToken);
             }
             else
             {
