@@ -9,13 +9,15 @@ public interface IConfigurator
     /// Sets the help provider for the application.
     /// </summary>
     /// <param name="helpProvider">The help provider to use.</param>
-    public void SetHelpProvider(IHelpProvider helpProvider);
+    /// <returns>A configurator that can be used for further configuration.</returns>
+    public IConfigurator SetHelpProvider(IHelpProvider helpProvider);
 
     /// <summary>
     /// Sets the help provider for the application.
     /// </summary>
     /// <typeparam name="T">The type of the help provider to instantiate at runtime and use.</typeparam>
-    public void SetHelpProvider<T>()
+    /// <returns>A configurator that can be used for further configuration.</returns>
+    public IConfigurator SetHelpProvider<T>()
         where T : IHelpProvider;
 
     /// <summary>
@@ -27,7 +29,8 @@ public interface IConfigurator
     /// Adds an example of how to use the application.
     /// </summary>
     /// <param name="args">The example arguments.</param>
-    void AddExample(params string[] args);
+    /// <returns>A configurator that can be used for further configuration.</returns>
+    IConfigurator AddExample(params string[] args);
 
     /// <summary>
     /// Adds a command.
