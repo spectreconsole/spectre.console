@@ -67,7 +67,7 @@ registrations.AddSingleton<IGreeter, HelloWorldGreeter>();
 
 // Create a type registrar and register any dependencies.
 // A type registrar is an adapter for a DI framework.
-var registrar = new TypeRegistrar(registrations);
+var registrar = new MyTypeRegistrar(registrations);
 
 // Create a new command app with the registrar
 // and run it with the provided arguments.
@@ -75,10 +75,13 @@ var app = new CommandApp<DefaultCommand>(registrar);
 return app.Run(args);
 ```
 
-`TypeRegistrar` is a custom class that must be created by the user. This [example using `Microsoft.Extensions.DependencyInjection` as the container](https://github.com/spectreconsole/examples/tree/main/examples/Cli/Injection) provides an example `TypeRegistrar` and `TypeResolver` that can be added to your application with small adjustments for your DI container.
+<?# Alert ?>
+  `MyTypeRegistrar` is a custom class that implements [ITypeRegistrar](xref:T:Spectre.Console.Cli.ITypeRegistrar) and must be provided by the user.
+<?#/ Alert ?>
 
-Hint: If you do write your own implementation of `TypeRegistrar` and `TypeResolver` and you have some form of unit tests in place for your project,
-there is a utility `TypeRegistrarBaseTests` available that can be used to ensure your implementations adhere to the required implementation. Simply call `TypeRegistrarBaseTests.RunAllTests()` and expect no `TypeRegistrarBaseTests.TestFailedException` to be thrown.
+There is a working [example of dependency injection](https://github.com/spectreconsole/examples/tree/main/examples/Cli/Injection) that uses `Microsoft.Extensions.DependencyInjection` as the container. Example implementations of `ITypeRegistrar` and `ITypeResolver` are provided, which you can copy and paste to your application for dependency injection.
+
+Unit testing your `ITypeRegistrar` and `ITypeResolver` implementations is done using the utility `TypeRegistrarBaseTests` included in `Spectre.Console.Testing`. Simply call `TypeRegistrarBaseTests.RunAllTests()` and expect no `TypeRegistrarBaseTests.TestFailedException` to be thrown.
 
 ## Interception
 Interceptors can be registered with the `TypeRegistrar` (or with a custom DI-Container). Alternatively, `CommandApp` also provides a `SetInterceptor` configuration.
@@ -89,4 +92,4 @@ This provides an opportunity to modify the result and also to tear down any infr
 
 The `Intercept`-Method of each interceptor is run before the command is executed and the `InterceptResult`-Method is run after it. These are typically used for configuring logging or other infrastructure concerns.
 
-For an example of using the interceptor to configure logging, see the [Serilog demo](https://github.com/spectreconsole/examples/tree/main/examples/Cli/Logging).
+For an example of using the interceptor to configure logging, see the [Serilog demo](https://github.com/spectreconsole/examples/tree/main/examples/Cli/Logging)
