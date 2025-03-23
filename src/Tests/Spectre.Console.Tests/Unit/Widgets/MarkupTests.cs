@@ -174,4 +174,22 @@ public sealed class MarkupTests
 └─────────────────┘
 ".NormalizeLineEndings());
     }
+
+    [Fact]
+    public void Should_Escape_Object_With_Square_Brackets()
+    {
+        // Given
+        var console = new TestConsole();
+        SomeCLass obj = new SomeCLass();
+
+        // When
+        console.Write($"Text {obj}");
+
+        // Then
+        console.Output.ShouldBe("Text with [square brackets]");
+    }
+    class SomeCLass
+    {
+        public override string ToString() => "with [square brackets]";
+    }
 }
