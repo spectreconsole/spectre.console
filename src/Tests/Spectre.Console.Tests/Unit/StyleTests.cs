@@ -405,5 +405,31 @@ public sealed class StyleTests
             // Then
             result.ShouldBe("default on green");
         }
+
+        [Fact]
+        public void Should_Return_Expected_Markup_For_Style_With_Only_Link()
+        {
+            // Given
+            var style = new Style(link:"https://spectreconsole.net/");
+
+            // When
+            var result = style.ToMarkup();
+
+            // Then
+            result.ShouldBe("link=https://spectreconsole.net/");
+        }
+
+        [Fact]
+        public void Should_Return_Expected_Markup_For_Style_With_Background_And_Link()
+        {
+            // Given
+            var style = new Style(background: Color.Blue, link: "https://spectreconsole.net/");
+
+            // When
+            var result = style.ToMarkup();
+
+            // Then
+            result.ShouldBe("default on blue link=https://spectreconsole.net/");
+        }
     }
 }
