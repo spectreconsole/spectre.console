@@ -34,6 +34,8 @@ public sealed class CommandContext
     /// </value>
     public object? Data { get; }
 
+    public ITypeResolver TypeResolver { get; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="CommandContext"/> class.
     /// </summary>
@@ -45,11 +47,13 @@ public sealed class CommandContext
         IEnumerable<string> arguments,
         IRemainingArguments remaining,
         string name,
-        object? data)
+        object? data,
+        ITypeResolver typeResolver)
     {
         Arguments = arguments.ToSafeReadOnlyList();
         Remaining = remaining ?? throw new System.ArgumentNullException(nameof(remaining));
         Name = name ?? throw new System.ArgumentNullException(nameof(name));
         Data = data;
+        TypeResolver = typeResolver ?? throw new System.ArgumentNullException(nameof(typeResolver));
     }
 }
