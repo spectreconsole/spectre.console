@@ -59,9 +59,16 @@ internal sealed class CommandExecutor
         // Create the resolver.
         using (var resolver = new TypeResolverAdapter(_registrar.Build()))
         {
-            var startupInterceptors = resolver.Resolve(typeof(IEnumerable<IStartupInterceptor>)) as IEnumerable<IStartupInterceptor>;
-            var startupContext = new StartupContext { TypeResolver = resolver };
-            startupInterceptors?.ForEach(i => i.Intercept(startupContext));
+            var startupInterceptors =
+                (resolver.Resolve(typeof(IEnumerable<IStartupInterceptor>)) as IEnumerable<IStartupInterceptor>)?.ToArray();
+            if (startupInterceptors?.Length > 0)
+            {
+                var startupContext = new StartupContext(resolver);
+                foreach (var i in startupInterceptors)
+                {
+                    i.Intercept(startupContext);
+                }
+            }
 
             // Get the registered help provider, falling back to the default provider
             // if no custom implementations have been registered.

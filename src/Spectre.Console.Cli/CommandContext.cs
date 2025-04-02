@@ -34,6 +34,12 @@ public sealed class CommandContext
     /// </value>
     public object? Data { get; }
 
+    /// <summary>
+    /// Gets the type resolver of the current command app.
+    /// </summary>
+    /// <value>
+    /// The type resolver.
+    /// </value>
     public ITypeResolver TypeResolver { get; }
 
     /// <summary>
@@ -43,6 +49,7 @@ public sealed class CommandContext
     /// <param name="remaining">The remaining arguments.</param>
     /// <param name="name">The command name.</param>
     /// <param name="data">The command data.</param>
+    /// <param name="typeResolver">The type resolver.</param>
     public CommandContext(
         IEnumerable<string> arguments,
         IRemainingArguments remaining,
