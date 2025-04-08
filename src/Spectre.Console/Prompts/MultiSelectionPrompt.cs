@@ -164,7 +164,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         if (key.Key == ConsoleKey.Spacebar || key.Key == ConsoleKey.Packet)
         {
             var current = state.Current;
-            var select = !current.IsSelected;
+            var select = !current!.IsSelected;
 
             if (Mode == SelectionMode.Leaf)
             {

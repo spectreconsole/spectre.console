@@ -108,7 +108,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
         var result = await prompt.Show(_tree, converter, Mode, true, SearchEnabled, FilterOnSearch, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
 
         // Return the selected item
-        return result.Current.Data;
+        return result.Current!.Data;
     }
 
     /// <inheritdoc/>

@@ -31,7 +31,6 @@ internal interface IListPromptStrategy<T>
     /// <param name="scrollable">Whether or not the list is scrollable.</param>
     /// <param name="cursorIndex">The cursor index.</param>
     /// <param name="items">The visible items.</param>
-    /// <param name="skipUnselectableItems">A value indicating whether or not the prompt should skip unselectable items.</param>
     /// <param name="searchText">The search text.</param>
     /// <returns>A <see cref="IRenderable"/> representing the items.</returns>
     public IRenderable Render(IAnsiConsole console, bool scrollable, int cursorIndex,
