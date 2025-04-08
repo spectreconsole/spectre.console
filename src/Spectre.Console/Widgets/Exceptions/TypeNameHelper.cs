@@ -39,11 +39,12 @@ internal static class TypeNameHelper
     /// <param name="type">The <see cref="Type"/>.</param>
     /// <param name="fullName"><c>true</c> to print a fully qualified name.</param>
     /// <param name="includeGenericParameterNames"><c>true</c> to include generic parameter names.</param>
+    /// <param name="includeSystemNamespace"><c>true</c> to include the <c>System</c> namespace.</param>
     /// <returns>The pretty printed type name.</returns>
-    public static string GetTypeDisplayName(Type type, bool fullName = false, bool includeGenericParameterNames = true)
+    public static string GetTypeDisplayName(Type type, bool fullName = false, bool includeGenericParameterNames = true, bool includeSystemNamespace = false)
     {
         var builder = new StringBuilder();
-        ProcessType(builder, type, new DisplayNameOptions(fullName, includeGenericParameterNames));
+        ProcessType(builder, type, new DisplayNameOptions(fullName, includeGenericParameterNames, includeSystemNamespace));
         return builder.ToString();
     }
 
@@ -71,11 +72,11 @@ internal static class TypeNameHelper
         {
             builder.Append(builtInName);
         }
-        else if (type.Namespace == nameof(System))
+        else if (type.Namespace == nameof(System) && !options.IncludeSystemNamespace)
         {
             builder.Append(type.Name);
         }
-        else if (type.Assembly.ManifestModule.Name == "FSharp.Core.dll"
+        else if (type.Assembly.GetName().Name == "FSharp.Core.dll"
                  && FSharpTypeNames.TryGetValue(type.Name, out builtInName))
         {
             builder.Append(builtInName);
@@ -150,7 +151,7 @@ internal static class TypeNameHelper
             return;
         }
 
-        if (type.Assembly.ManifestModule.Name == "FSharp.Core.dll"
+        if (type.Assembly.GetName().Name == "FSharp.Core.dll"
             && FSharpTypeNames.TryGetValue(type.Name, out var builtInName))
         {
             builder.Append(builtInName);
@@ -181,14 +182,17 @@ internal static class TypeNameHelper
 
     private struct DisplayNameOptions
     {
-        public DisplayNameOptions(bool fullName, bool includeGenericParameterNames)
+        public DisplayNameOptions(bool fullName, bool includeGenericParameterNames, bool includeSystemNamespace)
         {
             FullName = fullName;
             IncludeGenericParameterNames = includeGenericParameterNames;
+            IncludeSystemNamespace = includeSystemNamespace;
         }
 
         public bool FullName { get; }
 
         public bool IncludeGenericParameterNames { get; }
+
+        public bool IncludeSystemNamespace { get; }
     }
 }

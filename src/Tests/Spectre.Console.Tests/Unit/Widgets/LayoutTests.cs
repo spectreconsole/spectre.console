@@ -153,6 +153,35 @@ public sealed class LayoutTests
         return Verifier.Verify(console.Output);
     }
 
+    [Theory]
+    [InlineData(17, "17")]
+    [InlineData(20, "20")]
+    [InlineData(23, "23")]
+    [InlineData(28, "28")]
+    [InlineData(31, "31")]
+    [Expectation("Render_Layout_With_Nested_Three_Rows_In_One_Column")]
+    public Task Should_Render_Layout_With_Three_And_One_Columns(int height, string expectationPrefix)
+    {
+        // Given
+        var console = new TestConsole().Size(new Size(40, height));
+
+        // Layout with 2 columns, left column has 3 rows and right column has 1 row
+        var layout = new Layout(new Panel("Hello, World!") { Expand = true })
+            .SplitColumns(
+                new Layout(new Panel("Hello, World!") { Expand = true })
+                    .SplitRows(
+                        new Layout(new Panel("Hello, World!") { Expand = true }),
+                        new Layout(new Panel("Hello, World!") { Expand = true }),
+                        new Layout(new Panel("Hello, World!") { Expand = true })),
+                new Layout(new Panel("Hello, World!") { Expand = true }));
+
+        // When
+        console.Write(layout);
+
+        // Then
+        return Verifier.Verify(console.Output).UseTextForParameters(expectationPrefix);
+    }
+
     [Fact]
     [Expectation("Render_Layout_Without_Invisible_Children")]
     public Task Should_Render_Layout_Without_Invisible_Children()

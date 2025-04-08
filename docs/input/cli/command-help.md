@@ -41,7 +41,7 @@ Removing all styling from help text is also possible, a good choice for ensuring
 config.Settings.HelpProviderStyles = null;
 ```
 
-See [Markup](../markup) for information about the use of markup in Spectre.Console, and [Styles](xref:styles) for a listing of supported styles.
+See [Markup](../markup) for information about the use of markup in Spectre.Console, and [Styles](xref:appendix-styles) for a listing of supported styles.
 
 ## Custom help providers
 
@@ -71,5 +71,5 @@ public static class Program
 }
 ```
 
-There is a working [example of a custom help provider](https://github.com/spectreconsole/spectre.console/tree/main/examples/Cli/Help) demonstrating this.
+There is a working [example of a custom help provider](https://github.com/spectreconsole/examples/tree/main/examples/Cli/Help) demonstrating this.
 

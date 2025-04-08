@@ -1,8 +1,8 @@
 Title: Composing Commands
 RedirectFrom: introduction
 Order: 8
-Description: "The underlying philosophy behind *Spectre.Console.Cli* is to rely on the .NET type system to
-declare the commands, but tie everything together via composition."
+Description: The underlying philosophy behind *Spectre.Console.Cli* is 
+             to rely on the .NET type system to declare the commands, but tie everything together via composition.
 ---
 
 The underlying philosophy behind `Spectre.Console.Cli` is to rely on the .NET type system to

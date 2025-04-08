@@ -31,10 +31,5 @@ public sealed class CommandAppResult
         Output = output ?? string.Empty;
         Context = context;
         Settings = settings;
-
-        Output = Output
-            .NormalizeLineEndings()
-            .TrimLines()
-            .Trim();
     }
 }

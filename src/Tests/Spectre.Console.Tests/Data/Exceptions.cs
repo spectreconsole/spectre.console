@@ -6,6 +6,8 @@ public static class TestExceptions
 
     public static bool GenericMethodThatThrows<T0, T1, TRet>(int? number) => throw new InvalidOperationException("Throwing!");
 
+    public static bool MethodThatThrowsGenericException<T>() => throw new GenericException<T>("Throwing!", default);
+
     public static void ThrowWithInnerException()
     {
         try
@@ -42,3 +44,6 @@ public static class TestExceptions
         return ("key", new List<T>());
     }
 }
+
+#pragma warning disable CS9113 // Parameter is unread.
+public class GenericException<T>(string message, T value) : Exception(message);

@@ -139,10 +139,10 @@
     <value>VAL</value>
   </data>
   <data name="PrintHelpDescription" xml:space="preserve">
-    <value>Skriver ut hjälpinformation</value>
+    <value>Skriver ut hjälpinformation.</value>
   </data>
   <data name="PrintVersionDescription" xml:space="preserve">
-    <value>Skriver ut versionsnummer</value>
+    <value>Skriver ut versionsnummer.</value>
   </data>
   <data name="Usage" xml:space="preserve">
     <value>ANVÄNDING</value>

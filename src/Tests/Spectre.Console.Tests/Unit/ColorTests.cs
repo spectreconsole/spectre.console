@@ -1,9 +1,90 @@
+using System.Drawing;
+
 namespace Spectre.Console.Tests.Unit;
 
 public sealed class ColorTests
 {
     public sealed class TheEqualsMethod
     {
+        [Theory]
+        [InlineData("800080")]
+        [InlineData("#800080")]
+        public void Should_Consider_Color_And_Color_From_Hex_Equal(string color)
+        {
+            // Given
+            var color1 = new Color(128, 0, 128);
+
+            // When
+            var color2 = Color.FromHex(color);
+
+            // Then
+            color2.ShouldBe(color1);
+        }
+
+        [Theory]
+        [InlineData("800080")]
+        [InlineData("#800080")]
+        public void Should_Consider_Color_And_Color_Try_From_Hex_Equal(string color)
+        {
+            // Given
+            var color1 = new Color(128, 0, 128);
+
+            // When
+            var result = Color.TryFromHex(color, out var color2);
+
+            // Then
+            result.ShouldBeTrue();
+            color2.ShouldBe(color1);
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("#")]
+        [InlineData("#80")]
+        [InlineData("FOO")]
+        public void Should_Not_Parse_Non_Color_From_Hex(string noncolor)
+        {
+            // Given, When
+            var result = Record.Exception(() => Color.FromHex(noncolor));
+
+            // Then
+            result.ShouldBeAssignableTo<Exception>();
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("#")]
+        [InlineData("#80")]
+        [InlineData("FOO")]
+        public void Should_Not_Parse_Non_Color_Try_From_Hex(string noncolor)
+        {
+            // Given, When
+            var result = Color.TryFromHex(noncolor, out var color);
+
+            // Then
+            result.ShouldBeFalse();
+            color.ShouldBe(Color.Default);
+        }
+
+        [Theory]
+        [InlineData("ffffff")]
+        [InlineData("#ffffff")]
+        [InlineData("fff")]
+        [InlineData("#fff")]
+        public void Should_Parse_3_Digit_Hex_Colors_From_Hex(string color)
+        {
+            // Given
+            var expected = new Color(255, 255, 255);
+
+            // When
+            var result = Color.FromHex(color);
+
+            // Then
+            result.ShouldBe(expected);
+        }
+
         [Fact]
         public void Should_Consider_Color_And_Non_Color_Equal()
         {

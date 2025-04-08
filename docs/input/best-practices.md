@@ -94,6 +94,31 @@ Spectre.Console has an [analyzer](https://www.nuget.org/packages/Spectre.Console
 common errors in writing console output from above such as using multiple live rendering widgets simultaneously,
 or using the static `AnsiConsole` class when `IAnsiConsole` is available.
 
+### Native AOT Support
+
+Publishing your app as Native AOT with Spectre.Console produces an app that's self-contained and has been ahead-of-time (AOT) compiled to native code. Native AOT apps have faster startup time and smaller memory footprints. These apps can run on machines that don't have the .NET runtime installed.
+
+To enable AOT support on your application, Add `<PublishAot>true</PublishAot>` to your project file.
+
+```xml
+<PropertyGroup>
+    <PublishAot>true</PublishAot>
+</PropertyGroup>
+```
+
+Current Spectre.Console support for AOT:
+
+* &#9745;&#65039; Spectre.Console
+* &#10060; Spectre.Console.Cli
+* &#9745;&#65039; Spectre.Console.Json
+* &#9745;&#65039; Spectre.Console.ImageSharp
+
+Spectre.Console.Cli relies on reflection and discovering types at runtime, preventing it from currently supporting AOT.
+
+Spectre.Console supports AOT, but with the following limitations
+
+* `WriteException` will output a simple stacktrace and ignore any `ExceptionFormats` set.
+
 ### Configuring the Windows Terminal For Unicode and Emoji Support
 
 Windows Terminal supports Unicode and Emoji. However, the shells such as Powershell and cmd.exe do not.
