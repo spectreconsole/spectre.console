@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup Label="Dependencies">
-    <PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="System.Memory"/>
+    <PackageReference Include="System.Memory" />
     <PackageReference Include="Wcwidth.Sources">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
