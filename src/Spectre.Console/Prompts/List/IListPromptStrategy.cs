@@ -35,5 +35,5 @@ internal interface IListPromptStrategy<T>
     /// <param name="searchText">The search text.</param>
     /// <returns>A <see cref="IRenderable"/> representing the items.</returns>
     public IRenderable Render(IAnsiConsole console, bool scrollable, int cursorIndex,
-        IEnumerable<(int Index, ListPromptItem<T> Node)> items, bool skipUnselectableItems, string searchText);
+        IEnumerable<(int Index, ListPromptItem<T> Node)> items, string searchText);
 }
