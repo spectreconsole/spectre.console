@@ -26,21 +26,21 @@ Version 0.50 of Spectre.Console has been released!
 
 ### General
 
-* Strong name the assemblies by [@KirillOsenkov](https://github.com/KirillOsenkov) in [#1623]([#1623](https://github.com/spectreconsole/spectre.console/pull/1623))
-* Update MSDN link to learn.microsoft.com by [@Kissaki](https://github.com/Kissaki) in [#1575]([#1575](https://github.com/spectreconsole/spectre.console/pull/1575))
-* Add spanish translation for help strings by [@kzu](https://github.com/kzu) in [#1597]([#1597](https://github.com/spectreconsole/spectre.console/pull/1597))
-* Update documentation: add example for the Text Prompt usage by [@davide-pi](https://github.com/davide-pi) in [#1636]([#1636](https://github.com/spectreconsole/spectre.console/pull/1636))
-* Fix typos xml docs by [@devlead](https://github.com/devlead) in [#1684]([#1684](https://github.com/spectreconsole/spectre.console/pull/1684))
-* Upgrade SixLabors.ImageSharp to 3.1.7 by [@Moustafaa91](https://github.com/Moustafaa91) in [#1779]([#1779](https://github.com/spectreconsole/spectre.console/pull/1779))
+* Strong name the assemblies by [@KirillOsenkov](https://github.com/KirillOsenkov) in [#1623](https://github.com/spectreconsole/spectre.console/pull/1623)
+* Update MSDN link to learn.microsoft.com by [@Kissaki](https://github.com/Kissaki) in [#1575](https://github.com/spectreconsole/spectre.console/pull/1575)
+* Add spanish translation for help strings by [@kzu](https://github.com/kzu) in [#1597](https://github.com/spectreconsole/spectre.console/pull/1597)
+* Update documentation: add example for the Text Prompt usage by [@davide-pi](https://github.com/davide-pi) in [#1636](https://github.com/spectreconsole/spectre.console/pull/1636)
+* Fix typos xml docs by [@devlead](https://github.com/devlead) in [#1684](https://github.com/spectreconsole/spectre.console/pull/1684)
+* Upgrade SixLabors.ImageSharp to 3.1.7 by [@Moustafaa91](https://github.com/Moustafaa91) in [#1779](https://github.com/spectreconsole/spectre.console/pull/1779)
 
 ### Console
 
-* AOT Support for Spectre.Console by [@phil-scott-78](https://github.com/phil-scott-78) in [#1690]([#1690](https://github.com/spectreconsole/spectre.console/pull/1690))
-* Make method reference to Markup.Escape more obvious by [@Kissaki](https://github.com/Kissaki) in [#1574]([#1574](https://github.com/spectreconsole/spectre.console/pull/1574))
-* Fix `HtmlEncoder` Incorrectly Applying Italics to Bold Text by [@z4ryy](https://github.com/z4ryy) in [#1590]([#1590](https://github.com/spectreconsole/spectre.console/pull/1590))
-* Fix Console Display Issue with Deleting Wide Characters by [@TonWin618](https://github.com/TonWin618) in [#1595]([#1595](https://github.com/spectreconsole/spectre.console/pull/1595))
-* Fix search bug in prompt related to custom item types by [@patriksvensson](https://github.com/patriksvensson) in [#1627]([#1627](https://github.com/spectreconsole/spectre.console/pull/1627))
-* Cleanup the prompt tests by [@0xced](https://github.com/0xced) in [#1635]([#1635](https://github.com/spectreconsole/spectre.console/pull/1635))
+* AOT Support for Spectre.Console by [@phil-scott-78](https://github.com/phil-scott-78) in [#1690](https://github.com/spectreconsole/spectre.console/pull/1690)
+* Make method reference to Markup.Escape more obvious by [@Kissaki](https://github.com/Kissaki) in [#1574](https://github.com/spectreconsole/spectre.console/pull/1574)
+* Fix `HtmlEncoder` Incorrectly Applying Italics to Bold Text by [@z4ryy](https://github.com/z4ryy) in [#1590](https://github.com/spectreconsole/spectre.console/pull/1590)
+* Fix Console Display Issue with Deleting Wide Characters by [@TonWin618](https://github.com/TonWin618) in [#1595](https://github.com/spectreconsole/spectre.console/pull/1595)
+* Fix search bug in prompt related to custom item types by [@patriksvensson](https://github.com/patriksvensson) in [#1627](https://github.com/spectreconsole/spectre.console/pull/1627)
+* Cleanup the prompt tests by [@0xced](https://github.com/0xced) in [#1635](https://github.com/spectreconsole/spectre.console/pull/1635)
 * Add custom style for each calendar event by [@davide-pi](https://github.com/davide-pi) in [#1246](https://github.com/spectreconsole/spectre.console/pull/1246)
 * Fix tree expansion bug by [@davide-pi](https://github.com/davide-pi) in [#1245](https://github.com/spectreconsole/spectre.console/pull/1245)
 * Enhance the style of the checkboxes for multi-selection by [@davide-pi](https://github.com/davide-pi) in [#1244](https://github.com/spectreconsole/spectre.console/pull/1244)
