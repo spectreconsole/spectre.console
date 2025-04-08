@@ -182,10 +182,10 @@ internal sealed class ListPromptState<T>
             .ToList();
     }
 
-    private bool MatchesSearch(ListPromptItem<T>? item) =>
+    private bool MatchesSearch(ListPromptItem<T> item) =>
         _converter.Invoke(item.Data).Contains(SearchText, StringComparison.OrdinalIgnoreCase);
 
-    private class SelectableItem(ListPromptItem<T>? item, int index)
+    private class SelectableItem(ListPromptItem<T> item, int index)
     {
         public ListPromptItem<T> Item { get; } = item;
         public int Index { get; } = index;
