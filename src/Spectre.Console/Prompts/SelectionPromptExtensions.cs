@@ -187,8 +187,9 @@ public static class SelectionPromptExtensions
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>
     /// <param name="obj">The prompt.</param>
+    /// <param name="filterOnSearch">A boolean which indicates whether items should be filtered on searching.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static SelectionPrompt<T> EnableSearch<T>(this SelectionPrompt<T> obj, bool filterOptionsOnSearch = false)
+    public static SelectionPrompt<T> EnableSearch<T>(this SelectionPrompt<T> obj, bool filterOnSearch = false)
         where T : notnull
     {
         if (obj is null)
@@ -197,7 +198,7 @@ public static class SelectionPromptExtensions
         }
 
         obj.SearchEnabled = true;
-        obj.FilterOnSearch = filterOptionsOnSearch;
+        obj.FilterOnSearch = filterOnSearch;
         return obj;
     }
 
