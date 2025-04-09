@@ -65,7 +65,7 @@ internal static class ExceptionFormatter
 
         var stackTrace = new StackTrace(ex, fNeedFileInfo: true);
         var allFrames = stackTrace.GetFrames();
-        if (allFrames[0]?.GetMethod() == null)
+        if (allFrames.Length > 0 && allFrames[0]?.GetMethod() == null)
         {
             // if we can't easily get the method for the frame, then we are in AOT
             // fallback to using ToString method of each frame.
