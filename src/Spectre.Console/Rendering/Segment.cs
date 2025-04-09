@@ -36,6 +36,11 @@ public class Segment
     public Style Style { get; }
 
     /// <summary>
+    /// Gets the overridden cell size for this segment, some transparent segments may require this e.g. transparent characters.
+    /// </summary>
+    public int? CellCountOverride { get; }
+
+    /// <summary>
     /// Gets a segment representing a line break.
     /// </summary>
     public static Segment LineBreak { get; } = new Segment(Environment.NewLine, Style.Plain, true, false);
@@ -44,6 +49,13 @@ public class Segment
     /// Gets an empty segment.
     /// </summary>
     public static Segment Empty { get; } = new Segment(string.Empty, Style.Plain, false, false);
+
+    /// <summary>
+    /// Gets a transparent segment.
+    /// </summary>
+    /// <param name="size">The size of the transparent segment.</param>
+    /// <returns>A transparent segment.</returns>
+    public static Segment Transparent(int size) => new Segment(AnsiSequences.CUF(size), Style.Plain, false, false, size);
 
     /// <summary>
     /// Creates padding segment.
@@ -71,13 +83,14 @@ public class Segment
     {
     }
 
-    private Segment(string text, Style style, bool lineBreak, bool control)
+    private Segment(string text, Style style, bool lineBreak, bool control, int? cellCountOverride = null)
     {
         Text = text?.NormalizeNewLines() ?? throw new ArgumentNullException(nameof(text));
-        Style = style ?? throw new ArgumentNullException(nameof(style));
+        Style = style ?? throw new ArgumentNullException(paramName: nameof(style));
         IsLineBreak = lineBreak;
         IsWhiteSpace = string.IsNullOrWhiteSpace(text);
         IsControlCode = control;
+        CellCountOverride = cellCountOverride;
     }
 
     /// <summary>
@@ -97,6 +110,11 @@ public class Segment
     /// <returns>The number of cells that this segment occupies in the console.</returns>
     public int CellCount()
     {
+        if (CellCountOverride != null)
+        {
+            return CellCountOverride.Value;
+        }
+
         if (IsControlCode)
         {
             return 0;
