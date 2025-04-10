@@ -149,7 +149,7 @@ public sealed class InteractiveCommandTests
 
 ## Testing console behaviour
 
-`TestConsole` and `TestConsoleInput` are testable implementations of `IAnsiConsole` and `IAnsiConsoleInput`, allowing you fine-grain control over testing console output and interactivity.
+ `TestConsole` and `TestConsoleInput` are testable implementations of `IAnsiConsole` and `IAnsiConsoleInput`, allowing you fine-grain control over testing console output and interactivity.
 
 The following example renders some widgets before then validating the console output:
 
