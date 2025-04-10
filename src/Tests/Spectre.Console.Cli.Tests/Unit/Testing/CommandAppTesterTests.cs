@@ -44,4 +44,40 @@ public sealed class CommandAppTesterTests
         // Then
         result.Output.ShouldBe(expected);
     }
+
+    [Fact]
+    public void DefaultCtor_WithoutParameters_CreatesDefaultConsole()
+    {
+        // When
+        CommandAppTester app = new();
+
+        // Then
+        app.Console.ShouldNotBeNull();
+        app.Console.Profile.Width.ShouldBe(int.MaxValue);
+    }
+
+    [Fact]
+    public void DefaultCtor_WithCustomConsole_UsesProvidedInstance()
+    {
+        // Given
+        TestConsole console = new();
+
+        // When
+        CommandAppTester app = new(null, new CommandAppTesterSettings(), console);
+
+        // Then
+        app.Console.ShouldNotBeNull();
+        app.Console.ShouldBeSameAs(console);
+    }
+
+    [Fact]
+    public void Ctor_WithSettings_CreatesDefaultConsole()
+    {
+        // When
+        CommandAppTester app = new(new CommandAppTesterSettings());
+
+        // Then
+        app.Console.ShouldNotBeNull();
+        app.Console.Profile.Width.ShouldBe(int.MaxValue);
+    }
 }
