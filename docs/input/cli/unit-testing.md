@@ -5,7 +5,6 @@ Reference:
     - T:Spectre.Console.Testing.CommandAppTester
     - T:Spectre.Console.Testing.TestConsole
     - T:Spectre.Console.Testing.TestConsoleInput
-
 ---
 
 `Spectre.Console` has a separate project that contains test harnesses for unit testing your own console applications. 
@@ -150,7 +149,7 @@ public sealed class InteractiveCommandTests
 
 ## Testing console behaviour
 
-- `TestConsole` and `TestConsoleInput` are testable implementations of `IAnsiConsole` and `IAnsiConsoleInput`, allowing you fine-grain control over testing console output and interactivity.
+`TestConsole` and `TestConsoleInput` are testable implementations of `IAnsiConsole` and `IAnsiConsoleInput`, allowing you fine-grain control over testing console output and interactivity.
 
 The following example renders some widgets before then validating the console output:
 
@@ -197,4 +196,4 @@ The following example prompts the user for input before then validating the expe
     }
 ```
 
-- `CommandAppTester` uses `TestConsole` internally, which in turn uses `TestConsoleInput`, offering a fully testable harness for `Spectre.Console` widgets, prompts and commands.
+`CommandAppTester` uses `TestConsole` internally, which in turn uses `TestConsoleInput`, offering a fully testable harness for `Spectre.Console` widgets, prompts and commands.
