@@ -26,7 +26,7 @@ internal sealed class LiveDisplayRenderer : IRenderHook
             }
             else
             {
-                if (_context.Live.HasRenderable && _context.Live.DidOverflow)
+                if (_context.Live.HasRenderable && (_context.Live.DidOverflow || _context.Live.IsRecording))
                 {
                     // Redraw the whole live renderable
                     _console.Write(_context.Live.RestoreCursor());

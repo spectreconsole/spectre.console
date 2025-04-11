@@ -16,6 +16,7 @@ internal sealed class LiveRenderable : Renderable
     public bool HasRenderable => _renderable != null;
     public VerticalOverflow Overflow { get; set; }
     public VerticalOverflowCropping OverflowCropping { get; set; }
+    public bool IsRecording => _console is Recorder;
 
     public LiveRenderable(IAnsiConsole console)
     {
