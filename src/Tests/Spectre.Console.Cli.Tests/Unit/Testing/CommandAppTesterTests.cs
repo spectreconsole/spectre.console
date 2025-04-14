@@ -48,7 +48,7 @@ public sealed class CommandAppTesterTests
     [Fact]
     public void DefaultCtor_WithoutParameters_CreatesDefaultConsole()
     {
-        // When
+        // Given, When
         CommandAppTester app = new();
 
         // Then
@@ -73,7 +73,7 @@ public sealed class CommandAppTesterTests
     [Fact]
     public void Ctor_WithSettings_CreatesDefaultConsole()
     {
-        // When
+        // Given, When
         CommandAppTester app = new(new CommandAppTesterSettings());
 
         // Then
