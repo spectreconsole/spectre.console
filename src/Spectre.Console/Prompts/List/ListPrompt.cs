@@ -47,7 +47,15 @@ internal sealed class ListPrompt<T>
             throw new InvalidOperationException("Cannot show an empty selection prompt. Please call the AddChoice() method to configure the prompt.");
         }
 
-        var state = new ListPromptState<T>(nodes, converter, _strategy.CalculatePageSize(_console, nodes.Count, requestedPageSize), wrapAround, selectionMode, skipUnselectableItems, searchEnabled);
+        var state = new ListPromptState<T>(
+            nodes,
+            converter,
+            _strategy.CalculatePageSize(_console, nodes.Count, requestedPageSize),
+            wrapAround,
+            selectionMode,
+            skipUnselectableItems,
+            searchEnabled,
+            _strategy.CalculateInitialIndex(nodes));
         var hook = new ListPromptRenderHook<T>(_console, () => BuildRenderable(state));
 
         using (new RenderHookScope(_console, hook))
