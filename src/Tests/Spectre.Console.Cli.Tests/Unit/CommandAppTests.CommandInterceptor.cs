@@ -2,7 +2,7 @@ namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed partial class CommandAppTests
 {
-    public sealed class Interceptor
+    public sealed class CommandInterceptor
     {
         public sealed class NoCommand : Command<NoCommand.Settings>
         {
