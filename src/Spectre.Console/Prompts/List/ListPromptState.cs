@@ -124,7 +124,7 @@ internal sealed class ListPromptState<T>
 
             case ConsoleKey.Home:
                 _selectableIndex = 0;
-                break;
+                return true;
 
             case ConsoleKey.End:
                 _selectableIndex = _selectableItems.Count - 1;
