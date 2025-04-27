@@ -1,5 +1,5 @@
 ﻿BESKRIVNING:
-The lion command.
+The lion command
 
 ANVÄNDING:
     myapp <TEETH> [LEGS] [VAL] [KOMMANDO]
@@ -14,6 +14,7 @@ ARGUMENT:
 VAL:
                              STANDARD
     -h, --help                                   Skriver ut hjälpinformation
+    -v, --version                                Skriver ut versionsnummer
     -a, --alive                                  Indicates whether or not the animal is alive
     -n, --name <VALUE>
         --agility <VALUE>    10                  The agility between 0 and 100

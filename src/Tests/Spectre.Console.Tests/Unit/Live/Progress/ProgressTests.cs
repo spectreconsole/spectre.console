@@ -119,6 +119,31 @@ public sealed class ProgressTests
     }
 
     [Fact]
+    public void Setting_Max_Value_To_Zero_Should_Make_Percentage_OneHundred()
+    {
+        // Given
+        var console = new TestConsole()
+            .Interactive();
+
+        var task = default(ProgressTask);
+        var progress = new Progress(console)
+            .Columns(new[] { new ProgressBarColumn() })
+            .AutoRefresh(false)
+            .AutoClear(false);
+
+        // When
+        progress.Start(ctx =>
+        {
+            task = ctx.AddTask("foo");
+            task.MaxValue = 0;
+        });
+
+        // Then
+        task.Value.ShouldBe(0);
+        task.Percentage.ShouldBe(100);
+    }
+
+    [Fact]
     public void Setting_Value_Should_Override_Incremented_Value()
     {
         // Given

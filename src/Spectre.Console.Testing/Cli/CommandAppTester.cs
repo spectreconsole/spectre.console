@@ -9,18 +9,45 @@ public sealed class CommandAppTester
     private Action<IConfigurator>? _configuration;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CommandAppTester"/> class.
+    /// Gets the test console used by both the CommandAppTester and CommandApp.
     /// </summary>
-    /// <param name="registrar">The registrar.</param>
-    public CommandAppTester(ITypeRegistrar? registrar = null)
-    {
-        Registrar = registrar;
-    }
+    public TestConsole Console { get; }
 
     /// <summary>
     /// Gets or sets the Registrar to use in the CommandApp.
     /// </summary>
     public ITypeRegistrar? Registrar { get; set; }
+
+    /// <summary>
+    /// Gets or sets the settings for the <see cref="CommandAppTester"/>.
+    /// </summary>
+    public CommandAppTesterSettings TestSettings { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CommandAppTester"/> class.
+    /// </summary>
+    /// <param name="registrar">The registrar.</param>
+    /// <param name="settings">The settings.</param>
+    /// <param name="console">The test console that overrides the default one.</param>
+    public CommandAppTester(
+        ITypeRegistrar? registrar = null,
+        CommandAppTesterSettings? settings = null,
+        TestConsole? console = null)
+    {
+        Registrar = registrar;
+        TestSettings = settings ?? new CommandAppTesterSettings();
+        Console = console ?? new TestConsole().Width(int.MaxValue);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CommandAppTester"/> class.
+    /// </summary>
+    /// <param name="settings">The settings.</param>
+    public CommandAppTester(CommandAppTesterSettings settings)
+    {
+        TestSettings = settings;
+        Console = new TestConsole().Width(int.MaxValue);
+    }
 
     /// <summary>
     /// Sets the default command.
@@ -69,25 +96,23 @@ public sealed class CommandAppTester
     public CommandAppFailure RunAndCatch<T>(params string[] args)
         where T : Exception
     {
-        var console = new TestConsole().Width(int.MaxValue);
-
         try
         {
-            Run(args, console, c => c.PropagateExceptions());
+            Run(args, Console, c => c.PropagateExceptions());
             throw new InvalidOperationException("Expected an exception to be thrown, but there was none.");
         }
         catch (T ex)
         {
             if (ex is CommandAppException commandAppException && commandAppException.Pretty != null)
             {
-                console.Write(commandAppException.Pretty);
+                Console.Write(commandAppException.Pretty);
             }
             else
             {
-                console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message);
             }
 
-            return new CommandAppFailure(ex, console.Output);
+            return new CommandAppFailure(ex, Console.Output);
         }
         catch (Exception ex)
         {
@@ -104,8 +129,7 @@ public sealed class CommandAppTester
     /// <returns>The result.</returns>
     public CommandAppResult Run(params string[] args)
     {
-        var console = new TestConsole().Width(int.MaxValue);
-        return Run(args, console);
+        return Run(args, Console);
     }
 
     private CommandAppResult Run(string[] args, TestConsole console, Action<IConfigurator>? config = null)
@@ -135,10 +159,8 @@ public sealed class CommandAppTester
 
         var result = app.Run(args);
 
-        var output = console.Output
-            .NormalizeLineEndings()
-            .TrimLines()
-            .Trim();
+        var output = console.Output.NormalizeLineEndings();
+        output = TestSettings.TrimConsoleOutput ? output.TrimLines().Trim() : output;
 
         return new CommandAppResult(result, output, context, settings);
     }
@@ -150,8 +172,7 @@ public sealed class CommandAppTester
     /// <returns>The result.</returns>
     public async Task<CommandAppResult> RunAsync(params string[] args)
     {
-        var console = new TestConsole().Width(int.MaxValue);
-        return await RunAsync(args, console);
+        return await RunAsync(args, Console);
     }
 
     private async Task<CommandAppResult> RunAsync(string[] args, TestConsole console, Action<IConfigurator>? config = null)
@@ -181,10 +202,8 @@ public sealed class CommandAppTester
 
         var result = await app.RunAsync(args);
 
-        var output = console.Output
-            .NormalizeLineEndings()
-            .TrimLines()
-            .Trim();
+        var output = console.Output.NormalizeLineEndings();
+        output = TestSettings.TrimConsoleOutput ? output.TrimLines().Trim() : output;
 
         return new CommandAppResult(result, output, context, settings);
     }

@@ -25,7 +25,7 @@ public class Segment
     public bool IsWhiteSpace { get; }
 
     /// <summary>
-    /// Gets a value indicating whether or not his is a
+    /// Gets a value indicating whether or not this is a
     /// control code such as cursor movement.
     /// </summary>
     public bool IsControlCode { get; }

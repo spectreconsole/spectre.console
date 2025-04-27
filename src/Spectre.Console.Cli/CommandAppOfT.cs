@@ -6,6 +6,9 @@ namespace Spectre.Console.Cli;
 /// The entry point for a command line application with a default command.
 /// </summary>
 /// <typeparam name="TDefaultCommand">The type of the default command.</typeparam>
+#if !NETSTANDARD2_0
+[RequiresDynamicCode("Spectre.Console.Cli relies on reflection. Use during trimming and AOT compilation is not supported and may result in unexpected behaviors.")]
+#endif
 public sealed class CommandApp<TDefaultCommand> : ICommandApp
     where TDefaultCommand : class, ICommand
 {

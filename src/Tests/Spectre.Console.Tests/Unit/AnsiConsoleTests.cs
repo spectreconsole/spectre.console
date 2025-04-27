@@ -142,4 +142,21 @@ public partial class AnsiConsoleTests
                 .ShouldBe("[101mHello[0m\n[101mWorld[0m\n");
         }
     }
+
+    public sealed class WriteException
+    {
+        [Fact]
+        public void Should_Not_Throw_If_Exception_Has_No_StackTrace()
+        {
+            // Given
+            var console = new TestConsole();
+            var exception = new InvalidOperationException("An exception.");
+
+            // When
+            void When() => console.WriteException(exception);
+
+            // Then
+            Should.NotThrow(When);
+        }
+    }
 }

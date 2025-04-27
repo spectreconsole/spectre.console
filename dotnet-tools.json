@@ -3,15 +3,9 @@
   "isRoot": true,
   "tools": {
     "cake.tool": {
-      "version": "4.0.0",
+      "version": "5.0.0",
       "commands": [
         "dotnet-cake"
-      ]
-    },
-    "dotnet-example": {
-      "version": "3.1.0",
-      "commands": [
-        "dotnet-example"
       ]
     },
     "verify.tool": {

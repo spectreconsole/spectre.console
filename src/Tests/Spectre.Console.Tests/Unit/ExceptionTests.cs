@@ -123,6 +123,23 @@ public sealed class ExceptionTests
         return Verifier.Verify(result);
     }
 
+    [Theory]
+    [InlineData(ExceptionFormats.Default)]
+    [InlineData(ExceptionFormats.ShortenTypes)]
+    [Expectation("GenericException")]
+    public Task Should_Write_GenericException(ExceptionFormats exceptionFormats)
+    {
+        // Given
+        var console = new TestConsole { EmitAnsiSequences = true }.Width(1024);
+        var dex = GetException(() => TestExceptions.MethodThatThrowsGenericException<IAnsiConsole>());
+
+        // When
+        var result = console.WriteNormalizedException(dex, exceptionFormats);
+
+        // Then
+        return Verifier.Verify(result).UseParameters(exceptionFormats);
+    }
+
     public static Exception GetException(Action action)
     {
         try

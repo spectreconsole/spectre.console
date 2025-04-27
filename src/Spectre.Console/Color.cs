@@ -214,6 +214,57 @@ public partial struct Color : IEquatable<Color>
     }
 
     /// <summary>
+    /// Creates a color from a hexadecimal string representation.
+    /// </summary>
+    /// <param name="hex">The hexadecimal string representation of the color.</param>
+    /// <returns>The color created from the hexadecimal string.</returns>
+    public static Color FromHex(string hex)
+    {
+        if (hex is null)
+        {
+            throw new ArgumentNullException(nameof(hex));
+        }
+
+        if (hex.StartsWith("#"))
+        {
+            hex = hex.Substring(1);
+        }
+
+        // 3 digit hex codes are expanded to 6 digits
+        // by doubling each digit, conform to CSS color codes
+        if (hex.Length == 3)
+        {
+            hex = string.Concat(hex.Select(c => new string(c, 2)));
+        }
+
+        var r = byte.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
+        var g = byte.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
+        var b = byte.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
+
+        return new Color(r, g, b);
+    }
+
+    /// <summary>
+    /// Tries to convert a hexadecimal color code to a <see cref="Color"/> object.
+    /// </summary>
+    /// <param name="hex">The hexadecimal color code.</param>
+    /// <param name="color">When this method returns, contains the <see cref="Color"/> equivalent of the hexadecimal color code, if the conversion succeeded, or <see cref="Color.Default"/> if the conversion failed.</param>
+    /// <returns><c>true</c> if the conversion succeeded; otherwise, <c>false</c>.</returns>
+    public static bool TryFromHex(string hex, out Color color)
+    {
+        try
+        {
+            color = FromHex(hex);
+            return true;
+        }
+        catch
+        {
+            color = Color.Default;
+            return false;
+        }
+    }
+
+    /// <summary>
     /// Converts a <see cref="ConsoleColor"/> to a <see cref="Color"/>.
     /// </summary>
     /// <param name="color">The color to convert.</param>

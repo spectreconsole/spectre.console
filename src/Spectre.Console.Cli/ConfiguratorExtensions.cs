@@ -168,7 +168,7 @@ public static class ConfiguratorExtensions
     }
 
     /// <summary>
-    /// Tells the help writer whether or not to trim trailing period.
+    /// Tells the help provider whether or not to trim trailing period.
     /// </summary>
     /// <param name="configurator">The configurator.</param>
     /// <param name="trimTrailingPeriods">True to trim trailing period (default), false to not.</param>

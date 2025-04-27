@@ -22,7 +22,7 @@ public class HelpProvider : IHelpProvider
     protected virtual bool ShowOptionDefaultValues { get; }
 
     /// <summary>
-    /// Gets a value indicating whether a trailing period of a command description is trimmed in the help text.
+    /// Gets a value indicating whether a trailing period of a description is trimmed in the help text.
     /// </summary>
     protected virtual bool TrimTrailingPeriod { get; }
 
@@ -88,16 +88,27 @@ public class HelpProvider : IHelpProvider
                 new HelpOption("h", "help", null, null, resources.PrintHelpDescription, null),
             };
 
-            // Version information applies to the entire application
-            // Include the "-v" option in the help when at the root of the command line application
-            // Don't allow the "-v" option if users have specified one or more sub-commands
-            if ((command?.Parent == null) && !(command?.IsBranch ?? false))
+            // Version information applies to the entire CLI application.
+            // Whether to show the "-v|--version" option in the help is determined as per:
+            // - If an application version has been set, and
+            // -- When at the root of the application, or
+            // -- When at the root of the application with a default command, unless
+            // --- The default command has a version option in its settings
+            if ((command?.Parent == null) && !(command?.IsBranch ?? false) && (command?.IsDefaultCommand ?? true))
             {
-                // Only show the version command if there is an
-                // application version set.
-                if (model.ApplicationVersion != null)
+                // Check whether the default command has a version option in its settings.
+                var versionCommandOption = command?.Parameters?.OfType<CommandOption>()?.FirstOrDefault(o =>
+                    (o.ShortNames.FirstOrDefault(v => v.Equals("v", StringComparison.OrdinalIgnoreCase)) != null) ||
+                    (o.LongNames.FirstOrDefault(v => v.Equals("version", StringComparison.OrdinalIgnoreCase)) != null));
+
+                // Only show the version option if the default command doesn't have a version option in its settings.
+                if (versionCommandOption == null)
                 {
-                    parameters.Add(new HelpOption("v", "version", null, null, resources.PrintVersionDescription, null));
+                    // Only show the version option if there is an application version set.
+                    if (model.ApplicationVersion != null)
+                    {
+                        parameters.Add(new HelpOption("v", "version", null, null, resources.PrintVersionDescription, null));
+                    }
                 }
             }
 
@@ -171,7 +182,7 @@ public class HelpProvider : IHelpProvider
 
         var composer = NewComposer();
         composer.Style(helpStyles?.Description?.Header ?? Style.Plain, $"{resources.Description}:").LineBreak();
-        composer.Text(command.Description).LineBreak();
+        composer.Text(NormalizeDescription(command.Description)).LineBreak();
         yield return composer.LineBreak();
     }
 
@@ -364,14 +375,14 @@ public class HelpProvider : IHelpProvider
         {
             grid.AddRow(
                 NewComposer().Style(helpStyles?.Arguments?.RequiredArgument ?? Style.Plain, $"<{argument.Name}>"),
-                NewComposer().Text(argument.Description?.TrimEnd('.') ?? " "));
+                NewComposer().Text(NormalizeDescription(argument.Description)));
         }
 
         foreach (var argument in arguments.Where(x => !x.Required).OrderBy(x => x.Position))
         {
             grid.AddRow(
                 NewComposer().Style(helpStyles?.Arguments?.OptionalArgument ?? Style.Plain, $"[{argument.Name}]"),
-                NewComposer().Text(argument.Description?.TrimEnd('.') ?? " "));
+                NewComposer().Text(NormalizeDescription(argument.Description)));
         }
 
         result.Add(grid);
@@ -428,7 +439,7 @@ public class HelpProvider : IHelpProvider
                 columns.Add(GetDefaultValueForOption(option.DefaultValue));
             }
 
-            columns.Add(NewComposer().Text(option.Description?.TrimEnd('.') ?? " "));
+            columns.Add(NewComposer().Text(NormalizeDescription(option.Description)));
 
             grid.AddRow(columns.ToArray());
         }
@@ -478,18 +489,9 @@ public class HelpProvider : IHelpProvider
                 arguments.Space();
             }
 
-            if (TrimTrailingPeriod)
-            {
-                grid.AddRow(
-                    NewComposer().Text(arguments.ToString().TrimEnd()),
-                    NewComposer().Text(child.Description?.TrimEnd('.') ?? " "));
-            }
-            else
-            {
-                grid.AddRow(
-                    NewComposer().Text(arguments.ToString().TrimEnd()),
-                    NewComposer().Text(child.Description ?? " "));
-            }
+            grid.AddRow(
+                NewComposer().Text(arguments.ToString().TrimEnd()),
+                NewComposer().Text(NormalizeDescription(child.Description)));
         }
 
         result.Add(grid);
@@ -565,5 +567,17 @@ public class HelpProvider : IHelpProvider
             Array array => NewComposer().Join(", ", array.Cast<object>().Select(o => NewComposer().Style(helpStyles?.Options?.DefaultValue ?? Style.Plain, o.ToString() ?? string.Empty))),
             _ => NewComposer().Style(helpStyles?.Options?.DefaultValue ?? Style.Plain, defaultValue?.ToString() ?? string.Empty),
         };
+    }
+
+    private string NormalizeDescription(string? description)
+    {
+        if (description == null)
+        {
+            return " ";
+        }
+
+        return TrimTrailingPeriod
+            ? description.TrimEnd('.')
+            : description;
     }
 }

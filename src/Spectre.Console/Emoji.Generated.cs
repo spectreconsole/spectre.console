@@ -18,7 +18,7 @@ namespace Spectre.Console
     public static partial class Emoji
     {
         private static readonly Dictionary<string, string> _emojis
-            = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+            = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             { "abacus", Emoji.Known.Abacus },
             { "ab_button_blood_type", Emoji.Known.AbButtonBloodType },
