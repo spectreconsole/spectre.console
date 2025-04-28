@@ -6,6 +6,11 @@
 <BlazorConsoleOutput />
 
 <button class="btn btn-primary" @onclick="WriteHelloWorld">Write Hello World</button>
+<button class="btn btn-secondary" @onclick="DrawCanvas">Draw Canvas</button>
+<button class="btn btn-success" @onclick="ShowBarChart">Show Bar Chart</button>
+<button class="btn btn-warning" @onclick="ShowFiglet">Show Figlet</button>
+<button class="btn btn-info" @onclick="ShowTree">Show Tree</button>
+<button class="btn btn-dark" @onclick="ShowPanel">Show Panel</button>
 
 @using Spectre.Console
 @using Spectre.Console.BlazorWasm
@@ -33,5 +38,80 @@
 
         // Additional Markup with truecolor
         backend.Write(new Markup("[#FF6B6B]This is [#00BFFF]truecolor [#FFD700]output [#00FF00]in [#FF00FF]Blazor WASM![/][/][/][/][/]\n"));
+    }
+
+    private void DrawCanvas()
+    {
+        var backend = new BlazorAnsiConsoleBackend(ConsoleService);
+        var canvas = new Canvas(40, 10);
+
+        // Draw a diagonal line
+        for (int i = 0; i < 10; i++)
+        {
+            canvas.SetPixel(i * 4, i, Color.Red);
+        }
+
+        // Draw a box
+        for (int x = 0; x < 40; x++)
+        {
+            canvas.SetPixel(x, 0, Color.Blue);
+            canvas.SetPixel(x, 9, Color.Blue);
+        }
+        for (int y = 0; y < 10; y++)
+        {
+            canvas.SetPixel(0, y, Color.Blue);
+            canvas.SetPixel(39, y, Color.Blue);
+        }
+
+        backend.Write(canvas);
+    }
+
+    private void ShowBarChart()
+    {
+        var backend = new BlazorAnsiConsoleBackend(ConsoleService);
+        var chart = new BarChart()
+            .Width(60)
+            .Label("[green bold underline]Fruit Sales[/]")
+            .CenterLabel();
+
+        chart.AddItem("Apples", 12, Color.Red);
+        chart.AddItem("Bananas", 20, Color.Yellow);
+        chart.AddItem("Oranges", 8, Color.Orange1);
+        chart.AddItem("Grapes", 15, Color.Purple);
+
+        backend.Write(chart);
+    }
+
+    private void ShowFiglet()
+    {
+        var backend = new BlazorAnsiConsoleBackend(ConsoleService);
+        var figlet = new FigletText("Spectre.Console")
+            .Color(Color.Cyan1)
+            .Centered();
+
+        backend.Write(figlet);
+    }
+
+    private void ShowTree()
+    {
+        var backend = new BlazorAnsiConsoleBackend(ConsoleService);
+        var tree = new Tree("[yellow]Root[/]");
+        var branch1 = tree.AddNode("[green]Branch 1[/]");
+        branch1.AddNode("[blue]Leaf 1.1[/]");
+        branch1.AddNode("[blue]Leaf 1.2[/]");
+        var branch2 = tree.AddNode("[green]Branch 2[/]");
+        branch2.AddNode("[blue]Leaf 2.1[/]");
+        backend.Write(tree);
+    }
+
+    private void ShowPanel()
+    {
+        var backend = new BlazorAnsiConsoleBackend(ConsoleService);
+        var panel = new Panel("[bold yellow]This is a panel![/]")
+            .Header("[red]Panel Header[/]", Justify.Center)
+            .Border(BoxBorder.Double)
+            .BorderStyle(new Style(Color.Green));
+
+        backend.Write(panel);
     }
 }
