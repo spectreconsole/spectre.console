@@ -22,6 +22,8 @@
     <PackageVersion Include="Wcwidth.Sources" Version="2.0.0"/>
     <PackageVersion Include="xunit" Version="2.9.3"/>
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.2"/>
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.4"/>
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.4"/>
   </ItemGroup>
 
 </Project>

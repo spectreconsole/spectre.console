@@ -6,7 +6,7 @@ internal static class ConsoleHelper
     {
         try
         {
-            var width = System.Console.BufferWidth;
+            var width = ConsolePolyfill.BufferWidth;
             if (width == 0)
             {
                 width = defaultValue;
@@ -24,7 +24,7 @@ internal static class ConsoleHelper
     {
         try
         {
-            var height = System.Console.WindowHeight;
+            var height = ConsolePolyfill.WindowHeight;
             if (height == 0)
             {
                 height = defaultValue;

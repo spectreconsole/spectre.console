@@ -1,0 +1,37 @@
+@page "/console-demo"
+@inject Spectre.Console.BlazorWasm.BlazorConsoleService ConsoleService
+
+<h3>Blazor Spectre.Console Demo</h3>
+
+<BlazorConsoleOutput />
+
+<button class="btn btn-primary" @onclick="WriteHelloWorld">Write Hello World</button>
+
+@using Spectre.Console
+@using Spectre.Console.BlazorWasm
+
+@code {
+    private void WriteHelloWorld()
+    {
+        var backend = new BlazorAnsiConsoleBackend(ConsoleService);
+
+        // Markup banner
+        backend.Write(new Markup("[#FF6B6B]Spectre.Console TrueColor Demo[/]"));
+
+        // Rule with color
+        backend.Write(new Rule("[#00BFFF]TrueColor Demo[/]").RuleStyle("bold #00BFFF"));
+
+        // Table with colored cells
+        var table = new Table();
+        table.AddColumn(new TableColumn("[yellow]Feature[/]"));
+        table.AddColumn(new TableColumn("[yellow]Demo[/]"));
+        table.AddRow("[#FF00FF]Magenta[/]", "[#FF00FF]Spectre.Console[/]");
+        table.AddRow("[#00FF00]Bold[/]", "[bold]Bold Text[/]");
+        table.AddRow("[#FFA500]Italic[/]", "[italic]Italic Text[/]");
+        table.AddRow("[#FFD700]Underline[/]", "[underline]Underline Text[/]");
+        backend.Write(table);
+
+        // Additional Markup with truecolor
+        backend.Write(new Markup("[#FF6B6B]This is [#00BFFF]truecolor [#FFD700]output [#00FF00]in [#FF00FF]Blazor WASM![/][/][/][/][/]\n"));
+    }
+}

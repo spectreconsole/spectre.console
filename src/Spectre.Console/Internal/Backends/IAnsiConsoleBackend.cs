@@ -3,7 +3,7 @@ namespace Spectre.Console;
 /// <summary>
 /// Represents a console backend.
 /// </summary>
-internal interface IAnsiConsoleBackend
+public interface IAnsiConsoleBackend
 {
     /// <summary>
     /// Gets the console cursor for the backend.

@@ -10,10 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{20595AD4
 		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
+		Directory.Packages.props = Directory.Packages.props
 		..\dotnet-tools.json = ..\dotnet-tools.json
 		..\global.json = ..\global.json
 		stylecop.json = stylecop.json
-		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub", "GitHub", "{C3E2CB5C-1517-4C75-B59A-93D4E22BEC8D}"
@@ -38,9 +38,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Console.Json", "Ext
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F34EFD87-6CEA-453F-858B-094EA413578C}"
 	ProjectSection(SolutionItems) = preProject
-		Tests\Directory.Build.props = Tests\Directory.Build.props
 		Tests\.editorconfig = Tests\.editorconfig
+		Tests\Directory.Build.props = Tests\Directory.Build.props
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spectre.Console.BlazorWasm.Demo", "Extensions\Spectre.Console.BlazorWasm.Demo\Spectre.Console.BlazorWasm.Demo.csproj", "{60C15911-1EFE-4708-9E94-50FF489EBAB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spectre.Console.BlazorWasm", "Extensions\Spectre.Console.BlazorWasm\Spectre.Console.BlazorWasm.csproj", "{C85FDEBD-7840-7333-F301-E076CD4ECA02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,6 +140,30 @@ Global
 		{579E6E31-1E2F-4FE1-8F8C-9770878993E9}.Release|x64.Build.0 = Release|Any CPU
 		{579E6E31-1E2F-4FE1-8F8C-9770878993E9}.Release|x86.ActiveCfg = Release|Any CPU
 		{579E6E31-1E2F-4FE1-8F8C-9770878993E9}.Release|x86.Build.0 = Release|Any CPU
+		{60C15911-1EFE-4708-9E94-50FF489EBAB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60C15911-1EFE-4708-9E94-50FF489EBAB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60C15911-1EFE-4708-9E94-50FF489EBAB1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{60C15911-1EFE-4708-9E94-50FF489EBAB1}.Debug|x64.Build.0 = Debug|Any CPU
+		{60C15911-1EFE-4708-9E94-50FF489EBAB1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{60C15911-1EFE-4708-9E94-50FF489EBAB1}.Debug|x86.Build.0 = Debug|Any CPU
+		{60C15911-1EFE-4708-9E94-50FF489EBAB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60C15911-1EFE-4708-9E94-50FF489EBAB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60C15911-1EFE-4708-9E94-50FF489EBAB1}.Release|x64.ActiveCfg = Release|Any CPU
+		{60C15911-1EFE-4708-9E94-50FF489EBAB1}.Release|x64.Build.0 = Release|Any CPU
+		{60C15911-1EFE-4708-9E94-50FF489EBAB1}.Release|x86.ActiveCfg = Release|Any CPU
+		{60C15911-1EFE-4708-9E94-50FF489EBAB1}.Release|x86.Build.0 = Release|Any CPU
+		{C85FDEBD-7840-7333-F301-E076CD4ECA02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C85FDEBD-7840-7333-F301-E076CD4ECA02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C85FDEBD-7840-7333-F301-E076CD4ECA02}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C85FDEBD-7840-7333-F301-E076CD4ECA02}.Debug|x64.Build.0 = Debug|Any CPU
+		{C85FDEBD-7840-7333-F301-E076CD4ECA02}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C85FDEBD-7840-7333-F301-E076CD4ECA02}.Debug|x86.Build.0 = Debug|Any CPU
+		{C85FDEBD-7840-7333-F301-E076CD4ECA02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C85FDEBD-7840-7333-F301-E076CD4ECA02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C85FDEBD-7840-7333-F301-E076CD4ECA02}.Release|x64.ActiveCfg = Release|Any CPU
+		{C85FDEBD-7840-7333-F301-E076CD4ECA02}.Release|x64.Build.0 = Release|Any CPU
+		{C85FDEBD-7840-7333-F301-E076CD4ECA02}.Release|x86.ActiveCfg = Release|Any CPU
+		{C85FDEBD-7840-7333-F301-E076CD4ECA02}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,9 +171,11 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C3E2CB5C-1517-4C75-B59A-93D4E22BEC8D} = {20595AD4-8D75-4AF8-B6BC-9C38C160423F}
 		{0EFE694D-0770-4E71-BF4E-EC2B41362F79} = {E0E45070-123C-4A4D-AA98-2A780308876C}
-		{579E6E31-1E2F-4FE1-8F8C-9770878993E9} = {E0E45070-123C-4A4D-AA98-2A780308876C}
 		{60A4CADD-2B3D-48ED-89C0-1637A1F111AE} = {F34EFD87-6CEA-453F-858B-094EA413578C}
 		{E07C46D2-714F-4116-BADD-FEE09617A9C4} = {F34EFD87-6CEA-453F-858B-094EA413578C}
+		{579E6E31-1E2F-4FE1-8F8C-9770878993E9} = {E0E45070-123C-4A4D-AA98-2A780308876C}
+		{60C15911-1EFE-4708-9E94-50FF489EBAB1} = {E0E45070-123C-4A4D-AA98-2A780308876C}
+		{C85FDEBD-7840-7333-F301-E076CD4ECA02} = {E0E45070-123C-4A4D-AA98-2A780308876C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5729B071-67A0-48FB-8B1B-275E6822086C}

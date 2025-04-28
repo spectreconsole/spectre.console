@@ -1,0 +1,60 @@
+@inject Spectre.Console.BlazorWasm.BlazorConsoleService ConsoleService
+
+@using Microsoft.AspNetCore.Components
+@inject Spectre.Console.BlazorWasm.BlazorConsoleService ConsoleService
+
+<div class="blazor-console-output" style="background: #111; color: #eee; font-family: monospace; padding: 1em; min-height: 200px; white-space: pre-wrap;">
+    @((MarkupString)AnsiToHtml(output))
+</div>
+
+@code {
+    private string output = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        output = ConsoleService.Output;
+        ConsoleService.OutputChanged += OnOutputChanged;
+    }
+
+    private void OnOutputChanged()
+    {
+        output = ConsoleService.Output;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        ConsoleService.OutputChanged -= OnOutputChanged;
+    }
+
+    // Simple ANSI to HTML parser (supports colors, bold, italic, underline, reset)
+    private string AnsiToHtml(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+            return "";
+
+        // Replace ANSI codes with HTML spans
+        string html = input
+            .Replace("\u001b[0m", "</span>") // reset
+            .Replace("\u001b[1m", "<span style=\"font-weight:bold\">")
+            .Replace("\u001b[3m", "<span style=\"font-style:italic\">")
+            .Replace("\u001b[4m", "<span style=\"text-decoration:underline\">")
+            .Replace("\u001b[38;5;11m", "<span style=\"color:#ffff55\">")
+            .Replace("\u001b[38;2;255;107;107m", "<span style=\"color:#ff6b6b\">")
+            .Replace("\u001b[38;2;0;191;255m", "<span style=\"color:#00bfff\">")
+            .Replace("\u001b[38;2;255;0;255m", "<span style=\"color:#ff00ff\">")
+            .Replace("\u001b[38;2;0;255;0m", "<span style=\"color:#00ff00\">")
+            .Replace("\u001b[38;2;255;165;0m", "<span style=\"color:#ffa500\">")
+            .Replace("\u001b[38;2;255;215;0m", "<span style=\"color:#ffd700\">");
+
+        // Remove any remaining ANSI codes (fallback)
+        html = System.Text.RegularExpressions.Regex.Replace(html, @"\u001b\[[0-9;]*m", "</span>");
+
+        // Escape HTML special characters except for our tags
+        html = html.Replace("&", "&").Replace("<span", "\u0001").Replace("</span>", "\u0002")
+                   .Replace("<", "<").Replace(">", ">")
+                   .Replace("\u0001", "<span").Replace("\u0002", "</span>");
+
+        return html;
+    }
+}

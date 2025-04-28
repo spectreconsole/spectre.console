@@ -12,8 +12,8 @@ public class CanvasTests
             var result = Record.Exception(() => new Canvas(0, 1));
 
             // Then
-            result.ShouldBeOfType<ArgumentException>()
-                .And(ex => ex.ParamName.ShouldBe("width"));
+            var ex = result.ShouldBeOfType<ArgumentException>();
+            ex.ParamName.ShouldBe("width");
         }
 
         [Fact]
@@ -23,8 +23,8 @@ public class CanvasTests
             var result = Record.Exception(() => new Canvas(1, 0));
 
             // Then
-            result.ShouldBeOfType<ArgumentException>()
-                .And(ex => ex.ParamName.ShouldBe("height"));
+            var ex = result.ShouldBeOfType<ArgumentException>();
+            ex.ParamName.ShouldBe("height");
         }
     }
 
