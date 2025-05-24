@@ -37,6 +37,16 @@ public class CommandRuntimeException : CommandAppException
         return new CommandRuntimeException($"Command '{node.Command.Name}' is missing required argument '{argument.Value}'.");
     }
 
+    internal static CommandRuntimeException MissingRequiredOption(CommandTree node, CommandOption option)
+    {
+        if (node.Command.Name == CliConstants.DefaultCommandName)
+        {
+            return new CommandRuntimeException($"Missing required option '{option.GetOptionName()}'.");
+        }
+
+        return new CommandRuntimeException($"Command '{node.Command.Name}' is missing required argument '{option.GetOptionName()}'.");
+    }
+
     internal static CommandRuntimeException NoConverterFound(CommandParameter parameter)
     {
         return new CommandRuntimeException($"Could not find converter for type '{parameter.ParameterType.FullName}'.");

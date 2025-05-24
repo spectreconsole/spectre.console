@@ -142,7 +142,7 @@ internal sealed class XmlDocCommand : Command<XmlDocCommand.Settings>
             var node = document.CreateElement("Argument");
             node.SetNullableAttribute("Name", argument.Value);
             node.SetAttribute("Position", argument.Position.ToString(CultureInfo.InvariantCulture));
-            node.SetBooleanAttribute("Required", argument.Required);
+            node.SetBooleanAttribute("Required", argument.IsRequired);
             node.SetEnumAttribute("Kind", argument.ParameterKind);
             node.SetNullableAttribute("ClrType", argument.ParameterType?.FullName);
 
@@ -186,7 +186,7 @@ internal sealed class XmlDocCommand : Command<XmlDocCommand.Settings>
             node.SetNullableAttribute("Short", option.ShortNames);
             node.SetNullableAttribute("Long", option.LongNames);
             node.SetNullableAttribute("Value", option.ValueName);
-            node.SetBooleanAttribute("Required", option.Required);
+            node.SetBooleanAttribute("Required", option.IsRequired);
             node.SetEnumAttribute("Kind", option.ParameterKind);
             node.SetNullableAttribute("ClrType", option.ParameterType?.FullName);
 

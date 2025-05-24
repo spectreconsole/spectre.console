@@ -5,12 +5,12 @@ internal static class TemplateParser
     public sealed class ArgumentResult
     {
         public string Value { get; set; }
-        public bool Required { get; set; }
+        public bool IsRequired { get; set; }
 
-        public ArgumentResult(string value, bool required)
+        public ArgumentResult(string value, bool isRequired)
         {
             Value = value;
-            Required = required;
+            IsRequired = isRequired;
         }
     }
 
