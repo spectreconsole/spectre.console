@@ -76,8 +76,8 @@ public sealed class HelpProviderStyle
                 Header = "yellow",
                 DefaultValueHeader = "lime",
                 DefaultValue = "bold",
-                RequiredOption = "silver",
-                OptionalOption = "grey",
+                RequiredOptionValue = "silver",
+                OptionalOptionValue = "grey",
             },
         };
 }
@@ -213,7 +213,12 @@ public sealed class OptionStyle
     public Style? RequiredOption { get; set; }
 
     /// <summary>
+    /// Gets or sets the style for required option values.
+    /// </summary>
+    public Style? RequiredOptionValue { get; set; }
+
+    /// <summary>
     /// Gets or sets the style for optional options.
     /// </summary>
-    public Style? OptionalOption { get; set; }
+    public Style? OptionalOptionValue { get; set; }
 }
