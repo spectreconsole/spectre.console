@@ -1,6 +1,6 @@
 namespace Spectre.Console.Tests.Unit.Cli;
 
-public sealed partial class CommandApptests
+public sealed partial class CommandAppTests
 {
     [Fact]
     public void Should_Treat_Commands_As_Case_Sensitive_If_Specified()

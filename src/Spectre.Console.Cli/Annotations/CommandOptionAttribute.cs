@@ -31,6 +31,11 @@ public sealed class CommandOptionAttribute : Attribute
     public bool ValueIsOptional { get; }
 
     /// <summary>
+    /// Gets a value indicating whether the value is required.
+    /// </summary>
+    public bool IsRequired { get; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether this option is hidden from the help text.
     /// </summary>
     public bool IsHidden { get; set; }
@@ -39,7 +44,8 @@ public sealed class CommandOptionAttribute : Attribute
     /// Initializes a new instance of the <see cref="CommandOptionAttribute"/> class.
     /// </summary>
     /// <param name="template">The option template.</param>
-    public CommandOptionAttribute(string template)
+    /// <param name="isRequired">Indicates whether the option is required or not.</param>
+    public CommandOptionAttribute(string template, bool isRequired = false)
     {
         if (template == null)
         {
@@ -54,6 +60,7 @@ public sealed class CommandOptionAttribute : Attribute
         ShortNames = result.ShortNames;
         ValueName = result.Value;
         ValueIsOptional = result.ValueIsOptional;
+        IsRequired = isRequired;
     }
 
     internal bool IsMatch(string name)

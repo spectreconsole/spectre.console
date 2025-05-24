@@ -45,6 +45,6 @@ public sealed class CommandArgumentAttribute : Attribute
         // Assign the result.
         Position = position;
         ValueName = result.Value;
-        IsRequired = result.Required;
+        IsRequired = result.IsRequired;
     }
 }

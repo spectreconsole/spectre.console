@@ -212,7 +212,7 @@ internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
             parameterNode.AddNode(ValueMarkup("Value", commandArgumentParameter.Value));
         }
 
-        parameterNode.AddNode(ValueMarkup("Required", parameter.Required.ToString()));
+        parameterNode.AddNode(ValueMarkup("Required", parameter.IsRequired.ToString()));
 
         if (parameter.Converter != null)
         {
