@@ -1061,5 +1061,43 @@ public sealed partial class CommandAppTests
             // Then
             return Verifier.Verify(result.Output);
         }
+
+        [Fact]
+        [Expectation("Required_Options")]
+        public Task Should_Show_Required_Options()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<GenericCommand<RequiredOptionsSettings>>();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+            });
+
+            // When
+            var result = fixture.Run("--help");
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Required_Options_No_Description")]
+        public Task Should_Show_Required_Options_Without_Description()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<GenericCommand<RequiredOptionsWithoutDescriptionSettings>>();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+            });
+
+            // When
+            var result = fixture.Run("--help");
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
     }
 }

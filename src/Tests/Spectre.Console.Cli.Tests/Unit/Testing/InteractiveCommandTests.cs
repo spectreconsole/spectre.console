@@ -1,4 +1,4 @@
-namespace Spectre.Console.Cli.Tests.Unit.Testing;
+namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed class InteractiveCommandTests
 {
