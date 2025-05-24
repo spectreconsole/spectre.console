@@ -222,7 +222,8 @@ public class HelpProvider : IHelpProvider
                 {
                     if (isCurrent)
                     {
-                        parameters.Add(NewComposer().Style(helpStyles?.Usage?.CurrentCommand ?? Style.Plain,
+                        parameters.Add(NewComposer().Style(
+                            helpStyles?.Usage?.CurrentCommand ?? Style.Plain,
                             $"{current.Name}"));
                     }
                     else
@@ -238,7 +239,8 @@ public class HelpProvider : IHelpProvider
                         foreach (var argument in current.Parameters.OfType<ICommandArgument>()
                                      .Where(a => a.IsRequired).OrderBy(a => a.Position).ToArray())
                         {
-                            parameters.Add(NewComposer().Style(helpStyles?.Usage?.RequiredArgument ?? Style.Plain,
+                            parameters.Add(NewComposer().Style(
+                                helpStyles?.Usage?.RequiredArgument ?? Style.Plain,
                                 $"<{argument.Value}>"));
                         }
                     }
@@ -249,7 +251,8 @@ public class HelpProvider : IHelpProvider
                     {
                         foreach (var optionalArgument in optionalArguments)
                         {
-                            parameters.Add(NewComposer().Style(helpStyles?.Usage?.OptionalArgument ?? Style.Plain,
+                            parameters.Add(NewComposer().Style(
+                                helpStyles?.Usage?.OptionalArgument ?? Style.Plain,
                                 $"[{optionalArgument.Value}]"));
                         }
                     }
@@ -591,11 +594,14 @@ public class HelpProvider : IHelpProvider
             null => NewComposer().Text(" "),
             "" => NewComposer().Text(" "),
             Array { Length: 0 } => NewComposer().Text(" "),
-            Array array => NewComposer().Join(", ",
+            Array array => NewComposer().Join(
+                ", ",
                 array.Cast<object>().Select(o =>
-                    NewComposer().Style(helpStyles?.Options?.DefaultValue ?? Style.Plain,
+                    NewComposer().Style(
+                        helpStyles?.Options?.DefaultValue ?? Style.Plain,
                         o.ToString() ?? string.Empty))),
-            _ => NewComposer().Style(helpStyles?.Options?.DefaultValue ?? Style.Plain,
+            _ => NewComposer().Style(
+                helpStyles?.Options?.DefaultValue ?? Style.Plain,
                 defaultValue?.ToString() ?? string.Empty),
         };
     }

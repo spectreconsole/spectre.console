@@ -1,6 +1,0 @@
-﻿USAGE:
-    myapp [OPTIONS]
-
-OPTIONS:
-    -h, --help           Prints help information
-        --foo <VALUE>    Foos the bars. Required
