@@ -99,8 +99,7 @@ public class Api : Pipeline
             new ConcatDocuments(nameof(Code)),
             new CacheDocuments(
                 new AnalyzeCSharp()
-                    .WhereNamespaces(ns => ns.StartsWith("Spectre.Console") && !ns.Contains("Analyzer") &&
-                                           !ns.Contains("Testing") && !ns.Contains("Examples"))
+                    .WhereNamespaces(ns => ns.StartsWith("Spectre.Console") && !ns.Contains("Analyzer") && !ns.Contains("Examples"))
                     .WherePublic(true)
                     .WithCssClasses("code", "cs")
                     .WithDestinationPrefix("api")

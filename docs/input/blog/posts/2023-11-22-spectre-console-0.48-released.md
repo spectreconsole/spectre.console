@@ -26,9 +26,9 @@ New features have been added, such as the ability to show separators between tab
 ## Rendering
 
 * Add .NET 8 support by [@patriksvensson](https://github.com/patriksvensson) in [#1367](https://github.com/spectreconsole/spectre.console/pull/1367)
-* Fixed render issue where writeline inside status caused corrupt output #415 #694 by [@fredrikbentzen](https://github.com/fredrikbentzen) in [#1132](https://github.com/spectreconsole/spectre.console/pull/1132))
-* Relax the SDK requirements by rolling forward to the latest feature by [@0xced](https://github.com/0xced) in [#1237](https://github.com/spectreconsole/spectre.console/pull/1237))
-* Add fix to avoid exception on rows with no children by [@jeppevammenkristensen](https://github.com/jeppevammenkristensen) in [#1241](https://github.com/spectreconsole/spectre.console/pull/1241))
+* Fixed render issue where writeline inside status caused corrupt output #415 #694 by [@fredrikbentzen](https://github.com/fredrikbentzen) in [#1132](https://github.com/spectreconsole/spectre.console/pull/1132)
+* Relax the SDK requirements by rolling forward to the latest feature by [@0xced](https://github.com/0xced) in [#1237](https://github.com/spectreconsole/spectre.console/pull/1237)
+* Add fix to avoid exception on rows with no children by [@jeppevammenkristensen](https://github.com/jeppevammenkristensen) in [#1241](https://github.com/spectreconsole/spectre.console/pull/1241)
 * Set `end_of_line` to `LF` instead of `CRLF` by [@0xced](https://github.com/0xced) in [#1256](https://github.com/spectreconsole/spectre.console/pull/1256)
 * Fix `Rule` widget docs by [@tomaszprasolek](https://github.com/tomaszprasolek) in [#1257](https://github.com/spectreconsole/spectre.console/pull/1257)
 * Added the missing columns-cast by [@nils](https://github.com/nils)-a in [#1294](https://github.com/spectreconsole/spectre.console/pull/1294)
@@ -46,7 +46,7 @@ New features have been added, such as the ability to show separators between tab
 
 ## CLI
 * Add async command unit tests by [@FrankRay78](https://github.com/FrankRay78) in [#1228](https://github.com/spectreconsole/spectre.console/pull/1228)
-* Add support for async delegate by [@icalvo](https://github.com/icalvo) in [#1215](https://github.com/spectreconsole/spectre.console/pull/1215))
+* Add support for async delegate by [@icalvo](https://github.com/icalvo) in [#1215](https://github.com/spectreconsole/spectre.console/pull/1215)
 * Remove unnecessary `[NotNull]` attributes by [@0xced](https://github.com/0xced) in [#1255](https://github.com/spectreconsole/spectre.console/pull/1255)
 * Allow custom help providers by [@FrankRay78](https://github.com/FrankRay78) in [#1259](https://github.com/spectreconsole/spectre.console/pull/1259)
 * Specified details for settings for the argument vector by [@nils](https://github.com/nils)-a in [#1301](https://github.com/spectreconsole/spectre.console/pull/1301)

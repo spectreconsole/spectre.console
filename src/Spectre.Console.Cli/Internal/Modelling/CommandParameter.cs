@@ -12,7 +12,7 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
     public PairDeconstructorAttribute? PairDeconstructor { get; }
     public List<ParameterValidationAttribute> Validators { get; }
     public ParameterValueProviderAttribute? ValueProvider { get; }
-    public bool Required { get; set; }
+    public bool IsRequired { get; set; }
     public bool IsHidden { get; }
     public string PropertyName => Property.Name;
 
@@ -39,7 +39,7 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
         PairDeconstructor = deconstructor;
         ValueProvider = valueProvider;
         Validators = new List<ParameterValidationAttribute>(validators ?? Array.Empty<ParameterValidationAttribute>());
-        Required = required;
+        IsRequired = required;
         IsHidden = isHidden;
     }
 

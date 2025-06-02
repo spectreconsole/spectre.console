@@ -138,3 +138,10 @@ table.Columns[0].NoWrap();
 // Set the column width
 table.Columns[0].Width(15);
 ```
+
+### Show row separators
+
+```csharp
+// Shows separator between each row
+table.ShowRowSeparators();
+```

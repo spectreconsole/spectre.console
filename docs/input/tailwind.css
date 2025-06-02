@@ -17,7 +17,7 @@ and the ascii terminal player.
 /* temp styling for alerts */
 
 .alert-warning {
-    @apply p-4 border border-yellow-300 bg-yellow-100 text-yellow-800 dark:border-orange-700/50 dark:bg-orange-800/50 dark:text-orange-300/90 rounded shadow-sm  text-sm;
+    @apply p-4 border border-yellow-300 bg-yellow-100 text-yellow-800 dark:border-red-700/50 dark:bg-red-800/50 dark:text-red-100/90 rounded shadow-sm  text-sm;
 }
 
 .alert-warning p {

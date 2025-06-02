@@ -132,7 +132,7 @@ public sealed partial class CommandAppTests
             });
 
             // When
-            var result = fixture.Run("--help");
+            var result = fixture.Run("dog", "--help");
 
             // Then
             return Verifier.Verify(result.Output);
@@ -303,6 +303,18 @@ public sealed partial class CommandAppTests
         [InlineData("sv-SE", "SV")]
         [InlineData("de", "DE")]
         [InlineData("de-DE", "DE")]
+        [InlineData("it", "IT")]
+        [InlineData("it-IT", "IT")]
+        [InlineData("ja", "JA")]
+        [InlineData("ja-JP", "JA")]
+        [InlineData("ko", "KO")]
+        [InlineData("ko-KR", "KO")]
+        [InlineData("pt", "PT")]
+        [InlineData("pt-BR", "PT")]
+        [InlineData("ru", "RU")]
+        [InlineData("ru-RU", "RU")]
+        [InlineData("zh-Hans", "ZH-HANS")]
+        [InlineData("zh-Hans-CN", "ZH-HANS")]
         [Expectation("Default_Without_Args_Additional")]
         public Task Should_Output_Default_Command_And_Additional_Commands_When_Default_Command_Has_Required_Parameters_And_Is_Called_Without_Args_Localised(string culture, string expectationPrefix)
         {
@@ -314,6 +326,7 @@ public sealed partial class CommandAppTests
                 configurator.AddExample("20", "--alive");
                 configurator.SetApplicationCulture(string.IsNullOrEmpty(culture) ? null : new CultureInfo(culture));
                 configurator.SetApplicationName("myapp");
+                configurator.SetApplicationVersion("1.0.0");
                 configurator.AddCommand<GiraffeCommand>("giraffe");
             });
 
@@ -335,10 +348,10 @@ public sealed partial class CommandAppTests
             fixture.SetDefaultCommand<LionCommand>();
             fixture.Configure(configurator =>
             {
-                configurator.SetApplicationName("myapp");
-                configurator.AddExample("20", "--alive");
-                configurator.AddCommand<GiraffeCommand>("giraffe");
-                configurator.SetHelpProvider(new RenderMarkupHelpProvider(configurator.Settings));
+                configurator.SetApplicationName("myapp")
+                   .SetHelpProvider(new RenderMarkupHelpProvider(configurator.Settings))
+                   .AddExample("20", "--alive")
+                   .AddCommand<GiraffeCommand>("giraffe");
             });
 
             // When
@@ -526,10 +539,9 @@ public sealed partial class CommandAppTests
             fixture.Configure(configurator =>
             {
                 // Configure the custom help provider type
-                configurator.SetHelpProvider<RedirectHelpProvider>();
-
-                configurator.SetApplicationName("myapp");
-                configurator.AddCommand<DogCommand>("dog");
+                configurator.SetHelpProvider<RedirectHelpProvider>()
+                    .SetApplicationName("myapp")
+                    .AddCommand<DogCommand>("dog");
             });
 
             // When
@@ -939,12 +951,12 @@ public sealed partial class CommandAppTests
                 configurator.SetApplicationName("myapp");
 
                 // All root examples should be shown
-                configurator.AddExample("--name", "Rufus", "--age", "12", "--good-boy");
-                configurator.AddExample("--name", "Luna");
-                configurator.AddExample("--name", "Charlie");
-                configurator.AddExample("--name", "Bella");
-                configurator.AddExample("--name", "Daisy");
-                configurator.AddExample("--name", "Milo");
+                configurator.AddExample("--name", "Rufus", "--age", "12", "--good-boy")
+                    .AddExample("--name", "Luna")
+                    .AddExample("--name", "Charlie")
+                    .AddExample("--name", "Bella")
+                    .AddExample("--name", "Daisy")
+                    .AddExample("--name", "Milo");
             });
 
             // When
@@ -1038,6 +1050,44 @@ public sealed partial class CommandAppTests
             // Given
             var fixture = new CommandAppTester();
             fixture.SetDefaultCommand<GenericCommand<HiddenOptionSettings>>();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+            });
+
+            // When
+            var result = fixture.Run("--help");
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Required_Options")]
+        public Task Should_Show_Required_Options()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<GenericCommand<RequiredOptionsSettings>>();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+            });
+
+            // When
+            var result = fixture.Run("--help");
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
+        [Fact]
+        [Expectation("Required_Options_No_Description")]
+        public Task Should_Show_Required_Options_Without_Description()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.SetDefaultCommand<GenericCommand<RequiredOptionsWithoutDescriptionSettings>>();
             fixture.Configure(configurator =>
             {
                 configurator.SetApplicationName("myapp");
