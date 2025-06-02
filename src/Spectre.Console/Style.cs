@@ -226,9 +226,9 @@ public sealed class Style : IEquatable<Style>
             builder.Add("on " + Background.ToMarkup());
         }
 
-        if (Link?.ToString() != null)
+        if (Link != null)
         {
-            builder.Add($"link={Link.ToString()}");
+            builder.Add($"link={Link}");
         }
 
         return string.Join(" ", builder);
