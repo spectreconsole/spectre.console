@@ -3,6 +3,7 @@ namespace Spectre.Console;
 internal sealed class ListPromptState<T>
     where T : notnull
 {
+    public bool Aborted { get; set; }
     private readonly Func<T, string> _converter;
 
     public int Index { get; private set; }

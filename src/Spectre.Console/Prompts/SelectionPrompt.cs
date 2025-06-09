@@ -101,6 +101,10 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
         var prompt = new ListPrompt<T>(console, this);
         var converter = Converter ?? TypeConverterHelper.ConvertToString;
         var result = await prompt.Show(_tree, converter, Mode, true, SearchEnabled, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
+        if (result.Aborted)
+        {
+            throw new OperationCanceledException("Prompt Aborted.");
+        }
 
         // Return the selected item
         return result.Items[result.Index].Data;
@@ -109,6 +113,10 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     /// <inheritdoc/>
     ListPromptInputResult IListPromptStrategy<T>.HandleInput(ConsoleKeyInfo key, ListPromptState<T> state)
     {
+        if (key.Key == ConsoleKey.Escape)
+        {
+            return ListPromptInputResult.Abort;
+        }
         if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.Spacebar || key.Key == ConsoleKey.Packet)
         {
             // Selecting a non leaf in "leaf mode" is not allowed

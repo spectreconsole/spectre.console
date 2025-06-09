@@ -71,6 +71,12 @@ internal sealed class ListPrompt<T>
                     break;
                 }
 
+                if (result == ListPromptInputResult.Abort)
+                {
+                    state.Aborted = true;
+                    break;
+                }
+
                 if (state.Update(key) || result == ListPromptInputResult.Refresh)
                 {
                     hook.Refresh();

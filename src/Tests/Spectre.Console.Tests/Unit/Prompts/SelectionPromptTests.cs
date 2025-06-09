@@ -130,6 +130,21 @@ public sealed class SelectionPromptTests
         var exception = action.ShouldThrow<InvalidOperationException>();
         exception.Message.ShouldBe("Cannot show an empty selection prompt. Please call the AddChoice() method to configure the prompt.");
     }
+
+    [Fact]
+    public void Should_Abort_When_Escaped_Is_Pressed()
+    {
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var prompt = new SelectionPrompt<string>()
+            .Title("Select one")
+            .AddChoices("A", "B");
+
+        Should.Throw<OperationCanceledException>(() => prompt.Show(console));
+    }
 }
 
 file sealed class CustomSelectionItem
