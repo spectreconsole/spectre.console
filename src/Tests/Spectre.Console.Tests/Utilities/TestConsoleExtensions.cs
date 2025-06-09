@@ -4,6 +4,7 @@ public static class TestConsoleExtensions
 {
     private static readonly Regex _lineNumberRegex = new Regex(":\\d+", RegexOptions.Singleline);
     private static readonly Regex _filenameRegex = new Regex("\\sin\\s.*cs:nn", RegexOptions.Multiline);
+    private static readonly Regex _pathSeparatorRegex = new Regex(@"[/\\]+");
 
     public static string WriteNormalizedException(this TestConsole console, Exception ex, ExceptionFormats formats = ExceptionFormats.Default)
     {
@@ -21,12 +22,11 @@ public static class TestConsoleExtensions
 
     public static string NormalizeStackTrace(string text)
     {
-        text = _lineNumberRegex.Replace(text, match =>
-        {
-            return ":nn";
-        });
+        // First normalize line numbers
+        text = _lineNumberRegex.Replace(text, ":nn");
 
-        return _filenameRegex.Replace(text, match =>
+        // Then normalize paths and filenames
+        text = _filenameRegex.Replace(text, match =>
         {
             var value = match.Value;
             var index = value.LastIndexOfAny(new[] { '\\', '/' });
@@ -34,5 +34,8 @@ public static class TestConsoleExtensions
 
             return $" in /xyz/{filename}";
         });
+
+        // Finally normalize any remaining path separators
+        return _pathSeparatorRegex.Replace(text, "/");
     }
 }
