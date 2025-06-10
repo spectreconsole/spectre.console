@@ -117,6 +117,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
         {
             return ListPromptInputResult.Abort;
         }
+
         if (key.Key == ConsoleKey.Enter || key.Key == ConsoleKey.Spacebar || key.Key == ConsoleKey.Packet)
         {
             // Selecting a non leaf in "leaf mode" is not allowed
