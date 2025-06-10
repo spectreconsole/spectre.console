@@ -256,7 +256,13 @@ internal class CommandTreeParser
         if (context.State == State.Normal)
         {
             // Find the option.
-            var option = node.FindOption(token.Value, isLongOption, CaseSensitivity);
+            var rawName = token.Value;
+            if (isLongOption && rawName.StartsWith("no-", StringComparison.OrdinalIgnoreCase))
+            {
+                rawName = rawName.Substring(3);
+            }
+
+            var option = node.FindOption(rawName, isLongOption, CaseSensitivity);
             if (option != null)
             {
                 ParseOptionValue(context, stream, token, node, option);
@@ -264,6 +270,7 @@ internal class CommandTreeParser
             }
 
             // Help?
+
             if (_help?.IsMatch(token.Value) == true)
             {
                 node.ShowHelp = true;
@@ -378,7 +385,6 @@ internal class CommandTreeParser
                 context.AddRemainingArgument(token.Representation, null);
             }
         }
-
         // No value?
         if (context.State == State.Normal)
         {
@@ -386,7 +392,14 @@ internal class CommandTreeParser
             {
                 if (parameter.ParameterKind == ParameterKind.Flag)
                 {
-                    value = "true";
+                    if (token.Representation.StartsWith("--no-", StringComparison.Ordinal))
+                    {
+                        value = "false";
+                    }
+                    else
+                    {
+                        value = "true";
+                    }
                 }
                 else
                 {

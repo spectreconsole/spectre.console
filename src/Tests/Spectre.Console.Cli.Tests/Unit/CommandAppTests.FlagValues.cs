@@ -210,5 +210,31 @@ public sealed partial class CommandAppTests
             // Then
             result.ShouldBe(expected);
         }
+
+        [Fact]
+        public void Should_Negate_Boolean_Flag_With_No_Prefix()
+        {
+            var app = new CommandAppTester();
+            app.Configure(config =>
+            {
+                config.PropagateExceptions();
+                config.AddCommand<GenericCommand<BoolSettings>>("foo");
+            });
+
+            var result = app.Run(new[] { "foo", "--no-verbose" });
+
+            result.ExitCode.ShouldBe(0);
+            result.Settings.ShouldBeOfType<BoolSettings>().And(s =>
+            {
+                s.Verbose.ShouldBeFalse();
+            });
+        }
+
+        [SuppressMessage("Performance", "CA1812", Justification = "It's OK")]
+        private sealed class BoolSettings : CommandSettings
+        {
+            [CommandOption("--verbose")]
+            public bool Verbose { get; set; }
+        }
     }
 }
