@@ -270,7 +270,6 @@ internal class CommandTreeParser
             }
 
             // Help?
-
             if (_help?.IsMatch(token.Value) == true)
             {
                 node.ShowHelp = true;
@@ -385,6 +384,7 @@ internal class CommandTreeParser
                 context.AddRemainingArgument(token.Representation, null);
             }
         }
+
         // No value?
         if (context.State == State.Normal)
         {
