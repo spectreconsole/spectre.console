@@ -26,6 +26,11 @@ public sealed class CommandOptionAttribute : Attribute
     public string? ValueName { get; }
 
     /// <summary>
+    /// Gets the original, uncapitalized name of the value placeholder.
+    /// </summary>
+    public string? ValueNameOriginal { get; internal set; }
+
+    /// <summary>
     /// Gets a value indicating whether the value is optional.
     /// </summary>
     public bool ValueIsOptional { get; }

@@ -100,4 +100,9 @@ public interface ICommandAppSettings
     /// a command. I.e. only when the resolver is available.
     /// </summary>
     public Func<Exception, ITypeResolver?, int>? ExceptionHandler { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether option value placeholders should be capitalized in help text.
+    /// </summary>
+    bool CapitalizeOptionValuePlaceholders { get; set; }
 }

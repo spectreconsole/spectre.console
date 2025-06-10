@@ -19,6 +19,7 @@ internal static class TemplateParser
         public List<string> LongNames { get; set; }
         public List<string> ShortNames { get; set; }
         public string? Value { get; set; }
+        public string? OriginalValue { get; set; }
         public bool ValueIsOptional { get; set; }
 
         public OptionResult()
@@ -130,6 +131,7 @@ internal static class TemplateParser
                     }
                 }
 
+                result.OriginalValue = token.Value;
                 result.Value = token.Value.ToUpperInvariant();
                 result.ValueIsOptional = token.TokenKind == TemplateToken.Kind.OptionalValue;
             }

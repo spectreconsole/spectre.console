@@ -18,6 +18,7 @@ internal sealed class CommandAppSettings : ICommandAppSettings
     public HelpProviderStyle? HelpProviderStyles { get; set; }
     public bool StrictParsing { get; set; }
     public bool ConvertFlagsToRemainingArguments { get; set; }
+    public bool CapitalizeOptionValuePlaceholders { get; set; }
 
     public ParsingMode ParsingMode =>
         StrictParsing ? ParsingMode.Strict : ParsingMode.Relaxed;
@@ -33,6 +34,7 @@ internal sealed class CommandAppSettings : ICommandAppSettings
         TrimTrailingPeriod = true;
         HelpProviderStyles = HelpProviderStyle.Default;
         ConvertFlagsToRemainingArguments = false;
+        CapitalizeOptionValuePlaceholders = true;
     }
 
     public bool IsTrue(Func<CommandAppSettings, bool> func, string environmentVariableName)

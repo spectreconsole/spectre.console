@@ -5,6 +5,7 @@ internal sealed class CommandOption : CommandParameter, ICommandOption
     public IReadOnlyList<string> LongNames { get; }
     public IReadOnlyList<string> ShortNames { get; }
     public string? ValueName { get; }
+    public string? ValueNameOriginal { get; }
     public bool ValueIsOptional { get; }
     public bool IsShadowed { get; set; }
 
@@ -20,6 +21,7 @@ internal sealed class CommandOption : CommandParameter, ICommandOption
         LongNames = optionAttribute.LongNames;
         ShortNames = optionAttribute.ShortNames;
         ValueName = optionAttribute.ValueName;
+        ValueNameOriginal = optionAttribute.ValueNameOriginal;
         ValueIsOptional = valueIsOptional;
     }
 

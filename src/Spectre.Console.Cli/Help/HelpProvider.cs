@@ -27,6 +27,11 @@ public class HelpProvider : IHelpProvider
     protected virtual bool TrimTrailingPeriod { get; }
 
     /// <summary>
+    /// Gets a value indicating whether option vale placeholders should be capitalized in help text.
+    /// </summary>
+    protected virtual bool CapitalizeOptionValuePlaceholders { get; }
+
+    /// <summary>
     /// Gets a value indicating whether to emit the markup styles, inline, when rendering the help text.
     /// </summary>
     /// <remarks>
@@ -64,15 +69,17 @@ public class HelpProvider : IHelpProvider
         public string? Short { get; }
         public string? Long { get; }
         public string? Value { get; }
+        public string? ValueOriginal { get; }
         public bool? ValueIsOptional { get; }
         public string? Description { get; }
         public object? DefaultValue { get; }
 
-        private HelpOption(string? @short, string? @long, string? @value, bool? valueIsOptional, string? description, object? defaultValue)
+        private HelpOption(string? @short, string? @long, string? @value, string? valueOriginal, bool? valueIsOptional, string? description, object? defaultValue)
         {
             Short = @short;
             Long = @long;
             Value = value;
+            ValueOriginal = valueOriginal;
             ValueIsOptional = valueIsOptional;
             Description = description;
             DefaultValue = defaultValue;
@@ -85,7 +92,7 @@ public class HelpProvider : IHelpProvider
         {
             var parameters = new List<HelpOption>
             {
-                new HelpOption("h", "help", null, null, resources.PrintHelpDescription, null),
+                new HelpOption("h", "help", null, null, null, resources.PrintHelpDescription, null),
             };
 
             // Version information applies to the entire CLI application.
@@ -107,7 +114,7 @@ public class HelpProvider : IHelpProvider
                     // Only show the version option if there is an application version set.
                     if (model.ApplicationVersion != null)
                     {
-                        parameters.Add(new HelpOption("v", "version", null, null, resources.PrintVersionDescription, null));
+                        parameters.Add(new HelpOption("v", "version", null, null, null, resources.PrintVersionDescription, null));
                     }
                 }
             }
@@ -115,7 +122,10 @@ public class HelpProvider : IHelpProvider
             parameters.AddRange(command?.Parameters.OfType<ICommandOption>().Where(o => !o.IsHidden).Select(o =>
                 new HelpOption(
                     o.ShortNames.FirstOrDefault(), o.LongNames.FirstOrDefault(),
-                    o.ValueName, o.ValueIsOptional, o.Description,
+                    o.ValueName,
+                    o.ValueNameOriginal,
+                    o.ValueIsOptional,
+                    o.Description,
                     o.IsFlag && o.DefaultValue?.Value is false ? null : o.DefaultValue?.Value))
                 ?? Array.Empty<HelpOption>());
             return parameters;
@@ -131,6 +141,7 @@ public class HelpProvider : IHelpProvider
         this.ShowOptionDefaultValues = settings.ShowOptionDefaultValues;
         this.MaximumIndirectExamples = settings.MaximumIndirectExamples;
         this.TrimTrailingPeriod = settings.TrimTrailingPeriod;
+        this.CapitalizeOptionValuePlaceholders = settings.CapitalizeOptionValuePlaceholders;
 
         // Don't provide a default style if HelpProviderStyles is null,
         // as the user will have explicitly done this to output unstyled help text
@@ -543,14 +554,15 @@ public class HelpProvider : IHelpProvider
 
         if (option.Value != null)
         {
+            var value = CapitalizeOptionValuePlaceholders ? option.Value : option.ValueOriginal;
             composer.Text(" ");
             if (option.ValueIsOptional ?? false)
             {
-                composer.Style(helpStyles?.Options?.OptionalOption ?? Style.Plain, $"[{option.Value}]");
+                composer.Style(helpStyles?.Options?.OptionalOption ?? Style.Plain, $"[{value}]");
             }
             else
             {
-                composer.Style(helpStyles?.Options?.RequiredOption ?? Style.Plain, $"<{option.Value}>");
+                composer.Style(helpStyles?.Options?.RequiredOption ?? Style.Plain, $"<{value}>");
             }
         }
 

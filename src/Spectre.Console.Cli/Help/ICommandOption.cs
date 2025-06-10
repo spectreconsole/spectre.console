@@ -21,6 +21,11 @@ public interface ICommandOption : ICommandParameter
     string? ValueName { get; }
 
     /// <summary>
+    /// Gets the original, uncapitalized name of the value placeholder.
+    /// </summary>
+    string? ValueNameOriginal { get; }
+
+    /// <summary>
     /// Gets a value indicating whether the option value is optional.
     /// </summary>
     bool ValueIsOptional { get; }

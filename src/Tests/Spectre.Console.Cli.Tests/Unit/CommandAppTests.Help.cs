@@ -1061,5 +1061,30 @@ public sealed partial class CommandAppTests
             // Then
             return Verifier.Verify(result.Output);
         }
+
+        [Fact]
+        [Expectation("Leaf_No_Capitalisation")]
+        public Task Should_Not_Capitalise_Leaf_Option_Values_In_Help_Text_When_Disabled()
+        {
+            // Given
+            var fixture = new CommandAppTester();
+            fixture.Configure(configurator =>
+            {
+                configurator.SetApplicationName("myapp");
+                configurator.AddBranch<CatSettings>("cat", animal =>
+                {
+                    animal.SetDescription("Contains settings for a cat.");
+                    animal.AddCommand<LionCommand>("lion");
+                });
+                configurator.Settings.CapitalizeOptionValuePlaceholders = false;
+            });
+
+            // When
+            var result = fixture.Run("cat", "lion", "--help");
+
+            // Then
+            return Verifier.Verify(result.Output);
+        }
+
     }
 }
