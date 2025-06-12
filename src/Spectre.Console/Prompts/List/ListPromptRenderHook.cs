@@ -8,6 +8,7 @@ internal sealed class ListPromptRenderHook<T> : IRenderHook
     private readonly LiveRenderable _live;
     private readonly object _lock;
     private bool _dirty;
+    private Size _size;
 
     public ListPromptRenderHook(
         IAnsiConsole console,
@@ -42,7 +43,25 @@ internal sealed class ListPromptRenderHook<T> : IRenderHook
                 _dirty = false;
             }
 
-            yield return _live.PositionCursor();
+            // check if the size of the renderable decreased
+            var size = options.ConsoleSize;
+            if (size.Width >= _size.Width && size.Height >= _size.Height)
+            {
+                yield return _live.PositionCursor();
+            }
+            else
+            {
+                // clear shape to ensure new size calculations
+                _live.ClearShape();
+
+                // render a clear screen
+                yield return new ControlCode(AnsiSequences.ED(2));
+                yield return new ControlCode(AnsiSequences.ED(3));
+                yield return new ControlCode(AnsiSequences.CUP(1, 1));
+            }
+
+            // store new size
+            _size = size;
 
             foreach (var renderable in renderables)
             {

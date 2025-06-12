@@ -67,6 +67,14 @@ internal sealed class LiveRenderable : Renderable
         }
     }
 
+    public void ClearShape()
+    {
+        lock (_lock)
+        {
+            _shape = null;
+        }
+    }
+
     protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         lock (_lock)
