@@ -10,7 +10,6 @@ internal sealed class DefaultProgressRenderer : ProgressRenderer
     private readonly bool _hideCompleted;
     private readonly Func<IRenderable, IReadOnlyList<ProgressTask>, IRenderable> _renderHook;
     private TimeSpan _lastUpdate;
-    private Size _size;
 
     public override TimeSpan RefreshRate { get; }
 
@@ -119,25 +118,7 @@ internal sealed class DefaultProgressRenderer : ProgressRenderer
     {
         lock (_lock)
         {
-            // check if the size of the renderable decreased
-            var size = options.ConsoleSize;
-            if (size.Width >= _size.Width && size.Height >= _size.Height)
-            {
-                yield return _live.PositionCursor();
-            }
-            else
-            {
-                // clear shape to ensure new size calculations
-                _live.ClearShape();
-
-                // render a clear screen
-                yield return new ControlCode(AnsiSequences.ED(2));
-                yield return new ControlCode(AnsiSequences.ED(3));
-                yield return new ControlCode(AnsiSequences.CUP(1, 1));
-            }
-
-            // store new size
-            _size = size;
+            yield return _live.PositionCursor(options);
 
             foreach (var renderable in renderables)
             {
