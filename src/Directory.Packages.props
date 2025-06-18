@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageVersion Include="IsExternalInit" Version="1.0.3"/>
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3"/>
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0"/>
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1"/>
     <PackageVersion Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="8.0.0"/>
     <PackageVersion Include="MinVer" PrivateAssets="All" Version="6.0.0"/>
     <PackageVersion Include="PolySharp" Version="1.15.0"/>
