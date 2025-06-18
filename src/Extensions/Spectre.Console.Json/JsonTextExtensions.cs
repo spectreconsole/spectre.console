@@ -310,4 +310,22 @@ public static class JsonTextExtensions
         text.NullStyle = new Style(color);
         return text;
     }
+
+    /// <summary>
+    /// Sets the width of indent used for rendering the JSON text.
+    /// </summary>
+    /// <param name="text">The JSON text instance.</param>
+    /// <param name="indentWidth">The indent width.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The value must be between 2 and 4 spaces (inclusive).</exception>
+    public static JsonText NullColor(this JsonText text, int indentWidth)
+    {
+        if (text == null)
+        {
+            throw new ArgumentNullException(nameof(text));
+        }
+
+        text.IndentWidth = indentWidth;
+        return text;
+    }
 }

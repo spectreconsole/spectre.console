@@ -8,6 +8,7 @@ public sealed class JsonText : JustInTimeRenderable
     private readonly string _json;
     private JsonSyntax? _syntax;
     private IJsonParser? _parser;
+    private int _indentWidth;
 
     /// <summary>
     /// Gets or sets the style used for braces.
@@ -55,6 +56,26 @@ public sealed class JsonText : JustInTimeRenderable
     public Style? NullStyle { get; set; }
 
     /// <summary>
+    /// Gets or sets the width of indent used for rendering the JSON text.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// The value must be between 2 and 4 spaces (inclusive).
+    /// </exception>
+    public int IndentWidth
+    {
+        get => _indentWidth;
+        set
+        {
+            if (value < 2 || value > 4)
+            {
+                throw new ArgumentOutOfRangeException(nameof(IndentWidth), value, "The value must be between 2 and 4 spaces (inclusive).");
+            }
+
+            _indentWidth = value;
+        }
+    }
+
+    /// <summary>
     /// Gets or sets the JSON parser.
     /// </summary>
     public IJsonParser? Parser
@@ -77,6 +98,7 @@ public sealed class JsonText : JustInTimeRenderable
     public JsonText(string json)
     {
         _json = json ?? throw new ArgumentNullException(nameof(json));
+        _indentWidth = 3;
     }
 
     /// <inheritdoc/>
@@ -87,7 +109,7 @@ public sealed class JsonText : JustInTimeRenderable
             _syntax = (Parser ?? JsonParser.Shared).Parse(_json);
         }
 
-        var context = new JsonBuilderContext(new JsonTextStyles
+        var jsonStyles = new JsonTextStyles
         {
             BracesStyle = BracesStyle ?? Color.Grey,
             BracketsStyle = BracketsStyle ?? Color.Grey,
@@ -98,7 +120,8 @@ public sealed class JsonText : JustInTimeRenderable
             NumberStyle = NumberStyle ?? Color.Green,
             BooleanStyle = BooleanStyle ?? Color.Green,
             NullStyle = NullStyle ?? Color.Grey,
-        });
+        };
+        var context = new JsonBuilderContext(jsonStyles, IndentWidth);
 
         _syntax.Accept(JsonBuilder.Shared, context);
         return context.Paragraph;

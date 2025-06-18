@@ -5,16 +5,22 @@ internal sealed class JsonBuilderContext
     public Paragraph Paragraph { get; }
     public int Indentation { get; set; }
     public JsonTextStyles Styling { get; }
+    public int IndentWidth { get; }
 
-    public JsonBuilderContext(JsonTextStyles styling)
+    public JsonBuilderContext(JsonTextStyles styling, int indentWidth)
     {
+        if (indentWidth < 2 || indentWidth > 4)
+        {
+            throw new ArgumentOutOfRangeException(nameof(indentWidth), indentWidth, "The value must be between 2 and 4 spaces (inclusive).");
+        }
+
         Paragraph = new Paragraph();
         Styling = styling;
     }
 
     public void InsertIndentation()
     {
-        Paragraph.Append(new string(' ', Indentation * 3));
+        Paragraph.Append(new string(' ', Indentation * IndentWidth));
     }
 }
 
