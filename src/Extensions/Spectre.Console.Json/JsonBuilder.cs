@@ -16,6 +16,7 @@ internal sealed class JsonBuilderContext
 
         Paragraph = new Paragraph();
         Styling = styling;
+        IndentWidth = indentWidth;
     }
 
     public void InsertIndentation()
