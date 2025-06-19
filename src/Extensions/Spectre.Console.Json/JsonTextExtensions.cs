@@ -318,7 +318,7 @@ public static class JsonTextExtensions
     /// <param name="indentWidth">The indent width.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     /// <exception cref="ArgumentOutOfRangeException">The value must be between 2 and 4 spaces (inclusive).</exception>
-    public static JsonText NullColor(this JsonText text, int indentWidth)
+    public static JsonText IndentWidth(this JsonText text, int indentWidth)
     {
         if (text == null)
         {

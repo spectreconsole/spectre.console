@@ -98,7 +98,7 @@ public sealed class JsonText : JustInTimeRenderable
     public JsonText(string json)
     {
         _json = json ?? throw new ArgumentNullException(nameof(json));
-        _indentWidth = 3;
+        _indentWidth = 3; // Use 3 spaces for indent by default.
     }
 
     /// <inheritdoc/>
