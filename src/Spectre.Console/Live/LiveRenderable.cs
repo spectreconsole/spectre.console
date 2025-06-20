@@ -48,7 +48,7 @@ internal sealed class LiveRenderable : Renderable
                 return new ControlCode(string.Empty);
             }
 
-            // check if the size reduced see bug #703
+            // Check if the size have been reduced
             if (_shape.Value.Height > options.ConsoleSize.Height || _shape.Value.Width > options.ConsoleSize.Width)
             {
                 // Important reset shape, so the size can shrink
