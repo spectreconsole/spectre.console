@@ -53,8 +53,6 @@ internal sealed class LiveRenderable : Renderable
             {
                 // important reset shape, so the size can shrink
                 _shape = null;
-
-                // send clear screen sequence + home - I'm not sure here what is best - I have lack of experience here!
                 return new ControlCode(ED(2) + ED(3) + CUP(1, 1));
             }
 
