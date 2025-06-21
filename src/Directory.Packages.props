@@ -7,21 +7,21 @@
   <ItemGroup>
     <PackageVersion Include="IsExternalInit" Version="1.0.3"/>
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3"/>
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0"/>
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1"/>
     <PackageVersion Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="8.0.0"/>
     <PackageVersion Include="MinVer" PrivateAssets="All" Version="6.0.0"/>
     <PackageVersion Include="PolySharp" Version="1.15.0"/>
     <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="4.13.1"/>
     <PackageVersion Include="Shouldly" Version="4.3.0"/>
-    <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.7"/>
+    <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.10"/>
     <PackageVersion Include="Spectre.Verify.Extensions" Version="28.16.0"/>
     <PackageVersion Include="StyleCop.Analyzers" PrivateAssets="All" Version="1.2.0-beta.556"/>
     <PackageVersion Include="System.Memory" Version="4.6.3"/>
     <PackageVersion Include="TunnelVisionLabs.ReferenceAssemblyAnnotator" Version="1.0.0-alpha.160"/>
-    <PackageVersion Include="Verify.Xunit" Version="29.2.0"/>
+    <PackageVersion Include="Verify.Xunit" Version="30.4.0"/>
     <PackageVersion Include="Wcwidth.Sources" Version="2.0.0"/>
     <PackageVersion Include="xunit" Version="2.9.3"/>
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.2"/>
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.1"/>
   </ItemGroup>
 
 </Project>
