@@ -42,7 +42,7 @@ internal sealed class ListPromptRenderHook<T> : IRenderHook
                 _dirty = false;
             }
 
-            yield return _live.PositionCursor();
+            yield return _live.PositionCursor(options);
 
             foreach (var renderable in renderables)
             {

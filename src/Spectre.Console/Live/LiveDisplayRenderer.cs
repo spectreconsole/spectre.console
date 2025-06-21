@@ -4,7 +4,6 @@ internal sealed class LiveDisplayRenderer : IRenderHook
 {
     private readonly IAnsiConsole _console;
     private readonly LiveDisplayContext _context;
-
     public LiveDisplayRenderer(IAnsiConsole console, LiveDisplayContext context)
     {
         _console = console;
@@ -45,7 +44,7 @@ internal sealed class LiveDisplayRenderer : IRenderHook
     {
         lock (_context.Lock)
         {
-            yield return _context.Live.PositionCursor();
+            yield return _context.Live.PositionCursor(options);
 
             foreach (var renderable in renderables)
             {

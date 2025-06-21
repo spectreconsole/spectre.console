@@ -39,13 +39,21 @@ internal sealed class LiveRenderable : Renderable
         }
     }
 
-    public IRenderable PositionCursor()
+    public IRenderable PositionCursor(RenderOptions options)
     {
         lock (_lock)
         {
             if (_shape == null)
             {
                 return new ControlCode(string.Empty);
+            }
+
+            // Check if the size have been reduced
+            if (_shape.Value.Height > options.ConsoleSize.Height || _shape.Value.Width > options.ConsoleSize.Width)
+            {
+                // Important reset shape, so the size can shrink
+                _shape = null;
+                return new ControlCode(ED(2) + ED(3) + CUP(1, 1));
             }
 
             var linesToMoveUp = _shape.Value.Height - 1;
