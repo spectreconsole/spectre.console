@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Model>
   <!--DOG-->
   <Command Name="dog" IsBranch="false" ClrType="Spectre.Console.Tests.Data.DogCommand" Settings="Spectre.Console.Tests.Data.DogSettings">
@@ -14,8 +14,11 @@
       <Argument Name="AGE" Position="1" Required="true" Kind="scalar" ClrType="System.Int32" />
       <Option Short="a" Long="alive,not-dead" Value="NULL" Required="false" Kind="flag" ClrType="System.Boolean">
         <Description>Indicates whether or not the animal is alive.</Description>
+        <DefaultValue>False</DefaultValue>
       </Option>
-      <Option Short="g" Long="good-boy" Value="NULL" Required="false" Kind="flag" ClrType="System.Boolean" />
+      <Option Short="g" Long="good-boy" Value="NULL" Required="false" Kind="flag" ClrType="System.Boolean">
+        <DefaultValue>False</DefaultValue>
+      </Option>
       <Option Short="n,p" Long="name,pet-name" Value="VALUE" Required="false" Kind="scalar" ClrType="System.String" />
     </Parameters>
     <Examples>
