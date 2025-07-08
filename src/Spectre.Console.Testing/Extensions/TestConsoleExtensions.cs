@@ -3,7 +3,7 @@ namespace Spectre.Console.Testing;
 /// <summary>
 /// Contains extensions for <see cref="TestConsole"/>.
 /// </summary>
-public static class TestConsoleExtensions
+public static partial class TestConsoleExtensions
 {
     /// <summary>
     /// Sets the console's color system.
