@@ -7,9 +7,9 @@
     <Description>Contains testing utilities for Spectre.Console.</Description>
   </PropertyGroup>
 
-  <ItemGroup Label="Project References">
-    <ProjectReference Include="..\Spectre.Console.Cli\Spectre.Console.Cli.csproj" />
-    <ProjectReference Include="..\Spectre.Console\Spectre.Console.csproj" />
+  <ItemGroup>
+    <PackageReference Include="Spectre.Console" />
+    <PackageReference Include="Spectre.Console.Cli" />
   </ItemGroup>
 
 </Project>

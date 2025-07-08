@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Console.Testing", "Spectre.Console.Testing\Spectre.Console.Testing.csproj", "{7D5F6704-8249-46DD-906C-9E66419F215F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D5F6704-8249-46DD-906C-9E66419F215F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D5F6704-8249-46DD-906C-9E66419F215F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D5F6704-8249-46DD-906C-9E66419F215F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7D5F6704-8249-46DD-906C-9E66419F215F}.Debug|x64.Build.0 = Debug|Any CPU
+		{7D5F6704-8249-46DD-906C-9E66419F215F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7D5F6704-8249-46DD-906C-9E66419F215F}.Debug|x86.Build.0 = Debug|Any CPU
+		{7D5F6704-8249-46DD-906C-9E66419F215F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D5F6704-8249-46DD-906C-9E66419F215F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D5F6704-8249-46DD-906C-9E66419F215F}.Release|x64.ActiveCfg = Release|Any CPU
+		{7D5F6704-8249-46DD-906C-9E66419F215F}.Release|x64.Build.0 = Release|Any CPU
+		{7D5F6704-8249-46DD-906C-9E66419F215F}.Release|x86.ActiveCfg = Release|Any CPU
+		{7D5F6704-8249-46DD-906C-9E66419F215F}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5729B071-67A0-48FB-8B1B-275E6822086C}
+	EndGlobalSection
+EndGlobal
