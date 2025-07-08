@@ -1,19 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net9.0;net8.0;netstandard2.0</TargetFrameworks>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
   <PropertyGroup>
-    <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'" >false</IsAotCompatible>
+    <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'">false</IsAotCompatible>
     <IsTrimmable>false</IsTrimmable>
   </PropertyGroup>
   <ItemGroup Label="REMOVE THIS">
     <InternalsVisibleTo Include="Spectre.Console.Cli.Tests" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Spectre.Console\Spectre.Console.csproj" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
@@ -26,6 +22,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Spectre.Console" />
   </ItemGroup>
 
 

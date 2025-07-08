@@ -21,7 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Spectre.Console.Cli\Spectre.Console.Cli.csproj"/>
     <ProjectReference Include="..\..\Spectre.Console.Testing\Spectre.Console.Testing.csproj"/>
-    <ProjectReference Include="..\..\Spectre.Console\Spectre.Console.csproj"/>
   </ItemGroup>
 
 </Project>
