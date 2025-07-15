@@ -197,7 +197,7 @@ Console.WriteLine($"Your password is {password}");
 ### Usage
 
 ```csharp
-// Ask the user to enter the password
+// Ask for the user's favorite color (optional)
 var color = AnsiConsole.Prompt(
     new TextPrompt<string>("[[Optional]] Favorite color?")
         .AllowEmpty());
