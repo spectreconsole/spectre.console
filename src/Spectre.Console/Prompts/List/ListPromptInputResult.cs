@@ -6,4 +6,5 @@ internal enum ListPromptInputResult
     Refresh = 1,
     Submit = 2,
     Abort = 3,
+    Cancel = 4,
 }
