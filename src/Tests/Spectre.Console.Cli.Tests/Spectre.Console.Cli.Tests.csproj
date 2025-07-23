@@ -5,13 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IsExternalInit" PrivateAssets="all"/>
-    <PackageReference Include="Microsoft.NET.Test.Sdk"/>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
-    <PackageReference Include="Shouldly"/>
-    <PackageReference Include="Spectre.Verify.Extensions"/>
-    <PackageReference Include="Verify.Xunit"/>
-    <PackageReference Include="xunit"/>
+    <PackageReference Include="IsExternalInit" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Shouldly" />
+    <PackageReference Include="Spectre.Console.Testing" />
+    <PackageReference Include="Spectre.Verify.Extensions" />
+    <PackageReference Include="Verify.Xunit" />
+    <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -19,9 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Spectre.Console.Cli\Spectre.Console.Cli.csproj"/>
-    <ProjectReference Include="..\..\Spectre.Console.Testing\Spectre.Console.Testing.csproj"/>
-    <ProjectReference Include="..\..\Spectre.Console\Spectre.Console.csproj"/>
+    <ProjectReference Include="..\..\Spectre.Console.Cli\Spectre.Console.Cli.csproj" />
   </ItemGroup>
 
 </Project>
