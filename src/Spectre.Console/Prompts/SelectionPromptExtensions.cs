@@ -257,6 +257,25 @@ public static class SelectionPromptExtensions
     }
 
     /// <summary>
+    /// Sets the highlight style of the search results.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="style">The highlight style of the selected choice.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static SelectionPrompt<T> SearchHighlightStyle<T>(this SelectionPrompt<T> obj, Style style)
+        where T : notnull
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        obj.SearchHighlightStyle = style;
+        return obj;
+    }
+
+    /// <summary>
     /// Sets the text that will be displayed if there are more choices to show.
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>
