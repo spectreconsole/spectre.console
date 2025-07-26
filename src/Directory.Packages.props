@@ -9,7 +9,7 @@
     <PackageVersion Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="8.0.0" />
     <PackageVersion Include="MinVer" PrivateAssets="All" Version="6.0.0" />
     <PackageVersion Include="PolySharp" Version="1.15.0" />
-    <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="4.13.1" />
+    <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="4.14.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.10" />
     <PackageVersion Include="Spectre.Console" Version="0.50.0" />
