@@ -11,7 +11,7 @@
     <PackageVersion Include="PolySharp" Version="1.15.0" />
     <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="4.13.1" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-    <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.10" />
+    <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.11" />
     <PackageVersion Include="Spectre.Console" Version="0.50.0" />
     <PackageVersion Include="Spectre.Console.Cli" Version="0.50.0" />
     <PackageVersion Include="Spectre.Console.Testing" Version="0.50.1-preview.0.20" />
