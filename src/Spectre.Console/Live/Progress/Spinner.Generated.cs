@@ -360,6 +360,42 @@ namespace Spectre.Console
                     "⠀⡀",
             };
         }
+        private sealed class Dots13Spinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(80);
+            public override bool IsUnicode => true;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    "⣼",
+                    "⣹",
+                    "⢻",
+                    "⠿",
+                    "⡟",
+                    "⣏",
+                    "⣧",
+                    "⣶",
+            };
+        }
+        private sealed class Dots14Spinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(80);
+            public override bool IsUnicode => true;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    "⠉⠉",
+                    "⠈⠙",
+                    "⠀⠹",
+                    "⠀⢸",
+                    "⠀⣰",
+                    "⢀⣠",
+                    "⣀⣀",
+                    "⣄⡀",
+                    "⣆⠀",
+                    "⡇⠀",
+                    "⠏⠀",
+                    "⠋⠁",
+            };
+        }
         private sealed class Dots8BitSpinner : Spinner
         {
             public override TimeSpan Interval => TimeSpan.FromMilliseconds(80);
@@ -624,6 +660,65 @@ namespace Spectre.Console
                     "⣿",
             };
         }
+        private sealed class DotsCircleSpinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(80);
+            public override bool IsUnicode => true;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    "⢎ ",
+                    "⠎⠁",
+                    "⠊⠑",
+                    "⠈⠱",
+                    " ⡱",
+                    "⢀⡰",
+                    "⢄⡠",
+                    "⢆⡀",
+            };
+        }
+        private sealed class SandSpinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(80);
+            public override bool IsUnicode => true;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    "⠁",
+                    "⠂",
+                    "⠄",
+                    "⡀",
+                    "⡈",
+                    "⡐",
+                    "⡠",
+                    "⣀",
+                    "⣁",
+                    "⣂",
+                    "⣄",
+                    "⣌",
+                    "⣔",
+                    "⣤",
+                    "⣥",
+                    "⣦",
+                    "⣮",
+                    "⣶",
+                    "⣷",
+                    "⣿",
+                    "⡿",
+                    "⠿",
+                    "⢟",
+                    "⠟",
+                    "⡛",
+                    "⠛",
+                    "⠫",
+                    "⢋",
+                    "⠋",
+                    "⠍",
+                    "⡉",
+                    "⠉",
+                    "⠑",
+                    "⠡",
+                    "⢁",
+            };
+        }
         private sealed class LineSpinner : Spinner
         {
             public override TimeSpan Interval => TimeSpan.FromMilliseconds(130);
@@ -873,6 +968,24 @@ namespace Spectre.Console
                     "◣",
                     "◤",
                     "◥",
+            };
+        }
+        private sealed class BinarySpinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(80);
+            public override bool IsUnicode => false;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    "010010",
+                    "001100",
+                    "100101",
+                    "111010",
+                    "111101",
+                    "010111",
+                    "101011",
+                    "111000",
+                    "110011",
+                    "110101",
             };
         }
         private sealed class ArcSpinner : Spinner
@@ -1136,6 +1249,7 @@ namespace Spectre.Console
                     "[=   ]",
                     "[==  ]",
                     "[=== ]",
+                    "[====]",
                     "[ ===]",
                     "[  ==]",
                     "[   =]",
@@ -1490,8 +1604,8 @@ namespace Spectre.Console
             public override bool IsUnicode => true;
             public override IReadOnlyList<string> Frames => new List<string>
             {
-                    "،   ",
-                    "′   ",
+                    "،  ",
+                    "′  ",
                     " ´ ",
                     " ‾ ",
                     "  ⸌",
@@ -1545,6 +1659,153 @@ namespace Spectre.Console
                     "ββββββρ",
             };
         }
+        private sealed class FingerDanceSpinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(160);
+            public override bool IsUnicode => true;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    "🤘 ",
+                    "🤟 ",
+                    "🖖 ",
+                    "✋ ",
+                    "🤚 ",
+                    "👆 ",
+            };
+        }
+        private sealed class FistBumpSpinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(80);
+            public override bool IsUnicode => true;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    "🤜　　　　🤛 ",
+                    "🤜　　　　🤛 ",
+                    "🤜　　　　🤛 ",
+                    "　🤜　　🤛　 ",
+                    "　　🤜🤛　　 ",
+                    "　🤜✨🤛　　 ",
+                    "🤜　✨　🤛　 ",
+            };
+        }
+        private sealed class SoccerHeaderSpinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(80);
+            public override bool IsUnicode => true;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    " 🧑⚽️       🧑 ",
+                    "🧑  ⚽️      🧑 ",
+                    "🧑   ⚽️     🧑 ",
+                    "🧑    ⚽️    🧑 ",
+                    "🧑     ⚽️   🧑 ",
+                    "🧑      ⚽️  🧑 ",
+                    "🧑       ⚽️🧑  ",
+                    "🧑      ⚽️  🧑 ",
+                    "🧑     ⚽️   🧑 ",
+                    "🧑    ⚽️    🧑 ",
+                    "🧑   ⚽️     🧑 ",
+                    "🧑  ⚽️      🧑 ",
+            };
+        }
+        private sealed class MindblownSpinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(160);
+            public override bool IsUnicode => true;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    "😐 ",
+                    "😐 ",
+                    "😮 ",
+                    "😮 ",
+                    "😦 ",
+                    "😦 ",
+                    "😧 ",
+                    "😧 ",
+                    "🤯 ",
+                    "💥 ",
+                    "✨ ",
+                    "　 ",
+                    "　 ",
+                    "　 ",
+            };
+        }
+        private sealed class SpeakerSpinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(160);
+            public override bool IsUnicode => true;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    "🔈 ",
+                    "🔉 ",
+                    "🔊 ",
+                    "🔉 ",
+            };
+        }
+        private sealed class OrangePulseSpinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(100);
+            public override bool IsUnicode => true;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    "🔸 ",
+                    "🔶 ",
+                    "🟠 ",
+                    "🟠 ",
+                    "🔶 ",
+            };
+        }
+        private sealed class BluePulseSpinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(100);
+            public override bool IsUnicode => true;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    "🔹 ",
+                    "🔷 ",
+                    "🔵 ",
+                    "🔵 ",
+                    "🔷 ",
+            };
+        }
+        private sealed class OrangeBluePulseSpinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(100);
+            public override bool IsUnicode => true;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    "🔸 ",
+                    "🔶 ",
+                    "🟠 ",
+                    "🟠 ",
+                    "🔶 ",
+                    "🔹 ",
+                    "🔷 ",
+                    "🔵 ",
+                    "🔵 ",
+                    "🔷 ",
+            };
+        }
+        private sealed class TimeTravelSpinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(100);
+            public override bool IsUnicode => true;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    "🕛 ",
+                    "🕚 ",
+                    "🕙 ",
+                    "🕘 ",
+                    "🕗 ",
+                    "🕖 ",
+                    "🕕 ",
+                    "🕔 ",
+                    "🕓 ",
+                    "🕒 ",
+                    "🕑 ",
+                    "🕐 ",
+            };
+        }
         private sealed class AestheticSpinner : Spinner
         {
             public override TimeSpan Interval => TimeSpan.FromMilliseconds(80);
@@ -1559,6 +1820,147 @@ namespace Spectre.Console
                     "▰▰▰▰▰▰▱",
                     "▰▰▰▰▰▰▰",
                     "▰▱▱▱▱▱▱",
+            };
+        }
+        private sealed class DwarfFortressSpinner : Spinner
+        {
+            public override TimeSpan Interval => TimeSpan.FromMilliseconds(80);
+            public override bool IsUnicode => true;
+            public override IReadOnlyList<string> Frames => new List<string>
+            {
+                    " ██████£££  ",
+                    "☺██████£££  ",
+                    "☺██████£££  ",
+                    "☺▓█████£££  ",
+                    "☺▓█████£££  ",
+                    "☺▒█████£££  ",
+                    "☺▒█████£££  ",
+                    "☺░█████£££  ",
+                    "☺░█████£££  ",
+                    "☺ █████£££  ",
+                    " ☺█████£££  ",
+                    " ☺█████£££  ",
+                    " ☺▓████£££  ",
+                    " ☺▓████£££  ",
+                    " ☺▒████£££  ",
+                    " ☺▒████£££  ",
+                    " ☺░████£££  ",
+                    " ☺░████£££  ",
+                    " ☺ ████£££  ",
+                    "  ☺████£££  ",
+                    "  ☺████£££  ",
+                    "  ☺▓███£££  ",
+                    "  ☺▓███£££  ",
+                    "  ☺▒███£££  ",
+                    "  ☺▒███£££  ",
+                    "  ☺░███£££  ",
+                    "  ☺░███£££  ",
+                    "  ☺ ███£££  ",
+                    "   ☺███£££  ",
+                    "   ☺███£££  ",
+                    "   ☺▓██£££  ",
+                    "   ☺▓██£££  ",
+                    "   ☺▒██£££  ",
+                    "   ☺▒██£££  ",
+                    "   ☺░██£££  ",
+                    "   ☺░██£££  ",
+                    "   ☺ ██£££  ",
+                    "    ☺██£££  ",
+                    "    ☺██£££  ",
+                    "    ☺▓█£££  ",
+                    "    ☺▓█£££  ",
+                    "    ☺▒█£££  ",
+                    "    ☺▒█£££  ",
+                    "    ☺░█£££  ",
+                    "    ☺░█£££  ",
+                    "    ☺ █£££  ",
+                    "     ☺█£££  ",
+                    "     ☺█£££  ",
+                    "     ☺▓£££  ",
+                    "     ☺▓£££  ",
+                    "     ☺▒£££  ",
+                    "     ☺▒£££  ",
+                    "     ☺░£££  ",
+                    "     ☺░£££  ",
+                    "     ☺ £££  ",
+                    "      ☺£££  ",
+                    "      ☺£££  ",
+                    "      ☺▓££  ",
+                    "      ☺▓££  ",
+                    "      ☺▒££  ",
+                    "      ☺▒££  ",
+                    "      ☺░££  ",
+                    "      ☺░££  ",
+                    "      ☺ ££  ",
+                    "       ☺££  ",
+                    "       ☺££  ",
+                    "       ☺▓£  ",
+                    "       ☺▓£  ",
+                    "       ☺▒£  ",
+                    "       ☺▒£  ",
+                    "       ☺░£  ",
+                    "       ☺░£  ",
+                    "       ☺ £  ",
+                    "        ☺£  ",
+                    "        ☺£  ",
+                    "        ☺▓  ",
+                    "        ☺▓  ",
+                    "        ☺▒  ",
+                    "        ☺▒  ",
+                    "        ☺░  ",
+                    "        ☺░  ",
+                    "        ☺   ",
+                    "        ☺  &",
+                    "        ☺ ☼&",
+                    "       ☺ ☼ &",
+                    "       ☺☼  &",
+                    "      ☺☼  & ",
+                    "      ‼   & ",
+                    "     ☺   &  ",
+                    "    ‼    &  ",
+                    "   ☺    &   ",
+                    "  ‼     &   ",
+                    " ☺     &    ",
+                    "‼      &    ",
+                    "      &     ",
+                    "      &     ",
+                    "     &   ░  ",
+                    "     &   ▒  ",
+                    "    &    ▓  ",
+                    "    &    £  ",
+                    "   &    ░£  ",
+                    "   &    ▒£  ",
+                    "  &     ▓£  ",
+                    "  &     ££  ",
+                    " &     ░££  ",
+                    " &     ▒££  ",
+                    "&      ▓££  ",
+                    "&      £££  ",
+                    "      ░£££  ",
+                    "      ▒£££  ",
+                    "      ▓£££  ",
+                    "      █£££  ",
+                    "     ░█£££  ",
+                    "     ▒█£££  ",
+                    "     ▓█£££  ",
+                    "     ██£££  ",
+                    "    ░██£££  ",
+                    "    ▒██£££  ",
+                    "    ▓██£££  ",
+                    "    ███£££  ",
+                    "   ░███£££  ",
+                    "   ▒███£££  ",
+                    "   ▓███£££  ",
+                    "   ████£££  ",
+                    "  ░████£££  ",
+                    "  ▒████£££  ",
+                    "  ▓████£££  ",
+                    "  █████£££  ",
+                    " ░█████£££  ",
+                    " ▒█████£££  ",
+                    " ▓█████£££  ",
+                    " ██████£££  ",
+                    " ██████£££  ",
             };
         }
 
@@ -1624,9 +2026,25 @@ namespace Spectre.Console
             /// </summary>
             public static Spinner Dots12 { get; } = new Dots12Spinner();
             /// <summary>
+            /// Gets the "dots13" spinner.
+            /// </summary>
+            public static Spinner Dots13 { get; } = new Dots13Spinner();
+            /// <summary>
+            /// Gets the "dots14" spinner.
+            /// </summary>
+            public static Spinner Dots14 { get; } = new Dots14Spinner();
+            /// <summary>
             /// Gets the "dots8Bit" spinner.
             /// </summary>
             public static Spinner Dots8Bit { get; } = new Dots8BitSpinner();
+            /// <summary>
+            /// Gets the "dotsCircle" spinner.
+            /// </summary>
+            public static Spinner DotsCircle { get; } = new DotsCircleSpinner();
+            /// <summary>
+            /// Gets the "sand" spinner.
+            /// </summary>
+            public static Spinner Sand { get; } = new SandSpinner();
             /// <summary>
             /// Gets the "line" spinner.
             /// </summary>
@@ -1699,6 +2117,10 @@ namespace Spectre.Console
             /// Gets the "triangle" spinner.
             /// </summary>
             public static Spinner Triangle { get; } = new TriangleSpinner();
+            /// <summary>
+            /// Gets the "binary" spinner.
+            /// </summary>
+            public static Spinner Binary { get; } = new BinarySpinner();
             /// <summary>
             /// Gets the "arc" spinner.
             /// </summary>
@@ -1864,9 +2286,49 @@ namespace Spectre.Console
             /// </summary>
             public static Spinner BetaWave { get; } = new BetaWaveSpinner();
             /// <summary>
+            /// Gets the "fingerDance" spinner.
+            /// </summary>
+            public static Spinner FingerDance { get; } = new FingerDanceSpinner();
+            /// <summary>
+            /// Gets the "fistBump" spinner.
+            /// </summary>
+            public static Spinner FistBump { get; } = new FistBumpSpinner();
+            /// <summary>
+            /// Gets the "soccerHeader" spinner.
+            /// </summary>
+            public static Spinner SoccerHeader { get; } = new SoccerHeaderSpinner();
+            /// <summary>
+            /// Gets the "mindblown" spinner.
+            /// </summary>
+            public static Spinner Mindblown { get; } = new MindblownSpinner();
+            /// <summary>
+            /// Gets the "speaker" spinner.
+            /// </summary>
+            public static Spinner Speaker { get; } = new SpeakerSpinner();
+            /// <summary>
+            /// Gets the "orangePulse" spinner.
+            /// </summary>
+            public static Spinner OrangePulse { get; } = new OrangePulseSpinner();
+            /// <summary>
+            /// Gets the "bluePulse" spinner.
+            /// </summary>
+            public static Spinner BluePulse { get; } = new BluePulseSpinner();
+            /// <summary>
+            /// Gets the "orangeBluePulse" spinner.
+            /// </summary>
+            public static Spinner OrangeBluePulse { get; } = new OrangeBluePulseSpinner();
+            /// <summary>
+            /// Gets the "timeTravel" spinner.
+            /// </summary>
+            public static Spinner TimeTravel { get; } = new TimeTravelSpinner();
+            /// <summary>
             /// Gets the "aesthetic" spinner.
             /// </summary>
             public static Spinner Aesthetic { get; } = new AestheticSpinner();
+            /// <summary>
+            /// Gets the "dwarfFortress" spinner.
+            /// </summary>
+            public static Spinner DwarfFortress { get; } = new DwarfFortressSpinner();
         }
     }
 }
