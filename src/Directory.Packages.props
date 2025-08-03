@@ -9,9 +9,9 @@
     <PackageVersion Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="8.0.0" />
     <PackageVersion Include="MinVer" PrivateAssets="All" Version="6.0.0" />
     <PackageVersion Include="PolySharp" Version="1.15.0" />
-    <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="4.13.1" />
+    <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="4.14.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-    <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.10" />
+    <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.11" />
     <PackageVersion Include="Spectre.Console" Version="0.50.0" />
     <PackageVersion Include="Spectre.Console.Cli" Version="0.50.0" />
     <PackageVersion Include="Spectre.Console.Testing" Version="0.50.1-preview.0.20" />
@@ -19,9 +19,12 @@
     <PackageVersion Include="StyleCop.Analyzers" PrivateAssets="All" Version="1.2.0-beta.556" />
     <PackageVersion Include="System.Memory" Version="4.6.3" />
     <PackageVersion Include="TunnelVisionLabs.ReferenceAssemblyAnnotator" Version="1.0.0-alpha.160" />
-    <PackageVersion Include="Verify.Xunit" Version="30.4.0" />
+    <PackageVersion Include="Verify.Xunit" Version="30.5.0" />
     <PackageVersion Include="Wcwidth.Sources" Version="2.0.0" />
     <PackageVersion Include="xunit" Version="2.9.3" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.1" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageVersion>
   </ItemGroup>
 </Project>
