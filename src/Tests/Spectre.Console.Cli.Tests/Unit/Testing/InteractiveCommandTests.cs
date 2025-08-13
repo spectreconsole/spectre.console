@@ -77,4 +77,35 @@ public sealed class InteractiveCommandTests
         result.ExitCode.ShouldBe(0);
         result.Output.EndsWith("[Apple;Apricot;Spectre Console]");
     }
+
+    [Fact]
+    public void InteractiveCommand_WithMockedUserInputs_VimMotions_ProducesExpectedOutput()
+    {
+        // Given
+        TestConsole console = new();
+        console.Interactive();
+
+        // Your mocked inputs must always end with "Enter" for each prompt!
+
+        // Multi selection prompt: Choose first option
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // Selection prompt: Choose second option
+        console.Input.PushKey(ConsoleKey.J);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // Ask text prompt: Enter name
+        console.Input.PushTextWithEnter("Spectre Console");
+
+        var app = new CommandAppTester(null, new CommandAppTesterSettings(), console);
+        app.SetDefaultCommand<InteractiveCommand>();
+
+        // When
+        var result = app.Run();
+
+        // Then
+        result.ExitCode.ShouldBe(0);
+        result.Output.EndsWith("[Apple;Apricot;Spectre Console]");
+    }
 }

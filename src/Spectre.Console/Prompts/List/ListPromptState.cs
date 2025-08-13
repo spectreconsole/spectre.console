@@ -63,6 +63,7 @@ internal sealed class ListPromptState<T>
             switch (keyInfo.Key)
             {
                 case ConsoleKey.UpArrow:
+                case ConsoleKey.K:
                     if (currentLeafIndex > 0)
                     {
                         index = _leafIndexes[currentLeafIndex - 1];
@@ -75,6 +76,7 @@ internal sealed class ListPromptState<T>
                     break;
 
                 case ConsoleKey.DownArrow:
+                case ConsoleKey.J:
                     if (currentLeafIndex < _leafIndexes.Count - 1)
                     {
                         index = _leafIndexes[currentLeafIndex + 1];
@@ -117,8 +119,8 @@ internal sealed class ListPromptState<T>
         {
             index = keyInfo.Key switch
             {
-                ConsoleKey.UpArrow => Index - 1,
-                ConsoleKey.DownArrow => Index + 1,
+                ConsoleKey.UpArrow or ConsoleKey.K => Index - 1,
+                ConsoleKey.DownArrow or ConsoleKey.J => Index + 1,
                 ConsoleKey.Home => 0,
                 ConsoleKey.End => ItemCount - 1,
                 ConsoleKey.PageUp => Index - PageSize,
