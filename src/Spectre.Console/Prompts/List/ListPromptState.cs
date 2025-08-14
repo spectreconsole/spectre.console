@@ -24,7 +24,8 @@ internal sealed class ListPromptState<T>
         int pageSize, bool wrapAround,
         SelectionMode mode,
         bool skipUnselectableItems,
-        bool searchEnabled)
+        bool searchEnabled,
+        int initialIndex)
     {
         _converter = converter ?? throw new ArgumentNullException(nameof(converter));
         Items = items;
@@ -45,11 +46,18 @@ internal sealed class ListPromptState<T>
                     .ToList()
                     .AsReadOnly();
 
-            Index = _leafIndexes.FirstOrDefault();
+            if (_leafIndexes.Contains(initialIndex))
+            {
+                Index = initialIndex;
+            }
+            else
+            {
+                Index = _leafIndexes.FirstOrDefault();
+            }
         }
         else
         {
-            Index = 0;
+            Index = initialIndex;
         }
     }
 
