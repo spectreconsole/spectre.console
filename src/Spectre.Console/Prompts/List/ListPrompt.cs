@@ -66,9 +66,15 @@ internal sealed class ListPrompt<T>
 
                 var key = rawKey.Value;
                 var result = _strategy.HandleInput(key, state);
+
                 if (result == ListPromptInputResult.Submit)
                 {
                     break;
+                }
+
+                if (result == ListPromptInputResult.Cancel)
+                {
+                    throw new OperationCanceledException("Prompt cancelled via ESC key.");
                 }
 
                 if (state.Update(key) || result == ListPromptInputResult.Refresh)

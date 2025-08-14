@@ -115,7 +115,8 @@ public sealed class SelectionPromptTests
         selection.ShouldBe(choices[1]);
     }
 
-    [Fact] public void Should_Throw_Meaningful_Exception_For_Empty_Prompt()
+    [Fact]
+    public void Should_Throw_Meaningful_Exception_For_Empty_Prompt()
     {
         // Given
         var console = new TestConsole();
@@ -130,6 +131,26 @@ public sealed class SelectionPromptTests
         var exception = action.ShouldThrow<InvalidOperationException>();
         exception.Message.ShouldBe("Cannot show an empty selection prompt. Please call the AddChoice() method to configure the prompt.");
     }
+
+    [Fact]
+    public void SelectionPrompt_Should_Cancel_On_Esc()
+    {
+        // Arrange
+        var console = new TestConsole();
+        console.Profile.Capabilities.Ansi = true;
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(new ConsoleKeyInfo('\0', ConsoleKey.Escape, false, false, false));
+
+        var prompt = new SelectionPrompt<string>();
+        prompt.AddChoice("Option A");
+        prompt.AddChoice("Option B");
+
+        // Act & Assert
+        Assert.Throws<OperationCanceledException>(() =>
+        {
+            prompt.Show(console);
+        });
+    }
 }
 
 file sealed class CustomSelectionItem
@@ -143,3 +164,5 @@ file sealed class CustomSelectionItem
         Name = name ?? throw new ArgumentNullException(nameof(name));
     }
 }
+
+
