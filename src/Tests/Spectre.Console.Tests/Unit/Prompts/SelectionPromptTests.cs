@@ -142,6 +142,8 @@ file sealed class CustomSelectionItem
     {
         Value = value;
         Name = name ?? throw new ArgumentNullException(nameof(name));
+    }
+    
     public void Should_Append_Space_To_Search_If_Search_Is_Enabled()
     {
         /// Given
