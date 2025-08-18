@@ -131,22 +131,11 @@ public sealed class SelectionPromptTests
         var exception = action.ShouldThrow<InvalidOperationException>();
         exception.Message.ShouldBe("Cannot show an empty selection prompt. Please call the AddChoice() method to configure the prompt.");
     }
-}
 
-file sealed class CustomSelectionItem
-{
-    public int Value { get; }
-    public string Name { get; }
-
-    public CustomSelectionItem(int value, string name)
-    {
-        Value = value;
-        Name = name ?? throw new ArgumentNullException(nameof(name));
-    }
-    
+    [Fact]
     public void Should_Append_Space_To_Search_If_Search_Is_Enabled()
     {
-        /// Given
+        // Given
         var console = new TestConsole();
         console.Profile.Capabilities.Interactive = true;
         console.EmitAnsiSequences();
@@ -165,5 +154,17 @@ file sealed class CustomSelectionItem
         // Then
         result.ShouldBe("Item 2");
         console.Output.ShouldContain($"{ESC}[38;5;12m> {ESC}[0m{ESC}[1;38;5;12;48;5;11mItem {ESC}[0m{ESC}[38;5;12m2{ESC}[0m ");
+    }
+}
+
+file sealed class CustomSelectionItem
+{
+    public int Value { get; }
+    public string Name { get; }
+
+    public CustomSelectionItem(int value, string name)
+    {
+        Value = value;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
     }
 }
