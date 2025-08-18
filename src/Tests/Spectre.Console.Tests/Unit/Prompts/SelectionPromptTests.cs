@@ -87,7 +87,6 @@ public sealed class SelectionPromptTests
     }
 
     [Fact]
-<<<<<<< HEAD:src/Tests/Spectre.Console.Tests/Unit/Prompts/SelectionPromptTests.cs
     public void Should_Search_In_Remapped_Result()
     {
         // Given
@@ -116,7 +115,8 @@ public sealed class SelectionPromptTests
         selection.ShouldBe(choices[1]);
     }
 
-    [Fact] public void Should_Throw_Meaningful_Exception_For_Empty_Prompt()
+    [Fact]
+    public void Should_Throw_Meaningful_Exception_For_Empty_Prompt()
     {
         // Given
         var console = new TestConsole();
@@ -142,7 +142,6 @@ file sealed class CustomSelectionItem
     {
         Value = value;
         Name = name ?? throw new ArgumentNullException(nameof(name));
-=======
     public void Should_Append_Space_To_Search_If_Search_Is_Enabled()
     {
         /// Given
@@ -164,6 +163,5 @@ file sealed class CustomSelectionItem
         // Then
         result.ShouldBe("Item 2");
         console.Output.ShouldContain($"{ESC}[38;5;12m> {ESC}[0m{ESC}[1;38;5;12;48;5;11mItem {ESC}[0m{ESC}[38;5;12m2{ESC}[0m ");
->>>>>>> b402054 (changes Search in SelectionPrompt to accept Space Key as text):test/Spectre.Console.Tests/Unit/Prompts/SelectionPromptTests.cs
     }
 }
