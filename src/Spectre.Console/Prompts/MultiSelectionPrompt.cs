@@ -57,6 +57,16 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     /// </summary>
     public SelectionMode Mode { get; set; } = SelectionMode.Leaf;
 
+    /// <summary>
+    /// Gets or sets a value indicating whether or not search is enabled.
+    /// </summary>
+    public bool SearchEnabled { get; set; }
+
+    /// <summary>
+    /// Gets or sets the text that will be displayed when no search text has been entered.
+    /// </summary>
+    public string? SearchPlaceholderText { get; set; }
+
     internal ListPromptTree<T> Tree { get; }
 
     /// <summary>
@@ -95,7 +105,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
         var converter = Converter ?? TypeConverterHelper.ConvertToString;
-        var result = await prompt.Show(Tree, converter, Mode, false, false, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
+        var result = await prompt.Show(Tree, converter, Mode, false, SearchEnabled, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
 
         if (Mode == SelectionMode.Leaf)
         {
@@ -161,7 +171,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             return ListPromptInputResult.Submit;
         }
 
-        if (key.Key == ConsoleKey.Spacebar || key.Key == ConsoleKey.Packet)
+        if ((key.Key == ConsoleKey.Spacebar && key.Modifiers.HasFlag(ConsoleModifiers.Control)) || key.Key == ConsoleKey.Packet)
         {
             var current = state.Items[state.Index];
             var select = !current.IsSelected;
@@ -213,6 +223,12 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             extra++;
         }
 
+        if (SearchEnabled)
+        {
+            // Search input takes up one row
+            extra++;
+        }
+
         var pageSize = requestedPageSize;
         if (pageSize > console.Profile.Height - extra)
         {
@@ -228,6 +244,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     {
         var list = new List<IRenderable>();
         var highlightStyle = HighlightStyle ?? Color.Blue;
+        var searchHighlightStyle = new Style(foreground: Color.Default, background: Color.Yellow, Decoration.Bold);
 
         if (Title != null)
         {
@@ -242,7 +259,15 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             grid.AddEmptyRow();
         }
 
-        foreach (var item in items)
+        // Filter items based on search text
+        var filteredItems = items
+            .Where(item =>
+            {
+                var text = (Converter ?? TypeConverterHelper.ConvertToString)?.Invoke(item.Node.Data) ?? item.Node.Data.ToString() ?? "?";
+                return string.IsNullOrWhiteSpace(searchText) || text.Contains(searchText, StringComparison.OrdinalIgnoreCase);
+            });
+
+        foreach (var item in filteredItems)
         {
             var current = item.Index == cursorIndex;
             var style = current ? highlightStyle : Style.Plain;
@@ -254,6 +279,11 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             if (current)
             {
                 text = text.RemoveMarkup().EscapeMarkup();
+            }
+
+            if (searchText.Length > 0)
+            {
+                text = text.Highlight(searchText, searchHighlightStyle);
             }
 
             var checkbox = item.Node.IsSelected
@@ -272,8 +302,15 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             list.Add(new Markup(MoreChoicesText ?? ListPromptConstants.MoreChoicesMarkup));
         }
 
+        if (SearchEnabled)
+        {
+            // Add search text input
+            list.Add(new Markup(
+                searchText.Length > 0 ? searchText.EscapeMarkup() : SearchPlaceholderText ?? ListPromptConstants.SearchPlaceholderMarkup));
+        }
+
         // Instructions
-        list.Add(new Markup(InstructionsText ?? ListPromptConstants.InstructionsMarkup));
+        list.Add(new Markup(InstructionsText ?? (SearchEnabled ? ListPromptConstants.InstructionsSearchMarkup : ListPromptConstants.InstructionsMarkup)));
 
         // Combine all items
         return new Rows(list);
