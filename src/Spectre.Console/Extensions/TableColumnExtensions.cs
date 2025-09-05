@@ -45,7 +45,7 @@ public static class TableColumnExtensions
             throw new ArgumentNullException(nameof(header));
         }
 
-        column.Footer = header;
+        column.Header = header;
         return column;
     }
 
