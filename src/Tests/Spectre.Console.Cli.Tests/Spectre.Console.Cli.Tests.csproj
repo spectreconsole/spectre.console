@@ -9,7 +9,6 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Shouldly" />
-    <PackageReference Include="Spectre.Console.Testing" />
     <PackageReference Include="Spectre.Verify.Extensions" />
     <PackageReference Include="Verify.Xunit" />
     <PackageReference Include="xunit" />
@@ -21,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Spectre.Console.Cli\Spectre.Console.Cli.csproj" />
+    <ProjectReference Include="..\..\Spectre.Console.Testing\Spectre.Console.Testing.csproj" />
   </ItemGroup>
 
 </Project>

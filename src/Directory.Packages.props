@@ -12,9 +12,6 @@
     <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="4.14.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.11" />
-    <PackageVersion Include="Spectre.Console" Version="0.50.0" />
-    <PackageVersion Include="Spectre.Console.Cli" Version="0.50.0" />
-    <PackageVersion Include="Spectre.Console.Testing" Version="0.50.1-preview.0.20" />
     <PackageVersion Include="Spectre.Verify.Extensions" Version="28.16.0" />
     <PackageVersion Include="StyleCop.Analyzers" PrivateAssets="All" Version="1.2.0-beta.556" />
     <PackageVersion Include="System.Memory" Version="4.6.3" />
