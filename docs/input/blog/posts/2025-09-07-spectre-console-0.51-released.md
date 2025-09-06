@@ -1,11 +1,13 @@
-Title: Spectre.Console 0.51 released!
+Title: Spectre.Console 0.51.1 released!
 Description: Not a substitute for human interaction.
 Published: 2025-09-07
 Category: Release Notes
 Excluded: false
 ---
 
-Version 0.51 of Spectre.Console has been released!
+Version `0.51.1` of Spectre.Console has been released!
+  
+_Note: Due to an issue discovered after the release of version 0.51.0, that version has now been unlisted. Let’s all pretend it never existed 😅_
 
 ## What's Changed
 
@@ -38,4 +40,4 @@ Version 0.51 of Spectre.Console has been released!
 * [@mitchdenny](https://github.com/mitchdenny) made their first contribution in [#1881](https://github.com/spectreconsole/spectre.console/pull/1881)
 * [@mattfennerom](https://github.com/mattfennerom) made their first contribution in [#1890](https://github.com/spectreconsole/spectre.console/pull/1890)
 
-**Full Changelog**: [0.50.0...0.51.0](https://github.com/spectreconsole/spectre.console/compare/0.50.0...0.51.0)
+**Full Changelog**: [0.50.0...0.51.0](https://github.com/spectreconsole/spectre.console/compare/0.50.0...0.51.1)
