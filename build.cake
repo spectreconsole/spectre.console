@@ -12,10 +12,11 @@ Task("Clean")
 
 Task("Build")
     .IsDependentOn("Clean")
-    .Does(context => 
+    .Does(context =>
 {
     Information("Compiling generator...");
-    DotNetBuild("./resources/scripts/Generator/Generator.sln", new DotNetBuildSettings {
+    DotNetBuild("./resources/scripts/Generator/Generator.sln", new DotNetBuildSettings
+    {
         Configuration = configuration,
         Verbosity = DotNetVerbosity.Minimal,
         NoLogo = true,
@@ -25,7 +26,18 @@ Task("Build")
     });
 
     Information("\nCompiling Spectre.Console...");
-    DotNetBuild("./src/Spectre.Console.sln", new DotNetBuildSettings {
+    DotNetBuild("./src/Spectre.Console.sln", new DotNetBuildSettings
+    {
+        Configuration = configuration,
+        Verbosity = DotNetVerbosity.Minimal,
+        NoLogo = true,
+        NoIncremental = context.HasArgument("rebuild"),
+        MSBuildSettings = new DotNetMSBuildSettings()
+            .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
+    });
+    
+    Information("\nCompiling Spectre.Console CLI...");
+    DotNetBuild("./src/Spectre.Console.Cli.sln", new DotNetBuildSettings {
         Configuration = configuration,
         Verbosity = DotNetVerbosity.Minimal,
         NoLogo = true,
@@ -58,9 +70,21 @@ Task("Test")
 
 Task("Package")
     .IsDependentOn("Test")
-    .Does(context => 
+    .Does(context =>
 {
-    context.DotNetPack($"./src/Spectre.Console.sln", new DotNetPackSettings {
+    context.DotNetPack($"./src/Spectre.Console.sln", new DotNetPackSettings
+    {
+        Configuration = configuration,
+        Verbosity = DotNetVerbosity.Minimal,
+        NoLogo = true,
+        NoRestore = true,
+        NoBuild = true,
+        OutputDirectory = "./.artifacts",
+        MSBuildSettings = new DotNetMSBuildSettings()
+            .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
+    });
+
+    context.DotNetPack($"./src/Spectre.Console.Cli.sln", new DotNetPackSettings {
         Configuration = configuration,
         Verbosity = DotNetVerbosity.Minimal,
         NoLogo = true,
@@ -106,4 +130,4 @@ Task("Default")
 ////////////////////////////////////////////////////////////////
 // Execution
 
-RunTarget(target)
+RunTarget(target);
