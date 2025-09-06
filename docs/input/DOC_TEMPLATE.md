@@ -29,7 +29,7 @@ Optional: Embed an asciicast. The cast parameter should be the base name of the 
 one suffixed with -rich.cast and a second named -plain.cast. The cast attribute should be the name without
 the suffix. 
 
-To generate a new cast file, open the \resources\scripts\Generator\Generator.sln project and add a new sample in the
+To generate a new cast file, open the \resources\scripts\Generator\Generator.slnx project and add a new sample in the
 Commands/AsciiCast/Samples/ folder. If the widget is static such as a tree or a table, try and animate the widget
 using the Live widget to change the content or styling. 
 

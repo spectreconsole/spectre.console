@@ -1,0 +1,31 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Build/">
+    <File Path="../dotnet-tools.json" />
+    <File Path="../global.json" />
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+    <File Path="Directory.Packages.props" />
+    <File Path="stylecop.json" />
+  </Folder>
+  <Folder Name="/Build/GitHub/">
+    <File Path="../.github/workflows/ci.yaml" />
+    <File Path="../.github/workflows/publish.yaml" />
+  </Folder>
+  <Folder Name="/CLI/">
+    <Project Path="Spectre.Console.Cli/Spectre.Console.Cli.csproj" />
+    <Project Path="Tests/Spectre.Console.Cli.Tests/Spectre.Console.Cli.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Extensions/">
+    <Project Path="Extensions/Spectre.Console.ImageSharp/Spectre.Console.ImageSharp.csproj" />
+    <Project Path="Extensions/Spectre.Console.Json/Spectre.Console.Json.csproj" />
+  </Folder>
+  <Project Path="Spectre.Console.Testing/Spectre.Console.Testing.csproj" />
+  <Project Path="Spectre.Console/Spectre.Console.csproj" />
+  <Project Path="Tests/Spectre.Console.Tests/Spectre.Console.Tests.csproj" />
+</Solution>
