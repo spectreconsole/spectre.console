@@ -84,10 +84,21 @@ There is a working [example of dependency injection](https://github.com/spectrec
 Unit testing your `ITypeRegistrar` and `ITypeResolver` implementations is done using the utility `TypeRegistrarBaseTests` included in `Spectre.Console.Testing`. Simply call `TypeRegistrarBaseTests.RunAllTests()` and expect no `TypeRegistrarBaseTests.TestFailedException` to be thrown.
 
 ## Interception
-Interceptors can be registered with the `TypeRegistrar` (or with a custom DI-Container). Alternatively, `CommandApp` also provides a `SetInterceptor` configuration.
 
-All interceptors must implement `ICommandInterceptor`. Upon execution of a command, The `Intercept`-Method of an instance of your interceptor will be called with the parsed settings. This provides an opportunity for configuring any infrastructure or modifying the settings.
-When the command has been run, the `InterceptResult`-Method of the same instance is called with the result of the command.
+You can intercept the `CommandApp` at two points:
+
+- at startup, before any command is resolved (`IStartupInterceptor`)
+- just before a command is executed (`ICommandInterceptor`)
+
+Interceptors can be registered with the `TypeRegistrar` (or with a custom DI-Container). Alternatively, for `ICommandInterceptor`s, `CommandApp` also provides a `SetInterceptor` configuration.
+
+All interceptors must implement `ICommandInterceptor` or `IStartupInterceptor`, respectively.
+Upon execution of a command, The `Intercept`-Method of an instance of your interceptor will be called with the appropriate context.
+This provides an opportunity for configuring any infrastructure or modifying the command settings.
+
+### Command Interceptor Result
+
+When a command has been run, the `InterceptResult`-Method of the same `ICommandInterceptor` instance is called with the result of the command.
 This provides an opportunity to modify the result and also to tear down any infrastructure in use.
 
 The `Intercept`-Method of each interceptor is run before the command is executed and the `InterceptResult`-Method is run after it. These are typically used for configuring logging or other infrastructure concerns.

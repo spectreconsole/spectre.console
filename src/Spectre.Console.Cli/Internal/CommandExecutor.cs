@@ -80,6 +80,17 @@ internal sealed class CommandExecutor
         // Create the resolver.
         using (var resolver = new TypeResolverAdapter(_registrar.Build()))
         {
+            var startupInterceptors =
+                (resolver.Resolve(typeof(IEnumerable<IStartupInterceptor>)) as IEnumerable<IStartupInterceptor>)?.ToArray();
+            if (startupInterceptors?.Length > 0)
+            {
+                var startupContext = new StartupContext(resolver);
+                foreach (var i in startupInterceptors)
+                {
+                    i.Intercept(startupContext);
+                }
+            }
+
             // Get the registered help provider, falling back to the default provider
             // if no custom implementations have been registered.
             var helpProviders = resolver.Resolve(typeof(IEnumerable<IHelpProvider>)) as IEnumerable<IHelpProvider>;
@@ -115,7 +126,8 @@ internal sealed class CommandExecutor
                 arguments,
                 parsedResult.Remaining,
                 leaf.Command.Name,
-                leaf.Command.Data);
+                leaf.Command.Data,
+                resolver);
 
             // Execute the command tree.
             return await Execute(leaf, parsedResult.Tree, context, resolver, configuration).ConfigureAwait(false);
