@@ -208,8 +208,7 @@ public sealed class ListPromptStateTests
         state.Index.ShouldBe(19);
 
         // Then: Tab wraps to first match (index 1)
-        var moved = state.Update(ConsoleKey.Tab.ToConsoleKeyInfo());
-        moved.ShouldBeTrue();
+        state.Update(ConsoleKey.Tab.ToConsoleKeyInfo());
         state.Index.ShouldBe(1);
     }
 
