@@ -150,17 +150,17 @@ internal sealed class ListPromptState<T>
 
                 if (matches.Count > 0)
                 {
-                    var next = -1;
-                    for (int k = 0; k < matches.Count; k++)
-                    {
-                       if (matches[k] > Index)
-                       {
-                           next = matches[k];
-                           break;
-                       }
-                    }
+                    int matchIndex = matches.IndexOf(Index);
 
-                    index = next >= 0 ? next : matches[0];
+                    if (matchIndex == -1)
+                    {
+                        index = matches[0];
+                    }
+                    else
+                    {
+                        int nextMatchIndex = (matchIndex + 1) % matches.Count;
+                        index = matches[nextMatchIndex];
+                    }
                 }
             }
             else if (!char.IsControl(keyInfo.KeyChar))
