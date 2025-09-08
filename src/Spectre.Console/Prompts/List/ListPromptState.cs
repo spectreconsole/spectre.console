@@ -137,32 +137,28 @@ internal sealed class ListPromptState<T>
             if (keyInfo.Key == ConsoleKey.Tab && !string.IsNullOrEmpty(SearchText))
             {
                 var matches = new List<int>(Items.Count);
-    
                 for (int i = 0; i < Items.Count; i++)
                 {
                     var it = Items[i];
                     var text = _converter(it.Data);
-    
                     if ((text?.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0
                         && (!it.IsGroup || Mode != SelectionMode.Leaf))
                     {
                         matches.Add(i);
                     }
                 }
-    
+
                 if (matches.Count > 0)
                 {
-                    var next = -1;
-                    for (int k = 0; k < matches.Count; k++)
+                    var currentPos = matches.IndexOf(Index);
+                    if (currentPos == -1 || currentPos == matches.Count - 1)
                     {
-                        if (matches[k] > Index)
-                        {
-                            next = matches[k];
-                            break;
-                        }
+                        index = matches[0];
                     }
-    
-                    index = next >= 0 ? next : matches[0];
+                    else
+                    {
+                        index = matches[currentPos + 1];
+                    }
                 }
             }
             else if (!char.IsControl(keyInfo.KeyChar))

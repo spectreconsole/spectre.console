@@ -179,7 +179,7 @@ public sealed class ListPromptStateTests
     public void Should_Cycle_To_Next_Match_On_Tab()
     {
         // Given
-        var state = CreateListPromptState(20, 10, wrapAround: true, searchEnabled: true);
+        var state = CreateListPromptState(20, 10, shouldWrap: true, searchEnabled: true);
 
         // When: type '1' -> first matching item is "1" (index 1)
         state.Update(ConsoleKey.D1.ToConsoleKeyInfo());
@@ -198,7 +198,7 @@ public sealed class ListPromptStateTests
     public void Should_Wrap_To_First_Match_On_Tab()
     {
         // Given
-        var state = CreateListPromptState(20, 10, wrapAround: true, searchEnabled: true);
+        var state = CreateListPromptState(20, 10, shouldWrap: true, searchEnabled: true);
 
         // When: set search to '1' so matches are [1,10,11,12,13,14,15,16,17,18,19]
         state.Update(ConsoleKey.D1.ToConsoleKeyInfo());
@@ -217,7 +217,7 @@ public sealed class ListPromptStateTests
     public void Should_Not_Cycle_When_Search_Disabled()
     {
         // Given
-        var state = CreateListPromptState(20, 10, wrapAround: true, searchEnabled: false);
+        var state = CreateListPromptState(20, 10, shouldWrap: true, searchEnabled: false);
         var start = state.Index;
 
         // When
@@ -232,7 +232,7 @@ public sealed class ListPromptStateTests
     public void Should_Not_Cycle_When_Search_Empty()
     {
         // Given
-        var state = CreateListPromptState(20, 10, wrapAround: true, searchEnabled: true);
+        var state = CreateListPromptState(20, 10, shouldWrap: true, searchEnabled: true);
         var start = state.Index;
 
         // When: Tab without any search text
@@ -247,7 +247,7 @@ public sealed class ListPromptStateTests
     public void Should_Not_Move_When_No_Matches_For_Search()
     {
         // Given
-        var state = CreateListPromptState(10, 10, wrapAround: true, searchEnabled: true);
+        var state = CreateListPromptState(10, 10, shouldWrap: true, searchEnabled: true);
         state.Update(ConsoleKey.End.ToConsoleKeyInfo()); // move away from 0 so a change would be visible
         var indexBefore = state.Index;
 
@@ -266,7 +266,7 @@ public sealed class ListPromptStateTests
     public void Should_Return_True_When_Tab_Changes_Index()
     {
         // Given
-        var state = CreateListPromptState(20, 10, wrapAround: true, searchEnabled: true);
+        var state = CreateListPromptState(20, 10, shouldWrap: true, searchEnabled: true);
 
         // When
         state.Update(ConsoleKey.D1.ToConsoleKeyInfo()); // go to index 1
@@ -281,7 +281,7 @@ public sealed class ListPromptStateTests
     public void Should_Return_False_When_Tab_Noop()
     {
         // Given
-        var state = CreateListPromptState(20, 10, wrapAround: true, searchEnabled: true);
+        var state = CreateListPromptState(20, 10, shouldWrap: true, searchEnabled: true);
         var start = state.Index;
 
         // When: Tab without search term -> no-op
