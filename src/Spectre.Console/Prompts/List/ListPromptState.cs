@@ -56,13 +56,15 @@ internal sealed class ListPromptState<T>
     public bool Update(ConsoleKeyInfo keyInfo)
     {
         var index = Index;
+
+        // Flag to indicate if a key press should prevent search text modification
+        var keyHandledForNavigation = false;
         if (SkipUnselectableItems && Mode == SelectionMode.Leaf)
         {
             Debug.Assert(_leafIndexes != null, nameof(_leafIndexes) + " != null");
             var currentLeafIndex = _leafIndexes.IndexOf(index);
             switch (keyInfo.Key)
             {
-                case ConsoleKey.UpArrow:
                 case ConsoleKey.K:
                     if (currentLeafIndex > 0)
                     {
@@ -75,7 +77,19 @@ internal sealed class ListPromptState<T>
 
                     break;
 
-                case ConsoleKey.DownArrow:
+                case ConsoleKey.UpArrow:
+                    if (currentLeafIndex > 0)
+                    {
+                        index = _leafIndexes[currentLeafIndex - 1];
+                    }
+                    else if (WrapAround)
+                    {
+                        index = _leafIndexes.LastOrDefault();
+                    }
+
+                    keyHandledForNavigation = true;
+                    break;
+
                 case ConsoleKey.J:
                     if (currentLeafIndex < _leafIndexes.Count - 1)
                     {
@@ -88,12 +102,27 @@ internal sealed class ListPromptState<T>
 
                     break;
 
+                case ConsoleKey.DownArrow:
+                    if (currentLeafIndex < _leafIndexes.Count - 1)
+                    {
+                        index = _leafIndexes[currentLeafIndex + 1];
+                    }
+                    else if (WrapAround)
+                    {
+                        index = _leafIndexes.FirstOrDefault();
+                    }
+
+                    keyHandledForNavigation = true;
+                    break;
+
                 case ConsoleKey.Home:
                     index = _leafIndexes.FirstOrDefault();
+                    keyHandledForNavigation = true;
                     break;
 
                 case ConsoleKey.End:
                     index = _leafIndexes.LastOrDefault();
+                    keyHandledForNavigation = true;
                     break;
 
                 case ConsoleKey.PageUp:
@@ -103,6 +132,7 @@ internal sealed class ListPromptState<T>
                         index = _leafIndexes[index];
                     }
 
+                    keyHandledForNavigation = true;
                     break;
 
                 case ConsoleKey.PageDown:
@@ -112,32 +142,62 @@ internal sealed class ListPromptState<T>
                         index = _leafIndexes[index];
                     }
 
+                    keyHandledForNavigation = true;
                     break;
             }
         }
         else
         {
-            index = keyInfo.Key switch
+            switch (keyInfo.Key)
             {
-                ConsoleKey.UpArrow or ConsoleKey.K => Index - 1,
-                ConsoleKey.DownArrow or ConsoleKey.J => Index + 1,
-                ConsoleKey.Home => 0,
-                ConsoleKey.End => ItemCount - 1,
-                ConsoleKey.PageUp => Index - PageSize,
-                ConsoleKey.PageDown => Index + PageSize,
-                _ => Index,
-            };
+                case ConsoleKey.K:
+                    index = Index - 1;
+                    break;
+                case ConsoleKey.UpArrow:
+                    index = Index - 1;
+                    keyHandledForNavigation = true;
+                    break;
+                case ConsoleKey.J:
+                    index = Index + 1;
+                    break;
+                case ConsoleKey.DownArrow:
+                    index = Index + 1;
+                    keyHandledForNavigation = true;
+                    break;
+                case ConsoleKey.Home:
+                    index = 0;
+                    keyHandledForNavigation = true;
+                    break;
+                case ConsoleKey.End:
+                    index = ItemCount - 1;
+                    keyHandledForNavigation = true;
+                    break;
+                case ConsoleKey.PageUp:
+                    index = Index - PageSize;
+                    keyHandledForNavigation = true;
+                    break;
+                case ConsoleKey.PageDown:
+                    index = Index + PageSize;
+                    keyHandledForNavigation = true;
+                    break;
+            }
         }
 
-        var search = SearchText;
+        var search = SearchText; // Initialize search with current value
 
         if (SearchEnabled)
         {
-            // Cycle through matches with Tab
-            if (keyInfo.Key == ConsoleKey.Tab && !string.IsNullOrEmpty(SearchText))
+            // IMPORTANT: Check if the key was already handled by navigation logic.
+            // If it was, we prevent it from being processed as search input.
+            if (keyHandledForNavigation)
+            {
+                // Do nothing, the 'index' has already been updated if necessary.
+                // 'search' remains unchanged.
+            }
+            else if (keyInfo.Key == ConsoleKey.Tab && !string.IsNullOrEmpty(SearchText))
             {
                 var matches = new List<int>(Items.Count);
-                for (int i = 0; i < Items.Count; i++)
+                for (var i = 0; i < Items.Count; i++)
                 {
                     var it = Items[i];
                     var text = _converter(it.Data);
@@ -150,7 +210,7 @@ internal sealed class ListPromptState<T>
 
                 if (matches.Count > 0)
                 {
-                    int matchIndex = matches.IndexOf(Index);
+                    var matchIndex = matches.IndexOf(Index);
 
                     if (matchIndex == -1)
                     {
@@ -158,7 +218,7 @@ internal sealed class ListPromptState<T>
                     }
                     else
                     {
-                        int nextMatchIndex = (matchIndex + 1) % matches.Count;
+                        var nextMatchIndex = (matchIndex + 1) % matches.Count;
                         index = matches[nextMatchIndex];
                     }
                 }
