@@ -136,12 +136,14 @@ internal sealed class ListPromptState<T>
             // Cycle through matches with Tab
             if (keyInfo.Key == ConsoleKey.Tab && !string.IsNullOrEmpty(SearchText))
             {
-                // Build list of matching indexes (case-insensitive), excluding groups in Leaf mode
-                var matches = new List<int>(capacity: Items.Count);
+                var matches = new List<int>(Items.Count);
+    
                 for (int i = 0; i < Items.Count; i++)
                 {
                     var it = Items[i];
-                    if ((_converter(it.Data)?.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0
+                    var text = _converter(it.Data);
+    
+                    if ((text?.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) ?? -1) >= 0
                         && (!it.IsGroup || Mode != SelectionMode.Leaf))
                     {
                         matches.Add(i);
@@ -150,7 +152,6 @@ internal sealed class ListPromptState<T>
     
                 if (matches.Count > 0)
                 {
-                    // Find first match after current index; if none, wrap to the first match
                     var next = -1;
                     for (int k = 0; k < matches.Count; k++)
                     {
@@ -164,7 +165,6 @@ internal sealed class ListPromptState<T>
                     index = next >= 0 ? next : matches[0];
                 }
             }
-            // If is text input, append to search filter
             else if (!char.IsControl(keyInfo.KeyChar))
             {
                 search = SearchText + keyInfo.KeyChar;
