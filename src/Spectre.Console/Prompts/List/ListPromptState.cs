@@ -159,6 +159,7 @@ internal sealed class ListPromptState<T>
                            break;
                        }
                     }
+
                     index = next >= 0 ? next : matches[0];
                 }
             }
