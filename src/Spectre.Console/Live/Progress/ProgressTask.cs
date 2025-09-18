@@ -18,6 +18,10 @@ public sealed class ProgressTask : IProgress<double>
     public int Id { get; }
 
     /// <summary>
+    /// Gets or sets optional user tag data.
+    /// </summary>
+    public object Tag { get; set; }
+    /// <summary>
     /// Gets or sets the task description.
     /// </summary>
     public string Description
