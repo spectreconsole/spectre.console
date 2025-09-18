@@ -231,6 +231,11 @@ public sealed class ProgressTask : IProgress<double>
 
             var timestamp = DateTime.Now;
             samplesChanged = true;
+            if (Samples.Count == 0 && StartTime != null)
+            {
+                Samples.Add(new ProgressSample(StartTime.Value, 0));
+            }
+
             Samples.Add(new ProgressSample(timestamp, Value - startValue));
         }
     }
