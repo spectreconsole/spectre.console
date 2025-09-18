@@ -5,7 +5,8 @@ namespace Spectre.Console;
 /// </summary>
 public sealed class ProgressTask : IProgress<double>
 {
-    private readonly List<ProgressSample> _samples;
+    private readonly Lazy<CircularBuffer<ProgressSample>> lazySamples;
+    private CircularBuffer<ProgressSample> _samples => lazySamples.Value;
     private readonly object _lock;
 
     private double _maxValue;
@@ -16,6 +17,16 @@ public sealed class ProgressTask : IProgress<double>
     /// Gets the task ID.
     /// </summary>
     public int Id { get; }
+
+    /// <summary>
+    /// Gets or sets optional user tag data.
+    /// </summary>
+    public object? Tag { get; set; }
+
+    /// <summary>
+    /// Gets or sets if we should override the default hiding of this task when completed.
+    /// </summary>
+    public bool? HideWhenCompleted { get; set; }
 
     /// <summary>
     /// Gets or sets the task description.
@@ -104,7 +115,7 @@ public sealed class ProgressTask : IProgress<double>
     /// <param name="autoStart">Whether or not the task should start automatically.</param>
     public ProgressTask(int id, string description, double maxValue, bool autoStart = true)
     {
-        _samples = new List<ProgressSample>();
+        lazySamples = new(() => new CircularBuffer<ProgressSample>(MaxSamplesKept));
         _lock = new object();
         _maxValue = maxValue;
         _value = 0;
@@ -161,6 +172,16 @@ public sealed class ProgressTask : IProgress<double>
         Update(increment: value);
     }
 
+    /// <summary>
+    /// Gets or Sets the max age for samples we store to calculate speed/estimated time left. Samples older than this value are discarded to give you the 'current' speed.
+    /// </summary>
+    public TimeSpan MaxSamplingAge { get; set; } = TimeSpan.FromSeconds(30);
+
+    /// <summary>
+    /// Gets or Sets the maximum number of samples we use to calculate speed/time left. If set to 0, no samples are kept.
+    /// </summary>
+    public int MaxSamplesKept { get; set; } = 1000;
+
     private void Update(
         string? description = null,
         double? maxValue = null,
@@ -203,25 +224,22 @@ public sealed class ProgressTask : IProgress<double>
                 _value = _maxValue;
             }
 
+            if (MaxSamplesKept == 0)
+            {
+                return;
+            }
+
             var timestamp = DateTime.Now;
-            var threshold = timestamp - TimeSpan.FromSeconds(30);
-
-            // Remove samples that's too old
-            while (_samples.Count > 0 && _samples[0].Timestamp < threshold)
+            samplesChanged = true;
+            if (_samples.Count == 0 && StartTime != null)
             {
-                _samples.RemoveAt(0);
+                _samples.Add(new ProgressSample(StartTime.Value, 0));
             }
-
-            // Keep maximum of 1000 samples
-            while (_samples.Count > 1000)
-            {
-                _samples.RemoveAt(0);
-            }
-
             _samples.Add(new ProgressSample(timestamp, Value - startValue));
         }
     }
 
+    private volatile bool samplesChanged;
     private double GetPercentage()
     {
         if (MaxValue == 0)
@@ -234,28 +252,35 @@ public sealed class ProgressTask : IProgress<double>
         return percentage;
     }
 
+    private double? _cachedLastSpeed;
+
     private double? GetSpeed()
     {
+        if (!samplesChanged || StartTime == null || !lazySamples.IsValueCreated || _samples.Count == 0 || StopTime != null)
+        {
+            return _cachedLastSpeed;
+        }
+
+        samplesChanged = false;
+
         lock (_lock)
         {
-            if (StartTime == null)
+            var threshold = DateTime.Now - MaxSamplingAge;
+            var validSamples = _samples.Where(a => a.Timestamp >= threshold);
+            var first = validSamples.FirstOrDefault();
+            if (first.Equals(default(ProgressSample)))
             {
-                return null;
+                return _cachedLastSpeed = null;
             }
 
-            if (_samples.Count == 0)
-            {
-                return null;
-            }
-
-            var totalTime = _samples.Last().Timestamp - _samples[0].Timestamp;
+            var totalTime = _samples[_samples.Count - 1].Timestamp - first.Timestamp; // circular buffer automatically rotates index so length is newest and 0 is oldest, we
             if (totalTime == TimeSpan.Zero)
             {
-                return null;
+                return _cachedLastSpeed = null;
             }
 
-            var totalCompleted = _samples.Sum(x => x.Value);
-            return totalCompleted / totalTime.TotalSeconds;
+            var totalCompleted = validSamples.Sum(x => x.Value);
+            return _cachedLastSpeed = totalCompleted / totalTime.TotalSeconds;
         }
     }
 
