@@ -21,6 +21,12 @@ public sealed class ProgressTask : IProgress<double>
     /// Gets or sets optional user tag data.
     /// </summary>
     public object Tag { get; set; }
+
+    /// <summary>
+    /// Gets or sets if we should override the default hiding of this task when completed.
+    /// </summary>
+    public bool? HideWhenCompleted { get; set; }
+
     /// <summary>
     /// Gets or sets the task description.
     /// </summary>
