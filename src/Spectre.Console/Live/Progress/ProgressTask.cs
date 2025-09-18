@@ -171,6 +171,16 @@ public sealed class ProgressTask : IProgress<double>
         Update(increment: value);
     }
 
+    /// <summary>
+    /// Gets or Sets the max age for samples we store to calculate speed/estimated time left. Samples older than this value are discarded to give you the 'current' speed.
+    /// </summary>
+    public TimeSpan MaxSamplingAge { get; set; } = TimeSpan.FromSeconds(30);
+
+    /// <summary>
+    /// Gets or Sets the maximum number of samples we use to calculate speed/time left. If set to 0, no samples are kept.
+    /// </summary>
+    public int MaxSamplesKept { get; set; } = 1000;
+
     private void Update(
         string? description = null,
         double? maxValue = null,
@@ -213,8 +223,13 @@ public sealed class ProgressTask : IProgress<double>
                 _value = _maxValue;
             }
 
+            if (MaxSamplesKept == 0)
+            {
+                return;
+            }
+
             var timestamp = DateTime.Now;
-            var threshold = timestamp - TimeSpan.FromSeconds(30);
+            var threshold = timestamp - MaxSamplingAge;
 
             // Remove samples that's too old
             while (_samples.Count > 0 && _samples[0].Timestamp < threshold)
@@ -222,8 +237,8 @@ public sealed class ProgressTask : IProgress<double>
                 _samples.RemoveAt(0);
             }
 
-            // Keep maximum of 1000 samples
-            while (_samples.Count > 1000)
+            // Keep maximum of N samples
+            while (_samples.Count > MaxSamplesKept)
             {
                 _samples.RemoveAt(0);
             }
