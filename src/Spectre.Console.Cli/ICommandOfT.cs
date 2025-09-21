@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Spectre.Console.Cli;
 
 /// <summary>
@@ -12,6 +14,7 @@ public interface ICommand<TSettings> : ICommandLimiter<TSettings>
     /// </summary>
     /// <param name="context">The command context.</param>
     /// <param name="settings">The settings.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>An integer indicating whether or not the command executed successfully.</returns>
-    Task<int> Execute(CommandContext context, TSettings settings);
+    Task<int> Execute(CommandContext context, TSettings settings, CancellationToken cancellationToken);
 }

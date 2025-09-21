@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Spectre.Console.Tests.Data;
 
 public sealed class AsynchronousCommand : AsyncCommand<AsynchronousCommandSettings>
@@ -9,12 +11,12 @@ public sealed class AsynchronousCommand : AsyncCommand<AsynchronousCommandSettin
         _console = console;
     }
 
-    public async override Task<int> ExecuteAsync(CommandContext context, AsynchronousCommandSettings settings)
+    public async override Task<int> ExecuteAsync(CommandContext context, AsynchronousCommandSettings settings, CancellationToken cancellationToken)
     {
         // Simulate a long running asynchronous task
         await Task.Delay(200);
 
-        if (settings.ThrowException)
+        if (cancellationToken.IsCancellationRequested)
         {
             throw new Exception($"Throwing exception asynchronously");
         }

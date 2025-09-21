@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed partial class CommandAppTests
@@ -1198,7 +1200,7 @@ public sealed partial class CommandAppTests
             });
 
             // When
-            var result = await app.RunAsync(new[] { "foo", "4", "12" });
+            var result = await app.RunAsync(new[] { "foo", "4", "12" }, CancellationToken.None);
 
             // Then
             result.ShouldBe(1);
@@ -1266,7 +1268,7 @@ public sealed partial class CommandAppTests
             });
 
             // When
-            var result = await app.RunAsync(new[] { "foo", "4", "bar", "12" });
+            var result = await app.RunAsync(new[] { "foo", "4", "bar", "12" }, CancellationToken.None);
 
             // Then
             result.ShouldBe(1);

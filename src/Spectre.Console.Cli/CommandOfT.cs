@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Spectre.Console.Cli;
 
 /// <summary>
@@ -34,14 +36,20 @@ public abstract class Command<TSettings> : ICommand<TSettings>
     }
 
     /// <inheritdoc/>
-    Task<int> ICommand.Execute(CommandContext context, CommandSettings settings)
+    /// <param name="context">The command context.</param>
+    /// <param name="settings">The settings.</param>
+    /// <param name="cancellationToken">Should not be used. <see cref="AsyncCommand"/> should be used instead.</param>
+    Task<int> ICommand.Execute(CommandContext context, CommandSettings settings, CancellationToken cancellationToken)
     {
         Debug.Assert(settings is TSettings, "Command settings is of unexpected type.");
         return Task.FromResult(Execute(context, (TSettings)settings));
     }
 
     /// <inheritdoc/>
-    Task<int> ICommand<TSettings>.Execute(CommandContext context, TSettings settings)
+    /// <param name="context">The command context.</param>
+    /// <param name="settings">The settings.</param>
+    /// <param name="cancellationToken">Should not be used. <see cref="AsyncCommand"/> should be used instead.</param>
+    Task<int> ICommand<TSettings>.Execute(CommandContext context, TSettings settings, CancellationToken cancellationToken)
     {
         return Task.FromResult(Execute(context, settings));
     }

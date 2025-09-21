@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using AngleSharp.Html.Parser;
 using Generator.Models;
@@ -39,7 +40,7 @@ namespace Generator.Commands
             _parser = new HtmlParser();
         }
 
-        public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
+        public override async Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
         {
             var output = new DirectoryPath(settings.Output);
             if (!_fileSystem.Directory.Exists(settings.Output))
