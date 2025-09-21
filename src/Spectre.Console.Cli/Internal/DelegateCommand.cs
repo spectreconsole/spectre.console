@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Spectre.Console.Cli;
 
 internal sealed class DelegateCommand : ICommand
@@ -9,7 +11,7 @@ internal sealed class DelegateCommand : ICommand
         _func = func;
     }
 
-    public Task<int> Execute(CommandContext context, CommandSettings settings)
+    public Task<int> Execute(CommandContext context, CommandSettings settings, CancellationToken cancellationToken)
     {
         return _func(context, settings);
     }

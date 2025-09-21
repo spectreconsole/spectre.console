@@ -1,3 +1,4 @@
+using System.Threading;
 using static Spectre.Console.Cli.CommandTreeTokenizer;
 
 namespace Spectre.Console.Cli;
@@ -12,7 +13,7 @@ internal sealed class CommandExecutor
         _registrar.Register(typeof(DefaultPairDeconstructor), typeof(DefaultPairDeconstructor));
     }
 
-    public async Task<int> Execute(IConfiguration configuration, IEnumerable<string> args)
+    public async Task<int> Execute(IConfiguration configuration, IEnumerable<string> args, CancellationToken cancellationToken = default)
     {
         CommandTreeParserResult parsedResult;
 
@@ -118,7 +119,7 @@ internal sealed class CommandExecutor
                 leaf.Command.Data);
 
             // Execute the command tree.
-            return await Execute(leaf, parsedResult.Tree, context, resolver, configuration).ConfigureAwait(false);
+            return await Execute(leaf, parsedResult.Tree, context, resolver, configuration, cancellationToken);
         }
     }
 
@@ -220,7 +221,8 @@ internal sealed class CommandExecutor
         CommandTree tree,
         CommandContext context,
         ITypeResolver resolver,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        CancellationToken cancellationToken)
     {
         try
         {
@@ -249,7 +251,7 @@ internal sealed class CommandExecutor
             }
 
             // Execute the command.
-            var result = await command.Execute(context, settings);
+            var result = await command.Execute(context, settings, cancellationToken);
             foreach (var interceptor in interceptors)
             {
                 interceptor.InterceptResult(context, settings, ref result);
