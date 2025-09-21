@@ -1,3 +1,4 @@
+using System.Threading;
 using Spectre.Console.Cli.Internal.Configuration;
 
 namespace Spectre.Console.Cli;
@@ -58,15 +59,16 @@ public sealed class CommandApp : ICommandApp
     /// <returns>The exit code from the executed command.</returns>
     public int Run(IEnumerable<string> args)
     {
-        return RunAsync(args).GetAwaiter().GetResult();
+        return RunAsync(args, CancellationToken.None).GetAwaiter().GetResult();
     }
 
     /// <summary>
     /// Runs the command line application with specified arguments.
     /// </summary>
     /// <param name="args">The arguments.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The exit code from the executed command.</returns>
-    public async Task<int> RunAsync(IEnumerable<string> args)
+    public async Task<int> RunAsync(IEnumerable<string> args, CancellationToken cancellationToken)
     {
         try
         {
@@ -85,8 +87,7 @@ public sealed class CommandApp : ICommandApp
             }
 
             return await _executor
-                .Execute(_configurator, args)
-                .ConfigureAwait(false);
+                .Execute(_configurator, args, cancellationToken);
         }
         catch (Exception ex)
         {

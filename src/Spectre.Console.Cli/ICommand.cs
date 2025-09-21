@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Spectre.Console.Cli;
 
 /// <summary>
@@ -18,6 +20,7 @@ public interface ICommand
     /// </summary>
     /// <param name="context">The command context.</param>
     /// <param name="settings">The settings.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The validation result.</returns>
-    Task<int> Execute(CommandContext context, CommandSettings settings);
+    Task<int> Execute(CommandContext context, CommandSettings settings, CancellationToken cancellationToken);
 }

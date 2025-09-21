@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Spectre.Console.Cli;
 
 /// <summary>
@@ -14,13 +16,19 @@ public abstract class Command : ICommand<EmptyCommandSettings>
     public abstract int Execute(CommandContext context);
 
     /// <inheritdoc/>
-    Task<int> ICommand<EmptyCommandSettings>.Execute(CommandContext context, EmptyCommandSettings settings)
+    /// <param name="context">The command context.</param>
+    /// <param name="settings">The settings.</param>
+    /// <param name="cancellationToken">Should not be used. <see cref="AsyncCommand"/> should be used instead.</param>
+    Task<int> ICommand<EmptyCommandSettings>.Execute(CommandContext context, EmptyCommandSettings settings, CancellationToken cancellationToken)
     {
         return Task.FromResult(Execute(context));
     }
 
     /// <inheritdoc/>
-    Task<int> ICommand.Execute(CommandContext context, CommandSettings settings)
+    /// <param name="context">The command context.</param>
+    /// <param name="settings">The settings.</param>
+    /// <param name="cancellationToken">Should not be used. <see cref="AsyncCommand"/> should be used instead.</param>
+    Task<int> ICommand.Execute(CommandContext context, CommandSettings settings, CancellationToken cancellationToken)
     {
         return Task.FromResult(Execute(context));
     }
