@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Spectre.Console.Tests.Unit.Cli;
 
 public sealed partial class CommandAppTests
@@ -8,6 +10,8 @@ public sealed partial class CommandAppTests
         public async Task Should_Execute_Command_Asynchronously()
         {
             // Given
+            CancellationTokenSource cts = new();
+
             var app = new CommandAppTester();
             app.SetDefaultCommand<AsynchronousCommand>();
             app.Configure(config =>
@@ -16,7 +20,7 @@ public sealed partial class CommandAppTests
             });
 
             // When
-            var result = await app.RunAsync();
+            var result = await app.RunAsync(cts.Token);
 
             // Then
             result.ExitCode.ShouldBe(0);
@@ -27,15 +31,14 @@ public sealed partial class CommandAppTests
         public async Task Should_Handle_Exception_Asynchronously()
         {
             // Given
+            CancellationTokenSource cts = new();
+
             var app = new CommandAppTester();
             app.SetDefaultCommand<AsynchronousCommand>();
 
             // When
-            var result = await app.RunAsync(new[]
-                        {
-                        "--ThrowException",
-                        "true",
-                        });
+            cts.Cancel();
+            var result = await app.RunAsync(cts.Token);
 
             // Then
             result.ExitCode.ShouldBe(-1);
@@ -45,6 +48,8 @@ public sealed partial class CommandAppTests
         public async Task Should_Throw_Exception_Asynchronously()
         {
             // Given
+            CancellationTokenSource cts = new();
+
             var app = new CommandAppTester();
             app.SetDefaultCommand<AsynchronousCommand>();
             app.Configure(config =>
@@ -53,12 +58,9 @@ public sealed partial class CommandAppTests
             });
 
             // When
+            cts.Cancel();
             var result = await Record.ExceptionAsync(async () =>
-                    await app.RunAsync(new[]
-                        {
-                        "--ThrowException",
-                        "true",
-                        }));
+                    await app.RunAsync(cts.Token));
 
             // Then
             result.ShouldBeOfType<Exception>().And(ex =>

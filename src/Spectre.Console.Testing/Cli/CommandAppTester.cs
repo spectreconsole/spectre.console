@@ -168,14 +168,15 @@ public sealed class CommandAppTester
     /// <summary>
     /// Runs the command application asynchronously.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <param name="args">The arguments.</param>
     /// <returns>The result.</returns>
-    public async Task<CommandAppResult> RunAsync(params string[] args)
+    public async Task<CommandAppResult> RunAsync(CancellationToken cancellationToken, params string[] args)
     {
-        return await RunAsync(args, Console);
+        return await RunAsync(args, Console, cancellationToken);
     }
 
-    private async Task<CommandAppResult> RunAsync(string[] args, TestConsole console, Action<IConfigurator>? config = null)
+    private async Task<CommandAppResult> RunAsync(string[] args, TestConsole console, CancellationToken cancellationToken, Action<IConfigurator>? config = null)
     {
         CommandContext? context = null;
         CommandSettings? settings = null;
@@ -200,7 +201,7 @@ public sealed class CommandAppTester
             settings = s;
         })));
 
-        var result = await app.RunAsync(args);
+        var result = await app.RunAsync(args, cancellationToken);
 
         var output = console.Output.NormalizeLineEndings();
         output = TestSettings.TrimConsoleOutput ? output.TrimLines().Trim() : output;
