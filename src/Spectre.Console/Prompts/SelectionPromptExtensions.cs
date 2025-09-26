@@ -252,7 +252,7 @@ public static class SelectionPromptExtensions
             throw new ArgumentNullException(nameof(obj));
         }
 
-        obj.CancelResultFunc = cancelResultFunc;
+        obj.CancelResult = cancelResultFunc;
         return obj;
     }
 
@@ -271,7 +271,7 @@ public static class SelectionPromptExtensions
             throw new ArgumentNullException(nameof(obj));
         }
 
-        obj.CancelResultFunc = () => cancelResult;
+        obj.CancelResult = () => cancelResult;
         return obj;
     }
 
