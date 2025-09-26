@@ -157,7 +157,7 @@ public sealed class SelectionPromptTests
     }
 
     [Fact]
-    public void Should_Return_AbortChoice_On_Abort()
+    public void Should_Return_CancelResult_On_Cancel_FuncVersion()
     {
         // Given
         var console = new TestConsole();
@@ -170,7 +170,28 @@ public sealed class SelectionPromptTests
                 .Mode(SelectionMode.Leaf)
                 .AddChoiceGroup("Group one", "A", "B")
                 .AddChoiceGroup("Group two", "C", "D")
-                .AddAbortChoice("E");
+                .AddCancelResult(() => "E");
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe("E");
+    }
+
+    [Fact]
+    public void Should_Return_CancelResult_On_Cancel_ValueVersion()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        // When
+        var prompt = new SelectionPrompt<string>()
+                .Title("Select one")
+                .Mode(SelectionMode.Leaf)
+                .AddChoiceGroup("Group one", "A", "B")
+                .AddChoiceGroup("Group two", "C", "D")
+                .AddCancelResult("E");
         var selection = prompt.Show(console);
 
         // Then

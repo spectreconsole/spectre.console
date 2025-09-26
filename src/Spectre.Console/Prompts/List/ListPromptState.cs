@@ -12,7 +12,7 @@ internal sealed class ListPromptState<T>
     public SelectionMode Mode { get; }
     public bool SkipUnselectableItems { get; private set; }
     public bool SearchEnabled { get; }
-    public bool IsAborted { get; private set; }
+    public bool IsCancelled { get; private set; }
     public IReadOnlyList<ListPromptItem<T>> Items { get; }
     private readonly IReadOnlyList<int>? _leafIndexes;
 
@@ -181,8 +181,8 @@ internal sealed class ListPromptState<T>
         return false;
     }
 
-    internal void Abort()
+    internal void Cancel()
     {
-        IsAborted = true;
+        IsCancelled = true;
     }
 }

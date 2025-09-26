@@ -69,9 +69,9 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     public bool SearchEnabled { get; set; }
 
     /// <summary>
-    /// Gets or sets a value to be returned if Abort is triggered by the 'ESC' key.
+    /// Gets or sets a Func that will be triggered if Cancel is triggered by the 'ESC' key.
     /// </summary>
-    public T? AbortChoice { get; set; }
+    public Func<T>? CancelResultFunc { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SelectionPrompt{T}"/> class.
@@ -107,9 +107,9 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
         var converter = Converter ?? TypeConverterHelper.ConvertToString;
         var result = await prompt.Show(_tree, converter, Mode, true, SearchEnabled, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
 
-        if (result.IsAborted && AbortChoice is not null)
+        if (result.IsCancelled && CancelResultFunc is not null)
         {
-            return AbortChoice;
+            return CancelResultFunc();
         }
 
         // Return the selected item
@@ -132,7 +132,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
             return ListPromptInputResult.Submit;
         }
 
-        if (AbortChoice != null && key.Key == ConsoleKey.Escape)
+        if (key.Key == ConsoleKey.Escape && CancelResultFunc is not null)
         {
             return ListPromptInputResult.Abort;
         }
