@@ -157,7 +157,7 @@ public sealed class SelectionPromptTests
     }
 
     [Fact]
-    public void Should_Return_Correctly_On_Abort()
+    public void Should_Return_AbortChoice_On_Abort()
     {
         // Given
         var console = new TestConsole();
