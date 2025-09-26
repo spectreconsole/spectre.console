@@ -70,6 +70,11 @@ internal sealed class ListPrompt<T>
                 {
                     break;
                 }
+                else if (result == ListPromptInputResult.Abort)
+                {
+                    state.Abort();
+                    break;
+                }
 
                 if (state.Update(key) || result == ListPromptInputResult.Refresh)
                 {
