@@ -38,7 +38,7 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
         DefaultValue = defaultValue;
         PairDeconstructor = deconstructor;
         ValueProvider = valueProvider;
-        Validators = new List<ParameterValidationAttribute>(validators ?? Array.Empty<ParameterValidationAttribute>());
+        Validators = new List<ParameterValidationAttribute>(validators ?? []);
         IsRequired = required;
         IsHidden = isHidden;
     }

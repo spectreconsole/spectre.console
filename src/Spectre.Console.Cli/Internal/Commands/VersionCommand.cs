@@ -2,7 +2,7 @@ namespace Spectre.Console.Cli;
 
 [Description("Displays the CLI library version")]
 [SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes")]
-internal sealed class VersionCommand : Command<VersionCommand.Settings>
+internal sealed class VersionCommand : Command, IBuiltInCommand
 {
     private readonly IAnsiConsole _writer;
 
@@ -11,11 +11,7 @@ internal sealed class VersionCommand : Command<VersionCommand.Settings>
         _writer = configuration.Settings.Console.GetConsole();
     }
 
-    public sealed class Settings : CommandSettings
-    {
-    }
-
-    public override int Execute(CommandContext context, Settings settings)
+    public override int Execute(CommandContext context)
     {
         _writer.MarkupLine(
             "[yellow]Spectre.Cli[/] version [aqua]{0}[/]",

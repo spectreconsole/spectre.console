@@ -1,0 +1,190 @@
+﻿{
+  "opencli": "0.1-draft",
+  "info": {
+    "title": "my-app",
+    "version": "1.2.3"
+  },
+  "commands": [
+    {
+      "name": "animals",
+      "commands": [
+        {
+          "name": "cat",
+          "options": [
+            {
+              "name": "--agility",
+              "required": false,
+              "arguments": [
+                {
+                  "name": "VALUE",
+                  "required": true,
+                  "arity": {
+                    "minimum": 1,
+                    "maximum": 1
+                  },
+                  "metadata": [
+                    {
+                      "name": "ClrType",
+                      "value": "System.Int32"
+                    }
+                  ]
+                }
+              ],
+              "description": "The agility between 0 and 100.",
+              "recursive": false,
+              "hidden": false
+            },
+            {
+              "name": "--alive",
+              "required": false,
+              "aliases": [
+                "--not-dead",
+                "-a"
+              ],
+              "description": "Indicates whether or not the animal is alive.",
+              "recursive": false,
+              "hidden": false
+            },
+            {
+              "name": "--name",
+              "required": false,
+              "aliases": [
+                "--pet-name",
+                "-n",
+                "-p"
+              ],
+              "arguments": [
+                {
+                  "name": "VALUE",
+                  "required": true,
+                  "arity": {
+                    "minimum": 1,
+                    "maximum": 1
+                  },
+                  "metadata": [
+                    {
+                      "name": "ClrType",
+                      "value": "System.String"
+                    }
+                  ]
+                }
+              ],
+              "recursive": false,
+              "hidden": false
+            }
+          ],
+          "arguments": [
+            {
+              "name": "LEGS",
+              "required": false,
+              "arity": {
+                "minimum": 1,
+                "maximum": 1
+              },
+              "description": "The number of legs.",
+              "hidden": false,
+              "metadata": [
+                {
+                  "name": "ClrType",
+                  "value": "System.Int32"
+                }
+              ]
+            }
+          ],
+          "hidden": false,
+          "examples": []
+        },
+        {
+          "name": "dog",
+          "options": [
+            {
+              "name": "--alive",
+              "required": false,
+              "aliases": [
+                "--not-dead",
+                "-a"
+              ],
+              "description": "Indicates whether or not the animal is alive.",
+              "recursive": false,
+              "hidden": false
+            },
+            {
+              "name": "--good-boy",
+              "required": false,
+              "aliases": [
+                "-g"
+              ],
+              "recursive": false,
+              "hidden": false
+            },
+            {
+              "name": "--name",
+              "required": false,
+              "aliases": [
+                "--pet-name",
+                "-n",
+                "-p"
+              ],
+              "arguments": [
+                {
+                  "name": "VALUE",
+                  "required": true,
+                  "arity": {
+                    "minimum": 1,
+                    "maximum": 1
+                  },
+                  "metadata": [
+                    {
+                      "name": "ClrType",
+                      "value": "System.String"
+                    }
+                  ]
+                }
+              ],
+              "recursive": false,
+              "hidden": false
+            }
+          ],
+          "arguments": [
+            {
+              "name": "LEGS",
+              "required": false,
+              "arity": {
+                "minimum": 1,
+                "maximum": 1
+              },
+              "description": "The number of legs.",
+              "hidden": false,
+              "metadata": [
+                {
+                  "name": "ClrType",
+                  "value": "System.Int32"
+                }
+              ]
+            },
+            {
+              "name": "AGE",
+              "required": true,
+              "arity": {
+                "minimum": 1,
+                "maximum": 1
+              },
+              "hidden": false,
+              "metadata": [
+                {
+                  "name": "ClrType",
+                  "value": "System.Int32"
+                }
+              ]
+            }
+          ],
+          "description": "The dog command.",
+          "hidden": false,
+          "examples": []
+        }
+      ],
+      "hidden": false,
+      "examples": []
+    }
+  ]
+}
