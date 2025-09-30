@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFrameworks>net9.0;net8.0;netstandard2.0</TargetFrameworks>
     <IsPackable>true</IsPackable>
-  </PropertyGroup>
-  <PropertyGroup>
     <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'">false</IsAotCompatible>
     <IsTrimmable>false</IsTrimmable>
+    <DefineConstants>$(DefineConstants)OPENCLI_VISIBILITY_INTERNAL</DefineConstants>
   </PropertyGroup>
+
   <ItemGroup Label="REMOVE THIS">
     <InternalsVisibleTo Include="Spectre.Console.Cli.Tests"/>
   </ItemGroup>
@@ -18,6 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup Label="Dependencies">
+    <PackageReference Include="OpenCli.Sources" />
     <PackageReference Include="PolySharp">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

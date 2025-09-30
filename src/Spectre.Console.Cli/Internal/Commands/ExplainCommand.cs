@@ -2,7 +2,7 @@ namespace Spectre.Console.Cli;
 
 [Description("Displays diagnostics about CLI configurations")]
 [SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes")]
-internal sealed class ExplainCommand : Command<ExplainCommand.Settings>
+internal sealed class ExplainCommand : Command<ExplainCommand.Settings>, IBuiltInCommand
 {
     private readonly CommandModel _commandModel;
     private readonly IAnsiConsole _writer;

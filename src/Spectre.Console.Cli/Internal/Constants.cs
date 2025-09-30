@@ -5,6 +5,7 @@ internal static class CliConstants
     public const string DefaultCommandName = "__default_command";
     public const string True = "true";
     public const string False = "false";
+    public const string DumpHelpOpenCliOption = "--help-dump-opencli";
 
     public static string[] AcceptedBooleanValues { get; } = new string[]
     {
@@ -18,5 +19,6 @@ internal static class CliConstants
         public const string Version = "version";
         public const string XmlDoc = "xmldoc";
         public const string Explain = "explain";
+        public const string OpenCli = "opencli";
     }
 }

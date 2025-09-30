@@ -2,7 +2,7 @@ namespace Spectre.Console.Cli;
 
 [Description("Generates an XML representation of the CLI configuration.")]
 [SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes")]
-internal sealed class XmlDocCommand : Command<XmlDocCommand.Settings>
+internal sealed class XmlDocCommand : Command, IBuiltInCommand
 {
     private readonly CommandModel _model;
     private readonly IAnsiConsole _writer;
@@ -13,11 +13,7 @@ internal sealed class XmlDocCommand : Command<XmlDocCommand.Settings>
         _writer = configuration.Settings.Console.GetConsole();
     }
 
-    public sealed class Settings : CommandSettings
-    {
-    }
-
-    public override int Execute(CommandContext context, Settings settings)
+    public override int Execute(CommandContext context)
     {
         _writer.Write(Serialize(_model), Style.Plain);
         return 0;

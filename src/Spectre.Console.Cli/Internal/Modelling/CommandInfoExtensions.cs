@@ -2,6 +2,16 @@ namespace Spectre.Console.Cli;
 
 internal static class CommandInfoExtensions
 {
+    public static IEnumerable<CommandArgument>? GetArguments(this CommandInfo? command)
+    {
+        return command?.Parameters.OfType<CommandArgument>();
+    }
+
+    public static IEnumerable<CommandOption>? GetOptions(this CommandInfo? command)
+    {
+        return command?.Parameters.OfType<CommandOption>();
+    }
+
     public static bool HaveParentWithOption(this CommandInfo command, CommandOption option)
     {
         var parent = command?.Parent;

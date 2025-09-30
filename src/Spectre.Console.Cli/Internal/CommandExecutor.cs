@@ -68,6 +68,13 @@ internal sealed class CommandExecutor
                     }
                 }
             }
+
+            // OpenCLI?
+            if (firstArgument.Equals(CliConstants.DumpHelpOpenCliOption, StringComparison.OrdinalIgnoreCase))
+            {
+                // Replace all arguments with the opencligen command
+                arguments = ["cli", "opencli"];
+            }
         }
 
         // Parse and map the model against the arguments.
