@@ -1,3 +1,4 @@
+using System.Threading;
 using Spectre.Console.Cli.Internal.Configuration;
 
 namespace Spectre.Console.Cli;
@@ -48,10 +49,11 @@ public sealed class CommandApp<TDefaultCommand> : ICommandApp
     /// Runs the command line application with specified arguments.
     /// </summary>
     /// <param name="args">The arguments.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The exit code from the executed command.</returns>
-    public Task<int> RunAsync(IEnumerable<string> args)
+    public Task<int> RunAsync(IEnumerable<string> args, CancellationToken cancellationToken)
     {
-        return _app.RunAsync(args);
+        return _app.RunAsync(args, cancellationToken);
     }
 
     internal Configurator GetConfigurator()

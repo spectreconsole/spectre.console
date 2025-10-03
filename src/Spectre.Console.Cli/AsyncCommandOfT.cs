@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Spectre.Console.Cli;
 
 /// <summary>
@@ -23,8 +25,9 @@ public abstract class AsyncCommand<TSettings> : ICommand<TSettings>
     /// </summary>
     /// <param name="context">The command context.</param>
     /// <param name="settings">The settings.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>An integer indicating whether or not the command executed successfully.</returns>
-    public abstract Task<int> ExecuteAsync(CommandContext context, TSettings settings);
+    public abstract Task<int> ExecuteAsync(CommandContext context, TSettings settings, CancellationToken cancellationToken);
 
     /// <inheritdoc/>
     ValidationResult ICommand.Validate(CommandContext context, CommandSettings settings)
@@ -33,15 +36,15 @@ public abstract class AsyncCommand<TSettings> : ICommand<TSettings>
     }
 
     /// <inheritdoc/>
-    Task<int> ICommand.Execute(CommandContext context, CommandSettings settings)
+    Task<int> ICommand.Execute(CommandContext context, CommandSettings settings, CancellationToken cancellationToken)
     {
         Debug.Assert(settings is TSettings, "Command settings is of unexpected type.");
-        return ExecuteAsync(context, (TSettings)settings);
+        return ExecuteAsync(context, (TSettings)settings, cancellationToken);
     }
 
     /// <inheritdoc/>
-    Task<int> ICommand<TSettings>.Execute(CommandContext context, TSettings settings)
+    Task<int> ICommand<TSettings>.Execute(CommandContext context, TSettings settings, CancellationToken cancellationToken)
     {
-        return ExecuteAsync(context, settings);
+        return ExecuteAsync(context, settings, cancellationToken);
     }
 }
