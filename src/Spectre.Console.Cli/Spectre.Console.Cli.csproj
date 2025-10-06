@@ -5,7 +5,7 @@
     <IsPackable>true</IsPackable>
     <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'">false</IsAotCompatible>
     <IsTrimmable>false</IsTrimmable>
-    <DefineConstants>$(DefineConstants)OPENCLI_VISIBILITY_INTERNAL</DefineConstants>
+    <DefineConstants>$(DefineConstants);OPENCLI_VISIBILITY_INTERNAL</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Label="REMOVE THIS">
