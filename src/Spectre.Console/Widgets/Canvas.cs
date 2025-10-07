@@ -137,7 +137,7 @@ public sealed class Canvas : Renderable
                 }
                 else
                 {
-                    yield return new Segment(pixel);
+                    yield return Segment.Transparent(PixelWidth);
                 }
             }
 
