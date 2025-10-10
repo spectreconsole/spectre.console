@@ -5,7 +5,7 @@ Category: Release Notes
 Excluded: false
 ---
 
-Version`0.52.0` of Spectre.Console has been released!
+Version `0.52.0` of Spectre.Console has been released!
 
 Exciting things are happening. We’ve merged support for my love child, OpenCli, in this release. That means you can now pass the parameter `--help-dump-opencli` to your application to get an [OpenCli](https://opencli.org) description dumped to stdout.
 
