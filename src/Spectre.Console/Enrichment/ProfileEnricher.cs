@@ -1,3 +1,5 @@
+using Spectre.Console.Enrichment.CI;
+
 namespace Spectre.Console.Enrichment;
 
 internal static class ProfileEnricher
@@ -18,6 +20,7 @@ internal static class ProfileEnricher
             new TeamCityEnricher(),
             new TfsEnricher(),
             new TravisEnricher(),
+            new ConsoleSizeEnricher(),
         };
 
     public static void Enrich(
