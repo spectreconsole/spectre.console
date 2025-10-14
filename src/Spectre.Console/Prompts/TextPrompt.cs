@@ -90,6 +90,17 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     internal DefaultPromptValue<T>? DefaultValue { get; set; }
 
     /// <summary>
+    /// Gets or sets the placeholder text (displayed when input is empty).
+    /// </summary>
+    public string? Placeholder { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style for the placeholder.
+    /// Defaults to grey if null.
+    /// </summary>
+    public Style? PlaceholderStyle { get; set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="TextPrompt{T}"/> class.
     /// </summary>
     /// <param name="prompt">The prompt markup text.</param>
@@ -130,7 +141,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
 
             while (true)
             {
-                var input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken).ConfigureAwait(false);
+                var input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, Placeholder, PlaceholderStyle, cancellationToken).ConfigureAwait(false);
 
                 // Nothing entered?
                 if (string.IsNullOrWhiteSpace(input))
