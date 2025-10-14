@@ -128,7 +128,8 @@ public sealed class MultiSelectionPromptTests
         action.ShouldThrow<ArgumentOutOfRangeException>();
     }
 
-    [Fact] public void Should_Throw_Meaningful_Exception_For_Empty_Prompt()
+    [Fact]
+    public void Should_Throw_Meaningful_Exception_For_Empty_Prompt()
     {
         // Given
         var console = new TestConsole();
@@ -143,6 +144,115 @@ public sealed class MultiSelectionPromptTests
         // Then
         var exception = action.ShouldThrow<InvalidOperationException>();
         exception.Message.ShouldBe("Cannot show an empty selection prompt. Please call the AddChoice() method to configure the prompt.");
+    }
+
+    [Fact]
+    public void Should_Return_All_Selected_Items()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.DownArrow);
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+
+        // When
+        var prompt = new MultiSelectionPrompt<string>();
+        prompt.AddChoices(["A", "B", "C", "D"]);
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe(["A", "B"]);
+    }
+
+    [Fact]
+    public void Should_Return_CancelResult_On_Cancel_FuncVersion()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.DownArrow);
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Escape);
+
+
+        // When
+        var prompt = new MultiSelectionPrompt<string>();
+        prompt.AddChoices(["A", "B", "C", "D"]);
+        prompt.AddCancelResult(() => ["E"]);
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe(["E"]);
+    }
+
+    [Fact]
+    public void Should_Return_CancelResult_On_Cancel_ListVersion()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.DownArrow);
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Escape);
+
+
+        // When
+        var prompt = new MultiSelectionPrompt<string>();
+        prompt.AddChoices(["A", "B", "C", "D"]);
+        prompt.AddCancelResult(["E", "F"]);
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe(["E", "F"]);
+    }
+
+    [Fact]
+    public void Should_Return_CancelResult_On_Cancel_ItemVersion()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.DownArrow);
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Escape);
+
+
+        // When
+        var prompt = new MultiSelectionPrompt<string>();
+        prompt.AddChoices(["A", "B", "C", "D"]);
+        prompt.AddCancelResult("E");
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe(["E"]);
+    }
+
+    [Fact]
+    public void Should_Return_CancelResult_On_Cancel_EmptyVersion()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.DownArrow);
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Escape);
+
+
+        // When
+        var prompt = new MultiSelectionPrompt<string>();
+        prompt.AddChoices(["A", "B", "C", "D"]);
+        prompt.AddCancelResult();
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe([]);
     }
 }
 

@@ -197,6 +197,27 @@ public sealed class SelectionPromptTests
         // Then
         selection.ShouldBe("E");
     }
+
+    [Fact]
+    public void Should_Ignore_Escape_If_CancelResult_Not_Set()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new SelectionPrompt<string>()
+                .Title("Select one")
+                .Mode(SelectionMode.Leaf)
+                .AddChoiceGroup("Group one", "A", "B")
+                .AddChoiceGroup("Group two", "C", "D");
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe("A");
+    }
 }
 
 file sealed class CustomSelectionItem
