@@ -33,7 +33,7 @@ internal sealed class FileSizeCommand : Command<FileSizeCommand.Settings>
         public bool IncludeHidden { get; init; }
     }
 
-    public override int Execute([NotNull] CommandContext context, [NotNull] Settings settings)
+    public override int Execute(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         var searchOptions = new EnumerationOptions
         {

@@ -18,7 +18,7 @@ public class HelloCommand : Command<HelloCommand.Settings>
     }
 
 
-    public override int Execute(CommandContext context, Settings settings)
+    public override int Execute(CommandContext context, Settings settings, CancellationToken cancellationToken)
     {
         AnsiConsole.MarkupLine($"Hello, [blue]{settings.Name}[/]");
         return 0;
