@@ -55,7 +55,7 @@ in the previous step.
 ```csharp
 public class AddPackageCommand : Command<AddPackageSettings>
 {
-    public override int Execute(CommandContext context, AddPackageSettings settings)
+    public override int Execute(CommandContext context, AddPackageSettings settings, CancellationToken cancellationToken)
     {
         // Omitted
         return 0;
@@ -64,7 +64,7 @@ public class AddPackageCommand : Command<AddPackageSettings>
 
 public class AddReferenceCommand : Command<AddReferenceSettings>
 {
-    public override int Execute(CommandContext context, AddReferenceSettings settings)
+    public override int Execute(CommandContext context, AddReferenceSettings settings, CancellationToken cancellationToken)
     {
         // Omitted
         return 0;

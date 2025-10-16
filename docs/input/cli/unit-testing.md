@@ -40,7 +40,7 @@ The following example validates the exit code and terminal output of a `Spectre.
             _console = console;
         }
 
-        public override int Execute(CommandContext context)
+        public override int Execute(CommandContext context, CancellationToken cancellationToken)
         {
             _console.WriteLine("Hello world.");
             return 0;
@@ -78,7 +78,7 @@ public sealed class InteractiveCommandTests
             _console = console;
         }
 
-        public override int Execute(CommandContext context)
+        public override int Execute(CommandContext context, CancellationToken cancellationToken)
         {
             var fruits = _console.Prompt(
                 new MultiSelectionPrompt<string>()
