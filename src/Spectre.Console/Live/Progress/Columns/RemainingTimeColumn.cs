@@ -22,7 +22,7 @@ public sealed class RemainingTimeColumn : ProgressColumn
             return new Markup("--:--:--");
         }
 
-        if (remaining.Value.TotalHours > 99)
+        if (remaining.Value.TotalHours > 99 || task.IsIndeterminate)
         {
             return new Markup("**:**:**");
         }
