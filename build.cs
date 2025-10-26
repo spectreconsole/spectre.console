@@ -12,8 +12,18 @@ Task("Clean")
     context.CleanDirectory("./.artifacts");
 });
 
+Task("Lint")
+    .Does(context =>
+{
+    DotNetFormat("./src/Spectre.Console.slnx", new DotNetFormatSettings
+    {
+        VerifyNoChanges = true,
+    });
+});
+
 Task("Build")
     .IsDependentOn("Clean")
+    .IsDependentOn("Lint")
     .Does(context =>
 {
     Information("Compiling generator...");

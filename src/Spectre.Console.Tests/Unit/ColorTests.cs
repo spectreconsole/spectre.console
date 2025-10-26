@@ -1,5 +1,3 @@
-using System.Drawing;
-
 namespace Spectre.Console.Tests.Unit;
 
 public sealed class ColorTests

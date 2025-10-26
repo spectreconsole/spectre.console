@@ -1,4 +1,4 @@
-﻿namespace Spectre.Console;
+namespace Spectre.Console;
 
 internal static class EnumUtils
 {

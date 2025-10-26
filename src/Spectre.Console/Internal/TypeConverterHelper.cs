@@ -128,14 +128,14 @@ internal static class TypeConverterHelper
             [typeof(Array)] = _ => new ArrayConverter(),
             [typeof(ICollection)] = _ => new CollectionConverter(),
             [typeof(Enum)] = CreateEnumConverter(),
-            #if !NETSTANDARD2_0
+#if !NETSTANDARD2_0
             [typeof(Int128)] = _ => new Int128Converter(),
             [typeof(Half)] = _ => new HalfConverter(),
             [typeof(UInt128)] = _ => new UInt128Converter(),
             [typeof(DateOnly)] = _ => new DateOnlyConverter(),
             [typeof(TimeOnly)] = _ => new TimeOnlyConverter(),
             [typeof(Version)] = _ => new VersionConverter(),
-            #endif
+#endif
         };
     }
 

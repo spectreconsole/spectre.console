@@ -410,7 +410,7 @@ public sealed class StyleTests
         public void Should_Return_Expected_Markup_For_Style_With_Only_Link()
         {
             // Given
-            var style = new Style(link:"https://spectreconsole.net/");
+            var style = new Style(link: "https://spectreconsole.net/");
 
             // When
             var result = style.ToMarkup();
