@@ -17,15 +17,11 @@
     <File Path="../.github/workflows/ci.yaml" />
     <File Path="../.github/workflows/publish.yaml" />
   </Folder>
-  <Folder Name="/CLI/">
-    <Project Path="Spectre.Console.Cli/Spectre.Console.Cli.csproj" />
-    <Project Path="Tests/Spectre.Console.Cli.Tests/Spectre.Console.Cli.Tests.csproj" />
-  </Folder>
   <Folder Name="/Extensions/">
     <Project Path="Extensions/Spectre.Console.ImageSharp/Spectre.Console.ImageSharp.csproj" />
     <Project Path="Extensions/Spectre.Console.Json/Spectre.Console.Json.csproj" />
   </Folder>
   <Project Path="Spectre.Console.Testing/Spectre.Console.Testing.csproj" />
   <Project Path="Spectre.Console/Spectre.Console.csproj" />
-  <Project Path="Tests/Spectre.Console.Tests/Spectre.Console.Tests.csproj" />
+  <Project Path="Spectre.Console.Tests/Spectre.Console.Tests.csproj" />
 </Solution>

@@ -1,10 +1,6 @@
 Title: Unit Testing
 Order: 14
 Description: Instructions for unit testing a Spectre.Console application.
-Reference: 
-    - T:Spectre.Console.Testing.CommandAppTester
-    - T:Spectre.Console.Testing.TestConsole
-    - T:Spectre.Console.Testing.TestConsoleInput
 ---
 
 `Spectre.Console` has a separate project that contains test harnesses for unit testing your own console applications. 

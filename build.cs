@@ -50,14 +50,6 @@ Task("Test")
         NoRestore = true,
         NoBuild = true,
     });
-
-    DotNetTest("./src/Tests/Spectre.Console.Cli.Tests/Spectre.Console.Cli.Tests.csproj", new DotNetTestSettings {
-        Configuration = configuration,
-        Verbosity = DotNetVerbosity.Minimal,
-        NoLogo = true,
-        NoRestore = true,
-        NoBuild = true,
-    });
 });
 
 Task("Package")

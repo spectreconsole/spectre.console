@@ -1,9 +1,0 @@
-﻿USAGE:
-    myapp <FOO> [OPTIONS]
-
-ARGUMENTS:
-    <FOO>    Dummy argument FOO
-
-OPTIONS:
-    -h, --help    Prints help information
-        --baz     Dummy option BAZ

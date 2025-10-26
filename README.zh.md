@@ -9,11 +9,10 @@ _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.consol
 ## 目录
 
 1. [功能](#功能)
-2. [安装](#安装)
-3. [文档](#文档)
-4. [例子](#例子)
-5. [Sponsors](#Sponsors)
-6. [开源许可](#开源许可)
+1. [安装](#安装)
+1. [文档](#文档)
+1. [例子](#例子)
+1. [开源许可](#开源许可)
 
 ## 功能
 
@@ -41,24 +40,6 @@ https://spectreconsole.net/
 
 To see `Spectre.Console` in action, please see the 
 [examples repository](https://github.com/spectreconsole/examples).
-
-## Sponsors
-
-下面这些用户正在[sponsor](https://github.com/sponsors/patriksvensson)上支持着Spectre.Console，确保这个项目的持续维护。
-
-* [Rodney Littles II](https://github.com/RLittlesII)
-* [Martin Björkström](https://github.com/bjorkstromm)
-* [Dave Glick](https://github.com/daveaglick)
-* [Kim Gunanrsson](https://github.com/kimgunnarsson)
-* [Andrew McClenaghan](https://github.com/andymac4182)
-* [C. Augusto Proiete](https://github.com/augustoproiete)
-* [Viktor Elofsson](https://github.com/vktr)
-* [Steven Knox](https://github.com/stevenknox)
-* [David Pendray](https://github.com/dpen2000)
-* [Elmah.io](https://github.com/elmahio)
-
-我对此表示十分感激 
-**非常感谢各位！**
 
 ## 开源许可
 

@@ -1,4 +1,0 @@
-Error: Unknown command 'bat'.
-
-       dog bat 14
-           ^^^ Did you mean 'cat'?

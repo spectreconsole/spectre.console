@@ -9,11 +9,10 @@ para Python.
 ## Índice de Conteúdo
 
 1. [Funcionalidades](#funcionalidades)
-2. [Instalação](#instalação)
-3. [Documentação](#documentação)
-4. [Exemplos](#exemplos)
-5. [Patrocinadores](#patrocinadores)
-5. [Licença](#licença)
+1. [Instalação](#instalação)
+1. [Documentação](#documentação)
+1. [Exemplos](#exemplos)
+1. [Licença](#licença)
 
 ## Funcionalidades
 
@@ -45,25 +44,6 @@ https://spectreconsole.net/
 
 To see `Spectre.Console` in action, please see the 
 [examples repository](https://github.com/spectreconsole/examples).
-
-## Patrocinadores
-
-As seguintes pessoas estão [patrocinando](https://github.com/sponsors/patriksvensson)
-o Spectre.Console para mostrar o seu apoio e garantir a longevidade do projeto.
-
-* [Rodney Littles II](https://github.com/RLittlesII)
-* [Martin Björkström](https://github.com/bjorkstromm)
-* [Dave Glick](https://github.com/daveaglick)
-* [Kim Gunanrsson](https://github.com/kimgunnarsson)
-* [Andrew McClenaghan](https://github.com/andymac4182)
-* [C. Augusto Proiete](https://github.com/augustoproiete)
-* [Viktor Elofsson](https://github.com/vktr)
-* [Steven Knox](https://github.com/stevenknox)
-* [David Pendray](https://github.com/dpen2000)
-* [Elmah.io](https://github.com/elmahio)
-
-Eu estou muito agradecido. 
-**Muito obrigado!**
 
 ## Licença
 
