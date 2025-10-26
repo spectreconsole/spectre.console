@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="IsExternalInit" Version="1.0.3" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="8.0.0" />
     <PackageVersion Include="MinVer" PrivateAssets="All" Version="6.0.0" />
@@ -17,7 +17,7 @@
     <PackageVersion Include="StyleCop.Analyzers" PrivateAssets="All" Version="1.2.0-beta.556" />
     <PackageVersion Include="System.Memory" Version="4.6.3" />
     <PackageVersion Include="TunnelVisionLabs.ReferenceAssemblyAnnotator" Version="1.0.0-alpha.160" />
-    <PackageVersion Include="Verify.Xunit" Version="31.0.1" />
+    <PackageVersion Include="Verify.Xunit" Version="31.0.5" />
     <PackageVersion Include="Wcwidth.Sources" Version="3.0.0" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5">
