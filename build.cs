@@ -1,5 +1,12 @@
 #:sdk Cake.Sdk@5.1.25296.94-beta
 
+var solution = "./src/Spectre.Console.slnx";
+var generatorSolution = "./resources/scripts/Generator/Generator.slnx";
+var testProject = "./src/Spectre.Console.Tests/Spectre.Console.Tests.csproj";
+
+////////////////////////////////////////////////////////////////
+// Arguments
+
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
@@ -7,15 +14,15 @@ var configuration = Argument("configuration", "Release");
 // Tasks
 
 Task("Clean")
-    .Does(context =>
+    .Does(ctx =>
 {
-    context.CleanDirectory("./.artifacts");
+    ctx.CleanDirectory("./.artifacts");
 });
 
 Task("Lint")
-    .Does(context =>
+    .Does(ctx =>
 {
-    DotNetFormat("./src/Spectre.Console.slnx", new DotNetFormatSettings
+    ctx.DotNetFormat(solution, new DotNetFormatSettings
     {
         VerifyNoChanges = true,
     });
@@ -24,26 +31,26 @@ Task("Lint")
 Task("Build")
     .IsDependentOn("Clean")
     .IsDependentOn("Lint")
-    .Does(context =>
+    .Does(ctx =>
 {
     Information("Compiling generator...");
-    DotNetBuild("./resources/scripts/Generator/Generator.slnx", new DotNetBuildSettings
+    ctx.DotNetBuild(generatorSolution, new DotNetBuildSettings
     {
         Configuration = configuration,
         Verbosity = DotNetVerbosity.Minimal,
         NoLogo = true,
-        NoIncremental = context.HasArgument("rebuild"),
+        NoIncremental = ctx.HasArgument("rebuild"),
         MSBuildSettings = new DotNetMSBuildSettings()
             .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
     });
 
     Information("\nCompiling Spectre.Console...");
-    DotNetBuild("./src/Spectre.Console.slnx", new DotNetBuildSettings
+    ctx.DotNetBuild(solution, new DotNetBuildSettings
     {
         Configuration = configuration,
         Verbosity = DotNetVerbosity.Minimal,
         NoLogo = true,
-        NoIncremental = context.HasArgument("rebuild"),
+        NoIncremental = ctx.HasArgument("rebuild"),
         MSBuildSettings = new DotNetMSBuildSettings()
             .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
     });
@@ -51,9 +58,9 @@ Task("Build")
 
 Task("Test")
     .IsDependentOn("Build")
-    .Does(context => 
+    .Does(ctx => 
 {
-    DotNetTest("./src/Spectre.Console.Tests/Spectre.Console.Tests.csproj", new DotNetTestSettings {
+    ctx.DotNetTest(testProject, new DotNetTestSettings {
         Configuration = configuration,
         Verbosity = DotNetVerbosity.Minimal,
         NoLogo = true,
@@ -64,9 +71,9 @@ Task("Test")
 
 Task("Package")
     .IsDependentOn("Test")
-    .Does(context =>
+    .Does(ctx =>
 {
-    context.DotNetPack($"./src/Spectre.Console.slnx", new DotNetPackSettings
+    ctx.DotNetPack(solution, new DotNetPackSettings
     {
         Configuration = configuration,
         Verbosity = DotNetVerbosity.Minimal,
@@ -82,7 +89,7 @@ Task("Package")
 Task("Publish-NuGet")
     .WithCriteria(ctx => BuildSystem.IsRunningOnGitHubActions, "Not running on GitHub Actions")
     .IsDependentOn("Package")
-    .Does(context => 
+    .Does(ctx => 
 {
     var apiKey = Argument<string?>("nuget-key", null);
     if(string.IsNullOrWhiteSpace(apiKey)) {
@@ -90,9 +97,9 @@ Task("Publish-NuGet")
     }
 
     // Publish to GitHub Packages
-    foreach(var file in context.GetFiles("./.artifacts/*.nupkg")) 
+    foreach(var file in ctx.GetFiles("./.artifacts/*.nupkg")) 
     {
-        context.Information("Publishing {0}...", file.GetFilename().FullPath);
+        ctx.Information("Publishing {0}...", file.GetFilename().FullPath);
         DotNetNuGetPush(file.FullPath, new DotNetNuGetPushSettings
         {
             Source = "https://api.nuget.org/v3/index.json",
