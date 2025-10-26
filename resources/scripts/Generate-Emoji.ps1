@@ -1,8 +1,11 @@
+#!/usr/local/bin/pwsh
+
 ##########################################################
 # Script that generates the emoji lookup table.
 ##########################################################
 
 $Output = Join-Path $PSScriptRoot "Temp"
+$Generator = Join-Path $PSScriptRoot "/../../src/Generator"
 $Source = Join-Path $PSScriptRoot "/../../src/Spectre.Console"
 $Docs = Join-Path $PSScriptRoot "/../../docs/src/Data"
 
@@ -11,7 +14,7 @@ if(!(Test-Path $Output -PathType Container)) {
 }
 
 # Generate the files
-Push-Location Generator
+Push-Location $Generator
 &dotnet run -- emoji "$Output" --input $Output
 if(!$?) {
     Pop-Location
