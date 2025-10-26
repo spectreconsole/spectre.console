@@ -12,7 +12,7 @@ public sealed class TableTests
             var table = new Table();
 
             // When
-            var result = Record.Exception(() => table.AddColumn((string)null));
+            var result = Record.Exception(() => table.AddColumn((string)null!));
 
             // Then
             result.ShouldBeOfType<ArgumentNullException>()
@@ -45,7 +45,7 @@ public sealed class TableTests
             var table = new Table();
 
             // When
-            var result = Record.Exception(() => table.AddColumns((string[])null));
+            var result = Record.Exception(() => table.AddColumns((string[])null!));
 
             // Then
             result.ShouldBeOfType<ArgumentNullException>()
@@ -62,7 +62,7 @@ public sealed class TableTests
             var table = new Table();
 
             // When
-            var result = Record.Exception(() => table.AddRow((string[])null));
+            var result = Record.Exception(() => table.AddRow((string[])null!));
 
             // Then
             result.ShouldBeOfType<ArgumentNullException>()

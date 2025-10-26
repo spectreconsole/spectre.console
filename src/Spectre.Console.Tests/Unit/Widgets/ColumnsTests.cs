@@ -5,8 +5,8 @@ public sealed class ColumnsTests
 {
     private sealed class User
     {
-        public string Name { get; set; }
-        public string Country { get; set; }
+        public required string Name { get; init; }
+        public required string Country { get; init; }
     }
 
     [Fact]

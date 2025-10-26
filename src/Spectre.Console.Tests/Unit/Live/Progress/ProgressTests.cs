@@ -114,6 +114,7 @@ public sealed class ProgressTests
         });
 
         // Then
+        task.ShouldNotBeNull();
         task.MaxValue.ShouldBe(20);
         task.Value.ShouldBe(20);
     }
@@ -139,6 +140,7 @@ public sealed class ProgressTests
         });
 
         // Then
+        task.ShouldNotBeNull();
         task.Value.ShouldBe(0);
         task.Percentage.ShouldBe(100);
     }
@@ -165,6 +167,7 @@ public sealed class ProgressTests
         });
 
         // Then
+        task.ShouldNotBeNull();
         task.MaxValue.ShouldBe(100);
         task.Value.ShouldBe(20);
     }
@@ -190,6 +193,7 @@ public sealed class ProgressTests
         });
 
         // Then
+        task.ShouldNotBeNull();
         task.IsFinished.ShouldBe(true);
     }
 
@@ -215,6 +219,7 @@ public sealed class ProgressTests
         });
 
         // Then
+        task.ShouldNotBeNull();
         task.Value.ShouldBe(60);
     }
 
@@ -286,6 +291,7 @@ public sealed class ProgressTests
         });
 
         // Then
+        task.ShouldNotBeNull();
         task.RemainingTime.ShouldBe(TimeSpan.MaxValue);
     }
 

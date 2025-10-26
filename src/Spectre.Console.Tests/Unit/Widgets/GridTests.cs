@@ -31,7 +31,7 @@ public sealed class GridTests
             var grid = new Grid();
 
             // When
-            var result = Record.Exception(() => grid.AddRow(null));
+            var result = Record.Exception(() => grid.AddRow(null!));
 
             // Then
             result.ShouldBeOfType<ArgumentNullException>()

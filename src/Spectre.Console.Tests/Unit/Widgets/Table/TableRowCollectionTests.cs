@@ -12,7 +12,7 @@ public sealed class TableRowCollectionTests
             var table = new Table();
 
             // When
-            var result = Record.Exception(() => table.Rows.Add(null));
+            var result = Record.Exception(() => table.Rows.Add(null!));
 
             // Then
             result.ShouldBeOfType<ArgumentNullException>()
@@ -77,7 +77,7 @@ public sealed class TableRowCollectionTests
             var table = new Table();
 
             // When
-            var result = Record.Exception(() => table.Rows.Insert(0, null));
+            var result = Record.Exception(() => table.Rows.Insert(0, null!));
 
             // Then
             result.ShouldBeOfType<ArgumentNullException>()

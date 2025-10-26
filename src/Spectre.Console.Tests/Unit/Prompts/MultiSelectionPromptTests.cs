@@ -128,7 +128,8 @@ public sealed class MultiSelectionPromptTests
         action.ShouldThrow<ArgumentOutOfRangeException>();
     }
 
-    [Fact] public void Should_Throw_Meaningful_Exception_For_Empty_Prompt()
+    [Fact]
+    public void Should_Throw_Meaningful_Exception_For_Empty_Prompt()
     {
         // Given
         var console = new TestConsole();
@@ -142,7 +143,8 @@ public sealed class MultiSelectionPromptTests
 
         // Then
         var exception = action.ShouldThrow<InvalidOperationException>();
-        exception.Message.ShouldBe("Cannot show an empty selection prompt. Please call the AddChoice() method to configure the prompt.");
+        exception.Message.ShouldBe(
+            "Cannot show an empty selection prompt. Please call the AddChoice() method to configure the prompt.");
     }
 }
 
@@ -153,8 +155,18 @@ file sealed class CustomItem
 
     public class Comparer : IEqualityComparer<CustomItem>
     {
-        public bool Equals(CustomItem x, CustomItem y)
+        public bool Equals(CustomItem? x, CustomItem? y)
         {
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
             return x.X == y.X && x.Y == y.Y;
         }
 

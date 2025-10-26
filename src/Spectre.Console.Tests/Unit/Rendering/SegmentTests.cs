@@ -26,7 +26,7 @@ public sealed class SegmentTests
         [InlineData("Foo 测试 Bar", 10, "Foo 测试 B", "ar")]
         [InlineData("Foo 测试 Bar", 11, "Foo 测试 Ba", "r")]
         [InlineData("Foo 测试 Bar", 12, "Foo 测试 Bar", null)]
-        public void Should_Split_Segment_Correctly(string text, int offset, string expectedFirst, string expectedSecond)
+        public void Should_Split_Segment_Correctly(string text, int offset, string expectedFirst, string? expectedSecond)
         {
             // Given
             var style = new Style(Color.Red, Color.Green, Decoration.Bold);

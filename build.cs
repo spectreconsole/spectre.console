@@ -43,7 +43,7 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(context => 
 {
-    DotNetTest("./src/Tests/Spectre.Console.Tests/Spectre.Console.Tests.csproj", new DotNetTestSettings {
+    DotNetTest("./src/Spectre.Console.Tests/Spectre.Console.Tests.csproj", new DotNetTestSettings {
         Configuration = configuration,
         Verbosity = DotNetVerbosity.Minimal,
         NoLogo = true,

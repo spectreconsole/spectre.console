@@ -43,10 +43,10 @@ public sealed class ColorTests
         [InlineData("#")]
         [InlineData("#80")]
         [InlineData("FOO")]
-        public void Should_Not_Parse_Non_Color_From_Hex(string noncolor)
+        public void Should_Not_Parse_Non_Color_From_Hex(string? input)
         {
             // Given, When
-            var result = Record.Exception(() => Color.FromHex(noncolor));
+            var result = Record.Exception(() => Color.FromHex(input!));
 
             // Then
             result.ShouldBeAssignableTo<Exception>();
@@ -58,10 +58,10 @@ public sealed class ColorTests
         [InlineData("#")]
         [InlineData("#80")]
         [InlineData("FOO")]
-        public void Should_Not_Parse_Non_Color_Try_From_Hex(string noncolor)
+        public void Should_Not_Parse_Non_Color_Try_From_Hex(string? input)
         {
             // Given, When
-            var result = Color.TryFromHex(noncolor, out var color);
+            var result = Color.TryFromHex(input!, out var color);
 
             // Then
             result.ShouldBeFalse();

@@ -12,7 +12,13 @@ public static class EmbeddedResourceReader
         var assembly = Assembly.GetCallingAssembly();
         resourceName = resourceName.Replace("/", ".");
 
-        return assembly.GetManifestResourceStream(resourceName);
+        var stream = assembly.GetManifestResourceStream(resourceName);
+        if (stream == null)
+        {
+            throw new InvalidOperationException($"Could not load embedded resource '{resourceName}'");
+        }
+
+        return stream;
     }
 
     public static Stream LoadResourceStream(Assembly assembly, string resourceName)
@@ -28,6 +34,12 @@ public static class EmbeddedResourceReader
         }
 
         resourceName = resourceName.Replace("/", ".");
-        return assembly.GetManifestResourceStream(resourceName);
+        var stream = assembly.GetManifestResourceStream(resourceName);
+        if (stream == null)
+        {
+            throw new InvalidOperationException($"Could not load embedded resource '{resourceName}'");
+        }
+
+        return stream;
     }
 }
