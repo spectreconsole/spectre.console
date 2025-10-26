@@ -33,18 +33,6 @@ Task("Build")
     .IsDependentOn("Lint")
     .Does(ctx =>
 {
-    Information("Compiling generator...");
-    ctx.DotNetBuild(generatorSolution, new DotNetBuildSettings
-    {
-        Configuration = configuration,
-        Verbosity = DotNetVerbosity.Minimal,
-        NoLogo = true,
-        NoIncremental = ctx.HasArgument("rebuild"),
-        MSBuildSettings = new DotNetMSBuildSettings()
-            .TreatAllWarningsAs(MSBuildTreatAllWarningsAs.Error)
-    });
-
-    Information("\nCompiling Spectre.Console...");
     ctx.DotNetBuild(solution, new DotNetBuildSettings
     {
         Configuration = configuration,

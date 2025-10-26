@@ -11,6 +11,18 @@
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
   </Folder>
+  <Folder Name="/Build/Generator/">
+    <Project Path="Generator\Generator.csproj" Type="Classic C#">
+      <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
+      <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
+      <Configuration Solution="Release|x64" Project="Release|Any CPU" />
+      <Configuration Solution="Release|x86" Project="Release|Any CPU" />
+    </Project>
+    <File Path="..\resources\scripts\Generate-Spinners.ps1" />
+    <File Path="..\resources\scripts\Generate-Samples.ps1" />
+    <File Path="..\resources\scripts\Generate-Emoji.ps1" />
+    <File Path="..\resources\scripts\Generate-Colors.ps1" />
+  </Folder>
   <Folder Name="/Build/GitHub/">
     <File Path="../.github/workflows/ci.yaml" />
     <File Path="../.github/workflows/publish.yaml" />

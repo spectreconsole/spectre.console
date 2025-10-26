@@ -1,8 +1,11 @@
+#!/usr/local/bin/pwsh
+
 ##########################################################
 # Script that generates progress spinners.
 ##########################################################
 
 $Output = Join-Path $PSScriptRoot "Temp"
+$Generator = Join-Path $PSScriptRoot "/../../src/Generator"
 $Source = Join-Path $PSScriptRoot "/../../src/Spectre.Console"
 
 if(!(Test-Path $Output -PathType Container)) {
@@ -10,8 +13,8 @@ if(!(Test-Path $Output -PathType Container)) {
 }
 
 # Generate the files
-Push-Location Generator
-&dotnet run -- spinners "$Output" --input $Output
+Push-Location $Generator
+&dotnet run -- spinners "$Output"
 if(!$?) {
     Pop-Location
     Throw "An error occured when generating code."
