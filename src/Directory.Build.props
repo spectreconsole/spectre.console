@@ -50,17 +50,10 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
-  <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)/stylecop.json" Link="Properties/stylecop.json"/>
-  </ItemGroup>
-
   <!-- Allow folks to build with minimal dependencies (though they will need to provide their own Version data) -->
   <ItemGroup Label="Build Tools Package References" Condition="'$(UseBuildTimeTools)' != 'false'">
     <PackageReference Include="MinVer" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
-    <PackageReference Include="StyleCop.Analyzers">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Roslynator.Analyzers">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>

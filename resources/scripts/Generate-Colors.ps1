@@ -1,8 +1,11 @@
+#!/usr/local/bin/pwsh
+
 ##########################################################
 # Script that generates known colors and lookup tables.
 ##########################################################
 
 $Output = Join-Path $PSScriptRoot "Temp"
+$Generator = Join-Path $PSScriptRoot "/../../src/Generator" 
 $Source = Join-Path $PSScriptRoot "/../../src/Spectre.Console"
 
 if(!(Test-Path $Output -PathType Container)) {
@@ -10,7 +13,7 @@ if(!(Test-Path $Output -PathType Container)) {
 }
 
 # Generate the files
-Push-Location Generator
+Push-Location $Generator
 &dotnet run -- colors "$Output"
 if(!$?) { 
     Pop-Location

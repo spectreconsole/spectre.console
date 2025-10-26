@@ -1,5 +1,0 @@
-Error: An error occured when parsing template.
-       Long option names must consist of more than one character.
-
-       --f
-         ^ Invalid option name

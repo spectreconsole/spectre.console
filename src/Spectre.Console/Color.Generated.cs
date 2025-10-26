@@ -69,6 +69,11 @@ namespace Spectre.Console
         public static Color Grey { get; } = new Color(8, 128, 128, 128);
 
         /// <summary>
+        /// Gets the color "Gray" (RGB 128,128,128).
+        /// </summary>
+        public static Color Gray { get; } = new Color(8, 128, 128, 128);
+
+        /// <summary>
         /// Gets the color "Red" (RGB 255,0,0).
         /// </summary>
         public static Color Red { get; } = new Color(9, 255, 0, 0);
@@ -94,9 +99,19 @@ namespace Spectre.Console
         public static Color Fuchsia { get; } = new Color(13, 255, 0, 255);
 
         /// <summary>
+        /// Gets the color "Magenta" (RGB 255,0,255).
+        /// </summary>
+        public static Color Magenta { get; } = new Color(13, 255, 0, 255);
+
+        /// <summary>
         /// Gets the color "Aqua" (RGB 0,255,255).
         /// </summary>
         public static Color Aqua { get; } = new Color(14, 0, 255, 255);
+
+        /// <summary>
+        /// Gets the color "Cyan" (RGB 0,255,255).
+        /// </summary>
+        public static Color Cyan { get; } = new Color(14, 0, 255, 255);
 
         /// <summary>
         /// Gets the color "White" (RGB 255,255,255).
@@ -107,6 +122,11 @@ namespace Spectre.Console
         /// Gets the color "Grey0" (RGB 0,0,0).
         /// </summary>
         public static Color Grey0 { get; } = new Color(16, 0, 0, 0);
+
+        /// <summary>
+        /// Gets the color "Gray0" (RGB 0,0,0).
+        /// </summary>
+        public static Color Gray0 { get; } = new Color(16, 0, 0, 0);
 
         /// <summary>
         /// Gets the color "NavyBlue" (RGB 0,0,95).
@@ -330,6 +350,11 @@ namespace Spectre.Console
         /// Gets the color "Grey37" (RGB 95,95,95).
         /// </summary>
         public static Color Grey37 { get; } = new Color(59, 95, 95, 95);
+
+        /// <summary>
+        /// Gets the color "Gray37" (RGB 95,95,95).
+        /// </summary>
+        public static Color Gray37 { get; } = new Color(59, 95, 95, 95);
 
         /// <summary>
         /// Gets the color "MediumPurple4" (RGB 95,95,135).
@@ -559,6 +584,11 @@ namespace Spectre.Console
         public static Color Grey53 { get; } = new Color(102, 135, 135, 135);
 
         /// <summary>
+        /// Gets the color "Gray53" (RGB 135,135,135).
+        /// </summary>
+        public static Color Gray53 { get; } = new Color(102, 135, 135, 135);
+
+        /// <summary>
         /// Gets the color "LightSlateGrey" (RGB 135,135,175).
         /// </summary>
         public static Color LightSlateGrey { get; } = new Color(103, 135, 135, 175);
@@ -754,6 +784,11 @@ namespace Spectre.Console
         public static Color Grey63 { get; } = new Color(139, 175, 135, 175);
 
         /// <summary>
+        /// Gets the color "Gray63" (RGB 175,135,175).
+        /// </summary>
+        public static Color Gray63 { get; } = new Color(139, 175, 135, 175);
+
+        /// <summary>
         /// Gets the color "MediumPurple2_1" (RGB 175,135,215).
         /// </summary>
         [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
@@ -783,6 +818,11 @@ namespace Spectre.Console
         /// Gets the color "Grey69" (RGB 175,175,175).
         /// </summary>
         public static Color Grey69 { get; } = new Color(145, 175, 175, 175);
+
+        /// <summary>
+        /// Gets the color "Gray69" (RGB 175,175,175).
+        /// </summary>
+        public static Color Gray69 { get; } = new Color(145, 175, 175, 175);
 
         /// <summary>
         /// Gets the color "LightSteelBlue3" (RGB 175,175,215).
@@ -1014,6 +1054,11 @@ namespace Spectre.Console
         public static Color Grey84 { get; } = new Color(188, 215, 215, 215);
 
         /// <summary>
+        /// Gets the color "Gray84" (RGB 215,215,215).
+        /// </summary>
+        public static Color Gray84 { get; } = new Color(188, 215, 215, 215);
+
+        /// <summary>
         /// Gets the color "LightSteelBlue1" (RGB 215,215,255).
         /// </summary>
         public static Color LightSteelBlue1 { get; } = new Color(189, 215, 215, 255);
@@ -1238,9 +1283,19 @@ namespace Spectre.Console
         public static Color Grey100 { get; } = new Color(231, 255, 255, 255);
 
         /// <summary>
+        /// Gets the color "Gray100" (RGB 255,255,255).
+        /// </summary>
+        public static Color Gray100 { get; } = new Color(231, 255, 255, 255);
+
+        /// <summary>
         /// Gets the color "Grey3" (RGB 8,8,8).
         /// </summary>
         public static Color Grey3 { get; } = new Color(232, 8, 8, 8);
+
+        /// <summary>
+        /// Gets the color "Gray3" (RGB 8,8,8).
+        /// </summary>
+        public static Color Gray3 { get; } = new Color(232, 8, 8, 8);
 
         /// <summary>
         /// Gets the color "Grey7" (RGB 18,18,18).
@@ -1248,9 +1303,19 @@ namespace Spectre.Console
         public static Color Grey7 { get; } = new Color(233, 18, 18, 18);
 
         /// <summary>
+        /// Gets the color "Gray7" (RGB 18,18,18).
+        /// </summary>
+        public static Color Gray7 { get; } = new Color(233, 18, 18, 18);
+
+        /// <summary>
         /// Gets the color "Grey11" (RGB 28,28,28).
         /// </summary>
         public static Color Grey11 { get; } = new Color(234, 28, 28, 28);
+
+        /// <summary>
+        /// Gets the color "Gray11" (RGB 28,28,28).
+        /// </summary>
+        public static Color Gray11 { get; } = new Color(234, 28, 28, 28);
 
         /// <summary>
         /// Gets the color "Grey15" (RGB 38,38,38).
@@ -1258,9 +1323,19 @@ namespace Spectre.Console
         public static Color Grey15 { get; } = new Color(235, 38, 38, 38);
 
         /// <summary>
+        /// Gets the color "Gray15" (RGB 38,38,38).
+        /// </summary>
+        public static Color Gray15 { get; } = new Color(235, 38, 38, 38);
+
+        /// <summary>
         /// Gets the color "Grey19" (RGB 48,48,48).
         /// </summary>
         public static Color Grey19 { get; } = new Color(236, 48, 48, 48);
+
+        /// <summary>
+        /// Gets the color "Gray19" (RGB 48,48,48).
+        /// </summary>
+        public static Color Gray19 { get; } = new Color(236, 48, 48, 48);
 
         /// <summary>
         /// Gets the color "Grey23" (RGB 58,58,58).
@@ -1268,9 +1343,19 @@ namespace Spectre.Console
         public static Color Grey23 { get; } = new Color(237, 58, 58, 58);
 
         /// <summary>
+        /// Gets the color "Gray23" (RGB 58,58,58).
+        /// </summary>
+        public static Color Gray23 { get; } = new Color(237, 58, 58, 58);
+
+        /// <summary>
         /// Gets the color "Grey27" (RGB 68,68,68).
         /// </summary>
         public static Color Grey27 { get; } = new Color(238, 68, 68, 68);
+
+        /// <summary>
+        /// Gets the color "Gray27" (RGB 68,68,68).
+        /// </summary>
+        public static Color Gray27 { get; } = new Color(238, 68, 68, 68);
 
         /// <summary>
         /// Gets the color "Grey30" (RGB 78,78,78).
@@ -1278,9 +1363,19 @@ namespace Spectre.Console
         public static Color Grey30 { get; } = new Color(239, 78, 78, 78);
 
         /// <summary>
+        /// Gets the color "Gray30" (RGB 78,78,78).
+        /// </summary>
+        public static Color Gray30 { get; } = new Color(239, 78, 78, 78);
+
+        /// <summary>
         /// Gets the color "Grey35" (RGB 88,88,88).
         /// </summary>
         public static Color Grey35 { get; } = new Color(240, 88, 88, 88);
+
+        /// <summary>
+        /// Gets the color "Gray35" (RGB 88,88,88).
+        /// </summary>
+        public static Color Gray35 { get; } = new Color(240, 88, 88, 88);
 
         /// <summary>
         /// Gets the color "Grey39" (RGB 98,98,98).
@@ -1288,9 +1383,19 @@ namespace Spectre.Console
         public static Color Grey39 { get; } = new Color(241, 98, 98, 98);
 
         /// <summary>
+        /// Gets the color "Gray39" (RGB 98,98,98).
+        /// </summary>
+        public static Color Gray39 { get; } = new Color(241, 98, 98, 98);
+
+        /// <summary>
         /// Gets the color "Grey42" (RGB 108,108,108).
         /// </summary>
         public static Color Grey42 { get; } = new Color(242, 108, 108, 108);
+
+        /// <summary>
+        /// Gets the color "Gray42" (RGB 108,108,108).
+        /// </summary>
+        public static Color Gray42 { get; } = new Color(242, 108, 108, 108);
 
         /// <summary>
         /// Gets the color "Grey46" (RGB 118,118,118).
@@ -1298,9 +1403,19 @@ namespace Spectre.Console
         public static Color Grey46 { get; } = new Color(243, 118, 118, 118);
 
         /// <summary>
+        /// Gets the color "Gray46" (RGB 118,118,118).
+        /// </summary>
+        public static Color Gray46 { get; } = new Color(243, 118, 118, 118);
+
+        /// <summary>
         /// Gets the color "Grey50" (RGB 128,128,128).
         /// </summary>
         public static Color Grey50 { get; } = new Color(244, 128, 128, 128);
+
+        /// <summary>
+        /// Gets the color "Gray50" (RGB 128,128,128).
+        /// </summary>
+        public static Color Gray50 { get; } = new Color(244, 128, 128, 128);
 
         /// <summary>
         /// Gets the color "Grey54" (RGB 138,138,138).
@@ -1308,9 +1423,19 @@ namespace Spectre.Console
         public static Color Grey54 { get; } = new Color(245, 138, 138, 138);
 
         /// <summary>
+        /// Gets the color "Gray54" (RGB 138,138,138).
+        /// </summary>
+        public static Color Gray54 { get; } = new Color(245, 138, 138, 138);
+
+        /// <summary>
         /// Gets the color "Grey58" (RGB 148,148,148).
         /// </summary>
         public static Color Grey58 { get; } = new Color(246, 148, 148, 148);
+
+        /// <summary>
+        /// Gets the color "Gray58" (RGB 148,148,148).
+        /// </summary>
+        public static Color Gray58 { get; } = new Color(246, 148, 148, 148);
 
         /// <summary>
         /// Gets the color "Grey62" (RGB 158,158,158).
@@ -1318,9 +1443,19 @@ namespace Spectre.Console
         public static Color Grey62 { get; } = new Color(247, 158, 158, 158);
 
         /// <summary>
+        /// Gets the color "Gray62" (RGB 158,158,158).
+        /// </summary>
+        public static Color Gray62 { get; } = new Color(247, 158, 158, 158);
+
+        /// <summary>
         /// Gets the color "Grey66" (RGB 168,168,168).
         /// </summary>
         public static Color Grey66 { get; } = new Color(248, 168, 168, 168);
+
+        /// <summary>
+        /// Gets the color "Gray66" (RGB 168,168,168).
+        /// </summary>
+        public static Color Gray66 { get; } = new Color(248, 168, 168, 168);
 
         /// <summary>
         /// Gets the color "Grey70" (RGB 178,178,178).
@@ -1328,9 +1463,19 @@ namespace Spectre.Console
         public static Color Grey70 { get; } = new Color(249, 178, 178, 178);
 
         /// <summary>
+        /// Gets the color "Gray70" (RGB 178,178,178).
+        /// </summary>
+        public static Color Gray70 { get; } = new Color(249, 178, 178, 178);
+
+        /// <summary>
         /// Gets the color "Grey74" (RGB 188,188,188).
         /// </summary>
         public static Color Grey74 { get; } = new Color(250, 188, 188, 188);
+
+        /// <summary>
+        /// Gets the color "Gray74" (RGB 188,188,188).
+        /// </summary>
+        public static Color Gray74 { get; } = new Color(250, 188, 188, 188);
 
         /// <summary>
         /// Gets the color "Grey78" (RGB 198,198,198).
@@ -1338,9 +1483,19 @@ namespace Spectre.Console
         public static Color Grey78 { get; } = new Color(251, 198, 198, 198);
 
         /// <summary>
+        /// Gets the color "Gray78" (RGB 198,198,198).
+        /// </summary>
+        public static Color Gray78 { get; } = new Color(251, 198, 198, 198);
+
+        /// <summary>
         /// Gets the color "Grey82" (RGB 208,208,208).
         /// </summary>
         public static Color Grey82 { get; } = new Color(252, 208, 208, 208);
+
+        /// <summary>
+        /// Gets the color "Gray82" (RGB 208,208,208).
+        /// </summary>
+        public static Color Gray82 { get; } = new Color(252, 208, 208, 208);
 
         /// <summary>
         /// Gets the color "Grey85" (RGB 218,218,218).
@@ -1348,13 +1503,28 @@ namespace Spectre.Console
         public static Color Grey85 { get; } = new Color(253, 218, 218, 218);
 
         /// <summary>
+        /// Gets the color "Gray85" (RGB 218,218,218).
+        /// </summary>
+        public static Color Gray85 { get; } = new Color(253, 218, 218, 218);
+
+        /// <summary>
         /// Gets the color "Grey89" (RGB 228,228,228).
         /// </summary>
         public static Color Grey89 { get; } = new Color(254, 228, 228, 228);
 
         /// <summary>
+        /// Gets the color "Gray89" (RGB 228,228,228).
+        /// </summary>
+        public static Color Gray89 { get; } = new Color(254, 228, 228, 228);
+
+        /// <summary>
         /// Gets the color "Grey93" (RGB 238,238,238).
         /// </summary>
         public static Color Grey93 { get; } = new Color(255, 238, 238, 238);
+
+        /// <summary>
+        /// Gets the color "Gray93" (RGB 238,238,238).
+        /// </summary>
+        public static Color Gray93 { get; } = new Color(255, 238, 238, 238);
     }
 }
