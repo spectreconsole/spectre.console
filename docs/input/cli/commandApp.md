@@ -1,9 +1,6 @@
 Title: CommandApp
 Order: 2
 Description: "**CommandApp** is the entry point for a *Spectre.Console.Cli* command line application. It is used to configure the settings and commands used for execution of the application."
-Reference:
-    - T:Spectre.Console.Cli.CommandApp
-    - T:Spectre.Console.Cli.CommandApp`1
 ---
 
 `CommandApp` is the entry point for a `Spectre.Console.Cli` command line application. It is used to configure the settings and commands used for execution of the application. Most `Spectre.Console.Cli` applications will need to specify a custom configuration using the `Configure` method.
@@ -76,7 +73,7 @@ return app.Run(args);
 ```
 
 <?# Alert ?>
-  `MyTypeRegistrar` is a custom class that implements [ITypeRegistrar](xref:T:Spectre.Console.Cli.ITypeRegistrar) and must be provided by the user.
+  `MyTypeRegistrar` is a custom class that implements `ITypeRegistrar` and must be provided by the user.
 <?#/ Alert ?>
 
 There is a working [example of dependency injection](https://github.com/spectreconsole/examples/tree/main/examples/Cli/Injection) that uses `Microsoft.Extensions.DependencyInjection` as the container. Example implementations of `ITypeRegistrar` and `ITypeResolver` are provided, which you can copy and paste to your application for dependency injection.

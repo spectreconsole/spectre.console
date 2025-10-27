@@ -13,14 +13,14 @@ internal static class Cell
 
     static Cell()
     {
-        #if !NETSTANDARD2_0
+#if !NETSTANDARD2_0
         Array.Fill(_runeWidthCache, Sentinel);
-        #else
+#else
         for (var i = 0; i < _runeWidthCache.Length; i++)
         {
             _runeWidthCache[i] = Sentinel;
         }
-        #endif
+#endif
     }
 
     public static int GetCellLength(string text)

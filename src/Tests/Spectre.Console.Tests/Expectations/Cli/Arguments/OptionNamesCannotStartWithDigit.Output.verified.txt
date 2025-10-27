@@ -1,5 +1,0 @@
-Error: An error occured when parsing template.
-       Option names cannot start with a digit.
-
-       --1foo
-         ^^^^ Invalid option name

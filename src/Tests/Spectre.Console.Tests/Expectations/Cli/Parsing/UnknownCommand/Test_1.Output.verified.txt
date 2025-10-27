@@ -1,4 +1,0 @@
-Error: Unknown command 'cat'.
-
-       cat 14
-       ^^^ No such command

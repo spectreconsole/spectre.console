@@ -6,5 +6,4 @@ global using System.Linq;
 global using System.Text.RegularExpressions;
 global using System.Threading;
 global using System.Threading.Tasks;
-global using Spectre.Console.Cli;
 global using Spectre.Console.Rendering;

@@ -1,4 +1,0 @@
-Error: Unknown command 'bat'.
-
-       qux bat
-           ^^^ Did you mean 'bar'?

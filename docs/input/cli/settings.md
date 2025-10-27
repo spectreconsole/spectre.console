@@ -1,10 +1,6 @@
 Title: Specifying Settings
 Order: 5
 Description: "How to define command line argument settings for your *Spectre.Console.Cli* Commands"
-Reference:
-    - T:Spectre.Console.Cli.CommandSettings
-    - T:Spectre.Console.Cli.CommandArgumentAttribute
-    - T:Spectre.Console.Cli.CommandOptionAttribute
 ---
 
 Settings for `Spectre.Console.Cli` commands are defined via classes that inherit from `CommandSettings`. Attributes are used to indicate how the parser interprets the command line arguments and create a runtime instance of the settings to be used.
