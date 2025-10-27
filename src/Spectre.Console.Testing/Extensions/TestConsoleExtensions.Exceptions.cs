@@ -31,7 +31,7 @@ public static partial class TestConsoleExtensions
         return string.Join("\n", NormalizeStackTrace(console.Output)
             .NormalizeLineEndings()
             .Split(new char[] { '\n' })
-            .Select(line => line.TrimEnd()));
+            .Select(line => line.TrimEnd())).Replace(Path.DirectorySeparatorChar, '/');
     }
 
     /// <summary>
