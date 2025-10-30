@@ -3,7 +3,8 @@
 _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.console.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_ _[![Spectre.Console CLI NuGet Version](https://img.shields.io/nuget/v/spectre.console.cli.svg?style=flat&label=NuGet%3A%20Spectre.Console.Cli)](https://www.nuget.org/packages/spectre.console.cli)_ [![Netlify Status](https://api.netlify.com/api/v1/badges/1eaf215a-eb9c-45e4-8c64-c90b62963149/deploy-status)](https://app.netlify.com/sites/spectreconsole/deploys)
 
 A .NET library that makes it easier to create beautiful, cross platform, console applications.  
-It is heavily inspired by the excellent Python library, [Rich](https://github.com/willmcgugan/rich). Detailed instructions for using `Spectre.Console` are located on the project website, https://spectreconsole.net
+It is heavily inspired by the excellent Python libraries, [Rich](https://github.com/willmcgugan/rich) and [Textual](https://github.com/Textualize/textual?tab=readme-ov-file#widgets) 
+Detailed instructions for using `Spectre.Console` are located on the project website, https://spectreconsole.net
 
 ## Table of Contents
 
