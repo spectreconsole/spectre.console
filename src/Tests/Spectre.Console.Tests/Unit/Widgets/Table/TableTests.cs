@@ -631,4 +631,130 @@ public sealed class TableTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    [Expectation("Render_Cell_Overflow_Crop")]
+    public Task Should_Respect_Cell_Content_Overflow_Crop()
+    {
+        // Given
+        var console = new TestConsole();
+        var table = new Table();
+        table.AddColumn(new TableColumn("Column1").Width(15));
+        table.AddColumn(new TableColumn("Column2").Width(15));
+        table.AddRow(
+            new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar").Overflow(Overflow.Crop),
+            new Text("Short text"));
+
+        // When
+        console.Write(table);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Cell_Overflow_Ellipsis")]
+    public Task Should_Respect_Cell_Content_Overflow_Ellipsis()
+    {
+        // Given
+        var console = new TestConsole();
+        var table = new Table();
+        table.AddColumn(new TableColumn("Column1").Width(15));
+        table.AddColumn(new TableColumn("Column2").Width(15));
+        table.AddRow(
+            new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar").Overflow(Overflow.Ellipsis),
+            new Text("Short text"));
+
+        // When
+        console.Write(table);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Cell_Overflow_Fold")]
+    public Task Should_Respect_Cell_Content_Overflow_Fold()
+    {
+        // Given
+        var console = new TestConsole();
+        var table = new Table();
+        table.AddColumn(new TableColumn("Column1").Width(15));
+        table.AddColumn(new TableColumn("Column2").Width(15));
+        table.AddRow(
+            new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar").Overflow(Overflow.Fold),
+            new Text("Short text"));
+
+        // When
+        console.Write(table);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Cell_Markup_Overflow")]
+    public Task Should_Respect_Markup_Content_Overflow_In_Cell()
+    {
+        // Given
+        var console = new TestConsole();
+        var table = new Table();
+        table.AddColumn(new TableColumn("Column1").Width(18));
+        table.AddColumn(new TableColumn("Column2").Width(15));
+        table.AddRow(
+            new Markup("[yellow]foo[/] [red]pneumonoultramicroscopicsilicovolcanoconiosis[/] [blue]bar[/]").Overflow(Overflow.Ellipsis),
+            new Markup("[green]Short text[/]"));
+
+        // When
+        console.Write(table);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Cell_Overflow_Multiple_Rows")]
+    public Task Should_Respect_Cell_Content_Overflow_In_Multiple_Rows()
+    {
+        // Given
+        var console = new TestConsole();
+        var table = new Table();
+        table.AddColumn(new TableColumn("Column1").Width(15));
+        table.AddColumn(new TableColumn("Column2").Width(15));
+        table.AddRow(
+            new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis").Overflow(Overflow.Crop),
+            new Text("First row"));
+        table.AddRow(
+            new Text("bar supercalifragilisticexpialidocious").Overflow(Overflow.Ellipsis),
+            new Text("Second row"));
+        table.AddRow(
+            new Text("qux antidisestablishmentarianism").Overflow(Overflow.Fold),
+            new Text("Third row"));
+
+        // When
+        console.Write(table);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Cell_Overflow_With_NoWrap")]
+    public Task Should_Respect_Cell_Content_Overflow_With_NoWrap_Column()
+    {
+        // Given
+        var console = new TestConsole();
+        var table = new Table();
+        table.AddColumn(new TableColumn("Column1").Width(15).NoWrap());
+        table.AddColumn(new TableColumn("Column2").Width(15));
+        table.AddRow(
+            new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar").Overflow(Overflow.Ellipsis),
+            new Text("Short text"));
+
+        // When
+        console.Write(table);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
 }

@@ -366,4 +366,129 @@ public sealed class PanelTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    [Expectation("Render_Text_Overflow_Crop")]
+    public Task Should_Respect_Text_Overflow_Crop_In_Panel()
+    {
+        // Given
+        var console = new TestConsole();
+        var text = new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar qux")
+            .Overflow(Overflow.Crop);
+        var panel = new Panel(text)
+        {
+            Width = 20,
+        };
+
+        // When
+        console.Write(panel);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Text_Overflow_Ellipsis")]
+    public Task Should_Respect_Text_Overflow_Ellipsis_In_Panel()
+    {
+        // Given
+        var console = new TestConsole();
+        var text = new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar qux")
+            .Overflow(Overflow.Ellipsis);
+        var panel = new Panel(text)
+        {
+            Width = 20,
+        };
+
+        // When
+        console.Write(panel);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Text_Overflow_Fold")]
+    public Task Should_Respect_Text_Overflow_Fold_In_Panel()
+    {
+        // Given
+        var console = new TestConsole();
+        var text = new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar qux")
+            .Overflow(Overflow.Fold);
+        var panel = new Panel(text)
+        {
+            Width = 20,
+        };
+
+        // When
+        console.Write(panel);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Markup_Overflow_Ellipsis")]
+    public Task Should_Respect_Markup_Overflow_Ellipsis_In_Panel()
+    {
+        // Given
+        var console = new TestConsole();
+        var markup = new Markup("[yellow]foo[/] [red]pneumonoultramicroscopicsilicovolcanoconiosis[/] [blue]bar qux[/]")
+            .Overflow(Overflow.Ellipsis);
+        var panel = new Panel(markup)
+        {
+            Width = 20,
+        };
+
+        // When
+        console.Write(panel);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Text_Overflow_With_Padding")]
+    public Task Should_Respect_Text_Overflow_In_Panel_With_Padding()
+    {
+        // Given
+        var console = new TestConsole();
+        var text = new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar qux")
+            .Overflow(Overflow.Ellipsis);
+        var panel = new Panel(text)
+        {
+            Width = 25,
+            Padding = new Padding(2, 0, 2, 0),
+        };
+
+        // When
+        console.Write(panel);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Nested_Panel_With_Overflow")]
+    public Task Should_Respect_Text_Overflow_In_Nested_Panel()
+    {
+        // Given
+        var console = new TestConsole();
+        var text = new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar qux")
+            .Overflow(Overflow.Crop);
+        var innerPanel = new Panel(text)
+        {
+            Width = 15,
+        };
+        var outerPanel = new Panel(innerPanel)
+        {
+            Width = 25,
+        };
+
+        // When
+        console.Write(outerPanel);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
 }

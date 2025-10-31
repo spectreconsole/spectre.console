@@ -1,0 +1,7 @@
+﻿┌──────────────────┐
+│ foo              │
+│ pneumonoultramic │
+│ roscopicsilicovo │
+│ lcanoconiosis    │
+│ bar qux          │
+└──────────────────┘
