@@ -22,7 +22,7 @@
     <PackageReference Include="Wcwidth.Sources">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="PolySharp">
+    <PackageReference Include="PolySharp" Condition="'$(TargetFramework)' == 'netstandard2.0'">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
