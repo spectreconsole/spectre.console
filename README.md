@@ -17,17 +17,17 @@ It is heavily inspired by the excellent Python library, [Rich](https://github.co
 1. [License](#license)
 
 ## Features
+* Supports tables, grids, panels, and a Rich-inspired markup language.
 
-* Supports tables, grids, panels, and a [Rich](https://github.com/willmcgugan/rich) inspired markup language.
-* Supports the most common SRG parameters when it comes to text 
-  styling such as bold, dim, italic, underline, strikethrough, 
-  and blinking text.
+* Supports the most common SGR parameters for text styling such as bold, dim, italic, underline, strikethrough, and blinking text.
+
 * Supports 3/4/8/24-bit colors in the terminal.  
   The library will detect the capabilities of the current terminal 
   and downgrade colors as needed.
 * Written with unit testing in mind.
 
-![Example](docs/input/assets/images/example.png)
+![Example](docs/assets/images/example.png)
+
 
 ## Important Notices
 
@@ -40,6 +40,9 @@ The fastest way of getting started using `Spectre.Console` is to install the NuG
 
 ```csharp
 dotnet add package Spectre.Console
+
+
+
 ```
 
 ## Documentation
@@ -87,4 +90,6 @@ Copyright © Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi, Frank Ra
 
 `Spectre.Console` is provided as-is under the MIT license. For more information see LICENSE.
 
-* SixLabors.ImageSharp, a library which `Spectre.Console` relies upon, is licensed under Apache 2.0 when distributed as part of `Spectre.Console`. The Six Labors Split License covers all other usage, see: https://github.com/SixLabors/ImageSharp/blob/master/LICENSE 
+The Six Labors Split License covers all other usage.  
+See the [ImageSharp License](https://github.com/SixLabors/ImageSharp/blob/master/LICENSE) for more details.
+
