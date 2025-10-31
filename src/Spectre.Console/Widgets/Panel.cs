@@ -83,12 +83,13 @@ public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, 
         if (Width != null)
         {
             var width = Width.Value - edgeWidth;
-            if (width > childWidth.Max)
-            {
-                childWidth = new Measurement(
-                    childWidth.Min,
-                    width);
-            }
+
+            // If Width is specified, constrain or expand the measurement
+            // to exactly the specified width (clamped by maxWidth)
+            var constrainedWidth = Math.Min(width, maxWidth - edgeWidth);
+            childWidth = new Measurement(
+                Math.Min(childWidth.Min, constrainedWidth),
+                constrainedWidth);
         }
 
         return new Measurement(

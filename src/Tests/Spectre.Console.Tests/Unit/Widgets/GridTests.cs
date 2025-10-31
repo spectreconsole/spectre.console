@@ -192,4 +192,104 @@ public sealed class GridTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    [Expectation("Render_Cell_Overflow_Crop")]
+    public Task Should_Respect_Cell_Content_Overflow_Crop()
+    {
+        // Given
+        var console = new TestConsole().Width(40);
+        var grid = new Grid();
+        grid.AddColumn(new GridColumn { Width = 15 });
+        grid.AddColumn(new GridColumn { Width = 15 });
+        grid.AddRow(
+            new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar").Overflow(Overflow.Crop),
+            new Text("Short text"));
+
+        // When
+        console.Write(grid);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Cell_Overflow_Ellipsis")]
+    public Task Should_Respect_Cell_Content_Overflow_Ellipsis()
+    {
+        // Given
+        var console = new TestConsole().Width(40);
+        var grid = new Grid();
+        grid.AddColumn(new GridColumn { Width = 15 });
+        grid.AddColumn(new GridColumn { Width = 15 });
+        grid.AddRow(
+            new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar").Overflow(Overflow.Ellipsis),
+            new Text("Short text"));
+
+        // When
+        console.Write(grid);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Cell_Overflow_Fold")]
+    public Task Should_Respect_Cell_Content_Overflow_Fold()
+    {
+        // Given
+        var console = new TestConsole().Width(40);
+        var grid = new Grid();
+        grid.AddColumn(new GridColumn { Width = 15 });
+        grid.AddColumn(new GridColumn { Width = 15 });
+        grid.AddRow(
+            new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar").Overflow(Overflow.Fold),
+            new Text("Short text"));
+
+        // When
+        console.Write(grid);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Cell_Markup_Overflow")]
+    public Task Should_Respect_Markup_Content_Overflow_In_Cell()
+    {
+        // Given
+        var console = new TestConsole().Width(40);
+        var grid = new Grid();
+        grid.AddColumn(new GridColumn { Width = 18 });
+        grid.AddColumn(new GridColumn { Width = 15 });
+        grid.AddRow(
+            new Markup("[yellow]foo[/] [red]pneumonoultramicroscopicsilicovolcanoconiosis[/] [blue]bar[/]").Overflow(Overflow.Ellipsis),
+            new Markup("[green]Short text[/]"));
+
+        // When
+        console.Write(grid);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Cell_Overflow_With_NoWrap")]
+    public Task Should_Respect_Cell_Content_Overflow_With_NoWrap_Column()
+    {
+        // Given
+        var console = new TestConsole().Width(40);
+        var grid = new Grid();
+        grid.AddColumn(new GridColumn { Width = 15, NoWrap = true });
+        grid.AddColumn(new GridColumn { Width = 15 });
+        grid.AddRow(
+            new Text("foo pneumonoultramicroscopicsilicovolcanoconiosis bar").Overflow(Overflow.Ellipsis),
+            new Text("Short text"));
+
+        // When
+        console.Write(grid);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
 }

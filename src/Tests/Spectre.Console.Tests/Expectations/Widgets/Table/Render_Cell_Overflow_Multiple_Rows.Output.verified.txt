@@ -1,0 +1,11 @@
+﻿┌─────────────────┬─────────────────┐
+│ Column1         │ Column2         │
+├─────────────────┼─────────────────┤
+│ foo             │ First row       │
+│ pneumonoultrami │                 │
+│ bar             │ Second row      │
+│ supercalifragi… │                 │
+│ qux             │ Third row       │
+│ antidisestablis │                 │
+│ hmentarianism   │                 │
+└─────────────────┴─────────────────┘
