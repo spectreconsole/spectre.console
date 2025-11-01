@@ -410,4 +410,54 @@ public sealed class TextPromptTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+
+    [Fact]
+    [Expectation("Placeholder_Shown")]
+    public Task Should_Display_Placeholder_When_Input_Is_Empty()
+    {
+        // Given
+        var console = new TestConsole
+        {
+            EmitAnsiSequences = false
+        };
+
+        console.Input.PushTextWithEnter("Alice");
+
+        // When
+        var prompt = new TextPrompt<string>("Enter your name:")
+        {
+            Placeholder = "ex: Bob",
+        };
+        console.Prompt(prompt);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Placeholder_Style_Applied")]
+    public Task Should_Use_Specified_Style_For_Placeholder()
+    {
+        // Given
+        var console = new TestConsole
+        {
+            EmitAnsiSequences = true
+        };
+
+        console.Input.PushTextWithEnter("2");
+
+        // When
+        var prompt = new TextPrompt<string>("Enter Value:")
+        {
+            Placeholder = "ex: 5",
+            PlaceholderStyle = Color.Red
+        };
+
+        console.Prompt(prompt);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
 }
