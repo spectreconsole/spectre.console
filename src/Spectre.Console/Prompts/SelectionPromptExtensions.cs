@@ -238,6 +238,44 @@ public static class SelectionPromptExtensions
     }
 
     /// <summary>
+    /// Sets the value that will be returned if the prompt is cancelled with 'ESC'.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="cancelResultFunc">A Func that is returning a value on cancel.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static SelectionPrompt<T> AddCancelResult<T>(this SelectionPrompt<T> obj, Func<T> cancelResultFunc)
+        where T : notnull
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        obj.CancelResult = cancelResultFunc;
+        return obj;
+    }
+
+    /// <summary>
+    /// Sets a Func that will be triggered if the prompt is cancelled with 'ESC'.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="cancelResult">The value to be returned on cancel.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static SelectionPrompt<T> AddCancelResult<T>(this SelectionPrompt<T> obj, T cancelResult)
+        where T : notnull
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        obj.CancelResult = () => cancelResult;
+        return obj;
+    }
+
+    /// <summary>
     /// Sets the highlight style of the selected choice.
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>
