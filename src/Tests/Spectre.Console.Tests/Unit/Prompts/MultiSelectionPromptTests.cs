@@ -144,6 +144,26 @@ public sealed class MultiSelectionPromptTests
         var exception = action.ShouldThrow<InvalidOperationException>();
         exception.Message.ShouldBe("Cannot show an empty selection prompt. Please call the AddChoice() method to configure the prompt.");
     }
+
+    [Fact]
+    public void Should_Select_Node_And_All_Children_In_Leaf_Mode_On_Space()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        // Simulate pressing Space to toggle selection, then Enter to submit
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var prompt = new MultiSelectionPrompt<string>();
+        prompt.AddChoice("root").AddChild("level-1").AddChild("level-2").AddChild("item");
+
+        // When
+        var result = prompt.Show(console);
+
+        // Then
+        result.ShouldBe(new[] { "item" });
+    }
 }
 
 file sealed class CustomItem
