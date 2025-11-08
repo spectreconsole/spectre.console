@@ -148,9 +148,9 @@ public sealed class MultiSelectionPromptTests
     [Fact]
     public void Should_Select_Node_And_All_Children_In_Leaf_Mode_On_Space()
     {
-        // Given
         var console = new TestConsole();
         console.Profile.Capabilities.Interactive = true;
+
         // Simulate pressing Space to toggle selection, then Enter to submit
         console.Input.PushKey(ConsoleKey.Spacebar);
         console.Input.PushKey(ConsoleKey.Enter);
@@ -163,6 +163,140 @@ public sealed class MultiSelectionPromptTests
 
         // Then
         result.ShouldBe(new[] { "item" });
+    }
+
+    [Fact]
+    public void Should_Add_Title_To_Prompt()
+    {
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+
+        // Set the title
+        var prompt = new MultiSelectionPrompt<string>();
+        // var result = prompt.Title = "Test Title";
+        Action action = () => prompt.Title("Test Title");
+        action();
+
+        // Then
+        prompt.Title.ShouldBe("Test Title");
+    }
+
+    [Fact]
+    public void Page_Size_Less_Than_Three_Throws_Exception()
+    {
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+
+        var prompt = new MultiSelectionPrompt<string>();
+        Action action = () => prompt.PageSize(2);
+
+        var exception = action.ShouldThrow<ArgumentException>();
+        exception.Message.ShouldContain("Page size must be greater or equal to 3.");
+    }
+
+    [Fact]
+    public void Should_Add_Choice_Group_To_Prompt()
+    {
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+
+        var prompt = new MultiSelectionPrompt<string>();
+        List<string> choices = new List<string> { "root", "level-1", "level-2", };
+
+        Action action = () => prompt.AddChoiceGroup("New Group", choices);
+        action();
+
+        prompt.Tree.Find("New Group").ShouldNotBeNull();
+        prompt.Tree.Find("level-1").ShouldNotBeNull();
+        prompt.Tree.Find("level-2").ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void Should_Add_Choice_Group_To_Prompt_With_Array_Arg_Type()
+    {
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+
+        var prompt = new MultiSelectionPrompt<string>();
+        string[] choices = new []{ "root", "level-1", "level-2", };
+
+        Action action = () => prompt.AddChoiceGroup("New Group", choices);
+        action();
+
+        prompt.Tree.Find("New Group").ShouldNotBeNull();
+        prompt.Tree.Find("level-1").ShouldNotBeNull();
+        prompt.Tree.Find("level-2").ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void Should_Set_Wrap_Around_To_True_With_No_Arguments()
+    {
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+
+        var prompt = new MultiSelectionPrompt<string>();
+
+        Action action = () => prompt.WrapAround();
+        action();
+
+        prompt.WrapAround.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void Should_Set_Highlight_Styles()
+    {
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+
+        var foregroundColor = new Color(255, 0, 0);
+        var backgroundColor = new Color(255, 255, 0);
+        var decoration = Decoration.Bold;
+
+        var style = new Style(foregroundColor, backgroundColor, decoration);
+
+        var prompt = new MultiSelectionPrompt<string>();
+        Action action = () => prompt.HighlightStyle(style);
+        action.ShouldNotThrow();
+
+        prompt.HighlightStyle.ShouldBe(style);
+    }
+
+    [Fact]
+    public void More_Choices_Should_Be_Null_When_Passed_Null_Value()
+    {
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+
+        var prompt = new MultiSelectionPrompt<string>();
+        Action action = () => prompt.MoreChoicesText(null);
+        action.ShouldNotThrow();
+
+        prompt.MoreChoicesText.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Instructions_Text_Should_Be_Null_When_Passed_Null_Value()
+    {
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+
+        var prompt = new MultiSelectionPrompt<string>();
+        Action action = () => prompt.InstructionsText(null);
+        action.ShouldNotThrow();
+
+        prompt.InstructionsText.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Required_Should_Be_True_When_No_Argument_Passed()
+    {
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+
+        var prompt = new MultiSelectionPrompt<string>();
+        Action action = () => prompt.Required();
+        action.ShouldNotThrow();
+        prompt.Required.ShouldBeTrue();
     }
 }
 
