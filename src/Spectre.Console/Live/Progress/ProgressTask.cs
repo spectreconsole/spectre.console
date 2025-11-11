@@ -47,12 +47,12 @@ public sealed class ProgressTask : IProgress<double>
     /// <summary>
     /// Gets the start time of the task.
     /// </summary>
-    public DateTime? StartTime { get; private set; }
+    public long? StartTime { get; private set; }
 
     /// <summary>
     /// Gets the stop time of the task.
     /// </summary>
-    public DateTime? StopTime { get; private set; }
+    public long? StopTime { get; private set; }
 
     /// <summary>
     /// Gets the task state.
@@ -118,7 +118,7 @@ public sealed class ProgressTask : IProgress<double>
 
         Id = id;
         State = new ProgressTaskState();
-        StartTime = autoStart ? DateTime.Now : null;
+        StartTime = autoStart ? TimeProvider.System.GetTimestamp() : null;
     }
 
     /// <summary>
@@ -133,7 +133,7 @@ public sealed class ProgressTask : IProgress<double>
                 throw new InvalidOperationException("Stopped tasks cannot be restarted");
             }
 
-            StartTime = DateTime.Now;
+            StartTime = TimeProvider.System.GetTimestamp();
             StopTime = null;
         }
     }
@@ -145,7 +145,7 @@ public sealed class ProgressTask : IProgress<double>
     {
         lock (_lock)
         {
-            var now = DateTime.Now;
+            var now = TimeProvider.System.GetTimestamp();
             StartTime ??= now;
 
             StopTime = now;
@@ -263,17 +263,17 @@ public sealed class ProgressTask : IProgress<double>
     {
         lock (_lock)
         {
-            if (StartTime == null)
+            if (StartTime is not long start)
             {
                 return null;
             }
 
-            if (StopTime != null)
+            if (StopTime is long stop)
             {
-                return StopTime - StartTime;
+                return TimeProvider.System.GetElapsedTime(start, stop);
             }
 
-            return DateTime.Now - StartTime;
+            return TimeProvider.System.GetElapsedTime(start);
         }
     }
 

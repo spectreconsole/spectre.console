@@ -33,6 +33,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Bcl.TimeProvider" />
     <PackageReference Include="System.Memory" />
     <PackageReference Include="TunnelVisionLabs.ReferenceAssemblyAnnotator" PrivateAssets="all"/>
     <PackageDownload Include="Microsoft.NETCore.App.Ref" Version="[$(AnnotatedReferenceAssemblyVersion)]"/>

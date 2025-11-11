@@ -3,6 +3,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="Microsoft.Bcl.TimeProvider" Version="10.0.0" />
     <PackageVersion Include="IsExternalInit" Version="1.0.3" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
