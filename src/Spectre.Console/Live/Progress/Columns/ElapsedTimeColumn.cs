@@ -13,26 +13,24 @@ public sealed class ElapsedTimeColumn : ProgressColumn
     /// </summary>
     public Style Style { get; set; } = Color.Blue;
 
+    /// <summary>
+    /// Gets or sets the format of the elapsed time text.
+    /// </summary>
+    public string? Format { get; set; } = @"hh\:mm\:ss";
+
     /// <inheritdoc/>
     public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
     {
-        var elapsed = task.ElapsedTime;
-        if (elapsed == null)
+        if (task.ElapsedTime is not TimeSpan elapsed)
         {
             return new Markup("--:--:--");
         }
 
-        if (elapsed.Value.TotalHours > 99)
+        if (elapsed.TotalHours > 99)
         {
             return new Markup("**:**:**");
         }
 
-        return new Text($"{elapsed.Value:hh\\:mm\\:ss}", Style ?? Style.Plain);
-    }
-
-    /// <inheritdoc/>
-    public override int? GetColumnWidth(RenderOptions options)
-    {
-        return 8;
+        return new Text($"{elapsed.ToString(Format)}", Style ?? Style.Plain);
     }
 }
