@@ -9,7 +9,7 @@ public sealed class ElapsedTimeColumn : ProgressColumn
     protected internal override bool NoWrap => true;
 
     /// <summary>
-    /// Gets or sets the style of the remaining time text.
+    /// Gets or sets the style of the elapsed time text.
     /// </summary>
     public Style Style { get; set; } = Color.Blue;
 
