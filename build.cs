@@ -1,7 +1,6 @@
 #:sdk Cake.Sdk@5.1.25296.94-beta
 
 var solution = "./src/Spectre.Console.slnx";
-var generatorSolution = "./resources/scripts/Generator/Generator.slnx";
 var testProject = "./src/Spectre.Console.Tests/Spectre.Console.Tests.csproj";
 
 ////////////////////////////////////////////////////////////////
