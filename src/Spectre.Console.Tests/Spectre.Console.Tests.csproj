@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
   </PropertyGroup>
 
