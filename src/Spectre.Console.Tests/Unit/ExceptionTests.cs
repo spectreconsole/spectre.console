@@ -114,7 +114,7 @@ public sealed class ExceptionTests
     {
         // Given
         var console = new TestConsole().Width(1024);
-        var dex = GetException(() => TestExceptions.ThrowWithInnerException());
+        var dex = GetException(TestExceptions.ThrowWithInnerException);
 
         // When
         var result = console.WriteNormalizedException(dex, ExceptionFormats.NoStackTrace);
@@ -126,11 +126,13 @@ public sealed class ExceptionTests
     [Theory]
     [InlineData(ExceptionFormats.Default)]
     [InlineData(ExceptionFormats.ShortenTypes)]
+    [InlineData(ExceptionFormats.ShortenMethods)]
+    [InlineData(ExceptionFormats.ShortenEverything)]
     [Expectation("GenericException")]
     public Task Should_Write_GenericException(ExceptionFormats exceptionFormats)
     {
         // Given
-        var console = new TestConsole { EmitAnsiSequences = true }.Width(1024);
+        var console = new TestConsole().Width(1024);
         var dex = GetException(() => TestExceptions.MethodThatThrowsGenericException<IAnsiConsole>());
 
         // When

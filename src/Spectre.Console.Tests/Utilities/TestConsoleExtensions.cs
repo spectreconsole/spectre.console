@@ -14,9 +14,10 @@ public static class TestConsoleExtensions
         }
 
         console.WriteException(ex, formats);
+
         return string.Join("\n", NormalizeStackTrace(console.Output)
             .NormalizeLineEndings()
-            .Split(new char[] { '\n' })
+            .Split(['\n'])
             .Select(line => line.TrimEnd()));
     }
 
