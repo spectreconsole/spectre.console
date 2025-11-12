@@ -21,7 +21,7 @@ Task("Clean")
 Task("Lint")
     .Does(ctx =>
 {
-    ctx.DotNetFormat(solution, new DotNetFormatSettings
+    ctx.DotNetFormatStyle(solution, new DotNetFormatSettings
     {
         VerifyNoChanges = true,
     });
