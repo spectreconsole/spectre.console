@@ -15,7 +15,7 @@
     <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="4.14.1" />
     <PackageVersion Include="Scriban" Version="6.4.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-    <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.11" />
+    <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.12" />
     <PackageVersion Include="Spectre.Console.Cli" Version="0.53.0" />
     <PackageVersion Include="Spectre.IO" Version="0.21.0" />
     <PackageVersion Include="Spectre.Verify.Extensions" Version="28.16.0" />
