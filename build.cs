@@ -1,4 +1,4 @@
-#:sdk Cake.Sdk@5.1.25296.94-beta
+#:sdk Cake.Sdk@6.0.0
 
 var solution = "./src/Spectre.Console.slnx";
 var testProject = "./src/Spectre.Console.Tests/Spectre.Console.Tests.csproj";
