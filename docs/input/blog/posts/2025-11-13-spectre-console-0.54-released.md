@@ -1,5 +1,5 @@
 Title: Spectre.Console 0.54.0 released!
-Description: Someone said CancellationToken?
+Description: Spectre.Console.Cli has a new home!
 Published: 2025-11-13
 Category: Release Notes
 Excluded: false
