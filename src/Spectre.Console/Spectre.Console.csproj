@@ -19,10 +19,7 @@
   <ItemGroup>
     <PackageReference Include="Wcwidth.Sources" PrivateAssets="all" />
     <PackageReference Include="System.Memory" Condition="'$(TargetFramework)' == 'netstandard2.0'"/>
-    <PackageReference Include="Polyfill" Condition="'$(TargetFramework)' == 'netstandard2.0'">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Polyfill" Condition="'$(TargetFramework)' == 'netstandard2.0'" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
