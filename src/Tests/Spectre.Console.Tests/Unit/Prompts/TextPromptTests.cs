@@ -427,6 +427,7 @@ public sealed class TextPromptTests
         // When
         var result = await console.PromptAsync(prompt);
 
-        Assert.Equal("Yes", result);
+        // Then
+        result.ShouldBe("Yes");
     }
 }
