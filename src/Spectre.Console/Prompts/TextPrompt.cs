@@ -97,15 +97,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     public TextPrompt(string prompt, StringComparer? comparer = null)
     {
         _prompt = prompt ?? throw new System.ArgumentNullException(nameof(prompt));
-
-        if (typeof(T) == typeof(string) && comparer is null)
-        {
-            _comparer = StringComparer.OrdinalIgnoreCase;
-        }
-        else
-        {
-            _comparer = comparer;
-        }
+        _comparer = comparer ?? StringComparer.OrdinalIgnoreCase;
     }
 
     /// <summary>
