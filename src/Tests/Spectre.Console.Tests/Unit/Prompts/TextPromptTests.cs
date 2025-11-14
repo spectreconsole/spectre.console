@@ -424,6 +424,7 @@ public sealed class TextPromptTests
         var prompt = new TextPrompt<string>("Was the tool helpful?")
             .AddChoices(["Yes", "Partially", "No"]);
 
+        // When
         var result = await console.PromptAsync(prompt);
 
         Assert.Equal("Yes", result);
