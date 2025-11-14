@@ -417,6 +417,7 @@ public sealed class TextPromptTests
     [InlineData("YES")]
     public async Task Uses_case_insensitive_comparison_when_no_comparer_is_passed(string input)
     {
+        // Given
         var console = new TestConsole { EmitAnsiSequences = true, };
         console.Input.PushTextWithEnter(input);
 
