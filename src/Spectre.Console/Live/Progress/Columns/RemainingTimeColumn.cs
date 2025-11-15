@@ -13,21 +13,25 @@ public sealed class RemainingTimeColumn : ProgressColumn
     /// </summary>
     public Style Style { get; set; } = Color.Blue;
 
+    /// <summary>
+    /// Gets or sets the format of the remaining time text.
+    /// </summary>
+    public string? Format { get; set; } = @"hh\:mm\:ss";
+
     /// <inheritdoc/>
     public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
     {
-        var remaining = task.RemainingTime;
-        if (remaining == null)
+        if (task.RemainingTime is not TimeSpan remaining)
         {
             return new Markup("--:--:--");
         }
 
-        if (remaining.Value.TotalHours > 99)
+        if (remaining.TotalHours > 99)
         {
             return new Markup("**:**:**");
         }
 
-        return new Text($"{remaining.Value:hh\\:mm\\:ss}", Style ?? Style.Plain);
+        return new Text($"{remaining.ToString(Format)}", Style ?? Style.Plain);
     }
 
     /// <inheritdoc/>
