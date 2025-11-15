@@ -2,17 +2,19 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "cake.tool": {
-      "version": "5.1.0",
-      "commands": [
-        "dotnet-cake"
-      ]
-    },
     "verify.tool": {
       "version": "0.6.0",
       "commands": [
         "dotnet-verify"
-      ]
+      ],
+      "rollForward": false
+    },
+    "make": {
+      "version": "0.8.0",
+      "commands": [
+        "dotnet-make"
+      ],
+      "rollForward": false
     }
   }
 }

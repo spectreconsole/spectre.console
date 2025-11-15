@@ -1,6 +1,6 @@
 # `Spectre.Console`
 
-_[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.console.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_ _[![Spectre.Console CLI NuGet Version](https://img.shields.io/nuget/v/spectre.console.cli.svg?style=flat&label=NuGet%3A%20Spectre.Console.Cli)](https://www.nuget.org/packages/spectre.console.cli)_ [![Netlify Status](https://api.netlify.com/api/v1/badges/1eaf215a-eb9c-45e4-8c64-c90b62963149/deploy-status)](https://app.netlify.com/sites/spectreconsole/deploys)
+_[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.console.svg?style=flat&label=NuGet%3A%20Spectre.Console)](https://www.nuget.org/packages/spectre.console)_ [![Netlify Status](https://api.netlify.com/api/v1/badges/1eaf215a-eb9c-45e4-8c64-c90b62963149/deploy-status)](https://app.netlify.com/sites/spectreconsole/deploys)
 
 A .NET library that makes it easier to create beautiful, cross platform, console applications.  
 It is heavily inspired by the excellent Python library, [Rich](https://github.com/willmcgugan/rich). Detailed instructions for using `Spectre.Console` are located on the project website, https://spectreconsole.net
@@ -11,7 +11,6 @@ It is heavily inspired by the excellent Python library, [Rich](https://github.co
 1. [Installing](#installing)
 1. [Documentation](#documentation)
 1. [Examples](#examples)
-1. [Sponsors](#sponsors)
 1. [Code of Conduct](#code-of-conduct)
 1. [.NET Foundation](#net-foundation)
 1. [License](#license)
@@ -51,26 +50,6 @@ https://spectreconsole.net
 
 To see `Spectre.Console` in action, please see the 
 [examples repository](https://github.com/spectreconsole/examples).
-
-## Sponsors
-
-The following people are [sponsoring](https://github.com/sponsors/patriksvensson)
-`Spectre.Console` to show their support and to ensure the longevity of the project.
-
-* [Rodney Littles II](https://github.com/RLittlesII)
-* [Martin Björkström](https://github.com/bjorkstromm)
-* [Dave Glick](https://github.com/daveaglick)
-* [Kim Gunnarsson](https://github.com/kimgunnarsson)
-* [Andrew McClenaghan](https://github.com/andymac4182)
-* [C. Augusto Proiete](https://github.com/augustoproiete)
-* [Viktor Elofsson](https://github.com/vktr)
-* [Steven Knox](https://github.com/stevenknox)
-* [David Pendray](https://github.com/dpen2000)
-* [Elmah.io](https://github.com/elmahio)
-* [Tom Kerkhove](https://github.com/tomkerkhove)
-
-We really appreciate it.  
-**Thank you very much!**
 
 ## Code of Conduct
 

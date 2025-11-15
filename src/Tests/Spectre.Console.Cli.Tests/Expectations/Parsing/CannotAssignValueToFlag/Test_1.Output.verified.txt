@@ -1,4 +1,0 @@
-Error: Flags cannot be assigned a value.
-
-       dog --alive=indeterminate foo
-           ^^^^^^^ Can't assign value

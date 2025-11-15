@@ -1,0 +1,4 @@
+﻿GenericException<IAnsiConsole>: Throwing!
+  at bool MethodThatThrowsGenericException<T>() in /xyz/ in Exceptions.cs:nn
+  at void <Should_Write_GenericException>b__8_0() in /xyz/ in ExceptionTests.cs:nn
+  at Exception GetException(Action action) in /xyz/ in ExceptionTests.cs:nn

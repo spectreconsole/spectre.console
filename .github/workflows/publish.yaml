@@ -34,12 +34,13 @@ jobs:
           dotnet-version: |
             8.0.x
             9.0.x
+            10.0.x
 
       - name: Publish
         shell: bash
         run: |
           dotnet tool restore
-          dotnet cake --target="publish" \
+          dotnet make publish \
             --nuget-key="${{secrets.NUGET_API_KEY}}" \
             --github-key="${{secrets.GITHUB_TOKEN}}"
 
@@ -63,7 +64,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v6
       with:
-        node-version: '22'
+        node-version: '24'
 
     - name: Cache dependencies
       uses: actions/cache@v4

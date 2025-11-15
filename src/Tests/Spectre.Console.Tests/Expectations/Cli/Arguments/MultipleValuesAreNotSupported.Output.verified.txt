@@ -1,5 +1,0 @@
-Error: An error occured when parsing template.
-       Multiple values are not supported.
-
-       <FOO> <BAR>
-             ^^^^^ Too many values

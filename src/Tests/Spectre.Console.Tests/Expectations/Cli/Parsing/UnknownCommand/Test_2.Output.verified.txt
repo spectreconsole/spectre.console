@@ -1,4 +1,0 @@
-Error: Unknown command 'other'.
-
-       empty other
-             ^^^^^ No such command

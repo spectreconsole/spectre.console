@@ -1,9 +1,11 @@
 ﻿<Project>
   <PropertyGroup Label="Settings">
     <Deterministic>true</Deterministic>
-    <LangVersion>12</LangVersion>
+    <LangVersion>14</LangVersion>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>embedded</DebugType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <MinVerSkip Condition="'$(Configuration)' == 'Debug'">true</MinVerSkip>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>false</IsPackable>
@@ -14,7 +16,15 @@
     <PublicKey>00240000048000009400000006020000002400005253413100040000010001006146d3789d31477cf4a3b508dcf772ff9ccad8613f6bd6b17b9c4a960a7a7b551ecd22e4f4119ced70ee8bbdf3ca0a117c99fd6248c16255ea9033110c2233d42e74e81bf4f3f7eb09bfe8b53ad399d957514f427171a86f5fe9fe0014be121d571c80c4a0cfc3531bdbf5a2900d936d93f2c94171b9134f7644a1ac3612a0d0</PublicKey>
   </PropertyGroup>
 
-  <PropertyGroup Label="Deterministic Build" Condition="'$(GITHUB_ACTIONS)' == 'true'">
+  <!-- Disable nullability for netstandard2.0 since polyfills are not -->
+  <!-- working correctly with nullability analysis. -->
+  <!-- This is no big deal since nullability is checked for other TFMs. -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <Nullable>disable</Nullable>
+    <NoWarn>$(NoWarn);CS8632</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
@@ -31,7 +41,7 @@
     </None>
   </ItemGroup>
 
-  <PropertyGroup Label="Package Information">
+  <PropertyGroup>
     <Description>A library that makes it easier to create beautiful console applications.</Description>
     <Copyright>Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi, Frank Ray</Copyright>
     <Authors>Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi, Frank Ray</Authors>
@@ -45,22 +55,9 @@
     <PackageReleaseNotes>https://github.com/spectreconsole/spectre.console/releases</PackageReleaseNotes>
   </PropertyGroup>
 
-  <PropertyGroup Label="Source Link">
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)/stylecop.json" Link="Properties/stylecop.json"/>
-  </ItemGroup>
-
-  <!-- Allow folks to build with minimal dependencies (though they will need to provide their own Version data) -->
-  <ItemGroup Label="Build Tools Package References" Condition="'$(UseBuildTimeTools)' != 'false'">
+  <ItemGroup Condition="'$(UseBuildTimeTools)' != 'false'">
     <PackageReference Include="MinVer" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
-    <PackageReference Include="StyleCop.Analyzers">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Roslynator.Analyzers">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>

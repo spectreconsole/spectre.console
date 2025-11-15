@@ -1,0 +1,4 @@
+﻿GenericException<IAnsiConsole>: Throwing!
+  at bool Spectre.Console.Tests.Data.TestExceptions.MethodThatThrowsGenericException<T>() in /xyz/Exceptions.cs:nn
+  at void Spectre.Console.Tests.Unit.ExceptionTests.<>c.<Should_Write_GenericException>b__8_0() in /xyz/ExceptionTests.cs:nn
+  at Exception Spectre.Console.Tests.Unit.ExceptionTests.GetException(Action action) in /xyz/ExceptionTests.cs:nn

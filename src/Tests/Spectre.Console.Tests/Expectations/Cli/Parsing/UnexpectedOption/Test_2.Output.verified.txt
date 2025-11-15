@@ -1,4 +1,0 @@
-Error: Unexpected option 'f'.
-
-       -f
-       ^^ Did you forget the command?

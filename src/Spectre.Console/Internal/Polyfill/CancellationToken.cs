@@ -1,13 +1,12 @@
 #if NETSTANDARD2_0
-namespace Spectre.Console
+namespace Spectre.Console;
+
+internal static class CancellationTokenHelpers
 {
-    internal static class CancellationTokenHelpers
+    public static Task CancelAsync(this CancellationTokenSource cts)
     {
-        public static Task CancelAsync(this CancellationTokenSource cts)
-        {
-            cts.Cancel();
-            return Task.CompletedTask;
-        }
+        cts.Cancel();
+        return Task.CompletedTask;
     }
 }
 #endif
