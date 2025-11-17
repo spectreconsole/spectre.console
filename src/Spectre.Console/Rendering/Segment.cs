@@ -339,6 +339,10 @@ public class Segment
         // Default to folding
         overflow ??= Overflow.Fold;
 
+        // If this is a link preserve the full link url for all splits avoiding a url being broken when line wrapped or truncated
+        var isEmptyLink = segment.Style.Link?.Equals(Constants.EmptyLink, StringComparison.Ordinal) ?? false;
+        var style = isEmptyLink ? segment.Style.Link(segment.Text) : segment.Style;
+
         var result = new List<Segment>();
 
         if (overflow == Overflow.Fold)
@@ -346,7 +350,7 @@ public class Segment
             var splitted = SplitSegment(segment.Text, maxWidth);
             foreach (var str in splitted)
             {
-                result.Add(new Segment(str, segment.Style));
+                result.Add(new Segment(str, style));
             }
         }
         else if (overflow == Overflow.Crop)
@@ -357,18 +361,18 @@ public class Segment
             }
             else
             {
-                result.Add(new Segment(segment.Text.Substring(0, maxWidth), segment.Style));
+                result.Add(new Segment(segment.Text.Substring(0, maxWidth), style));
             }
         }
         else if (overflow == Overflow.Ellipsis)
         {
             if (Math.Max(0, maxWidth - 1) == 0)
             {
-                result.Add(new Segment("…", segment.Style));
+                result.Add(new Segment("…", style));
             }
             else
             {
-                result.Add(new Segment(segment.Text.Substring(0, maxWidth - 1) + "…", segment.Style));
+                result.Add(new Segment(segment.Text.Substring(0, maxWidth - 1) + "…", style));
             }
         }
 
