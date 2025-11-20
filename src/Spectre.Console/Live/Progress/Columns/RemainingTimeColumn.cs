@@ -33,10 +33,4 @@ public sealed class RemainingTimeColumn : ProgressColumn
 
         return new Text($"{remaining.ToString(Format)}", Style ?? Style.Plain);
     }
-
-    /// <inheritdoc/>
-    public override int? GetColumnWidth(RenderOptions options)
-    {
-        return 8;
-    }
 }
