@@ -64,6 +64,31 @@ public static class CalendarExtensions
         calendar.CalendarEvents.Add(new CalendarEvent(description, year, month, day, customEventHighlightStyle));
         return calendar;
     }
+    /// <summary>
+    /// Remove a calendar event.
+    /// </summary>
+    /// <param name="calendar">The calendar.</param>
+    /// <param name="year">The year of the calendar event.</param>
+    /// <param name="month">The month of the calendar event.</param>
+    /// <param name="day">The day of the calendar event.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Calendar RemoveCalendarEvent(this Calendar calendar, int year, int month, int day)
+    {
+        if (calendar is null)
+        {
+            throw new ArgumentNullException(nameof(calendar));
+        }
+
+        var calendarEvent = calendar.CalendarEvents.Where(e => e.Year == year && e.Month == month && e.Day == day)
+            .ToList()
+            .SingleOrDefault();
+        if (calendarEvent != null)
+        {
+            calendar.CalendarEvents.Remove(calendarEvent);
+        }
+
+        return calendar;
+    }
 
     /// <summary>
     /// Sets the calendar's highlight <see cref="Style"/>.
