@@ -65,7 +65,7 @@ public static class CalendarExtensions
         return calendar;
     }
     /// <summary>
-    /// Remove a calendar event.
+    /// Removes a calendar event.
     /// </summary>
     /// <param name="calendar">The calendar.</param>
     /// <param name="year">The year of the calendar event.</param>
