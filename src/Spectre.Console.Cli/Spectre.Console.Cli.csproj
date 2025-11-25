@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup Label="Dependencies">
-    <PackageReference Include="OpenCli.Sources" />
+    <PackageReference Include="OpenCli.Sources" PrivateAssets="all" />
     <PackageReference Include="PolySharp">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
