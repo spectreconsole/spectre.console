@@ -426,18 +426,18 @@ public sealed class TextPromptTests
             }, "missing a"); // second validator
 
         // First validator fails -> second should not run
-        var result1 = prompt.Validator("ab");
+        var result1 = prompt.Validator?.Invoke("ab");
         result1.ShouldBeEquivalentTo(ValidationResult.Error("too short"));
         secondInvoked.ShouldBeFalse();
 
         // First passes, second fails -> second runs and its error returned
         secondInvoked = false;
-        var result2 = prompt.Validator("bbc");
+        var result2 = prompt.Validator?.Invoke("bbc");
         result2.ShouldBeEquivalentTo(ValidationResult.Error("missing a"));
         secondInvoked.ShouldBeTrue();
 
         // // Both pass -> success
-        var result3 = prompt.Validator("abc");
+        var result3 = prompt.Validator?.Invoke("abc");
         result3.ShouldBeEquivalentTo(ValidationResult.Success());
     }
 
@@ -466,18 +466,18 @@ public sealed class TextPromptTests
         }, "missing z");
 
         // First fails -> second should not run
-        var result1 = prompt.Validator("abc");
+        var result1 = prompt.Validator?.Invoke("abc");
         result1.ShouldBeEquivalentTo(ValidationResult.Error("length < 4"));
         secondInvoked.ShouldBeFalse();
 
         // First passes, second fails -> second runs and returns its message
         secondInvoked = false;
-        var result2 = prompt.Validator("abcd");
+        var result2 = prompt.Validator?.Invoke("abcd");
         result2.ShouldBeEquivalentTo(ValidationResult.Error("missing z"));
         secondInvoked.ShouldBeTrue();
 
         // Both pass -> success
-        var result3 = prompt.Validator("abcz");
+        var result3 = prompt.Validator?.Invoke("abcz");
         result3.ShouldBeEquivalentTo(ValidationResult.Success());
     }
 }
