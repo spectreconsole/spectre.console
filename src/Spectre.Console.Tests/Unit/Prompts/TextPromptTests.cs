@@ -410,4 +410,74 @@ public sealed class TextPromptTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    public void Validate_BoolOverloads_ChainsAndShortCircuits()
+    {
+        var prompt = new TextPrompt<string>("Enter:");
+        bool secondInvoked = false;
+
+        prompt
+            .Validate(s => s.Length >= 3, "too short") // first validator
+            .Validate(s =>
+            {
+                secondInvoked = true;
+                return s.Contains("a");
+            }, "missing a"); // second validator
+
+        // First validator fails -> second should not run
+        var result1 = prompt.Validator("ab");
+        result1.ShouldBeEquivalentTo(ValidationResult.Error("too short"));
+        secondInvoked.ShouldBeFalse();
+
+        // First passes, second fails -> second runs and its error returned
+        secondInvoked = false;
+        var result2 = prompt.Validator("bbc");
+        result2.ShouldBeEquivalentTo(ValidationResult.Error("missing a"));
+        secondInvoked.ShouldBeTrue();
+
+        // // Both pass -> success
+        var result3 = prompt.Validator("abc");
+        result3.ShouldBeEquivalentTo(ValidationResult.Success());
+    }
+
+    [Fact]
+    public void Validate_MixedOverloads_ChainsAndPreservesMessages()
+    {
+        var prompt = new TextPrompt<string>("Enter:");
+        bool secondInvoked = false;
+
+        // First uses Func<T, ValidationResult>
+        prompt.Validate<string>(s =>
+        {
+            if (s.Length < 4)
+            {
+                return ValidationResult.Error("length < 4");
+            }
+
+            return ValidationResult.Success();
+        });
+
+        // Second uses Func<T, bool>
+        prompt.Validate<string>(s =>
+        {
+            secondInvoked = true;
+            return s.Contains("z");
+        }, "missing z");
+
+        // First fails -> second should not run
+        var result1 = prompt.Validator("abc");
+        result1.ShouldBeEquivalentTo(ValidationResult.Error("length < 4"));
+        secondInvoked.ShouldBeFalse();
+
+        // First passes, second fails -> second runs and returns its message
+        secondInvoked = false;
+        var result2 = prompt.Validator("abcd");
+        result2.ShouldBeEquivalentTo(ValidationResult.Error("missing z"));
+        secondInvoked.ShouldBeTrue();
+
+        // Both pass -> success
+        var result3 = prompt.Validator("abcz");
+        result3.ShouldBeEquivalentTo(ValidationResult.Success());
+    }
 }

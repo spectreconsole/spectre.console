@@ -194,8 +194,23 @@ public static class TextPromptExtensions
             throw new ArgumentNullException(nameof(obj));
         }
 
+        if (validator is null)
+        {
+            throw new ArgumentNullException(nameof(validator));
+        }
+
+        var previous = obj.Validator;
         obj.Validator = result =>
         {
+            if (previous is not null)
+            {
+                var previousResult = previous(result);
+                if (!previousResult.Successful)
+                {
+                    return previousResult;
+                }
+            }
+
             if (validator(result))
             {
                 return ValidationResult.Success();
@@ -221,7 +236,26 @@ public static class TextPromptExtensions
             throw new ArgumentNullException(nameof(obj));
         }
 
-        obj.Validator = validator;
+        if (validator is null)
+        {
+            throw new ArgumentNullException(nameof(validator));
+        }
+
+        var previous = obj.Validator;
+
+        obj.Validator = result =>
+        {
+            if (previous is not null)
+            {
+                var previousResult = previous(result);
+                if (!previousResult.Successful)
+                {
+                    return previousResult;
+                }
+            }
+
+            return validator(result);
+        };
 
         return obj;
     }
