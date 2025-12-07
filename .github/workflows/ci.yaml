@@ -22,13 +22,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup .NET SDK
+      - name: Setup .NET SDK (net8.0, net9.0)
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             8.0.x
             9.0.x
-            10.0.x
+
+      - name: Setup .NET SDK (global.json)
+        uses: actions/setup-dotnet@v5
 
       - name: Build
         shell: bash

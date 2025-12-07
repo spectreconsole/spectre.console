@@ -8,8 +8,8 @@
 .idea
 .DS_Store
 
-# Cakeup
-cakeup-x86_64-latest.exe
+# Sign tool
+.sign
 
 # .NET Core CLI
 /.dotnet/
