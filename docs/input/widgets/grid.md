@@ -33,6 +33,22 @@ grid.AddRow(new string[]{"Row 1", "Row 2", "Row 3"});
 AnsiConsole.Write(grid);
 ```
 
+### Configure columns
+
+```csharp
+var grid = new Grid();
+
+// Add columns with specific configuration
+grid.AddColumns(
+    new GridColumn { Alignment = Justify.Left },
+    new GridColumn { Alignment = Justify.Center },
+    new GridColumn { Alignment = Justify.Right, Width = 12, NoWrap = true });
+
+grid.AddRow("Left", "Center", "Right");
+
+AnsiConsole.Write(grid);
+```
+
 ### Align and style items within cells
 
 ```csharp

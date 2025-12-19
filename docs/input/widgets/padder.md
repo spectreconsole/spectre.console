@@ -37,8 +37,22 @@ grid.AddColumn();
 
 grid.AddRow(pad_I, pad_II, pad_III);
 
-// Write grid and it's padded contents to the Console
+// Write grid and its padded contents to the Console
 AnsiConsole.Write(grid);
+```
+
+### Set padding and expand
+
+```csharp
+var panel = new Panel("Padded panel");
+
+var paddedPanel = new Padder(panel)
+{
+    Padding = new Padding(2, 1, 2, 1),
+    Expand = true,
+};
+
+AnsiConsole.Write(paddedPanel);
 ```
 
 ### Padding element within a padded element
@@ -61,7 +75,7 @@ grid.AddColumn();
 grid.AddRow(pad_I, pad_II);
 
 // Apply horizontal and vertical padding on the grid
-var paddedGrid = new Padder(grid).Padding(4,1);
+var paddedGrid = new Padder(grid).Padding(4, 1);
 
 // Write the padded grid to the Console
 AnsiConsole.Write(paddedGrid);

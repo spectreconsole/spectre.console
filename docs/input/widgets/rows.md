@@ -1,6 +1,6 @@
 Title: Rows
 Order: 20
-Description: "Use **Rows** to render widgets in horiztonal rows to the console."
+Description: "Use **Rows** to render widgets in horizontal rows to the console."
 Highlights:
     - Custom colors
     - Labels
@@ -22,6 +22,17 @@ Use `Rows` to render widgets in horizontal rows to the console.
 AnsiConsole.Write(new Rows(
             new Text("Item 1"),
             new Text("Item 2")
+        ));
+```
+
+### Mix widgets
+
+```csharp
+// Rows can contain any IRenderable widgets
+AnsiConsole.Write(new Rows(
+            new Markup("[bold]Title[/]"),
+            new Rule(),
+            new Panel("Content")
         ));
 ```
 
