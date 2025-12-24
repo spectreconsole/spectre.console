@@ -24,7 +24,7 @@ _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.consol
   این کتابخانه توانایی ترمینال فعلی را تشخیص داده و در صورت لزوم رنگ‌ها را کاهش می‌دهد.
 
 
-![Example](docs/input/assets/images/example.png)
+![Example](resources/example.png)
 
 <h2 id="installing">نصب</h2>
 

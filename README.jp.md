@@ -29,7 +29,7 @@ Python用の素晴らしい[Rich ライブラリ](https://github.com/willmcgugan
 
 ## 例
 
-![Example](docs/input/assets/images/example.png)
+![Example](resources/example.png)
 
 ## 使用方法
 
@@ -294,10 +294,6 @@ table.AddRow(new Markup("[blue]Corgi[/]"), new Panel("Waldo"));
 AnsiConsole.Render(table);
 ```
 
-これは次のように出力を描画します。
-
-![Table](docs/input/assets/images/table.png)
-
 ### 罫線
 
 
@@ -373,20 +369,16 @@ column.Width = 15;
 AnsiConsole.WriteException(ex);
 ```
 
-![exception](docs/input/assets/images/exception.png)
 ### 例外の省略表示
 
 例外の特定部分を短くして、さらに読みやすくしたり、パスをクリック可能なハイパーリンクにすることもできます。
 ハイパーリンクがクリックできるかはターミナル次第です。
-
 
 ```csharp
 AnsiConsole.WriteException(ex, 
     ExceptionFormats.ShortenPaths | ExceptionFormats.ShortenTypes |
     ExceptionFormats.ShortenMethods | ExceptionFormats.ShowLinks);
 ```
-
-![exception](docs/input/assets/images/compact_exception.png)
 
 ### 例外出力のカスタマイズ
 
@@ -410,5 +402,3 @@ AnsiConsole.WriteException(ex, new ExceptionSettings
     }
 });
 ```
-
-![exception](docs/input/assets/images/custom_exception.png)

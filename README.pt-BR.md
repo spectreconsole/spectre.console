@@ -25,7 +25,7 @@ para Python.
   A biblioteca detectará os recursos do terminal atual 
   e reduz as cores conforme necessário.
 
-![Exemplo](docs/input/assets/images/example.png)
+![Exemplo](resources/example.png)
 
 ## Instalação
 

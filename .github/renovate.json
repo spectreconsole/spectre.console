@@ -9,12 +9,10 @@
   "npm": {
     "ignorePaths": [
       "**/node_modules/**",
-      "**/bower_components/**",
-      "docs/**"
+      "**/bower_components/**"
     ]
   },
   "ignorePaths": [
-    "resources/scripts/**",
-    "docs/**"
+    "resources/scripts/**"
   ]
 }

@@ -26,7 +26,7 @@ It is heavily inspired by the excellent Python library, [Rich](https://github.co
   and downgrade colors as needed.
 * Written with unit testing in mind.
 
-![Example](docs/input/assets/images/example.png)
+![Example](これは次のように出力を描画します。/example.png)
 
 ## Important Notices
 
