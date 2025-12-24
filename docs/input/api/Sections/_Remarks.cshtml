@@ -1,9 +1,0 @@
-@using Statiq.CodeAnalysis
-@{
-    var remarks = Document.GetString(CodeAnalysisKeys.Remarks);
-    if (!remarks.IsNullOrWhiteSpace())
-    {
-        <h3>Remarks</h3>
-        <div>@Html.Raw(remarks)</div>
-    }
-}

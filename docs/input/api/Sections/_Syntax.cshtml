@@ -1,8 +1,0 @@
-@using Statiq.CodeAnalysis
-@{
-    string syntax = Document.GetString(CodeAnalysisKeys.Syntax);
-    if (!syntax.IsNullOrWhiteSpace())
-    {
-        <pre class="language-csharp"><code class="language-csharp">@syntax</code></pre>
-    }
-}
