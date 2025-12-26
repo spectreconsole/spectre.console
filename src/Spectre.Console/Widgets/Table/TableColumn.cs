@@ -17,9 +17,9 @@ public sealed class TableColumn : IColumn
 
     /// <summary>
     /// Gets or sets the width of the column.
-    /// If <c>null</c>, the column will adapt to its contents.
+    /// By default it is set to <see cref="ColumnWidth.SizeToContent" />.
     /// </summary>
-    public int? Width { get; set; }
+    public ColumnWidth Width { get; set; }
 
     /// <summary>
     /// Gets or sets the padding of the column.
@@ -54,7 +54,7 @@ public sealed class TableColumn : IColumn
     public TableColumn(IRenderable header)
     {
         Header = header ?? throw new ArgumentNullException(nameof(header));
-        Width = null;
+        Width = ColumnWidth.SizeToContent();
         Padding = new Padding(1, 0, 1, 0);
         NoWrap = false;
         Alignment = null;
