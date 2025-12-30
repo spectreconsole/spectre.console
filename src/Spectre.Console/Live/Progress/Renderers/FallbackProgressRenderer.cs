@@ -6,7 +6,7 @@ internal sealed class FallbackProgressRenderer : ProgressRenderer
     private static readonly double?[] _milestones = new double?[] { FirstMilestone, 50, 75, 95, 96, 97, 98, 99, 100 };
 
     private readonly Dictionary<int, double> _taskMilestones;
-    private readonly object _lock;
+    private readonly Lock _lock;
     private IRenderable? _renderable;
     private DateTime _lastUpdate;
 
@@ -15,7 +15,7 @@ internal sealed class FallbackProgressRenderer : ProgressRenderer
     public FallbackProgressRenderer()
     {
         _taskMilestones = new Dictionary<int, double>();
-        _lock = new object();
+        _lock = LockFactory.Create();
     }
 
     public override void Update(ProgressContext context)
