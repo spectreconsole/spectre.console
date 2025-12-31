@@ -10,6 +10,9 @@ on:
 
 permissions:
   id-token: write
+  contents: write
+  packages: write
+  issues: write
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
