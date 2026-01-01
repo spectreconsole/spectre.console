@@ -8,7 +8,7 @@ public sealed class SpinnerColumn : ProgressColumn
     private const string ACCUMULATED = "SPINNER_ACCUMULATED";
     private const string INDEX = "SPINNER_INDEX";
 
-    private readonly object _lock;
+    private readonly Lock _lock;
     private Spinner _spinner;
     private int? _maxWidth;
     private string? _completed;
@@ -91,7 +91,7 @@ public sealed class SpinnerColumn : ProgressColumn
     public SpinnerColumn(Spinner spinner)
     {
         _spinner = spinner ?? throw new ArgumentNullException(nameof(spinner));
-        _lock = new object();
+        _lock = LockFactory.Create();
     }
 
     /// <inheritdoc/>
