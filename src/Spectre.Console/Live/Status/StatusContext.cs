@@ -86,33 +86,33 @@ public static class StatusContextExtensions
             context.Status = status;
             return context;
         }
-    }
 
-    /// <summary>
-    /// Sets the spinner.
-    /// </summary>
-    /// <param name="context">The status context.</param>
-    /// <param name="spinner">The spinner.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static StatusContext Spinner(this StatusContext context, Spinner spinner)
-    {
-        ArgumentNullException.ThrowIfNull(context);
+        /// <summary>
+        /// Sets the spinner.
+        /// </summary>
+        /// <param name="context">The status context.</param>
+        /// <param name="spinner">The spinner.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public StatusContext Spinner(Spinner spinner)
+        {
+            ArgumentNullException.ThrowIfNull(context);
 
-        context.Spinner = spinner;
-        return context;
-    }
+            context.Spinner = spinner;
+            return context;
+        }
 
-    /// <summary>
-    /// Sets the spinner style.
-    /// </summary>
-    /// <param name="context">The status context.</param>
-    /// <param name="style">The spinner style.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static StatusContext SpinnerStyle(this StatusContext context, Style? style)
-    {
-        ArgumentNullException.ThrowIfNull(context);
+        /// <summary>
+        /// Sets the spinner style.
+        /// </summary>
+        /// <param name="context">The status context.</param>
+        /// <param name="style">The spinner style.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public StatusContext SpinnerStyle(Style? style)
+        {
+            ArgumentNullException.ThrowIfNull(context);
 
-        context.SpinnerStyle = style;
-        return context;
+            context.SpinnerStyle = style;
+            return context;
+        }
     }
 }

@@ -27,16 +27,16 @@ internal static class StringBuilderExtensions
 
             return builder.Append(value);
         }
-    }
 
-    public static void AppendSpan(this StringBuilder builder, ReadOnlySpan<char> span)
-    {
-        // NetStandard 2 lacks the override for StringBuilder to add the span. We'll need to convert the span
-        // to a string for it, but for .NET 6.0 or newer we'll use the override.
+        public void AppendSpan(ReadOnlySpan<char> span)
+        {
+            // NetStandard 2 lacks the override for StringBuilder to add the span. We'll need to convert the span
+            // to a string for it, but for .NET 6.0 or newer we'll use the override.
 #if NETSTANDARD2_0
-        builder.Append(span.ToString());
+            builder.Append(span.ToString());
 #else
-        builder.Append(span);
+            builder.Append(span);
 #endif
+        }
     }
 }

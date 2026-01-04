@@ -106,16 +106,4 @@ public static partial class Emoji
         value = string.Empty;
         return false;
     }
-
-    private static int IndexOf(this ReadOnlySpan<char> span, char value, int startIndex)
-    {
-        var indexInSlice = span.Slice(startIndex).IndexOf(value);
-
-        if (indexInSlice == -1)
-        {
-            return -1;
-        }
-
-        return startIndex + indexInSlice;
-    }
 }

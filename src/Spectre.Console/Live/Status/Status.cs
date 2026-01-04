@@ -137,33 +137,33 @@ public static class StatusExtensions
             status.AutoRefresh = enabled;
             return status;
         }
-    }
 
-    /// <summary>
-    /// Sets the spinner.
-    /// </summary>
-    /// <param name="status">The <see cref="Status"/> instance.</param>
-    /// <param name="spinner">The spinner.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Status Spinner(this Status status, Spinner spinner)
-    {
-        ArgumentNullException.ThrowIfNull(status);
+        /// <summary>
+        /// Sets the spinner.
+        /// </summary>
+        /// <param name="status">The <see cref="Status"/> instance.</param>
+        /// <param name="spinner">The spinner.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public Status Spinner(Spinner spinner)
+        {
+            ArgumentNullException.ThrowIfNull(status);
 
-        status.Spinner = spinner;
-        return status;
-    }
+            status.Spinner = spinner;
+            return status;
+        }
 
-    /// <summary>
-    /// Sets the spinner style.
-    /// </summary>
-    /// <param name="status">The <see cref="Status"/> instance.</param>
-    /// <param name="style">The spinner style.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Status SpinnerStyle(this Status status, Style? style)
-    {
-        ArgumentNullException.ThrowIfNull(status);
+        /// <summary>
+        /// Sets the spinner style.
+        /// </summary>
+        /// <param name="status">The <see cref="Status"/> instance.</param>
+        /// <param name="style">The spinner style.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public Status SpinnerStyle(Style? style)
+        {
+            ArgumentNullException.ThrowIfNull(status);
 
-        status.SpinnerStyle = style;
-        return status;
+            status.SpinnerStyle = style;
+            return status;
+        }
     }
 }

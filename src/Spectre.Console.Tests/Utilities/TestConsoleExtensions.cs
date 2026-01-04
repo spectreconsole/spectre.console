@@ -6,22 +6,25 @@ public static class TestConsoleExtensions
     private static readonly Regex _filenameRegex = new Regex("\\sin\\s.*cs:nn", RegexOptions.Multiline);
     private static readonly Regex _pathSeparatorRegex = new Regex(@"[/\\]+");
 
-    public static string WriteNormalizedException(this TestConsole console, Exception ex, ExceptionFormats formats = ExceptionFormats.Default)
+    extension(TestConsole console)
     {
-        if (!string.IsNullOrWhiteSpace(console.Output))
+        public string WriteNormalizedException(Exception ex, ExceptionFormats formats = ExceptionFormats.Default)
         {
-            throw new InvalidOperationException("Output buffer is not empty.");
+            if (!string.IsNullOrWhiteSpace(console.Output))
+            {
+                throw new InvalidOperationException("Output buffer is not empty.");
+            }
+
+            console.WriteException(ex, formats);
+
+            return string.Join("\n", NormalizeStackTrace(console.Output)
+                .NormalizeLineEndings()
+                .Split(['\n'])
+                .Select(line => line.TrimEnd()));
         }
-
-        console.WriteException(ex, formats);
-
-        return string.Join("\n", NormalizeStackTrace(console.Output)
-            .NormalizeLineEndings()
-            .Split(['\n'])
-            .Select(line => line.TrimEnd()));
     }
 
-    public static string NormalizeStackTrace(string text)
+    private static string NormalizeStackTrace(string text)
     {
         // First normalize line numbers
         text = _lineNumberRegex.Replace(text, ":nn");

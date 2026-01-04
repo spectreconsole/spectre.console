@@ -242,3 +242,276 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
         return true;
     }
 }
+
+/// <summary>
+/// Contains extension methods for <see cref="TextPrompt{T}"/>.
+/// </summary>
+public static class TextPromptExtensions
+{
+    /// <param name="obj">The prompt.</param>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    extension<T>(TextPrompt<T> obj)
+    {
+        /// <summary>
+        /// Allow empty input.
+        /// </summary>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> AllowEmpty()
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.AllowEmpty = true;
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the prompt style.
+        /// </summary>
+        /// <param name="style">The prompt style.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> PromptStyle(Style style)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            ArgumentNullException.ThrowIfNull(style);
+
+            obj.PromptStyle = style;
+            return obj;
+        }
+
+        /// <summary>
+        /// Show or hide choices.
+        /// </summary>
+        /// <param name="show">Whether or not choices should be visible.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> ShowChoices(bool show)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.ShowChoices = show;
+            return obj;
+        }
+
+        /// <summary>
+        /// Shows choices.
+        /// </summary>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> ShowChoices()
+        {
+            return ShowChoices(obj, true);
+        }
+
+        /// <summary>
+        /// Hides choices.
+        /// </summary>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> HideChoices()
+        {
+            return ShowChoices(obj, false);
+        }
+
+        /// <summary>
+        /// Show or hide the default value.
+        /// </summary>
+        /// <param name="show">Whether or not the default value should be visible.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> ShowDefaultValue(bool show)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.ShowDefaultValue = show;
+            return obj;
+        }
+
+        /// <summary>
+        /// Shows the default value.
+        /// </summary>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> ShowDefaultValue()
+        {
+            return ShowDefaultValue(obj, true);
+        }
+
+        /// <summary>
+        /// Hides the default value.
+        /// </summary>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> HideDefaultValue()
+        {
+            return ShowDefaultValue(obj, false);
+        }
+
+        /// <summary>
+        /// Sets the validation error message for the prompt.
+        /// </summary>
+        /// <param name="message">The validation error message.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> ValidationErrorMessage(string message)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.ValidationErrorMessage = message;
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the "invalid choice" message for the prompt.
+        /// </summary>
+        /// <param name="message">The "invalid choice" message.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> InvalidChoiceMessage(string message)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.InvalidChoiceMessage = message;
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the default value of the prompt.
+        /// </summary>
+        /// <param name="value">The default value.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> DefaultValue(T value)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.DefaultValue = new DefaultPromptValue<T>(value);
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the validation criteria for the prompt.
+        /// </summary>
+        /// <param name="validator">The validation criteria.</param>
+        /// <param name="message">The validation error message.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> Validate(Func<T, bool> validator, string? message = null)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.Validator = result =>
+            {
+                if (validator(result))
+                {
+                    return ValidationResult.Success();
+                }
+
+                return ValidationResult.Error(message);
+            };
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the validation criteria for the prompt.
+        /// </summary>
+        /// <param name="validator">The validation criteria.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> Validate(Func<T, ValidationResult> validator)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.Validator = validator;
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Adds a choice to the prompt.
+        /// </summary>
+        /// <param name="choice">The choice to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> AddChoice(T choice)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.Choices.Add(choice);
+            return obj;
+        }
+
+        /// <summary>
+        /// Adds multiple choices to the prompt.
+        /// </summary>
+        /// <param name="choices">The choices to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> AddChoices(IEnumerable<T> choices)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            ArgumentNullException.ThrowIfNull(choices);
+
+            foreach (var choice in choices)
+            {
+                obj.Choices.Add(choice);
+            }
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Replaces prompt user input with asterisks in the console.
+        /// </summary>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> Secret()
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.IsSecret = true;
+            return obj;
+        }
+
+        /// <summary>
+        /// Replaces prompt user input with mask in the console.
+        /// </summary>
+        /// <param name="mask">The masking character to use for the secret.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> Secret(char? mask)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.IsSecret = true;
+            obj.Mask = mask;
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the function to create a display string for a given choice.
+        /// </summary>
+        /// <param name="displaySelector">The function to get a display string for a given choice.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> WithConverter(Func<T, string>? displaySelector)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.Converter = displaySelector;
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the style in which the default value is displayed.
+        /// </summary>
+        /// <param name="style">The default value style or <see langword="null"/> to use the default style (green).</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> DefaultValueStyle(Style? style)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.DefaultValueStyle = style;
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the style in which the list of choices is displayed.
+        /// </summary>
+        /// <param name="style">The style to use for displaying the choices or <see langword="null"/> to use the default style (blue).</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TextPrompt<T> ChoicesStyle(Style? style)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.ChoicesStyle = style;
+            return obj;
+        }
+    }
+}
