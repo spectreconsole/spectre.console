@@ -8,12 +8,6 @@ on:
     branches:
       - main
 
-permissions:
-  id-token: write
-  contents: write
-  packages: write
-  issues: write
-
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
@@ -34,20 +28,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Azure login
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Setup .NET SDK (net8.0, net9.0)
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: |
-            8.0.x
-            9.0.x
-
       - name: Setup .NET SDK (global.json)
         uses: actions/setup-dotnet@v5
 
@@ -55,7 +35,4 @@ jobs:
         shell: bash
         run: |
           dotnet tool restore
-          dotnet make publish --sign \
-            --nuget-key="${{secrets.NUGET_API_KEY}}" \
-            --keyvaultUrl="${{secrets.SIGN_KEYVAULT_URL}}" \
-            --keyvaultCertificate="${{secrets.SIGN_KEYVAULT_CERTIFICATE}}"
+          dotnet make publish --nuget-key="${{secrets.NUGET_API_KEY}}"
