@@ -3,6 +3,7 @@ namespace Spectre.Console.Advanced;
 /// <summary>
 /// Contains extension methods for <see cref="IAnsiConsole"/>.
 /// </summary>
+[Obsolete("Use methods on IAnsiConsole instead")]
 public static class AnsiConsoleExtensions
 {
     /// <param name="console">The console to write to.</param>

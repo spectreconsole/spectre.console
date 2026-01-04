@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <Compile Include="..\Polyfills.cs">
-      <Link>Extensions\Polyfills.cs</Link>
+      <Link>Extensions\Bcl\Polyfills.cs</Link>
     </Compile>
   </ItemGroup>
 
