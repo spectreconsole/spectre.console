@@ -16,6 +16,7 @@ public static partial class AnsiConsoleExtensions
         /// <summary>
         /// Starts recording the console output.
         /// </summary>
+        [Obsolete("Use AnsiConsole.CreateRecorder instead")]
         public static void Record()
         {
             if (AnsiConsole.Recorder == null)
@@ -28,6 +29,7 @@ public static partial class AnsiConsoleExtensions
         /// Exports all recorded console output as text.
         /// </summary>
         /// <returns>The recorded output as text.</returns>
+        [Obsolete("Use recorder from AnsiConsole.CreateRecorder instead")]
         public static string ExportText()
         {
             if (AnsiConsole.Recorder == null)
@@ -42,6 +44,7 @@ public static partial class AnsiConsoleExtensions
         /// Exports all recorded console output as HTML text.
         /// </summary>
         /// <returns>The recorded output as HTML text.</returns>
+        [Obsolete("Use recorder from AnsiConsole.CreateRecorder instead")]
         public static string ExportHtml()
         {
             if (AnsiConsole.Recorder == null)
@@ -57,6 +60,7 @@ public static partial class AnsiConsoleExtensions
         /// </summary>
         /// <param name="encoder">The encoder to use.</param>
         /// <returns>The recorded output.</returns>
+        [Obsolete("Use recorder from AnsiConsole.CreateRecorder instead")]
         public static string ExportCustom(IAnsiConsoleEncoder encoder)
         {
             if (AnsiConsole.Recorder == null)

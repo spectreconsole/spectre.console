@@ -7,6 +7,7 @@ public static partial class AnsiConsoleExtensions
         /// <summary>
         /// Gets or sets the foreground color.
         /// </summary>
+        [Obsolete("Static global state has been obsolete and will be removed in a future version")]
         public static Color Foreground
         {
             get => AnsiConsole.CurrentStyle.Foreground;
@@ -16,6 +17,7 @@ public static partial class AnsiConsoleExtensions
         /// <summary>
         /// Gets or sets the background color.
         /// </summary>
+        [Obsolete("Static global state has been obsolete and will be removed in a future version")]
         public static Color Background
         {
             get => AnsiConsole.CurrentStyle.Background;
@@ -25,6 +27,7 @@ public static partial class AnsiConsoleExtensions
         /// <summary>
         /// Gets or sets the text decoration.
         /// </summary>
+        [Obsolete("Static global state has been obsolete and will be removed in a future version")]
         public static Decoration Decoration
         {
             get => AnsiConsole.CurrentStyle.Decoration;
@@ -34,6 +37,7 @@ public static partial class AnsiConsoleExtensions
         /// <summary>
         /// Resets colors and text decorations.
         /// </summary>
+        [Obsolete("Static global state has been obsolete and will be removed in a future version")]
         public static void Reset()
         {
             ResetColors();
@@ -43,6 +47,7 @@ public static partial class AnsiConsoleExtensions
         /// <summary>
         /// Resets the current applied text decorations.
         /// </summary>
+        [Obsolete("Static global state has been obsolete and will be removed in a future version")]
         public static void ResetDecoration()
         {
             AnsiConsole.Decoration = Decoration.None;
@@ -51,6 +56,7 @@ public static partial class AnsiConsoleExtensions
         /// <summary>
         /// Resets the current applied foreground and background colors.
         /// </summary>
+        [Obsolete("Static global state has been obsolete and will be removed in a future version")]
         public static void ResetColors()
         {
             AnsiConsole.CurrentStyle = Style.Plain;

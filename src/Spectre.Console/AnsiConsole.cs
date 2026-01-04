@@ -10,6 +10,8 @@ public static partial class AnsiConsole
 #pragma warning restore CS0618
 
     internal static Style CurrentStyle { get; set; } = Style.Plain;
+    internal static Recorder? Recorder { get; set; }
+
     internal static bool Created { get; private set; }
 
     private static Lazy<IAnsiConsole> _console = new Lazy<IAnsiConsole>(
@@ -26,8 +28,6 @@ public static partial class AnsiConsole
             return console;
         });
 
-    internal static Recorder? Recorder { get; set; }
-
     /// <summary>
     /// Gets or sets the underlying <see cref="IAnsiConsole"/>.
     /// </summary>
@@ -40,13 +40,7 @@ public static partial class AnsiConsole
         set
         {
             _console = new Lazy<IAnsiConsole>(() => value);
-
-            if (Recorder != null)
-            {
-                // Recreate the recorder
-                Recorder = Recorder.Clone(value);
-            }
-
+            Recorder = Recorder?.Clone(value); // Recreate the recorder
             Created = true;
         }
     }
