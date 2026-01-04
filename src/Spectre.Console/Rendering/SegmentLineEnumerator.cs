@@ -13,10 +13,7 @@ public sealed class SegmentLineEnumerator : IEnumerable<Segment>
     /// <param name="lines">The lines to enumerate.</param>
     public SegmentLineEnumerator(IEnumerable<SegmentLine> lines)
     {
-        if (lines is null)
-        {
-            throw new System.ArgumentNullException(nameof(lines));
-        }
+        ArgumentNullException.ThrowIfNull(lines);
 
         _lines = new List<SegmentLine>(lines);
     }

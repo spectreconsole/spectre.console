@@ -5,309 +5,241 @@ namespace Spectre.Console.Json;
 /// </summary>
 public static class JsonTextExtensions
 {
-    /// <summary>
-    /// Sets the style used for braces.
-    /// </summary>
     /// <param name="text">The JSON text instance.</param>
-    /// <param name="style">The style to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText BracesStyle(this JsonText text, Style? style)
+    extension(JsonText text)
     {
-        if (text == null)
+        /// <summary>
+        /// Sets the style used for braces.
+        /// </summary>
+        /// <param name="style">The style to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText BracesStyle(Style style)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.BracesStyle = style;
+            return text;
         }
 
-        text.BracesStyle = style;
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the style used for brackets.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="style">The style to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText BracketStyle(this JsonText text, Style? style)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the style used for brackets.
+        /// </summary>
+        /// <param name="style">The style to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText BracketStyle(Style? style)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.BracketsStyle = style;
+            return text;
         }
 
-        text.BracketsStyle = style;
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the style used for member names.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="style">The style to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText MemberStyle(this JsonText text, Style? style)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the style used for member names.
+        /// </summary>
+        /// <param name="style">The style to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText MemberStyle(Style? style)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.MemberStyle = style;
+            return text;
         }
 
-        text.MemberStyle = style;
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the style used for colons.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="style">The style to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText ColonStyle(this JsonText text, Style? style)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the style used for colons.
+        /// </summary>
+        /// <param name="style">The style to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText ColonStyle(Style? style)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.ColonStyle = style;
+            return text;
         }
 
-        text.ColonStyle = style;
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the style used for commas.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="style">The style to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText CommaStyle(this JsonText text, Style? style)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the style used for commas.
+        /// </summary>
+        /// <param name="style">The style to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText CommaStyle(Style? style)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.CommaStyle = style;
+            return text;
         }
 
-        text.CommaStyle = style;
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the style used for string literals.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="style">The style to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText StringStyle(this JsonText text, Style? style)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the style used for string literals.
+        /// </summary>
+        /// <param name="style">The style to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText StringStyle(Style? style)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.StringStyle = style;
+            return text;
         }
 
-        text.StringStyle = style;
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the style used for number literals.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="style">The style to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText NumberStyle(this JsonText text, Style? style)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the style used for number literals.
+        /// </summary>
+        /// <param name="style">The style to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText NumberStyle(Style? style)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.NumberStyle = style;
+            return text;
         }
 
-        text.NumberStyle = style;
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the style used for boolean literals.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="style">The style to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText BooleanStyle(this JsonText text, Style? style)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the style used for boolean literals.
+        /// </summary>
+        /// <param name="style">The style to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText BooleanStyle(Style? style)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.BooleanStyle = style;
+            return text;
         }
 
-        text.BooleanStyle = style;
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the style used for <c>null</c> literals.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="style">The style to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText NullStyle(this JsonText text, Style? style)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the style used for <c>null</c> literals.
+        /// </summary>
+        /// <param name="style">The style to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText NullStyle(Style? style)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.NullStyle = style;
+            return text;
         }
 
-        text.NullStyle = style;
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the color used for braces.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="color">The color to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText BracesColor(this JsonText text, Color color)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the color used for braces.
+        /// </summary>
+        /// <param name="color">The color to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText BracesColor(Color color)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.BracesStyle = new Style(color);
+            return text;
         }
 
-        text.BracesStyle = new Style(color);
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the color used for brackets.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="color">The color to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText BracketColor(this JsonText text, Color color)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the color used for brackets.
+        /// </summary>
+        /// <param name="color">The color to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText BracketColor(Color color)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.BracketsStyle = new Style(color);
+            return text;
         }
 
-        text.BracketsStyle = new Style(color);
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the color used for member names.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="color">The color to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText MemberColor(this JsonText text, Color color)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the color used for member names.
+        /// </summary>
+        /// <param name="color">The color to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText MemberColor(Color color)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.MemberStyle = new Style(color);
+            return text;
         }
 
-        text.MemberStyle = new Style(color);
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the color used for colons.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="color">The color to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText ColonColor(this JsonText text, Color color)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the color used for colons.
+        /// </summary>
+        /// <param name="color">The color to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText ColonColor(Color color)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.ColonStyle = new Style(color);
+            return text;
         }
 
-        text.ColonStyle = new Style(color);
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the color used for commas.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="color">The color to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText CommaColor(this JsonText text, Color color)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the color used for commas.
+        /// </summary>
+        /// <param name="color">The color to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText CommaColor(Color color)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.CommaStyle = new Style(color);
+            return text;
         }
 
-        text.CommaStyle = new Style(color);
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the color used for string literals.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="color">The color to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText StringColor(this JsonText text, Color color)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the color used for string literals.
+        /// </summary>
+        /// <param name="color">The color to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText StringColor(Color color)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.StringStyle = new Style(color);
+            return text;
         }
 
-        text.StringStyle = new Style(color);
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the color used for number literals.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="color">The color to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText NumberColor(this JsonText text, Color color)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the color used for number literals.
+        /// </summary>
+        /// <param name="color">The color to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText NumberColor(Color color)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.NumberStyle = new Style(color);
+            return text;
         }
 
-        text.NumberStyle = new Style(color);
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the color used for boolean literals.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="color">The color to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText BooleanColor(this JsonText text, Color color)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the color used for boolean literals.
+        /// </summary>
+        /// <param name="color">The color to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText BooleanColor(Color color)
         {
-            throw new ArgumentNullException(nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
+
+            text.BooleanStyle = new Style(color);
+            return text;
         }
 
-        text.BooleanStyle = new Style(color);
-        return text;
-    }
-
-    /// <summary>
-    /// Sets the color used for <c>null</c> literals.
-    /// </summary>
-    /// <param name="text">The JSON text instance.</param>
-    /// <param name="color">The color to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static JsonText NullColor(this JsonText text, Color color)
-    {
-        if (text == null)
+        /// <summary>
+        /// Sets the color used for <c>null</c> literals.
+        /// </summary>
+        /// <param name="color">The color to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public JsonText NullColor(Color color)
         {
-            throw new ArgumentNullException(nameof(text));
-        }
+            ArgumentNullException.ThrowIfNull(text);
 
-        text.NullStyle = new Style(color);
-        return text;
+            text.NullStyle = new Style(color);
+            return text;
+        }
     }
 }

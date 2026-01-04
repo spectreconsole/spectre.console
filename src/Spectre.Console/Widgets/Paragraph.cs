@@ -44,10 +44,7 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
     public Paragraph(string text, Style? style = null)
         : this()
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        ArgumentNullException.ThrowIfNull(text);
 
         Append(text, style);
     }
@@ -60,10 +57,7 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public Paragraph Append(string text, Style? style = null)
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        ArgumentNullException.ThrowIfNull(text);
 
         foreach (var (_, first, last, part) in text.SplitLines().Enumerate())
         {
@@ -128,10 +122,7 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
     /// <inheritdoc/>
     protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        if (options is null)
-        {
-            throw new ArgumentNullException(nameof(options));
-        }
+        ArgumentNullException.ThrowIfNull(options);
 
         if (_lines.Count == 0)
         {

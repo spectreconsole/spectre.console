@@ -1,44 +1,54 @@
 namespace Spectre.Console;
 
-/// <summary>
-/// Contains extension methods for <see cref="IAnsiConsole"/>.
-/// </summary>
 public static partial class AnsiConsoleExtensions
 {
-    /// <summary>
-    /// Switches to an alternate screen buffer if the terminal supports it.
-    /// </summary>
-    /// <param name="console">The console.</param>
-    /// <param name="action">The action to execute within the alternate screen buffer.</param>
-    public static void AlternateScreen(this IAnsiConsole console, Action action)
+    extension(AnsiConsole)
     {
-        if (console is null)
+        /// <summary>
+        /// Switches to an alternate screen buffer if the terminal supports it.
+        /// </summary>
+        /// <param name="action">The action to execute within the alternate screen buffer.</param>
+        public static void AlternateScreen(Action action)
         {
-            throw new ArgumentNullException(nameof(console));
+            AnsiConsole.Console.AlternateScreen(action);
         }
+    }
 
-        if (!console.Profile.Capabilities.Ansi)
+    /// <param name="console">The console.</param>
+    extension(IAnsiConsole console)
+    {
+        /// <summary>
+        /// Switches to an alternate screen buffer if the terminal supports it.
+        /// </summary>
+        /// <param name="action">The action to execute within the alternate screen buffer.</param>
+        public void AlternateScreen(Action action)
         {
-            throw new NotSupportedException("Alternate buffers are not supported since your terminal does not support ANSI.");
-        }
+            ArgumentNullException.ThrowIfNull(console);
 
-        if (!console.Profile.Capabilities.AlternateBuffer)
-        {
-            throw new NotSupportedException("Alternate buffers are not supported by your terminal.");
-        }
+            if (!console.Profile.Capabilities.Ansi)
+            {
+                throw new NotSupportedException(
+                    "Alternate buffers are not supported since your terminal does not support ANSI.");
+            }
 
-        // Switch to alternate screen
-        console.Write(new ControlCode("\u001b[?1049h\u001b[H"));
+            if (!console.Profile.Capabilities.AlternateBuffer)
+            {
+                throw new NotSupportedException("Alternate buffers are not supported by your terminal.");
+            }
 
-        try
-        {
-            // Execute custom action
-            action();
-        }
-        finally
-        {
-            // Switch back to primary screen
-            console.Write(new ControlCode("\u001b[?1049l"));
+            // Switch to alternate screen
+            console.Write(new ControlCode("\u001b[?1049h\u001b[H"));
+
+            try
+            {
+                // Execute custom action
+                action();
+            }
+            finally
+            {
+                // Switch back to primary screen
+                console.Write(new ControlCode("\u001b[?1049l"));
+            }
         }
     }
 }

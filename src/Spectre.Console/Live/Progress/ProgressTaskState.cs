@@ -54,10 +54,7 @@ public sealed class ProgressTaskState
     {
         lock (_lock)
         {
-            if (func is null)
-            {
-                throw new ArgumentNullException(nameof(func));
-            }
+            ArgumentNullException.ThrowIfNull(func);
 
             var old = default(T);
             if (_state.TryGetValue(key, out var value))

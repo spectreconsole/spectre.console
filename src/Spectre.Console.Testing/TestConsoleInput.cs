@@ -21,10 +21,7 @@ public sealed class TestConsoleInput : IAnsiConsoleInput
     /// <param name="input">The input string.</param>
     public void PushText(string input)
     {
-        if (input is null)
-        {
-            throw new ArgumentNullException(nameof(input));
-        }
+        ArgumentNullException.ThrowIfNull(input);
 
         foreach (var character in input)
         {

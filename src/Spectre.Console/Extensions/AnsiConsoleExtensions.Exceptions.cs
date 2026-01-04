@@ -1,31 +1,55 @@
 namespace Spectre.Console;
 
-/// <summary>
-/// Contains extension methods for <see cref="IAnsiConsole"/>.
-/// </summary>
 public static partial class AnsiConsoleExtensions
 {
-    /// <summary>
-    /// Writes an exception to the console.
-    /// </summary>
-    /// <param name="console">The console.</param>
-    /// <param name="exception">The exception to write to the console.</param>
-    /// <param name="format">The exception format options.</param>
-    [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
-    public static void WriteException(this IAnsiConsole console, Exception exception, ExceptionFormats format = ExceptionFormats.Default)
+    extension(AnsiConsole)
     {
-        console.Write(exception.GetRenderable(format));
+        /// <summary>
+        /// Writes an exception to the console.
+        /// </summary>
+        /// <param name="exception">The exception to write to the console.</param>
+        /// <param name="format">The exception format options.</param>
+        [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
+        public static void WriteException(Exception exception, ExceptionFormats format = ExceptionFormats.Default)
+        {
+            AnsiConsole.Console.WriteException(exception, format);
+        }
+
+        /// <summary>
+        /// Writes an exception to the console.
+        /// </summary>
+        /// <param name="exception">The exception to write to the console.</param>
+        /// <param name="settings">The exception settings.</param>
+        [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
+        public static void WriteException(Exception exception, ExceptionSettings settings)
+        {
+            AnsiConsole.Console.WriteException(exception, settings);
+        }
     }
 
-    /// <summary>
-    /// Writes an exception to the console.
-    /// </summary>
     /// <param name="console">The console.</param>
-    /// <param name="exception">The exception to write to the console.</param>
-    /// <param name="settings">The exception settings.</param>
-    [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
-    public static void WriteException(this IAnsiConsole console, Exception exception, ExceptionSettings settings)
+    extension(IAnsiConsole console)
     {
-        console.Write(exception.GetRenderable(settings));
+        /// <summary>
+        /// Writes an exception to the console.
+        /// </summary>
+        /// <param name="exception">The exception to write to the console.</param>
+        /// <param name="format">The exception format options.</param>
+        [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
+        public void WriteException(Exception exception, ExceptionFormats format = ExceptionFormats.Default)
+        {
+            console.Write(exception.GetRenderable(format));
+        }
+
+        /// <summary>
+        /// Writes an exception to the console.
+        /// </summary>
+        /// <param name="exception">The exception to write to the console.</param>
+        /// <param name="settings">The exception settings.</param>
+        [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
+        public void WriteException(Exception exception, ExceptionSettings settings)
+        {
+            console.Write(exception.GetRenderable(settings));
+        }
     }
 }

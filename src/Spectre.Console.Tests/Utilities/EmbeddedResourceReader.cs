@@ -4,10 +4,7 @@ public static class EmbeddedResourceReader
 {
     public static Stream LoadResourceStream(string resourceName)
     {
-        if (resourceName is null)
-        {
-            throw new ArgumentNullException(nameof(resourceName));
-        }
+        ArgumentNullException.ThrowIfNull(resourceName);
 
         var assembly = Assembly.GetCallingAssembly();
         resourceName = resourceName.Replace("/", ".");
@@ -23,15 +20,9 @@ public static class EmbeddedResourceReader
 
     public static Stream LoadResourceStream(Assembly assembly, string resourceName)
     {
-        if (assembly is null)
-        {
-            throw new ArgumentNullException(nameof(assembly));
-        }
+        ArgumentNullException.ThrowIfNull(assembly);
 
-        if (resourceName is null)
-        {
-            throw new ArgumentNullException(nameof(resourceName));
-        }
+        ArgumentNullException.ThrowIfNull(resourceName);
 
         resourceName = resourceName.Replace("/", ".");
         var stream = assembly.GetManifestResourceStream(resourceName);

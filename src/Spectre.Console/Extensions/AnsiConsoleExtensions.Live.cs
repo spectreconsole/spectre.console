@@ -1,28 +1,35 @@
 namespace Spectre.Console;
 
-/// <summary>
-/// Contains extension methods for <see cref="IAnsiConsole"/>.
-/// </summary>
 public static partial class AnsiConsoleExtensions
 {
-    /// <summary>
-    /// Creates a new <see cref="LiveDisplay"/> instance for the console.
-    /// </summary>
-    /// <param name="console">The console.</param>
-    /// <param name="target">The target renderable to update.</param>
-    /// <returns>A <see cref="LiveDisplay"/> instance.</returns>
-    public static LiveDisplay Live(this IAnsiConsole console, IRenderable target)
+    extension(AnsiConsole)
     {
-        if (console is null)
+        /// <summary>
+        /// Creates a new <see cref="LiveDisplay"/> instance.
+        /// </summary>
+        /// <param name="target">The target renderable to update.</param>
+        /// <returns>A <see cref="LiveDisplay"/> instance.</returns>
+        public static LiveDisplay Live(IRenderable target)
         {
-            throw new ArgumentNullException(nameof(console));
+            return AnsiConsole.Console.Live(target);
         }
+    }
 
-        if (target is null)
+    /// <param name="console">The console.</param>
+    extension(IAnsiConsole console)
+    {
+        /// <summary>
+        /// Creates a new <see cref="LiveDisplay"/> instance for the console.
+        /// </summary>
+        /// <param name="target">The target renderable to update.</param>
+        /// <returns>A <see cref="LiveDisplay"/> instance.</returns>
+        public LiveDisplay Live(IRenderable target)
         {
-            throw new ArgumentNullException(nameof(target));
-        }
+            ArgumentNullException.ThrowIfNull(console);
 
-        return new LiveDisplay(console, target);
+            ArgumentNullException.ThrowIfNull(target);
+
+            return new LiveDisplay(console, target);
+        }
     }
 }

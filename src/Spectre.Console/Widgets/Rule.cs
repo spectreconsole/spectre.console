@@ -135,3 +135,43 @@ public sealed class Rule : Renderable, IHasJustification, IHasBoxBorder
         throw new NotSupportedException("Unsupported alignment.");
     }
 }
+
+/// <summary>
+/// Contains extension methods for <see cref="RuleExtensions"/>.
+/// </summary>
+public static class RuleExtensions
+{
+    /// <param name="rule">The rule.</param>
+    extension(Rule rule)
+    {
+        /// <summary>
+        /// Sets the rule title.
+        /// </summary>
+        /// <param name="title">The title.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public Rule RuleTitle(string title)
+        {
+            ArgumentNullException.ThrowIfNull(rule);
+
+            ArgumentNullException.ThrowIfNull(title);
+
+            rule.Title = title;
+            return rule;
+        }
+
+        /// <summary>
+        /// Sets the rule style.
+        /// </summary>
+        /// <param name="style">The rule style.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public Rule RuleStyle(Style style)
+        {
+            ArgumentNullException.ThrowIfNull(rule);
+
+            ArgumentNullException.ThrowIfNull(style);
+
+            rule.Style = style;
+            return rule;
+        }
+    }
+}

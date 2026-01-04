@@ -279,3 +279,259 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         return new Rows(list);
     }
 }
+
+/// <summary>
+/// Contains extension methods for <see cref="MultiSelectionPrompt{T}"/>.
+/// </summary>
+public static class MultiSelectionPromptExtensions
+{
+    /// <param name="obj">The prompt.</param>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    extension<T>(MultiSelectionPrompt<T> obj) where T : notnull
+    {
+        /// <summary>
+        /// Sets the selection mode.
+        /// </summary>
+        /// <param name="mode">The selection mode.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> Mode(SelectionMode mode)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.Mode = mode;
+            return obj;
+        }
+
+        /// <summary>
+        /// Adds a choice.
+        /// </summary>
+        /// <param name="choice">The choice to add.</param>
+        /// <param name="configurator">The configurator for the choice.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> AddChoices(T choice, Action<IMultiSelectionItem<T>> configurator)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            ArgumentNullException.ThrowIfNull(configurator);
+
+            var result = obj.AddChoice(choice);
+            configurator(result);
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Adds multiple choices.
+        /// </summary>
+        /// <param name="choices">The choices to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> AddChoices(params T[] choices)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            foreach (var choice in choices)
+            {
+                obj.AddChoice(choice);
+            }
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Adds multiple choices.
+        /// </summary>
+        /// <param name="choices">The choices to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> AddChoices(IEnumerable<T> choices)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            foreach (var choice in choices)
+            {
+                obj.AddChoice(choice);
+            }
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Adds multiple grouped choices.
+        /// </summary>
+        /// <param name="group">The group.</param>
+        /// <param name="choices">The choices to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> AddChoiceGroup(T group, IEnumerable<T> choices)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            var root = obj.AddChoice(group);
+            foreach (var choice in choices)
+            {
+                root.AddChild(choice);
+            }
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Adds multiple grouped choices.
+        /// </summary>
+        /// <param name="group">The group.</param>
+        /// <param name="choices">The choices to add.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> AddChoiceGroup(T group, params T[] choices)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            var root = obj.AddChoice(group);
+            foreach (var choice in choices)
+            {
+                root.AddChild(choice);
+            }
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Marks an item as selected.
+        /// </summary>
+        /// <param name="item">The item to select.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> Select(T item)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            var node = obj.Tree.Find(item);
+            node?.Select();
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the title.
+        /// </summary>
+        /// <param name="title">The title markup text.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> Title(string? title)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.Title = title;
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets how many choices that are displayed to the user.
+        /// </summary>
+        /// <param name="pageSize">The number of choices that are displayed to the user.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> PageSize(int pageSize)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            if (pageSize <= 2)
+            {
+                throw new ArgumentException("Page size must be greater or equal to 3.", nameof(pageSize));
+            }
+
+            obj.PageSize = pageSize;
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets whether the selection should wrap around when reaching its edges.
+        /// </summary>
+        /// <param name="shouldWrap">Whether the selection should wrap around.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> WrapAround(bool shouldWrap = true)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.WrapAround = shouldWrap;
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the highlight style of the selected choice.
+        /// </summary>
+        /// <param name="highlightStyle">The highlight style of the selected choice.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> HighlightStyle(Style highlightStyle)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.HighlightStyle = highlightStyle;
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the text that will be displayed if there are more choices to show.
+        /// </summary>
+        /// <param name="text">The text to display.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> MoreChoicesText(string? text)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.MoreChoicesText = text;
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the text that instructs the user of how to select items.
+        /// </summary>
+        /// <param name="text">The text to display.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> InstructionsText(string? text)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.InstructionsText = text;
+            return obj;
+        }
+
+        /// <summary>
+        /// Requires no choice to be selected.
+        /// </summary>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> NotRequired()
+        {
+            return Required(obj, false);
+        }
+
+        /// <summary>
+        /// Requires a choice to be selected.
+        /// </summary>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> Required()
+        {
+            return Required(obj, true);
+        }
+
+        /// <summary>
+        /// Sets a value indicating whether or not at least one choice must be selected.
+        /// </summary>
+        /// <param name="required">Whether or not at least one choice must be selected.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> Required(bool required)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.Required = required;
+            return obj;
+        }
+
+        /// <summary>
+        /// Sets the function to create a display string for a given choice.
+        /// </summary>
+        /// <param name="displaySelector">The function to get a display string for a given choice.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public MultiSelectionPrompt<T> UseConverter(Func<T, string>? displaySelector)
+        {
+            ArgumentNullException.ThrowIfNull(obj);
+
+            obj.Converter = displaySelector;
+            return obj;
+        }
+    }
+}

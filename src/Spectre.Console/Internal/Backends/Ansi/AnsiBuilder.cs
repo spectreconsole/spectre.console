@@ -50,10 +50,7 @@ internal static class AnsiBuilder
         {
             throw new ArgumentNullException(nameof(text));
         }
-        else if (style is null)
-        {
-            throw new ArgumentNullException(nameof(style));
-        }
+        else ArgumentNullException.ThrowIfNull(style);
 
         var codes = AnsiDecorationBuilder.GetAnsiCodes(style.Decoration);
 

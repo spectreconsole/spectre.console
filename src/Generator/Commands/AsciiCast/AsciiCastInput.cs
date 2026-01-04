@@ -18,10 +18,7 @@ public sealed class AsciiCastInput : IAnsiConsoleInput
 
     public void PushText(string input, int keypressDelayMs)
     {
-        if (input is null)
-        {
-            throw new ArgumentNullException(nameof(input));
-        }
+        ArgumentNullException.ThrowIfNull(input);
 
         foreach (var character in input)
         {

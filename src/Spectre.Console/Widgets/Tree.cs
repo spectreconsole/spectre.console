@@ -133,3 +133,39 @@ public sealed class Tree : Renderable, IHasTreeNodes
         return new Segment(guide.GetPart(part), Style ?? Style.Plain);
     }
 }
+
+/// <summary>
+/// Contains extension methods for <see cref="Tree"/>.
+/// </summary>
+public static class TreeExtensions
+{
+    /// <param name="tree">The tree.</param>
+    extension(Tree tree)
+    {
+        /// <summary>
+        /// Sets the tree style.
+        /// </summary>
+        /// <param name="style">The tree style.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public Tree Style(Style? style)
+        {
+            ArgumentNullException.ThrowIfNull(tree);
+
+            tree.Style = style;
+            return tree;
+        }
+
+        /// <summary>
+        /// Sets the tree guide line appearance.
+        /// </summary>
+        /// <param name="guide">The tree guide lines to use.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public Tree Guide(TreeGuide guide)
+        {
+            ArgumentNullException.ThrowIfNull(tree);
+
+            tree.Guide = guide;
+            return tree;
+        }
+    }
+}

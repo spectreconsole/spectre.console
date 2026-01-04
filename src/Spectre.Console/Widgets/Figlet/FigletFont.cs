@@ -112,10 +112,7 @@ public sealed class FigletFont
 
     internal IEnumerable<FigletCharacter> GetCharacters(string text)
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        ArgumentNullException.ThrowIfNull(text);
 
         var result = new List<FigletCharacter>();
         foreach (var character in text)

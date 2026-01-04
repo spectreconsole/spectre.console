@@ -11,20 +11,14 @@ internal static class ExceptionFormatter
 
     public static IRenderable Format(Exception exception, ExceptionSettings settings)
     {
-        if (exception is null)
-        {
-            throw new ArgumentNullException(nameof(exception));
-        }
+        ArgumentNullException.ThrowIfNull(exception);
 
         return GetException(exception, settings);
     }
 
     private static IRenderable GetException(Exception exception, ExceptionSettings settings)
     {
-        if (exception is null)
-        {
-            throw new ArgumentNullException(nameof(exception));
-        }
+        ArgumentNullException.ThrowIfNull(exception);
 
         return new Rows(GetMessage(exception, settings), GetStackFrames(exception, settings)).Expand();
     }
@@ -252,27 +246,30 @@ internal static class ExceptionFormatter
         return true;
     }
 
-    private static IEnumerable<StackFrame> FilterStackFrames(this IEnumerable<StackFrame?>? frames)
+    extension(IEnumerable<StackFrame?>? frames)
     {
-        var allFrames = frames?.ToArray() ?? Array.Empty<StackFrame>();
-        var numberOfFrames = allFrames.Length;
-
-        for (var i = 0; i < numberOfFrames; i++)
+        private IEnumerable<StackFrame> FilterStackFrames()
         {
-            var thisFrame = allFrames[i];
-            if (thisFrame == null)
-            {
-                continue;
-            }
+            var allFrames = frames?.ToArray() ?? Array.Empty<StackFrame>();
+            var numberOfFrames = allFrames.Length;
 
-            // always include the last frame
-            if (i == numberOfFrames - 1)
+            for (var i = 0; i < numberOfFrames; i++)
             {
-                yield return thisFrame;
-            }
-            else if (ShowInStackTrace(thisFrame))
-            {
-                yield return thisFrame;
+                var thisFrame = allFrames[i];
+                if (thisFrame == null)
+                {
+                    continue;
+                }
+
+                // always include the last frame
+                if (i == numberOfFrames - 1)
+                {
+                    yield return thisFrame;
+                }
+                else if (ShowInStackTrace(thisFrame))
+                {
+                    yield return thisFrame;
+                }
             }
         }
     }

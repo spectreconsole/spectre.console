@@ -44,10 +44,7 @@ public sealed class TableTitle
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public TableTitle SetStyle(string style)
     {
-        if (style is null)
-        {
-            throw new ArgumentNullException(nameof(style));
-        }
+        ArgumentNullException.ThrowIfNull(style);
 
         Style = Style.Parse(style);
         return this;

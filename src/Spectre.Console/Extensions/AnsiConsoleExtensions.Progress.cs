@@ -1,37 +1,51 @@
 namespace Spectre.Console;
 
-/// <summary>
-/// Contains extension methods for <see cref="IAnsiConsole"/>.
-/// </summary>
 public static partial class AnsiConsoleExtensions
 {
-    /// <summary>
-    /// Creates a new <see cref="Progress"/> instance for the console.
-    /// </summary>
-    /// <param name="console">The console.</param>
-    /// <returns>A <see cref="Progress"/> instance.</returns>
-    public static Progress Progress(this IAnsiConsole console)
+    extension(AnsiConsole)
     {
-        if (console is null)
+        /// <summary>
+        /// Creates a new <see cref="Spectre.Console.Progress"/> instance.
+        /// </summary>
+        /// <returns>A <see cref="Spectre.Console.Progress"/> instance.</returns>
+        public static Progress Progress()
         {
-            throw new ArgumentNullException(nameof(console));
+            return AnsiConsole.Console.Progress();
         }
 
-        return new Progress(console);
+        /// <summary>
+        /// Creates a new <see cref="Spectre.Console.Status"/> instance.
+        /// </summary>
+        /// <returns>A <see cref="Spectre.Console.Status"/> instance.</returns>
+        public static Status Status()
+        {
+            return AnsiConsole.Console.Status();
+        }
     }
 
-    /// <summary>
-    /// Creates a new <see cref="Status"/> instance for the console.
-    /// </summary>
     /// <param name="console">The console.</param>
-    /// <returns>A <see cref="Status"/> instance.</returns>
-    public static Status Status(this IAnsiConsole console)
+    extension(IAnsiConsole console)
     {
-        if (console is null)
+        /// <summary>
+        /// Creates a new <see cref="Spectre.Console.Progress"/> instance for the console.
+        /// </summary>
+        /// <returns>A <see cref="Spectre.Console.Progress"/> instance.</returns>
+        public Progress Progress()
         {
-            throw new ArgumentNullException(nameof(console));
+            ArgumentNullException.ThrowIfNull(console);
+
+            return new Progress(console);
         }
 
-        return new Status(console);
+        /// <summary>
+        /// Creates a new <see cref="Spectre.Console.Status"/> instance for the console.
+        /// </summary>
+        /// <returns>A <see cref="Spectre.Console.Status"/> instance.</returns>
+        public Status Status()
+        {
+            ArgumentNullException.ThrowIfNull(console);
+
+            return new Status(console);
+        }
     }
 }

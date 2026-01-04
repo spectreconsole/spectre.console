@@ -9,7 +9,11 @@ public static partial class AnsiConsole
     private static readonly AnsiConsoleFactory _factory = new AnsiConsoleFactory();
 #pragma warning restore CS0618
 
-    private static Recorder? _recorder;
+    internal static Style CurrentStyle { get; set; } = Style.Plain;
+    internal static Recorder? Recorder { get; set; }
+
+    internal static bool Created { get; private set; }
+
     private static Lazy<IAnsiConsole> _console = new Lazy<IAnsiConsole>(
         () =>
         {
@@ -31,18 +35,12 @@ public static partial class AnsiConsole
     {
         get
         {
-            return _recorder ?? _console.Value;
+            return Recorder ?? _console.Value;
         }
         set
         {
             _console = new Lazy<IAnsiConsole>(() => value);
-
-            if (_recorder != null)
-            {
-                // Recreate the recorder
-                _recorder = _recorder.Clone(value);
-            }
-
+            Recorder = Recorder?.Clone(value); // Recreate the recorder
             Created = true;
         }
     }
@@ -50,7 +48,7 @@ public static partial class AnsiConsole
     /// <summary>
     /// Gets the <see cref="IAnsiConsoleCursor"/>.
     /// </summary>
-    public static IAnsiConsoleCursor Cursor => _recorder?.Cursor ?? _console.Value.Cursor;
+    public static IAnsiConsoleCursor Cursor => Recorder?.Cursor ?? _console.Value.Cursor;
 
     /// <summary>
     /// Gets the console profile.
@@ -66,13 +64,5 @@ public static partial class AnsiConsole
     public static IAnsiConsole Create(AnsiConsoleSettings settings)
     {
         return _factory.Create(settings);
-    }
-
-    /// <summary>
-    /// Clears the console.
-    /// </summary>
-    public static void Clear()
-    {
-        Console.Clear();
     }
 }
