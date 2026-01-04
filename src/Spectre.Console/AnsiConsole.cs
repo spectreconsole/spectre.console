@@ -65,12 +65,4 @@ public static partial class AnsiConsole
     {
         return _factory.Create(settings);
     }
-
-    /// <summary>
-    /// Clears the console.
-    /// </summary>
-    public static void Clear()
-    {
-        Console.Clear();
-    }
 }

@@ -5,6 +5,17 @@ namespace Spectre.Console;
 /// </summary>
 public static partial class AnsiConsoleExtensions
 {
+    extension(AnsiConsole)
+    {
+        /// <summary>
+        /// Clears the console.
+        /// </summary>
+        public static void Clear()
+        {
+            AnsiConsole.Console.Clear();
+        }
+    }
+
     /// <param name="console">The console to record.</param>
     extension(IAnsiConsole console)
     {
