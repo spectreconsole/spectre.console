@@ -1,4 +1,4 @@
-﻿<Project>
+<Project>
   <PropertyGroup Label="Settings">
     <Deterministic>true</Deterministic>
     <LangVersion>14</LangVersion>
@@ -20,6 +20,11 @@
   <!-- when "params" are used together with extension blocks -->
   <PropertyGroup>
     <NoWarn>$(NoWarn);CS8620</NoWarn>
+  </PropertyGroup>
+
+  <!-- Earlier (<10.0.100) SDK throws on extension blocks -->
+  <PropertyGroup Condition="'$(TargetFramework)' != 'net10.0'">
+    <NoWarn>$(NoWarn);AD0001</NoWarn>
   </PropertyGroup>
 
   <!-- Disable nullability for netstandard2.0 since polyfills are not -->

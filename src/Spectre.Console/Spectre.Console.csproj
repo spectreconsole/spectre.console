@@ -1,28 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net10.0;net9.0;net8.0;netstandard2.0</TargetFrameworks>
     <IsPackable>true</IsPackable>
-    <DefineConstants>$(DefineConstants)TRACE;WCWIDTH_VISIBILITY_INTERNAL</DefineConstants>
-    <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'" >true</IsAotCompatible>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' != 'net10.0'">
-    <NoWarn>$(NoWarn);AD0001</NoWarn>
+    <DefineConstants>$(DefineConstants)TRACE;WCWIDTH;WCWIDTH_VISIBILITY_INTERNAL</DefineConstants>
+    <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'">true</IsAotCompatible>
   </PropertyGroup>
 
   <ItemGroup Label="REMOVE THIS">
-    <InternalsVisibleTo Include="$(AssemblyName).Tests"/>
+    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
   </ItemGroup>
 
   <ItemGroup Label="Standard Figlet font">
-    <EmbeddedResource Include="Widgets\Figlet\Fonts\Standard.flf"/>
-    <None Remove="Widgets\Figlet\Fonts\Standard.flf"/>
+    <EmbeddedResource Include="Widgets\Figlet\Fonts\Standard.flf" />
+    <None Remove="Widgets\Figlet\Fonts\Standard.flf" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Wcwidth.Sources" PrivateAssets="all" />
-    <PackageReference Include="System.Memory" Condition="'$(TargetFramework)' == 'netstandard2.0'"/>
+    <PackageReference Include="System.Memory" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
     <PackageReference Include="Polyfill" Condition="'$(TargetFramework)' == 'netstandard2.0'" PrivateAssets="all" />
   </ItemGroup>
 

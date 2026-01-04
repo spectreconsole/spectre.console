@@ -1,10 +1,20 @@
 namespace Spectre.Console;
 
-/// <summary>
-/// Contains extension methods for <see cref="IAnsiConsole"/>.
-/// </summary>
 public static partial class AnsiConsoleExtensions
 {
+    extension(AnsiConsole)
+    {
+        /// <summary>
+        /// Creates a new <see cref="LiveDisplay"/> instance.
+        /// </summary>
+        /// <param name="target">The target renderable to update.</param>
+        /// <returns>A <see cref="LiveDisplay"/> instance.</returns>
+        public static LiveDisplay Live(IRenderable target)
+        {
+            return AnsiConsole.Console.Live(target);
+        }
+    }
+
     /// <param name="console">The console.</param>
     extension(IAnsiConsole console)
     {

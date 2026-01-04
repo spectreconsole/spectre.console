@@ -12,7 +12,7 @@
     <File Path="Directory.Packages.props" />
   </Folder>
   <Folder Name="/Build/Generator/">
-    <Project Path="Generator\Generator.csproj" Type="Classic C#">
+    <Project Path="Generator\Generator.csproj" Type="C#">
       <Configuration Solution="Debug|x64" Project="Debug|Any CPU" />
       <Configuration Solution="Debug|x86" Project="Debug|Any CPU" />
       <Configuration Solution="Release|x64" Project="Release|Any CPU" />

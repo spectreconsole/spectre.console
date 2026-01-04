@@ -11,8 +11,8 @@
     <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\Spectre.Console\Internal\Extensions\CharExtensions.cs" Link="Internal\CharExtensions.cs" />
-    <Compile Include="..\..\Spectre.Console\Internal\Extensions\EnumerableExtensions.cs" Link="Internal\EnumerableExtensions.cs" />
+    <Compile Include="..\..\Spectre.Console\Extensions\CharExtensions.cs" Link="Internal\CharExtensions.cs" />
+    <Compile Include="..\..\Spectre.Console\Extensions\EnumerableExtensions.cs" Link="Internal\EnumerableExtensions.cs" />
     <Compile Include="..\..\Spectre.Console\Internal\Text\StringBuffer.cs" Link="Internal\StringBuffer.cs" />
   </ItemGroup>
 

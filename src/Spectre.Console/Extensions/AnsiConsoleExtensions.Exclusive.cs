@@ -1,8 +1,5 @@
 namespace Spectre.Console;
 
-/// <summary>
-/// Contains extension methods for <see cref="IAnsiConsole"/>.
-/// </summary>
 public static partial class AnsiConsoleExtensions
 {
     /// <param name="console">The console.</param>

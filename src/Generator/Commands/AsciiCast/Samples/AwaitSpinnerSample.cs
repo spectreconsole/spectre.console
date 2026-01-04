@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Generator.Commands.Samples;
 using Spectre.Console;
-using Spectre.Console.Extensions;
 
 namespace Generator.Commands.AsciiCast.Samples;
 
