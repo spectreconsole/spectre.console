@@ -6,7 +6,7 @@ namespace Spectre.Console;
 public sealed class ProgressTask : IProgress<double>
 {
     private readonly List<ProgressSample> _samples;
-    private readonly object _lock;
+    private readonly Lock _lock;
 
     private double _maxValue;
     private string _description;
@@ -105,7 +105,7 @@ public sealed class ProgressTask : IProgress<double>
     public ProgressTask(int id, string description, double maxValue, bool autoStart = true)
     {
         _samples = new List<ProgressSample>();
-        _lock = new object();
+        _lock = LockFactory.Create();
         _maxValue = maxValue;
         _value = 0;
 
