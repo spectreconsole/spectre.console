@@ -5,147 +5,141 @@ namespace Spectre.Console;
 /// </summary>
 public static class CursorExtensions
 {
-    /// <summary>
-    /// Shows the cursor.
-    /// </summary>
     /// <param name="cursor">The cursor.</param>
-    public static void Show(this IAnsiConsoleCursor cursor)
+    extension(IAnsiConsoleCursor cursor)
     {
-        if (cursor is null)
+        /// <summary>
+        /// Shows the cursor.
+        /// </summary>
+        public void Show()
         {
-            throw new System.ArgumentNullException(nameof(cursor));
+            if (cursor is null)
+            {
+                throw new System.ArgumentNullException(nameof(cursor));
+            }
+
+            cursor.Show(true);
         }
 
-        cursor.Show(true);
-    }
-
-    /// <summary>
-    /// Hides the cursor.
-    /// </summary>
-    /// <param name="cursor">The cursor.</param>
-    public static void Hide(this IAnsiConsoleCursor cursor)
-    {
-        if (cursor is null)
+        /// <summary>
+        /// Hides the cursor.
+        /// </summary>
+        public void Hide()
         {
-            throw new System.ArgumentNullException(nameof(cursor));
+            if (cursor is null)
+            {
+                throw new System.ArgumentNullException(nameof(cursor));
+            }
+
+            cursor.Show(false);
         }
 
-        cursor.Show(false);
-    }
-
-    /// <summary>
-    /// Moves the cursor up.
-    /// </summary>
-    /// <param name="cursor">The cursor.</param>
-    public static void MoveUp(this IAnsiConsoleCursor cursor)
-    {
-        if (cursor is null)
+        /// <summary>
+        /// Moves the cursor up.
+        /// </summary>
+        public void MoveUp()
         {
-            throw new System.ArgumentNullException(nameof(cursor));
+            if (cursor is null)
+            {
+                throw new System.ArgumentNullException(nameof(cursor));
+            }
+
+            cursor.Move(CursorDirection.Up, 1);
         }
 
-        cursor.Move(CursorDirection.Up, 1);
-    }
-
-    /// <summary>
-    /// Moves the cursor up.
-    /// </summary>
-    /// <param name="cursor">The cursor.</param>
-    /// <param name="steps">The number of steps to move the cursor.</param>
-    public static void MoveUp(this IAnsiConsoleCursor cursor, int steps)
-    {
-        if (cursor is null)
+        /// <summary>
+        /// Moves the cursor up.
+        /// </summary>
+        /// <param name="steps">The number of steps to move the cursor.</param>
+        public void MoveUp(int steps)
         {
-            throw new System.ArgumentNullException(nameof(cursor));
+            if (cursor is null)
+            {
+                throw new System.ArgumentNullException(nameof(cursor));
+            }
+
+            cursor.Move(CursorDirection.Up, steps);
         }
 
-        cursor.Move(CursorDirection.Up, steps);
-    }
-
-    /// <summary>
-    /// Moves the cursor down.
-    /// </summary>
-    /// <param name="cursor">The cursor.</param>
-    public static void MoveDown(this IAnsiConsoleCursor cursor)
-    {
-        if (cursor is null)
+        /// <summary>
+        /// Moves the cursor down.
+        /// </summary>
+        public void MoveDown()
         {
-            throw new System.ArgumentNullException(nameof(cursor));
+            if (cursor is null)
+            {
+                throw new System.ArgumentNullException(nameof(cursor));
+            }
+
+            cursor.Move(CursorDirection.Down, 1);
         }
 
-        cursor.Move(CursorDirection.Down, 1);
-    }
-
-    /// <summary>
-    /// Moves the cursor down.
-    /// </summary>
-    /// <param name="cursor">The cursor.</param>
-    /// <param name="steps">The number of steps to move the cursor.</param>
-    public static void MoveDown(this IAnsiConsoleCursor cursor, int steps)
-    {
-        if (cursor is null)
+        /// <summary>
+        /// Moves the cursor down.
+        /// </summary>
+        /// <param name="steps">The number of steps to move the cursor.</param>
+        public void MoveDown(int steps)
         {
-            throw new System.ArgumentNullException(nameof(cursor));
+            if (cursor is null)
+            {
+                throw new System.ArgumentNullException(nameof(cursor));
+            }
+
+            cursor.Move(CursorDirection.Down, steps);
         }
 
-        cursor.Move(CursorDirection.Down, steps);
-    }
-
-    /// <summary>
-    /// Moves the cursor to the left.
-    /// </summary>
-    /// <param name="cursor">The cursor.</param>
-    public static void MoveLeft(this IAnsiConsoleCursor cursor)
-    {
-        if (cursor is null)
+        /// <summary>
+        /// Moves the cursor to the left.
+        /// </summary>
+        public void MoveLeft()
         {
-            throw new System.ArgumentNullException(nameof(cursor));
+            if (cursor is null)
+            {
+                throw new System.ArgumentNullException(nameof(cursor));
+            }
+
+            cursor.Move(CursorDirection.Left, 1);
         }
 
-        cursor.Move(CursorDirection.Left, 1);
-    }
-
-    /// <summary>
-    /// Moves the cursor to the left.
-    /// </summary>
-    /// <param name="cursor">The cursor.</param>
-    /// <param name="steps">The number of steps to move the cursor.</param>
-    public static void MoveLeft(this IAnsiConsoleCursor cursor, int steps)
-    {
-        if (cursor is null)
+        /// <summary>
+        /// Moves the cursor to the left.
+        /// </summary>
+        /// <param name="steps">The number of steps to move the cursor.</param>
+        public void MoveLeft(int steps)
         {
-            throw new System.ArgumentNullException(nameof(cursor));
+            if (cursor is null)
+            {
+                throw new System.ArgumentNullException(nameof(cursor));
+            }
+
+            cursor.Move(CursorDirection.Left, steps);
         }
 
-        cursor.Move(CursorDirection.Left, steps);
-    }
-
-    /// <summary>
-    /// Moves the cursor to the right.
-    /// </summary>
-    /// <param name="cursor">The cursor.</param>
-    public static void MoveRight(this IAnsiConsoleCursor cursor)
-    {
-        if (cursor is null)
+        /// <summary>
+        /// Moves the cursor to the right.
+        /// </summary>
+        public void MoveRight()
         {
-            throw new System.ArgumentNullException(nameof(cursor));
+            if (cursor is null)
+            {
+                throw new System.ArgumentNullException(nameof(cursor));
+            }
+
+            cursor.Move(CursorDirection.Right, 1);
         }
 
-        cursor.Move(CursorDirection.Right, 1);
-    }
-
-    /// <summary>
-    /// Moves the cursor to the right.
-    /// </summary>
-    /// <param name="cursor">The cursor.</param>
-    /// <param name="steps">The number of steps to move the cursor.</param>
-    public static void MoveRight(this IAnsiConsoleCursor cursor, int steps)
-    {
-        if (cursor is null)
+        /// <summary>
+        /// Moves the cursor to the right.
+        /// </summary>
+        /// <param name="steps">The number of steps to move the cursor.</param>
+        public void MoveRight(int steps)
         {
-            throw new System.ArgumentNullException(nameof(cursor));
-        }
+            if (cursor is null)
+            {
+                throw new System.ArgumentNullException(nameof(cursor));
+            }
 
-        cursor.Move(CursorDirection.Right, steps);
+            cursor.Move(CursorDirection.Right, steps);
+        }
     }
 }

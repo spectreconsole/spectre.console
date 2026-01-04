@@ -5,13 +5,16 @@ namespace Spectre.Console;
 /// </summary>
 public static partial class CharExtensions
 {
-    /// <summary>
-    /// Gets the cell width of a character.
-    /// </summary>
     /// <param name="character">The character to get the cell width of.</param>
-    /// <returns>The cell width of the character.</returns>
-    public static int GetCellWidth(this char character)
+    extension(char character)
     {
-        return Cell.GetCellLength(character);
+        /// <summary>
+        /// Gets the cell width of a character.
+        /// </summary>
+        /// <returns>The cell width of the character.</returns>
+        public int GetCellWidth()
+        {
+            return Cell.GetCellLength(character);
+        }
     }
 }

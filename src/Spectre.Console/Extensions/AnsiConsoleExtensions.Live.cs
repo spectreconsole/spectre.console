@@ -5,24 +5,27 @@ namespace Spectre.Console;
 /// </summary>
 public static partial class AnsiConsoleExtensions
 {
-    /// <summary>
-    /// Creates a new <see cref="LiveDisplay"/> instance for the console.
-    /// </summary>
     /// <param name="console">The console.</param>
-    /// <param name="target">The target renderable to update.</param>
-    /// <returns>A <see cref="LiveDisplay"/> instance.</returns>
-    public static LiveDisplay Live(this IAnsiConsole console, IRenderable target)
+    extension(IAnsiConsole console)
     {
-        if (console is null)
+        /// <summary>
+        /// Creates a new <see cref="LiveDisplay"/> instance for the console.
+        /// </summary>
+        /// <param name="target">The target renderable to update.</param>
+        /// <returns>A <see cref="LiveDisplay"/> instance.</returns>
+        public LiveDisplay Live(IRenderable target)
         {
-            throw new ArgumentNullException(nameof(console));
-        }
+            if (console is null)
+            {
+                throw new ArgumentNullException(nameof(console));
+            }
 
-        if (target is null)
-        {
-            throw new ArgumentNullException(nameof(target));
-        }
+            if (target is null)
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
 
-        return new LiveDisplay(console, target);
+            return new LiveDisplay(console, target);
+        }
     }
 }

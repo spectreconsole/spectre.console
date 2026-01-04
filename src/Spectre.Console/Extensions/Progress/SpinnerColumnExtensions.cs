@@ -5,21 +5,24 @@ namespace Spectre.Console;
 /// </summary>
 public static class SpinnerColumnExtensions
 {
-    /// <summary>
-    /// Sets the style of the spinner.
-    /// </summary>
     /// <param name="column">The column.</param>
-    /// <param name="style">The style.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static SpinnerColumn Style(this SpinnerColumn column, Style? style)
+    extension(SpinnerColumn column)
     {
-        if (column is null)
+        /// <summary>
+        /// Sets the style of the spinner.
+        /// </summary>
+        /// <param name="style">The style.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public SpinnerColumn Style(Style? style)
         {
-            throw new ArgumentNullException(nameof(column));
-        }
+            if (column is null)
+            {
+                throw new ArgumentNullException(nameof(column));
+            }
 
-        column.Style = style;
-        return column;
+            column.Style = style;
+            return column;
+        }
     }
 
     /// <summary>

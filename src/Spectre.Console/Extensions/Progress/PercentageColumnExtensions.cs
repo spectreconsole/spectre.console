@@ -5,47 +5,49 @@ namespace Spectre.Console;
 /// </summary>
 public static class PercentageColumnExtensions
 {
-    /// <summary>
-    /// Sets the style for a non-complete task.
-    /// </summary>
     /// <param name="column">The column.</param>
-    /// <param name="style">The style.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static PercentageColumn Style(this PercentageColumn column, Style style)
+    extension(PercentageColumn column)
     {
-        if (column is null)
+        /// <summary>
+        /// Sets the style for a non-complete task.
+        /// </summary>
+        /// <param name="style">The style.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public PercentageColumn Style(Style style)
         {
-            throw new ArgumentNullException(nameof(column));
+            if (column is null)
+            {
+                throw new ArgumentNullException(nameof(column));
+            }
+
+            if (style is null)
+            {
+                throw new ArgumentNullException(nameof(style));
+            }
+
+            column.Style = style;
+            return column;
         }
 
-        if (style is null)
+        /// <summary>
+        /// Sets the style for a completed task.
+        /// </summary>
+        /// <param name="style">The style.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public PercentageColumn CompletedStyle(Style style)
         {
-            throw new ArgumentNullException(nameof(style));
+            if (column is null)
+            {
+                throw new ArgumentNullException(nameof(column));
+            }
+
+            if (style is null)
+            {
+                throw new ArgumentNullException(nameof(style));
+            }
+
+            column.CompletedStyle = style;
+            return column;
         }
-
-        column.Style = style;
-        return column;
-    }
-
-    /// <summary>
-    /// Sets the style for a completed task.
-    /// </summary>
-    /// <param name="column">The column.</param>
-    /// <param name="style">The style.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static PercentageColumn CompletedStyle(this PercentageColumn column, Style style)
-    {
-        if (column is null)
-        {
-            throw new ArgumentNullException(nameof(column));
-        }
-
-        if (style is null)
-        {
-            throw new ArgumentNullException(nameof(style));
-        }
-
-        column.CompletedStyle = style;
-        return column;
     }
 }

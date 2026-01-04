@@ -5,77 +5,83 @@ namespace Spectre.Console;
 /// </summary>
 public static partial class AnsiConsoleExtensions
 {
-    internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, char? mask, IEnumerable<string>? items = null, CancellationToken cancellationToken = default)
+    extension(IAnsiConsole console)
     {
-        if (console is null)
+        internal async Task<string> ReadLine(
+            Style style, bool secret, char? mask,
+            IEnumerable<string>? items = null,
+            CancellationToken cancellationToken = default)
         {
-            throw new ArgumentNullException(nameof(console));
-        }
-
-        style ??= Style.Plain;
-        var text = string.Empty;
-
-        var autocomplete = new List<string>(items ?? Enumerable.Empty<string>());
-
-        while (true)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            var rawKey = await console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
-            if (rawKey == null)
+            if (console is null)
             {
-                continue;
+                throw new ArgumentNullException(nameof(console));
             }
 
-            var key = rawKey.Value;
-            if (key.Key == ConsoleKey.Enter)
-            {
-                return text;
-            }
+            style ??= Style.Plain;
+            var text = string.Empty;
 
-            if (key.Key == ConsoleKey.Tab && autocomplete.Count > 0)
+            var autocomplete = new List<string>(items ?? Enumerable.Empty<string>());
+
+            while (true)
             {
-                var autoCompleteDirection = key.Modifiers.HasFlag(ConsoleModifiers.Shift)
-                    ? AutoCompleteDirection.Backward
-                    : AutoCompleteDirection.Forward;
-                var replace = AutoComplete(autocomplete, text, autoCompleteDirection);
-                if (!string.IsNullOrEmpty(replace))
+                cancellationToken.ThrowIfCancellationRequested();
+                var rawKey = await console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
+                if (rawKey == null)
                 {
-                    // Render the suggestion
-                    console.Write("\b \b".Repeat(text.Length), style);
-                    console.Write(replace);
-                    text = replace;
                     continue;
                 }
-            }
 
-            if (key.Key == ConsoleKey.Backspace)
-            {
-                if (text.Length > 0)
+                var key = rawKey.Value;
+                if (key.Key == ConsoleKey.Enter)
                 {
-                    var lastChar = text.Last();
-                    text = text.Substring(0, text.Length - 1);
+                    return text;
+                }
 
-                    if (mask != null)
+                if (key.Key == ConsoleKey.Tab && autocomplete.Count > 0)
+                {
+                    var autoCompleteDirection = key.Modifiers.HasFlag(ConsoleModifiers.Shift)
+                        ? AutoCompleteDirection.Backward
+                        : AutoCompleteDirection.Forward;
+                    var replace = AutoComplete(autocomplete, text, autoCompleteDirection);
+                    if (!string.IsNullOrEmpty(replace))
                     {
-                        if (UnicodeCalculator.GetWidth(lastChar) == 1)
-                        {
-                            console.Write("\b \b");
-                        }
-                        else if (UnicodeCalculator.GetWidth(lastChar) == 2)
-                        {
-                            console.Write("\b \b\b \b");
-                        }
+                        // Render the suggestion
+                        console.Write("\b \b".Repeat(text.Length), style);
+                        console.Write(replace);
+                        text = replace;
+                        continue;
                     }
                 }
 
-                continue;
-            }
+                if (key.Key == ConsoleKey.Backspace)
+                {
+                    if (text.Length > 0)
+                    {
+                        var lastChar = text.Last();
+                        text = text.Substring(0, text.Length - 1);
 
-            if (!char.IsControl(key.KeyChar))
-            {
-                text += key.KeyChar.ToString();
-                var output = key.KeyChar.ToString();
-                console.Write(secret ? output.Mask(mask) : output, style);
+                        if (mask != null)
+                        {
+                            if (UnicodeCalculator.GetWidth(lastChar) == 1)
+                            {
+                                console.Write("\b \b");
+                            }
+                            else if (UnicodeCalculator.GetWidth(lastChar) == 2)
+                            {
+                                console.Write("\b \b\b \b");
+                            }
+                        }
+                    }
+
+                    continue;
+                }
+
+                if (!char.IsControl(key.KeyChar))
+                {
+                    text += key.KeyChar.ToString();
+                    var output = key.KeyChar.ToString();
+                    console.Write(secret ? output.Mask(mask) : output, style);
+                }
             }
         }
     }

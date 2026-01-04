@@ -5,21 +5,24 @@ namespace Spectre.Console;
 /// </summary>
 public static class StatusContextExtensions
 {
-    /// <summary>
-    /// Sets the status message.
-    /// </summary>
     /// <param name="context">The status context.</param>
-    /// <param name="status">The status message.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static StatusContext Status(this StatusContext context, string status)
+    extension(StatusContext context)
     {
-        if (context is null)
+        /// <summary>
+        /// Sets the status message.
+        /// </summary>
+        /// <param name="status">The status message.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public StatusContext Status(string status)
         {
-            throw new ArgumentNullException(nameof(context));
-        }
+            if (context is null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
 
-        context.Status = status;
-        return context;
+            context.Status = status;
+            return context;
+        }
     }
 
     /// <summary>

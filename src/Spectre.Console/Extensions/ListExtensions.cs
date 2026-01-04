@@ -2,33 +2,36 @@ namespace Spectre.Console;
 
 internal static class ListExtensions
 {
-    public static void RemoveLast<T>(this List<T> list)
+    extension<T>(List<T> list)
     {
-        if (list is null)
+        public void RemoveLast()
         {
-            throw new ArgumentNullException(nameof(list));
+            if (list is null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+
+            if (list.Count > 0)
+            {
+                list.RemoveAt(list.Count - 1);
+            }
         }
 
-        if (list.Count > 0)
+        public void AddOrReplaceLast(T item)
         {
-            list.RemoveAt(list.Count - 1);
-        }
-    }
+            if (list is null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
 
-    public static void AddOrReplaceLast<T>(this List<T> list, T item)
-    {
-        if (list is null)
-        {
-            throw new ArgumentNullException(nameof(list));
-        }
-
-        if (list.Count == 0)
-        {
-            list.Add(item);
-        }
-        else
-        {
-            list[list.Count - 1] = item;
+            if (list.Count == 0)
+            {
+                list.Add(item);
+            }
+            else
+            {
+                list[list.Count - 1] = item;
+            }
         }
     }
 }

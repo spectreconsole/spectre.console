@@ -5,25 +5,28 @@ namespace Spectre.Console;
 /// </summary>
 public static class RemainingTimeColumnExtensions
 {
-    /// <summary>
-    /// Sets the style of the remaining time text.
-    /// </summary>
     /// <param name="column">The column.</param>
-    /// <param name="style">The style.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static RemainingTimeColumn Style(this RemainingTimeColumn column, Style style)
+    extension(RemainingTimeColumn column)
     {
-        if (column is null)
+        /// <summary>
+        /// Sets the style of the remaining time text.
+        /// </summary>
+        /// <param name="style">The style.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public RemainingTimeColumn Style(Style style)
         {
-            throw new ArgumentNullException(nameof(column));
-        }
+            if (column is null)
+            {
+                throw new ArgumentNullException(nameof(column));
+            }
 
-        if (style is null)
-        {
-            throw new ArgumentNullException(nameof(style));
-        }
+            if (style is null)
+            {
+                throw new ArgumentNullException(nameof(style));
+            }
 
-        column.Style = style;
-        return column;
+            column.Style = style;
+            return column;
+        }
     }
 }

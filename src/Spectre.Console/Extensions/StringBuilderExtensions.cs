@@ -2,25 +2,31 @@ namespace Spectre.Console;
 
 internal static class StringBuilderExtensions
 {
-    public static StringBuilder AppendWithStyle(this StringBuilder builder, Style? style, int? value)
+    extension(StringBuilder builder)
     {
-        return AppendWithStyle(builder, style, value?.ToString(CultureInfo.InvariantCulture));
+        public StringBuilder AppendWithStyle(Style? style, int? value)
+        {
+            return AppendWithStyle(builder, style, value?.ToString(CultureInfo.InvariantCulture));
+        }
     }
 
-    public static StringBuilder AppendWithStyle(this StringBuilder builder, Style? style, string? value)
+    extension(StringBuilder builder)
     {
-        value ??= string.Empty;
-
-        if (style != null)
+        public StringBuilder AppendWithStyle(Style? style, string? value)
         {
-            return builder.Append('[')
-            .Append(style.ToMarkup())
-            .Append(']')
-            .Append(value.EscapeMarkup())
-            .Append("[/]");
-        }
+            value ??= string.Empty;
 
-        return builder.Append(value);
+            if (style != null)
+            {
+                return builder.Append('[')
+                    .Append(style.ToMarkup())
+                    .Append(']')
+                    .Append(value.EscapeMarkup())
+                    .Append("[/]");
+            }
+
+            return builder.Append(value);
+        }
     }
 
     public static void AppendSpan(this StringBuilder builder, ReadOnlySpan<char> span)

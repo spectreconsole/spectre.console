@@ -2,18 +2,21 @@ namespace Spectre.Console;
 
 internal static class StackExtensions
 {
-    public static void PushRange<T>(this Stack<T> stack, IEnumerable<T> source)
+    extension<T>(Stack<T> stack)
     {
-        if (stack is null)
+        public void PushRange(IEnumerable<T> source)
         {
-            throw new ArgumentNullException(nameof(stack));
-        }
-
-        if (source != null)
-        {
-            foreach (var item in source)
+            if (stack is null)
             {
-                stack.Push(item);
+                throw new ArgumentNullException(nameof(stack));
+            }
+
+            if (source != null)
+            {
+                foreach (var item in source)
+                {
+                    stack.Push(item);
+                }
             }
         }
     }

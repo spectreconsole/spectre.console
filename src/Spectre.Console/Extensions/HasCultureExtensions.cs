@@ -5,58 +5,54 @@ namespace Spectre.Console;
 /// </summary>
 public static class HasCultureExtensions
 {
-    /// <summary>
-    /// Sets the culture.
-    /// </summary>
-    /// <typeparam name="T">An object type with a culture.</typeparam>
     /// <param name="obj">The object to set the culture for.</param>
-    /// <param name="culture">The culture to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static T Culture<T>(this T obj, CultureInfo culture)
-        where T : class, IHasCulture
+    /// <typeparam name="T">An object type with a culture.</typeparam>
+    extension<T>(T obj) where T : class, IHasCulture
     {
-        if (obj is null)
+        /// <summary>
+        /// Sets the culture.
+        /// </summary>
+        /// <param name="culture">The culture to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public T Culture(CultureInfo culture)
         {
-            throw new ArgumentNullException(nameof(obj));
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            if (culture is null)
+            {
+                throw new ArgumentNullException(nameof(culture));
+            }
+
+            obj.Culture = culture;
+            return obj;
         }
 
-        if (culture is null)
+        /// <summary>
+        /// Sets the culture.
+        /// </summary>
+        /// <param name="name">The culture to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public T Culture(string name)
         {
-            throw new ArgumentNullException(nameof(culture));
+            if (name is null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            return Culture(obj, CultureInfo.GetCultureInfo(name));
         }
 
-        obj.Culture = culture;
-        return obj;
-    }
-
-    /// <summary>
-    /// Sets the culture.
-    /// </summary>
-    /// <typeparam name="T">An object type with a culture.</typeparam>
-    /// <param name="obj">The object to set the culture for.</param>
-    /// <param name="name">The culture to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static T Culture<T>(this T obj, string name)
-        where T : class, IHasCulture
-    {
-        if (name is null)
+        /// <summary>
+        /// Sets the culture.
+        /// </summary>
+        /// <param name="culture">The culture to set.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public T Culture(int culture)
         {
-            throw new ArgumentNullException(nameof(name));
+            return Culture(obj, CultureInfo.GetCultureInfo(culture));
         }
-
-        return Culture(obj, CultureInfo.GetCultureInfo(name));
-    }
-
-    /// <summary>
-    /// Sets the culture.
-    /// </summary>
-    /// <typeparam name="T">An object type with a culture.</typeparam>
-    /// <param name="obj">The object to set the culture for.</param>
-    /// <param name="culture">The culture to set.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static T Culture<T>(this T obj, int culture)
-        where T : class, IHasCulture
-    {
-        return Culture(obj, CultureInfo.GetCultureInfo(culture));
     }
 }

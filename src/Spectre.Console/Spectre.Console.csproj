@@ -7,6 +7,10 @@
     <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'" >true</IsAotCompatible>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)' != 'net10.0'">
+    <NoWarn>$(NoWarn);AD0001</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup Label="REMOVE THIS">
     <InternalsVisibleTo Include="$(AssemblyName).Tests"/>
   </ItemGroup>

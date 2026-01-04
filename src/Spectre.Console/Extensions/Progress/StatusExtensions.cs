@@ -5,22 +5,25 @@ namespace Spectre.Console;
 /// </summary>
 public static class StatusExtensions
 {
-    /// <summary>
-    /// Sets whether or not auto refresh is enabled.
-    /// If disabled, you will manually have to refresh the progress.
-    /// </summary>
     /// <param name="status">The <see cref="Status"/> instance.</param>
-    /// <param name="enabled">Whether or not auto refresh is enabled.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Status AutoRefresh(this Status status, bool enabled)
+    extension(Status status)
     {
-        if (status is null)
+        /// <summary>
+        /// Sets whether or not auto refresh is enabled.
+        /// If disabled, you will manually have to refresh the progress.
+        /// </summary>
+        /// <param name="enabled">Whether or not auto refresh is enabled.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public Status AutoRefresh(bool enabled)
         {
-            throw new ArgumentNullException(nameof(status));
-        }
+            if (status is null)
+            {
+                throw new ArgumentNullException(nameof(status));
+            }
 
-        status.AutoRefresh = enabled;
-        return status;
+            status.AutoRefresh = enabled;
+            return status;
+        }
     }
 
     /// <summary>

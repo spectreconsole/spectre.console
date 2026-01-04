@@ -5,31 +5,37 @@ namespace Spectre.Console.Extensions;
 /// </summary>
 public static class SpinnerExtensions
 {
-    /// <summary>
-    /// Runs a task with a spinner animation.
-    /// </summary>
     /// <param name="task">The task to run.</param>
-    /// <param name="spinner">The spinner to use.</param>
-    /// <param name="style">The style to apply to the spinner.</param>
-    /// <param name="ansiConsole">The console to write to.</param>
-    /// <returns>The result of the task.</returns>
-    public static async Task Spinner(this Task task, Spinner? spinner = null, Style? style = null, IAnsiConsole? ansiConsole = null)
+    extension(Task task)
     {
-        await SpinnerInternal<object>(task, spinner ?? Console.Spinner.Known.Default, style, ansiConsole);
+        /// <summary>
+        /// Runs a task with a spinner animation.
+        /// </summary>
+        /// <param name="spinner">The spinner to use.</param>
+        /// <param name="style">The style to apply to the spinner.</param>
+        /// <param name="ansiConsole">The console to write to.</param>
+        /// <returns>The result of the task.</returns>
+        public async Task Spinner(Spinner? spinner = null, Style? style = null, IAnsiConsole? ansiConsole = null)
+        {
+            await SpinnerInternal<object>(task, spinner ?? Console.Spinner.Known.Default, style, ansiConsole);
+        }
     }
 
-    /// <summary>
-    /// Runs a task with a spinner animation.
-    /// </summary>
-    /// <typeparam name="T">The type of the task result.</typeparam>
     /// <param name="task">The task to run.</param>
-    /// <param name="spinner">The spinner to use.</param>
-    /// <param name="style">The style to apply to the spinner.</param>
-    /// <param name="ansiConsole">The console to write to.</param>
-    /// <returns>The result of the task.</returns>
-    public static async Task<T> Spinner<T>(this Task<T> task, Spinner? spinner = null, Style? style = null, IAnsiConsole? ansiConsole = null)
+    /// <typeparam name="T">The type of the task result.</typeparam>
+    extension<T>(Task<T> task)
     {
-        return (await SpinnerInternal<T>(task, spinner ?? Console.Spinner.Known.Default, style, ansiConsole))!;
+        /// <summary>
+        /// Runs a task with a spinner animation.
+        /// </summary>
+        /// <param name="spinner">The spinner to use.</param>
+        /// <param name="style">The style to apply to the spinner.</param>
+        /// <param name="ansiConsole">The console to write to.</param>
+        /// <returns>The result of the task.</returns>
+        public async Task<T> Spinner(Spinner? spinner = null, Style? style = null, IAnsiConsole? ansiConsole = null)
+        {
+            return (await SpinnerInternal<T>(task, spinner ?? Console.Spinner.Known.Default, style, ansiConsole))!;
+        }
     }
 
     private static async Task<T?> SpinnerInternal<T>(Task task, Spinner spinner, Style? style = null, IAnsiConsole? ansiConsole = null)

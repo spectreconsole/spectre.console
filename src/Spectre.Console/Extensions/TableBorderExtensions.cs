@@ -5,24 +5,27 @@ namespace Spectre.Console.Rendering;
 /// </summary>
 public static class TableBorderExtensions
 {
-    /// <summary>
-    /// Gets the safe border for a border.
-    /// </summary>
     /// <param name="border">The border to get the safe border for.</param>
-    /// <param name="safe">Whether or not to return the safe border.</param>
-    /// <returns>The safe border if one exist, otherwise the original border.</returns>
-    public static TableBorder GetSafeBorder(this TableBorder border, bool safe)
+    extension(TableBorder border)
     {
-        if (border is null)
+        /// <summary>
+        /// Gets the safe border for a border.
+        /// </summary>
+        /// <param name="safe">Whether or not to return the safe border.</param>
+        /// <returns>The safe border if one exist, otherwise the original border.</returns>
+        public TableBorder GetSafeBorder(bool safe)
         {
-            throw new ArgumentNullException(nameof(border));
-        }
+            if (border is null)
+            {
+                throw new ArgumentNullException(nameof(border));
+            }
 
-        if (safe && border.SafeBorder != null)
-        {
-            border = border.SafeBorder;
-        }
+            if (safe && border.SafeBorder != null)
+            {
+                border = border.SafeBorder;
+            }
 
-        return border;
+            return border;
+        }
     }
 }

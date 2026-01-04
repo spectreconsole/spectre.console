@@ -5,40 +5,41 @@ namespace Spectre.Console;
 /// </summary>
 public static class TreeNodeExtensions
 {
-    /// <summary>
-    /// Expands the tree.
-    /// </summary>
     /// <param name="node">The tree node.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TreeNode Expand(this TreeNode node)
+    extension(TreeNode node)
     {
-        return Expand(node, true);
-    }
-
-    /// <summary>
-    /// Collapses the tree.
-    /// </summary>
-    /// <param name="node">The tree node.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TreeNode Collapse(this TreeNode node)
-    {
-        return Expand(node, false);
-    }
-
-    /// <summary>
-    /// Sets whether or not the tree node should be expanded.
-    /// </summary>
-    /// <param name="node">The tree node.</param>
-    /// <param name="expand">Whether or not the tree node should be expanded.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TreeNode Expand(this TreeNode node, bool expand)
-    {
-        if (node is null)
+        /// <summary>
+        /// Expands the tree.
+        /// </summary>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TreeNode Expand()
         {
-            throw new ArgumentNullException(nameof(node));
+            return Expand(node, true);
         }
 
-        node.Expanded = expand;
-        return node;
+        /// <summary>
+        /// Collapses the tree.
+        /// </summary>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TreeNode Collapse()
+        {
+            return Expand(node, false);
+        }
+
+        /// <summary>
+        /// Sets whether or not the tree node should be expanded.
+        /// </summary>
+        /// <param name="expand">Whether or not the tree node should be expanded.</param>
+        /// <returns>The same instance so that multiple calls can be chained.</returns>
+        public TreeNode Expand(bool expand)
+        {
+            if (node is null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
+            node.Expanded = expand;
+            return node;
+        }
     }
 }

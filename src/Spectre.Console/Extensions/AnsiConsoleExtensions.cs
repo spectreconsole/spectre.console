@@ -5,103 +5,100 @@ namespace Spectre.Console;
 /// </summary>
 public static partial class AnsiConsoleExtensions
 {
-    /// <summary>
-    /// Creates a recorder for the specified console.
-    /// </summary>
     /// <param name="console">The console to record.</param>
-    /// <returns>A recorder for the specified console.</returns>
-    public static Recorder CreateRecorder(this IAnsiConsole console)
+    extension(IAnsiConsole console)
     {
-        return new Recorder(console);
-    }
-
-    /// <summary>
-    /// Clears the console.
-    /// </summary>
-    /// <param name="console">The console to clear.</param>
-    public static void Clear(this IAnsiConsole console)
-    {
-        if (console is null)
+        /// <summary>
+        /// Creates a recorder for the specified console.
+        /// </summary>
+        /// <returns>A recorder for the specified console.</returns>
+        public Recorder CreateRecorder()
         {
-            throw new ArgumentNullException(nameof(console));
+            return new Recorder(console);
         }
 
-        console.Clear(true);
-    }
-
-    /// <summary>
-    /// Writes the specified string value to the console.
-    /// </summary>
-    /// <param name="console">The console to write to.</param>
-    /// <param name="text">The text to write.</param>
-    public static void Write(this IAnsiConsole console, string text)
-    {
-        if (console is null)
+        /// <summary>
+        /// Clears the console.
+        /// </summary>
+        public void Clear()
         {
-            throw new ArgumentNullException(nameof(console));
+            if (console is null)
+            {
+                throw new ArgumentNullException(nameof(console));
+            }
+
+            console.Clear(true);
         }
 
-        console.Write(new Text(text, Style.Plain));
-    }
-
-    /// <summary>
-    /// Writes the specified string value to the console.
-    /// </summary>
-    /// <param name="console">The console to write to.</param>
-    /// <param name="text">The text to write.</param>
-    /// <param name="style">The text style or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
-    public static void Write(this IAnsiConsole console, string text, Style? style)
-    {
-        if (console is null)
+        /// <summary>
+        /// Writes the specified string value to the console.
+        /// </summary>
+        /// <param name="text">The text to write.</param>
+        public void Write(string text)
         {
-            throw new ArgumentNullException(nameof(console));
+            if (console is null)
+            {
+                throw new ArgumentNullException(nameof(console));
+            }
+
+            console.Write(new Text(text, Style.Plain));
         }
 
-        console.Write(new Text(text, style));
-    }
-
-    /// <summary>
-    /// Writes an empty line to the console.
-    /// </summary>
-    /// <param name="console">The console to write to.</param>
-    public static void WriteLine(this IAnsiConsole console)
-    {
-        if (console is null)
+        /// <summary>
+        /// Writes the specified string value to the console.
+        /// </summary>
+        /// <param name="text">The text to write.</param>
+        /// <param name="style">The text style or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
+        public void Write(string text, Style? style)
         {
-            throw new ArgumentNullException(nameof(console));
+            if (console is null)
+            {
+                throw new ArgumentNullException(nameof(console));
+            }
+
+            console.Write(new Text(text, style));
         }
 
-        console.Write(Text.NewLine);
-    }
-
-    /// <summary>
-    /// Writes the specified string value, followed by the current line terminator, to the console.
-    /// </summary>
-    /// <param name="console">The console to write to.</param>
-    /// <param name="text">The text to write.</param>
-    public static void WriteLine(this IAnsiConsole console, string text)
-    {
-        WriteLine(console, text, Style.Plain);
-    }
-
-    /// <summary>
-    /// Writes the specified string value, followed by the current line terminator, to the console.
-    /// </summary>
-    /// <param name="console">The console to write to.</param>
-    /// <param name="text">The text to write.</param>
-    /// <param name="style">The text style or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
-    public static void WriteLine(this IAnsiConsole console, string text, Style? style)
-    {
-        if (console is null)
+        /// <summary>
+        /// Writes an empty line to the console.
+        /// </summary>
+        public void WriteLine()
         {
-            throw new ArgumentNullException(nameof(console));
+            if (console is null)
+            {
+                throw new ArgumentNullException(nameof(console));
+            }
+
+            console.Write(Text.NewLine);
         }
 
-        if (text is null)
+        /// <summary>
+        /// Writes the specified string value, followed by the current line terminator, to the console.
+        /// </summary>
+        /// <param name="text">The text to write.</param>
+        public void WriteLine(string text)
         {
-            throw new ArgumentNullException(nameof(text));
+            WriteLine(console, text, Style.Plain);
         }
 
-        console.Write(text + Environment.NewLine, style);
+        /// <summary>
+        /// Writes the specified string value, followed by the current line terminator, to the console.
+        /// </summary>
+        /// <param name="text">The text to write.</param>
+        /// <param name="style">The text style or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
+        public void WriteLine(string text, Style? style)
+        {
+            if (console is null)
+            {
+                throw new ArgumentNullException(nameof(console));
+            }
+
+            if (text is null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            console.Write(text + Environment.NewLine, style);
+        }
     }
 }

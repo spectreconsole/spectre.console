@@ -2,22 +2,25 @@ namespace Spectre.Console;
 
 internal static class DayOfWeekExtensions
 {
-    public static string GetAbbreviatedDayName(this DayOfWeek day, CultureInfo culture)
+    extension(DayOfWeek day)
     {
-        culture ??= CultureInfo.InvariantCulture;
-        return culture.DateTimeFormat
-            .GetAbbreviatedDayName(day)
-            .CapitalizeFirstLetter(culture);
-    }
-
-    public static DayOfWeek GetNextWeekDay(this DayOfWeek day)
-    {
-        var next = (int)day + 1;
-        if (next > (int)DayOfWeek.Saturday)
+        public string GetAbbreviatedDayName(CultureInfo culture)
         {
-            return DayOfWeek.Sunday;
+            culture ??= CultureInfo.InvariantCulture;
+            return culture.DateTimeFormat
+                .GetAbbreviatedDayName(day)
+                .CapitalizeFirstLetter(culture);
         }
 
-        return (DayOfWeek)next;
+        public DayOfWeek GetNextWeekDay()
+        {
+            var next = (int)day + 1;
+            if (next > (int)DayOfWeek.Saturday)
+            {
+                return DayOfWeek.Sunday;
+            }
+
+            return (DayOfWeek)next;
+        }
     }
 }
