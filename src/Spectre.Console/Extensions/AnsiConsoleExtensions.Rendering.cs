@@ -20,10 +20,7 @@ public static partial class AnsiConsoleExtensions
         /// <param name="renderable">The object to render.</param>
         public static void Write(IRenderable renderable)
         {
-            if (renderable is null)
-            {
-                throw new ArgumentNullException(nameof(renderable));
-            }
+            ArgumentNullException.ThrowIfNull(renderable);
 
             AnsiConsole.Console.Write(renderable);
         }
@@ -39,15 +36,9 @@ public static partial class AnsiConsoleExtensions
         [Obsolete("Consider using IAnsiConsole.Write instead.")]
         public void Render(IRenderable renderable)
         {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
+            ArgumentNullException.ThrowIfNull(console);
 
-            if (renderable is null)
-            {
-                throw new ArgumentNullException(nameof(renderable));
-            }
+            ArgumentNullException.ThrowIfNull(renderable);
 
             console.Write(renderable);
         }

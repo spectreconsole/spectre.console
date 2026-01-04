@@ -97,10 +97,7 @@ public sealed class Style : IEquatable<Style>
     /// <returns>A new style representing a combination of this and the other one.</returns>
     public Style Combine(Style other)
     {
-        if (other is null)
-        {
-            throw new ArgumentNullException(nameof(other));
-        }
+        ArgumentNullException.ThrowIfNull(other);
 
         var foreground = Foreground;
         if (!other.Foreground.IsDefault)
@@ -271,10 +268,7 @@ public static class StyleExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Style Foreground(Color color)
         {
-            if (style is null)
-            {
-                throw new ArgumentNullException(nameof(style));
-            }
+            ArgumentNullException.ThrowIfNull(style);
 
             return new Style(
                 foreground: color,
@@ -290,10 +284,7 @@ public static class StyleExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Style Background(Color color)
         {
-            if (style is null)
-            {
-                throw new ArgumentNullException(nameof(style));
-            }
+            ArgumentNullException.ThrowIfNull(style);
 
             return new Style(
                 foreground: style.Foreground,
@@ -309,10 +300,7 @@ public static class StyleExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Style Decoration(Decoration decoration)
         {
-            if (style is null)
-            {
-                throw new ArgumentNullException(nameof(style));
-            }
+            ArgumentNullException.ThrowIfNull(style);
 
             return new Style(
                 foreground: style.Foreground,
@@ -328,10 +316,7 @@ public static class StyleExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Style Link(string link)
         {
-            if (style is null)
-            {
-                throw new ArgumentNullException(nameof(style));
-            }
+            ArgumentNullException.ThrowIfNull(style);
 
             return new Style(
                 foreground: style.Foreground,
@@ -342,10 +327,7 @@ public static class StyleExtensions
 
         internal Style Combine(IEnumerable<Style> source)
         {
-            if (style is null)
-            {
-                throw new ArgumentNullException(nameof(style));
-            }
+            ArgumentNullException.ThrowIfNull(style);
 
             var current = style;
             foreach (var item in source)

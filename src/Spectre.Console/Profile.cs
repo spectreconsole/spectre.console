@@ -139,10 +139,7 @@ public sealed class Profile
 
     internal void AddEnricher(string name)
     {
-        if (name is null)
-        {
-            throw new ArgumentNullException(nameof(name));
-        }
+        ArgumentNullException.ThrowIfNull(name);
 
         _enrichers.Add(name);
     }

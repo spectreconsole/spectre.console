@@ -13,10 +13,7 @@ public static partial class AnsiConsoleExtensions
         /// </summary>
         public void Clear()
         {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
+            ArgumentNullException.ThrowIfNull(console);
 
             console.Clear(true);
         }

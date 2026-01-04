@@ -160,10 +160,7 @@ public static class AlignExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Align Width(int? width)
         {
-            if (align is null)
-            {
-                throw new ArgumentNullException(nameof(align));
-            }
+            ArgumentNullException.ThrowIfNull(align);
 
             align.Width = width;
             return align;
@@ -176,10 +173,7 @@ public static class AlignExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Align Height(int? height)
         {
-            if (align is null)
-            {
-                throw new ArgumentNullException(nameof(align));
-            }
+            ArgumentNullException.ThrowIfNull(align);
 
             align.Height = height;
             return align;
@@ -192,10 +186,7 @@ public static class AlignExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Align VerticalAlignment(VerticalAlignment? vertical)
         {
-            if (align is null)
-            {
-                throw new ArgumentNullException(nameof(align));
-            }
+            ArgumentNullException.ThrowIfNull(align);
 
             align.Vertical = vertical;
             return align;
@@ -207,10 +198,7 @@ public static class AlignExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Align TopAligned()
         {
-            if (align is null)
-            {
-                throw new ArgumentNullException(nameof(align));
-            }
+            ArgumentNullException.ThrowIfNull(align);
 
             align.Vertical = Console.VerticalAlignment.Top;
             return align;
@@ -222,10 +210,7 @@ public static class AlignExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Align MiddleAligned()
         {
-            if (align is null)
-            {
-                throw new ArgumentNullException(nameof(align));
-            }
+            ArgumentNullException.ThrowIfNull(align);
 
             align.Vertical = Console.VerticalAlignment.Middle;
             return align;
@@ -237,10 +222,7 @@ public static class AlignExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Align BottomAligned()
         {
-            if (align is null)
-            {
-                throw new ArgumentNullException(nameof(align));
-            }
+            ArgumentNullException.ThrowIfNull(align);
 
             align.Vertical = Console.VerticalAlignment.Bottom;
             return align;

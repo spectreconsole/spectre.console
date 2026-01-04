@@ -27,10 +27,7 @@ public static class AlignableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Alignment(Justify? alignment)
         {
-            if (obj is null)
-            {
-                throw new System.ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Alignment = alignment;
             return obj;
@@ -42,10 +39,7 @@ public static class AlignableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T LeftAligned()
         {
-            if (obj is null)
-            {
-                throw new System.ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Alignment = Justify.Left;
             return obj;
@@ -57,10 +51,7 @@ public static class AlignableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Centered()
         {
-            if (obj is null)
-            {
-                throw new System.ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Alignment = Justify.Center;
             return obj;
@@ -72,10 +63,7 @@ public static class AlignableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T RightAligned()
         {
-            if (obj is null)
-            {
-                throw new System.ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Alignment = Justify.Right;
             return obj;

@@ -53,20 +53,14 @@ public sealed class StatusContext
 
     private void SetStatus(string status)
     {
-        if (status is null)
-        {
-            throw new ArgumentNullException(nameof(status));
-        }
+        ArgumentNullException.ThrowIfNull(status);
 
         _task.Description = status;
     }
 
     private void SetSpinner(Spinner spinner)
     {
-        if (spinner is null)
-        {
-            throw new ArgumentNullException(nameof(spinner));
-        }
+        ArgumentNullException.ThrowIfNull(spinner);
 
         _spinnerColumn.Spinner = spinner;
     }
@@ -87,10 +81,7 @@ public static class StatusContextExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public StatusContext Status(string status)
         {
-            if (context is null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
+            ArgumentNullException.ThrowIfNull(context);
 
             context.Status = status;
             return context;
@@ -105,10 +96,7 @@ public static class StatusContextExtensions
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static StatusContext Spinner(this StatusContext context, Spinner spinner)
     {
-        if (context is null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
+        ArgumentNullException.ThrowIfNull(context);
 
         context.Spinner = spinner;
         return context;
@@ -122,10 +110,7 @@ public static class StatusContextExtensions
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static StatusContext SpinnerStyle(this StatusContext context, Style? style)
     {
-        if (context is null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
+        ArgumentNullException.ThrowIfNull(context);
 
         context.SpinnerStyle = style;
         return context;

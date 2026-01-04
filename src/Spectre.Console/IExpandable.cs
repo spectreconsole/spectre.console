@@ -29,10 +29,7 @@ public static class ExpandableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Collapse()
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Expand = false;
             return obj;
@@ -44,10 +41,7 @@ public static class ExpandableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Expand()
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Expand = true;
             return obj;

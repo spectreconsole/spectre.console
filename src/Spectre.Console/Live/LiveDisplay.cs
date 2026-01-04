@@ -70,10 +70,7 @@ public sealed class LiveDisplay
     /// <returns>The result.</returns>
     public async Task StartAsync(Func<LiveDisplayContext, Task> func)
     {
-        if (func is null)
-        {
-            throw new ArgumentNullException(nameof(func));
-        }
+        ArgumentNullException.ThrowIfNull(func);
 
         _ = await StartAsync<object?>(async ctx =>
         {
@@ -90,10 +87,7 @@ public sealed class LiveDisplay
     /// <returns>The result.</returns>
     public async Task<T> StartAsync<T>(Func<LiveDisplayContext, Task<T>> func)
     {
-        if (func is null)
-        {
-            throw new ArgumentNullException(nameof(func));
-        }
+        ArgumentNullException.ThrowIfNull(func);
 
         return await _console.RunExclusive(async () =>
         {
@@ -136,10 +130,7 @@ public static class LiveDisplayExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public LiveDisplay AutoClear(bool enabled)
         {
-            if (live is null)
-            {
-                throw new ArgumentNullException(nameof(live));
-            }
+            ArgumentNullException.ThrowIfNull(live);
 
             live.AutoClear = enabled;
 
@@ -153,10 +144,7 @@ public static class LiveDisplayExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public LiveDisplay Overflow(VerticalOverflow overflow)
         {
-            if (live is null)
-            {
-                throw new ArgumentNullException(nameof(live));
-            }
+            ArgumentNullException.ThrowIfNull(live);
 
             live.Overflow = overflow;
 
@@ -170,10 +158,7 @@ public static class LiveDisplayExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public LiveDisplay Cropping(VerticalOverflowCropping cropping)
         {
-            if (live is null)
-            {
-                throw new ArgumentNullException(nameof(live));
-            }
+            ArgumentNullException.ThrowIfNull(live);
 
             live.Cropping = cropping;
 

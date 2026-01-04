@@ -32,10 +32,7 @@ public static class HasTreeNodeExtensions
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            if (markup is null)
-            {
-                throw new ArgumentNullException(nameof(markup));
-            }
+            ArgumentNullException.ThrowIfNull(markup);
 
             return AddNode(obj, new Markup(markup));
         }
@@ -52,10 +49,7 @@ public static class HasTreeNodeExtensions
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            if (renderable is null)
-            {
-                throw new ArgumentNullException(nameof(renderable));
-            }
+            ArgumentNullException.ThrowIfNull(renderable);
 
             var node = new TreeNode(renderable);
             obj.Nodes.Add(node);
@@ -74,10 +68,7 @@ public static class HasTreeNodeExtensions
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            if (node is null)
-            {
-                throw new ArgumentNullException(nameof(node));
-            }
+            ArgumentNullException.ThrowIfNull(node);
 
             obj.Nodes.Add(node);
             return node;
@@ -94,10 +85,7 @@ public static class HasTreeNodeExtensions
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            if (nodes is null)
-            {
-                throw new ArgumentNullException(nameof(nodes));
-            }
+            ArgumentNullException.ThrowIfNull(nodes);
 
             obj.Nodes.AddRange(nodes.Select(node => new TreeNode(new Markup(node))));
         }
@@ -113,10 +101,7 @@ public static class HasTreeNodeExtensions
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            if (nodes is null)
-            {
-                throw new ArgumentNullException(nameof(nodes));
-            }
+            ArgumentNullException.ThrowIfNull(nodes);
 
             obj.Nodes.AddRange(nodes.Select(node => new TreeNode(new Markup(node))));
         }
@@ -132,10 +117,7 @@ public static class HasTreeNodeExtensions
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            if (nodes is null)
-            {
-                throw new ArgumentNullException(nameof(nodes));
-            }
+            ArgumentNullException.ThrowIfNull(nodes);
 
             obj.Nodes.AddRange(nodes.Select(node => new TreeNode(node)));
         }
@@ -151,10 +133,7 @@ public static class HasTreeNodeExtensions
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            if (nodes is null)
-            {
-                throw new ArgumentNullException(nameof(nodes));
-            }
+            ArgumentNullException.ThrowIfNull(nodes);
 
             obj.Nodes.AddRange(nodes.Select(node => new TreeNode(node)));
         }
@@ -170,10 +149,7 @@ public static class HasTreeNodeExtensions
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            if (nodes is null)
-            {
-                throw new ArgumentNullException(nameof(nodes));
-            }
+            ArgumentNullException.ThrowIfNull(nodes);
 
             obj.Nodes.AddRange(nodes);
         }
@@ -189,10 +165,7 @@ public static class HasTreeNodeExtensions
                 throw new ArgumentNullException(nameof(obj));
             }
 
-            if (nodes is null)
-            {
-                throw new ArgumentNullException(nameof(nodes));
-            }
+            ArgumentNullException.ThrowIfNull(nodes);
 
             obj.Nodes.AddRange(nodes);
         }

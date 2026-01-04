@@ -327,10 +327,7 @@ public static class ProgressTaskExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public ProgressTask Description(string description)
         {
-            if (task is null)
-            {
-                throw new ArgumentNullException(nameof(task));
-            }
+            ArgumentNullException.ThrowIfNull(task);
 
             task.Description = description;
             return task;
@@ -343,10 +340,7 @@ public static class ProgressTaskExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public ProgressTask MaxValue(double value)
         {
-            if (task is null)
-            {
-                throw new ArgumentNullException(nameof(task));
-            }
+            ArgumentNullException.ThrowIfNull(task);
 
             task.MaxValue = value;
             return task;
@@ -359,10 +353,7 @@ public static class ProgressTaskExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public ProgressTask Value(double value)
         {
-            if (task is null)
-            {
-                throw new ArgumentNullException(nameof(task));
-            }
+            ArgumentNullException.ThrowIfNull(task);
 
             task.Value = value;
             return task;
@@ -375,10 +366,7 @@ public static class ProgressTaskExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public ProgressTask IsIndeterminate(bool indeterminate = true)
         {
-            if (task is null)
-            {
-                throw new ArgumentNullException(nameof(task));
-            }
+            ArgumentNullException.ThrowIfNull(task);
 
             task.IsIndeterminate = indeterminate;
             return task;

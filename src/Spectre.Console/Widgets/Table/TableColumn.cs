@@ -76,15 +76,9 @@ public static class TableColumnExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public TableColumn Header(string header)
         {
-            if (column is null)
-            {
-                throw new ArgumentNullException(nameof(column));
-            }
+            ArgumentNullException.ThrowIfNull(column);
 
-            if (header is null)
-            {
-                throw new ArgumentNullException(nameof(header));
-            }
+            ArgumentNullException.ThrowIfNull(header);
 
             column.Header = new Markup(header);
             return column;
@@ -97,15 +91,9 @@ public static class TableColumnExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public TableColumn Header(IRenderable header)
         {
-            if (column is null)
-            {
-                throw new ArgumentNullException(nameof(column));
-            }
+            ArgumentNullException.ThrowIfNull(column);
 
-            if (header is null)
-            {
-                throw new ArgumentNullException(nameof(header));
-            }
+            ArgumentNullException.ThrowIfNull(header);
 
             column.Header = header;
             return column;
@@ -118,15 +106,9 @@ public static class TableColumnExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public TableColumn Footer(string footer)
         {
-            if (column is null)
-            {
-                throw new ArgumentNullException(nameof(column));
-            }
+            ArgumentNullException.ThrowIfNull(column);
 
-            if (footer is null)
-            {
-                throw new ArgumentNullException(nameof(footer));
-            }
+            ArgumentNullException.ThrowIfNull(footer);
 
             column.Footer = new Markup(footer);
             return column;
@@ -139,15 +121,9 @@ public static class TableColumnExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public TableColumn Footer(IRenderable footer)
         {
-            if (column is null)
-            {
-                throw new ArgumentNullException(nameof(column));
-            }
+            ArgumentNullException.ThrowIfNull(column);
 
-            if (footer is null)
-            {
-                throw new ArgumentNullException(nameof(footer));
-            }
+            ArgumentNullException.ThrowIfNull(footer);
 
             column.Footer = footer;
             return column;

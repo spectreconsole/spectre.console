@@ -26,10 +26,7 @@ public static class OverflowableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Fold()
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             return Overflow(obj, Console.Overflow.Fold);
         }
@@ -40,10 +37,7 @@ public static class OverflowableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Crop()
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             return Overflow(obj, Console.Overflow.Crop);
         }
@@ -54,10 +48,7 @@ public static class OverflowableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Ellipsis()
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             return Overflow(obj, Console.Overflow.Ellipsis);
         }
@@ -69,10 +60,7 @@ public static class OverflowableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Overflow(Overflow overflow)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Overflow = overflow;
             return obj;

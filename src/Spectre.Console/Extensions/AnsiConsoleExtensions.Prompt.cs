@@ -12,10 +12,7 @@ public static partial class AnsiConsoleExtensions
         /// <returns>The prompt input result.</returns>
         public static T Prompt<T>(IPrompt<T> prompt)
         {
-            if (prompt is null)
-            {
-                throw new ArgumentNullException(nameof(prompt));
-            }
+            ArgumentNullException.ThrowIfNull(prompt);
 
             return prompt.Show(AnsiConsole.Console);
         }
@@ -29,10 +26,7 @@ public static partial class AnsiConsoleExtensions
         /// <returns>The prompt input result.</returns>
         public static Task<T> PromptAsync<T>(IPrompt<T> prompt, CancellationToken cancellationToken = default)
         {
-            if (prompt is null)
-            {
-                throw new ArgumentNullException(nameof(prompt));
-            }
+            ArgumentNullException.ThrowIfNull(prompt);
 
             return prompt.ShowAsync(AnsiConsole.Console, cancellationToken);
         }
@@ -133,10 +127,7 @@ public static partial class AnsiConsoleExtensions
         /// <returns>The prompt input result.</returns>
         public T Prompt<T>(IPrompt<T> prompt)
         {
-            if (prompt is null)
-            {
-                throw new ArgumentNullException(nameof(prompt));
-            }
+            ArgumentNullException.ThrowIfNull(prompt);
 
             return prompt.Show(console);
         }
@@ -190,10 +181,7 @@ public static partial class AnsiConsoleExtensions
         /// <returns>The prompt input result.</returns>
         public Task<T> PromptAsync<T>(IPrompt<T> prompt, CancellationToken cancellationToken = default)
         {
-            if (prompt is null)
-            {
-                throw new ArgumentNullException(nameof(prompt));
-            }
+            ArgumentNullException.ThrowIfNull(prompt);
 
             return prompt.ShowAsync(console, cancellationToken);
         }

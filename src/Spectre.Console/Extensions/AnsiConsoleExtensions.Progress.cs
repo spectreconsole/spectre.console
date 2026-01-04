@@ -32,10 +32,7 @@ public static partial class AnsiConsoleExtensions
         /// <returns>A <see cref="Spectre.Console.Progress"/> instance.</returns>
         public Progress Progress()
         {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
+            ArgumentNullException.ThrowIfNull(console);
 
             return new Progress(console);
         }
@@ -46,10 +43,7 @@ public static partial class AnsiConsoleExtensions
         /// <returns>A <see cref="Spectre.Console.Status"/> instance.</returns>
         public Status Status()
         {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
+            ArgumentNullException.ThrowIfNull(console);
 
             return new Status(console);
         }

@@ -11,10 +11,7 @@ internal sealed class AnsiLinkHasher
 
     public int GenerateId(string link, string text)
     {
-        if (link is null)
-        {
-            throw new ArgumentNullException(nameof(link));
-        }
+        ArgumentNullException.ThrowIfNull(link);
 
         link += text ?? string.Empty;
 

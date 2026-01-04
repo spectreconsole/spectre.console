@@ -70,10 +70,7 @@ public sealed class Grid : JustInTimeRenderable, IExpandable, IAlignable
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public Grid AddColumn(GridColumn column)
     {
-        if (column is null)
-        {
-            throw new ArgumentNullException(nameof(column));
-        }
+        ArgumentNullException.ThrowIfNull(column);
 
         if (_rows.Count > 0)
         {
@@ -95,10 +92,7 @@ public sealed class Grid : JustInTimeRenderable, IExpandable, IAlignable
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public Grid AddRow(params IRenderable[] columns)
     {
-        if (columns is null)
-        {
-            throw new ArgumentNullException(nameof(columns));
-        }
+        ArgumentNullException.ThrowIfNull(columns);
 
         if (columns.Length > _columns.Count)
         {
@@ -162,10 +156,7 @@ public static class GridExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Grid AddColumns(int count)
         {
-            if (grid is null)
-            {
-                throw new ArgumentNullException(nameof(grid));
-            }
+            ArgumentNullException.ThrowIfNull(grid);
 
             for (var index = 0; index < count; index++)
             {
@@ -182,15 +173,9 @@ public static class GridExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Grid AddColumns(params GridColumn[] columns)
         {
-            if (grid is null)
-            {
-                throw new ArgumentNullException(nameof(grid));
-            }
+            ArgumentNullException.ThrowIfNull(grid);
 
-            if (columns is null)
-            {
-                throw new ArgumentNullException(nameof(columns));
-            }
+            ArgumentNullException.ThrowIfNull(columns);
 
             foreach (var column in columns)
             {
@@ -206,10 +191,7 @@ public static class GridExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Grid AddEmptyRow()
         {
-            if (grid is null)
-            {
-                throw new ArgumentNullException(nameof(grid));
-            }
+            ArgumentNullException.ThrowIfNull(grid);
 
             var columns = new IRenderable[grid.Columns.Count];
             Enumerable.Range(0, grid.Columns.Count).ForEach(index => columns[index] = Text.Empty);
@@ -225,15 +207,9 @@ public static class GridExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Grid AddRow(params string[] columns)
         {
-            if (grid is null)
-            {
-                throw new ArgumentNullException(nameof(grid));
-            }
+            ArgumentNullException.ThrowIfNull(grid);
 
-            if (columns is null)
-            {
-                throw new ArgumentNullException(nameof(columns));
-            }
+            ArgumentNullException.ThrowIfNull(columns);
 
             grid.AddRow(columns.Select(column => new Markup(column)).ToArray());
             return grid;
@@ -246,10 +222,7 @@ public static class GridExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Grid Width(int? width)
         {
-            if (grid is null)
-            {
-                throw new ArgumentNullException(nameof(grid));
-            }
+            ArgumentNullException.ThrowIfNull(grid);
 
             grid.Width = width;
             return grid;

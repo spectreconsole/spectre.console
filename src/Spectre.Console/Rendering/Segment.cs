@@ -112,10 +112,7 @@ public class Segment
     /// <returns>The number of cells that the segments occupies in the console.</returns>
     public static int CellCount(IEnumerable<Segment> segments)
     {
-        if (segments is null)
-        {
-            throw new ArgumentNullException(nameof(segments));
-        }
+        ArgumentNullException.ThrowIfNull(segments);
 
         var sum = 0;
         foreach (var segment in segments)
@@ -188,10 +185,7 @@ public class Segment
     /// <returns>A collection of lines.</returns>
     public static List<SegmentLine> SplitLines(IEnumerable<Segment> segments)
     {
-        if (segments is null)
-        {
-            throw new ArgumentNullException(nameof(segments));
-        }
+        ArgumentNullException.ThrowIfNull(segments);
 
         return SplitLines(segments, int.MaxValue);
     }
@@ -205,10 +199,7 @@ public class Segment
     /// <returns>A list of lines.</returns>
     public static List<SegmentLine> SplitLines(IEnumerable<Segment> segments, int maxWidth, int? height = null)
     {
-        if (segments is null)
-        {
-            throw new ArgumentNullException(nameof(segments));
-        }
+        ArgumentNullException.ThrowIfNull(segments);
 
         var lines = new List<SegmentLine>();
         var line = new SegmentLine();
@@ -326,10 +317,7 @@ public class Segment
     /// <returns>A list of segments that has been split.</returns>
     public static List<Segment> SplitOverflow(Segment segment, Overflow? overflow, int maxWidth)
     {
-        if (segment is null)
-        {
-            throw new ArgumentNullException(nameof(segment));
-        }
+        ArgumentNullException.ThrowIfNull(segment);
 
         if (segment.CellCount() <= maxWidth)
         {
@@ -383,10 +371,7 @@ public class Segment
     /// <returns>A list of segments that has been truncated.</returns>
     public static List<Segment> Truncate(IEnumerable<Segment> segments, int maxWidth)
     {
-        if (segments is null)
-        {
-            throw new ArgumentNullException(nameof(segments));
-        }
+        ArgumentNullException.ThrowIfNull(segments);
 
         var result = new List<Segment>();
 
@@ -455,10 +440,7 @@ public class Segment
 
     internal static IEnumerable<Segment> Merge(IEnumerable<Segment> segments)
     {
-        if (segments is null)
-        {
-            throw new ArgumentNullException(nameof(segments));
-        }
+        ArgumentNullException.ThrowIfNull(segments);
 
         var result = new List<Segment>();
 
@@ -499,10 +481,7 @@ public class Segment
 
     internal static List<Segment> TruncateWithEllipsis(IEnumerable<Segment> segments, int maxWidth)
     {
-        if (segments is null)
-        {
-            throw new ArgumentNullException(nameof(segments));
-        }
+        ArgumentNullException.ThrowIfNull(segments);
 
         if (CellCount(segments) <= maxWidth)
         {
@@ -522,10 +501,7 @@ public class Segment
 
     internal static List<Segment> TrimEnd(IEnumerable<Segment> segments)
     {
-        if (segments is null)
-        {
-            throw new ArgumentNullException(nameof(segments));
-        }
+        ArgumentNullException.ThrowIfNull(segments);
 
         var stack = new Stack<Segment>();
         var checkForWhitespace = true;
@@ -550,10 +526,7 @@ public class Segment
     // TODO: Move this to Table
     internal static List<List<SegmentLine>> MakeSameHeight(int cellHeight, List<List<SegmentLine>> cells)
     {
-        if (cells is null)
-        {
-            throw new ArgumentNullException(nameof(cells));
-        }
+        ArgumentNullException.ThrowIfNull(cells);
 
         foreach (var cell in cells)
         {

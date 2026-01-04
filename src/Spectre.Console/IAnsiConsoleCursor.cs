@@ -39,10 +39,7 @@ public static class CursorExtensions
         /// </summary>
         public void Show()
         {
-            if (cursor is null)
-            {
-                throw new System.ArgumentNullException(nameof(cursor));
-            }
+            ArgumentNullException.ThrowIfNull(cursor);
 
             cursor.Show(true);
         }
@@ -52,10 +49,7 @@ public static class CursorExtensions
         /// </summary>
         public void Hide()
         {
-            if (cursor is null)
-            {
-                throw new System.ArgumentNullException(nameof(cursor));
-            }
+            ArgumentNullException.ThrowIfNull(cursor);
 
             cursor.Show(false);
         }
@@ -65,10 +59,7 @@ public static class CursorExtensions
         /// </summary>
         public void MoveUp()
         {
-            if (cursor is null)
-            {
-                throw new System.ArgumentNullException(nameof(cursor));
-            }
+            ArgumentNullException.ThrowIfNull(cursor);
 
             cursor.Move(CursorDirection.Up, 1);
         }
@@ -79,10 +70,7 @@ public static class CursorExtensions
         /// <param name="steps">The number of steps to move the cursor.</param>
         public void MoveUp(int steps)
         {
-            if (cursor is null)
-            {
-                throw new System.ArgumentNullException(nameof(cursor));
-            }
+            ArgumentNullException.ThrowIfNull(cursor);
 
             cursor.Move(CursorDirection.Up, steps);
         }
@@ -92,10 +80,7 @@ public static class CursorExtensions
         /// </summary>
         public void MoveDown()
         {
-            if (cursor is null)
-            {
-                throw new System.ArgumentNullException(nameof(cursor));
-            }
+            ArgumentNullException.ThrowIfNull(cursor);
 
             cursor.Move(CursorDirection.Down, 1);
         }
@@ -106,10 +91,7 @@ public static class CursorExtensions
         /// <param name="steps">The number of steps to move the cursor.</param>
         public void MoveDown(int steps)
         {
-            if (cursor is null)
-            {
-                throw new System.ArgumentNullException(nameof(cursor));
-            }
+            ArgumentNullException.ThrowIfNull(cursor);
 
             cursor.Move(CursorDirection.Down, steps);
         }
@@ -119,10 +101,7 @@ public static class CursorExtensions
         /// </summary>
         public void MoveLeft()
         {
-            if (cursor is null)
-            {
-                throw new System.ArgumentNullException(nameof(cursor));
-            }
+            ArgumentNullException.ThrowIfNull(cursor);
 
             cursor.Move(CursorDirection.Left, 1);
         }
@@ -133,10 +112,7 @@ public static class CursorExtensions
         /// <param name="steps">The number of steps to move the cursor.</param>
         public void MoveLeft(int steps)
         {
-            if (cursor is null)
-            {
-                throw new System.ArgumentNullException(nameof(cursor));
-            }
+            ArgumentNullException.ThrowIfNull(cursor);
 
             cursor.Move(CursorDirection.Left, steps);
         }
@@ -146,10 +122,7 @@ public static class CursorExtensions
         /// </summary>
         public void MoveRight()
         {
-            if (cursor is null)
-            {
-                throw new System.ArgumentNullException(nameof(cursor));
-            }
+            ArgumentNullException.ThrowIfNull(cursor);
 
             cursor.Move(CursorDirection.Right, 1);
         }
@@ -160,10 +133,7 @@ public static class CursorExtensions
         /// <param name="steps">The number of steps to move the cursor.</param>
         public void MoveRight(int steps)
         {
-            if (cursor is null)
-            {
-                throw new System.ArgumentNullException(nameof(cursor));
-            }
+            ArgumentNullException.ThrowIfNull(cursor);
 
             cursor.Move(CursorDirection.Right, steps);
         }

@@ -110,10 +110,7 @@ public static class ConfirmationPromptExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public ConfirmationPrompt ShowChoices(bool show)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.ShowChoices = show;
             return obj;
@@ -148,10 +145,7 @@ public static class ConfirmationPromptExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public ConfirmationPrompt ChoicesStyle(Style style)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.ChoicesStyle = style;
             return obj;
@@ -164,10 +158,7 @@ public static class ConfirmationPromptExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public ConfirmationPrompt ShowDefaultValue(bool show)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.ShowDefaultValue = show;
             return obj;
@@ -198,10 +189,7 @@ public static class ConfirmationPromptExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public ConfirmationPrompt DefaultValueStyle(Style? style)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.DefaultValueStyle = style;
             return obj;
@@ -214,10 +202,7 @@ public static class ConfirmationPromptExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public ConfirmationPrompt InvalidChoiceMessage(string message)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.InvalidChoiceMessage = message;
             return obj;
@@ -230,10 +215,7 @@ public static class ConfirmationPromptExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public ConfirmationPrompt Yes(char character)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Yes = character;
             return obj;
@@ -246,10 +228,7 @@ public static class ConfirmationPromptExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public ConfirmationPrompt No(char character)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.No = character;
             return obj;

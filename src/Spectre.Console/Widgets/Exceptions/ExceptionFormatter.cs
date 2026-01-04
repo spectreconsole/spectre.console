@@ -11,20 +11,14 @@ internal static class ExceptionFormatter
 
     public static IRenderable Format(Exception exception, ExceptionSettings settings)
     {
-        if (exception is null)
-        {
-            throw new ArgumentNullException(nameof(exception));
-        }
+        ArgumentNullException.ThrowIfNull(exception);
 
         return GetException(exception, settings);
     }
 
     private static IRenderable GetException(Exception exception, ExceptionSettings settings)
     {
-        if (exception is null)
-        {
-            throw new ArgumentNullException(nameof(exception));
-        }
+        ArgumentNullException.ThrowIfNull(exception);
 
         return new Rows(GetMessage(exception, settings), GetStackFrames(exception, settings)).Expand();
     }

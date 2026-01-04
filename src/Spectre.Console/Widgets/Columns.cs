@@ -32,10 +32,7 @@ public sealed class Columns : Renderable, IPaddable, IExpandable
     /// <param name="items">The items to render as columns.</param>
     public Columns(IEnumerable<IRenderable> items)
     {
-        if (items is null)
-        {
-            throw new ArgumentNullException(nameof(items));
-        }
+        ArgumentNullException.ThrowIfNull(items);
 
         _items = new List<IRenderable>(items);
     }
@@ -46,10 +43,7 @@ public sealed class Columns : Renderable, IPaddable, IExpandable
     /// <param name="items">The items to render.</param>
     public Columns(IEnumerable<string> items)
     {
-        if (items is null)
-        {
-            throw new ArgumentNullException(nameof(items));
-        }
+        ArgumentNullException.ThrowIfNull(items);
 
         _items = new List<IRenderable>(items.Select(item => new Markup(item)));
     }
@@ -191,10 +185,7 @@ public static class ColumnExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T NoWrap()
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.NoWrap = true;
             return obj;
@@ -207,10 +198,7 @@ public static class ColumnExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Width(int? width)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Width = width;
             return obj;

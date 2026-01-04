@@ -13,10 +13,7 @@ internal readonly struct SegmentShape
 
     public static SegmentShape Calculate(RenderOptions options, List<SegmentLine> lines)
     {
-        if (lines is null)
-        {
-            throw new ArgumentNullException(nameof(lines));
-        }
+        ArgumentNullException.ThrowIfNull(lines);
 
         var height = lines.Count;
         var width = lines.Max(l => Segment.CellCount(l));

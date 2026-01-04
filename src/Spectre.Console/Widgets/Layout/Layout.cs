@@ -325,10 +325,7 @@ public static class LayoutExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Layout Ratio(int ratio)
         {
-            if (layout is null)
-            {
-                throw new ArgumentNullException(nameof(layout));
-            }
+            ArgumentNullException.ThrowIfNull(layout);
 
             layout.Ratio = ratio;
             return layout;
@@ -341,10 +338,7 @@ public static class LayoutExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Layout Size(int size)
         {
-            if (layout is null)
-            {
-                throw new ArgumentNullException(nameof(layout));
-            }
+            ArgumentNullException.ThrowIfNull(layout);
 
             layout.Size = size;
             return layout;
@@ -357,10 +351,7 @@ public static class LayoutExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Layout MinimumSize(int size)
         {
-            if (layout is null)
-            {
-                throw new ArgumentNullException(nameof(layout));
-            }
+            ArgumentNullException.ThrowIfNull(layout);
 
             layout.MinimumSize = size;
             return layout;

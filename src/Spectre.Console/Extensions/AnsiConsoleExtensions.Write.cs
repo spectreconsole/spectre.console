@@ -212,10 +212,7 @@ public static partial class AnsiConsoleExtensions
         /// <param name="value">The value to write.</param>
         public static void Write(IFormatProvider provider, char[] value)
         {
-            if (value is null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
 
             for (var index = 0; index < value.Length; index++)
             {
@@ -255,10 +252,7 @@ public static partial class AnsiConsoleExtensions
         /// <param name="text">The text to write.</param>
         public void Write(string text)
         {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
+            ArgumentNullException.ThrowIfNull(console);
 
             console.Write(new Text(text, Style.Plain));
         }
@@ -270,10 +264,7 @@ public static partial class AnsiConsoleExtensions
         /// <param name="style">The text style or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
         public void Write(string text, Style? style)
         {
-            if (console is null)
-            {
-                throw new ArgumentNullException(nameof(console));
-            }
+            ArgumentNullException.ThrowIfNull(console);
 
             console.Write(new Text(text, style));
         }

@@ -27,10 +27,7 @@ public static class HasJustificationExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Justify(Justify? alignment)
         {
-            if (obj is null)
-            {
-                throw new System.ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Justification = alignment;
             return obj;
@@ -42,10 +39,7 @@ public static class HasJustificationExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T LeftJustified()
         {
-            if (obj is null)
-            {
-                throw new System.ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Justification = Console.Justify.Left;
             return obj;
@@ -57,10 +51,7 @@ public static class HasJustificationExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Centered()
         {
-            if (obj is null)
-            {
-                throw new System.ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Justification = Console.Justify.Center;
             return obj;
@@ -72,10 +63,7 @@ public static class HasJustificationExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T RightJustified()
         {
-            if (obj is null)
-            {
-                throw new System.ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Justification = Console.Justify.Right;
             return obj;

@@ -325,10 +325,7 @@ public static class CalendarExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Calendar AddCalendarEvent(string description, int year, int month, int day, Style? customEventHighlightStyle = null)
         {
-            if (calendar is null)
-            {
-                throw new ArgumentNullException(nameof(calendar));
-            }
+            ArgumentNullException.ThrowIfNull(calendar);
 
             calendar.CalendarEvents.Add(new CalendarEvent(description, year, month, day, customEventHighlightStyle));
             return calendar;
@@ -341,10 +338,7 @@ public static class CalendarExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Calendar HighlightStyle(Style? style)
         {
-            if (calendar is null)
-            {
-                throw new ArgumentNullException(nameof(calendar));
-            }
+            ArgumentNullException.ThrowIfNull(calendar);
 
             calendar.HighlightStyle = style ?? Style.Plain;
             return calendar;
@@ -357,10 +351,7 @@ public static class CalendarExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Calendar HeaderStyle(Style? style)
         {
-            if (calendar is null)
-            {
-                throw new ArgumentNullException(nameof(calendar));
-            }
+            ArgumentNullException.ThrowIfNull(calendar);
 
             calendar.HeaderStyle = style ?? Style.Plain;
             return calendar;
@@ -372,10 +363,7 @@ public static class CalendarExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Calendar ShowHeader()
         {
-            if (calendar is null)
-            {
-                throw new ArgumentNullException(nameof(calendar));
-            }
+            ArgumentNullException.ThrowIfNull(calendar);
 
             calendar.ShowHeader = true;
             return calendar;
@@ -387,10 +375,7 @@ public static class CalendarExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Calendar HideHeader()
         {
-            if (calendar is null)
-            {
-                throw new ArgumentNullException(nameof(calendar));
-            }
+            ArgumentNullException.ThrowIfNull(calendar);
 
             calendar.ShowHeader = false;
             return calendar;

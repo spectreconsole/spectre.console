@@ -155,10 +155,7 @@ public static class StringExtensions
 
         internal string Repeat(int count)
         {
-            if (text is null)
-            {
-                throw new ArgumentNullException(nameof(text));
-            }
+            ArgumentNullException.ThrowIfNull(text);
 
             if (count <= 0)
             {
@@ -198,20 +195,11 @@ public static class StringExtensions
         /// <returns>Markup of input with the first matched text highlighted.</returns>
         internal string Highlight(string searchText, Style? highlightStyle)
         {
-            if (text is null)
-            {
-                throw new ArgumentNullException(nameof(text));
-            }
+            ArgumentNullException.ThrowIfNull(text);
 
-            if (searchText is null)
-            {
-                throw new ArgumentNullException(nameof(searchText));
-            }
+            ArgumentNullException.ThrowIfNull(searchText);
 
-            if (highlightStyle is null)
-            {
-                throw new ArgumentNullException(nameof(highlightStyle));
-            }
+            ArgumentNullException.ThrowIfNull(highlightStyle);
 
             if (searchText.Length == 0)
             {

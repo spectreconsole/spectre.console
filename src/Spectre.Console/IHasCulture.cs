@@ -27,15 +27,9 @@ public static class HasCultureExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Culture(CultureInfo culture)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
-            if (culture is null)
-            {
-                throw new ArgumentNullException(nameof(culture));
-            }
+            ArgumentNullException.ThrowIfNull(culture);
 
             obj.Culture = culture;
             return obj;
@@ -48,10 +42,7 @@ public static class HasCultureExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Culture(string name)
         {
-            if (name is null)
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
+            ArgumentNullException.ThrowIfNull(name);
 
             return Culture(obj, CultureInfo.GetCultureInfo(name));
         }

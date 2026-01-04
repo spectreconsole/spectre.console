@@ -27,10 +27,7 @@ public static class HasBoxBorderExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Border(BoxBorder border)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Border = border;
             return obj;

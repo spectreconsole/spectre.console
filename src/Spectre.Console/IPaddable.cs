@@ -27,10 +27,7 @@ public static class PaddableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T PadLeft(int left)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             return Padding(obj, new Padding(left, obj.Padding.GetTopSafe(), obj.Padding.GetRightSafe(), obj.Padding.GetBottomSafe()));
         }
@@ -42,10 +39,7 @@ public static class PaddableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T PadTop(int top)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             return Padding(obj, new Padding(obj.Padding.GetLeftSafe(), top, obj.Padding.GetRightSafe(), obj.Padding.GetBottomSafe()));
         }
@@ -57,10 +51,7 @@ public static class PaddableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T PadRight(int right)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             return Padding(obj, new Padding(obj.Padding.GetLeftSafe(), obj.Padding.GetTopSafe(), right, obj.Padding.GetBottomSafe()));
         }
@@ -72,10 +63,7 @@ public static class PaddableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T PadBottom(int bottom)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             return Padding(obj, new Padding(obj.Padding.GetLeftSafe(), obj.Padding.GetTopSafe(), obj.Padding.GetRightSafe(), bottom));
         }
@@ -111,10 +99,7 @@ public static class PaddableExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Padding(Padding padding)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.Padding = padding;
             return obj;

@@ -93,10 +93,7 @@ public sealed class Progress
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public async Task StartAsync(Func<ProgressContext, Task> action)
     {
-        if (action is null)
-        {
-            throw new ArgumentNullException(nameof(action));
-        }
+        ArgumentNullException.ThrowIfNull(action);
 
         _ = await StartAsync<object?>(async progressContext =>
         {
@@ -113,10 +110,7 @@ public sealed class Progress
     /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation.</returns>
     public async Task<T> StartAsync<T>(Func<ProgressContext, Task<T>> action)
     {
-        if (action is null)
-        {
-            throw new ArgumentNullException(nameof(action));
-        }
+        ArgumentNullException.ThrowIfNull(action);
 
         return await _console.RunExclusive(async () =>
         {
@@ -187,15 +181,9 @@ public static class ProgressExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Progress Columns(params ProgressColumn[] columns)
         {
-            if (progress is null)
-            {
-                throw new ArgumentNullException(nameof(progress));
-            }
+            ArgumentNullException.ThrowIfNull(progress);
 
-            if (columns is null)
-            {
-                throw new ArgumentNullException(nameof(columns));
-            }
+            ArgumentNullException.ThrowIfNull(columns);
 
             if (!columns.Any())
             {
@@ -228,10 +216,7 @@ public static class ProgressExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Progress AutoRefresh(bool enabled)
         {
-            if (progress is null)
-            {
-                throw new ArgumentNullException(nameof(progress));
-            }
+            ArgumentNullException.ThrowIfNull(progress);
 
             progress.AutoRefresh = enabled;
 
@@ -247,10 +232,7 @@ public static class ProgressExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Progress AutoClear(bool enabled)
         {
-            if (progress is null)
-            {
-                throw new ArgumentNullException(nameof(progress));
-            }
+            ArgumentNullException.ThrowIfNull(progress);
 
             progress.AutoClear = enabled;
 
@@ -266,10 +248,7 @@ public static class ProgressExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public Progress HideCompleted(bool enabled)
         {
-            if (progress is null)
-            {
-                throw new ArgumentNullException(nameof(progress));
-            }
+            ArgumentNullException.ThrowIfNull(progress);
 
             progress.HideCompleted = enabled;
 

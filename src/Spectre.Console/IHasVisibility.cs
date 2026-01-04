@@ -27,10 +27,7 @@ public static class VisibilityExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Invisible()
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.IsVisible = false;
             return obj;
@@ -42,10 +39,7 @@ public static class VisibilityExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T Visible()
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.IsVisible = true;
             return obj;

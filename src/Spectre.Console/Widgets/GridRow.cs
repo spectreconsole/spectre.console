@@ -28,10 +28,7 @@ public sealed class GridRow : IEnumerable<IRenderable>
 
     internal void Add(IRenderable item)
     {
-        if (item is null)
-        {
-            throw new ArgumentNullException(nameof(item));
-        }
+        ArgumentNullException.ThrowIfNull(item);
 
         _items.Add(item);
     }

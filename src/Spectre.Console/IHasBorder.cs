@@ -33,10 +33,7 @@ public static class HasBorderExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T SafeBorder()
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.UseSafeBorder = true;
             return obj;
@@ -48,10 +45,7 @@ public static class HasBorderExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T NoSafeBorder()
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.UseSafeBorder = false;
             return obj;
@@ -64,10 +58,7 @@ public static class HasBorderExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T BorderStyle(Style style)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.BorderStyle = style;
             return obj;
@@ -80,10 +71,7 @@ public static class HasBorderExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public T BorderColor(Color color)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentNullException.ThrowIfNull(obj);
 
             obj.BorderStyle = (obj.BorderStyle ?? Style.Plain).Foreground(color);
             return obj;

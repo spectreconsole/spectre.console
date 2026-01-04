@@ -4,10 +4,7 @@ public static class StreamExtensions
 {
     public static string ReadText(this Stream stream)
     {
-        if (stream is null)
-        {
-            throw new ArgumentNullException(nameof(stream));
-        }
+        ArgumentNullException.ThrowIfNull(stream);
 
         using (var reader = new StreamReader(stream))
         {

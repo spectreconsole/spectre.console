@@ -64,10 +64,7 @@ public static partial class AnsiConsoleExtensions
                 throw new InvalidOperationException("Cannot export HTML since a recording hasn't been started.");
             }
 
-            if (encoder is null)
-            {
-                throw new ArgumentNullException(nameof(encoder));
-            }
+            ArgumentNullException.ThrowIfNull(encoder);
 
             return AnsiConsole.Recorder.Export(encoder);
         }

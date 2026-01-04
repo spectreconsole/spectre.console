@@ -22,4 +22,10 @@
     <PackageReference Include="Polyfill" Condition="'$(TargetFramework)' == 'netstandard2.0'" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\Polyfills.cs">
+      <Link>Extensions\Polyfills.cs</Link>
+    </Compile>
+  </ItemGroup>
+
 </Project>

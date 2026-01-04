@@ -120,10 +120,7 @@ public static class BarChartExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public BarChart AddItem(string label, double value, Color? color = null)
         {
-            if (chart is null)
-            {
-                throw new ArgumentNullException(nameof(chart));
-            }
+            ArgumentNullException.ThrowIfNull(chart);
 
             chart.Data.Add(new BarChartItem(label, value, color));
             return chart;
@@ -138,10 +135,7 @@ public static class BarChartExtensions
         public BarChart AddItem<T>(T item)
             where T : IBarChartItem
         {
-            if (chart is null)
-            {
-                throw new ArgumentNullException(nameof(chart));
-            }
+            ArgumentNullException.ThrowIfNull(chart);
 
             if (item is BarChartItem barChartItem)
             {
@@ -168,15 +162,9 @@ public static class BarChartExtensions
         public BarChart AddItems<T>(IEnumerable<T> items)
             where T : IBarChartItem
         {
-            if (chart is null)
-            {
-                throw new ArgumentNullException(nameof(chart));
-            }
+            ArgumentNullException.ThrowIfNull(chart);
 
-            if (items is null)
-            {
-                throw new ArgumentNullException(nameof(items));
-            }
+            ArgumentNullException.ThrowIfNull(items);
 
             foreach (var item in items)
             {
@@ -195,20 +183,11 @@ public static class BarChartExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public BarChart AddItems<T>(IEnumerable<T> items, Func<T, BarChartItem> converter)
         {
-            if (chart is null)
-            {
-                throw new ArgumentNullException(nameof(chart));
-            }
+            ArgumentNullException.ThrowIfNull(chart);
 
-            if (items is null)
-            {
-                throw new ArgumentNullException(nameof(items));
-            }
+            ArgumentNullException.ThrowIfNull(items);
 
-            if (converter is null)
-            {
-                throw new ArgumentNullException(nameof(converter));
-            }
+            ArgumentNullException.ThrowIfNull(converter);
 
             foreach (var item in items)
             {
@@ -225,10 +204,7 @@ public static class BarChartExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public BarChart UseValueFormatter(Func<double, CultureInfo, string>? func)
         {
-            if (chart is null)
-            {
-                throw new ArgumentNullException(nameof(chart));
-            }
+            ArgumentNullException.ThrowIfNull(chart);
 
             chart.ValueFormatter = func;
             return chart;
@@ -241,10 +217,7 @@ public static class BarChartExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public BarChart UseValueFormatter(Func<double, string>? func)
         {
-            if (chart is null)
-            {
-                throw new ArgumentNullException(nameof(chart));
-            }
+            ArgumentNullException.ThrowIfNull(chart);
 
             chart.ValueFormatter = func != null
                 ? (value, _) => func(value)
@@ -260,10 +233,7 @@ public static class BarChartExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public BarChart Width(int? width)
         {
-            if (chart is null)
-            {
-                throw new ArgumentNullException(nameof(chart));
-            }
+            ArgumentNullException.ThrowIfNull(chart);
 
             chart.Width = width;
             return chart;
@@ -276,10 +246,7 @@ public static class BarChartExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public BarChart Label(string? label)
         {
-            if (chart is null)
-            {
-                throw new ArgumentNullException(nameof(chart));
-            }
+            ArgumentNullException.ThrowIfNull(chart);
 
             chart.Label = label;
             return chart;
@@ -311,10 +278,7 @@ public static class BarChartExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public BarChart ShowValues(bool show)
         {
-            if (chart is null)
-            {
-                throw new ArgumentNullException(nameof(chart));
-            }
+            ArgumentNullException.ThrowIfNull(chart);
 
             chart.ShowValues = show;
             return chart;
@@ -326,10 +290,7 @@ public static class BarChartExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public BarChart LeftAlignLabel()
         {
-            if (chart is null)
-            {
-                throw new ArgumentNullException(nameof(chart));
-            }
+            ArgumentNullException.ThrowIfNull(chart);
 
             chart.LabelAlignment = Justify.Left;
             return chart;
@@ -341,10 +302,7 @@ public static class BarChartExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public BarChart CenterLabel()
         {
-            if (chart is null)
-            {
-                throw new ArgumentNullException(nameof(chart));
-            }
+            ArgumentNullException.ThrowIfNull(chart);
 
             chart.LabelAlignment = Justify.Center;
             return chart;
@@ -356,10 +314,7 @@ public static class BarChartExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public BarChart RightAlignLabel()
         {
-            if (chart is null)
-            {
-                throw new ArgumentNullException(nameof(chart));
-            }
+            ArgumentNullException.ThrowIfNull(chart);
 
             chart.LabelAlignment = Justify.Right;
             return chart;
@@ -372,10 +327,7 @@ public static class BarChartExtensions
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public BarChart WithMaxValue(double maxValue)
         {
-            if (chart is null)
-            {
-                throw new ArgumentNullException(nameof(chart));
-            }
+            ArgumentNullException.ThrowIfNull(chart);
 
             chart.MaxValue = maxValue;
             return chart;
