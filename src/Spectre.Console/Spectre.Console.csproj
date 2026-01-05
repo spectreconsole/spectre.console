@@ -11,6 +11,17 @@
     <InternalsVisibleTo Include="$(AssemblyName).Tests" />
   </ItemGroup>
 
+
+  <PropertyGroup>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Exclude the output of source generators from the compilation -->
+    <Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
+  </ItemGroup>
+
   <ItemGroup Label="Standard Figlet font">
     <EmbeddedResource Include="Widgets\Figlet\Fonts\Standard.flf" />
     <None Remove="Widgets\Figlet\Fonts\Standard.flf" />
@@ -20,6 +31,24 @@
     <PackageReference Include="Wcwidth.Sources" PrivateAssets="all" />
     <PackageReference Include="System.Memory" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
     <PackageReference Include="Polyfill" Condition="'$(TargetFramework)' == 'netstandard2.0'" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup Label="Source Generator">
+    <ProjectReference Include="..\Spectre.Console.SourceGenerator\Spectre.Console.SourceGenerator.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup Label="Generator Data Files">
+    <AdditionalFiles Include="Data\colors.json" />
+    <AdditionalFiles Include="Data\spinners_default.json" />
+    <AdditionalFiles Include="Data\spinners_sindresorhus.json" />
+
+    <!--
+    currently Emoji v17.
+    see data.raw.json at https://github.com/milesj/emojibase/tree/master/packages/data/en
+    -->
+    <AdditionalFiles Include="Data\emoji.json" />
   </ItemGroup>
 
   <ItemGroup>
