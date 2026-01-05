@@ -3,14 +3,14 @@
   "isRoot": true,
   "tools": {
     "verify.tool": {
-      "version": "0.6.0",
+      "version": "0.7.0",
       "commands": [
         "dotnet-verify"
       ],
       "rollForward": false
     },
     "make": {
-      "version": "0.8.0",
+      "version": "0.11.0",
       "commands": [
         "dotnet-make"
       ],
