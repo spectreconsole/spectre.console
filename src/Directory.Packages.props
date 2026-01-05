@@ -8,7 +8,7 @@
     <PackageVersion Include="IsExternalInit" Version="1.0.3" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="8.0.0" />
-    <PackageVersion Include="MinVer" PrivateAssets="All" Version="6.1.0" />
+    <PackageVersion Include="MinVer" PrivateAssets="All" Version="7.0.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="Polyfill" Version="9.6.0" />
     <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="4.15.0" />
