@@ -24,7 +24,6 @@ jobs:
   build:
     name: Publish NuGet Packages
     runs-on: windows-latest
-    environment: Production
     steps:
       - name: Checkout
         uses: actions/checkout@v6
