@@ -171,31 +171,34 @@ public sealed class Progress
 /// </summary>
 public static class ProgressExtensions
 {
+    /// <summary>
+    /// Sets the columns to be used for an <see cref="Progress"/> instance.
+    /// </summary>
+    /// <param name="progress">The <see cref="Progress"/> instance.</param>
+    /// <param name="columns">The columns to use.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Progress Columns(this Progress progress, params ProgressColumn[] columns)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(progress);
+        ArgumentNullException.ThrowIfNull(columns);
+
+        if (!columns.Any())
+        {
+            throw new InvalidOperationException("At least one column must be specified.");
+        }
+
+        progress.Columns.Clear();
+        progress.Columns.AddRange(columns);
+
+        return progress;
+    }
+
     /// <param name="progress">The <see cref="Progress"/> instance.</param>
     extension(Progress progress)
     {
-        /// <summary>
-        /// Sets the columns to be used for an <see cref="Progress"/> instance.
-        /// </summary>
-        /// <param name="columns">The columns to use.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Progress Columns(params ProgressColumn[] columns)
-        {
-            ArgumentNullException.ThrowIfNull(progress);
-
-            ArgumentNullException.ThrowIfNull(columns);
-
-            if (!columns.Any())
-            {
-                throw new InvalidOperationException("At least one column must be specified.");
-            }
-
-            progress.Columns.Clear();
-            progress.Columns.AddRange(columns);
-
-            return progress;
-        }
-
         /// <summary>
         /// Sets an optional hook to intercept rendering.
         /// </summary>
@@ -204,7 +207,6 @@ public static class ProgressExtensions
         public Progress UseRenderHook(Func<IRenderable, IReadOnlyList<ProgressTask>, IRenderable> renderHook)
         {
             progress.RenderHook = renderHook;
-
             return progress;
         }
 
@@ -217,9 +219,7 @@ public static class ProgressExtensions
         public Progress AutoRefresh(bool enabled)
         {
             ArgumentNullException.ThrowIfNull(progress);
-
             progress.AutoRefresh = enabled;
-
             return progress;
         }
 
@@ -233,9 +233,7 @@ public static class ProgressExtensions
         public Progress AutoClear(bool enabled)
         {
             ArgumentNullException.ThrowIfNull(progress);
-
             progress.AutoClear = enabled;
-
             return progress;
         }
 
@@ -249,9 +247,7 @@ public static class ProgressExtensions
         public Progress HideCompleted(bool enabled)
         {
             ArgumentNullException.ThrowIfNull(progress);
-
             progress.HideCompleted = enabled;
-
             return progress;
         }
     }

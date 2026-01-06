@@ -146,6 +146,46 @@ public sealed class Grid : JustInTimeRenderable, IExpandable, IAlignable
 /// </summary>
 public static class GridExtensions
 {
+    /// <summary>
+    /// Adds a new row to the grid.
+    /// </summary>
+    /// <param name="grid">The grid to add the column to.</param>
+    /// <param name="columns">The columns to add.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Grid AddRow(this Grid grid, params string[] columns)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(grid);
+        ArgumentNullException.ThrowIfNull(columns);
+
+        grid.AddRow(columns.Select(column => new Markup(column)).ToArray<IRenderable>());
+        return grid;
+    }
+
+    /// <summary>
+    /// Adds a column to the grid.
+    /// </summary>
+    /// <param name="grid">The grid to add the column to.</param>
+    /// <param name="columns">The columns to add.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Grid AddColumns(this Grid grid, params GridColumn[] columns)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(grid);
+        ArgumentNullException.ThrowIfNull(columns);
+
+        foreach (var column in columns)
+        {
+            grid.AddColumn(column);
+        }
+
+        return grid;
+    }
+
     /// <param name="grid">The grid to add the column to.</param>
     extension(Grid grid)
     {
@@ -167,25 +207,6 @@ public static class GridExtensions
         }
 
         /// <summary>
-        /// Adds a column to the grid.
-        /// </summary>
-        /// <param name="columns">The columns to add.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Grid AddColumns(params GridColumn[] columns)
-        {
-            ArgumentNullException.ThrowIfNull(grid);
-
-            ArgumentNullException.ThrowIfNull(columns);
-
-            foreach (var column in columns)
-            {
-                grid.AddColumn(column);
-            }
-
-            return grid;
-        }
-
-        /// <summary>
         /// Adds an empty row to the grid.
         /// </summary>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
@@ -197,21 +218,6 @@ public static class GridExtensions
             Enumerable.Range(0, grid.Columns.Count).ForEach(index => columns[index] = Text.Empty);
             grid.AddRow(columns);
 
-            return grid;
-        }
-
-        /// <summary>
-        /// Adds a new row to the grid.
-        /// </summary>
-        /// <param name="columns">The columns to add.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Grid AddRow(params string[] columns)
-        {
-            ArgumentNullException.ThrowIfNull(grid);
-
-            ArgumentNullException.ThrowIfNull(columns);
-
-            grid.AddRow(columns.Select(column => new Markup(column)).ToArray());
             return grid;
         }
 

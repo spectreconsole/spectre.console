@@ -168,28 +168,121 @@ public sealed class Table : Renderable, IHasTableBorder, IExpandable, IAlignable
 /// </summary>
 public static class TableExtensions
 {
+    /// <summary>
+    /// Adds multiple columns to the table.
+    /// </summary>
+    /// <param name="table">The table to add the column to.</param>
+    /// <param name="columns">The columns to add.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Table AddColumns(this Table table, params TableColumn[] columns)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(table);
+        ArgumentNullException.ThrowIfNull(columns);
+
+        foreach (var column in columns)
+        {
+            table.AddColumn(column);
+        }
+
+        return table;
+    }
+
+    /// <summary>
+    /// Adds a row to the table.
+    /// </summary>
+    /// <param name="table">The table to add the column to.</param>
+    /// <param name="columns">The row columns to add.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Table AddRow(this Table table, params IRenderable[] columns)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(table);
+
+        return table.AddRow((IEnumerable<IRenderable>)columns);
+    }
+
+    /// <summary>
+    /// Adds multiple columns to the table.
+    /// </summary>
+    /// <param name="table">The table to add the column to.</param>
+    /// <param name="columns">The columns to add.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Table AddColumns(this Table table, params string[] columns)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(table);
+        ArgumentNullException.ThrowIfNull(columns);
+
+        foreach (var column in columns)
+        {
+            AddColumn(table, column);
+        }
+
+        return table;
+    }
+
+    /// <summary>
+    /// Adds a row to the table.
+    /// </summary>
+    /// <param name="table">The table to add the column to.</param>
+    /// <param name="columns">The row columns to add.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Table AddRow(this Table table, params string[] columns)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(table);
+        ArgumentNullException.ThrowIfNull(columns);
+
+        table.AddRow(columns.Select(column => new Markup(column)).ToArray());
+        return table;
+    }
+
+    /// <summary>
+    /// Inserts a row in the table at the specified index.
+    /// </summary>
+    /// <param name="table">The table to add the column to.</param>
+    /// <param name="index">The index to insert the row at.</param>
+    /// <param name="columns">The row columns to add.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Table InsertRow(this Table table, int index, params IRenderable[] columns)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(table);
+
+        return InsertRow(table, index, (IEnumerable<IRenderable>)columns);
+    }
+
+    /// <summary>
+    /// Inserts a row in the table at the specified index.
+    /// </summary>
+    /// <param name="table">The table to add the column to.</param>
+    /// <param name="index">The index to insert the row at.</param>
+    /// <param name="columns">The row columns to add.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Table InsertRow(this Table table, int index, params string[] columns)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(table);
+
+        return InsertRow(table, index, columns.Select(column => new Markup(column)));
+    }
+
     /// <param name="table">The table to add the column to.</param>
     extension(Table table)
     {
-        /// <summary>
-        /// Adds multiple columns to the table.
-        /// </summary>
-        /// <param name="columns">The columns to add.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Table AddColumns(params TableColumn[] columns)
-        {
-            ArgumentNullException.ThrowIfNull(table);
-
-            ArgumentNullException.ThrowIfNull(columns);
-
-            foreach (var column in columns)
-            {
-                table.AddColumn(column);
-            }
-
-            return table;
-        }
-
         /// <summary>
         /// Adds a row to the table.
         /// </summary>
@@ -203,18 +296,6 @@ public static class TableExtensions
 
             table.Rows.Add(new TableRow(columns));
             return table;
-        }
-
-        /// <summary>
-        /// Adds a row to the table.
-        /// </summary>
-        /// <param name="columns">The row columns to add.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Table AddRow(params IRenderable[] columns)
-        {
-            ArgumentNullException.ThrowIfNull(table);
-
-            return table.AddRow((IEnumerable<IRenderable>)columns);
         }
 
         /// <summary>
@@ -247,40 +328,6 @@ public static class TableExtensions
             configure?.Invoke(tableColumn);
 
             table.AddColumn(tableColumn);
-            return table;
-        }
-
-        /// <summary>
-        /// Adds multiple columns to the table.
-        /// </summary>
-        /// <param name="columns">The columns to add.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Table AddColumns(params string[] columns)
-        {
-            ArgumentNullException.ThrowIfNull(table);
-
-            ArgumentNullException.ThrowIfNull(columns);
-
-            foreach (var column in columns)
-            {
-                AddColumn(table, column);
-            }
-
-            return table;
-        }
-
-        /// <summary>
-        /// Adds a row to the table.
-        /// </summary>
-        /// <param name="columns">The row columns to add.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Table AddRow(params string[] columns)
-        {
-            ArgumentNullException.ThrowIfNull(table);
-
-            ArgumentNullException.ThrowIfNull(columns);
-
-            table.AddRow(columns.Select(column => new Markup(column)).ToArray());
             return table;
         }
 
@@ -334,32 +381,6 @@ public static class TableExtensions
             table.Rows.Update(rowIndex, columnIndex, new Markup(cellData));
 
             return table;
-        }
-
-        /// <summary>
-        /// Inserts a row in the table at the specified index.
-        /// </summary>
-        /// <param name="index">The index to insert the row at.</param>
-        /// <param name="columns">The row columns to add.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Table InsertRow(int index, params IRenderable[] columns)
-        {
-            ArgumentNullException.ThrowIfNull(table);
-
-            return InsertRow(table, index, (IEnumerable<IRenderable>)columns);
-        }
-
-        /// <summary>
-        /// Inserts a row in the table at the specified index.
-        /// </summary>
-        /// <param name="index">The index to insert the row at.</param>
-        /// <param name="columns">The row columns to add.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Table InsertRow(int index, params string[] columns)
-        {
-            ArgumentNullException.ThrowIfNull(table);
-
-            return InsertRow(table, index, columns.Select(column => new Markup(column)));
         }
 
         /// <summary>

@@ -2,6 +2,64 @@ namespace Spectre.Console;
 
 public static partial class AnsiConsoleExtensions
 {
+    /// <summary>
+    /// Writes the specified markup to the console.
+    /// </summary>
+    /// <param name="console">The console to write to.</param>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="args">An array of objects to write.</param>
+    public static void Markup(this IAnsiConsole console, string format, params object[] args)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        Markup(console, CultureInfo.CurrentCulture, format, args);
+    }
+
+    /// <summary>
+    /// Writes the specified markup to the console.
+    /// </summary>
+    /// <param name="console">The console to write to.</param>
+    /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="args">An array of objects to write.</param>
+    public static void Markup(this IAnsiConsole console, IFormatProvider provider, string format, params object[] args)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        Markup(console, string.Format(provider, format, args));
+    }
+
+    /// <summary>
+    /// Writes the specified markup, followed by the current line terminator, to the console.
+    /// </summary>
+    /// <param name="console">The console to write to.</param>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="args">An array of objects to write.</param>
+    public static void MarkupLine(this IAnsiConsole console, string format, params object[] args)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        MarkupLine(console, CultureInfo.CurrentCulture, format, args);
+    }
+
+    /// <summary>
+    /// Writes the specified markup, followed by the current line terminator, to the console.
+    /// </summary>
+    /// <param name="console">The console to write to.</param>
+    /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="args">An array of objects to write.</param>
+    public static void MarkupLine(this IAnsiConsole console, IFormatProvider provider, string format, params object[] args)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        Markup(console, provider, format + Environment.NewLine, args);
+    }
+
     extension(AnsiConsole)
     {
         /// <summary>
@@ -11,16 +69,6 @@ public static partial class AnsiConsoleExtensions
         public static void Markup(string value)
         {
             AnsiConsole.Console.Markup(value);
-        }
-
-        /// <summary>
-        /// Writes the specified markup to the console.
-        /// </summary>
-        /// <param name="format">A composite format string.</param>
-        /// <param name="args">An array of objects to write.</param>
-        public static void Markup(string format, params object[] args)
-        {
-            AnsiConsole.Console.Markup(format, args);
         }
 
         /// <summary>
@@ -39,17 +87,6 @@ public static partial class AnsiConsoleExtensions
         public static void MarkupInterpolated(FormattableString value)
         {
             AnsiConsole.Console.MarkupInterpolated(value);
-        }
-
-        /// <summary>
-        /// Writes the specified markup to the console.
-        /// </summary>
-        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-        /// <param name="format">A composite format string.</param>
-        /// <param name="args">An array of objects to write.</param>
-        public static void Markup(IFormatProvider provider, string format, params object[] args)
-        {
-            AnsiConsole.Console.Markup(provider, format, args);
         }
 
         /// <summary>
@@ -82,16 +119,6 @@ public static partial class AnsiConsoleExtensions
 
         /// <summary>
         /// Writes the specified markup, followed by the current line terminator, to the console.
-        /// </summary>
-        /// <param name="format">A composite format string.</param>
-        /// <param name="args">An array of objects to write.</param>
-        public static void MarkupLine(string format, params object[] args)
-        {
-            AnsiConsole.Console.MarkupLine(format, args);
-        }
-
-        /// <summary>
-        /// Writes the specified markup, followed by the current line terminator, to the console.
         /// <para/>
         /// All interpolation holes which contain a string are automatically escaped so you must not call <see cref="StringExtensions.EscapeMarkup"/>.
         /// </summary>
@@ -106,17 +133,6 @@ public static partial class AnsiConsoleExtensions
         public static void MarkupLineInterpolated(FormattableString value)
         {
             AnsiConsole.Console.MarkupLineInterpolated(value);
-        }
-
-        /// <summary>
-        /// Writes the specified markup, followed by the current line terminator, to the console.
-        /// </summary>
-        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-        /// <param name="format">A composite format string.</param>
-        /// <param name="args">An array of objects to write.</param>
-        public static void MarkupLine(IFormatProvider provider, string format, params object[] args)
-        {
-            AnsiConsole.Console.MarkupLine(provider, format, args);
         }
 
         /// <summary>
@@ -144,16 +160,6 @@ public static partial class AnsiConsoleExtensions
     {
         /// <summary>
         /// Writes the specified markup to the console.
-        /// </summary>
-        /// <param name="format">A composite format string.</param>
-        /// <param name="args">An array of objects to write.</param>
-        public void Markup(string format, params object[] args)
-        {
-            Markup(console, CultureInfo.CurrentCulture, format, args);
-        }
-
-        /// <summary>
-        /// Writes the specified markup to the console.
         /// <para/>
         /// All interpolation holes which contain a string are automatically escaped so you must not call <see cref="StringExtensions.EscapeMarkup"/>.
         /// </summary>
@@ -168,17 +174,6 @@ public static partial class AnsiConsoleExtensions
         public void MarkupInterpolated(FormattableString value)
         {
             MarkupInterpolated(console, CultureInfo.CurrentCulture, value);
-        }
-
-        /// <summary>
-        /// Writes the specified markup to the console.
-        /// </summary>
-        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-        /// <param name="format">A composite format string.</param>
-        /// <param name="args">An array of objects to write.</param>
-        public void Markup(IFormatProvider provider, string format, params object[] args)
-        {
-            Markup(console, string.Format(provider, format, args));
         }
 
         /// <summary>
@@ -211,16 +206,6 @@ public static partial class AnsiConsoleExtensions
 
         /// <summary>
         /// Writes the specified markup, followed by the current line terminator, to the console.
-        /// </summary>
-        /// <param name="format">A composite format string.</param>
-        /// <param name="args">An array of objects to write.</param>
-        public void MarkupLine(string format, params object[] args)
-        {
-            MarkupLine(console, CultureInfo.CurrentCulture, format, args);
-        }
-
-        /// <summary>
-        /// Writes the specified markup, followed by the current line terminator, to the console.
         /// <para/>
         /// All interpolation holes which contain a string are automatically escaped so you must not call <see cref="StringExtensions.EscapeMarkup"/>.
         /// </summary>
@@ -244,17 +229,6 @@ public static partial class AnsiConsoleExtensions
         public void MarkupLine(string value)
         {
             Markup(console, value + Environment.NewLine);
-        }
-
-        /// <summary>
-        /// Writes the specified markup, followed by the current line terminator, to the console.
-        /// </summary>
-        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-        /// <param name="format">A composite format string.</param>
-        /// <param name="args">An array of objects to write.</param>
-        public void MarkupLine(IFormatProvider provider, string format, params object[] args)
-        {
-            Markup(console, provider, format + Environment.NewLine, args);
         }
 
         /// <summary>

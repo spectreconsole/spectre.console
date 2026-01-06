@@ -66,3 +66,98 @@ public static partial class AnsiConsole
         return _factory.Create(settings);
     }
 }
+
+// TODO: This is here temporary due to a bug in the .NET SDK
+// See issue: https://github.com/dotnet/roslyn/issues/80024
+public static partial class AnsiConsole
+{
+    /// <summary>
+    /// Writes the text representation of the specified array of objects,
+    /// to the console using the specified format information.
+    /// </summary>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="args">An array of objects to write.</param>
+    public static void Write(string format, params object[] args)
+    {
+        Write(CultureInfo.CurrentCulture, format, args);
+    }
+
+    /// <summary>
+    /// Writes the text representation of the specified array of objects,
+    /// to the console using the specified format information.
+    /// </summary>
+    /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="args">An array of objects to write.</param>
+    public static void Write(IFormatProvider provider, string format, params object[] args)
+    {
+        Console.Write(string.Format(provider, format, args), CurrentStyle);
+    }
+
+    /// <summary>
+    /// Writes the text representation of the specified array of objects,
+    /// followed by the current line terminator, to the console
+    /// using the specified format information.
+    /// </summary>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="args">An array of objects to write.</param>
+    public static void WriteLine(string format, params object[] args)
+    {
+        WriteLine(CultureInfo.CurrentCulture, format, args);
+    }
+
+    /// <summary>
+    /// Writes the text representation of the specified array of objects,
+    /// followed by the current line terminator, to the console
+    /// using the specified format information.
+    /// </summary>
+    /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="args">An array of objects to write.</param>
+    public static void WriteLine(IFormatProvider provider, string format, params object[] args)
+    {
+        Console.WriteLine(string.Format(provider, format, args), CurrentStyle);
+    }
+
+    /// <summary>
+    /// Writes the specified markup to the console.
+    /// </summary>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="args">An array of objects to write.</param>
+    public static void Markup(string format, params object[] args)
+    {
+        Console.Markup(format, args);
+    }
+
+    /// <summary>
+    /// Writes the specified markup to the console.
+    /// </summary>
+    /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="args">An array of objects to write.</param>
+    public static void Markup(IFormatProvider provider, string format, params object[] args)
+    {
+        Console.Markup(provider, format, args);
+    }
+
+    /// <summary>
+    /// Writes the specified markup, followed by the current line terminator, to the console.
+    /// </summary>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="args">An array of objects to write.</param>
+    public static void MarkupLine(string format, params object[] args)
+    {
+        Console.MarkupLine(format, args);
+    }
+
+    /// <summary>
+    /// Writes the specified markup, followed by the current line terminator, to the console.
+    /// </summary>
+    /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+    /// <param name="format">A composite format string.</param>
+    /// <param name="args">An array of objects to write.</param>
+    public static void MarkupLine(IFormatProvider provider, string format, params object[] args)
+    {
+        Console.MarkupLine(provider, format, args);
+    }
+}
