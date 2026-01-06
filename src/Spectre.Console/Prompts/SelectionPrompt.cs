@@ -235,6 +235,55 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
 /// </summary>
 public static class SelectionPromptExtensions
 {
+    /// <summary>
+    /// Adds multiple choices.
+    /// </summary>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="choices">The choices to add.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static SelectionPrompt<T> AddChoices<T>(
+        this SelectionPrompt<T> obj,
+        params T[] choices) where T : notnull
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(obj);
+
+        foreach (var choice in choices)
+        {
+            obj.AddChoice(choice);
+        }
+
+        return obj;
+    }
+
+    /// <summary>
+    /// Adds multiple grouped choices.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="group">The group.</param>
+    /// <param name="choices">The choices to add.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static SelectionPrompt<T> AddChoiceGroup<T>(
+        this SelectionPrompt<T> obj,
+        T group, params T[] choices) where T : notnull
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(obj);
+
+        var root = obj.AddChoice(group);
+        foreach (var choice in choices)
+        {
+            root.AddChild(choice);
+        }
+
+        return obj;
+    }
+
     /// <param name="obj">The prompt.</param>
     /// <typeparam name="T">The prompt result type.</typeparam>
     extension<T>(SelectionPrompt<T> obj) where T : notnull
@@ -249,23 +298,6 @@ public static class SelectionPromptExtensions
             ArgumentNullException.ThrowIfNull(obj);
 
             obj.Mode = mode;
-            return obj;
-        }
-
-        /// <summary>
-        /// Adds multiple choices.
-        /// </summary>
-        /// <param name="choices">The choices to add.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public SelectionPrompt<T> AddChoices(params T[] choices)
-        {
-            ArgumentNullException.ThrowIfNull(obj);
-
-            foreach (var choice in choices)
-            {
-                obj.AddChoice(choice);
-            }
-
             return obj;
         }
 
@@ -293,25 +325,6 @@ public static class SelectionPromptExtensions
         /// <param name="choices">The choices to add.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public SelectionPrompt<T> AddChoiceGroup(T group, IEnumerable<T> choices)
-        {
-            ArgumentNullException.ThrowIfNull(obj);
-
-            var root = obj.AddChoice(group);
-            foreach (var choice in choices)
-            {
-                root.AddChild(choice);
-            }
-
-            return obj;
-        }
-
-        /// <summary>
-        /// Adds multiple grouped choices.
-        /// </summary>
-        /// <param name="group">The group.</param>
-        /// <param name="choices">The choices to add.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public SelectionPrompt<T> AddChoiceGroup(T group, params T[] choices)
         {
             ArgumentNullException.ThrowIfNull(obj);
 

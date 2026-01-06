@@ -16,6 +16,54 @@ public interface IHasTreeNodes
 /// </summary>
 public static class HasTreeNodeExtensions
 {
+    /// <summary>
+    /// Add multiple tree nodes.
+    /// </summary>
+    /// <param name="obj">The object to add the tree node to.</param>
+    /// <param name="nodes">The tree nodes to add.</param>
+    public static void AddNodes(this IHasTreeNodes obj, params string[] nodes)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(obj);
+        ArgumentNullException.ThrowIfNull(nodes);
+
+        obj.Nodes.AddRange(nodes.Select(node => new TreeNode(new Markup(node))));
+    }
+
+    /// <summary>
+    /// Add multiple tree nodes.
+    /// </summary>
+    /// <param name="obj">The object to add the tree node to.</param>
+    /// <param name="nodes">The tree nodes to add.</param>
+    public static void AddNodes(this IHasTreeNodes obj, params IRenderable[] nodes)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(obj);
+        ArgumentNullException.ThrowIfNull(nodes);
+
+        obj.Nodes.AddRange(nodes.Select(node => new TreeNode(node)));
+    }
+
+    /// <summary>
+    /// Add multiple tree nodes.
+    /// </summary>
+    /// <param name="obj">The object to add the tree node to.</param>
+    /// <param name="nodes">The tree nodes to add.</param>
+    public static void AddNodes(this IHasTreeNodes obj, params TreeNode[] nodes)
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(obj);
+        ArgumentNullException.ThrowIfNull(nodes);
+
+        obj.Nodes.AddRange(nodes);
+    }
+
     /// <param name="obj">The object to add the tree node to.</param>
     /// <typeparam name="T">An object with tree nodes.</typeparam>
     extension<T>(T obj) where T : IHasTreeNodes
@@ -27,11 +75,7 @@ public static class HasTreeNodeExtensions
         /// <returns>The added tree node.</returns>
         public TreeNode AddNode(string markup)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
+            ArgumentNullException.ThrowIfNull(obj);
             ArgumentNullException.ThrowIfNull(markup);
 
             return AddNode(obj, new Markup(markup));
@@ -44,11 +88,7 @@ public static class HasTreeNodeExtensions
         /// <returns>The added tree node.</returns>
         public TreeNode AddNode(IRenderable renderable)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
+            ArgumentNullException.ThrowIfNull(obj);
             ArgumentNullException.ThrowIfNull(renderable);
 
             var node = new TreeNode(renderable);
@@ -63,11 +103,7 @@ public static class HasTreeNodeExtensions
         /// <returns>The added tree node.</returns>
         public TreeNode AddNode(TreeNode node)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
+            ArgumentNullException.ThrowIfNull(obj);
             ArgumentNullException.ThrowIfNull(node);
 
             obj.Nodes.Add(node);
@@ -78,48 +114,12 @@ public static class HasTreeNodeExtensions
         /// Add multiple tree nodes.
         /// </summary>
         /// <param name="nodes">The tree nodes to add.</param>
-        public void AddNodes(params string[] nodes)
-        {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
-            ArgumentNullException.ThrowIfNull(nodes);
-
-            obj.Nodes.AddRange(nodes.Select(node => new TreeNode(new Markup(node))));
-        }
-
-        /// <summary>
-        /// Add multiple tree nodes.
-        /// </summary>
-        /// <param name="nodes">The tree nodes to add.</param>
         public void AddNodes(IEnumerable<string> nodes)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
+            ArgumentNullException.ThrowIfNull(obj);
             ArgumentNullException.ThrowIfNull(nodes);
 
             obj.Nodes.AddRange(nodes.Select(node => new TreeNode(new Markup(node))));
-        }
-
-        /// <summary>
-        /// Add multiple tree nodes.
-        /// </summary>
-        /// <param name="nodes">The tree nodes to add.</param>
-        public void AddNodes(params IRenderable[] nodes)
-        {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
-            ArgumentNullException.ThrowIfNull(nodes);
-
-            obj.Nodes.AddRange(nodes.Select(node => new TreeNode(node)));
         }
 
         /// <summary>
@@ -128,11 +128,7 @@ public static class HasTreeNodeExtensions
         /// <param name="nodes">The tree nodes to add.</param>
         public void AddNodes(IEnumerable<IRenderable> nodes)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
+            ArgumentNullException.ThrowIfNull(obj);
             ArgumentNullException.ThrowIfNull(nodes);
 
             obj.Nodes.AddRange(nodes.Select(node => new TreeNode(node)));
@@ -142,29 +138,9 @@ public static class HasTreeNodeExtensions
         /// Add multiple tree nodes.
         /// </summary>
         /// <param name="nodes">The tree nodes to add.</param>
-        public void AddNodes(params TreeNode[] nodes)
-        {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
-            ArgumentNullException.ThrowIfNull(nodes);
-
-            obj.Nodes.AddRange(nodes);
-        }
-
-        /// <summary>
-        /// Add multiple tree nodes.
-        /// </summary>
-        /// <param name="nodes">The tree nodes to add.</param>
         public void AddNodes(IEnumerable<TreeNode> nodes)
         {
-            if (obj is null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-
+            ArgumentNullException.ThrowIfNull(obj);
             ArgumentNullException.ThrowIfNull(nodes);
 
             obj.Nodes.AddRange(nodes);

@@ -95,7 +95,8 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
         var converter = Converter ?? TypeConverterHelper.ConvertToString;
-        var result = await prompt.Show(Tree, converter, Mode, false, false, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
+        var result = await prompt.Show(Tree, converter, Mode, false, false, PageSize, WrapAround, cancellationToken)
+            .ConfigureAwait(false);
 
         if (Mode == SelectionMode.Leaf)
         {
@@ -248,9 +249,12 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             var style = current ? highlightStyle : Style.Plain;
 
             var indent = new string(' ', item.Node.Depth * 2);
-            var prompt = item.Index == cursorIndex ? ListPromptConstants.Arrow : new string(' ', ListPromptConstants.Arrow.Length);
+            var prompt = item.Index == cursorIndex
+                ? ListPromptConstants.Arrow
+                : new string(' ', ListPromptConstants.Arrow.Length);
 
-            var text = (Converter ?? TypeConverterHelper.ConvertToString)?.Invoke(item.Node.Data) ?? item.Node.Data.ToString() ?? "?";
+            var text = (Converter ?? TypeConverterHelper.ConvertToString)?.Invoke(item.Node.Data) ??
+                       item.Node.Data.ToString() ?? "?";
             if (current)
             {
                 text = text.RemoveMarkup().EscapeMarkup();
@@ -285,6 +289,56 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
 /// </summary>
 public static class MultiSelectionPromptExtensions
 {
+    /// <summary>
+    /// Adds multiple choices.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="choices">The choices to add.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static MultiSelectionPrompt<T> AddChoices<T>(
+        this MultiSelectionPrompt<T> obj,
+        params T[] choices) where T : notnull
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(obj);
+
+        foreach (var choice in choices)
+        {
+            obj.AddChoice(choice);
+        }
+
+        return obj;
+    }
+
+    /// <summary>
+    /// Adds multiple grouped choices.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="group">The group.</param>
+    /// <param name="choices">The choices to add.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static MultiSelectionPrompt<T> AddChoiceGroup<T>(
+        this MultiSelectionPrompt<T> obj,
+        T group, params T[] choices) where T : notnull
+    {
+        // TODO: This is here temporary due to a bug in the .NET SDK
+        // See issue: https://github.com/dotnet/roslyn/issues/80024
+
+        ArgumentNullException.ThrowIfNull(obj);
+
+        var root = obj.AddChoice(group);
+        foreach (var choice in choices)
+        {
+            root.AddChild(choice);
+        }
+
+        return obj;
+    }
+
     /// <param name="obj">The prompt.</param>
     /// <typeparam name="T">The prompt result type.</typeparam>
     extension<T>(MultiSelectionPrompt<T> obj) where T : notnull
@@ -325,23 +379,6 @@ public static class MultiSelectionPromptExtensions
         /// </summary>
         /// <param name="choices">The choices to add.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public MultiSelectionPrompt<T> AddChoices(params T[] choices)
-        {
-            ArgumentNullException.ThrowIfNull(obj);
-
-            foreach (var choice in choices)
-            {
-                obj.AddChoice(choice);
-            }
-
-            return obj;
-        }
-
-        /// <summary>
-        /// Adds multiple choices.
-        /// </summary>
-        /// <param name="choices">The choices to add.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
         public MultiSelectionPrompt<T> AddChoices(IEnumerable<T> choices)
         {
             ArgumentNullException.ThrowIfNull(obj);
@@ -361,25 +398,6 @@ public static class MultiSelectionPromptExtensions
         /// <param name="choices">The choices to add.</param>
         /// <returns>The same instance so that multiple calls can be chained.</returns>
         public MultiSelectionPrompt<T> AddChoiceGroup(T group, IEnumerable<T> choices)
-        {
-            ArgumentNullException.ThrowIfNull(obj);
-
-            var root = obj.AddChoice(group);
-            foreach (var choice in choices)
-            {
-                root.AddChild(choice);
-            }
-
-            return obj;
-        }
-
-        /// <summary>
-        /// Adds multiple grouped choices.
-        /// </summary>
-        /// <param name="group">The group.</param>
-        /// <param name="choices">The choices to add.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public MultiSelectionPrompt<T> AddChoiceGroup(T group, params T[] choices)
         {
             ArgumentNullException.ThrowIfNull(obj);
 

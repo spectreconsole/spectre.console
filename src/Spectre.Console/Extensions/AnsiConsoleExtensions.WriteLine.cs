@@ -237,31 +237,6 @@ public static partial class AnsiConsoleExtensions
 
             AnsiConsole.Console.WriteLine();
         }
-
-        /// <summary>
-        /// Writes the text representation of the specified array of objects,
-        /// followed by the current line terminator, to the console
-        /// using the specified format information.
-        /// </summary>
-        /// <param name="format">A composite format string.</param>
-        /// <param name="args">An array of objects to write.</param>
-        public static void WriteLine(string format, params object[] args)
-        {
-            WriteLine(CultureInfo.CurrentCulture, format, args);
-        }
-
-        /// <summary>
-        /// Writes the text representation of the specified array of objects,
-        /// followed by the current line terminator, to the console
-        /// using the specified format information.
-        /// </summary>
-        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-        /// <param name="format">A composite format string.</param>
-        /// <param name="args">An array of objects to write.</param>
-        public static void WriteLine(IFormatProvider provider, string format, params object[] args)
-        {
-            AnsiConsole.Console.WriteLine(string.Format(provider, format, args), AnsiConsole.CurrentStyle);
-        }
     }
 
     extension(IAnsiConsole console)

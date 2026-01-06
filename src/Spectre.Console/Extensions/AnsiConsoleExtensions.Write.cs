@@ -10,7 +10,7 @@ public static partial class AnsiConsoleExtensions
         /// <param name="value">The value to write.</param>
         public static void Write(string value)
         {
-            Write(value, AnsiConsole.CurrentStyle);
+            AnsiConsole.Write(value, AnsiConsole.CurrentStyle);
         }
 
         /// <summary>
@@ -218,29 +218,6 @@ public static partial class AnsiConsoleExtensions
             {
                 AnsiConsole.Console.Write(value[index].ToString(provider), AnsiConsole.CurrentStyle);
             }
-        }
-
-        /// <summary>
-        /// Writes the text representation of the specified array of objects,
-        /// to the console using the specified format information.
-        /// </summary>
-        /// <param name="format">A composite format string.</param>
-        /// <param name="args">An array of objects to write.</param>
-        public static void Write(string format, params object[] args)
-        {
-            Write(CultureInfo.CurrentCulture, format, args);
-        }
-
-        /// <summary>
-        /// Writes the text representation of the specified array of objects,
-        /// to the console using the specified format information.
-        /// </summary>
-        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-        /// <param name="format">A composite format string.</param>
-        /// <param name="args">An array of objects to write.</param>
-        public static void Write(IFormatProvider provider, string format, params object[] args)
-        {
-            AnsiConsole.Console.Write(string.Format(provider, format, args), AnsiConsole.CurrentStyle);
         }
     }
 

@@ -17,12 +17,6 @@
     <PolyArgumentExceptions>true</PolyArgumentExceptions>
   </PropertyGroup>
 
-  <!-- Due to a bug in the .NET SDK (10.0.101), a false positive CS8620 warning is emitted -->
-  <!-- when "params" are used together with extension blocks -->
-  <PropertyGroup>
-    <NoWarn>$(NoWarn);CS8620</NoWarn>
-  </PropertyGroup>
-
   <!-- Earlier (<10.0.100) SDK throws on extension blocks -->
   <PropertyGroup Condition="'$(TargetFramework)' != 'net10.0'">
     <NoWarn>$(NoWarn);AD0001</NoWarn>
