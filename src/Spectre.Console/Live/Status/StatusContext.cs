@@ -53,66 +53,21 @@ public sealed class StatusContext
 
     private void SetStatus(string status)
     {
-        ArgumentNullException.ThrowIfNull(status);
+        if (status is null)
+        {
+            throw new ArgumentNullException(nameof(status));
+        }
 
         _task.Description = status;
     }
 
     private void SetSpinner(Spinner spinner)
     {
-        ArgumentNullException.ThrowIfNull(spinner);
+        if (spinner is null)
+        {
+            throw new ArgumentNullException(nameof(spinner));
+        }
 
         _spinnerColumn.Spinner = spinner;
-    }
-}
-
-/// <summary>
-/// Contains extension methods for <see cref="StatusContext"/>.
-/// </summary>
-public static class StatusContextExtensions
-{
-    /// <param name="context">The status context.</param>
-    extension(StatusContext context)
-    {
-        /// <summary>
-        /// Sets the status message.
-        /// </summary>
-        /// <param name="status">The status message.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public StatusContext Status(string status)
-        {
-            ArgumentNullException.ThrowIfNull(context);
-
-            context.Status = status;
-            return context;
-        }
-
-        /// <summary>
-        /// Sets the spinner.
-        /// </summary>
-        /// <param name="context">The status context.</param>
-        /// <param name="spinner">The spinner.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public StatusContext Spinner(Spinner spinner)
-        {
-            ArgumentNullException.ThrowIfNull(context);
-
-            context.Spinner = spinner;
-            return context;
-        }
-
-        /// <summary>
-        /// Sets the spinner style.
-        /// </summary>
-        /// <param name="context">The status context.</param>
-        /// <param name="style">The spinner style.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public StatusContext SpinnerStyle(Style? style)
-        {
-            ArgumentNullException.ThrowIfNull(context);
-
-            context.SpinnerStyle = style;
-            return context;
-        }
     }
 }

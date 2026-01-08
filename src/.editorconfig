@@ -1,12 +1,6 @@
-[*.cs]
-# ========================================================
-# Temporarily disable warnings related to extension blocks
-# ========================================================
-dotnet_diagnostic.RCS1139.severity = none
-dotnet_diagnostic.RCS1263.severity = none
-dotnet_diagnostic.CS1572.severity = none
-dotnet_diagnostic.CA1510.severity = warning
+root = false
 
+[*.cs]
 # Prefer file scoped namespace declarations
 csharp_style_namespace_declarations = file_scoped:warning
 

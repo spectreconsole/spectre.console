@@ -53,7 +53,10 @@ public abstract class JustInTimeRenderable : Renderable
     /// </param>
     protected void MarkAsDirty(Action action)
     {
-        ArgumentNullException.ThrowIfNull(action);
+        if (action is null)
+        {
+            throw new ArgumentNullException(nameof(action));
+        }
 
         action();
         _dirty = true;

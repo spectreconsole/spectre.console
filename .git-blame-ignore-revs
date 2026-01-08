@@ -1,8 +1,5 @@
 # Use file scoped namespace declarations
 7b2da0a4f63bf3ceab99d2c88535e74155f2b99c
 
-# Fix line-endings
+# fix line-endings
 e2ad4b1ea5555e701cda4fd400bb6592e318e1ff
-
-# Modernization of code base (extension blocks)
-3f57df5af667beeaab128d865a8818c246af8ea1

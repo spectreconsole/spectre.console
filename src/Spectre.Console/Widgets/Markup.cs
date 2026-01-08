@@ -84,7 +84,10 @@ public sealed class Markup : Renderable, IHasJustification, IOverflowable
     /// <returns>A string that is safe to use in markup.</returns>
     public static string Escape(string text)
     {
-        ArgumentNullException.ThrowIfNull(text);
+        if (text is null)
+        {
+            throw new ArgumentNullException(nameof(text));
+        }
 
         return text.EscapeMarkup();
     }
@@ -96,7 +99,10 @@ public sealed class Markup : Renderable, IHasJustification, IOverflowable
     /// <returns>A string that does not have any markup.</returns>
     public static string Remove(string text)
     {
-        ArgumentNullException.ThrowIfNull(text);
+        if (text is null)
+        {
+            throw new ArgumentNullException(nameof(text));
+        }
 
         return text.RemoveMarkup();
     }

@@ -13,7 +13,10 @@ public sealed class AnsiConsoleFactory
     /// <returns>An implementation of <see cref="IAnsiConsole"/>.</returns>
     public IAnsiConsole Create(AnsiConsoleSettings settings)
     {
-        ArgumentNullException.ThrowIfNull(settings);
+        if (settings is null)
+        {
+            throw new ArgumentNullException(nameof(settings));
+        }
 
         var output = settings.Out ?? new AnsiConsoleOutput(System.Console.Out);
         if (output.Writer == null)

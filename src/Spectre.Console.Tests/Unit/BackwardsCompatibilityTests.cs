@@ -1,9 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Shouldly;
-using Xunit;
-
 namespace Spectre.Console.Tests.Unit;
 
 /// <summary>

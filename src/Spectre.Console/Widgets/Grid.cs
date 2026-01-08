@@ -70,7 +70,10 @@ public sealed class Grid : JustInTimeRenderable, IExpandable, IAlignable
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public Grid AddColumn(GridColumn column)
     {
-        ArgumentNullException.ThrowIfNull(column);
+        if (column is null)
+        {
+            throw new ArgumentNullException(nameof(column));
+        }
 
         if (_rows.Count > 0)
         {
@@ -92,7 +95,10 @@ public sealed class Grid : JustInTimeRenderable, IExpandable, IAlignable
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public Grid AddRow(params IRenderable[] columns)
     {
-        ArgumentNullException.ThrowIfNull(columns);
+        if (columns is null)
+        {
+            throw new ArgumentNullException(nameof(columns));
+        }
 
         if (columns.Length > _columns.Count)
         {
@@ -138,100 +144,5 @@ public sealed class Grid : JustInTimeRenderable, IExpandable, IAlignable
         }
 
         return table;
-    }
-}
-
-/// <summary>
-/// Contains extension methods for <see cref="Grid"/>.
-/// </summary>
-public static class GridExtensions
-{
-    /// <summary>
-    /// Adds a new row to the grid.
-    /// </summary>
-    /// <param name="grid">The grid to add the column to.</param>
-    /// <param name="columns">The columns to add.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Grid AddRow(this Grid grid, params string[] columns)
-    {
-        // TODO: This is here temporary due to a bug in the .NET SDK
-        // See issue: https://github.com/dotnet/roslyn/issues/80024
-
-        ArgumentNullException.ThrowIfNull(grid);
-        ArgumentNullException.ThrowIfNull(columns);
-
-        grid.AddRow(columns.Select(column => new Markup(column)).ToArray<IRenderable>());
-        return grid;
-    }
-
-    /// <summary>
-    /// Adds a column to the grid.
-    /// </summary>
-    /// <param name="grid">The grid to add the column to.</param>
-    /// <param name="columns">The columns to add.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Grid AddColumns(this Grid grid, params GridColumn[] columns)
-    {
-        // TODO: This is here temporary due to a bug in the .NET SDK
-        // See issue: https://github.com/dotnet/roslyn/issues/80024
-
-        ArgumentNullException.ThrowIfNull(grid);
-        ArgumentNullException.ThrowIfNull(columns);
-
-        foreach (var column in columns)
-        {
-            grid.AddColumn(column);
-        }
-
-        return grid;
-    }
-
-    /// <param name="grid">The grid to add the column to.</param>
-    extension(Grid grid)
-    {
-        /// <summary>
-        /// Adds a column to the grid.
-        /// </summary>
-        /// <param name="count">The number of columns to add.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Grid AddColumns(int count)
-        {
-            ArgumentNullException.ThrowIfNull(grid);
-
-            for (var index = 0; index < count; index++)
-            {
-                grid.AddColumn(new GridColumn());
-            }
-
-            return grid;
-        }
-
-        /// <summary>
-        /// Adds an empty row to the grid.
-        /// </summary>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Grid AddEmptyRow()
-        {
-            ArgumentNullException.ThrowIfNull(grid);
-
-            var columns = new IRenderable[grid.Columns.Count];
-            Enumerable.Range(0, grid.Columns.Count).ForEach(index => columns[index] = Text.Empty);
-            grid.AddRow(columns);
-
-            return grid;
-        }
-
-        /// <summary>
-        /// Sets the grid width.
-        /// </summary>
-        /// <param name="width">The width.</param>
-        /// <returns>The same instance so that multiple calls can be chained.</returns>
-        public Grid Width(int? width)
-        {
-            ArgumentNullException.ThrowIfNull(grid);
-
-            grid.Width = width;
-            return grid;
-        }
     }
 }

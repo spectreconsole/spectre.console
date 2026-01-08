@@ -49,7 +49,10 @@ public class Recorder : IAnsiConsole, IDisposable
     /// <inheritdoc/>
     public void Write(IRenderable renderable)
     {
-        ArgumentNullException.ThrowIfNull(renderable);
+        if (renderable is null)
+        {
+            throw new ArgumentNullException(nameof(renderable));
+        }
 
         _recorded.Add(renderable);
 
@@ -70,43 +73,11 @@ public class Recorder : IAnsiConsole, IDisposable
     /// <returns>The recorded data represented as a string.</returns>
     public string Export(IAnsiConsoleEncoder encoder)
     {
-        ArgumentNullException.ThrowIfNull(encoder);
+        if (encoder is null)
+        {
+            throw new ArgumentNullException(nameof(encoder));
+        }
 
         return encoder.Encode(_console, _recorded);
-    }
-}
-
-/// <summary>
-/// Contains extension methods for <see cref="Recorder"/>.
-/// </summary>
-public static class RecorderExtensions
-{
-    private static readonly TextEncoder _textEncoder = new TextEncoder();
-    private static readonly HtmlEncoder _htmlEncoder = new HtmlEncoder();
-
-    /// <param name="recorder">The recorder.</param>
-    extension(Recorder recorder)
-    {
-        /// <summary>
-        /// Exports the recorded content as text.
-        /// </summary>
-        /// <returns>The recorded content as text.</returns>
-        public string ExportText()
-        {
-            ArgumentNullException.ThrowIfNull(recorder);
-
-            return recorder.Export(_textEncoder);
-        }
-
-        /// <summary>
-        /// Exports the recorded content as HTML.
-        /// </summary>
-        /// <returns>The recorded content as HTML.</returns>
-        public string ExportHtml()
-        {
-            ArgumentNullException.ThrowIfNull(recorder);
-
-            return recorder.Export(_htmlEncoder);
-        }
     }
 }
