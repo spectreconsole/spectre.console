@@ -2,16 +2,16 @@ namespace Spectre.Console.Tests;
 
 public static class StreamExtensions
 {
-    extension(Stream stream)
+    public static string ReadText(this Stream stream)
     {
-        public string ReadText()
+        if (stream is null)
         {
-            ArgumentNullException.ThrowIfNull(stream);
+            throw new ArgumentNullException(nameof(stream));
+        }
 
-            using (var reader = new StreamReader(stream))
-            {
-                return reader.ReadToEnd();
-            }
+        using (var reader = new StreamReader(stream))
+        {
+            return reader.ReadToEnd();
         }
     }
 }

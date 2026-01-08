@@ -49,7 +49,10 @@ public sealed class TableRowCollection : IReadOnlyList<TableRow>
     /// <returns>The index of the added item.</returns>
     public int Add(IEnumerable<IRenderable> columns)
     {
-        ArgumentNullException.ThrowIfNull(columns);
+        if (columns is null)
+        {
+            throw new ArgumentNullException(nameof(columns));
+        }
 
         lock (_lock)
         {
@@ -67,7 +70,10 @@ public sealed class TableRowCollection : IReadOnlyList<TableRow>
     /// <returns>The index of the inserted item.</returns>
     public int Insert(int index, IEnumerable<IRenderable> columns)
     {
-        ArgumentNullException.ThrowIfNull(columns);
+        if (columns is null)
+        {
+            throw new ArgumentNullException(nameof(columns));
+        }
 
         lock (_lock)
         {
@@ -85,7 +91,10 @@ public sealed class TableRowCollection : IReadOnlyList<TableRow>
     /// <param name="cellData">The new cells details.</param>
     public void Update(int row, int column, IRenderable cellData)
     {
-        ArgumentNullException.ThrowIfNull(cellData);
+        if (cellData is null)
+        {
+            throw new ArgumentNullException(nameof(cellData));
+        }
 
         lock (_lock)
         {

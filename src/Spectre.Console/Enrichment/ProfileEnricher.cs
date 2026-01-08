@@ -25,7 +25,10 @@ internal static class ProfileEnricher
         ProfileEnrichment settings,
         IDictionary<string, string>? environmentVariables)
     {
-        ArgumentNullException.ThrowIfNull(profile);
+        if (profile is null)
+        {
+            throw new ArgumentNullException(nameof(profile));
+        }
 
         settings ??= new ProfileEnrichment();
 

@@ -3,36 +3,34 @@ namespace Spectre.Console.Advanced;
 /// <summary>
 /// Contains extension methods for <see cref="IAnsiConsole"/>.
 /// </summary>
-[Obsolete("Use methods on IAnsiConsole instead")]
 public static class AnsiConsoleExtensions
 {
+    /// <summary>
+    /// Writes a VT/Ansi control code sequence to the console (if supported).
+    /// </summary>
     /// <param name="console">The console to write to.</param>
-    extension(IAnsiConsole console)
+    /// <param name="sequence">The VT/Ansi control code sequence to write.</param>
+    public static void WriteAnsi(this IAnsiConsole console, string sequence)
     {
-        /// <summary>
-        /// Writes a VT/Ansi control code sequence to the console (if supported).
-        /// </summary>
-        /// <param name="sequence">The VT/Ansi control code sequence to write.</param>
-        [Obsolete("Use Spectre.Console.IAnsiConsole.WriteAnsi instead")]
-        public void WriteAnsi(string sequence)
+        if (console is null)
         {
-            ArgumentNullException.ThrowIfNull(console);
-
-            if (console.Profile.Capabilities.Ansi)
-            {
-                console.Write(new ControlCode(sequence));
-            }
+            throw new ArgumentNullException(nameof(console));
         }
 
-        /// <summary>
-        /// Gets the VT/ANSI control code sequence for a <see cref="IRenderable"/>.
-        /// </summary>
-        /// <param name="renderable">The renderable to the VT/ANSI control code sequence for.</param>
-        /// <returns>The VT/ANSI control code sequence.</returns>
-        [Obsolete("Use Spectre.Console.IAnsiConsole.ToAnsi instead")]
-        public string ToAnsi(IRenderable renderable)
+        if (console.Profile.Capabilities.Ansi)
         {
-            return AnsiBuilder.Build(console, renderable);
+            console.Write(new ControlCode(sequence));
         }
+    }
+
+    /// <summary>
+    /// Gets the VT/ANSI control code sequence for a <see cref="IRenderable"/>.
+    /// </summary>
+    /// <param name="console">The console.</param>
+    /// <param name="renderable">The renderable to the VT/ANSI control code sequence for.</param>
+    /// <returns>The VT/ANSI control code sequence.</returns>
+    public static string ToAnsi(this IAnsiConsole console, IRenderable renderable)
+    {
+        return AnsiBuilder.Build(console, renderable);
     }
 }

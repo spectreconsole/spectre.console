@@ -24,7 +24,10 @@ public sealed class SegmentLineIterator : IEnumerator<Segment>
     /// <param name="lines">The lines to iterate.</param>
     public SegmentLineIterator(IEnumerable<SegmentLine> lines)
     {
-        ArgumentNullException.ThrowIfNull(lines);
+        if (lines is null)
+        {
+            throw new System.ArgumentNullException(nameof(lines));
+        }
 
         _currentLine = 0;
         _currentIndex = -1;

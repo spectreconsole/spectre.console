@@ -1,3 +1,5 @@
+using Spectre.Console.Extensions;
+
 namespace Spectre.Console.Tests.Unit;
 
 [ExpectationPath("Widgets/Align")]
