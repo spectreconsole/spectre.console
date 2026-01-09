@@ -36,6 +36,11 @@ public class Segment
     public Style Style { get; }
 
     /// <summary>
+    /// Gets the overridden cell size for this segment, some transparent segments may require this e.g. transparent characters.
+    /// </summary>
+    public int? CellCountOverride { get; }
+
+    /// <summary>
     /// Gets a segment representing a line break.
     /// </summary>
     public static Segment LineBreak { get; } = new Segment(Environment.NewLine, Style.Plain, true, false);
@@ -44,6 +49,13 @@ public class Segment
     /// Gets an empty segment.
     /// </summary>
     public static Segment Empty { get; } = new Segment(string.Empty, Style.Plain, false, false);
+
+    /// <summary>
+    /// Gets a transparent segment.
+    /// </summary>
+    /// <param name="size">The size of the transparent segment.</param>
+    /// <returns>A transparent segment.</returns>
+    public static Segment Transparent(int size) => new Segment(AnsiSequences.CUF(size), Style.Plain, false, false, size);
 
     /// <summary>
     /// Creates padding segment.
@@ -71,13 +83,14 @@ public class Segment
     {
     }
 
-    private Segment(string text, Style style, bool lineBreak, bool control)
+    private Segment(string text, Style style, bool lineBreak, bool control, int? cellCountOverride = null)
     {
         Text = text?.NormalizeNewLines() ?? throw new ArgumentNullException(nameof(text));
-        Style = style ?? throw new ArgumentNullException(nameof(style));
+        Style = style ?? throw new ArgumentNullException(paramName: nameof(style));
         IsLineBreak = lineBreak;
         IsWhiteSpace = string.IsNullOrWhiteSpace(text);
         IsControlCode = control;
+        CellCountOverride = cellCountOverride;
     }
 
     /// <summary>
@@ -97,6 +110,11 @@ public class Segment
     /// <returns>The number of cells that this segment occupies in the console.</returns>
     public int CellCount()
     {
+        if (CellCountOverride != null)
+        {
+            return CellCountOverride.Value;
+        }
+
         if (IsControlCode)
         {
             return 0;
@@ -339,6 +357,10 @@ public class Segment
         // Default to folding
         overflow ??= Overflow.Fold;
 
+        // If this is a link preserve the full link url for all splits avoiding a url being broken when line wrapped or truncated
+        var isEmptyLink = segment.Style.Link?.Equals(Constants.EmptyLink, StringComparison.Ordinal) ?? false;
+        var style = isEmptyLink ? segment.Style.Link(segment.Text) : segment.Style;
+
         var result = new List<Segment>();
 
         if (overflow == Overflow.Fold)
@@ -346,7 +368,7 @@ public class Segment
             var splitted = SplitSegment(segment.Text, maxWidth);
             foreach (var str in splitted)
             {
-                result.Add(new Segment(str, segment.Style));
+                result.Add(new Segment(str, style));
             }
         }
         else if (overflow == Overflow.Crop)
@@ -357,18 +379,18 @@ public class Segment
             }
             else
             {
-                result.Add(new Segment(segment.Text.Substring(0, maxWidth), segment.Style));
+                result.Add(new Segment(segment.Text.Substring(0, maxWidth), style));
             }
         }
         else if (overflow == Overflow.Ellipsis)
         {
             if (Math.Max(0, maxWidth - 1) == 0)
             {
-                result.Add(new Segment("…", segment.Style));
+                result.Add(new Segment("…", style));
             }
             else
             {
-                result.Add(new Segment(segment.Text.Substring(0, maxWidth - 1) + "…", segment.Style));
+                result.Add(new Segment(segment.Text.Substring(0, maxWidth - 1) + "…", style));
             }
         }
 
