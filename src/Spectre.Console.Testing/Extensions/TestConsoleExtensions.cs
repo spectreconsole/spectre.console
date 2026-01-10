@@ -30,6 +30,18 @@ public static partial class TestConsoleExtensions
     }
 
     /// <summary>
+    /// Sets whether or not Unicode is supported.
+    /// </summary>
+    /// <param name="console">The console.</param>
+    /// <param name="enable">Whether or not Unicode is supported.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static TestConsole SupportsUnicode(this TestConsole console, bool enable)
+    {
+        console.Profile.Capabilities.Unicode = enable;
+        return console;
+    }
+
+    /// <summary>
     /// Makes the console interactive.
     /// </summary>
     /// <param name="console">The console.</param>
