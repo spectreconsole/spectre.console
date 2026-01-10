@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Processing.Processors.Transforms;
@@ -33,6 +34,7 @@ public sealed class CanvasImage : Renderable
     /// <summary>
     /// Gets or sets the render width of the canvas.
     /// </summary>
+    [Obsolete("Not used anymore. Will be removed in future update.")]
     public int PixelWidth { get; set; } = 2;
 
     /// <summary>
@@ -73,27 +75,23 @@ public sealed class CanvasImage : Renderable
     /// <inheritdoc/>
     protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
-        if (PixelWidth < 0)
-        {
-            throw new InvalidOperationException("Pixel width must be greater than zero.");
-        }
-
+        var pixelWidth = options.Unicode ? 1 : 2;
         var width = MaxWidth ?? Width;
-        if (maxWidth < width * PixelWidth)
+        if (maxWidth < width * pixelWidth)
         {
             return new Measurement(maxWidth, maxWidth);
         }
 
-        return new Measurement(width * PixelWidth, width * PixelWidth);
+        return new Measurement(width * pixelWidth, width * pixelWidth);
     }
 
     /// <inheritdoc/>
     protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var image = Image;
-
         var width = Width;
         var height = Height;
+        var pixelWidth = options.Unicode ? 1 : 2;
 
         // Got a max width?
         if (MaxWidth != null)
@@ -103,10 +101,10 @@ public sealed class CanvasImage : Renderable
         }
 
         // Exceed the max width when we take pixel width into account?
-        if (width * PixelWidth > maxWidth)
+        if (width * pixelWidth > maxWidth)
         {
-            height = (int)(height * (maxWidth / (float)(width * PixelWidth)));
-            width = maxWidth / PixelWidth;
+            height = (int)(height * (maxWidth / (float)(width * pixelWidth)));
+            width = maxWidth / pixelWidth;
         }
 
         // Need to rescale the pixel buffer?
@@ -120,7 +118,6 @@ public sealed class CanvasImage : Renderable
         var canvas = new Canvas(width, height)
         {
             MaxWidth = MaxWidth,
-            PixelWidth = PixelWidth,
             Scale = false,
         };
 

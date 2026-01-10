@@ -47,6 +47,7 @@ public static class CanvasImageExtensions
     /// <param name="image">The canvas image.</param>
     /// <param name="width">The pixel width.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
+    [Obsolete("Not used anymore. Will be removed in future update.")]
     public static CanvasImage PixelWidth(this CanvasImage image, int width)
     {
         if (image is null)
