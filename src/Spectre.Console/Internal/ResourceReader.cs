@@ -4,10 +4,7 @@ internal static class ResourceReader
 {
     public static string ReadManifestData(string resourceName)
     {
-        if (resourceName is null)
-        {
-            throw new ArgumentNullException(nameof(resourceName));
-        }
+        ArgumentNullException.ThrowIfNull(resourceName);
 
         var assembly = typeof(ResourceReader).Assembly;
         resourceName = resourceName.ReplaceExact("/", ".");

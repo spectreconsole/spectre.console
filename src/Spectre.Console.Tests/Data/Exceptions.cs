@@ -34,14 +34,14 @@ public static class TestExceptions
 
     public static List<T> GenericMethodWithOutThatThrows<T>(out List<T> firstFewItems)
     {
-        firstFewItems = new List<T>();
+        firstFewItems = [];
         throw new InvalidOperationException("Throwing!");
     }
 
     public static (string Key, List<T> Values) GetTuplesWithInnerException<T>((int First, string Second) myValue)
     {
         MethodThatThrows(0);
-        return ("key", new List<T>());
+        return ("key", []);
     }
 }
 

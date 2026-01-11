@@ -4,10 +4,7 @@ internal static class MarkupParser
 {
     public static Paragraph Parse(string text, Style? style = null)
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        ArgumentNullException.ThrowIfNull(text);
 
         style ??= Style.Plain;
 

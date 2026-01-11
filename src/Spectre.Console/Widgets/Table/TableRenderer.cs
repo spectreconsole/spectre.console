@@ -10,7 +10,13 @@ internal static class TableRenderer
         // Can't render the table?
         if (context.TableWidth <= 0 || context.TableWidth > context.MaxWidth || columnWidths.Any(c => c < 0))
         {
-            return new List<Segment>(new[] { new Segment("…", context.BorderStyle ?? Style.Plain) });
+            return
+            [
+                ..new[]
+                {
+                    new Segment("…", context.BorderStyle ?? Style.Plain)
+                }
+            ];
         }
 
         var result = new List<Segment>();
@@ -190,7 +196,7 @@ internal static class TableRenderer
     {
         if (header == null)
         {
-            return Array.Empty<Segment>();
+            return [];
         }
 
         var paragraph = new Markup(header.Text, header.Style ?? defaultStyle)

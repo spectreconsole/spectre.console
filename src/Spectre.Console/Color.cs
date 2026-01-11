@@ -3,7 +3,7 @@ namespace Spectre.Console;
 /// <summary>
 /// Represents a color.
 /// </summary>
-public partial struct Color : IEquatable<Color>
+public readonly partial struct Color : IEquatable<Color>
 {
     /// <summary>
     /// Gets the default color.
@@ -220,10 +220,7 @@ public partial struct Color : IEquatable<Color>
     /// <returns>The color created from the hexadecimal string.</returns>
     public static Color FromHex(string hex)
     {
-        if (hex is null)
-        {
-            throw new ArgumentNullException(nameof(hex));
-        }
+        ArgumentNullException.ThrowIfNull(hex);
 
         if (hex.StartsWith("#"))
         {

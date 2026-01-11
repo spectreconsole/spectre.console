@@ -213,10 +213,7 @@ public static partial class AnsiConsole
     /// <param name="value">The value to write.</param>
     public static void Write(IFormatProvider provider, char[] value)
     {
-        if (value is null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(value);
 
         for (var index = 0; index < value.Length; index++)
         {

@@ -2,7 +2,7 @@ namespace Spectre.Console;
 
 internal static class TypeNameHelper
 {
-    // from  https://github.com/benaadams/Ben.Demystifier/blob/main/src/Ben.Demystifier/TypeNameHelper.cs
+    // from https://github.com/benaadams/Ben.Demystifier/blob/main/src/Ben.Demystifier/TypeNameHelper.cs
     // which was adapted from https://github.com/aspnet/Common/blob/dev/shared/Microsoft.Extensions.TypeNameHelper.Sources/TypeNameHelper.cs
     public static readonly Dictionary<Type, string> BuiltInTypeNames = new Dictionary<Type, string>
     {
@@ -180,19 +180,17 @@ internal static class TypeNameHelper
         builder.Append('>');
     }
 
-    private struct DisplayNameOptions
+    private readonly struct DisplayNameOptions
     {
+        public bool FullName { get; }
+        public bool IncludeGenericParameterNames { get; }
+        public bool IncludeSystemNamespace { get; }
+
         public DisplayNameOptions(bool fullName, bool includeGenericParameterNames, bool includeSystemNamespace)
         {
             FullName = fullName;
             IncludeGenericParameterNames = includeGenericParameterNames;
             IncludeSystemNamespace = includeSystemNamespace;
         }
-
-        public bool FullName { get; }
-
-        public bool IncludeGenericParameterNames { get; }
-
-        public bool IncludeSystemNamespace { get; }
     }
 }

@@ -6,7 +6,7 @@ internal static class AnsiColorBuilder
     {
         return system switch
         {
-            ColorSystem.NoColors => Array.Empty<byte>(), // No colors
+            ColorSystem.NoColors => [], // No colors
             ColorSystem.TrueColor => GetTrueColor(color, foreground), // 24-bit
             ColorSystem.EightBit => GetEightBit(color, foreground), // 8-bit
             ColorSystem.Standard => GetFourBit(color, foreground), // 4-bit
@@ -26,7 +26,7 @@ internal static class AnsiColorBuilder
         Debug.Assert(number >= 0 && number < 8, "Invalid range for 4-bit color");
 
         var mod = foreground ? 30 : 40;
-        return new byte[] { (byte)(number.Value + mod) };
+        return [(byte)(number.Value + mod)];
     }
 
     private static IEnumerable<byte> GetFourBit(Color color, bool foreground)
@@ -40,7 +40,7 @@ internal static class AnsiColorBuilder
         Debug.Assert(number >= 0 && number < 16, "Invalid range for 4-bit color");
 
         var mod = number < 8 ? (foreground ? 30 : 40) : (foreground ? 82 : 92);
-        return new byte[] { (byte)(number.Value + mod) };
+        return [(byte)(number.Value + mod)];
     }
 
     private static IEnumerable<byte> GetEightBit(Color color, bool foreground)
@@ -49,7 +49,7 @@ internal static class AnsiColorBuilder
         Debug.Assert(number >= 0 && number <= 255, "Invalid range for 8-bit color");
 
         var mod = foreground ? (byte)38 : (byte)48;
-        return new byte[] { mod, 5, (byte)number };
+        return [mod, 5, (byte)number];
     }
 
     private static IEnumerable<byte> GetTrueColor(Color color, bool foreground)
@@ -60,6 +60,6 @@ internal static class AnsiColorBuilder
         }
 
         var mod = foreground ? (byte)38 : (byte)48;
-        return new byte[] { mod, 2, color.R, color.G, color.B };
+        return [mod, 2, color.R, color.G, color.B];
     }
 }

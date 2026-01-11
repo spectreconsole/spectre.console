@@ -15,7 +15,7 @@ internal sealed class ListPromptItem<T> : IMultiSelectionItem<T>
     {
         Data = data;
         Parent = parent;
-        Children = new List<ListPromptItem<T>>();
+        Children = [];
         Depth = CalculateDepth(parent);
     }
 

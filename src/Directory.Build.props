@@ -14,6 +14,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\..\resources\spectre.snk</AssemblyOriginatorKeyFile>
     <PublicKey>00240000048000009400000006020000002400005253413100040000010001006146d3789d31477cf4a3b508dcf772ff9ccad8613f6bd6b17b9c4a960a7a7b551ecd22e4f4119ced70ee8bbdf3ca0a117c99fd6248c16255ea9033110c2233d42e74e81bf4f3f7eb09bfe8b53ad399d957514f427171a86f5fe9fe0014be121d571c80c4a0cfc3531bdbf5a2900d936d93f2c94171b9134f7644a1ac3612a0d0</PublicKey>
+    <PolyArgumentExceptions>true</PolyArgumentExceptions>
   </PropertyGroup>
 
   <!-- Disable nullability for netstandard2.0 since polyfills are not -->

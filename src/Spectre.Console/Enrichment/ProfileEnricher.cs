@@ -2,33 +2,30 @@ namespace Spectre.Console.Enrichment;
 
 internal static class ProfileEnricher
 {
-    private static readonly List<IProfileEnricher> _defaultEnrichers = new List<IProfileEnricher>
-        {
-            new AppVeyorEnricher(),
-            new AzurePipelinesEnricher(),
-            new BambooEnricher(),
-            new BitbucketEnricher(),
-            new BitriseEnricher(),
-            new ContinuaEnricher(),
-            new GitHubEnricher(),
-            new GitLabEnricher(),
-            new GoCDEnricher(),
-            new JenkinsEnricher(),
-            new MyGetEnricher(),
-            new TeamCityEnricher(),
-            new TfsEnricher(),
-            new TravisEnricher(),
-        };
+    private static readonly List<IProfileEnricher> _defaultEnrichers =
+    [
+        new AppVeyorEnricher(),
+        new AzurePipelinesEnricher(),
+        new BambooEnricher(),
+        new BitbucketEnricher(),
+        new BitriseEnricher(),
+        new ContinuaEnricher(),
+        new GitHubEnricher(),
+        new GitLabEnricher(),
+        new GoCDEnricher(),
+        new JenkinsEnricher(),
+        new MyGetEnricher(),
+        new TeamCityEnricher(),
+        new TfsEnricher(),
+        new TravisEnricher()
+    ];
 
     public static void Enrich(
         Profile profile,
         ProfileEnrichment settings,
         IDictionary<string, string>? environmentVariables)
     {
-        if (profile is null)
-        {
-            throw new ArgumentNullException(nameof(profile));
-        }
+        ArgumentNullException.ThrowIfNull(profile);
 
         settings ??= new ProfileEnrichment();
 

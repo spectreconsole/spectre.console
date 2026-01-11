@@ -1,4 +1,4 @@
-namespace Spectre.Console.Internal;
+namespace Spectre.Console;
 
 internal sealed class DefaultExclusivityMode : IExclusivityMode
 {

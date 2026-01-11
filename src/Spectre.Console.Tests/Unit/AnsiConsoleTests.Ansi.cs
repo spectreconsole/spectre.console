@@ -2,7 +2,7 @@ namespace Spectre.Console.Tests.Unit;
 
 public sealed partial class AnsiConsoleTests
 {
-    public sealed class Advanced
+    public sealed class Ansi
     {
         [Fact]
         public void Should_Write_Ansi_Codes_To_Console_If_Supported()

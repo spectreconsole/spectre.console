@@ -1,4 +1,26 @@
-namespace Spectre.Console;
+namespace Spectre.Console.Rendering;
+
+/// <summary>
+/// Represents something that can be rendered to the console.
+/// </summary>
+public interface IRenderable
+{
+    /// <summary>
+    /// Measures the renderable object.
+    /// </summary>
+    /// <param name="options">The render options.</param>
+    /// <param name="maxWidth">The maximum allowed width.</param>
+    /// <returns>The minimum and maximum width of the object.</returns>
+    Measurement Measure(RenderOptions options, int maxWidth);
+
+    /// <summary>
+    /// Renders the object.
+    /// </summary>
+    /// <param name="options">The render options.</param>
+    /// <param name="maxWidth">The maximum allowed width.</param>
+    /// <returns>A collection of segments.</returns>
+    IEnumerable<Segment> Render(RenderOptions options, int maxWidth);
+}
 
 /// <summary>
 /// Contains extension methods for <see cref="IRenderable"/>.
@@ -13,18 +35,11 @@ public static class RenderableExtensions
     /// <returns>An enumerable containing segments representing the specified <see cref="IRenderable"/>.</returns>
     public static IEnumerable<Segment> GetSegments(this IRenderable renderable, IAnsiConsole console)
     {
-        if (console is null)
-        {
-            throw new ArgumentNullException(nameof(console));
-        }
-
-        if (renderable is null)
-        {
-            throw new ArgumentNullException(nameof(renderable));
-        }
+        ArgumentNullException.ThrowIfNull(console);
+        ArgumentNullException.ThrowIfNull(renderable);
 
         var context = RenderOptions.Create(console, console.Profile.Capabilities);
-        var renderables = console.Pipeline.Process(context, new[] { renderable });
+        var renderables = console.Pipeline.Process(context, [renderable]);
 
         return GetSegments(console, context, renderables);
     }

@@ -27,7 +27,7 @@ public sealed class ProgressContext
 
     internal ProgressContext(IAnsiConsole console, ProgressRenderer renderer)
     {
-        _tasks = new List<ProgressTask>();
+        _tasks = [];
         _taskLock = new object();
         _console = console ?? throw new ArgumentNullException(nameof(console));
         _renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
@@ -180,10 +180,7 @@ public sealed class ProgressContext
 
     private ProgressTask AddTaskAtInternal(string description, ProgressTaskSettings settings, int position)
     {
-        if (settings is null)
-        {
-            throw new ArgumentNullException(nameof(settings));
-        }
+        ArgumentNullException.ThrowIfNull(settings);
 
         var task = new ProgressTask(_taskId++, description, settings.MaxValue, settings.AutoStart);
 

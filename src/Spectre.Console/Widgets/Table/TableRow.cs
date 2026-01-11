@@ -36,7 +36,7 @@ public sealed class TableRow : IEnumerable<IRenderable>
 
     private TableRow(IEnumerable<IRenderable> items, bool isHeader, bool isFooter)
     {
-        _items = new List<IRenderable>(items ?? Array.Empty<IRenderable>());
+        _items = new List<IRenderable>(items ?? []);
 
         IsHeader = isHeader;
         IsFooter = isFooter;
@@ -54,10 +54,7 @@ public sealed class TableRow : IEnumerable<IRenderable>
 
     internal void Add(IRenderable item)
     {
-        if (item is null)
-        {
-            throw new ArgumentNullException(nameof(item));
-        }
+        ArgumentNullException.ThrowIfNull(item);
 
         _items.Add(item);
     }

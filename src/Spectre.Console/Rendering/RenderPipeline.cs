@@ -13,7 +13,7 @@ public sealed class RenderPipeline
     /// </summary>
     public RenderPipeline()
     {
-        _hooks = new List<IRenderHook>();
+        _hooks = [];
         _lock = new object();
     }
 

@@ -33,7 +33,7 @@ internal static class StyleParser
         var effectiveBackground = (Color?)null;
         var effectiveLink = (string?)null;
 
-        var parts = text.Split(new[] { ' ' });
+        var parts = text.Split([' ']);
         var foreground = true;
         foreach (var part in parts)
         {
@@ -203,7 +203,7 @@ internal static class StyleParser
                 {
                     normalized = normalized.Trim('(').Trim(')');
 
-                    var parts = normalized.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    var parts = normalized.Split([','], StringSplitOptions.RemoveEmptyEntries);
                     if (parts.Length == 3)
                     {
                         return new Color(

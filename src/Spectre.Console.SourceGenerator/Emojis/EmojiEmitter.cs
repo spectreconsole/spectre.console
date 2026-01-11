@@ -16,14 +16,14 @@ internal static class EmojiEmitter
     /// Format: (OldName, OldIdentifier, NewName, Description)
     /// </summary>
     private static readonly (string OldName, string OldIdentifier, string NewName, string Description)[] LegacyAliases =
-    {
+    [
         // "hugging face" was renamed to "smiling face with open hands"
         ("HuggingFace", "hugging_face", "SmilingFaceWithOpenHands", "Hugging face"),
         // "knocked out face" was renamed to "face with crossed-out eyes"
         ("KnockedOutFace", "knocked_out_face", "FaceWithCrossedOutEyes", "Knocked-out face"),
         // "pouting face" was renamed to "enraged face"
-        ("PoutingFace", "pouting_face", "EnragedFace", "Pouting face"),
-    };
+        ("PoutingFace", "pouting_face", "EnragedFace", "Pouting face")
+    ];
 
     /// <summary>
     /// Converts a Unicode escape sequence like "\U0001F9EE" to the actual character.

@@ -6,10 +6,7 @@ internal static class EnumerableExtensions
     // so we won't have to cast List<T> to IEnumerable<T>.
     public static IEnumerable<T> ReverseEnumerable<T>(this IEnumerable<T> source)
     {
-        if (source is null)
-        {
-            throw new ArgumentNullException(nameof(source));
-        }
+        ArgumentNullException.ThrowIfNull(source);
 
         return source.Reverse();
     }
@@ -76,20 +73,14 @@ internal static class EnumerableExtensions
 
     public static IEnumerable<(int Index, bool First, bool Last, T Item)> Enumerate<T>(this IEnumerable<T> source)
     {
-        if (source is null)
-        {
-            throw new ArgumentNullException(nameof(source));
-        }
+        ArgumentNullException.ThrowIfNull(source);
 
         return Enumerate(source.GetEnumerator());
     }
 
     public static IEnumerable<(int Index, bool First, bool Last, T Item)> Enumerate<T>(this IEnumerator<T> source)
     {
-        if (source is null)
-        {
-            throw new ArgumentNullException(nameof(source));
-        }
+        ArgumentNullException.ThrowIfNull(source);
 
         var first = true;
         var last = !source.MoveNext();

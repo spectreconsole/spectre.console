@@ -13,6 +13,8 @@ public static partial class AnsiConsoleExtensions
     /// <param name="args">An array of objects to write.</param>
     public static void Markup(this IAnsiConsole console, string format, params object[] args)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         Markup(console, CultureInfo.CurrentCulture, format, args);
     }
 
@@ -32,6 +34,8 @@ public static partial class AnsiConsoleExtensions
     /// <param name="value">The interpolated string value to write.</param>
     public static void MarkupInterpolated(this IAnsiConsole console, FormattableString value)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         MarkupInterpolated(console, CultureInfo.CurrentCulture, value);
     }
 
@@ -44,6 +48,8 @@ public static partial class AnsiConsoleExtensions
     /// <param name="args">An array of objects to write.</param>
     public static void Markup(this IAnsiConsole console, IFormatProvider provider, string format, params object[] args)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         Markup(console, string.Format(provider, format, args));
     }
 
@@ -64,6 +70,8 @@ public static partial class AnsiConsoleExtensions
     /// <param name="value">The interpolated string value to write.</param>
     public static void MarkupInterpolated(this IAnsiConsole console, IFormatProvider provider, FormattableString value)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         Markup(console, Console.Markup.EscapeInterpolated(provider, value));
     }
 
@@ -74,6 +82,8 @@ public static partial class AnsiConsoleExtensions
     /// <param name="value">The value to write.</param>
     public static void Markup(this IAnsiConsole console, string value)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         console.Write(MarkupParser.Parse(value));
     }
 
@@ -85,6 +95,8 @@ public static partial class AnsiConsoleExtensions
     /// <param name="args">An array of objects to write.</param>
     public static void MarkupLine(this IAnsiConsole console, string format, params object[] args)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         MarkupLine(console, CultureInfo.CurrentCulture, format, args);
     }
 
@@ -104,6 +116,8 @@ public static partial class AnsiConsoleExtensions
     /// <param name="value">The interpolated string value to write.</param>
     public static void MarkupLineInterpolated(this IAnsiConsole console, FormattableString value)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         MarkupLineInterpolated(console, CultureInfo.CurrentCulture, value);
     }
 
@@ -114,6 +128,8 @@ public static partial class AnsiConsoleExtensions
     /// <param name="value">The value to write.</param>
     public static void MarkupLine(this IAnsiConsole console, string value)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         Markup(console, value + Environment.NewLine);
     }
 
@@ -126,6 +142,8 @@ public static partial class AnsiConsoleExtensions
     /// <param name="args">An array of objects to write.</param>
     public static void MarkupLine(this IAnsiConsole console, IFormatProvider provider, string format, params object[] args)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         Markup(console, provider, format + Environment.NewLine, args);
     }
 
@@ -146,6 +164,8 @@ public static partial class AnsiConsoleExtensions
     /// <param name="value">The interpolated string value to write.</param>
     public static void MarkupLineInterpolated(this IAnsiConsole console, IFormatProvider provider, FormattableString value)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         MarkupLine(console, Console.Markup.EscapeInterpolated(provider, value));
     }
 }
