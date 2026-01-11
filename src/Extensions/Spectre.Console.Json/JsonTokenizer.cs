@@ -25,10 +25,10 @@ internal static class JsonTokenizer
             { "null", JsonTokenType.Null },
         };
 
-        _allowedEscapedChars = new HashSet<char>
-        {
-            '\"', '\\', '/', 'b', 'f', 'n', 'r', 't', 'u',
-        };
+        _allowedEscapedChars =
+        [
+            '\"', '\\', '/', 'b', 'f', 'n', 'r', 't', 'u'
+        ];
     }
 
     public static List<JsonToken> Tokenize(string text)

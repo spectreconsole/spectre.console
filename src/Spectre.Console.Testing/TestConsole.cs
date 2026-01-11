@@ -37,7 +37,7 @@ public sealed class TestConsole : IAnsiConsole, IDisposable
     /// <summary>
     /// Gets the console output lines.
     /// </summary>
-    public IReadOnlyList<string> Lines => Output.NormalizeLineEndings().TrimEnd('\n').Split(new char[] { '\n' });
+    public IReadOnlyList<string> Lines => Output.NormalizeLineEndings().TrimEnd('\n').Split(['\n']);
 
     /// <summary>
     /// Gets or sets a value indicating whether or not VT/ANSI sequences

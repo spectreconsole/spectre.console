@@ -12,8 +12,11 @@ public static partial class AnsiConsoleExtensions
     /// <param name="exception">The exception to write to the console.</param>
     /// <param name="format">The exception format options.</param>
     [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
-    public static void WriteException(this IAnsiConsole console, Exception exception, ExceptionFormats format = ExceptionFormats.Default)
+    public static void WriteException(this IAnsiConsole console, Exception exception,
+        ExceptionFormats format = ExceptionFormats.Default)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         console.Write(exception.GetRenderable(format));
     }
 
@@ -26,6 +29,8 @@ public static partial class AnsiConsoleExtensions
     [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
     public static void WriteException(this IAnsiConsole console, Exception exception, ExceptionSettings settings)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         console.Write(exception.GetRenderable(settings));
     }
 }

@@ -41,7 +41,7 @@ internal sealed class TableRendererContext : TableAccessor
         : base(table, options)
     {
         _table = table ?? throw new ArgumentNullException(nameof(table));
-        _rows = new List<TableRow>(rows ?? Enumerable.Empty<TableRow>());
+        _rows = new List<TableRow>(rows ?? []);
 
         ShowBorder = _table.Border.Visible;
         HasRows = Rows.Any(row => !row.IsHeader && !row.IsFooter);

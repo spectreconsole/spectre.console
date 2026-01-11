@@ -8,7 +8,7 @@ namespace Spectre.Console;
 internal static class AnsiDetector
 {
     private static readonly Regex[] _regexes =
-    {
+    [
         new("^xterm"), // xterm, PuTTY, Mintty
         new("^rxvt"), // RXVT
         new("^eterm"), // Eterm
@@ -25,8 +25,8 @@ internal static class AnsiDetector
         new("konsole"), // Konsole
         new("bvterm"), // Bitvise SSH Client
         new("^st-256color"), // Suckless Simple Terminal, st
-        new("alacritty"), // Alacritty
-    };
+        new("alacritty") // Alacritty
+    ];
 
     public static (bool SupportsAnsi, bool LegacyConsole) Detect(bool stdError, bool upgrade)
     {

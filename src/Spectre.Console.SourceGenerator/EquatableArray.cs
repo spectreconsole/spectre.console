@@ -27,7 +27,7 @@ internal readonly struct EquatableArray<T> : IEquatable<EquatableArray<T>>, IEnu
     /// <summary>
     /// Creates a new EquatableArray from the given enumerable.
     /// </summary>
-    public EquatableArray(IEnumerable<T> items) => _array = items.ToImmutableArray();
+    public EquatableArray(IEnumerable<T> items) => _array = [.. items];
 
     /// <summary>
     /// Gets the number of elements.

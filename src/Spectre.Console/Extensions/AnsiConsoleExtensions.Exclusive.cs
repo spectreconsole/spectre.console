@@ -14,6 +14,8 @@ public static partial class AnsiConsoleExtensions
     /// <returns>The result of the function.</returns>
     public static T RunExclusive<T>(this IAnsiConsole console, Func<T> func)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         return console.ExclusivityMode.Run(func);
     }
 
@@ -26,6 +28,8 @@ public static partial class AnsiConsoleExtensions
     /// <returns>The result of the function.</returns>
     public static Task<T> RunExclusive<T>(this IAnsiConsole console, Func<Task<T>> func)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         return console.ExclusivityMode.RunAsync(func);
     }
 }

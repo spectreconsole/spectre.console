@@ -1,6 +1,6 @@
 using static Spectre.Console.AnsiSequences;
 
-namespace Spectre.Console.Rendering;
+namespace Spectre.Console;
 
 internal sealed class LiveRenderable : Renderable
 {

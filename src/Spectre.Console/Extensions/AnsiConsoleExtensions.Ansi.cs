@@ -1,9 +1,9 @@
-namespace Spectre.Console.Advanced;
+namespace Spectre.Console;
 
 /// <summary>
 /// Contains extension methods for <see cref="IAnsiConsole"/>.
 /// </summary>
-public static class AnsiConsoleExtensions
+public static partial class AnsiConsoleExtensions
 {
     /// <summary>
     /// Writes a VT/Ansi control code sequence to the console (if supported).
@@ -12,10 +12,7 @@ public static class AnsiConsoleExtensions
     /// <param name="sequence">The VT/Ansi control code sequence to write.</param>
     public static void WriteAnsi(this IAnsiConsole console, string sequence)
     {
-        if (console is null)
-        {
-            throw new ArgumentNullException(nameof(console));
-        }
+        ArgumentNullException.ThrowIfNull(console);
 
         if (console.Profile.Capabilities.Ansi)
         {
@@ -31,6 +28,8 @@ public static class AnsiConsoleExtensions
     /// <returns>The VT/ANSI control code sequence.</returns>
     public static string ToAnsi(this IAnsiConsole console, IRenderable renderable)
     {
+        ArgumentNullException.ThrowIfNull(console);
+
         return AnsiBuilder.Build(console, renderable);
     }
 }

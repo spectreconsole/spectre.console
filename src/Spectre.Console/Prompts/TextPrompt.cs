@@ -17,7 +17,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     /// <summary>
     /// Gets the list of choices.
     /// </summary>
-    public List<T> Choices { get; } = new List<T>();
+    public List<T> Choices { get; } = [];
 
     /// <summary>
     /// Gets or sets the culture to use when converting input to object.
@@ -114,10 +114,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     /// <inheritdoc/>
     public async Task<T> ShowAsync(IAnsiConsole console, CancellationToken cancellationToken)
     {
-        if (console is null)
-        {
-            throw new ArgumentNullException(nameof(console));
-        }
+        ArgumentNullException.ThrowIfNull(console);
 
         return await console.RunExclusive(async () =>
         {
@@ -191,10 +188,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     /// <param name="console">The console to write the prompt to.</param>
     private void WritePrompt(IAnsiConsole console)
     {
-        if (console is null)
-        {
-            throw new ArgumentNullException(nameof(console));
-        }
+        ArgumentNullException.ThrowIfNull(console);
 
         var builder = new StringBuilder();
         builder.Append(_prompt.TrimEnd());

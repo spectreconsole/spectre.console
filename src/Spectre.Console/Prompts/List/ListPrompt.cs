@@ -22,10 +22,7 @@ internal sealed class ListPrompt<T>
         bool wrapAround,
         CancellationToken cancellationToken = default)
     {
-        if (tree is null)
-        {
-            throw new ArgumentNullException(nameof(tree));
-        }
+        ArgumentNullException.ThrowIfNull(tree);
 
         if (!_console.Profile.Capabilities.Interactive)
         {

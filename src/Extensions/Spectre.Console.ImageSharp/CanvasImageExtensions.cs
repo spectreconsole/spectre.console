@@ -16,10 +16,7 @@ public static class CanvasImageExtensions
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static CanvasImage MaxWidth(this CanvasImage image, int? maxWidth)
     {
-        if (image is null)
-        {
-            throw new ArgumentNullException(nameof(image));
-        }
+        ArgumentNullException.ThrowIfNull(image);
 
         image.MaxWidth = maxWidth;
         return image;
@@ -32,10 +29,7 @@ public static class CanvasImageExtensions
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static CanvasImage NoMaxWidth(this CanvasImage image)
     {
-        if (image is null)
-        {
-            throw new ArgumentNullException(nameof(image));
-        }
+        ArgumentNullException.ThrowIfNull(image);
 
         image.MaxWidth = null;
         return image;
@@ -50,10 +44,7 @@ public static class CanvasImageExtensions
     [Obsolete("Not used anymore. Will be removed in future update.")]
     public static CanvasImage PixelWidth(this CanvasImage image, int width)
     {
-        if (image is null)
-        {
-            throw new ArgumentNullException(nameof(image));
-        }
+        ArgumentNullException.ThrowIfNull(image);
 
         image.PixelWidth = width;
         return image;
@@ -67,15 +58,9 @@ public static class CanvasImageExtensions
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static CanvasImage Mutate(this CanvasImage image, Action<IImageProcessingContext> action)
     {
-        if (image is null)
-        {
-            throw new ArgumentNullException(nameof(image));
-        }
+        ArgumentNullException.ThrowIfNull(image);
 
-        if (action is null)
-        {
-            throw new ArgumentNullException(nameof(action));
-        }
+        ArgumentNullException.ThrowIfNull(action);
 
         image.Image.Mutate(action);
         return image;
@@ -88,10 +73,7 @@ public static class CanvasImageExtensions
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static CanvasImage BicubicResampler(this CanvasImage image)
     {
-        if (image is null)
-        {
-            throw new ArgumentNullException(nameof(image));
-        }
+        ArgumentNullException.ThrowIfNull(image);
 
         image.Resampler = KnownResamplers.Bicubic;
         return image;
@@ -106,10 +88,7 @@ public static class CanvasImageExtensions
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static CanvasImage BilinearResampler(this CanvasImage image)
     {
-        if (image is null)
-        {
-            throw new ArgumentNullException(nameof(image));
-        }
+        ArgumentNullException.ThrowIfNull(image);
 
         image.Resampler = KnownResamplers.Triangle;
         return image;
@@ -124,10 +103,7 @@ public static class CanvasImageExtensions
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static CanvasImage NearestNeighborResampler(this CanvasImage image)
     {
-        if (image is null)
-        {
-            throw new ArgumentNullException(nameof(image));
-        }
+        ArgumentNullException.ThrowIfNull(image);
 
         image.Resampler = KnownResamplers.NearestNeighbor;
         return image;

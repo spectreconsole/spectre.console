@@ -33,10 +33,7 @@ public sealed class TestCapabilities : IReadOnlyCapabilities
     /// <returns>A <see cref="RenderOptions"/> with the same capabilities as this instace.</returns>
     public RenderOptions CreateRenderContext(IAnsiConsole console)
     {
-        if (console is null)
-        {
-            throw new ArgumentNullException(nameof(console));
-        }
+        ArgumentNullException.ThrowIfNull(console);
 
         return RenderOptions.Create(console, this);
     }

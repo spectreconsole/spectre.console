@@ -50,16 +50,15 @@ public sealed class SegmentTests
         {
             // Given, When
             var lines = Segment.SplitLines(
-                new[]
-                {
-                        new Segment("Foo"),
+            [
+                new Segment("Foo"),
                         new Segment("Bar"),
                         new Segment("\n"),
                         new Segment("Baz"),
                         new Segment("Qux"),
                         new Segment("\n"),
-                        new Segment("Corgi"),
-                });
+                        new Segment("Corgi")
+            ]);
 
             // Then
             lines.Count.ShouldBe(3);
@@ -81,16 +80,15 @@ public sealed class SegmentTests
         {
             // Given, When
             var lines = Segment.SplitLines(
-                new[]
-                {
-                        new Segment("Foo"),
+            [
+                new Segment("Foo"),
                         new Segment("Bar"),
                         new Segment("\r\n"),
                         new Segment("Baz"),
                         new Segment("Qux"),
                         new Segment("\r\n"),
-                        new Segment("Corgi"),
-                });
+                        new Segment("Corgi")
+            ]);
 
             // Then
             lines.Count.ShouldBe(3);
@@ -112,14 +110,13 @@ public sealed class SegmentTests
         {
             // Given, Given
             var lines = Segment.SplitLines(
-                new[]
-                {
-                        new Segment("Foo\n"),
+            [
+                new Segment("Foo\n"),
                         new Segment("Bar\n"),
                         new Segment("Baz"),
                         new Segment("Qux\n"),
-                        new Segment("Corgi"),
-                });
+                        new Segment("Corgi")
+            ]);
 
             // Then
             lines.Count.ShouldBe(4);

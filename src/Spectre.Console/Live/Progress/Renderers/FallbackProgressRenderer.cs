@@ -3,7 +3,7 @@ namespace Spectre.Console;
 internal sealed class FallbackProgressRenderer : ProgressRenderer
 {
     private const double FirstMilestone = 25;
-    private static readonly double?[] _milestones = new double?[] { FirstMilestone, 50, 75, 95, 96, 97, 98, 99, 100 };
+    private static readonly double?[] _milestones = [FirstMilestone, 50, 75, 95, 96, 97, 98, 99, 100];
 
     private readonly Dictionary<int, double> _taskMilestones;
     private readonly object _lock;

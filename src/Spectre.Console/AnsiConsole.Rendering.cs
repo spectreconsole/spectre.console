@@ -21,10 +21,7 @@ public static partial class AnsiConsole
     /// <param name="renderable">The object to render.</param>
     public static void Write(IRenderable renderable)
     {
-        if (renderable is null)
-        {
-            throw new ArgumentNullException(nameof(renderable));
-        }
+        ArgumentNullException.ThrowIfNull(renderable);
 
         Console.Write(renderable);
     }

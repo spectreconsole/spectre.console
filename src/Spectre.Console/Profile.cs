@@ -6,7 +6,7 @@ namespace Spectre.Console;
 public sealed class Profile
 {
     private readonly HashSet<string> _enrichers;
-    private static readonly string[] _defaultEnricher = new[] { "Default" };
+    private static readonly string[] _defaultEnricher = ["Default"];
 
     private IAnsiConsoleOutput _out;
     private Encoding _encoding;
@@ -139,10 +139,7 @@ public sealed class Profile
 
     internal void AddEnricher(string name)
     {
-        if (name is null)
-        {
-            throw new ArgumentNullException(nameof(name));
-        }
+        ArgumentNullException.ThrowIfNull(name);
 
         _enrichers.Add(name);
     }

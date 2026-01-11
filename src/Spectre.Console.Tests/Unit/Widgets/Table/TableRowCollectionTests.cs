@@ -27,7 +27,7 @@ public sealed class TableRowCollectionTests
             table.AddColumn("Column #1");
 
             // When
-            table.Rows.Add(new[] { Text.Empty });
+            table.Rows.Add([Text.Empty]);
 
             // Then
             table.Rows.Count.ShouldBe(1);
@@ -39,10 +39,10 @@ public sealed class TableRowCollectionTests
             // Given
             var table = new Table();
             table.AddColumn("Column #1");
-            table.Rows.Add(new[] { Text.Empty });
+            table.Rows.Add([Text.Empty]);
 
             // When
-            var result = table.Rows.Add(new[] { Text.Empty });
+            var result = table.Rows.Add([Text.Empty]);
 
             // Then
             result.ShouldBe(1);
@@ -56,9 +56,9 @@ public sealed class TableRowCollectionTests
             var console = new TestConsole();
             var table = new Table();
             table.AddColumn("Column #1");
-            table.Rows.Add(new[] { new Text("1") });
-            table.Rows.Add(new[] { new Text("2") });
-            table.Rows.Add(new[] { new Text("3") });
+            table.Rows.Add([new Text("1")]);
+            table.Rows.Add([new Text("2")]);
+            table.Rows.Add([new Text("3")]);
 
             // When
             console.Write(table);
@@ -90,10 +90,10 @@ public sealed class TableRowCollectionTests
             // Given
             var table = new Table();
             table.AddColumn("Column #1");
-            table.Rows.Add(new[] { Text.Empty });
+            table.Rows.Add([Text.Empty]);
 
             // When
-            table.Rows.Insert(0, new[] { Text.Empty });
+            table.Rows.Insert(0, [Text.Empty]);
 
             // Then
             table.Rows.Count.ShouldBe(2);
@@ -105,11 +105,11 @@ public sealed class TableRowCollectionTests
             // Given
             var table = new Table();
             table.AddColumn("Column #1");
-            table.Rows.Add(new[] { new Text("1") });
-            table.Rows.Add(new[] { new Text("2") });
+            table.Rows.Add([new Text("1")]);
+            table.Rows.Add([new Text("2")]);
 
             // When
-            var result = table.Rows.Insert(1, new[] { new Text("3") });
+            var result = table.Rows.Insert(1, [new Text("3")]);
 
             // Then
             result.ShouldBe(1);
@@ -123,9 +123,9 @@ public sealed class TableRowCollectionTests
             var console = new TestConsole();
             var table = new Table();
             table.AddColumn("Column #1");
-            table.Rows.Add(new[] { new Text("1") });
-            table.Rows.Add(new[] { new Text("2") });
-            table.Rows.Insert(1, new[] { new Text("3") });
+            table.Rows.Add([new Text("1")]);
+            table.Rows.Add([new Text("2")]);
+            table.Rows.Insert(1, [new Text("3")]);
 
             // When
             console.Write(table);
@@ -158,9 +158,9 @@ public sealed class TableRowCollectionTests
             // Given
             var table = new Table();
             table.AddColumn("Column #1");
-            table.Rows.Add(new[] { new Text("1") });
-            table.Rows.Add(new[] { new Text("2") });
-            table.Rows.Add(new[] { new Text("3") });
+            table.Rows.Add([new Text("1")]);
+            table.Rows.Add([new Text("2")]);
+            table.Rows.Add([new Text("3")]);
 
             // When
             var result = Record.Exception(() => table.Rows.RemoveAt(3));
@@ -178,9 +178,9 @@ public sealed class TableRowCollectionTests
             var console = new TestConsole();
             var table = new Table();
             table.AddColumn("Column #1");
-            table.Rows.Add(new[] { new Text("1") });
-            table.Rows.Add(new[] { new Text("2") });
-            table.Rows.Add(new[] { new Text("3") });
+            table.Rows.Add([new Text("1")]);
+            table.Rows.Add([new Text("2")]);
+            table.Rows.Add([new Text("3")]);
             table.Rows.RemoveAt(1);
 
             // When
@@ -199,9 +199,9 @@ public sealed class TableRowCollectionTests
             // Given
             var table = new Table();
             table.AddColumn("Column #1");
-            table.Rows.Add(new[] { new Text("1") });
-            table.Rows.Add(new[] { new Text("2") });
-            table.Rows.Add(new[] { new Text("3") });
+            table.Rows.Add([new Text("1")]);
+            table.Rows.Add([new Text("2")]);
+            table.Rows.Add([new Text("3")]);
             table.Rows.Clear();
 
             // When
@@ -223,9 +223,9 @@ public sealed class TableRowCollectionTests
             table.AddColumn("Column #1");
             table.AddColumn("Column #2");
             table.AddColumn("Column #3");
-            table.Rows.Add(new[] { new Text("1") });
-            table.Rows.Add(new[] { new Text("2") });
-            table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
+            table.Rows.Add([new Text("1")]);
+            table.Rows.Add([new Text("2")]);
+            table.Rows.Add([new Text("3"), new Text("4"), new Text("8")]);
 
             table.UpdateCell(2, 2, "5");
 
@@ -245,9 +245,9 @@ public sealed class TableRowCollectionTests
             table.AddColumn("Column #1");
             table.AddColumn("Column #2");
             table.AddColumn("Column #3");
-            table.Rows.Add(new[] { new Text("1") });
-            table.Rows.Add(new[] { new Text("2") });
-            table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
+            table.Rows.Add([new Text("1")]);
+            table.Rows.Add([new Text("2")]);
+            table.Rows.Add([new Text("3"), new Text("4"), new Text("8")]);
 
             table.UpdateCell(2, 2, new Markup("5"));
 
@@ -267,9 +267,9 @@ public sealed class TableRowCollectionTests
             table.AddColumn("Column #1");
             table.AddColumn("Column #2");
             table.AddColumn("Column #3");
-            table.Rows.Add(new[] { new Text("1") });
-            table.Rows.Add(new[] { new Text("2") });
-            table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
+            table.Rows.Add([new Text("1")]);
+            table.Rows.Add([new Text("2")]);
+            table.Rows.Add([new Text("3"), new Text("4"), new Text("8")]);
             table.UpdateCell(2, 2, "5");
 
             // When
@@ -289,9 +289,9 @@ public sealed class TableRowCollectionTests
             table.AddColumn("Column #1");
             table.AddColumn("Column #2");
             table.AddColumn("Column #3");
-            table.Rows.Add(new[] { new Text("1") });
-            table.Rows.Add(new[] { new Text("2") });
-            table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
+            table.Rows.Add([new Text("1")]);
+            table.Rows.Add([new Text("2")]);
+            table.Rows.Add([new Text("3"), new Text("4"), new Text("8")]);
             table.UpdateCell(2, 2, "5");
 
             // When
@@ -311,9 +311,9 @@ public sealed class TableRowCollectionTests
             table.AddColumn("Column #1");
             table.AddColumn("Column #2");
             table.AddColumn("Column #3");
-            table.Rows.Add(new[] { new Text("1") });
-            table.Rows.Add(new[] { new Text("2") });
-            table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
+            table.Rows.Add([new Text("1")]);
+            table.Rows.Add([new Text("2")]);
+            table.Rows.Add([new Text("3"), new Text("4"), new Text("8")]);
             table.UpdateCell(2, 2, "5");
 
             // When
@@ -333,9 +333,9 @@ public sealed class TableRowCollectionTests
             table.AddColumn("Column #1");
             table.AddColumn("Column #2");
             table.AddColumn("Column #3");
-            table.Rows.Add(new[] { new Text("1") });
-            table.Rows.Add(new[] { new Text("2") });
-            table.Rows.Add(new[] { new Text("3"), new Text("4"), new Text("8") });
+            table.Rows.Add([new Text("1")]);
+            table.Rows.Add([new Text("2")]);
+            table.Rows.Add([new Text("3"), new Text("4"), new Text("8")]);
             table.UpdateCell(2, 2, "5");
 
             // When

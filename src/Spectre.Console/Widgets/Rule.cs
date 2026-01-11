@@ -81,18 +81,21 @@ public sealed class Rule : Renderable, IHasJustification, IHasBoxBorder
         var border = Border.GetSafeBorder(safe: !options.Unicode);
         var text = border.GetPart(BoxBorderPart.Top).Repeat(maxWidth);
 
-        return new[]
-        {
+        return
+        [
             new Segment(text, Style ?? Style.Plain),
-            Segment.LineBreak,
-        };
+            Segment.LineBreak
+        ];
     }
 
     private IEnumerable<Segment> GetTitleSegments(RenderOptions options, string title, int width)
     {
         title = title.NormalizeNewLines().ReplaceExact("\n", " ").Trim();
         var markup = new Markup(title, Style);
-        return ((IRenderable)markup).Render(options with { SingleLine = true }, width);
+        return ((IRenderable)markup).Render(options with
+        {
+            SingleLine = true
+        }, width);
     }
 
     private (Segment Left, Segment Right) GetLineSegments(RenderOptions options, int width, IEnumerable<Segment> title)
@@ -105,10 +108,12 @@ public sealed class Rule : Renderable, IHasJustification, IHasBoxBorder
         var alignment = Justification ?? Justify.Center;
         if (alignment == Justify.Left)
         {
-            var left = new Segment(borderPart.Repeat(TitlePadding) + new string(' ', TitleSpacing), Style ?? Style.Plain);
+            var left = new Segment(borderPart.Repeat(TitlePadding) + new string(' ', TitleSpacing),
+                Style ?? Style.Plain);
 
             var rightLength = width - titleLength - left.CellCount() - TitleSpacing;
-            var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(rightLength), Style ?? Style.Plain);
+            var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(rightLength),
+                Style ?? Style.Plain);
 
             return (left, right);
         }
@@ -118,13 +123,15 @@ public sealed class Rule : Renderable, IHasJustification, IHasBoxBorder
             var left = new Segment(borderPart.Repeat(leftLength) + new string(' ', TitleSpacing), Style ?? Style.Plain);
 
             var rightLength = width - titleLength - left.CellCount() - TitleSpacing;
-            var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(rightLength), Style ?? Style.Plain);
+            var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(rightLength),
+                Style ?? Style.Plain);
 
             return (left, right);
         }
         else if (alignment == Justify.Right)
         {
-            var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(TitlePadding), Style ?? Style.Plain);
+            var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(TitlePadding),
+                Style ?? Style.Plain);
 
             var leftLength = width - titleLength - right.CellCount() - TitleSpacing;
             var left = new Segment(borderPart.Repeat(leftLength) + new string(' ', TitleSpacing), Style ?? Style.Plain);
@@ -133,5 +140,41 @@ public sealed class Rule : Renderable, IHasJustification, IHasBoxBorder
         }
 
         throw new NotSupportedException("Unsupported alignment.");
+    }
+}
+
+/// <summary>
+/// Contains extension methods for <see cref="RuleExtensions"/>.
+/// </summary>
+public static class RuleExtensions
+{
+    /// <summary>
+    /// Sets the rule title.
+    /// </summary>
+    /// <param name="rule">The rule.</param>
+    /// <param name="title">The title.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Rule RuleTitle(this Rule rule, string title)
+    {
+        ArgumentNullException.ThrowIfNull(rule);
+        ArgumentNullException.ThrowIfNull(title);
+
+        rule.Title = title;
+        return rule;
+    }
+
+    /// <summary>
+    /// Sets the rule style.
+    /// </summary>
+    /// <param name="rule">The rule.</param>
+    /// <param name="style">The rule style.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Rule RuleStyle(this Rule rule, Style style)
+    {
+        ArgumentNullException.ThrowIfNull(rule);
+        ArgumentNullException.ThrowIfNull(style);
+
+        rule.Style = style;
+        return rule;
     }
 }

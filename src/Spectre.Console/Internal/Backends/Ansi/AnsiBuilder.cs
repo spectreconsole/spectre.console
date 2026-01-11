@@ -22,7 +22,7 @@ internal static class AnsiBuilder
                 continue;
             }
 
-            var parts = segment.Text.NormalizeNewLines().Split(new[] { '\n' });
+            var parts = segment.Text.NormalizeNewLines().Split(['\n']);
             foreach (var (_, _, last, part) in parts.Enumerate())
             {
                 if (!string.IsNullOrEmpty(part))
@@ -50,10 +50,7 @@ internal static class AnsiBuilder
         {
             throw new ArgumentNullException(nameof(text));
         }
-        else if (style is null)
-        {
-            throw new ArgumentNullException(nameof(style));
-        }
+        else ArgumentNullException.ThrowIfNull(style);
 
         var codes = AnsiDecorationBuilder.GetAnsiCodes(style.Decoration);
 

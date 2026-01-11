@@ -12,10 +12,7 @@ public static partial class AnsiConsoleExtensions
     /// <param name="action">The action to execute within the alternate screen buffer.</param>
     public static void AlternateScreen(this IAnsiConsole console, Action action)
     {
-        if (console is null)
-        {
-            throw new ArgumentNullException(nameof(console));
-        }
+        ArgumentNullException.ThrowIfNull(console);
 
         if (!console.Profile.Capabilities.Ansi)
         {

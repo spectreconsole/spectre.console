@@ -30,7 +30,7 @@ public class Recorder : IAnsiConsole, IDisposable
     public Recorder(IAnsiConsole console)
     {
         _console = console ?? throw new ArgumentNullException(nameof(console));
-        _recorded = new List<IRenderable>();
+        _recorded = [];
     }
 
     /// <inheritdoc/>
@@ -49,10 +49,7 @@ public class Recorder : IAnsiConsole, IDisposable
     /// <inheritdoc/>
     public void Write(IRenderable renderable)
     {
-        if (renderable is null)
-        {
-            throw new ArgumentNullException(nameof(renderable));
-        }
+        ArgumentNullException.ThrowIfNull(renderable);
 
         _recorded.Add(renderable);
 
@@ -73,11 +70,41 @@ public class Recorder : IAnsiConsole, IDisposable
     /// <returns>The recorded data represented as a string.</returns>
     public string Export(IAnsiConsoleEncoder encoder)
     {
-        if (encoder is null)
-        {
-            throw new ArgumentNullException(nameof(encoder));
-        }
+        ArgumentNullException.ThrowIfNull(encoder);
 
         return encoder.Encode(_console, _recorded);
+    }
+}
+
+/// <summary>
+/// Contains extension methods for <see cref="Recorder"/>.
+/// </summary>
+public static class RecorderExtensions
+{
+    private static readonly TextEncoder _textEncoder = new TextEncoder();
+    private static readonly HtmlEncoder _htmlEncoder = new HtmlEncoder();
+
+    /// <summary>
+    /// Exports the recorded content as text.
+    /// </summary>
+    /// <param name="recorder">The recorder.</param>
+    /// <returns>The recorded content as text.</returns>
+    public static string ExportText(this Recorder recorder)
+    {
+        ArgumentNullException.ThrowIfNull(recorder);
+
+        return recorder.Export(_textEncoder);
+    }
+
+    /// <summary>
+    /// Exports the recorded content as HTML.
+    /// </summary>
+    /// <param name="recorder">The recorder.</param>
+    /// <returns>The recorded content as HTML.</returns>
+    public static string ExportHtml(this Recorder recorder)
+    {
+        ArgumentNullException.ThrowIfNull(recorder);
+
+        return recorder.Export(_htmlEncoder);
     }
 }

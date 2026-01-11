@@ -4,7 +4,7 @@ namespace Spectre.Console;
 /// Represents a size.
 /// </summary>
 [DebuggerDisplay("{Width,nq}x{Height,nq}")]
-public struct Size
+public readonly struct Size
 {
     /// <summary>
     /// Gets the width.

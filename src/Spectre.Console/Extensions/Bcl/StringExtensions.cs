@@ -101,8 +101,8 @@ public static class StringExtensions
 
     internal static string[] SplitLines(this string text)
     {
-        var result = text?.NormalizeNewLines()?.Split(new[] { '\n' }, StringSplitOptions.None);
-        return result ?? Array.Empty<string>();
+        var result = text?.NormalizeNewLines()?.Split(['\n'], StringSplitOptions.None);
+        return result ?? [];
     }
 
     internal static string[] SplitWords(this string word, StringSplitOptions options = StringSplitOptions.None)
@@ -151,10 +151,7 @@ public static class StringExtensions
 
     internal static string Repeat(this string text, int count)
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        ArgumentNullException.ThrowIfNull(text);
 
         if (count <= 0)
         {
@@ -219,20 +216,11 @@ public static class StringExtensions
     /// <returns>Markup of input with the first matched text highlighted.</returns>
     internal static string Highlight(this string value, string searchText, Style? highlightStyle)
     {
-        if (value is null)
-        {
-            throw new ArgumentNullException(nameof(value));
-        }
+        ArgumentNullException.ThrowIfNull(value);
 
-        if (searchText is null)
-        {
-            throw new ArgumentNullException(nameof(searchText));
-        }
+        ArgumentNullException.ThrowIfNull(searchText);
 
-        if (highlightStyle is null)
-        {
-            throw new ArgumentNullException(nameof(highlightStyle));
-        }
+        ArgumentNullException.ThrowIfNull(highlightStyle);
 
         if (searchText.Length == 0)
         {

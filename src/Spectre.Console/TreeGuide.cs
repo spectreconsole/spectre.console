@@ -17,3 +17,27 @@ public abstract partial class TreeGuide
     /// <returns>Rendering string for the tree part.</returns>
     public abstract string GetPart(TreeGuidePart part);
 }
+
+/// <summary>
+/// Contains extension methods for <see cref="TreeGuide"/>.
+/// </summary>
+public static class TreeGuideExtensions
+{
+    /// <summary>
+    /// Gets the safe border for a border.
+    /// </summary>
+    /// <param name="guide">The tree guide to get the safe version for.</param>
+    /// <param name="safe">Whether or not to return the safe border.</param>
+    /// <returns>The safe border if one exist, otherwise the original border.</returns>
+    public static TreeGuide GetSafeTreeGuide(this TreeGuide guide, bool safe)
+    {
+        ArgumentNullException.ThrowIfNull(guide);
+
+        if (safe && guide.SafeTreeGuide != null)
+        {
+            return guide.SafeTreeGuide;
+        }
+
+        return guide;
+    }
+}

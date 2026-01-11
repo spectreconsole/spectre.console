@@ -4,7 +4,7 @@ namespace Spectre.Console;
 /// Represents a region.
 /// </summary>
 [DebuggerDisplay("[X={X,nq}, Y={Y,nq}, W={Width,nq}, H={Height,nq}]")]
-public struct Region
+public readonly struct Region
 {
     /// <summary>
     /// Gets the x-coordinate.

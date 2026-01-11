@@ -33,7 +33,7 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
     /// </summary>
     public Paragraph()
     {
-        _lines = new List<SegmentLine>();
+        _lines = [];
     }
 
     /// <summary>
@@ -44,10 +44,7 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
     public Paragraph(string text, Style? style = null)
         : this()
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        ArgumentNullException.ThrowIfNull(text);
 
         Append(text, style);
     }
@@ -60,10 +57,7 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public Paragraph Append(string text, Style? style = null)
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        ArgumentNullException.ThrowIfNull(text);
 
         foreach (var (_, first, last, part) in text.SplitLines().Enumerate())
         {
@@ -72,7 +66,7 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
                 var line = _lines.LastOrDefault();
                 if (line == null)
                 {
-                    _lines.Add(new SegmentLine());
+                    _lines.Add([]);
                     line = _lines.Last();
                 }
 
@@ -128,18 +122,15 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
     /// <inheritdoc/>
     protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
-        if (options is null)
-        {
-            throw new ArgumentNullException(nameof(options));
-        }
+        ArgumentNullException.ThrowIfNull(options);
 
         if (_lines.Count == 0)
         {
-            return Array.Empty<Segment>();
+            return [];
         }
 
         var lines = options.SingleLine
-            ? new List<SegmentLine>(_lines)
+            ? [.. _lines]
             : SplitLines(maxWidth);
 
         // Justify lines
@@ -184,7 +175,7 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
         if (maxWidth <= 0)
         {
             // Nothing fits, so return an empty line.
-            return new List<SegmentLine>();
+            return [];
         }
 
         if (_lines.Max(x => x.CellCount()) <= maxWidth)
@@ -224,7 +215,7 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
             if (current.IsLineBreak)
             {
                 lines.Add(line);
-                line = new SegmentLine();
+                line = [];
                 continue;
             }
 
@@ -239,7 +230,7 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
                     if (line.CellCount() + segments[0].CellCount() > maxWidth)
                     {
                         lines.Add(line);
-                        line = new SegmentLine();
+                        line = [];
 
                         segments.ForEach(s => queue.Enqueue(s));
                         continue;
@@ -259,7 +250,7 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
                 {
                     line.Add(Segment.Empty);
                     lines.Add(line);
-                    line = new SegmentLine();
+                    line = [];
                     newLine = true;
                 }
             }

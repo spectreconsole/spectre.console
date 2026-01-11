@@ -83,7 +83,7 @@ public sealed class MultiSelectionPromptTests
         var actual = prompt.GetParents("item");
 
         // Then
-        actual.ShouldBe(new[] { "root", "level-1", "level-2" });
+        actual.ShouldBe(["root", "level-1", "level-2"]);
     }
 
     [Fact]
