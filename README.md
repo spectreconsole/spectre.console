@@ -18,7 +18,7 @@ It is heavily inspired by the excellent Python library, [Rich](https://github.co
 ## Features
 
 * Supports tables, grids, panels, and a [Rich](https://github.com/willmcgugan/rich) inspired markup language.
-* Supports the most common SRG parameters when it comes to text 
+* Supports the most common SGR parameters when it comes to text 
   styling such as bold, dim, italic, underline, strikethrough, 
   and blinking text.
 * Supports 3/4/8/24-bit colors in the terminal.  

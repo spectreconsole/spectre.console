@@ -18,7 +18,7 @@ _[![Spectre.Console NuGet Version](https://img.shields.io/nuget/v/spectre.consol
 
 * 编写时考虑到了单元测试。
 * 支持 tables、grid、panel 和 [rich](https://github.com/willmcgugan/rich) 所支持的标记语言。
-* 支持大部分的 SRG 参数，包括粗体、暗淡字、斜体、下划线、删除线和闪烁文本。
+* 支持大部分的 SGR 参数，包括粗体、暗淡字、斜体、下划线、删除线和闪烁文本。
 * 支持终端显示 3/4/8/24 位色。自动检测终端类型，自适应颜色范围。
 
 ![例子](resources/example.png)
