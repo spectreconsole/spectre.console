@@ -442,8 +442,6 @@ public class Segment
     {
         ArgumentNullException.ThrowIfNull(segments);
 
-        var result = new List<Segment>();
-
         var segmentBuilder = (SegmentBuilder?)null;
         foreach (var segment in segments)
         {
@@ -468,16 +466,14 @@ public class Segment
                 continue;
             }
 
-            result.Add(segmentBuilder.Build());
+            yield return segmentBuilder.Build();
             segmentBuilder.Reset(segment);
         }
 
         if (segmentBuilder != null)
         {
-            result.Add(segmentBuilder.Build());
+            yield return segmentBuilder.Build();
         }
-
-        return result;
     }
 
     internal static List<Segment> TruncateWithEllipsis(IEnumerable<Segment> segments, int maxWidth)
@@ -604,7 +600,10 @@ public class Segment
 
         public Segment Build()
         {
-            return new Segment(_textBuilder.ToString(), _originalSegment.Style, _originalSegment.IsLineBreak,
+            return new Segment(
+                _textBuilder.ToString(),
+                _originalSegment.Style,
+                _originalSegment.IsLineBreak,
                 _originalSegment.IsControlCode);
         }
 

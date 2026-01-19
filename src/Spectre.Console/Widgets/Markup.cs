@@ -39,7 +39,11 @@ public sealed class Markup : Renderable, IHasJustification, IOverflowable
     /// <param name="style">The style of the text.</param>
     public Markup(string text, Style? style = null)
     {
-        _paragraph = MarkupParser.Parse(text, style);
+        _paragraph = new Paragraph();
+        foreach (var segment in AnsiMarkup.Parse(text, style))
+        {
+            _paragraph.Append(Emoji.Replace(segment.Text), segment.Style);
+        }
     }
 
     /// <inheritdoc/>

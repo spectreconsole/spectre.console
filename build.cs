@@ -1,13 +1,13 @@
 #:sdk Cake.Sdk@6.0.0
 
 var solution = "./src/Spectre.Console.slnx";
-var testProject = "./src/Spectre.Console.Tests/Spectre.Console.Tests.csproj";
 
 ////////////////////////////////////////////////////////////////
 // Arguments
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
+var noLinting = HasArgument("no-lint");
 
 ////////////////////////////////////////////////////////////////
 // Tasks
@@ -19,6 +19,8 @@ Task("Clean")
 });
 
 Task("Lint")
+    .WithCriteria(ctx => BuildSystem.IsLocalBuild || BuildSystem.IsPullRequest, "Not a local build or pull request")
+    .WithCriteria(ctx => !noLinting, "Linting disabled by user")
     .Does(ctx =>
 {
     ctx.DotNetFormatStyle(solution, new DotNetFormatSettings
@@ -47,7 +49,7 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(ctx =>
 {
-    ctx.DotNetTest(testProject, new DotNetTestSettings
+    ctx.DotNetTest(solution, new DotNetTestSettings
     {
         Configuration = configuration,
         Verbosity = DotNetVerbosity.Minimal,
@@ -89,7 +91,7 @@ Task("Sign-Binaries")
     {
         ToolExecutableNames = ["sign", "sign.exe"],
         ToolName = "sign",
-        ToolPath = ResolveSignTool("sign.exe") 
+        ToolPath = ResolveSignTool("sign.exe")
             ?? ResolveSignTool("sign")
             ?? throw new Exception("Failed to locate sign tool"),
     };

@@ -46,6 +46,11 @@ internal sealed class LegacyConsoleBackend : IAnsiConsoleBackend
         }
     }
 
+    public void Write(Action<AnsiWriter> action)
+    {
+        // Do nothing. The backend is not capable of emitting ANSI/VT escape sequences.
+    }
+
     private void SetStyle(Style style)
     {
         _lastStyle = style;

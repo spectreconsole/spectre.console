@@ -117,13 +117,14 @@ public sealed class Profile
     /// Initializes a new instance of the <see cref="Profile"/> class.
     /// </summary>
     /// <param name="out">The output buffer.</param>
+    /// <param name="capabilities">The capabilities.</param>
     /// <param name="encoding">The output encoding.</param>
-    public Profile(IAnsiConsoleOutput @out, Encoding encoding)
+    public Profile(IAnsiConsoleOutput @out, Capabilities capabilities, Encoding encoding)
     {
         _enrichers = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         _out = @out ?? throw new ArgumentNullException(nameof(@out));
+        _capabilities = capabilities ?? throw new ArgumentNullException(nameof(capabilities));
         _encoding = encoding ?? throw new ArgumentNullException(nameof(encoding));
-        _capabilities = new Capabilities(_out);
     }
 
     /// <summary>

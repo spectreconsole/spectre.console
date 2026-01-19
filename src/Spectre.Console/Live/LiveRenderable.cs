@@ -1,10 +1,8 @@
-using static Spectre.Console.AnsiSequences;
-
 namespace Spectre.Console;
 
 internal sealed class LiveRenderable : Renderable
 {
-    private readonly object _lock = new object();
+    private readonly object _lock = new();
     private readonly IAnsiConsole _console;
     private IRenderable? _renderable;
     private SegmentShape? _shape;
@@ -45,7 +43,7 @@ internal sealed class LiveRenderable : Renderable
         {
             if (_shape == null)
             {
-                return new ControlCode(string.Empty);
+                return ControlCode.Empty;
             }
 
             // Check if the size have been reduced
@@ -53,11 +51,20 @@ internal sealed class LiveRenderable : Renderable
             {
                 // Important reset shape, so the size can shrink
                 _shape = null;
-                return new ControlCode(ED(2) + ED(3) + CUP(1, 1));
+                return ControlCode.Create(options.Capabilities, w =>
+                {
+                    w.EraseInDisplay(2);
+                    w.ClearScrollback();
+                    w.CursorHome();
+                });
             }
 
             var linesToMoveUp = _shape.Value.Height - 1;
-            return new ControlCode("\r" + CUU(linesToMoveUp));
+            return ControlCode.Create(options.Capabilities, w =>
+            {
+                w.Write("\r"); // More efficient than CHA (CSI 1 G)?
+                w.CursorUp(linesToMoveUp);
+            });
         }
     }
 
@@ -67,11 +74,21 @@ internal sealed class LiveRenderable : Renderable
         {
             if (_shape == null)
             {
-                return new ControlCode(string.Empty);
+                return ControlCode.Empty;
             }
 
             var linesToClear = _shape.Value.Height - 1;
-            return new ControlCode("\r" + EL(2) + (CUU(1) + EL(2)).Repeat(linesToClear));
+            return ControlCode.Create(_console.Profile.Capabilities, w =>
+            {
+                w.Write("\r"); // More efficient than CHA (CSI 1 G)?
+                w.EraseInLine(2);
+
+                for (var count = 0; count < linesToClear; count++)
+                {
+                    w.CursorUp(1);
+                    w.EraseInLine(2);
+                }
+            });
         }
     }
 
@@ -134,7 +151,7 @@ internal sealed class LiveRenderable : Renderable
                     DidOverflow = true;
                 }
 
-                _shape = _shape == null ? shape : _shape.Value.Inflate(shape);
+                _shape = _shape?.Inflate(shape) ?? shape;
                 _shape.Value.Apply(options, ref lines);
 
                 foreach (var (_, _, last, line) in lines.Enumerate())

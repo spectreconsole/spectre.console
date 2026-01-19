@@ -59,7 +59,7 @@ public static class SpinnerExtensions
 
                     // Write the spinner frame
                     ansiConsole.Write(new Text(spinnerFrame, style));
-                    ansiConsole.Write(new ControlCode(AnsiSequences.CUB(spinnerFrame.Length)));
+                    ansiConsole.WriteAnsi(w => w.CursorLeft(spinnerFrame.Length));
 
                     currentFrame = (currentFrame + 1) % spinner.Frames.Count;
                     await Task.Delay(spinner.Interval, cancellationTokenSource.Token);
@@ -91,7 +91,7 @@ public static class SpinnerExtensions
             var spinnerFrame = spinner.Frames[currentFrame];
 
             ansiConsole.Write(new string(' ', spinnerFrame.Length));
-            ansiConsole.Write(new ControlCode(AnsiSequences.CUB(spinnerFrame.Length)));
+            ansiConsole.WriteAnsi(w => w.CursorLeft(spinnerFrame.Length));
             ansiConsole.Cursor.Show();
             await cancellationTokenSource.CancelAsync();
         }

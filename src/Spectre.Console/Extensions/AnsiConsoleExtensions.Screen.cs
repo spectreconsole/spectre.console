@@ -25,7 +25,11 @@ public static partial class AnsiConsoleExtensions
         }
 
         // Switch to alternate screen
-        console.Write(new ControlCode("\u001b[?1049h\u001b[H"));
+        console.WriteAnsi(w =>
+        {
+            w.EnterAltScreen();
+            w.CursorHome();
+        });
 
         try
         {
@@ -35,7 +39,7 @@ public static partial class AnsiConsoleExtensions
         finally
         {
             // Switch back to primary screen
-            console.Write(new ControlCode("\u001b[?1049l"));
+            console.WriteAnsi(w => w.ExitAltScreen());
         }
     }
 }

@@ -38,7 +38,7 @@ public sealed class LiveDisplayContext
     {
         lock (Lock)
         {
-            _console.Write(new ControlCode(string.Empty));
+            _console.Write(ControlCode.Empty);
         }
     }
 

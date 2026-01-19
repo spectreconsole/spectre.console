@@ -1,5 +1,3 @@
-using static Spectre.Console.AnsiSequences;
-
 namespace Spectre.Console;
 
 internal sealed class AnsiConsoleCursor : IAnsiConsoleCursor
@@ -15,11 +13,11 @@ internal sealed class AnsiConsoleCursor : IAnsiConsoleCursor
     {
         if (show)
         {
-            _backend.Write(new ControlCode(SM(DECTCEM)));
+            _backend.Write(w => w.ShowCursor());
         }
         else
         {
-            _backend.Write(new ControlCode(RM(DECTCEM)));
+            _backend.Write(w => w.HideCursor());
         }
     }
 
@@ -33,22 +31,22 @@ internal sealed class AnsiConsoleCursor : IAnsiConsoleCursor
         switch (direction)
         {
             case CursorDirection.Up:
-                _backend.Write(new ControlCode(CUU(steps)));
+                _backend.Write(w => w.CursorUp(steps));
                 break;
             case CursorDirection.Down:
-                _backend.Write(new ControlCode(CUD(steps)));
+                _backend.Write(w => w.CursorDown(steps));
                 break;
             case CursorDirection.Right:
-                _backend.Write(new ControlCode(CUF(steps)));
+                _backend.Write(w => w.CursorRight(steps));
                 break;
             case CursorDirection.Left:
-                _backend.Write(new ControlCode(CUB(steps)));
+                _backend.Write(w => w.CursorLeft(steps));
                 break;
         }
     }
 
     public void SetPosition(int column, int line)
     {
-        _backend.Write(new ControlCode(CUP(line, column)));
+        _backend.Write(w => w.CursorPosition(line, column));
     }
 }

@@ -30,6 +30,10 @@ public static partial class AnsiConsoleExtensions
     {
         ArgumentNullException.ThrowIfNull(console);
 
-        return AnsiBuilder.Build(console, renderable);
+        // TODO: Make this a bit more efficient
+        var buffer = new StringWriter();
+        var ansi = new AnsiWriter(buffer, console.Profile.Capabilities);
+        ansi.Write(console, renderable);
+        return buffer.ToString();
     }
 }

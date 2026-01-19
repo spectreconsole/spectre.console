@@ -108,6 +108,12 @@ public sealed class TestConsole : IAnsiConsole, IDisposable
         }
     }
 
+    /// <inheritdoc/>
+    public void WriteAnsi(Action<AnsiWriter> action)
+    {
+        _console.WriteAnsi(action);
+    }
+
     internal void SetCursor(IAnsiConsoleCursor? cursor)
     {
         _cursor = cursor;

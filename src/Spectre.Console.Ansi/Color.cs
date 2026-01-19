@@ -84,6 +84,16 @@ public readonly partial struct Color : IEquatable<Color>
             B.ToString("X2", CultureInfo.InvariantCulture));
     }
 
+    /// <summary>
+    /// Gets the exact or closest color in the specified <see cref="ColorSystem"/>.
+    /// </summary>
+    /// <param name="system">The color system.</param>
+    /// <returns>The exact or closest color in the specified <see cref="ColorSystem"/>.</returns>
+    public Color ExactOrClosest(ColorSystem system)
+    {
+        return ColorPalette.ExactOrClosest(system, this);
+    }
+
     /// <inheritdoc/>
     public override int GetHashCode()
     {
@@ -259,6 +269,16 @@ public readonly partial struct Color : IEquatable<Color>
             color = Color.Default;
             return false;
         }
+    }
+
+    /// <summary>
+    /// Gets a <see cref="Color"/> from its name.
+    /// </summary>
+    /// <param name="name">The name of the color.</param>
+    /// <returns>The requested <see cref="Color"/> or <c>null</c> if not found.</returns>
+    public static Color? FromName(string name)
+    {
+        return ColorTable.GetColor(name);
     }
 
     /// <summary>

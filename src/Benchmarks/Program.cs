@@ -37,12 +37,7 @@ public class RenderBenchmarks
                 EnvironmentVariables = null
             });
 
-        _renderable = new Table()
-            .AddColumns("Foo", "Bar")
-            .AddRow(new Text("1"), new Table()
-                .AddColumns("Baz", "Qux")
-                .AddRow("1", "2")
-                .AddRow("3", "4"));
+        _renderable = new Markup("[yellow]Hello[/] [blue]World[/]");
     }
 
     [Benchmark]
@@ -71,12 +66,7 @@ public class AnsiBenchmarks
                 EnvironmentVariables = null
             });
 
-        _renderable = new Table()
-            .AddColumns("Foo", "Bar")
-            .AddRow(new Text("1"), new Table()
-                .AddColumns("Baz", "Qux")
-                .AddRow("1", "2")
-                .AddRow("3", "4"));
+        _renderable = new Markup("[yellow]Hello[/] [blue]World[/]");
     }
 
     [Benchmark]

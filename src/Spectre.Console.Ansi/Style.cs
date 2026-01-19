@@ -26,6 +26,18 @@ public sealed class Style : IEquatable<Style>
     public string? Link { get; }
 
     /// <summary>
+    /// Gets the link ID associated with the style.
+    /// </summary>
+    public int? LinkId { get; }
+
+    /// <summary>
+    /// Gets whether or not the style has an associated link.
+    /// </summary>
+    [MemberNotNullWhen(true, nameof(Link))]
+    [MemberNotNullWhen(true, nameof(LinkId))]
+    public bool HasLink { get; }
+
+    /// <summary>
     /// Gets a <see cref="Style"/> with the
     /// default colors and without text decoration.
     /// </summary>
@@ -43,7 +55,10 @@ public sealed class Style : IEquatable<Style>
         Foreground = foreground ?? Color.Default;
         Background = background ?? Color.Default;
         Decoration = decoration ?? Decoration.None;
+
         Link = link;
+        LinkId = Link != null ? Random.Shared.Next(0, int.MaxValue) : null;
+        HasLink = Link != null;
     }
 
     /// <summary>

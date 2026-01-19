@@ -21,7 +21,7 @@ public static partial class AnsiConsoleExtensions
     /// <summary>
     /// Writes the specified markup to the console.
     /// <para/>
-    /// All interpolation holes which contain a string are automatically escaped so you must not call <see cref="StringExtensions.EscapeMarkup"/>.
+    /// All interpolation holes which contain a string are automatically escaped.
     /// </summary>
     /// <example>
     /// <code>
@@ -56,7 +56,7 @@ public static partial class AnsiConsoleExtensions
     /// <summary>
     /// Writes the specified markup to the console.
     /// <para/>
-    /// All interpolation holes which contain a string are automatically escaped so you must not call <see cref="StringExtensions.EscapeMarkup"/>.
+    /// All interpolation holes which contain a string are automatically escaped.
     /// </summary>
     /// <example>
     /// <code>
@@ -84,7 +84,7 @@ public static partial class AnsiConsoleExtensions
     {
         ArgumentNullException.ThrowIfNull(console);
 
-        console.Write(MarkupParser.Parse(value));
+        console.Write(new Markup(value));
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ public static partial class AnsiConsoleExtensions
     /// <summary>
     /// Writes the specified markup, followed by the current line terminator, to the console.
     /// <para/>
-    /// All interpolation holes which contain a string are automatically escaped so you must not call <see cref="StringExtensions.EscapeMarkup"/>.
+    /// All interpolation holes which contain a string are automatically escaped.
     /// </summary>
     /// <example>
     /// <code>
@@ -150,7 +150,7 @@ public static partial class AnsiConsoleExtensions
     /// <summary>
     /// Writes the specified markup, followed by the current line terminator, to the console.
     /// <para/>
-    /// All interpolation holes which contain a string are automatically escaped so you must not call <see cref="StringExtensions.EscapeMarkup"/>.
+    /// All interpolation holes which contain a string are automatically escaped.
     /// </summary>
     /// <example>
     /// <code>

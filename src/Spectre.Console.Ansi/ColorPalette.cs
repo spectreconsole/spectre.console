@@ -13,7 +13,7 @@ internal static partial class ColorPalette
         EightBit = GenerateEightBitPalette(Standard);
     }
 
-    internal static Color ExactOrClosest(ColorSystem system, Color color)
+    public static Color ExactOrClosest(ColorSystem system, Color color)
     {
         var exact = Exact(system, color);
         return exact ?? Closest(system, color);
