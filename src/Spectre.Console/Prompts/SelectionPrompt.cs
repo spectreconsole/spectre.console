@@ -200,7 +200,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
 
             if (searchText.Length > 0 && !(item.Node.IsGroup && Mode == SelectionMode.Leaf))
             {
-                text = text.Highlight(searchText, searchHighlightStyle);
+                text = AnsiMarkup.Highlight(text, searchText, searchHighlightStyle);
             }
 
             grid.AddRow(new Markup(indent + prompt + " " + text, style));

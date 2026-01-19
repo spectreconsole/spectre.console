@@ -52,8 +52,13 @@ public class Recorder : IAnsiConsole, IDisposable
         ArgumentNullException.ThrowIfNull(renderable);
 
         _recorded.Add(renderable);
-
         _console.Write(renderable);
+    }
+
+    /// <inheritdoc/>
+    public void WriteAnsi(Action<AnsiWriter> action)
+    {
+        // Do nothing
     }
 
     internal Recorder Clone(IAnsiConsole console)

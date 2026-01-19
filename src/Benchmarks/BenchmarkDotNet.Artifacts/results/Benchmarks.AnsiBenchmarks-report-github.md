@@ -10,8 +10,8 @@ Apple M3 Pro, 1 CPU, 11 logical and 11 physical cores
 
 
 ```
-| Method           | Job       | Runtime   | Mean     | Error    | StdDev   | Gen0   | Gen1   | Allocated |
-|----------------- |---------- |---------- |---------:|---------:|---------:|-------:|-------:|----------:|
-| RenderableToAnsi | .NET 10.0 | .NET 10.0 | 12.33 μs | 0.054 μs | 0.045 μs | 5.3558 | 0.1831 |  43.87 KB |
-| RenderableToAnsi | .NET 8.0  | .NET 8.0  | 14.12 μs | 0.100 μs | 0.094 μs | 5.7068 | 0.1831 |  46.73 KB |
-| RenderableToAnsi | .NET 9.0  | .NET 9.0  | 14.12 μs | 0.052 μs | 0.049 μs | 5.6458 | 0.1984 |  46.17 KB |
+| Method           | Job       | Runtime   | Mean     | Error   | StdDev  | Gen0   | Gen1   | Allocated |
+|----------------- |---------- |---------- |---------:|--------:|--------:|-------:|-------:|----------:|
+| RenderableToAnsi | .NET 10.0 | .NET 10.0 | 786.6 ns | 1.87 ns | 1.75 ns | 0.3662 | 0.0010 |   2.99 KB |
+| RenderableToAnsi | .NET 8.0  | .NET 8.0  | 897.3 ns | 2.21 ns | 1.96 ns | 0.3815 | 0.0010 |   3.12 KB |
+| RenderableToAnsi | .NET 9.0  | .NET 9.0  | 935.2 ns | 3.13 ns | 2.77 ns | 0.3700 | 0.0010 |   3.02 KB |

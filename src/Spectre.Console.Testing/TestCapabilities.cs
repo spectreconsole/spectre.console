@@ -18,19 +18,19 @@ public sealed class TestCapabilities : IReadOnlyCapabilities
     public bool Legacy { get; set; }
 
     /// <inheritdoc/>
-    public bool IsTerminal { get; set; }
-
-    /// <inheritdoc/>
     public bool Interactive { get; set; }
 
     /// <inheritdoc/>
     public bool Unicode { get; set; }
 
+    /// <inheritdoc/>
+    public bool AlternateBuffer { get; set; }
+
     /// <summary>
-    /// Creates a <see cref="RenderOptions"/> with the same capabilities as this instace.
+    /// Creates a <see cref="RenderOptions"/> with the same capabilities as this instance.
     /// </summary>
     /// <param name="console">The console.</param>
-    /// <returns>A <see cref="RenderOptions"/> with the same capabilities as this instace.</returns>
+    /// <returns>A <see cref="RenderOptions"/> with the same capabilities as this instance.</returns>
     public RenderOptions CreateRenderContext(IAnsiConsole console)
     {
         ArgumentNullException.ThrowIfNull(console);

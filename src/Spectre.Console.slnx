@@ -7,6 +7,7 @@
   <Folder Name="/Build/">
     <File Path="../dotnet-tools.json" />
     <File Path="../global.json" />
+    <File Path="..\build.cs" />
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
@@ -20,6 +21,8 @@
     <Project Path="Extensions/Spectre.Console.Json/Spectre.Console.Json.csproj" />
   </Folder>
   <Project Path="Benchmarks/Benchmarks.csproj" />
+  <Project Path="Spectre.Console.Ansi.Tests/Spectre.Console.Ansi.Tests.csproj" />
+  <Project Path="Spectre.Console.Ansi/Spectre.Console.Ansi.csproj" />
   <Project Path="Spectre.Console.SourceGenerator/Spectre.Console.SourceGenerator.csproj" />
   <Project Path="Spectre.Console.Testing/Spectre.Console.Testing.csproj" />
   <Project Path="Spectre.Console.Tests/Spectre.Console.Tests.csproj" />

@@ -10,7 +10,6 @@
   <ItemGroup Label="REMOVE THIS">
     <InternalsVisibleTo Include="$(AssemblyName).Tests" />
   </ItemGroup>
-  
 
   <PropertyGroup>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
@@ -34,13 +33,13 @@
   </ItemGroup>
 
   <ItemGroup Label="Source Generator">
+    <ProjectReference Include="..\Spectre.Console.Ansi\Spectre.Console.Ansi.csproj" />
     <ProjectReference Include="..\Spectre.Console.SourceGenerator\Spectre.Console.SourceGenerator.csproj"
                       OutputItemType="Analyzer"
                       ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup Label="Generator Data Files">
-    <AdditionalFiles Include="Data\colors.json" />
     <AdditionalFiles Include="Data\spinners_default.json" />
     <AdditionalFiles Include="Data\spinners_sindresorhus.json" />
 

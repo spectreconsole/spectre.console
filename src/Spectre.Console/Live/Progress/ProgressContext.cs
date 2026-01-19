@@ -175,7 +175,7 @@ public sealed class ProgressContext
     public void Refresh()
     {
         _renderer.Update(this);
-        _console.Write(new ControlCode(string.Empty));
+        _console.Write(ControlCode.Empty);
     }
 
     private ProgressTask AddTaskAtInternal(string description, ProgressTaskSettings settings, int position)

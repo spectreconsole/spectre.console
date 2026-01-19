@@ -17,7 +17,6 @@ internal sealed class GitHubEnricher : IProfileEnricher
     public void Enrich(Profile profile)
     {
         profile.Capabilities.Ansi = true;
-        profile.Capabilities.Legacy = false;
         profile.Capabilities.Interactive = false;
         profile.Capabilities.Links = false;
     }

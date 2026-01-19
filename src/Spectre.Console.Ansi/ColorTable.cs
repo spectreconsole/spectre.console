@@ -9,6 +9,7 @@ internal static partial class ColorTable
     {
         _numberLookup = GenerateTable();
         _nameLookup = new Dictionary<int, string>();
+
         foreach (var pair in _numberLookup)
         {
             if (_nameLookup.ContainsKey(pair.Value))

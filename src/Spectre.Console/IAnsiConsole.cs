@@ -41,4 +41,10 @@ public interface IAnsiConsole
     /// </summary>
     /// <param name="renderable">The <see cref="IRenderable"/> to write.</param>
     void Write(IRenderable renderable);
+
+    /// <summary>
+    /// Writes ANSI/VT escapes sequences to the console.
+    /// </summary>
+    /// <param name="action">The <see cref="AnsiWriter"/> action.</param>
+    void WriteAnsi(Action<AnsiWriter> action);
 }

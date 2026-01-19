@@ -1,7 +1,4 @@
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-// Portions of this code was ported from the supports-ansi project by Qingrong Ke
-// https://github.com/keqingrong/supports-ansi/blob/master/index.js
-/////////////////////////////////////////////////////////////////////////////////////////////////////
+using System.Text.RegularExpressions;
 
 namespace Spectre.Console;
 
@@ -28,7 +25,31 @@ internal static class AnsiDetector
         new("alacritty") // Alacritty
     ];
 
-    public static (bool SupportsAnsi, bool LegacyConsole) Detect(bool stdError, bool upgrade)
+    public static (bool Ansi, bool Legacy) Detect(TextWriter buffer, AnsiSupport ansi)
+    {
+        var supportsAnsi = ansi == AnsiSupport.Yes;
+        var legacyConsole = false;
+
+        if (ansi == AnsiSupport.Detect)
+        {
+            (supportsAnsi, legacyConsole) = AnsiDetector.Detect(buffer.IsStandardError(), true);
+            return (supportsAnsi, legacyConsole);
+        }
+
+        if (buffer.IsStandardOut() || buffer.IsStandardError())
+        {
+            // Are we running on Windows?
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                // Try detecting whether or not this is a legacy console
+                (_, legacyConsole) = AnsiDetector.Detect(buffer.IsStandardError(), false);
+            }
+        }
+
+        return (supportsAnsi, legacyConsole);
+    }
+
+    private static (bool SupportsAnsi, bool LegacyConsole) Detect(bool stdError, bool upgrade)
     {
         // Running on Windows?
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
