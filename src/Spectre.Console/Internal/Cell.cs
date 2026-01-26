@@ -23,12 +23,13 @@ internal static class Cell
 #endif
     }
 
-    public static int GetCellLength(string text)
+    public static int GetCellLength(string text) => GetCellLength(text.AsSpan());
+
+    public static int GetCellLength(ReadOnlySpan<char> text)
     {
         var sum = 0;
-        for (var index = 0; index < text.Length; index++)
+        foreach (var rune in text)
         {
-            var rune = text[index];
             sum += GetCellLength(rune);
         }
 
@@ -51,10 +52,10 @@ internal static class Cell
         var width = _runeWidthCache[rune];
         if (width == Sentinel)
         {
-            _runeWidthCache[rune] = (sbyte)UnicodeCalculator.GetWidth(rune);
-            return _runeWidthCache[rune];
+            width = (sbyte)UnicodeCalculator.GetWidth(rune);
+            _runeWidthCache[rune] = width;
         }
 
-        return _runeWidthCache[rune];
+        return width;
     }
 }
