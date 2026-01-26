@@ -45,6 +45,6 @@ jobs:
         run: |
           dotnet tool restore
           dotnet make publish --sign \
-            --nuget-key="${{secrets.NUGET_API_KEY}}" \
+            --nuget-key="${{secrets.NUGET_SIGNING_API_KEY}}" \
             --keyvaultUrl="${{secrets.SIGN_KEYVAULT_URL}}" \
             --keyvaultCertificate="${{secrets.SIGN_KEYVAULT_CERTIFICATE}}"
