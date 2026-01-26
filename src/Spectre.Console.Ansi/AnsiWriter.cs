@@ -299,7 +299,7 @@ public sealed class AnsiWriter
 
     /// <summary>
     /// This control function moves the cursor to the specified line and column (1-indexed)
-    /// by emitting <c>CUP</c>.
+    /// by emitting <c>CSI row;column H</c>.
     /// </summary>
     /// <remarks>
     /// See <see href="https://vt100.net/docs/vt100-ug/chapter3.html#CUP"/>.
@@ -314,7 +314,7 @@ public sealed class AnsiWriter
     }
 
     /// <summary>
-    /// Moves the cursor to position 1,1 (top left corner) by emitting <c>CUP</c>.
+    /// Moves the cursor to position 1,1 (top left corner) by emitting <c>CSI H</c>.
     /// </summary>
     /// <remarks>
     /// See <see href="https://vt100.net/docs/vt100-ug/chapter3.html#CUP"/>.
@@ -327,7 +327,7 @@ public sealed class AnsiWriter
     }
 
     /// <summary>
-    /// Moves the cursor up a specified number of lines in the same column by emitting <c>CUU</c>.
+    /// Moves the cursor up a specified number of lines in the same column by emitting <c>CSI n A</c>.
     /// The cursor stops at the top margin.
     /// If the cursor is already above the top margin, then the cursor stops at the top line.
     /// </summary>
@@ -344,7 +344,7 @@ public sealed class AnsiWriter
 
     /// <summary>
     /// This control function moves the cursor down a specified number of lines in the same column
-    /// by emitting <c>CUD</c>.
+    /// by emitting <c>CSI n B</c>.
     /// The cursor stops at the bottom margin.
     /// If the cursor is already below the bottom margin, then the cursor stops at the bottom line.
     /// </summary>
@@ -361,7 +361,7 @@ public sealed class AnsiWriter
 
     /// <summary>
     /// This control function moves the cursor to the right by a specified number of columns
-    /// by emitting <c>CUF</c>.
+    /// by emitting <c>CSI n C</c>.
     /// The cursor stops at the right border of the page.
     /// </summary>
     /// <remarks>
@@ -377,7 +377,7 @@ public sealed class AnsiWriter
 
     /// <summary>
     /// This control function moves the cursor to the left by a specified number of columns
-    /// by emitting <c>CUB</c>.
+    /// by emitting <c>CSI n D</c>.
     /// The cursor stops at the left border of the page.
     /// </summary>
     /// <remarks>
@@ -392,7 +392,7 @@ public sealed class AnsiWriter
     }
 
     /// <summary>
-    /// Shows the cursor by emitting <c>SM(25h)</c>.
+    /// Shows the cursor by emitting <c>CSI ? 25 h</c>.
     /// </summary>
     /// <remarks>
     /// See <see href="https://vt100.net/docs/vt100-ug/chapter3.html#SM"/>.
@@ -405,7 +405,7 @@ public sealed class AnsiWriter
     }
 
     /// <summary>
-    /// Hides the cursor by emitting <c>RM(25l)</c>.
+    /// Hides the cursor by emitting <c>CSI ? 25 l</c>.
     /// </summary>
     /// <remarks>
     /// See <see href="https://vt100.net/docs/vt100-ug/chapter3.html#RM"/>.
@@ -418,7 +418,49 @@ public sealed class AnsiWriter
     }
 
     /// <summary>
-    /// Enters the alternative screen buffer by emitting <c>CSI ?1049h</c>.
+    /// Saves current cursor position for SCO console mode
+    /// by emitting <c>CSI s</c>
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/SCOSC.html"/>.
+    /// </remarks>
+    /// <returns></returns>
+    public AnsiWriter SaveCursor()
+    {
+        WriteCsi("s");
+        return this;
+    }
+
+    /// <summary>
+    /// Moves cursor to the position saved by save cursor command in SCO console mode
+    /// by emitting <c>CSI u</c>
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/SCORC.html"/>.
+    /// </remarks>
+    /// <returns></returns>
+    public AnsiWriter RestoreCursor()
+    {
+        WriteCsi("u");
+        return this;
+    }
+
+    /// <summary>
+    /// Moves the active position to the n-th character of the active line
+    /// by emitting <c>CSI n G</c>
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/CHA.html"/>.
+    /// </remarks>
+    /// <param name="position">The horizontal position.</param>
+    public AnsiWriter CursorHorizontalAbsolute(int position)
+    {
+        WriteCsi(position, 'G');
+        return this;
+    }
+
+    /// <summary>
+    /// Enters the alternative screen buffer by emitting <c>CSI ? 1049 h</c>.
     /// </summary>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter EnterAltScreen()
@@ -428,7 +470,7 @@ public sealed class AnsiWriter
     }
 
     /// <summary>
-    /// Exits the alternative screen buffer by emitting <c>CSI ?1049l</c>.
+    /// Exits the alternative screen buffer by emitting <c>CSI ? 1049 l</c>.
     /// </summary>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter ExitAltScreen()
