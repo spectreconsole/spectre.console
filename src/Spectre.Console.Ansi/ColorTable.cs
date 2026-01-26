@@ -12,12 +12,7 @@ internal static partial class ColorTable
 
         foreach (var pair in _numberLookup)
         {
-            if (_nameLookup.ContainsKey(pair.Value))
-            {
-                continue;
-            }
-
-            _nameLookup.Add(pair.Value, pair.Key);
+            _nameLookup.TryAdd(pair.Value, pair.Key);
         }
     }
 
