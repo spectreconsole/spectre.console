@@ -69,7 +69,8 @@ public sealed class AnsiMarkup
             {
                 var parsed = AnsiMarkupTagParser.Parse(token.Value);
                 link ??= parsed.Link;
-                stack.Push(parsed.Style);
+                stack.Push(style.Value);
+                style = style.Value.Combine(parsed.Style);
             }
             else if (token.Kind == MarkupTokenKind.Close)
             {
@@ -79,12 +80,11 @@ public sealed class AnsiMarkup
                         $"Encountered closing tag when none was expected near position {token.Position}.");
                 }
 
-                stack.Pop();
+                style = stack.Pop();
             }
             else if (token.Kind == MarkupTokenKind.Text)
             {
-                var effectiveStyle = style.Combine(stack.Reverse());
-                if (result.Count > 0 && result[^1].Style.Equals(effectiveStyle))
+                if (result.Count > 0 && result[^1].Style.Equals(style))
                 {
                     // Merge segments
                     result[^1].Text += token.Value;
@@ -93,7 +93,7 @@ public sealed class AnsiMarkup
                 {
                     result.Add(
                         new AnsiMarkupSegment(
-                        token.Value, effectiveStyle, link));
+                        token.Value, style.Value, link));
                 }
             }
             else
