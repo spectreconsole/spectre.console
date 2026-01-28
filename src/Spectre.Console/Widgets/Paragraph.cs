@@ -61,46 +61,33 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
     {
         ArgumentNullException.ThrowIfNull(text);
 
-        foreach (var (_, first, last, part) in text.SplitLines().Enumerate())
-        {
-            if (first)
-            {
-                var line = _lines.LastOrDefault();
-                if (line == null)
-                {
-                    _lines.Add([]);
-                    line = _lines.Last();
-                }
+        style ??= Style.Plain;
 
-                if (string.IsNullOrEmpty(part))
-                {
-                    line.Add(Segment.Empty);
-                }
-                else
-                {
-                    foreach (var span in part.SplitWords())
-                    {
-                        line.Add(new Segment(span, style ?? Style.Plain, link));
-                    }
-                }
+        var first = true;
+        foreach (var part in text.SplitLines())
+        {
+            SegmentLine line;
+            if (!first || _lines.Count == 0)
+            {
+                line = [];
+                _lines.Add(line);
             }
             else
             {
-                var line = new SegmentLine();
+                line = _lines[^1];
+            }
+            first = false;
 
-                if (string.IsNullOrEmpty(part))
+            if (string.IsNullOrEmpty(part))
+            {
+                line.Add(Segment.Empty);
+            }
+            else
+            {
+                foreach (var span in part.SplitWords())
                 {
-                    line.Add(Segment.Empty);
+                    line.Add(new Segment(span, style.Value, link));
                 }
-                else
-                {
-                    foreach (var span in part.SplitWords())
-                    {
-                        line.Add(new Segment(span, style ?? Style.Plain, link));
-                    }
-                }
-
-                _lines.Add(line);
             }
         }
 
