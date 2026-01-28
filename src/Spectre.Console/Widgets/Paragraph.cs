@@ -1,3 +1,5 @@
+using Spectre.Console.Internal.Text;
+
 namespace Spectre.Console;
 
 /// <summary>
@@ -64,7 +66,8 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
         style ??= Style.Plain;
 
         var first = true;
-        foreach (var part in text.SplitLines())
+        var span = text.AsSpan();
+        foreach (var lineSpan in span.EnumerateLines())
         {
             SegmentLine line;
             if (!first || _lines.Count == 0)
@@ -78,15 +81,15 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
             }
             first = false;
 
-            if (string.IsNullOrEmpty(part))
+            if (lineSpan.IsEmpty)
             {
                 line.Add(Segment.Empty);
             }
             else
             {
-                foreach (var span in part.SplitWords())
+                foreach (var part in new WhiteSpaceSegmentEnumerator(lineSpan))
                 {
-                    line.Add(new Segment(span, style.Value, link));
+                    line.Add(new Segment(part.ToString(), style.Value, link));
                 }
             }
         }
