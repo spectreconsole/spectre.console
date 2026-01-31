@@ -429,15 +429,17 @@ public class Segment
         }
 
         var builder = new StringBuilder();
+        var accumulatedCellWidth = 0;
         foreach (var character in segment.Text)
         {
-            var accumulatedCellWidth = builder.ToString().GetCellWidth();
-            if (accumulatedCellWidth >= maxWidth)
+            var characterWidth = UnicodeCalculator.GetWidth(character);
+            if (accumulatedCellWidth + characterWidth > maxWidth)
             {
                 break;
             }
 
             builder.Append(character);
+            accumulatedCellWidth += characterWidth;
         }
 
         if (builder.Length == 0)
