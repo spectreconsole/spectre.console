@@ -346,13 +346,14 @@ public class Segment
         }
         else if (overflow == Overflow.Crop)
         {
-            if (Math.Max(0, maxWidth - 1) == 0)
+            if (maxWidth <= 0)
             {
                 result.Add(new Segment(string.Empty, segment.Style));
             }
             else
             {
-                result.Add(new Segment(segment.Text.Substring(0, maxWidth), segment.Style));
+                var truncated = Truncate(segment, maxWidth);
+                result.Add(truncated ?? new Segment(string.Empty, segment.Style));
             }
         }
         else if (overflow == Overflow.Ellipsis)
@@ -363,7 +364,9 @@ public class Segment
             }
             else
             {
-                result.Add(new Segment(segment.Text.Substring(0, maxWidth - 1) + "…", segment.Style));
+                var truncated = Truncate(segment, maxWidth - 1);
+                var prefix = truncated?.Text ?? string.Empty;
+                result.Add(new Segment(prefix + "…", segment.Style));
             }
         }
 
