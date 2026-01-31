@@ -109,6 +109,11 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     /// <inheritdoc/>
     ListPromptInputResult IListPromptStrategy<T>.HandleInput(ConsoleKeyInfo key, ListPromptState<T> state)
     {
+        if (key.Key == ConsoleKey.Escape)
+        {
+            return ListPromptInputResult.Abort;
+        }
+
         if (key.Key == ConsoleKey.Enter
          || key.Key == ConsoleKey.Packet
          || (!state.SearchEnabled && key.Key == ConsoleKey.Spacebar))

@@ -149,6 +149,11 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     /// <inheritdoc/>
     ListPromptInputResult IListPromptStrategy<T>.HandleInput(ConsoleKeyInfo key, ListPromptState<T> state)
     {
+        if (key.Key == ConsoleKey.Escape)
+        {
+            return ListPromptInputResult.Abort;
+        }
+
         if (key.Key == ConsoleKey.Enter)
         {
             if (Required && state.Items.None(x => x.IsSelected))
