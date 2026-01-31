@@ -70,7 +70,7 @@ internal sealed class ListPrompt<T>
 
                 if (result == ListPromptInputResult.Abort)
                 {
-                    return state;
+                    throw new OperationCanceledException();
                 }
 
                 if (state.Update(key) || result == ListPromptInputResult.Refresh)

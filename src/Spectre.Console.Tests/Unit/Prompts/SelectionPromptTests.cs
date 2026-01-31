@@ -155,6 +155,24 @@ public sealed class SelectionPromptTests
         result.ShouldBe("Item 2");
         console.Output.ShouldContain($"{ESC}[38;5;12m> {ESC}[0m{ESC}[1;38;5;12;48;5;11mItem {ESC}[0m{ESC}[38;5;12m2{ESC}[0m ");
     }
+
+    [Fact]
+    public void Should_Abort_Prompt_On_Escape_Key()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        // When
+        var prompt = new SelectionPrompt<string>()
+            .Title("Select one")
+            .AddChoices("A", "B");
+        Action action = () => prompt.Show(console);
+
+        // Then
+        action.ShouldThrow<OperationCanceledException>();
+    }
 }
 
 file sealed class CustomSelectionItem
