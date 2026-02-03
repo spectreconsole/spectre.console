@@ -30,6 +30,7 @@ public sealed class AnsiParserTests
             .And(csi =>
             {
                 csi.Collect.Count.ShouldBe(0);
+                csi.ParamsRaw.ShouldBe("");
                 csi.Params.Count.ShouldBe(0);
                 csi.Final.ShouldBe('H');
             });
@@ -48,6 +49,7 @@ public sealed class AnsiParserTests
             {
                 csi.Collect.Count.ShouldBe(0);
 
+                csi.ParamsRaw.ShouldBe("1;4");
                 csi.Params.Count.ShouldBe(2);
                 csi.Params[0].ShouldBe(1);
                 csi.Params[1].ShouldBe(4);
@@ -69,6 +71,7 @@ public sealed class AnsiParserTests
             {
                 csi.Collect.Count.ShouldBe(0);
 
+                csi.ParamsRaw.ShouldBe("38:2");
                 csi.Params.Count.ShouldBe(2);
                 csi.Params[0].ShouldBe(38);
                 csi.Params[1].ShouldBe(2);
@@ -90,6 +93,7 @@ public sealed class AnsiParserTests
             {
                 csi.Collect.Count.ShouldBe(0);
 
+                csi.ParamsRaw.ShouldBe("38;2");
                 csi.Params.Count.ShouldBe(2);
                 csi.Params[0].ShouldBe(38);
                 csi.Params[1].ShouldBe(2);
@@ -113,6 +117,7 @@ public sealed class AnsiParserTests
                 csi.Collect[0].ShouldBe('?');
                 csi.Collect[1].ShouldBe('$');
 
+                csi.ParamsRaw.ShouldBe("2026");
                 csi.Params.Count.ShouldBe(1);
                 csi.Params[0].ShouldBe(2026);
 
