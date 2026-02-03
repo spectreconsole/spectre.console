@@ -6,7 +6,9 @@ public sealed class AnsiParser
     private readonly List<char> _collect = [];
     private readonly List<char> _osc = [];
     private readonly List<int> _parameters = [0];
-    private bool _hasParameter = false;
+    private readonly List<bool> _parameterSeparators = [true];
+    private readonly StringBuilder _parametersRaw = new();
+    private bool _hasParameter;
     private AnsiParserState _currentState;
 
     public AnsiParser(Action<AnsiToken> callback)
@@ -40,19 +42,19 @@ public sealed class AnsiParser
                     _collect.Add(code);
                     break;
                 case AnsiTransitionAction.Param:
+                    _parametersRaw.Append(code);
+
                     if (code is ';' or ':')
                     {
                         _parameters.Add(0);
+                        _parameterSeparators.Add(code is ';');
                     }
                     else
                     {
-                        if (!char.IsDigit(code))
-                        {
-                            // TODO: Handle this
-                            throw new InvalidOperationException("");
-                        }
+                        Debug.Assert(char.IsDigit(code), "Expected digit");
 
                         var accumulator = (_parameters[^1] * 10) + code - 48;
+
                         _parameters[^1] =
                             accumulator > (int.MaxValue / 10) - 10
                                 ? 0
@@ -69,9 +71,12 @@ public sealed class AnsiParser
                     _callback(new AnsiToken.Csi(
                         [.. _collect],
                         _hasParameter ? [.. _parameters] : [],
-                        code));
+                        code,
+                        _parametersRaw.ToString()));
                     break;
                 case AnsiTransitionAction.Clear:
+                    _hasParameter = false;
+                    _parametersRaw.Clear();
                     _parameters.Clear();
                     _parameters.Add(0);
                     _osc.Clear();
@@ -91,20 +96,18 @@ public sealed class AnsiParser
                     // Learned about CAN/SUB from SwiftTerm, but not sure why...
                     if (_osc.Count > 0 && _osc[0] != 0x18 /*CAN*/ && _osc[0] != 0x1A /*SUB*/)
                     {
-                        var oscCode = 0;
+                        int oscCode;
                         var content = string.Empty;
 
                         var osc = new string(_osc.ToArray());
                         var idx = osc.IndexOf(';');
                         if (idx != -1)
                         {
-                            // TODO: Fix parsing
                             oscCode = int.Parse(osc[..idx]);
-                            content = osc.Substring(idx, osc.Length - idx);
+                            content = osc[idx..];
                         }
                         else
                         {
-                            // TODO: Fix parsing
                             oscCode = int.Parse(osc);
                         }
 
@@ -129,27 +132,17 @@ public sealed class AnsiParser
             _currentState = nextState;
         }
     }
-
-    private void DispatchEsc(char c)
-    {
-        if (_collect.Count == 0)
-        {
-        }
-        else if (_collect.Count == 1)
-        {
-        }
-    }
 }
 
 public abstract record AnsiToken
 {
-    public record Print(char C) : AnsiToken;
+    public record Print(char Code) : AnsiToken;
 
-    public record Execute(char C) : AnsiToken;
+    public record Execute(char Code) : AnsiToken;
 
     public record Esc(List<char> Collect, char Final) : AnsiToken;
 
-    public record Csi(List<char> Collect, List<int> Params, char Final) : AnsiToken;
+    public record Csi(List<char> Collect, List<int> Params, char Final, string ParamsRaw) : AnsiToken;
 
     public record Osc(char Code, List<char> Data) : AnsiToken;
 }
