@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="AngleSharp" Version="1.4.0" />
-    <PackageVersion Include="Backport.System.Threading.Lock" Version="3.1.5" />
+    <PackageVersion Include="Backport.System.Threading.Lock" Version="3.1.6" />
     <PackageVersion Include="Humanizer.Core" Version="2.14.1" />
     <PackageVersion Include="IsExternalInit" Version="1.0.3" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
