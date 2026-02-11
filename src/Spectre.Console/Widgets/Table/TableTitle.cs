@@ -33,7 +33,7 @@ public sealed class TableTitle
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public TableTitle SetStyle(Style? style)
     {
-        Style = style ?? Style.Plain;
+        Style = style ?? Spectre.Console.Style.Plain;
         return this;
     }
 
@@ -46,7 +46,7 @@ public sealed class TableTitle
     {
         ArgumentNullException.ThrowIfNull(style);
 
-        Style = Style.Parse(style);
+        Style = Spectre.Console.Style.Parse(style);
         return this;
     }
 }

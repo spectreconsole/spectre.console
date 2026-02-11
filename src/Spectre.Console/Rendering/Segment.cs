@@ -36,14 +36,19 @@ public class Segment
     public Style Style { get; }
 
     /// <summary>
+    /// Gets the segment link.
+    /// </summary>
+    public Link? Link { get; }
+
+    /// <summary>
     /// Gets a segment representing a line break.
     /// </summary>
-    public static Segment LineBreak { get; } = new Segment(Environment.NewLine, Style.Plain, true, false);
+    public static Segment LineBreak { get; } = new Segment(Environment.NewLine, Style.Plain, null, true, false);
 
     /// <summary>
     /// Gets an empty segment.
     /// </summary>
-    public static Segment Empty { get; } = new Segment(string.Empty, Style.Plain, false, false);
+    public static Segment Empty { get; } = new Segment(string.Empty, Style.Plain, null, false, false);
 
     /// <summary>
     /// Creates padding segment.
@@ -66,15 +71,17 @@ public class Segment
     /// </summary>
     /// <param name="text">The segment text.</param>
     /// <param name="style">The segment style.</param>
-    public Segment(string text, Style style)
-        : this(text, style, false, false)
+    /// <param name="link">The segment link.</param>
+    public Segment(string text, Style style, Link? link = null)
+        : this(text, style, link, false, false)
     {
     }
 
-    private Segment(string text, Style style, bool lineBreak, bool control)
+    private Segment(string text, Style style, Link? link, bool lineBreak, bool control)
     {
         Text = text?.NormalizeNewLines() ?? throw new ArgumentNullException(nameof(text));
-        Style = style ?? throw new ArgumentNullException(nameof(style));
+        Style = style;
+        Link = link;
         IsLineBreak = lineBreak;
         IsWhiteSpace = string.IsNullOrWhiteSpace(text);
         IsControlCode = control;
@@ -87,7 +94,7 @@ public class Segment
     /// <returns>A segment representing a control code.</returns>
     public static Segment Control(string control)
     {
-        return new Segment(control, Style.Plain, false, true);
+        return new Segment(control, Style.Plain, null, false, true);
     }
 
     /// <summary>
@@ -603,6 +610,7 @@ public class Segment
             return new Segment(
                 _textBuilder.ToString(),
                 _originalSegment.Style,
+                _originalSegment.Link,
                 _originalSegment.IsLineBreak,
                 _originalSegment.IsControlCode);
         }

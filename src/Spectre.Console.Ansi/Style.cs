@@ -3,45 +3,38 @@ namespace Spectre.Console;
 /// <summary>
 /// Represents color and text decoration.
 /// </summary>
-public sealed class Style : IEquatable<Style>
+public readonly record struct Style
 {
     /// <summary>
     /// Gets the foreground color.
     /// </summary>
-    public Color Foreground { get; }
+    public Color Foreground { get; init; }
 
     /// <summary>
     /// Gets the background color.
     /// </summary>
-    public Color Background { get; }
+    public Color Background { get; init; }
 
     /// <summary>
     /// Gets the text decoration.
     /// </summary>
-    public Decoration Decoration { get; }
-
-    /// <summary>
-    /// Gets the link associated with the style.
-    /// </summary>
-    public string? Link { get; }
-
-    /// <summary>
-    /// Gets the link ID associated with the style.
-    /// </summary>
-    public int? LinkId { get; }
-
-    /// <summary>
-    /// Gets whether or not the style has an associated link.
-    /// </summary>
-    [MemberNotNullWhen(true, nameof(Link))]
-    [MemberNotNullWhen(true, nameof(LinkId))]
-    public bool HasLink { get; }
+    public Decoration Decoration { get; init; }
 
     /// <summary>
     /// Gets a <see cref="Style"/> with the
     /// default colors and without text decoration.
     /// </summary>
-    public static Style Plain { get; } = new Style();
+    public static Style Plain { get; } = new Style(null, null, null);
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Style"/> class.
+    /// </summary>
+    public Style()
+    {
+        Foreground = Color.Default;
+        Background = Color.Default;
+        Decoration = Decoration.None;
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Style"/> class.
@@ -49,60 +42,11 @@ public sealed class Style : IEquatable<Style>
     /// <param name="foreground">The foreground color.</param>
     /// <param name="background">The background color.</param>
     /// <param name="decoration">The text decoration.</param>
-    /// <param name="link">The link.</param>
-    public Style(Color? foreground = null, Color? background = null, Decoration? decoration = null, string? link = null)
+    public Style(Color? foreground = null, Color? background = null, Decoration? decoration = null)
     {
         Foreground = foreground ?? Color.Default;
         Background = background ?? Color.Default;
         Decoration = decoration ?? Decoration.None;
-
-        Link = link;
-        LinkId = Link != null ? Random.Shared.Next(0, int.MaxValue) : null;
-        HasLink = Link != null;
-    }
-
-    /// <summary>
-    /// Creates a new style from the specified foreground color.
-    /// </summary>
-    /// <param name="color">The foreground color.</param>
-    /// <returns>A new <see cref="Style"/> with the specified foreground color.</returns>
-    [Obsolete("Use ctor(..) instead")]
-    public static Style WithForeground(Color color)
-    {
-        return new Style(foreground: color);
-    }
-
-    /// <summary>
-    /// Creates a new style from the specified background color.
-    /// </summary>
-    /// <param name="color">The background color.</param>
-    /// <returns>A new <see cref="Style"/> with the specified background color.</returns>
-    [Obsolete("Use ctor(..) instead")]
-    public static Style WithBackground(Color color)
-    {
-        return new Style(background: color);
-    }
-
-    /// <summary>
-    /// Creates a new style from the specified text decoration.
-    /// </summary>
-    /// <param name="decoration">The text decoration.</param>
-    /// <returns>A new <see cref="Style"/> with the specified text decoration.</returns>
-    [Obsolete("Use ctor(..) instead")]
-    public static Style WithDecoration(Decoration decoration)
-    {
-        return new Style(decoration: decoration);
-    }
-
-    /// <summary>
-    /// Creates a new style from the specified link.
-    /// </summary>
-    /// <param name="link">The link.</param>
-    /// <returns>A new <see cref="Style"/> with the specified link.</returns>
-    [Obsolete("Use ctor(..) instead")]
-    public static Style WithLink(string link)
-    {
-        return new Style(link: link);
     }
 
     /// <summary>
@@ -112,8 +56,6 @@ public sealed class Style : IEquatable<Style>
     /// <returns>A new style representing a combination of this and the other one.</returns>
     public Style Combine(Style other)
     {
-        ArgumentNullException.ThrowIfNull(other);
-
         var foreground = Foreground;
         if (!other.Foreground.IsDefault)
         {
@@ -126,13 +68,7 @@ public sealed class Style : IEquatable<Style>
             background = other.Background;
         }
 
-        var link = Link;
-        if (!string.IsNullOrWhiteSpace(other.Link))
-        {
-            link = other.Link;
-        }
-
-        return new Style(foreground, background, Decoration | other.Decoration, link);
+        return new Style(foreground, background, Decoration | other.Decoration);
     }
 
     /// <summary>
@@ -160,7 +96,8 @@ public sealed class Style : IEquatable<Style>
     /// <returns>A <see cref="Style"/> equivalent of the text contained in <paramref name="text"/>.</returns>
     public static Style Parse(string text)
     {
-        return StyleParser.Parse(text);
+        var result = AnsiMarkupTagParser.Parse(text);
+        return result.Style;
     }
 
     /// <summary>
@@ -173,35 +110,27 @@ public sealed class Style : IEquatable<Style>
     /// if the conversion succeeded, or <c>null</c> if the conversion failed.
     /// </param>
     /// <returns><c>true</c> if s was converted successfully; otherwise, <c>false</c>.</returns>
-    public static bool TryParse(string text, out Style? result)
+    public static bool TryParse(string text, out Style result)
     {
-        return StyleParser.TryParse(text, out result);
+        if (AnsiMarkupTagParser.TryParse(text, out var parsed))
+        {
+            result = parsed.Value.Style;
+            return true;
+        }
+
+        result = Plain;
+        return false;
     }
 
     /// <inheritdoc/>
     public override int GetHashCode()
     {
-        int? GetLinkHashCode()
-        {
-#if NETSTANDARD2_0
-            return Link?.GetHashCode();
-#else
-            return Link?.GetHashCode(StringComparison.Ordinal);
-#endif
-        }
-
         unchecked
         {
             var hash = (int)2166136261;
             hash = (hash * 16777619) ^ Foreground.GetHashCode();
             hash = (hash * 16777619) ^ Background.GetHashCode();
             hash = (hash * 16777619) ^ Decoration.GetHashCode();
-
-            if (Link != null)
-            {
-                hash = (hash * 16777619) ^ GetLinkHashCode() ?? 0;
-            }
-
             return hash;
         }
     }
@@ -238,32 +167,7 @@ public sealed class Style : IEquatable<Style>
             builder.Add("on " + Background.ToMarkup());
         }
 
-        if (Link != null)
-        {
-            builder.Add($"link={Link}");
-        }
-
         return string.Join(" ", builder);
-    }
-
-    /// <inheritdoc/>
-    public override bool Equals(object? obj)
-    {
-        return Equals(obj as Style);
-    }
-
-    /// <inheritdoc/>
-    public bool Equals(Style? other)
-    {
-        if (other == null)
-        {
-            return false;
-        }
-
-        return Foreground.Equals(other.Foreground) &&
-            Background.Equals(other.Background) &&
-            Decoration == other.Decoration &&
-            string.Equals(Link, other.Link, StringComparison.Ordinal);
     }
 }
 
@@ -281,8 +185,6 @@ public static class StyleExtensions
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static Style Foreground(this Style style, Color color)
     {
-        ArgumentNullException.ThrowIfNull(style);
-
         return new Style(
             foreground: color,
             background: style.Background,
@@ -298,8 +200,6 @@ public static class StyleExtensions
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static Style Background(this Style style, Color color)
     {
-        ArgumentNullException.ThrowIfNull(style);
-
         return new Style(
             foreground: style.Foreground,
             background: color,
@@ -315,37 +215,15 @@ public static class StyleExtensions
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static Style Decoration(this Style style, Decoration decoration)
     {
-        ArgumentNullException.ThrowIfNull(style);
-
         return new Style(
             foreground: style.Foreground,
             background: style.Background,
             decoration: decoration);
     }
 
-    /// <summary>
-    /// Creates a new style from the specified one with
-    /// the specified link.
-    /// </summary>
-    /// <param name="style">The style.</param>
-    /// <param name="link">The link.</param>
-    /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Style Link(this Style style, string link)
+    internal static Style Combine(this Style? style, IEnumerable<Style> source)
     {
-        ArgumentNullException.ThrowIfNull(style);
-
-        return new Style(
-            foreground: style.Foreground,
-            background: style.Background,
-            decoration: style.Decoration,
-            link: link);
-    }
-
-    internal static Style Combine(this Style style, IEnumerable<Style> source)
-    {
-        ArgumentNullException.ThrowIfNull(style);
-
-        var current = style;
+        var current = style ?? Style.Plain;
         foreach (var item in source)
         {
             current = current.Combine(item);

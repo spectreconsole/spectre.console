@@ -14,7 +14,7 @@ internal static class TableRenderer
             [
                 ..new[]
                 {
-                    new Segment("…", context.BorderStyle ?? Style.Plain)
+                    new Segment("…", context.BorderStyle)
                 }
             ];
         }

@@ -19,20 +19,20 @@ public sealed class AnsiMarkup
     /// <summary>
     /// Outputs the specified markup.
     /// </summary>
-    /// <param name="markup"></param>
-    /// <param name="style"></param>
+    /// <param name="markup">The markup to write.</param>
+    /// <param name="style">The base style to use during parsing.</param>
     public void Write(string markup, Style? style = null)
     {
         foreach (var segment in Parse(markup, style))
         {
-            _writer.Write(segment.Text, segment.Style);
+            _writer.Write(segment.Text, segment.Style, segment.Link);
         }
     }
 
     /// <summary>
     /// Outputs the specified markup, followed by the current line terminator
     /// </summary>
-    /// <param name="markup"></param>
+    /// <param name="markup">The markup to write.</param>
     public void WriteLine(string markup)
     {
         Write(markup);
@@ -42,9 +42,9 @@ public sealed class AnsiMarkup
     /// <summary>
     /// Parses the specified markup text into segments that can be processed.
     /// </summary>
-    /// <param name="markup"></param>
-    /// <param name="style"></param>
-    /// <returns></returns>
+    /// <param name="markup">The markup to parse.</param>
+    /// <param name="style">The base style to use when parsing.</param>
+    /// <returns>One or more segments that represents the parsed markup.</returns>
     public static IEnumerable<AnsiMarkupSegment> Parse(string markup, Style? style = null)
     {
         ArgumentNullException.ThrowIfNull(markup);
@@ -55,6 +55,7 @@ public sealed class AnsiMarkup
 
         var result = new List<AnsiMarkupSegment>();
         var stack = new Stack<Style>();
+        var link = default(Link?);
 
         while (tokenizer.MoveNext())
         {
@@ -66,8 +67,9 @@ public sealed class AnsiMarkup
 
             if (token.Kind == MarkupTokenKind.Open)
             {
-                var parsedStyle = string.IsNullOrEmpty(token.Value) ? Style.Plain : StyleParser.Parse(token.Value);
-                stack.Push(parsedStyle);
+                var parsed = AnsiMarkupTagParser.Parse(token.Value);
+                link ??= parsed.Link;
+                stack.Push(parsed.Style);
             }
             else if (token.Kind == MarkupTokenKind.Close)
             {
@@ -91,7 +93,7 @@ public sealed class AnsiMarkup
                 {
                     result.Add(
                         new AnsiMarkupSegment(
-                        token.Value, effectiveStyle));
+                        token.Value, effectiveStyle, link));
                 }
             }
             else
@@ -111,16 +113,16 @@ public sealed class AnsiMarkup
     /// <summary>
     /// Escapes the specified text so that it won’t be interpreted as markup.
     /// </summary>
-    /// <param name="text"></param>
-    /// <returns></returns>
-    public static string Escape(string? text)
+    /// <param name="markup">The markup to escape.</param>
+    /// <returns>The escaped markup.</returns>
+    public static string Escape(string? markup)
     {
-        if (text == null)
+        if (markup == null)
         {
             return string.Empty;
         }
 
-        return text
+        return markup
             .ReplaceExact("[", "[[")
             .ReplaceExact("]", "]]");
     }
@@ -128,18 +130,18 @@ public sealed class AnsiMarkup
     /// <summary>
     /// Removes markup from the specified text.
     /// </summary>
-    /// <param name="text"></param>
-    /// <returns></returns>
-    public static string Remove(string? text)
+    /// <param name="markup">The markup to clean.</param>
+    /// <returns>The provided text without markup.</returns>
+    public static string Remove(string? markup)
     {
-        if (string.IsNullOrWhiteSpace(text))
+        if (string.IsNullOrWhiteSpace(markup))
         {
             return string.Empty;
         }
 
         var result = new StringBuilder();
 
-        using var tokenizer = new MarkupTokenizer(text);
+        using var tokenizer = new MarkupTokenizer(markup);
         while (tokenizer.MoveNext() && tokenizer.Current != null)
         {
             if (tokenizer.Current.Kind == MarkupTokenKind.Text)
@@ -180,14 +182,21 @@ public sealed class AnsiMarkupSegment
     public Style Style { get; }
 
     /// <summary>
+    /// Gets the segment link.
+    /// </summary>
+    public Link? Link { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="AnsiMarkupSegment"/> class.
     /// </summary>
     /// <param name="text">The text.</param>
     /// <param name="style">The style.</param>
-    public AnsiMarkupSegment(string text, Style style)
+    /// <param name="link">The link.</param>
+    public AnsiMarkupSegment(string text, Style style, Link? link)
     {
         Text = text;
         Style = style;
+        Link = link;
     }
 
     /// <inheritdoc />

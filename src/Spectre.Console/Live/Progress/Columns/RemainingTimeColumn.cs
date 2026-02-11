@@ -27,7 +27,7 @@ public sealed class RemainingTimeColumn : ProgressColumn
             return new Markup("**:**:**");
         }
 
-        return new Text($"{remaining.Value:hh\\:mm\\:ss}", Style ?? Style.Plain);
+        return new Text($"{remaining.Value:hh\\:mm\\:ss}", Style);
     }
 
     /// <inheritdoc/>
@@ -51,7 +51,6 @@ public static class RemainingTimeColumnExtensions
     public static RemainingTimeColumn Style(this RemainingTimeColumn column, Style style)
     {
         ArgumentNullException.ThrowIfNull(column);
-        ArgumentNullException.ThrowIfNull(style);
 
         column.Style = style;
         return column;

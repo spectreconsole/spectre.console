@@ -8,12 +8,7 @@ public readonly partial struct Color : IEquatable<Color>
     /// <summary>
     /// Gets the default color.
     /// </summary>
-    public static Color Default { get; }
-
-    static Color()
-    {
-        Default = new Color(0, 0, 0, 0, true);
-    }
+    public static Color Default { get; } = new(0, 0, 0, 0, true);
 
     /// <summary>
     /// Gets the red component.

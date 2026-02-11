@@ -30,8 +30,6 @@ public static class TextPromptExtensions
     {
         ArgumentNullException.ThrowIfNull(obj);
 
-        ArgumentNullException.ThrowIfNull(style);
-
         obj.PromptStyle = style;
         return obj;
     }

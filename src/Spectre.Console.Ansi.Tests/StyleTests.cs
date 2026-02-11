@@ -17,7 +17,7 @@ public sealed class StyleTests
     {
         // Given
         var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic);
-        var other = new Style(Color.Green, Color.Silver, Decoration.Underline, "https://example.com");
+        var other = new Style(Color.Green, Color.Silver, Decoration.Underline);
 
         // When
         var result = first.Combine(other);
@@ -26,15 +26,14 @@ public sealed class StyleTests
         result.Foreground.ShouldBe(Color.Green);
         result.Background.ShouldBe(Color.Silver);
         result.Decoration.ShouldBe(Decoration.Bold | Decoration.Italic | Decoration.Underline);
-        result.Link.ShouldBe("https://example.com");
     }
 
     [Fact]
     public void Should_Consider_Two_Identical_Styles_Equal()
     {
         // Given
-        var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://example.com");
-        var second = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://example.com");
+        var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic);
+        var second = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic);
 
         // When
         var result = first.Equals(second);
@@ -47,8 +46,8 @@ public sealed class StyleTests
     public void Should_Not_Consider_Two_Styles_With_Different_Foreground_Colors_Equal()
     {
         // Given
-        var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://example.com");
-        var second = new Style(Color.Blue, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://example.com");
+        var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic);
+        var second = new Style(Color.Blue, Color.Yellow, Decoration.Bold | Decoration.Italic);
 
         // When
         var result = first.Equals(second);
@@ -61,8 +60,8 @@ public sealed class StyleTests
     public void Should_Not_Consider_Two_Styles_With_Different_Background_Colors_Equal()
     {
         // Given
-        var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://example.com");
-        var second = new Style(Color.White, Color.Blue, Decoration.Bold | Decoration.Italic, "http://example.com");
+        var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic);
+        var second = new Style(Color.White, Color.Blue, Decoration.Bold | Decoration.Italic);
 
         // When
         var result = first.Equals(second);
@@ -75,22 +74,8 @@ public sealed class StyleTests
     public void Should_Not_Consider_Two_Styles_With_Different_Decorations_Equal()
     {
         // Given
-        var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://example.com");
-        var second = new Style(Color.White, Color.Yellow, Decoration.Bold, "http://example.com");
-
-        // When
-        var result = first.Equals(second);
-
-        // Then
-        result.ShouldBeFalse();
-    }
-
-    [Fact]
-    public void Should_Not_Consider_Two_Styles_With_Different_Links_Equal()
-    {
-        // Given
-        var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://example.com");
-        var second = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic, "http://foo.com");
+        var first = new Style(Color.White, Color.Yellow, Decoration.Bold | Decoration.Italic);
+        var second = new Style(Color.White, Color.Yellow, Decoration.Bold);
 
         // When
         var result = first.Equals(second);
@@ -108,7 +93,6 @@ public sealed class StyleTests
             var result = Style.Parse("default");
 
             // Then
-            result.ShouldNotBeNull();
             result.Foreground.ShouldBe(Color.Default);
             result.Background.ShouldBe(Color.Default);
             result.Decoration.ShouldBe(Decoration.None);
@@ -134,41 +118,7 @@ public sealed class StyleTests
             var result = Style.Parse(text);
 
             // Then
-            result.ShouldNotBeNull();
             result.Decoration.ShouldBe(decoration);
-        }
-
-        [Fact]
-        public void Should_Parse_Link_Without_Address()
-        {
-            // Given, When
-            var result = Style.Parse("link");
-
-            // Then
-            result.ShouldNotBeNull();
-            result.Link.ShouldBe("https://emptylink");
-        }
-
-        [Fact]
-        public void Should_Parse_Link()
-        {
-            // Given, When
-            var result = Style.Parse("link=https://example.com");
-
-            // Then
-            result.ShouldNotBeNull();
-            result.Link.ShouldBe("https://example.com");
-        }
-
-        [Fact]
-        public void Should_Throw_If_Link_Is_Set_Twice()
-        {
-            // Given, When
-            var result = Record.Exception(() => Style.Parse("link=https://example.com link=https://example.com"));
-
-            // Then
-            result.ShouldBeOfType<InvalidOperationException>();
-            result.Message.ShouldBe("A link has already been set.");
         }
 
         [Fact]
@@ -178,7 +128,6 @@ public sealed class StyleTests
             var result = Style.Parse("default on green");
 
             // Then
-            result.ShouldNotBeNull();
             result.Decoration.ShouldBe(Decoration.None);
             result.Foreground.ShouldBe(Color.Default);
             result.Background.ShouldBe(Color.Green);
@@ -229,17 +178,15 @@ public sealed class StyleTests
         }
 
         [Fact]
-        public void Should_Parse_Colors_And_Decoration_And_Link()
+        public void Should_Parse_Colors_And_Decoration()
         {
             // Given, When
-            var result = Style.Parse("link=https://example.com bold underline blue on green");
+            var result = Style.Parse("bold underline blue on green");
 
             // Then
-            result.ShouldNotBeNull();
             result.Decoration.ShouldBe(Decoration.Bold | Decoration.Underline);
             result.Foreground.ShouldBe(Color.Blue);
             result.Background.ShouldBe(Color.Green);
-            result.Link.ShouldBe("https://example.com");
         }
 
         [Theory]
@@ -334,7 +281,6 @@ public sealed class StyleTests
 
             // Then
             result.ShouldBeTrue();
-            style.ShouldNotBeNull();
             style.Decoration.ShouldBe(Decoration.Bold);
         }
 
@@ -401,32 +347,6 @@ public sealed class StyleTests
 
             // Then
             result.ShouldBe("default on green");
-        }
-
-        [Fact]
-        public void Should_Return_Expected_Markup_For_Style_With_Only_Link()
-        {
-            // Given
-            var style = new Style(link: "https://spectreconsole.net/");
-
-            // When
-            var result = style.ToMarkup();
-
-            // Then
-            result.ShouldBe("link=https://spectreconsole.net/");
-        }
-
-        [Fact]
-        public void Should_Return_Expected_Markup_For_Style_With_Background_And_Link()
-        {
-            // Given
-            var style = new Style(background: Color.Blue, link: "https://spectreconsole.net/");
-
-            // When
-            var result = style.ToMarkup();
-
-            // Then
-            result.ShouldBe("default on blue link=https://spectreconsole.net/");
         }
     }
 }
