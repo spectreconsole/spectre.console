@@ -83,7 +83,7 @@ public sealed class Rule : Renderable, IHasJustification, IHasBoxBorder
 
         return
         [
-            new Segment(text, Style ?? Style.Plain),
+            new Segment(text, Style ?? Spectre.Console.Style.Plain),
             Segment.LineBreak
         ];
     }
@@ -109,32 +109,34 @@ public sealed class Rule : Renderable, IHasJustification, IHasBoxBorder
         if (alignment == Justify.Left)
         {
             var left = new Segment(borderPart.Repeat(TitlePadding) + new string(' ', TitleSpacing),
-                Style ?? Style.Plain);
+                Style ?? Spectre.Console.Style.Plain);
 
             var rightLength = width - titleLength - left.CellCount() - TitleSpacing;
             var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(rightLength),
-                Style ?? Style.Plain);
+                Style ?? Spectre.Console.Style.Plain);
 
             return (left, right);
         }
         else if (alignment == Justify.Center)
         {
             var leftLength = ((width - titleLength) / 2) - TitleSpacing;
-            var left = new Segment(borderPart.Repeat(leftLength) + new string(' ', TitleSpacing), Style ?? Style.Plain);
+            var left = new Segment(borderPart.Repeat(leftLength) + new string(' ', TitleSpacing),
+                Style ?? Spectre.Console.Style.Plain);
 
             var rightLength = width - titleLength - left.CellCount() - TitleSpacing;
             var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(rightLength),
-                Style ?? Style.Plain);
+                Style ?? Spectre.Console.Style.Plain);
 
             return (left, right);
         }
         else if (alignment == Justify.Right)
         {
             var right = new Segment(new string(' ', TitleSpacing) + borderPart.Repeat(TitlePadding),
-                Style ?? Style.Plain);
+                Style ?? Spectre.Console.Style.Plain);
 
             var leftLength = width - titleLength - right.CellCount() - TitleSpacing;
-            var left = new Segment(borderPart.Repeat(leftLength) + new string(' ', TitleSpacing), Style ?? Style.Plain);
+            var left = new Segment(borderPart.Repeat(leftLength) + new string(' ', TitleSpacing),
+                Style ?? Spectre.Console.Style.Plain);
 
             return (left, right);
         }
@@ -172,7 +174,6 @@ public static class RuleExtensions
     public static Rule RuleStyle(this Rule rule, Style style)
     {
         ArgumentNullException.ThrowIfNull(rule);
-        ArgumentNullException.ThrowIfNull(style);
 
         rule.Style = style;
         return rule;

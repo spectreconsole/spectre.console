@@ -27,7 +27,7 @@ public sealed class ElapsedTimeColumn : ProgressColumn
             return new Markup("**:**:**");
         }
 
-        return new Text($"{elapsed.Value:hh\\:mm\\:ss}", Style ?? Style.Plain);
+        return new Text($"{elapsed.Value:hh\\:mm\\:ss}", Style);
     }
 
     /// <inheritdoc/>

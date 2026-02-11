@@ -41,12 +41,13 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
     /// </summary>
     /// <param name="text">The text.</param>
     /// <param name="style">The style of the text or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
-    public Paragraph(string text, Style? style = null)
+    /// <param name="link">The link of the text.</param>
+    public Paragraph(string text, Style? style = null, Link? link = null)
         : this()
     {
         ArgumentNullException.ThrowIfNull(text);
 
-        Append(text, style);
+        Append(text, style, link);
     }
 
     /// <summary>
@@ -54,8 +55,9 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
     /// </summary>
     /// <param name="text">The text to append.</param>
     /// <param name="style">The style of the appended text or <see cref="Style.Plain"/> if <see langword="null"/>.</param>
+    /// <param name="link">The link that the appended text points at.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public Paragraph Append(string text, Style? style = null)
+    public Paragraph Append(string text, Style? style = null, Link? link = null)
     {
         ArgumentNullException.ThrowIfNull(text);
 
@@ -78,7 +80,7 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
                 {
                     foreach (var span in part.SplitWords())
                     {
-                        line.Add(new Segment(span, style ?? Style.Plain));
+                        line.Add(new Segment(span, style ?? Style.Plain, link));
                     }
                 }
             }
@@ -94,7 +96,7 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
                 {
                     foreach (var span in part.SplitWords())
                     {
-                        line.Add(new Segment(span, style ?? Style.Plain));
+                        line.Add(new Segment(span, style ?? Style.Plain, link));
                     }
                 }
 

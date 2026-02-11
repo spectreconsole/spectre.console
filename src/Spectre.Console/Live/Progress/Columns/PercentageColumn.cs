@@ -19,7 +19,7 @@ public sealed class PercentageColumn : ProgressColumn
     public override IRenderable Render(RenderOptions options, ProgressTask task, TimeSpan deltaTime)
     {
         var percentage = (int)task.Percentage;
-        var style = percentage == 100 ? CompletedStyle : Style ?? Style.Plain;
+        var style = percentage == 100 ? CompletedStyle : Style;
         return new Text($"{percentage}%", style).RightJustified();
     }
 
@@ -44,7 +44,6 @@ public static class PercentageColumnExtensions
     public static PercentageColumn Style(this PercentageColumn column, Style style)
     {
         ArgumentNullException.ThrowIfNull(column);
-        ArgumentNullException.ThrowIfNull(style);
 
         column.Style = style;
         return column;
@@ -59,7 +58,6 @@ public static class PercentageColumnExtensions
     public static PercentageColumn CompletedStyle(this PercentageColumn column, Style style)
     {
         ArgumentNullException.ThrowIfNull(column);
-        ArgumentNullException.ThrowIfNull(style);
 
         column.CompletedStyle = style;
         return column;

@@ -102,12 +102,12 @@ public sealed class SpinnerColumn : ProgressColumn
 
         if (!task.IsStarted)
         {
-            return new Markup(PendingText ?? " ", PendingStyle ?? Style.Plain);
+            return new Markup(PendingText ?? " ", PendingStyle ?? Spectre.Console.Style.Plain);
         }
 
         if (task.IsFinished)
         {
-            return new Markup(CompletedText ?? " ", CompletedStyle ?? Style.Plain);
+            return new Markup(CompletedText ?? " ", CompletedStyle ?? Spectre.Console.Style.Plain);
         }
 
         var accumulated = task.State.Update<double>(ACCUMULATED, acc => acc + deltaTime.TotalMilliseconds);
@@ -119,7 +119,7 @@ public sealed class SpinnerColumn : ProgressColumn
 
         var index = task.State.Get<int>(INDEX);
         var frame = spinner.Frames[index % spinner.Frames.Count];
-        return new Markup(frame.EscapeMarkup(), Style ?? Style.Plain);
+        return new Markup(frame.EscapeMarkup(), Style ?? Spectre.Console.Style.Plain);
     }
 
     /// <inheritdoc/>
@@ -139,8 +139,8 @@ public sealed class SpinnerColumn : ProgressColumn
 
                 _maxWidth = Math.Max(
                     Math.Max(
-                    ((IRenderable)new Markup(PendingText ?? " ")).Measure(options, int.MaxValue).Max,
-                    ((IRenderable)new Markup(CompletedText ?? " ")).Measure(options, int.MaxValue).Max),
+                        ((IRenderable)new Markup(PendingText ?? " ")).Measure(options, int.MaxValue).Max,
+                        ((IRenderable)new Markup(CompletedText ?? " ")).Measure(options, int.MaxValue).Max),
                     spinner.Frames.Max(frame => Cell.GetCellLength(frame)));
             }
 

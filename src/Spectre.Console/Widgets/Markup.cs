@@ -42,7 +42,7 @@ public sealed class Markup : Renderable, IHasJustification, IOverflowable
         _paragraph = new Paragraph();
         foreach (var segment in AnsiMarkup.Parse(text, style))
         {
-            _paragraph.Append(Emoji.Replace(segment.Text), segment.Style);
+            _paragraph.Append(Emoji.Replace(segment.Text), segment.Style, segment.Link);
         }
     }
 

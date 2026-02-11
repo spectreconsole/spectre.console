@@ -69,21 +69,18 @@ public sealed class AnsiWriter
     /// </summary>
     /// <param name="text">The text.</param>
     /// <param name="style">The style.</param>
+    /// <param name="link">The link.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public AnsiWriter Write(string text, Style style)
+    public AnsiWriter Write(string text, Style style, Link? link = null)
     {
         var shouldClose = false;
 
         if (Capabilities.Ansi)
         {
-            if (style.HasLink)
+            if (link != null)
             {
-                var link =
-                    style.Link.Equals(Constants.EmptyLink)
-                        ? text
-                        : style.Link;
-
-                BeginLink(link, style.LinkId);
+                var url = link.Url.Equals(Constants.EmptyLink) ? text : link.Url;
+                BeginLink(url, link.Id);
             }
 
             _styleBuffer.Clear();
@@ -103,7 +100,7 @@ public sealed class AnsiWriter
                 WriteSgr(0);
             }
 
-            if (style.HasLink)
+            if (link != null)
             {
                 EndLink();
             }
@@ -140,10 +137,11 @@ public sealed class AnsiWriter
     /// </summary>
     /// <param name="text">The text.</param>
     /// <param name="style">The style.</param>
+    /// <param name="link">The link.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public AnsiWriter WriteLine(string text, Style style)
+    public AnsiWriter WriteLine(string text, Style style, Link? link = null)
     {
-        Write(text, style);
+        Write(text, style, link);
         WriteLine();
 
         return this;
@@ -153,14 +151,15 @@ public sealed class AnsiWriter
     /// Writes a <see cref="Style"/> by emitting <c>SGR</c>.
     /// </summary>
     /// <param name="style">The style.</param>
+    /// <param name="link">The link.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public AnsiWriter Style(Style style)
+    public AnsiWriter Style(Style style, Link? link = null)
     {
         if (Capabilities.Ansi)
         {
-            if (style.HasLink)
+            if (link != null)
             {
-                BeginLink(style.Link, style.LinkId);
+                BeginLink(link);
             }
 
             _codes.Clear();
@@ -262,10 +261,26 @@ public sealed class AnsiWriter
     /// See <see href="https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda"/>.
     /// </remarks>
     /// <param name="link">The link.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter BeginLink(Link link)
+    {
+        ArgumentNullException.ThrowIfNull(link);
+        return BeginLink(link.Url, link.Id);
+    }
+
+    /// <summary>
+    /// Begins a link by emitting <c>OSC 8</c>.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda"/>.
+    /// </remarks>
+    /// <param name="link">The link.</param>
     /// <param name="linkId">The link ID.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter BeginLink(string link, int? linkId = null)
     {
+        ArgumentNullException.ThrowIfNull(link);
+
         if (Capabilities is { Ansi: true, Links: true })
         {
             _linkCount++;
@@ -424,7 +439,7 @@ public sealed class AnsiWriter
     /// <remarks>
     /// See <see href="https://vt100.net/docs/vt510-rm/SCOSC.html"/>.
     /// </remarks>
-    /// <returns></returns>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter SaveCursor()
     {
         WriteCsi("s");
@@ -438,7 +453,7 @@ public sealed class AnsiWriter
     /// <remarks>
     /// See <see href="https://vt100.net/docs/vt510-rm/SCORC.html"/>.
     /// </remarks>
-    /// <returns></returns>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter RestoreCursor()
     {
         WriteCsi("u");

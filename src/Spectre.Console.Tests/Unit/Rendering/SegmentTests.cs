@@ -38,8 +38,8 @@ public sealed class SegmentTests
             // Then
             first.Text.ShouldBe(expectedFirst);
             first.Style.ShouldBe(style);
-            second?.Text?.ShouldBe(expectedSecond);
-            second?.Style?.ShouldBe(style);
+            second?.Text.ShouldBe(expectedSecond);
+            second?.Style.ShouldBe(style);
         }
     }
 

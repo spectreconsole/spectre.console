@@ -14,7 +14,7 @@ internal static class StringBuilderExtensions
         if (style != null)
         {
             return builder.Append('[')
-            .Append(style.ToMarkup())
+            .Append(style.Value.ToMarkup())
             .Append(']')
             .Append(value.EscapeMarkup())
             .Append("[/]");
