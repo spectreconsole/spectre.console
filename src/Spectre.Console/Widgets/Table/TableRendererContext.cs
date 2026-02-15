@@ -7,11 +7,34 @@ internal sealed class TableRendererContext : TableAccessor
 
     public override IReadOnlyList<TableRow> Rows => _rows;
 
+    /// <summary>
+    /// Gets the table border.
+    /// </summary>
     public TableBorder Border { get; }
+
+    /// <summary>
+    /// Gets the style of the table border.
+    /// </summary>
     public Style BorderStyle { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether the border should be shown.
+    /// </summary>
     public bool ShowBorder { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether row separators should be shown.
+    /// </summary>
     public bool ShowRowSeparators { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether the table has any rows.
+    /// </summary>
     public bool HasRows { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether the table has any footers.
+    /// </summary>
     public bool HasFooters { get; }
 
     /// <summary>
