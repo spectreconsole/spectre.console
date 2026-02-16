@@ -3,7 +3,7 @@ namespace Spectre.Console;
 /// <summary>
 /// A renderable table.
 /// </summary>
-public sealed class Table : Renderable, IHasTableBorder, IExpandable, IAlignable
+public sealed class Table : Renderable, IHasTableBorder, IExpandable
 {
     private readonly List<TableColumn> _columns;
 
@@ -62,10 +62,6 @@ public sealed class Table : Renderable, IHasTableBorder, IExpandable, IAlignable
     /// Gets or sets the table footnote.
     /// </summary>
     public TableTitle? Caption { get; set; }
-
-    /// <inheritdoc/>
-    [Obsolete("Use the Align widget instead. This property will be removed in a later release.")]
-    public Justify? Alignment { get; set; }
 
     // Whether this is a grid or not.
     internal bool IsGrid { get; set; }

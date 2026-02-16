@@ -33,10 +33,6 @@ internal sealed class TableRendererContext : TableAccessor
     public TableTitle? Title => _table.Title;
     public TableTitle? Caption => _table.Caption;
 
-#pragma warning disable CS0618 // Type or member is obsolete
-    public Justify? Alignment => _table.Alignment;
-#pragma warning restore CS0618 // Type or member is obsolete
-
     public TableRendererContext(Table table, RenderOptions options, IEnumerable<TableRow> rows, int tableWidth, int maxWidth)
         : base(table, options)
     {

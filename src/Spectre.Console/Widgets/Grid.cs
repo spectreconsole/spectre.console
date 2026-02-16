@@ -3,13 +3,12 @@ namespace Spectre.Console;
 /// <summary>
 /// A renderable grid.
 /// </summary>
-public sealed class Grid : JustInTimeRenderable, IExpandable, IAlignable
+public sealed class Grid : JustInTimeRenderable, IExpandable
 {
     private readonly ListWithCallback<GridColumn> _columns;
     private readonly ListWithCallback<GridRow> _rows;
 
     private bool _expand;
-    private Justify? _alignment;
     private bool _padRightCell;
 
     /// <summary>
@@ -29,14 +28,6 @@ public sealed class Grid : JustInTimeRenderable, IExpandable, IAlignable
         set => MarkAsDirty(() => _expand = value);
     }
 
-    /// <inheritdoc/>
-    [Obsolete("Use the Align widget instead. This property will be removed in a later release.")]
-    public Justify? Alignment
-    {
-        get => _alignment;
-        set => MarkAsDirty(() => _alignment = value);
-    }
-
     /// <summary>
     /// Gets or sets the width of the grid.
     /// </summary>
@@ -48,7 +39,6 @@ public sealed class Grid : JustInTimeRenderable, IExpandable, IAlignable
     public Grid()
     {
         _expand = false;
-        _alignment = null;
         _columns = new ListWithCallback<GridColumn>(MarkAsDirty);
         _rows = new ListWithCallback<GridRow>(MarkAsDirty);
     }

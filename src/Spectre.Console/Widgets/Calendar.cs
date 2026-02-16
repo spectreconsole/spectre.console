@@ -3,7 +3,7 @@ namespace Spectre.Console;
 /// <summary>
 /// A renderable calendar.
 /// </summary>
-public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorder, IAlignable
+public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorder
 {
     private const int NumberOfWeekDays = 7;
     private const int ExpectedRowCount = 6;
@@ -20,7 +20,6 @@ public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorde
     private Style _highlightStyle;
     private bool _showHeader;
     private Style? _headerStyle;
-    private Justify? _alignment;
 
     /// <summary>
     /// Gets or sets the calendar year.
@@ -106,14 +105,6 @@ public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorde
         set => MarkAsDirty(() => _headerStyle = value);
     }
 
-    /// <inheritdoc/>
-    [Obsolete("Use the Align widget instead. This property will be removed in a later release.")]
-    public Justify? Alignment
-    {
-        get => _alignment;
-        set => MarkAsDirty(() => _alignment = value);
-    }
-
     /// <summary>
     /// Gets a list containing all calendar events.
     /// </summary>
@@ -163,15 +154,12 @@ public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorde
     {
         var culture = Culture ?? CultureInfo.InvariantCulture;
 
-#pragma warning disable CS0618 // Type or member is obsolete
         var table = new Table
         {
             Border = _border,
             UseSafeBorder = _useSafeBorder,
             BorderStyle = _borderStyle,
-            Alignment = _alignment,
         };
-#pragma warning restore CS0618 // Type or member is obsolete
 
         if (ShowHeader)
         {
@@ -199,7 +187,8 @@ public sealed class Calendar : JustInTimeRenderable, IHasCulture, IHasTableBorde
                 var todayEvent = _calendarEvents.LastOrDefault(e => e.Month == Month && e.Day == currentDay);
                 if (todayEvent != null)
                 {
-                    row.Add(new Markup(currentDay.ToString(CultureInfo.InvariantCulture) + "*", todayEvent.CustomHighlightStyle ?? _highlightStyle));
+                    row.Add(new Markup(currentDay.ToString(CultureInfo.InvariantCulture) + "*",
+                        todayEvent.CustomHighlightStyle ?? _highlightStyle));
                 }
                 else
                 {
@@ -282,7 +271,8 @@ public static class CalendarExtensions
     /// <param name="date">The calendar event date.</param>
     /// <param name="customEventHighlightStyle">The calendar event custom highlight style.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Calendar AddCalendarEvent(this Calendar calendar, DateTime date, Style? customEventHighlightStyle = null)
+    public static Calendar AddCalendarEvent(this Calendar calendar, DateTime date,
+        Style? customEventHighlightStyle = null)
     {
         return AddCalendarEvent(calendar, string.Empty, date.Year, date.Month, date.Day, customEventHighlightStyle);
     }
@@ -295,7 +285,8 @@ public static class CalendarExtensions
     /// <param name="date">The calendar event date.</param>
     /// <param name="customEventHighlightStyle">The calendar event custom highlight style.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Calendar AddCalendarEvent(this Calendar calendar, string description, DateTime date, Style? customEventHighlightStyle = null)
+    public static Calendar AddCalendarEvent(this Calendar calendar, string description, DateTime date,
+        Style? customEventHighlightStyle = null)
     {
         return AddCalendarEvent(calendar, description, date.Year, date.Month, date.Day, customEventHighlightStyle);
     }
@@ -309,7 +300,8 @@ public static class CalendarExtensions
     /// <param name="day">The day of the calendar event.</param>
     /// <param name="customEventHighlightStyle">The calendar event custom highlight style.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Calendar AddCalendarEvent(this Calendar calendar, int year, int month, int day, Style? customEventHighlightStyle = null)
+    public static Calendar AddCalendarEvent(this Calendar calendar, int year, int month, int day,
+        Style? customEventHighlightStyle = null)
     {
         return AddCalendarEvent(calendar, string.Empty, year, month, day, customEventHighlightStyle);
     }
@@ -324,7 +316,8 @@ public static class CalendarExtensions
     /// <param name="day">The day of the calendar event.</param>
     /// <param name="customEventHighlightStyle">The calendar event custom highlight style.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static Calendar AddCalendarEvent(this Calendar calendar, string description, int year, int month, int day, Style? customEventHighlightStyle = null)
+    public static Calendar AddCalendarEvent(this Calendar calendar, string description, int year, int month, int day,
+        Style? customEventHighlightStyle = null)
     {
         ArgumentNullException.ThrowIfNull(calendar);
 
