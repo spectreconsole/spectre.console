@@ -32,7 +32,10 @@ internal static class TableRenderer
             foreach (var (columnIndex, _, _, (columnWidth, cell)) in columnWidths.Zip(row).Enumerate())
             {
                 var justification = context.Columns[columnIndex].Alignment;
-                var childContext = context.Options with { Justification = justification };
+                var childContext = context.Options with
+                {
+                    Justification = justification
+                };
 
                 var lines = Segment.SplitLines(cell.Render(childContext, columnWidth));
                 cellHeight = Math.Max(cellHeight, lines.Count);
@@ -42,9 +45,7 @@ internal static class TableRenderer
             // Show top of header?
             if (isFirstRow && context.ShowBorder)
             {
-                var separator = Aligner.Align(
-                    context.Border.GetColumnRow(TablePart.Top, columnWidths, context.Columns),
-                    context.Alignment, context.MaxWidth);
+                var separator = context.Border.GetColumnRow(TablePart.Top, columnWidths, context.Columns);
                 result.Add(new Segment(separator, context.BorderStyle));
                 result.Add(Segment.LineBreak);
             }
@@ -55,8 +56,7 @@ internal static class TableRenderer
                 var textBorder = context.Border.GetColumnRow(TablePart.FooterSeparator, columnWidths, context.Columns);
                 if (!string.IsNullOrEmpty(textBorder))
                 {
-                    var separator = Aligner.Align(textBorder, context.Alignment, context.MaxWidth);
-                    result.Add(new Segment(separator, context.BorderStyle));
+                    result.Add(new Segment(textBorder, context.BorderStyle));
                     result.Add(Segment.LineBreak);
                 }
             }
@@ -129,9 +129,6 @@ internal static class TableRenderer
                     }
                 }
 
-                // Align the row result.
-                Aligner.Align(rowResult, context.Alignment, context.MaxWidth);
-
                 // Is the row larger than the allowed max width?
                 if (Segment.CellCount(rowResult) > context.MaxWidth)
                 {
@@ -148,17 +145,15 @@ internal static class TableRenderer
             // Show header separator?
             if (isFirstRow && context.ShowBorder && context.ShowHeaders && context.HasRows)
             {
-                var separator =
-                    Aligner.Align(
-                        context.Border.GetColumnRow(TablePart.HeaderSeparator, columnWidths, context.Columns),
-                        context.Alignment, context.MaxWidth);
+                var separator = context.Border.GetColumnRow(TablePart.HeaderSeparator, columnWidths, context.Columns);
                 result.Add(new Segment(separator, context.BorderStyle));
                 result.Add(Segment.LineBreak);
             }
 
             // Show row separator, if headers are hidden show separator after the first row
-            if (context.Border.SupportsRowSeparator && context.ShowRowSeparators
-                                                    && (!isFirstRow || (isFirstRow && !context.ShowHeaders)) && !isLastRow)
+            if (context.Border.SupportsRowSeparator && context.ShowRowSeparators &&
+                (!isFirstRow || (isFirstRow && !context.ShowHeaders)) &&
+                !isLastRow)
             {
                 var hasVisibleFootes = context is { ShowFooters: true, HasFooters: true };
                 var isNextLastLine = index == context.Rows.Count - 2;
@@ -166,10 +161,7 @@ internal static class TableRenderer
                 var isRenderingFooter = hasVisibleFootes && isNextLastLine;
                 if (!isRenderingFooter)
                 {
-                    var separator =
-                        Aligner.Align(
-                            context.Border.GetColumnRow(TablePart.RowSeparator, columnWidths, context.Columns),
-                            context.Alignment, context.MaxWidth);
+                    var separator = context.Border.GetColumnRow(TablePart.RowSeparator, columnWidths, context.Columns);
                     result.Add(new Segment(separator, context.BorderStyle));
                     result.Add(Segment.LineBreak);
                 }
@@ -178,10 +170,7 @@ internal static class TableRenderer
             // Show bottom of footer?
             if (isLastRow && context.ShowBorder)
             {
-                var separator =
-                    Aligner.Align(
-                        context.Border.GetColumnRow(TablePart.Bottom, columnWidths, context.Columns),
-                        context.Alignment, context.MaxWidth);
+                var separator = context.Border.GetColumnRow(TablePart.Bottom, columnWidths, context.Columns);
                 result.Add(new Segment(separator, context.BorderStyle));
                 result.Add(Segment.LineBreak);
             }
@@ -206,9 +195,6 @@ internal static class TableRenderer
         // Render the paragraphs
         var segments = new List<Segment>();
         segments.AddRange(((IRenderable)paragraph).Render(context.Options, context.TableWidth));
-
-        // Align over the whole buffer area
-        Aligner.Align(segments, context.Alignment, context.MaxWidth);
 
         segments.Add(Segment.LineBreak);
         return segments;

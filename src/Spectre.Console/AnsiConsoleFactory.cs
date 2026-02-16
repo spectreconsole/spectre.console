@@ -3,15 +3,9 @@ namespace Spectre.Console;
 /// <summary>
 /// Factory for creating an ANSI console.
 /// </summary>
-[Obsolete("Consider using AnsiConsole.Create instead.")]
-public sealed class AnsiConsoleFactory
+internal sealed class AnsiConsoleFactory
 {
-    /// <summary>
-    /// Creates an ANSI console.
-    /// </summary>
-    /// <param name="settings">The settings.</param>
-    /// <returns>An implementation of <see cref="IAnsiConsole"/>.</returns>
-    public IAnsiConsole Create(AnsiConsoleSettings settings)
+    public static IAnsiConsole Create(AnsiConsoleSettings settings)
     {
         ArgumentNullException.ThrowIfNull(settings);
 
