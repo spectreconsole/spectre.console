@@ -59,6 +59,11 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     public bool ShowDefaultValue { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets the default value input method. Defaults to true which places the default value in the input buffer.
+    /// </summary>
+    public bool DefaultInput { get; set; } = true;
+
+    /// <summary>
     /// Gets or sets a value indicating whether or not an empty result is valid.
     /// </summary>
     public bool AllowEmpty { get; set; }
@@ -127,7 +132,17 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
 
             while (true)
             {
-                var input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken).ConfigureAwait(false);
+                string input;
+                if (DefaultInput)
+                {
+                    input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken, converter(DefaultValue.Value).ToString()).ConfigureAwait(false);
+                }
+                else
+                {
+                    input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken).ConfigureAwait(false);
+                }
+
+
 
                 // Nothing entered?
                 if (string.IsNullOrWhiteSpace(input))
