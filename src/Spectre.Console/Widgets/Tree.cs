@@ -130,7 +130,7 @@ public sealed class Tree : Renderable, IHasTreeNodes
     private Segment GetGuide(RenderOptions options, TreeGuidePart part)
     {
         var guide = Guide.GetSafeTreeGuide(safe: !options.Unicode);
-        return new Segment(guide.GetPart(part), Style ?? Style.Plain);
+        return new Segment(guide.GetPart(part), Style ?? Spectre.Console.Style.Plain);
     }
 }
 

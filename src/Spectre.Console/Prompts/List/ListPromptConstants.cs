@@ -14,7 +14,7 @@ internal sealed class ListPromptConstants
     {
         if (style != null)
         {
-            return "[[" + $"[{style.ToMarkup()}]X[/]" + "]]";
+            return "[[" + $"[{style.Value.ToMarkup()}]X[/]" + "]]";
         }
 
         return isGroup && mode == SelectionMode.Leaf

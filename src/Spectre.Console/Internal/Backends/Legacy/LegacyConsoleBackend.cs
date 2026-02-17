@@ -37,7 +37,7 @@ internal sealed class LegacyConsoleBackend : IAnsiConsoleBackend
                 continue;
             }
 
-            if (_lastStyle?.Equals(segment.Style) != true)
+            if (!_lastStyle.Equals(segment.Style))
             {
                 SetStyle(segment.Style);
             }

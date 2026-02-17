@@ -61,7 +61,6 @@ public static class ProgressBarColumnExtensions
     public static ProgressBarColumn CompletedStyle(this ProgressBarColumn column, Style style)
     {
         ArgumentNullException.ThrowIfNull(column);
-        ArgumentNullException.ThrowIfNull(style);
 
         column.CompletedStyle = style;
         return column;
@@ -76,7 +75,6 @@ public static class ProgressBarColumnExtensions
     public static ProgressBarColumn FinishedStyle(this ProgressBarColumn column, Style style)
     {
         ArgumentNullException.ThrowIfNull(column);
-        ArgumentNullException.ThrowIfNull(style);
 
         column.FinishedStyle = style;
         return column;
@@ -91,7 +89,6 @@ public static class ProgressBarColumnExtensions
     public static ProgressBarColumn RemainingStyle(this ProgressBarColumn column, Style style)
     {
         ArgumentNullException.ThrowIfNull(column);
-        ArgumentNullException.ThrowIfNull(style);
 
         column.RemainingStyle = style;
         return column;

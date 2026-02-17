@@ -33,25 +33,25 @@ internal static class AnsiMarkupHighlighter
                 if (startIndex >= part.StartIndex && startIndex <= part.EndIndex)
                 {
                     var beginning = part.Text[0..(startIndex - part.StartIndex)];
-                    result.Add(new AnsiMarkupSegment(beginning, part.Style));
+                    result.Add(new AnsiMarkupSegment(beginning, part.Style, part.Link));
 
                     var centerStart = startIndex - part.StartIndex;
                     var centerEnd = Math.Min(endIndex - startIndex, part.Text.Length - beginning.Length);
                     var center = part.Text.Substring(centerStart, centerEnd);
-                    result.Add(new AnsiMarkupSegment(center, style));
+                    result.Add(new AnsiMarkupSegment(center, style, part.Link));
 
                     var endStart = part.Text.Length - center.Length - beginning.Length;
                     if (endStart > 0)
                     {
                         // Got an end as well
-                        result.Add(new AnsiMarkupSegment(part.Text[^endStart..], part.Style));
+                        result.Add(new AnsiMarkupSegment(part.Text[^endStart..], part.Style, part.Link));
                     }
 
                     partFound = true;
                 }
                 else
                 {
-                    result.Add(new AnsiMarkupSegment(part.Text, part.Style));
+                    result.Add(new AnsiMarkupSegment(part.Text, part.Style, part.Link));
                 }
 
                 continue;
@@ -64,21 +64,21 @@ internal static class AnsiMarkupHighlighter
                 var remaining = endIndex - part.StartIndex;
                 if (remaining > part.Text.Length)
                 {
-                    result.Add(new AnsiMarkupSegment(part.Text, style));
+                    result.Add(new AnsiMarkupSegment(part.Text, style, part.Link));
                 }
                 else
                 {
-                    result.Add(new AnsiMarkupSegment(part.Text[..remaining], style));
+                    result.Add(new AnsiMarkupSegment(part.Text[..remaining], style, part.Link));
 
                     if (remaining < part.Text.Length)
                     {
-                        result.Add(new AnsiMarkupSegment(part.Text[remaining..], part.Style));
+                        result.Add(new AnsiMarkupSegment(part.Text[remaining..], part.Style, part.Link));
                     }
                 }
             }
             else
             {
-                result.Add(new AnsiMarkupSegment(part.Text, part.Style));
+                result.Add(new AnsiMarkupSegment(part.Text, part.Style, part.Link));
             }
         }
 
@@ -103,13 +103,13 @@ internal static class AnsiMarkupHighlighter
                 else
                 {
                     result.Add(new AnsiMarkupSegment(
-                        item.Text, item.Style));
+                        item.Text, item.Style, item.Link));
                 }
             }
             else
             {
                 result.Add(new AnsiMarkupSegment(
-                    item.Text, item.Style));
+                    item.Text, item.Style, item.Link));
             }
         }
 
@@ -123,6 +123,7 @@ file sealed class IndexedMarkupSegment
 
     public string Text => _segment.Text;
     public Style Style => _segment.Style;
+    public Link? Link => _segment.Link;
     public int StartIndex { get; }
     public int EndIndex => StartIndex + _segment.Text.Length;
 

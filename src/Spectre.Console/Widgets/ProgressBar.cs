@@ -89,7 +89,7 @@ internal sealed class ProgressBar : Renderable, IHasCulture
     private IEnumerable<Segment> RenderIndeterminate(RenderOptions options, int width)
     {
         var bar = options.Unicode ? UnicodeBar.ToString() : AsciiBar.ToString();
-        var style = IndeterminateStyle ?? DefaultPulseStyle;
+        var style = IndeterminateStyle;
 
         IEnumerable<Segment> GetPulseSegments()
         {

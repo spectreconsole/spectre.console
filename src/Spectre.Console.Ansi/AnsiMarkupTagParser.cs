@@ -1,32 +1,25 @@
 namespace Spectre.Console;
 
-internal static class StyleParser
+internal static class AnsiMarkupTagParser
 {
-    public static Style Parse(string text)
+    public static (Style Style, Link? Link) Parse(string text)
     {
-        var style = Parse(text, out var error);
+        var result = Parse(text, out var error);
         if (error != null)
         {
             throw new InvalidOperationException(error);
         }
 
-        if (style == null)
-        {
-            // This should not happen, but we need to please the compiler
-            // which cannot know that style isn't null here.
-            throw new InvalidOperationException("Could not parse style.");
-        }
-
-        return style;
+        return result ?? throw new InvalidOperationException("Could not parse style.");
     }
 
-    public static bool TryParse(string text, out Style? style)
+    public static bool TryParse(string text, [NotNullWhen(true)] out (Style Style, Link?)? result)
     {
-        style = Parse(text, out var error);
-        return error == null;
+        result = Parse(text, out _);
+        return result != null;
     }
 
-    private static Style? Parse(string text, out string? error)
+    private static (Style Style, Link? Link)? Parse(string text, out string? error)
     {
         var effectiveDecoration = (Decoration?)null;
         var effectiveForeground = (Color?)null;
@@ -141,12 +134,16 @@ internal static class StyleParser
             }
         }
 
+        var link = effectiveLink != null
+            ? new Link(effectiveLink)
+            : null;
+
         error = null;
-        return new Style(
-            effectiveForeground,
-            effectiveBackground,
-            effectiveDecoration,
-            effectiveLink);
+        return (new Style(
+                effectiveForeground,
+                effectiveBackground,
+                effectiveDecoration),
+            link);
     }
 
     private static Color? ParseHexColor(string hex, out string? error)

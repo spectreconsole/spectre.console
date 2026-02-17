@@ -25,7 +25,7 @@ internal static class AnsiWriterExtensions
             {
                 if (!string.IsNullOrEmpty(part))
                 {
-                    writer.Write(part, segment.Style);
+                    writer.Write(part, segment.Style, segment.Link);
                 }
 
                 if (!last)
