@@ -75,8 +75,13 @@ internal sealed class TableMeasurer : TableAccessor
 
         if (tableWidth < maxWidth && Expand)
         {
-            var padWidths = Ratio.Distribute(maxWidth - tableWidth, widths);
-            widths = widths.Zip(padWidths, (a, b) => (a, b)).Select(f => f.a + f.b).ToList();
+            var flexibleColumns = Columns.Select(column => column.Width == null).ToList();
+            if (flexibleColumns.Any(isFlexible => isFlexible))
+            {
+                var ratios = widths.Select((width, index) => flexibleColumns[index] ? Math.Max(width, 1) : 0).ToList();
+                var padWidths = Ratio.Distribute(maxWidth - tableWidth, ratios);
+                widths = widths.Zip(padWidths, (a, b) => (a, b)).Select(f => f.a + f.b).ToList();
+            }
         }
 
         return widths;
