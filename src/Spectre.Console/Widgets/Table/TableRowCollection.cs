@@ -175,15 +175,30 @@ public sealed class TableRowCollection : IReadOnlyList<TableRow>
     {
         var row = new TableRow(columns);
 
-        if (row.Count > _table.Columns.Count)
+        // Calculate total span considering TableCell instances
+        var totalSpan = 0;
+        for (var i = 0; i < row.Count; i++)
         {
-            throw new InvalidOperationException("The number of row columns are greater than the number of table columns.");
+            var cell = row[i];
+            if (cell is TableCell tableCell)
+            {
+                totalSpan += tableCell.ColumnSpan;
+            }
+            else
+            {
+                totalSpan++;
+            }
+        }
+
+        if (totalSpan > _table.Columns.Count)
+        {
+            throw new InvalidOperationException($"The number of row columns (including spans) are greater than the number of table columns. Expected {_table.Columns.Count} but got {totalSpan}.");
         }
 
         // Need to add missing columns
-        if (row.Count < _table.Columns.Count)
+        if (totalSpan < _table.Columns.Count)
         {
-            var diff = _table.Columns.Count - row.Count;
+            var diff = _table.Columns.Count - totalSpan;
             Enumerable.Range(0, diff).ForEach(_ => row.Add(Text.Empty));
         }
 
