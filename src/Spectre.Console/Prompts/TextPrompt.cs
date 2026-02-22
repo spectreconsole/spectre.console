@@ -247,10 +247,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
             return;
         }
 
-        if (console is null)
-        {
-            throw new ArgumentNullException(nameof(console));
-        }
+        ArgumentNullException.ThrowIfNull(console);
 
         if (!console.Profile.Capabilities.Ansi)
         {
@@ -258,7 +255,10 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
         }
 
         console.Cursor.MoveUp();
-        console.Write("\r\e[2K");
+        console.Write(ControlCode.Create(console, writer => {
+            writer.Write("\r");
+            writer.EraseInLine(2);
+        }));
     }
 
     private bool ValidateResult(T value, [NotNullWhen(false)] out string? message)

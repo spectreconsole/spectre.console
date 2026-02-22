@@ -314,10 +314,7 @@ public static class TextPromptExtensions
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static TextPrompt<T> ClearOnFinish<T>(this TextPrompt<T> obj, bool clear = true)
     {
-        if (obj is null)
-        {
-            throw new ArgumentNullException(nameof(obj));
-        }
+        ArgumentNullException.ThrowIfNull(obj);
 
         obj.ClearOnFinish = clear;
         return obj;
