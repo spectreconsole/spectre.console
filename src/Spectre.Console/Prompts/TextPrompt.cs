@@ -255,7 +255,8 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
         }
 
         console.Cursor.MoveUp();
-        console.Write(ControlCode.Create(console, writer => {
+        console.Write(ControlCode.Create(console, writer =>
+        {
             writer.Write("\r");
             writer.EraseInLine(2);
         }));
