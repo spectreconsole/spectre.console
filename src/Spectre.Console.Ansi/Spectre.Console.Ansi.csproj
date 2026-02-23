@@ -30,14 +30,4 @@
     <AdditionalFiles Include="Data\colors.json" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Backport.System.Threading.Lock">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>analyzers</IncludeAssets>
-    </PackageReference>
-    <Using Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))" Alias="Lock" Include="System.Threading.Lock" />
-    <Using Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))" Alias="Lock" Include="Backport.System.Threading.Lock" />
-    <Using Alias="LockFactory" Include="Backport.System.Threading.LockFactory" />
-  </ItemGroup>  
-
 </Project>

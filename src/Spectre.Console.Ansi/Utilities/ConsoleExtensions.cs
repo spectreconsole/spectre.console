@@ -8,7 +8,7 @@ namespace Spectre.Console;
 /// </summary>
 public static class SystemConsoleExtensions
 {
-    private static readonly Lock _lock = LockFactory.Create();
+    private static readonly Lock _lock = new();
     private static AnsiWriter? _writer;
     private static AnsiMarkup? _markup;
 
