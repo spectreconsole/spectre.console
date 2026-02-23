@@ -416,7 +416,10 @@ public sealed class TextPromptTests
     public Task Should_Clear_Prompt_Line_When_ClearOnFinish_Is_Enabled()
     {
         // Given
-        var console = new TestConsole();
+        var console = new TestConsole
+        {
+            EmitAnsiSequences = true,
+        };
         console.Input.PushTextWithEnter("secret-value");
 
         // When
