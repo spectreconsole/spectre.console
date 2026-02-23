@@ -30,7 +30,7 @@ public sealed class ProgressTask : IProgress<double>
     public object? Tag { get; set; }
 
     /// <summary>
-    /// Gets or sets if we should override the default hiding of this task when completed.
+    /// Gets or sets a value indicating whether to override the default hiding behavior of this task when completed.
     /// </summary>
     public bool? HideWhenCompleted { get; set; }
 
@@ -180,12 +180,14 @@ public sealed class ProgressTask : IProgress<double>
     }
 
     /// <summary>
-    /// Gets or Sets the max age for samples we store to calculate speed/estimated time left. Samples older than this value are discarded to give you the 'current' speed.
+    /// Gets or sets the maximum age of samples kept for calculating speed and estimated time remaining.
+    /// Samples older than this value are discarded to more accurately reflect the current speed.
     /// </summary>
     public TimeSpan MaxSamplingAge { get; set; } = TimeSpan.FromSeconds(30);
 
     /// <summary>
-    /// Gets or Sets the maximum number of samples we use to calculate speed/time left. If set to 0, no samples are kept.
+    /// Gets or sets the maximum number of samples to keep for calculating speed and estimated time remaining.
+    /// If set to 0, no samples are kept.
     /// </summary>
     public int MaxSamplesKept { get; set; } = 1000;
 
@@ -259,7 +261,9 @@ public sealed class ProgressTask : IProgress<double>
     }
 
     /// <summary>
-    /// Gets or Sets When we calculate speed we only use the timespan containing the sampled range normally.  This sets the max age for the oldest sample before we treat now as its sample time.
+    /// Gets or sets the maximum time a calculated speed value is cached.
+    /// When estimating speed, if the oldest sample is older than this value, the current time is used as the end of the timespan instead.
+    /// This causes the predicted speed to naturally decay if no new samples are received.
     /// </summary>
     public TimeSpan MaxTimeForSpeedCache { get; set; } = TimeSpan.FromSeconds(1);
     /// <summary>
