@@ -28,18 +28,65 @@ internal static class TableRenderer
             var cellHeight = 1;
 
             // Get the list of cells for the row and calculate the cell height
-            var cells = new List<List<SegmentLine>>();
-            foreach (var (columnIndex, _, _, (columnWidth, cell)) in columnWidths.Zip(row).Enumerate())
+            // Store rendered lines, calculated width, column index, and span for each cell
+            var cells = new List<(List<SegmentLine>? Lines, int Width, int ColumnIndex, int Span)>();
+            var columnIndex = 0;
+
+            foreach (var item in row)
             {
+                var cell = item;
+                var span = 1;
+
+                // Check if this is a spanning cell
+                if (item is TableCell tableCell)
+                {
+                    cell = tableCell.Content;
+                    span = tableCell.ColumnSpan;
+                }
+
+                // Calculate the total width for this cell (including spanned columns)
+                var cellWidth = columnWidths[columnIndex];
+                if (span > 1)
+                {
+                    // Add widths of spanned columns plus separator widths
+                    for (var i = 1; i < span; i++)
+                    {
+                        if (columnIndex + i < columnWidths.Count)
+                        {
+                            // Add separator width (assuming 1 character separator)
+                            if (context.ShowBorder)
+                            {
+                                cellWidth += 1;
+                            }
+                            cellWidth += columnWidths[columnIndex + i];
+
+                            // Add padding from intermediate columns
+                            if (context.ShowBorder || context.IsGrid)
+                            {
+                                cellWidth += context.Columns[columnIndex + i].Padding.GetLeftSafe();
+                                cellWidth += context.Columns[columnIndex + i].Padding.GetRightSafe();
+                            }
+                        }
+                    }
+                }
+
                 var justification = context.Columns[columnIndex].Alignment;
                 var childContext = context.Options with
                 {
                     Justification = justification
                 };
 
-                var lines = Segment.SplitLines(cell.Render(childContext, columnWidth));
+                var lines = Segment.SplitLines(cell.Render(childContext, cellWidth));
                 cellHeight = Math.Max(cellHeight, lines.Count);
-                cells.Add(lines);
+                cells.Add((lines, cellWidth, columnIndex, span));
+
+                // Add null placeholders for spanned columns
+                for (var i = 1; i < span; i++)
+                {
+                    cells.Add((null, 0, columnIndex + i, 0));
+                }
+
+                columnIndex += span;
             }
 
             // Show top of header?
@@ -61,16 +108,44 @@ internal static class TableRenderer
                 }
             }
 
-            // Make cells the same shape
-            cells = Segment.MakeSameHeight(cellHeight, cells);
+            // Make cells the same shape (skip null placeholders for spanning)
+            for (var i = 0; i < cells.Count; i++)
+            {
+                if (cells[i].Lines != null && cells[i].Lines?.Count < cellHeight)
+                {
+                    var lines = cells[i].Lines;
+                    while (lines?.Count < cellHeight)
+                    {
+                        lines.Add(new SegmentLine());
+                    }
+                }
+            }
+
+            // Determine the indices of the first and last non-null cells
+            // to correctly apply border edges when spanning cells create trailing nulls.
+            var firstNonNullIndex = cells.FindIndex(c => c.Lines != null);
+            var lastNonNullIndex = cells.FindLastIndex(c => c.Lines != null);
 
             // Iterate through each cell row
             foreach (var cellRowIndex in Enumerable.Range(0, cellHeight))
             {
                 var rowResult = new List<Segment>();
 
-                foreach (var (cellIndex, isFirstCell, isLastCell, cell) in cells.Enumerate())
+                foreach (var (cellIndex, _, _, cellData) in cells.Enumerate())
                 {
+                    // Skip cells that are part of a span from a previous cell
+                    if (cellData.Lines == null)
+                    {
+                        continue;
+                    }
+
+                    var isFirstCell = cellIndex == firstNonNullIndex;
+                    var isLastCell = cellIndex == lastNonNullIndex;
+                    var actualColumnIndex = cellData.ColumnIndex;
+                    var cell = cellData.Lines;
+                    var cellWidth = cellData.Width;
+                    var cellSpan = cellData.Span;
+
                     if (isFirstCell && context.ShowBorder)
                     {
                         // Show left column edge
@@ -83,7 +158,7 @@ internal static class TableRenderer
                     // Pad column on left side.
                     if (context.ShowBorder || context.IsGrid)
                     {
-                        var leftPadding = context.Columns[cellIndex].Padding.GetLeftSafe();
+                        var leftPadding = context.Columns[actualColumnIndex].Padding.GetLeftSafe();
                         if (leftPadding > 0)
                         {
                             rowResult.Add(new Segment(new string(' ', leftPadding)));
@@ -95,16 +170,17 @@ internal static class TableRenderer
 
                     // Pad cell content right
                     var length = cell[cellRowIndex].Sum(segment => segment.CellCount());
-                    if (length < columnWidths[cellIndex])
+                    if (length < cellWidth)
                     {
-                        rowResult.Add(new Segment(new string(' ', columnWidths[cellIndex] - length)));
+                        rowResult.Add(new Segment(new string(' ', cellWidth - length)));
                     }
 
-                    // Pad column on the right side
+                    // Pad column on the right side (use the LAST column in the span)
+                    var rightColumnIndex = actualColumnIndex + cellSpan - 1;
                     if (context.ShowBorder || (context.HideBorder && !isLastCell) ||
                         (context.HideBorder && isLastCell && context.IsGrid && context.PadRightCell))
                     {
-                        var rightPadding = context.Columns[cellIndex].Padding.GetRightSafe();
+                        var rightPadding = context.Columns[rightColumnIndex].Padding.GetRightSafe();
                         if (rightPadding > 0)
                         {
                             rowResult.Add(new Segment(new string(' ', rightPadding)));
@@ -122,6 +198,7 @@ internal static class TableRenderer
                     else if (context.ShowBorder)
                     {
                         // Add column separator
+                        // We should ALWAYS add separator after a cell, unless this is the last cell
                         var part = isFirstRow && context.ShowHeaders
                             ? TableBorderPart.HeaderSeparator
                             : TableBorderPart.CellSeparator;

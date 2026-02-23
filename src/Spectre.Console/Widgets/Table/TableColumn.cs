@@ -5,15 +5,42 @@ namespace Spectre.Console;
 /// </summary>
 public sealed class TableColumn : IColumn
 {
+    private IRenderable _header = null!;
+    private IRenderable? _footer;
+
     /// <summary>
     /// Gets or sets the column header.
     /// </summary>
-    public IRenderable Header { get; set; }
+    public IRenderable Header
+    {
+        get => _header;
+        set
+        {
+            if (value is TableCell cell && cell.ColumnSpan > 1)
+            {
+                throw new InvalidOperationException("Column spanning is not supported in table header rows.");
+            }
+
+            _header = value ?? throw new ArgumentNullException(nameof(value));
+        }
+    }
 
     /// <summary>
     /// Gets or sets the column footer.
     /// </summary>
-    public IRenderable? Footer { get; set; }
+    public IRenderable? Footer
+    {
+        get => _footer;
+        set
+        {
+            if (value is TableCell cell && cell.ColumnSpan > 1)
+            {
+                throw new InvalidOperationException("Column spanning is not supported in table footer rows.");
+            }
+
+            _footer = value;
+        }
+    }
 
     /// <summary>
     /// Gets or sets the width of the column.

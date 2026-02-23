@@ -96,7 +96,7 @@ public sealed class TableTests
 
             // Then
             result.ShouldBeOfType<InvalidOperationException>();
-            result.Message.ShouldBe("The number of row columns are greater than the number of table columns.");
+            result.Message.ShouldBe("The number of row columns (including spans) are greater than the number of table columns. Expected 1 but got 2.");
         }
     }
 
@@ -138,6 +138,193 @@ public sealed class TableTests
 
         // Then
         return Verifier.Verify(console.Output);
+    }
+
+    public sealed class ColumnSpanning
+    {
+        [Fact]
+        [Expectation("Render_ColumnSpan_2")]
+        public Task Should_Render_Table_With_2_Column_Span()
+        {
+            // Given
+            var console = new TestConsole().Width(80);
+            var table = new Table();
+            table.AddColumns("Col1", "Col2", "Col3", "Col4");
+            table.AddRow(new IRenderable[] { new Markup("A"), new TableCell("B spans 2").Span(2), new Markup("D") });
+            table.AddRow("E", "F", "G", "H");
+
+            // When
+            console.Write(table);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("Render_ColumnSpan_3")]
+        public Task Should_Render_Table_With_3_Column_Span()
+        {
+            // Given
+            var console = new TestConsole().Width(80);
+            var table = new Table();
+            table.AddColumns("Item", "Qty", "Unit Price", "Total");
+            table.AddRow("Item A", "5", "20", "100");
+            table.AddRow(new IRenderable[] { new Markup("Item B"), new TableCell("Note: deliver after 5pm").Span(3) });
+            table.AddRow("Item C", "3", "15", "45");
+
+            // When
+            console.Write(table);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("Render_ColumnSpan_All")]
+        public Task Should_Render_Table_With_Full_Row_Span()
+        {
+            // Given
+            var console = new TestConsole().Width(80);
+            var table = new Table();
+            table.AddColumns("Col1", "Col2", "Col3");
+            table.AddRow("A", "B", "C");
+            table.AddRow(new TableCell("Full width spanning cell").Span(3));
+            table.AddRow("D", "E", "F");
+
+            // When
+            console.Write(table);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("Render_ColumnSpan_LeftAligned")]
+        public Task Should_Render_Spanned_Cell_LeftAligned()
+        {
+            // Given
+            var console = new TestConsole().Width(80);
+            var table = new Table();
+            table.AddColumn(new TableColumn("Left") { Alignment = Justify.Left });
+            table.AddColumn(new TableColumn("Center") { Alignment = Justify.Center });
+            table.AddColumn(new TableColumn("Right") { Alignment = Justify.Right });
+            table.AddRow(new IRenderable[] { new Markup("A"), new TableCell("Spanned").Span(2) });
+            table.AddRow("D", "E", "F");
+
+            // When
+            console.Write(table);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("Render_ColumnSpan_Multiple")]
+        public Task Should_Render_Table_With_Multiple_Spans_In_Row()
+        {
+            // Given
+            var console = new TestConsole().Width(80);
+            var table = new Table();
+            table.AddColumns("Col1", "Col2", "Col3", "Col4", "Col5");
+            table.AddRow(new IRenderable[] { new TableCell("Span1").Span(2), new TableCell("Span2").Span(2), new Markup("E") });
+            table.AddRow("A", "B", "C", "D", "E");
+
+            // When
+            console.Write(table);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        public void Should_Throw_When_Span_Exceeds_Column_Count()
+        {
+            // Given
+            var table = new Table();
+            table.AddColumns("Col1", "Col2", "Col3");
+
+            // When
+            var result = Record.Exception(() => table.AddRow(new TableCell("Too wide").Span(4)));
+
+            // Then
+            result.ShouldBeOfType<InvalidOperationException>();
+            result.Message.ShouldContain("greater than the number of table columns");
+        }
+
+        [Fact]
+        public void Should_Throw_When_Span_Is_Less_Than_1()
+        {
+            // Given, When
+            var result = Record.Exception(() => new TableCell("Test").Span(0));
+
+            // Then
+            result.ShouldBeOfType<ArgumentException>();
+            result.Message.ShouldContain("Column span must be at least 1");
+        }
+
+        [Fact]
+        public void Should_Throw_When_Spanning_In_Header()
+        {
+            // Given/When
+            var result = Record.Exception(() => new TableColumn(new TableCell("Header").Span(2)));
+
+            // Then
+            result.ShouldBeOfType<InvalidOperationException>();
+            result.Message.ShouldContain("Column spanning is not supported in table header rows");
+        }
+
+        [Fact]
+        public void Should_Throw_When_Spanning_In_Footer()
+        {
+            // Given
+            var table = new Table();
+            table.AddColumns("Col1", "Col2");
+            var column = table.Columns[0];
+
+            // When
+            var result = Record.Exception(() => column.Footer = new TableCell("Footer").Span(2));
+
+            // Then
+            result.ShouldBeOfType<InvalidOperationException>();
+            result.Message.ShouldContain("Column spanning is not supported in table footer rows");
+        }
+
+        [Fact]
+        [Expectation("Render_ColumnSpan_NoBorder")]
+        public Task Should_Render_Spanned_Cells_Without_Border()
+        {
+            // Given
+            var console = new TestConsole().Width(80);
+            var table = new Table();
+            table.Border = TableBorder.None;
+            table.AddColumns("Col1", "Col2", "Col3");
+            table.AddRow(new IRenderable[] { new Markup("A"), new TableCell("Spanned").Span(2) });
+            table.AddRow("D", "E", "F");
+
+            // When
+            console.Write(table);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+
+        [Fact]
+        [Expectation("Render_ColumnSpan_Multiline")]
+        public Task Should_Render_Multiline_Spanned_Cell()
+        {
+            // Given
+            var console = new TestConsole().Width(80);
+            var table = new Table();
+            table.AddColumns("Col1", "Col2", "Col3");
+            table.AddRow(new IRenderable[] { new Markup("A"), new TableCell("Line 1\nLine 2\nLine 3").Span(2) });
+            table.AddRow("D", "E", "F");
+
+            // When
+            console.Write(table);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
     }
 
     [Fact]

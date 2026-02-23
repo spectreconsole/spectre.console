@@ -38,6 +38,13 @@ public sealed class TableRow : IEnumerable<IRenderable>
     {
         _items = new List<IRenderable>(items ?? []);
 
+        // Reject column spanning in header or footer rows
+        if ((isHeader || isFooter) && _items.OfType<TableCell>().Any(cell => cell.ColumnSpan > 1))
+        {
+            var rowType = isHeader ? "header" : "footer";
+            throw new InvalidOperationException($"Column spanning is not supported in table {rowType} rows.");
+        }
+
         IsHeader = isHeader;
         IsFooter = isFooter;
     }
