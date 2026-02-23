@@ -61,7 +61,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     /// <summary>
     /// Gets or sets the default value input method. Defaults to true which places the default value in the input buffer.
     /// </summary>
-    public bool DefaultInput { get; set; } = true;
+    public bool DefaultInput { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether or not an empty result is valid.
