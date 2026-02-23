@@ -133,9 +133,9 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
             while (true)
             {
                 string input;
-                if (DefaultInput)
+                if (DefaultInput && DefaultValue != null)
                 {
-                    input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken, converter(DefaultValue.Value).ToString()).ConfigureAwait(false);
+                    input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken, converter(DefaultValue.Value)).ConfigureAwait(false);
                 }
                 else
                 {
