@@ -1,4 +1,4 @@
-namespace Spectre.Console.Internal.Text;
+namespace Spectre.Console;
 
 internal ref struct WhiteSpaceSegmentEnumerator
 {

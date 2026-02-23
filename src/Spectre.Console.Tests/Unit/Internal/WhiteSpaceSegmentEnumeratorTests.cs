@@ -1,5 +1,3 @@
-using Spectre.Console.Internal.Text;
-
 namespace Spectre.Console.Tests.Unit.Internal;
 
 public class WhiteSpaceSegmentEnumeratorTests
