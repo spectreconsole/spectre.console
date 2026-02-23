@@ -13,7 +13,7 @@ public sealed class TableCell : IRenderable
     /// <summary>
     /// Gets the number of columns this cell spans.
     /// </summary>
-    public int ColumnSpan { get; private set; }
+    public int ColumnSpan { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TableCell"/> class.
@@ -28,9 +28,9 @@ public sealed class TableCell : IRenderable
     /// <summary>
     /// Initializes a new instance of the <see cref="TableCell"/> class.
     /// </summary>
-    /// <param name="content">The cell content.</param>
-    public TableCell(string content)
-        : this(new Markup(content ?? string.Empty))
+    /// <param name="markup">Markup text.</param>
+    public TableCell(string markup)
+        : this(new Markup(markup ?? string.Empty))
     {
     }
 
@@ -53,10 +53,10 @@ public sealed class TableCell : IRenderable
     /// <summary>
     /// Implicitly converts a <see cref="string"/> to a <see cref="TableCell"/>.
     /// </summary>
-    /// <param name="text">The text to convert.</param>
-    public static implicit operator TableCell(string text)
+    /// <param name="markup">The markup text to convert.</param>
+    public static implicit operator TableCell(string markup)
     {
-        return new TableCell(text);
+        return new TableCell(markup);
     }
 
     /// <inheritdoc/>

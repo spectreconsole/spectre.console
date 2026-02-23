@@ -21,7 +21,7 @@ public sealed class TableColumn : IColumn
                 throw new InvalidOperationException("Column spanning is not supported in table header rows.");
             }
 
-            _header = value;
+            _header = value ?? throw new ArgumentNullException(nameof(value));
         }
     }
 
