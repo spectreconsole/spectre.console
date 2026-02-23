@@ -23,7 +23,6 @@ jobs:
 
   build:
     name: Publish NuGet Packages
-    if: "!contains(github.event.head_commit.message, 'skip-ci') || startsWith(github.ref, 'refs/tags/')"
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -36,14 +35,7 @@ jobs:
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Setup .NET SDK (net8.0, net9.0)
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: |
-            8.0.x
-            9.0.x
+          allow-no-subscriptions: true
 
       - name: Setup .NET SDK (global.json)
         uses: actions/setup-dotnet@v5
@@ -53,6 +45,6 @@ jobs:
         run: |
           dotnet tool restore
           dotnet make publish --sign \
-            --nuget-key="${{secrets.NUGET_API_KEY}}" \
+            --nuget-key="${{secrets.NUGET_SIGNING_API_KEY}}" \
             --keyvaultUrl="${{secrets.SIGN_KEYVAULT_URL}}" \
             --keyvaultCertificate="${{secrets.SIGN_KEYVAULT_CERTIFICATE}}"

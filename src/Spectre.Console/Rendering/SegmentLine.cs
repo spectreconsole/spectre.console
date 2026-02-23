@@ -41,10 +41,7 @@ public sealed class SegmentLine : List<Segment>
     /// <param name="segment">The segment to prepend.</param>
     public void Prepend(Segment segment)
     {
-        if (segment is null)
-        {
-            throw new System.ArgumentNullException(nameof(segment));
-        }
+        ArgumentNullException.ThrowIfNull(segment);
 
         Insert(0, segment);
     }

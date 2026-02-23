@@ -1,37 +1,39 @@
-using static Spectre.Console.AnsiSequences;
-
 namespace Spectre.Console;
 
 internal sealed class AnsiConsoleBackend : IAnsiConsoleBackend
 {
     private readonly IAnsiConsole _console;
+    private readonly AnsiWriter _writer;
 
     public IAnsiConsoleCursor Cursor { get; }
+    public Capabilities Capabilities => _console.Profile.Capabilities;
 
     public AnsiConsoleBackend(IAnsiConsole console)
     {
         _console = console ?? throw new ArgumentNullException(nameof(console));
+        _writer = new AnsiWriter(_console.Profile.Out.Writer, _console.Profile.Capabilities);
+
         Cursor = new AnsiConsoleCursor(this);
     }
 
     public void Clear(bool home)
     {
-        Write(new ControlCode(ED(2)));
-        Write(new ControlCode(ED(3)));
+        Write(w => w.EraseInDisplay(2));
+        Write(w => w.ClearScrollback());
 
         if (home)
         {
-            Write(new ControlCode(CUP(1, 1)));
+            Write(w => w.CursorPosition(1, 1));
         }
     }
 
     public void Write(IRenderable renderable)
     {
-        var result = AnsiBuilder.Build(_console, renderable);
-        if (result?.Length > 0)
-        {
-            _console.Profile.Out.Writer.Write(result);
-            _console.Profile.Out.Writer.Flush();
-        }
+        _writer.Write(_console, renderable);
+    }
+
+    public void Write(Action<AnsiWriter> action)
+    {
+        action(_writer);
     }
 }

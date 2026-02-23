@@ -38,8 +38,8 @@ public sealed class SegmentTests
             // Then
             first.Text.ShouldBe(expectedFirst);
             first.Style.ShouldBe(style);
-            second?.Text?.ShouldBe(expectedSecond);
-            second?.Style?.ShouldBe(style);
+            second?.Text.ShouldBe(expectedSecond);
+            second?.Style.ShouldBe(style);
         }
     }
 
@@ -50,16 +50,15 @@ public sealed class SegmentTests
         {
             // Given, When
             var lines = Segment.SplitLines(
-                new[]
-                {
-                        new Segment("Foo"),
+            [
+                new Segment("Foo"),
                         new Segment("Bar"),
                         new Segment("\n"),
                         new Segment("Baz"),
                         new Segment("Qux"),
                         new Segment("\n"),
-                        new Segment("Corgi"),
-                });
+                        new Segment("Corgi")
+            ]);
 
             // Then
             lines.Count.ShouldBe(3);
@@ -81,16 +80,15 @@ public sealed class SegmentTests
         {
             // Given, When
             var lines = Segment.SplitLines(
-                new[]
-                {
-                        new Segment("Foo"),
+            [
+                new Segment("Foo"),
                         new Segment("Bar"),
                         new Segment("\r\n"),
                         new Segment("Baz"),
                         new Segment("Qux"),
                         new Segment("\r\n"),
-                        new Segment("Corgi"),
-                });
+                        new Segment("Corgi")
+            ]);
 
             // Then
             lines.Count.ShouldBe(3);
@@ -112,14 +110,13 @@ public sealed class SegmentTests
         {
             // Given, Given
             var lines = Segment.SplitLines(
-                new[]
-                {
-                        new Segment("Foo\n"),
+            [
+                new Segment("Foo\n"),
                         new Segment("Bar\n"),
                         new Segment("Baz"),
                         new Segment("Qux\n"),
-                        new Segment("Corgi"),
-                });
+                        new Segment("Corgi")
+            ]);
 
             // Then
             lines.Count.ShouldBe(4);
@@ -136,6 +133,41 @@ public sealed class SegmentTests
 
             lines[3].Count.ShouldBe(1);
             lines[3][0].Text.ShouldBe("Corgi");
+        }
+    }
+
+    public sealed class TheSplitOverflowMethod
+    {
+        [Fact]
+        public void Should_Handle_Fullwidth_Text_When_Using_Ellipsis()
+        {
+            // Given
+            var text = "神様達が下界に来る前は、魔法は特定の種族の専売特許に過ぎなかった。";
+            var segment = new Segment(text);
+
+            // When
+            var result = Segment.SplitOverflow(segment, Overflow.Ellipsis, 10);
+
+            // Then
+            result.Count.ShouldBe(1);
+            result[0].CellCount().ShouldBeLessThanOrEqualTo(10);
+            result[0].Text.EndsWith("…", StringComparison.Ordinal).ShouldBeTrue();
+        }
+
+        [Fact]
+        public void Should_Handle_Fullwidth_Text_When_Using_Crop()
+        {
+            // Given
+            var text = "神様達が下界に来る前は、魔法は特定の種族の専売特許に過ぎなかった。";
+            var segment = new Segment(text);
+
+            // When
+            var result = Segment.SplitOverflow(segment, Overflow.Crop, 10);
+
+            // Then
+            result.Count.ShouldBe(1);
+            result[0].CellCount().ShouldBeLessThanOrEqualTo(10);
+            result[0].Text.EndsWith("…", StringComparison.Ordinal).ShouldBeFalse();
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace Spectre.Console.Extensions;
+namespace Spectre.Console;
 
 /// <summary>
 /// Provides extension methods for running tasks with a spinner animation.
@@ -13,8 +13,11 @@ public static class SpinnerExtensions
     /// <param name="style">The style to apply to the spinner.</param>
     /// <param name="ansiConsole">The console to write to.</param>
     /// <returns>The result of the task.</returns>
-    public static async Task Spinner(this Task task, Spinner? spinner = null, Style? style = null, IAnsiConsole? ansiConsole = null)
+    public static async Task Spinner(this Task task, Spinner? spinner = null, Style? style = null,
+        IAnsiConsole? ansiConsole = null)
     {
+        ArgumentNullException.ThrowIfNull(task);
+
         await SpinnerInternal<object>(task, spinner ?? Console.Spinner.Known.Default, style, ansiConsole);
     }
 
@@ -27,12 +30,16 @@ public static class SpinnerExtensions
     /// <param name="style">The style to apply to the spinner.</param>
     /// <param name="ansiConsole">The console to write to.</param>
     /// <returns>The result of the task.</returns>
-    public static async Task<T> Spinner<T>(this Task<T> task, Spinner? spinner = null, Style? style = null, IAnsiConsole? ansiConsole = null)
+    public static async Task<T> Spinner<T>(this Task<T> task, Spinner? spinner = null, Style? style = null,
+        IAnsiConsole? ansiConsole = null)
     {
+        ArgumentNullException.ThrowIfNull(task);
+
         return (await SpinnerInternal<T>(task, spinner ?? Console.Spinner.Known.Default, style, ansiConsole))!;
     }
 
-    private static async Task<T?> SpinnerInternal<T>(Task task, Spinner spinner, Style? style = null, IAnsiConsole? ansiConsole = null)
+    private static async Task<T?> SpinnerInternal<T>(Task task, Spinner spinner, Style? style = null,
+        IAnsiConsole? ansiConsole = null)
     {
         ansiConsole ??= AnsiConsole.Console;
 
@@ -43,21 +50,21 @@ public static class SpinnerExtensions
         // Start spinner animation in background
         var spinnerTask = Task.Run(
             async () =>
-        {
-            while (!cancellationTokenSource.Token.IsCancellationRequested)
             {
-                ansiConsole.Cursor.Show(false);
+                while (!cancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    ansiConsole.Cursor.Show(false);
 
-                var spinnerFrame = spinner.Frames[currentFrame];
+                    var spinnerFrame = spinner.Frames[currentFrame];
 
-                // Write the spinner frame
-                ansiConsole.Write(new Text(spinnerFrame, style));
-                ansiConsole.Write(new ControlCode(AnsiSequences.CUB(spinnerFrame.Length)));
+                    // Write the spinner frame
+                    ansiConsole.Write(new Text(spinnerFrame, style));
+                    ansiConsole.WriteAnsi(w => w.CursorLeft(spinnerFrame.Length));
 
-                currentFrame = (currentFrame + 1) % spinner.Frames.Count;
-                await Task.Delay(spinner.Interval, cancellationTokenSource.Token);
-            }
-        }, cancellationTokenSource.Token);
+                    currentFrame = (currentFrame + 1) % spinner.Frames.Count;
+                    await Task.Delay(spinner.Interval, cancellationTokenSource.Token);
+                }
+            }, cancellationTokenSource.Token);
 
         try
         {
@@ -84,7 +91,7 @@ public static class SpinnerExtensions
             var spinnerFrame = spinner.Frames[currentFrame];
 
             ansiConsole.Write(new string(' ', spinnerFrame.Length));
-            ansiConsole.Write(new ControlCode(AnsiSequences.CUB(spinnerFrame.Length)));
+            ansiConsole.WriteAnsi(w => w.CursorLeft(spinnerFrame.Length));
             ansiConsole.Cursor.Show();
             await cancellationTokenSource.CancelAsync();
         }

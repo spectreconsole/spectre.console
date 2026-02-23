@@ -14,20 +14,12 @@ jobs:
 
   build:
     name: Build
-    if: "!contains(github.event.head_commit.message, 'skip-ci')"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
-      - name: Setup .NET SDK (net8.0, net9.0)
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: |
-            8.0.x
-            9.0.x
 
       - name: Setup .NET SDK (global.json)
         uses: actions/setup-dotnet@v5
@@ -40,7 +32,7 @@ jobs:
 
       - name: Upload Verify Test Results
         if: failure()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: verify-test-results
           path: |

@@ -222,17 +222,14 @@ public sealed class TableTests
 
     [Fact]
     [Expectation("Render_LeftAligned")]
-    public Task Should_Left_Align_Table_Correctly()
+    public Task Should_Left_Align_Table_By_Default()
     {
         // Given
         var console = new TestConsole();
-        var table = new Table();
-#pragma warning disable CS0618 // Type or member is obsolete
-        table.Alignment = Justify.Left;
-#pragma warning restore CS0618 // Type or member is obsolete
-        table.AddColumns("Foo", "Bar", "Baz");
-        table.AddRow("Qux", "Corgi", "Waldo");
-        table.AddRow("Grault", "Garply", "Fred");
+        var table = new Table()
+            .AddColumns("Foo", "Bar", "Baz")
+            .AddRow("Qux", "Corgi", "Waldo")
+            .AddRow("Grault", "Garply", "Fred");
 
         // When
         console.Write(table);
@@ -261,17 +258,16 @@ public sealed class TableTests
 
     [Fact]
     [Expectation("Render_Centered")]
-    public Task Should_Center_Table_Correctly()
+    public Task Should_Center_Table_Correctly_Using_Aligner()
     {
         // Given
         var console = new TestConsole();
-        var table = new Table();
-#pragma warning disable CS0618 // Type or member is obsolete
-        table.Alignment = Justify.Center;
-#pragma warning restore CS0618 // Type or member is obsolete
-        table.AddColumns("Foo", "Bar", "Baz");
-        table.AddRow("Qux", "Corgi", "Waldo");
-        table.AddRow("Grault", "Garply", "Fred");
+        var table = new Align(
+            new Table()
+                .AddColumns("Foo", "Bar", "Baz")
+                .AddRow("Qux", "Corgi", "Waldo")
+                .AddRow("Grault", "Garply", "Fred"),
+            HorizontalAlignment.Center);
 
         // When
         console.Write(table);
@@ -300,17 +296,16 @@ public sealed class TableTests
 
     [Fact]
     [Expectation("Render_RightAligned")]
-    public Task Should_Right_Align_Table_Correctly()
+    public Task Should_Right_Align_Table_Correctly_Using_Aligner()
     {
         // Given
         var console = new TestConsole();
-        var table = new Table();
-#pragma warning disable CS0618 // Type or member is obsolete
-        table.Alignment = Justify.Right;
-#pragma warning restore CS0618 // Type or member is obsolete
-        table.AddColumns("Foo", "Bar", "Baz");
-        table.AddRow("Qux", "Corgi", "Waldo");
-        table.AddRow("Grault", "Garply", "Fred");
+        var table = new Align(
+            new Table()
+                .AddColumns("Foo", "Bar", "Baz")
+                .AddRow("Qux", "Corgi", "Waldo")
+                .AddRow("Grault", "Garply", "Fred"),
+            HorizontalAlignment.Right);
 
         // When
         console.Write(table);
@@ -343,10 +338,16 @@ public sealed class TableTests
     {
         // A simple table
         var console = new TestConsole();
-        var table = new Table() { Border = TableBorder.Rounded };
+        var table = new Table()
+        {
+            Border = TableBorder.Rounded
+        };
         table.AddColumn("Foo");
         table.AddColumn("Bar");
-        table.AddColumn(new TableColumn("Baz") { Alignment = Justify.Right });
+        table.AddColumn(new TableColumn("Baz")
+        {
+            Alignment = Justify.Right
+        });
         table.AddRow("Qux\nQuuuuuux", "[blue]Corgi[/]", "Waldo");
         table.AddRow("Grault", "Garply", "Fred");
 
@@ -367,9 +368,18 @@ public sealed class TableTests
         // Given
         var console = new TestConsole();
         var table = new Table();
-        table.AddColumn(new TableColumn("Foo") { Alignment = Justify.Left });
-        table.AddColumn(new TableColumn("Bar") { Alignment = Justify.Right });
-        table.AddColumn(new TableColumn("Baz") { Alignment = Justify.Center });
+        table.AddColumn(new TableColumn("Foo")
+        {
+            Alignment = Justify.Left
+        });
+        table.AddColumn(new TableColumn("Bar")
+        {
+            Alignment = Justify.Right
+        });
+        table.AddColumn(new TableColumn("Baz")
+        {
+            Alignment = Justify.Center
+        });
         table.AddRow("Qux", "Corgi", "Waldo");
         table.AddRow("Grault", "Garply", "Lorem ipsum dolor sit amet");
 
@@ -386,7 +396,10 @@ public sealed class TableTests
     {
         // Given
         var console = new TestConsole();
-        var table = new Table() { Expand = true };
+        var table = new Table()
+        {
+            Expand = true
+        };
         table.AddColumns("Foo", "Bar", "Baz");
         table.AddRow("Qux", "Corgi", "Waldo");
         table.AddRow("Grault", "Garply", "Fred");
@@ -396,6 +409,32 @@ public sealed class TableTests
 
         // Then
         return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    public void Should_Not_Expand_Fixed_Width_Columns()
+    {
+        // Given
+        var console = new TestConsole().Width(40);
+        var table = new Table()
+            .Expand()
+            .HideHeaders()
+            .HideFooters();
+
+        table.AddColumn(new TableColumn("Time").Width(12));
+        table.AddColumn("Message");
+        table.AddRow("12:00", "Hello");
+
+        // When
+        console.Write(table);
+
+        // Then
+        var line = console.Lines.Single(l => l.Contains("12:00"));
+        var firstSeparator = line.IndexOf('│');
+        var secondSeparator = line.IndexOf('│', firstSeparator + 1);
+
+        var firstColumnWidth = secondSeparator - firstSeparator - 1;
+        firstColumnWidth.ShouldBe(14);
     }
 
     [Fact]
@@ -424,7 +463,10 @@ public sealed class TableTests
         var console = new TestConsole();
         var table = new Table();
         table.AddColumns("Foo", "Bar");
-        table.AddColumn(new TableColumn("Baz") { Padding = new Padding(3, 0, 2, 0) });
+        table.AddColumn(new TableColumn("Baz")
+        {
+            Padding = new Padding(3, 0, 2, 0)
+        });
         table.AddRow("Qux\nQuuux", "Corgi", "Waldo");
         table.AddRow("Grault", "Garply", "Fred");
 
@@ -443,7 +485,10 @@ public sealed class TableTests
         var console = new TestConsole();
         var table = new Table();
         table.AddColumns("Foo", "Bar");
-        table.AddColumn(new TableColumn("Baz") { Padding = new Padding(3, 0, 2, 0) });
+        table.AddColumn(new TableColumn("Baz")
+        {
+            Padding = new Padding(3, 0, 2, 0)
+        });
 
         // When
         console.Write(table);
@@ -496,7 +541,10 @@ public sealed class TableTests
     {
         // Given
         var console = new TestConsole();
-        var table = new Table { Border = TableBorder.Rounded };
+        var table = new Table
+        {
+            Border = TableBorder.Rounded
+        };
         table.Title = new TableTitle("Hello World");
         table.Caption = new TableTitle("Goodbye World");
         table.AddColumns("Foo", "Bar", "Baz");
@@ -516,13 +564,13 @@ public sealed class TableTests
     {
         // Given
         var console = new TestConsole();
-        var table = new Table { Border = TableBorder.Rounded };
-        table.LeftAligned();
-        table.Title = new TableTitle("Hello World");
-        table.Caption = new TableTitle("Goodbye World");
-        table.AddColumns("Foo", "Bar", "Baz");
-        table.AddRow("Qux", "Corgi", "Waldo");
-        table.AddRow("Grault", "Garply", "Fred");
+        var table = new Table()
+            .RoundedBorder()
+            .Title(new TableTitle("Hello World"))
+            .Caption(new TableTitle("Goodbye World"))
+            .AddColumns("Foo", "Bar", "Baz")
+            .AddRow("Qux", "Corgi", "Waldo")
+            .AddRow("Grault", "Garply", "Fred");
 
         // When
         console.Write(table);
@@ -533,17 +581,19 @@ public sealed class TableTests
 
     [Fact]
     [Expectation("Render_Title_Caption_Centered")]
-    public Task Should_Center_Table_With_Title_And_Caption_Correctly()
+    public Task Should_Center_Table_With_Title_And_Caption_Correctly_Using_Aligner()
     {
         // Given
         var console = new TestConsole();
-        var table = new Table { Border = TableBorder.Rounded };
-        table.Centered();
-        table.Title = new TableTitle("Hello World");
-        table.Caption = new TableTitle("Goodbye World");
-        table.AddColumns("Foo", "Bar", "Baz");
-        table.AddRow("Qux", "Corgi", "Waldo");
-        table.AddRow("Grault", "Garply", "Fred");
+        var table = new Align(
+            new Table()
+                .RoundedBorder()
+                .Title(new TableTitle("Hello World"))
+                .Caption(new TableTitle("Goodbye World"))
+                .AddColumns("Foo", "Bar", "Baz")
+                .AddRow("Qux", "Corgi", "Waldo")
+                .AddRow("Grault", "Garply", "Fred"),
+            HorizontalAlignment.Center);
 
         // When
         console.Write(table);
@@ -558,13 +608,15 @@ public sealed class TableTests
     {
         // Given
         var console = new TestConsole();
-        var table = new Table { Border = TableBorder.Rounded };
-        table.RightAligned();
-        table.Title = new TableTitle("Hello World");
-        table.Caption = new TableTitle("Goodbye World");
-        table.AddColumns("Foo", "Bar", "Baz");
-        table.AddRow("Qux", "Corgi", "Waldo");
-        table.AddRow("Grault", "Garply", "Fred");
+        var table = new Align(
+            new Table()
+                .RoundedBorder()
+                .Title(new TableTitle("Hello World"))
+                .Caption(new TableTitle("Goodbye World"))
+                .AddColumns("Foo", "Bar", "Baz")
+                .AddRow("Qux", "Corgi", "Waldo")
+                .AddRow("Grault", "Garply", "Fred"),
+            HorizontalAlignment.Right);
 
         // When
         console.Write(table);
@@ -579,7 +631,10 @@ public sealed class TableTests
     {
         // Given
         var console = new TestConsole();
-        var table = new Table { Border = TableBorder.Rounded };
+        var table = new Table
+        {
+            Border = TableBorder.Rounded
+        };
         table.Title = new TableTitle("hello world");
         table.Caption = new TableTitle("goodbye world");
         table.AddColumns("Foo", "Bar", "Baz");
@@ -702,7 +757,8 @@ public sealed class TableTests
         table.AddColumn(new TableColumn("Column1").Width(18));
         table.AddColumn(new TableColumn("Column2").Width(15));
         table.AddRow(
-            new Markup("[yellow]foo[/] [red]pneumonoultramicroscopicsilicovolcanoconiosis[/] [blue]bar[/]").Overflow(Overflow.Ellipsis),
+            new Markup("[yellow]foo[/] [red]pneumonoultramicroscopicsilicovolcanoconiosis[/] [blue]bar[/]").Overflow(
+                Overflow.Ellipsis),
             new Markup("[green]Short text[/]"));
 
         // When

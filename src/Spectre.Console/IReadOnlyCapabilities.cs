@@ -1,27 +1,10 @@
 namespace Spectre.Console;
 
 /// <summary>
-/// Represents (read-only) console capabilities.
+/// Represents (read-only) terminal capabilities.
 /// </summary>
-public interface IReadOnlyCapabilities
+public interface IReadOnlyCapabilities : IReadOnlyAnsiCapabilities
 {
-    /// <summary>
-    /// Gets the color system.
-    /// </summary>
-    ColorSystem ColorSystem { get; }
-
-    /// <summary>
-    /// Gets a value indicating whether or not
-    /// the console supports VT/ANSI control codes.
-    /// </summary>
-    bool Ansi { get; }
-
-    /// <summary>
-    /// Gets a value indicating whether or not
-    /// the console support links.
-    /// </summary>
-    bool Links { get; }
-
     /// <summary>
     /// Gets a value indicating whether or not
     /// this is a legacy console (cmd.exe) on an OS
@@ -30,14 +13,8 @@ public interface IReadOnlyCapabilities
     /// <remarks>
     /// Only relevant when running on Microsoft Windows.
     /// </remarks>
+    [Obsolete("This property will be removed in a future version")]
     bool Legacy { get; }
-
-    /// <summary>
-    /// Gets a value indicating whether or not
-    /// console output has been redirected.
-    /// </summary>
-    [Obsolete("Use Profile.Out.IsTerminal instead")]
-    bool IsTerminal { get; }
 
     /// <summary>
     /// Gets a value indicating whether

@@ -1,6 +1,6 @@
 namespace Spectre.Console;
 
-internal struct FileSize
+internal readonly struct FileSize
 {
     public double Bytes { get; }
     public double Bits => Bytes * 8;

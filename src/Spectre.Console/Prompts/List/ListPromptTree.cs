@@ -8,7 +8,7 @@ internal sealed class ListPromptTree<T>
 
     public ListPromptTree(IEqualityComparer<T> comparer)
     {
-        _roots = new List<ListPromptItem<T>>();
+        _roots = [];
         _comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
     }
 

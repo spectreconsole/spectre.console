@@ -28,13 +28,16 @@ public class CanvasTests
         }
     }
 
-    [Fact]
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
     [Expectation("Render")]
-    public async Task Should_Render_Canvas_Correctly()
+    public async Task Should_Render_Canvas_Correctly(bool supportsUnicode)
     {
         // Given
         var console = new TestConsole()
             .Colors(ColorSystem.Standard)
+            .SupportsUnicode(supportsUnicode)
             .EmitAnsiSequences();
 
         var canvas = new Canvas(width: 5, height: 5);
@@ -47,16 +50,21 @@ public class CanvasTests
         console.Write(canvas);
 
         // Then
-        await Verifier.Verify(console.Output);
+        await Verifier
+            .Verify(console.Output)
+            .UseMethodName(supportsUnicode ? "Unicode" : "NonUnicode");
     }
 
-    [Fact]
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
     [Expectation("Render_Nested")]
-    public async Task Simple_Measure()
+    public async Task Simple_Measure(bool supportsUnicode)
     {
         // Given
         var console = new TestConsole()
             .Colors(ColorSystem.Standard)
+            .SupportsUnicode(supportsUnicode)
             .EmitAnsiSequences();
 
         var panel = new Panel(new Canvas(width: 2, height: 2)
@@ -67,17 +75,22 @@ public class CanvasTests
         console.Write(panel);
 
         // Then
-        await Verifier.Verify(console.Output);
+        await Verifier
+            .Verify(console.Output)
+            .UseMethodName(supportsUnicode ? "Unicode" : "NonUnicode");
     }
 
-    [Fact]
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
     [Expectation("Render_NarrowTerminal")]
-    public async Task Should_Scale_Down_Canvas_Is_Bigger_Than_Terminal()
+    public async Task Should_Scale_Down_Canvas_Is_Bigger_Than_Terminal(bool supportsUnicode)
     {
         // Given
         var console = new TestConsole()
             .Width(10)
             .Colors(ColorSystem.Standard)
+            .SupportsUnicode(supportsUnicode)
             .EmitAnsiSequences();
 
         var canvas = new Canvas(width: 20, height: 10);
@@ -88,19 +101,27 @@ public class CanvasTests
         console.Write(canvas);
 
         // Then
-        await Verifier.Verify(console.Output);
+        await Verifier
+            .Verify(console.Output)
+            .UseMethodName(supportsUnicode ? "Unicode" : "NonUnicode");
     }
 
-    [Fact]
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
     [Expectation("Render_MaxWidth")]
-    public async Task Should_Scale_Down_Canvas_If_MaxWidth_Is_Set()
+    public async Task Should_Scale_Down_Canvas_If_MaxWidth_Is_Set(bool supportsUnicode)
     {
         // Given
         var console = new TestConsole()
             .Colors(ColorSystem.Standard)
+            .SupportsUnicode(supportsUnicode)
             .EmitAnsiSequences();
 
-        var canvas = new Canvas(width: 20, height: 10) { MaxWidth = 10 };
+        var canvas = new Canvas(width: 20, height: 10)
+        {
+            MaxWidth = 10
+        };
         canvas.SetPixel(0, 0, Color.Aqua);
         canvas.SetPixel(19, 9, Color.Aqua);
 
@@ -108,16 +129,22 @@ public class CanvasTests
         console.Write(canvas);
 
         // Then
-        await Verifier.Verify(console.Output);
+        await Verifier
+            .Verify(console.Output)
+            .UseMethodName(supportsUnicode ? "Unicode" : "NonUnicode");
     }
 
-    [Fact]
-    public void Should_Not_Render_Canvas_If_Canvas_Cannot_Be_Scaled_Down()
+    [Theory]
+    [InlineData(true, 5)]
+    [InlineData(false, 10)]
+    public void Should_Not_Render_Canvas_If_Canvas_Cannot_Be_Scaled_Down(
+        bool supportsUnicode, int consoleWidth)
     {
         // Given
         var console = new TestConsole()
-            .Width(10)
+            .Width(consoleWidth)
             .Colors(ColorSystem.Standard)
+            .SupportsUnicode(supportsUnicode)
             .EmitAnsiSequences();
 
         var canvas = new Canvas(width: 20, height: 2);

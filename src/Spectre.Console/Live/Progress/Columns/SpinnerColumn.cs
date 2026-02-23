@@ -102,12 +102,12 @@ public sealed class SpinnerColumn : ProgressColumn
 
         if (!task.IsStarted)
         {
-            return new Markup(PendingText ?? " ", PendingStyle ?? Style.Plain);
+            return new Markup(PendingText ?? " ", PendingStyle ?? Spectre.Console.Style.Plain);
         }
 
         if (task.IsFinished)
         {
-            return new Markup(CompletedText ?? " ", CompletedStyle ?? Style.Plain);
+            return new Markup(CompletedText ?? " ", CompletedStyle ?? Spectre.Console.Style.Plain);
         }
 
         var accumulated = task.State.Update<double>(ACCUMULATED, acc => acc + deltaTime.TotalMilliseconds);
@@ -119,7 +119,7 @@ public sealed class SpinnerColumn : ProgressColumn
 
         var index = task.State.Get<int>(INDEX);
         var frame = spinner.Frames[index % spinner.Frames.Count];
-        return new Markup(frame.EscapeMarkup(), Style ?? Style.Plain);
+        return new Markup(frame.EscapeMarkup(), Style ?? Spectre.Console.Style.Plain);
     }
 
     /// <inheritdoc/>
@@ -139,12 +139,61 @@ public sealed class SpinnerColumn : ProgressColumn
 
                 _maxWidth = Math.Max(
                     Math.Max(
-                    ((IRenderable)new Markup(PendingText ?? " ")).Measure(options, int.MaxValue).Max,
-                    ((IRenderable)new Markup(CompletedText ?? " ")).Measure(options, int.MaxValue).Max),
+                        ((IRenderable)new Markup(PendingText ?? " ")).Measure(options, int.MaxValue).Max,
+                        ((IRenderable)new Markup(CompletedText ?? " ")).Measure(options, int.MaxValue).Max),
                     spinner.Frames.Max(frame => Cell.GetCellLength(frame)));
             }
 
             return _maxWidth.Value;
         }
+    }
+}
+
+/// <summary>
+/// Contains extension methods for <see cref="SpinnerColumn"/>.
+/// </summary>
+public static class SpinnerColumnExtensions
+{
+    /// <summary>
+    /// Sets the style of the spinner.
+    /// </summary>
+    /// <param name="column">The column.</param>
+    /// <param name="style">The style.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static SpinnerColumn Style(this SpinnerColumn column, Style? style)
+    {
+        ArgumentNullException.ThrowIfNull(column);
+
+        column.Style = style;
+        return column;
+    }
+
+    /// <summary>
+    /// Sets the text that should be shown instead of the spinner
+    /// once a task completes.
+    /// </summary>
+    /// <param name="column">The column.</param>
+    /// <param name="text">The text.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static SpinnerColumn CompletedText(this SpinnerColumn column, string? text)
+    {
+        ArgumentNullException.ThrowIfNull(column);
+
+        column.CompletedText = text;
+        return column;
+    }
+
+    /// <summary>
+    /// Sets the completed style of the spinner.
+    /// </summary>
+    /// <param name="column">The column.</param>
+    /// <param name="style">The style.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static SpinnerColumn CompletedStyle(this SpinnerColumn column, Style? style)
+    {
+        ArgumentNullException.ThrowIfNull(column);
+
+        column.CompletedStyle = style;
+        return column;
     }
 }

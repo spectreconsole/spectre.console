@@ -15,7 +15,7 @@ public sealed class LiveDisplayContext
         _console = console ?? throw new ArgumentNullException(nameof(console));
 
         Live = new LiveRenderable(_console, target);
-        Lock = new object();
+        Lock = new();
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public sealed class LiveDisplayContext
     {
         lock (Lock)
         {
-            _console.Write(new ControlCode(string.Empty));
+            _console.Write(ControlCode.Empty);
         }
     }
 

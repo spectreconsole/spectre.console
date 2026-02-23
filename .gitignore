@@ -17,6 +17,10 @@
 dotnet-install.sh*
 *.lock.json
 
+# Benchmarks
+**/BenchmarkDotNet.Artifacts/**/*.*
+!**/BenchmarkDotNet.Artifacts/**/*.md
+
 # Visual Studio
 .vs/
 .vscode/

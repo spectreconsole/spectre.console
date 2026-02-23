@@ -1,4 +1,4 @@
-namespace Spectre.Console.Internal;
+namespace Spectre.Console;
 
 internal sealed class EncoderCapabilities : IReadOnlyCapabilities
 {
@@ -10,6 +10,7 @@ internal sealed class EncoderCapabilities : IReadOnlyCapabilities
     public bool IsTerminal => false;
     public bool Interactive => false;
     public bool Unicode => true;
+    public bool AlternateBuffer => false;
 
     public EncoderCapabilities(ColorSystem colors)
     {

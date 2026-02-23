@@ -62,7 +62,7 @@ public sealed class Tree : Renderable, IHasTreeNodes
         var visitedNodes = new HashSet<TreeNode>();
 
         var stack = new Stack<Queue<TreeNode>>();
-        stack.Push(new Queue<TreeNode>(new[] { _root }));
+        stack.Push(new Queue<TreeNode>([_root]));
 
         var levels = new List<Segment>();
         levels.Add(GetGuide(options, TreeGuidePart.Continue));
@@ -130,6 +130,40 @@ public sealed class Tree : Renderable, IHasTreeNodes
     private Segment GetGuide(RenderOptions options, TreeGuidePart part)
     {
         var guide = Guide.GetSafeTreeGuide(safe: !options.Unicode);
-        return new Segment(guide.GetPart(part), Style ?? Style.Plain);
+        return new Segment(guide.GetPart(part), Style ?? Spectre.Console.Style.Plain);
+    }
+}
+
+/// <summary>
+/// Contains extension methods for <see cref="Tree"/>.
+/// </summary>
+public static class TreeExtensions
+{
+    /// <summary>
+    /// Sets the tree style.
+    /// </summary>
+    /// <param name="tree">The tree.</param>
+    /// <param name="style">The tree style.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Tree Style(this Tree tree, Style? style)
+    {
+        ArgumentNullException.ThrowIfNull(tree);
+
+        tree.Style = style;
+        return tree;
+    }
+
+    /// <summary>
+    /// Sets the tree guide line appearance.
+    /// </summary>
+    /// <param name="tree">The tree.</param>
+    /// <param name="guide">The tree guide lines to use.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Tree Guide(this Tree tree, TreeGuide guide)
+    {
+        ArgumentNullException.ThrowIfNull(tree);
+
+        tree.Guide = guide;
+        return tree;
     }
 }

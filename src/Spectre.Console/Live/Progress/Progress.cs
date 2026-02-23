@@ -6,6 +6,7 @@ namespace Spectre.Console;
 public sealed class Progress
 {
     private readonly IAnsiConsole _console;
+    private readonly TimeProvider _timeProvider;
 
     /// <summary>
     /// Gets or sets a optional custom render function.
@@ -46,17 +47,19 @@ public sealed class Progress
     /// Initializes a new instance of the <see cref="Progress"/> class.
     /// </summary>
     /// <param name="console">The console to render to.</param>
-    public Progress(IAnsiConsole console)
+    /// <param name="timeProvider">The time provider to use. Defaults to <see cref="TimeProvider.System"/>.</param>
+    public Progress(IAnsiConsole console, TimeProvider? timeProvider = null)
     {
         _console = console ?? throw new ArgumentNullException(nameof(console));
+        _timeProvider = timeProvider ?? TimeProvider.System;
 
         // Initialize with default columns
-        Columns = new List<ProgressColumn>
-            {
-                new TaskDescriptionColumn(),
-                new ProgressBarColumn(),
-                new PercentageColumn(),
-            };
+        Columns =
+        [
+            new TaskDescriptionColumn(),
+            new ProgressBarColumn(),
+            new PercentageColumn()
+        ];
     }
 
     /// <summary>
@@ -93,15 +96,12 @@ public sealed class Progress
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public async Task StartAsync(Func<ProgressContext, Task> action)
     {
-        if (action is null)
-        {
-            throw new ArgumentNullException(nameof(action));
-        }
+        ArgumentNullException.ThrowIfNull(action);
 
         _ = await StartAsync<object?>(async progressContext =>
         {
             await action(progressContext).ConfigureAwait(false);
-            return default;
+            return null;
         }).ConfigureAwait(false);
     }
 
@@ -113,10 +113,7 @@ public sealed class Progress
     /// <returns>A <see cref="Task{T}"/> representing the asynchronous operation.</returns>
     public async Task<T> StartAsync<T>(Func<ProgressContext, Task<T>> action)
     {
-        if (action is null)
-        {
-            throw new ArgumentNullException(nameof(action));
-        }
+        ArgumentNullException.ThrowIfNull(action);
 
         return await _console.RunExclusive(async () =>
         {
@@ -129,7 +126,7 @@ public sealed class Progress
             {
                 using (new RenderHookScope(_console, renderer))
                 {
-                    var context = new ProgressContext(_console, renderer);
+                    var context = new ProgressContext(_console, renderer, _timeProvider);
 
                     if (AutoRefresh)
                     {
@@ -167,7 +164,99 @@ public sealed class Progress
         }
         else
         {
-            return FallbackRenderer ?? new FallbackProgressRenderer();
+            return FallbackRenderer ?? new FallbackProgressRenderer(_timeProvider);
         }
+    }
+}
+
+/// <summary>
+/// Contains extension methods for <see cref="Progress"/>.
+/// </summary>
+public static class ProgressExtensions
+{
+    /// <summary>
+    /// Sets the columns to be used for an <see cref="Progress"/> instance.
+    /// </summary>
+    /// <param name="progress">The <see cref="Progress"/> instance.</param>
+    /// <param name="columns">The columns to use.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Progress Columns(this Progress progress, params ProgressColumn[] columns)
+    {
+        ArgumentNullException.ThrowIfNull(progress);
+
+        ArgumentNullException.ThrowIfNull(columns);
+
+        if (!columns.Any())
+        {
+            throw new InvalidOperationException("At least one column must be specified.");
+        }
+
+        progress.Columns.Clear();
+        progress.Columns.AddRange(columns);
+
+        return progress;
+    }
+
+    /// <summary>
+    /// Sets an optional hook to intercept rendering.
+    /// </summary>
+    /// <param name="progress">The <see cref="Progress"/> instance.</param>
+    /// <param name="renderHook">The custom render function.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Progress UseRenderHook(this Progress progress, Func<IRenderable, IReadOnlyList<ProgressTask>, IRenderable> renderHook)
+    {
+        progress.RenderHook = renderHook;
+
+        return progress;
+    }
+
+    /// <summary>
+    /// Sets whether or not auto refresh is enabled.
+    /// If disabled, you will manually have to refresh the progress.
+    /// </summary>
+    /// <param name="progress">The <see cref="Progress"/> instance.</param>
+    /// <param name="enabled">Whether or not auto refresh is enabled.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Progress AutoRefresh(this Progress progress, bool enabled)
+    {
+        ArgumentNullException.ThrowIfNull(progress);
+
+        progress.AutoRefresh = enabled;
+
+        return progress;
+    }
+
+    /// <summary>
+    /// Sets whether or not auto clear is enabled.
+    /// If enabled, the task tabled will be removed once
+    /// all tasks have completed.
+    /// </summary>
+    /// <param name="progress">The <see cref="Progress"/> instance.</param>
+    /// <param name="enabled">Whether or not auto clear is enabled.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Progress AutoClear(this Progress progress, bool enabled)
+    {
+        ArgumentNullException.ThrowIfNull(progress);
+
+        progress.AutoClear = enabled;
+
+        return progress;
+    }
+
+    /// <summary>
+    /// Sets whether or not hide completed is enabled.
+    /// If enabled, the task tabled will be removed once it is
+    /// completed.
+    /// </summary>
+    /// <param name="progress">The <see cref="Progress"/> instance.</param>
+    /// <param name="enabled">Whether or not hide completed is enabled.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Progress HideCompleted(this Progress progress, bool enabled)
+    {
+        ArgumentNullException.ThrowIfNull(progress);
+
+        progress.HideCompleted = enabled;
+
+        return progress;
     }
 }

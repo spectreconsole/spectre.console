@@ -15,7 +15,7 @@ public sealed class JsonArray : JsonSyntax
     /// </summary>
     public JsonArray()
     {
-        Items = new List<JsonSyntax>();
+        Items = [];
     }
 
     internal override void Accept<T>(JsonSyntaxVisitor<T> visitor, T context)

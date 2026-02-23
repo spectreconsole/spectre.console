@@ -11,20 +11,14 @@ internal static class ExceptionFormatter
 
     public static IRenderable Format(Exception exception, ExceptionSettings settings)
     {
-        if (exception is null)
-        {
-            throw new ArgumentNullException(nameof(exception));
-        }
+        ArgumentNullException.ThrowIfNull(exception);
 
         return GetException(exception, settings);
     }
 
     private static IRenderable GetException(Exception exception, ExceptionSettings settings)
     {
-        if (exception is null)
-        {
-            throw new ArgumentNullException(nameof(exception));
-        }
+        ArgumentNullException.ThrowIfNull(exception);
 
         return new Rows(GetMessage(exception, settings), GetStackFrames(exception, settings)).Expand();
     }
@@ -35,7 +29,7 @@ internal static class ExceptionFormatter
         var exceptionType = ex.GetType();
         var exceptionTypeName = TypeNameHelper.GetTypeDisplayName(exceptionType, fullName: !shortenTypes, includeSystemNamespace: true);
         var type = new StringBuilder();
-        Emphasize(type, exceptionTypeName, new[] { '.' }, settings.Style.Exception, shortenTypes, settings, limit: '<');
+        Emphasize(type, exceptionTypeName, ['.'], settings.Style.Exception, shortenTypes, settings, limit: '<');
 
         var message = $"[{settings.Style.Message.ToMarkup()}]{ex.Message.EscapeMarkup()}[/]";
         return new Markup($"{type}: {message}");
@@ -102,7 +96,7 @@ internal static class ExceptionFormatter
                 builder.Append(' ');
             }
 
-            Emphasize(builder, methodName, new[] { '.' }, styles.Method, shortenMethods, settings);
+            Emphasize(builder, methodName, ['.'], styles.Method, shortenMethods, settings);
             builder.AppendWithStyle(styles.Parenthesis, "(");
             AppendParameters(builder, method, settings);
             builder.AppendWithStyle(styles.Parenthesis, ")");
@@ -169,7 +163,7 @@ internal static class ExceptionFormatter
         void AppendPath()
         {
             var shortenPaths = (settings.Format & ExceptionFormats.ShortenPaths) != 0;
-            Emphasize(builder, path, new[] { '/', '\\' }, settings.Style.Path, shortenPaths, settings);
+            Emphasize(builder, path, ['/', '\\'], settings.Style.Path, shortenPaths, settings);
         }
 
         if ((settings.Format & ExceptionFormats.ShowLinks) != 0)
@@ -254,7 +248,7 @@ internal static class ExceptionFormatter
 
     private static IEnumerable<StackFrame> FilterStackFrames(this IEnumerable<StackFrame?>? frames)
     {
-        var allFrames = frames?.ToArray() ?? Array.Empty<StackFrame>();
+        var allFrames = frames?.ToArray() ?? [];
         var numberOfFrames = allFrames.Length;
 
         for (var i = 0; i < numberOfFrames; i++)

@@ -41,6 +41,14 @@ internal sealed class AnsiConsoleFacade : IAnsiConsole
         }
     }
 
+    public void WriteAnsi(Action<AnsiWriter> action)
+    {
+        lock (_renderLock)
+        {
+            GetBackend().Write(action);
+        }
+    }
+
     private IAnsiConsoleBackend GetBackend()
     {
         if (Profile.Capabilities.Ansi)

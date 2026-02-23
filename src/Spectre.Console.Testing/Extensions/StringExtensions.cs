@@ -18,7 +18,7 @@ public static class StringExtensions
         }
 
         var result = new List<string>();
-        foreach (var line in value.NormalizeLineEndings().Split(new[] { '\n' }))
+        foreach (var line in value.NormalizeLineEndings().Split(['\n']))
         {
             result.Add(line.TrimEnd());
         }

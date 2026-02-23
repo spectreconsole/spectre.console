@@ -3,33 +3,62 @@
   <PropertyGroup>
     <TargetFrameworks>net10.0;net9.0;net8.0;netstandard2.0</TargetFrameworks>
     <IsPackable>true</IsPackable>
-    <DefineConstants>$(DefineConstants)TRACE;WCWIDTH_VISIBILITY_INTERNAL</DefineConstants>
-    <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'" >true</IsAotCompatible>
+    <DefineConstants>$(DefineConstants)TRACE;WCWIDTH;WCWIDTH_VISIBILITY_INTERNAL</DefineConstants>
+    <IsAotCompatible Condition="'$(TargetFramework)' != 'netstandard2.0'">true</IsAotCompatible>
   </PropertyGroup>
 
   <ItemGroup Label="REMOVE THIS">
-    <InternalsVisibleTo Include="$(AssemblyName).Tests"/>
+    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Exclude the output of source generators from the compilation -->
+    <Compile Remove="$(CompilerGeneratedFilesOutputPath)/**/*.cs" />
   </ItemGroup>
 
   <ItemGroup Label="Standard Figlet font">
-    <EmbeddedResource Include="Widgets\Figlet\Fonts\Standard.flf"/>
-    <None Remove="Widgets\Figlet\Fonts\Standard.flf"/>
+    <EmbeddedResource Include="Widgets\Figlet\Fonts\Standard.flf" />
+    <None Remove="Widgets\Figlet\Fonts\Standard.flf" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Wcwidth.Sources" PrivateAssets="all" />
-    <PackageReference Include="System.Memory" Condition="'$(TargetFramework)' == 'netstandard2.0'"/>
+    <PackageReference Include="Microsoft.Bcl.TimeProvider" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+    <PackageReference Include="System.Memory" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
     <PackageReference Include="Polyfill" Condition="'$(TargetFramework)' == 'netstandard2.0'" PrivateAssets="all" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Backport.System.Threading.Lock">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>analyzers</IncludeAssets>
-    </PackageReference>
-    <Using Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))" Alias="Lock" Include="System.Threading.Lock" />
-    <Using Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))" Alias="Lock" Include="Backport.System.Threading.Lock" />
-    <Using Alias="LockFactory" Include="Backport.System.Threading.LockFactory" />
-  </ItemGroup>  
+  <ItemGroup Label="Source Generator">
+    <ProjectReference Include="..\Spectre.Console.Ansi\Spectre.Console.Ansi.csproj" />
+    <ProjectReference Include="..\Spectre.Console.SourceGenerator\Spectre.Console.SourceGenerator.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup Label="Generator Data Files">
+    <AdditionalFiles Include="Data\spinners_default.json" />
+    <AdditionalFiles Include="Data\spinners_sindresorhus.json" />
+
+    <!--
+    currently Emoji v17.
+    see data.raw.json at https://github.com/milesj/emojibase/tree/master/packages/data/en
+    -->
+    <AdditionalFiles Include="Data\emoji.json" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Backport.System.Threading.Lock">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>analyzers</IncludeAssets>
+		</PackageReference>
+		<Using Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))" Alias="Lock" Include="System.Threading.Lock" />
+		<Using Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))" Alias="Lock" Include="Backport.System.Threading.Lock" />
+		<Using Alias="LockFactory" Include="Backport.System.Threading.LockFactory" />
+	</ItemGroup>
 
 </Project>

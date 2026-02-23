@@ -23,15 +23,12 @@ public sealed class GridRow : IEnumerable<IRenderable>
     /// <param name="items">The row items.</param>
     public GridRow(IEnumerable<IRenderable> items)
     {
-        _items = new List<IRenderable>(items ?? Array.Empty<IRenderable>());
+        _items = new List<IRenderable>(items ?? []);
     }
 
     internal void Add(IRenderable item)
     {
-        if (item is null)
-        {
-            throw new ArgumentNullException(nameof(item));
-        }
+        ArgumentNullException.ThrowIfNull(item);
 
         _items.Add(item);
     }

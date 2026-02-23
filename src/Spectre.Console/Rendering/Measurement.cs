@@ -3,7 +3,7 @@ namespace Spectre.Console.Rendering;
 /// <summary>
 /// Represents a measurement.
 /// </summary>
-public struct Measurement : IEquatable<Measurement>
+public readonly struct Measurement : IEquatable<Measurement>
 {
     /// <summary>
     /// Gets the minimum width.

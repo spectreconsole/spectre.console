@@ -37,13 +37,18 @@ internal sealed class LegacyConsoleBackend : IAnsiConsoleBackend
                 continue;
             }
 
-            if (_lastStyle?.Equals(segment.Style) != true)
+            if (!_lastStyle.Equals(segment.Style))
             {
                 SetStyle(segment.Style);
             }
 
             _console.Profile.Out.Writer.Write(segment.Text.NormalizeNewLines(native: true));
         }
+    }
+
+    public void Write(Action<AnsiWriter> action)
+    {
+        // Do nothing. The backend is not capable of emitting ANSI/VT escape sequences.
     }
 
     private void SetStyle(Style style)

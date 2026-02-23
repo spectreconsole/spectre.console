@@ -36,15 +36,8 @@ public abstract partial class TableBorder
     /// <returns>A string representing the column row.</returns>
     public virtual string GetColumnRow(TablePart part, IReadOnlyList<int> widths, IReadOnlyList<IColumn> columns)
     {
-        if (widths is null)
-        {
-            throw new ArgumentNullException(nameof(widths));
-        }
-
-        if (columns is null)
-        {
-            throw new ArgumentNullException(nameof(columns));
-        }
+        ArgumentNullException.ThrowIfNull(widths);
+        ArgumentNullException.ThrowIfNull(columns);
 
         var (left, center, separator, right) = GetTableParts(part);
 
@@ -104,5 +97,29 @@ public abstract partial class TableBorder
             // Unknown
             _ => throw new NotSupportedException("Unknown column row part"),
         };
+    }
+}
+
+/// <summary>
+/// Contains extension methods for <see cref="TableBorder"/>.
+/// </summary>
+public static class TableBorderExtensions
+{
+    /// <summary>
+    /// Gets the safe border for a border.
+    /// </summary>
+    /// <param name="border">The border to get the safe border for.</param>
+    /// <param name="safe">Whether or not to return the safe border.</param>
+    /// <returns>The safe border if one exist, otherwise the original border.</returns>
+    public static TableBorder GetSafeBorder(this TableBorder border, bool safe)
+    {
+        ArgumentNullException.ThrowIfNull(border);
+
+        if (safe && border.SafeBorder != null)
+        {
+            border = border.SafeBorder;
+        }
+
+        return border;
     }
 }

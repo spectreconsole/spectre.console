@@ -15,7 +15,7 @@ public sealed class JsonObject : JsonSyntax
     /// </summary>
     public JsonObject()
     {
-        Members = new List<JsonMember>();
+        Members = [];
     }
 
     internal override void Accept<T>(JsonSyntaxVisitor<T> visitor, T context)

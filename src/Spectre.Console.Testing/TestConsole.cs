@@ -37,7 +37,7 @@ public sealed class TestConsole : IAnsiConsole, IDisposable
     /// <summary>
     /// Gets the console output lines.
     /// </summary>
-    public IReadOnlyList<string> Lines => Output.NormalizeLineEndings().TrimEnd('\n').Split(new char[] { '\n' });
+    public IReadOnlyList<string> Lines => Output.NormalizeLineEndings().TrimEnd('\n').Split(['\n']);
 
     /// <summary>
     /// Gets or sets a value indicating whether or not VT/ANSI sequences
@@ -106,6 +106,12 @@ public sealed class TestConsole : IAnsiConsole, IDisposable
                 Profile.Out.Writer.Write(segment.Text);
             }
         }
+    }
+
+    /// <inheritdoc/>
+    public void WriteAnsi(Action<AnsiWriter> action)
+    {
+        _console.WriteAnsi(action);
     }
 
     internal void SetCursor(IAnsiConsoleCursor? cursor)

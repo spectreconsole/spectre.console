@@ -30,7 +30,7 @@ public static class TestConsoleExtensions
         text = _filenameRegex.Replace(text, match =>
         {
             var value = match.Value;
-            var index = value.LastIndexOfAny(new[] { '\\', '/' });
+            var index = value.LastIndexOfAny(['\\', '/']);
             var filename = value.Substring(index + 1, value.Length - index - 1);
 
             return $" in /xyz/{filename}";

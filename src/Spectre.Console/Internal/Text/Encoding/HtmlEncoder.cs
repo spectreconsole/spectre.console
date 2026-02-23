@@ -1,4 +1,4 @@
-namespace Spectre.Console.Internal;
+namespace Spectre.Console;
 
 internal sealed class HtmlEncoder : IAnsiConsoleEncoder
 {
@@ -25,7 +25,7 @@ internal sealed class HtmlEncoder : IAnsiConsoleEncoder
                     continue;
                 }
 
-                var parts = segment.Text.Split(new[] { '\n' }, StringSplitOptions.None);
+                var parts = segment.Text.Split(['\n'], StringSplitOptions.None);
                 foreach (var (_, _, last, line) in parts.Enumerate())
                 {
                     if (string.IsNullOrEmpty(line))

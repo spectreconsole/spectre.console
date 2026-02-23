@@ -23,15 +23,16 @@ public sealed class CalendarTests
 
     [Fact]
     [Expectation("Centered")]
-    public Task Should_Center_Calendar_Correctly()
+    public Task Should_Center_Calendar_Correctly_Using_Aligner()
     {
         // Given
         var console = new TestConsole();
-        var calendar = new Calendar(2020, 10)
-            .Centered()
-            .AddCalendarEvent(new DateTime(2020, 9, 1))
-            .AddCalendarEvent(new DateTime(2020, 10, 3))
-            .AddCalendarEvent(new DateTime(2020, 10, 12));
+        var calendar = new Align(
+            new Calendar(2020, 10)
+                .AddCalendarEvent(new DateTime(2020, 9, 1))
+                .AddCalendarEvent(new DateTime(2020, 10, 3))
+                .AddCalendarEvent(new DateTime(2020, 10, 12)),
+            HorizontalAlignment.Center);
 
         // When
         console.Write(calendar);
@@ -42,12 +43,11 @@ public sealed class CalendarTests
 
     [Fact]
     [Expectation("LeftAligned")]
-    public Task Should_Left_Align_Calendar_Correctly()
+    public Task Should_Left_Align_Calendar_By_Default()
     {
         // Given
         var console = new TestConsole();
         var calendar = new Calendar(2020, 10)
-            .LeftAligned()
             .AddCalendarEvent(new DateTime(2020, 9, 1))
             .AddCalendarEvent(new DateTime(2020, 10, 3))
             .AddCalendarEvent(new DateTime(2020, 10, 12));
@@ -61,15 +61,16 @@ public sealed class CalendarTests
 
     [Fact]
     [Expectation("RightAligned")]
-    public Task Should_Right_Align_Calendar_Correctly()
+    public Task Should_Right_Align_Calendar_Correctly_Using_Aligner()
     {
         // Given
         var console = new TestConsole();
-        var calendar = new Calendar(2020, 10)
-            .RightAligned()
-            .AddCalendarEvent(new DateTime(2020, 9, 1))
-            .AddCalendarEvent(new DateTime(2020, 10, 3))
-            .AddCalendarEvent(new DateTime(2020, 10, 12));
+        var calendar = new Align(
+            new Calendar(2020, 10)
+                .AddCalendarEvent(new DateTime(2020, 9, 1))
+                .AddCalendarEvent(new DateTime(2020, 10, 3))
+                .AddCalendarEvent(new DateTime(2020, 10, 12)),
+            HorizontalAlignment.Right);
 
         // When
         console.Write(calendar);

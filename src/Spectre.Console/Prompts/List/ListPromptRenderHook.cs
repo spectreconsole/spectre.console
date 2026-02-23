@@ -17,7 +17,7 @@ internal sealed class ListPromptRenderHook<T> : IRenderHook
         _builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
         _live = new LiveRenderable(console);
-        _lock = new object();
+        _lock = new();
         _dirty = true;
     }
 
@@ -29,7 +29,7 @@ internal sealed class ListPromptRenderHook<T> : IRenderHook
     public void Refresh()
     {
         _dirty = true;
-        _console.Write(new ControlCode(string.Empty));
+        _console.Write(ControlCode.Empty);
     }
 
     public IEnumerable<IRenderable> Process(RenderOptions options, IEnumerable<IRenderable> renderables)

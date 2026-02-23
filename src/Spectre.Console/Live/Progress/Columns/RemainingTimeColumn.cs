@@ -27,12 +27,32 @@ public sealed class RemainingTimeColumn : ProgressColumn
             return new Markup("**:**:**");
         }
 
-        return new Text($"{remaining.Value:hh\\:mm\\:ss}", Style ?? Style.Plain);
+        return new Text($"{remaining.Value:hh\\:mm\\:ss}", Style);
     }
 
     /// <inheritdoc/>
     public override int? GetColumnWidth(RenderOptions options)
     {
         return 8;
+    }
+}
+
+/// <summary>
+/// Contains extension methods for <see cref="RemainingTimeColumn"/>.
+/// </summary>
+public static class RemainingTimeColumnExtensions
+{
+    /// <summary>
+    /// Sets the style of the remaining time text.
+    /// </summary>
+    /// <param name="column">The column.</param>
+    /// <param name="style">The style.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static RemainingTimeColumn Style(this RemainingTimeColumn column, Style style)
+    {
+        ArgumentNullException.ThrowIfNull(column);
+
+        column.Style = style;
+        return column;
     }
 }

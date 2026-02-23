@@ -12,10 +12,7 @@ public static partial class AnsiConsoleExtensions
     /// <param name="action">The action to execute within the alternate screen buffer.</param>
     public static void AlternateScreen(this IAnsiConsole console, Action action)
     {
-        if (console is null)
-        {
-            throw new ArgumentNullException(nameof(console));
-        }
+        ArgumentNullException.ThrowIfNull(console);
 
         if (!console.Profile.Capabilities.Ansi)
         {
@@ -28,7 +25,11 @@ public static partial class AnsiConsoleExtensions
         }
 
         // Switch to alternate screen
-        console.Write(new ControlCode("\u001b[?1049h\u001b[H"));
+        console.WriteAnsi(w =>
+        {
+            w.EnterAltScreen();
+            w.CursorHome();
+        });
 
         try
         {
@@ -38,7 +39,7 @@ public static partial class AnsiConsoleExtensions
         finally
         {
             // Switch back to primary screen
-            console.Write(new ControlCode("\u001b[?1049l"));
+            console.WriteAnsi(w => w.ExitAltScreen());
         }
     }
 }
