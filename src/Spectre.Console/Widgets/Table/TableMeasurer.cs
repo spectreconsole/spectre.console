@@ -75,8 +75,13 @@ internal sealed class TableMeasurer : TableAccessor
 
         if (tableWidth < maxWidth && Expand)
         {
-            var padWidths = Ratio.Distribute(maxWidth - tableWidth, widths);
-            widths = widths.Zip(padWidths, (a, b) => (a, b)).Select(f => f.a + f.b).ToList();
+            var flexibleColumns = Columns.Select(column => column.Width == null).ToList();
+            if (flexibleColumns.Any(isFlexible => isFlexible))
+            {
+                var ratios = widths.Select((width, index) => flexibleColumns[index] ? Math.Max(width, 1) : 0).ToList();
+                var padWidths = Ratio.Distribute(maxWidth - tableWidth, ratios);
+                widths = widths.Zip(padWidths, (a, b) => (a, b)).Select(f => f.a + f.b).ToList();
+            }
         }
 
         return widths;
@@ -91,7 +96,6 @@ internal sealed class TableMeasurer : TableAccessor
         }
 
         var columnIndex = Columns.IndexOf(column);
-        var rows = Rows.Select(row => row[columnIndex]);
 
         var minWidths = new List<int>();
         var maxWidths = new List<int>();
@@ -102,11 +106,57 @@ internal sealed class TableMeasurer : TableAccessor
         minWidths.Add(Math.Min(headerMeasure.Min, footerMeasure.Min));
         maxWidths.Add(Math.Max(headerMeasure.Max, footerMeasure.Max));
 
-        foreach (var row in rows)
+        // Measure rows, accounting for column spanning
+        foreach (var row in Rows)
         {
-            var rowMeasure = row.Measure(Options, maxWidth);
-            minWidths.Add(rowMeasure.Min);
-            maxWidths.Add(rowMeasure.Max);
+            var currentColumnIndex = 0;
+            foreach (var item in row)
+            {
+                if (currentColumnIndex == columnIndex)
+                {
+                    // This cell starts at the column we're measuring
+                    if (item is TableCell tableCell)
+                    {
+                        // For spanning cells, distribute the measurement across spanned columns
+                        var cellMeasure = tableCell.Content.Measure(Options, maxWidth);
+
+                        if (tableCell.ColumnSpan > 1)
+                        {
+                            // Distribute the measurement evenly across spanned columns
+                            var minPerColumn = cellMeasure.Min / tableCell.ColumnSpan;
+                            var maxPerColumn = cellMeasure.Max / tableCell.ColumnSpan;
+                            minWidths.Add(minPerColumn);
+                            maxWidths.Add(maxPerColumn);
+                        }
+                        else
+                        {
+                            minWidths.Add(cellMeasure.Min);
+                            maxWidths.Add(cellMeasure.Max);
+                        }
+                    }
+                    else
+                    {
+                        var rowMeasure = item.Measure(Options, maxWidth);
+                        minWidths.Add(rowMeasure.Min);
+                        maxWidths.Add(rowMeasure.Max);
+                    }
+                    break; // Found the cell for this column, move to next row
+                }
+                else if (item is TableCell tableCell && currentColumnIndex + tableCell.ColumnSpan > columnIndex)
+                {
+                    // This column is covered by a spanning cell that started earlier
+                    // Contribute a portion of the spanning cell's measurement
+                    var cellMeasure = tableCell.Content.Measure(Options, maxWidth);
+                    var minPerColumn = cellMeasure.Min / tableCell.ColumnSpan;
+                    var maxPerColumn = cellMeasure.Max / tableCell.ColumnSpan;
+                    minWidths.Add(minPerColumn);
+                    maxWidths.Add(maxPerColumn);
+                    break;
+                }
+
+                // Advance column index
+                currentColumnIndex += item is TableCell tc ? tc.ColumnSpan : 1;
+            }
         }
 
         var padding = column.Padding?.GetWidth() ?? 0;

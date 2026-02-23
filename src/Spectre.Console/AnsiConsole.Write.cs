@@ -6,6 +6,17 @@ namespace Spectre.Console;
 public static partial class AnsiConsole
 {
     /// <summary>
+    /// Renders the specified <see cref="IRenderable"/> to the console.
+    /// </summary>
+    /// <param name="renderable">The object to render.</param>
+    public static void Write(IRenderable renderable)
+    {
+        ArgumentNullException.ThrowIfNull(renderable);
+
+        Console.Write(renderable);
+    }
+
+    /// <summary>
     /// Writes the specified string value to the console.
     /// </summary>
     /// <param name="value">The value to write.</param>

@@ -7,15 +7,17 @@ internal sealed class FallbackProgressRenderer : ProgressRenderer
 
     private readonly Dictionary<int, double> _taskMilestones;
     private readonly object _lock;
+    private readonly TimeProvider _timeProvider;
     private IRenderable? _renderable;
     private DateTime _lastUpdate;
 
     public override TimeSpan RefreshRate => TimeSpan.FromSeconds(1);
 
-    public FallbackProgressRenderer()
+    public FallbackProgressRenderer(TimeProvider timeProvider)
     {
         _taskMilestones = new Dictionary<int, double>();
         _lock = new object();
+        _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
     public override void Update(ProgressContext context)
@@ -41,7 +43,7 @@ internal sealed class FallbackProgressRenderer : ProgressRenderer
             }
 
             // Got started tasks but no updates for 30 seconds?
-            if (hasStartedTasks && updates.Count == 0 && (DateTime.Now - _lastUpdate) > TimeSpan.FromSeconds(30))
+            if (hasStartedTasks && updates.Count == 0 && (_timeProvider.GetLocalNow().LocalDateTime - _lastUpdate) > TimeSpan.FromSeconds(30))
             {
                 foreach (var task in context.GetTasks())
                 {
@@ -51,7 +53,7 @@ internal sealed class FallbackProgressRenderer : ProgressRenderer
 
             if (updates.Count > 0)
             {
-                _lastUpdate = DateTime.Now;
+                _lastUpdate = _timeProvider.GetLocalNow().LocalDateTime;
             }
 
             _renderable = BuildTaskGrid(updates);

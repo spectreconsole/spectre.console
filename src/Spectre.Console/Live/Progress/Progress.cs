@@ -6,6 +6,7 @@ namespace Spectre.Console;
 public sealed class Progress
 {
     private readonly IAnsiConsole _console;
+    private readonly TimeProvider _timeProvider;
 
     /// <summary>
     /// Gets or sets a optional custom render function.
@@ -46,9 +47,11 @@ public sealed class Progress
     /// Initializes a new instance of the <see cref="Progress"/> class.
     /// </summary>
     /// <param name="console">The console to render to.</param>
-    public Progress(IAnsiConsole console)
+    /// <param name="timeProvider">The time provider to use. Defaults to <see cref="TimeProvider.System"/>.</param>
+    public Progress(IAnsiConsole console, TimeProvider? timeProvider = null)
     {
         _console = console ?? throw new ArgumentNullException(nameof(console));
+        _timeProvider = timeProvider ?? TimeProvider.System;
 
         // Initialize with default columns
         Columns =
@@ -98,7 +101,7 @@ public sealed class Progress
         _ = await StartAsync<object?>(async progressContext =>
         {
             await action(progressContext).ConfigureAwait(false);
-            return default;
+            return null;
         }).ConfigureAwait(false);
     }
 
@@ -123,7 +126,7 @@ public sealed class Progress
             {
                 using (new RenderHookScope(_console, renderer))
                 {
-                    var context = new ProgressContext(_console, renderer);
+                    var context = new ProgressContext(_console, renderer, _timeProvider);
 
                     if (AutoRefresh)
                     {
@@ -161,7 +164,7 @@ public sealed class Progress
         }
         else
         {
-            return FallbackRenderer ?? new FallbackProgressRenderer();
+            return FallbackRenderer ?? new FallbackProgressRenderer(_timeProvider);
         }
     }
 }

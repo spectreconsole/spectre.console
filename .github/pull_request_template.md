@@ -3,20 +3,23 @@ Do NOT open a PR without discussing the changes on an open issue, first.
 
 Add the issue number here. e.g. #123
 -->
-fixes #
+Fixes #
 
-<!-- formalities. These are not optional. -->
+<!-- Formalities. These are not optional. -->
 
 - [ ] I have read the [Contribution Guidelines](https://github.com/spectreconsole/spectre.console/blob/main/CONTRIBUTING.md)
-- [ ] I have commented on the issue above and discussed the intended changes
-- [ ] A maintainer has signed off on the changes and the issue was assigned to me
+- [ ] I have checked that there isn't already another pull request that solves the above issue
 - [ ] All newly added code is adequately covered by tests
 - [ ] All existing tests are still running without errors
-- [ ] The documentation was modified to reflect the changes _OR_ no documentation changes are required.
+
+<!-- 
+If you have used generative AI to create this pull request, you will need to disclose this here,
+i.e. What AI agent you used and to what extent.
+-->
 
 ## Changes
 
-<!-- describe the changes you made. -->
+<!-- Describe the changes you made. -->
 
 ---
 Please upvote :+1: this pull request if you are interested in it.

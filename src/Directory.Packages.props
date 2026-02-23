@@ -6,17 +6,18 @@
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
     <PackageVersion Include="IsExternalInit" Version="1.0.3" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="10.0.102" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" Version="10.0.103" />
     <PackageVersion Include="MinVer" PrivateAssets="All" Version="7.0.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageVersion Include="Polyfill" Version="9.7.6" />
+    <PackageVersion Include="Polyfill" Version="9.10.0" />
     <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="4.15.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" />
-    <PackageVersion Include="System.Text.Json" Version="10.0.2" />
+    <PackageVersion Include="System.Text.Json" Version="10.0.3" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.12" />
     <PackageVersion Include="Spectre.Verify.Extensions" Version="28.16.0" />
+    <PackageVersion Include="Microsoft.Bcl.TimeProvider" Version="10.0.3" />
     <PackageVersion Include="System.Memory" Version="4.6.3" />
     <PackageVersion Include="Verify.Xunit" Version="31.9.4" />
     <PackageVersion Include="Wcwidth.Sources" Version="4.0.1" />
