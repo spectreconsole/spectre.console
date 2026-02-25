@@ -13,7 +13,7 @@ public sealed class ProgressTask : IProgress<double>
     private string _description;
     private double _value;
 
-    private volatile bool samplesChanged;
+    private volatile bool _samplesChanged;
 
     private double? _cachedLastSpeed;
     private DateTime _lastSpeedCalculation = DateTime.MinValue;
@@ -245,8 +245,9 @@ public sealed class ProgressTask : IProgress<double>
                 return;
             }
 
+            _samplesChanged = true;
+
             var timestamp = _timeProvider.GetLocalNow().LocalDateTime;
-            samplesChanged = true;
             if (Samples.Count == 0 && StartTime != null)
             {
                 Samples.Add(new ProgressSample(StartTime.Value, 0));
@@ -271,7 +272,7 @@ public sealed class ProgressTask : IProgress<double>
     private double? GetSpeed()
     {
         var now = _timeProvider.GetLocalNow().LocalDateTime;
-        if (!samplesChanged && (now - _lastSpeedCalculation) < MaxTimeForSpeedCache)
+        if (!_samplesChanged && (now - _lastSpeedCalculation) < MaxTimeForSpeedCache)
         {
             return _cachedLastSpeed;
         }
@@ -284,7 +285,7 @@ public sealed class ProgressTask : IProgress<double>
             }
 
             _lastSpeedCalculation = now;
-            samplesChanged = false;
+            _samplesChanged = false;
 
             var threshold = now - MaxSamplingAge;
             var validSamples = Samples.Where(a => a.Timestamp >= threshold).ToList();
@@ -425,6 +426,34 @@ public static class ProgressTaskExtensions
         ArgumentNullException.ThrowIfNull(task);
 
         task.IsIndeterminate = indeterminate;
+        return task;
+    }
+
+    /// <summary>
+    /// Sets whether to override the default hiding behavior of this task when completed.
+    /// </summary>
+    /// <param name="task">The task.</param>
+    /// <param name="hideWhenCompleted">Whether the task should be hidden once completed or not.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static ProgressTask HideWhenCompleted(this ProgressTask task, bool hideWhenCompleted = true)
+    {
+        ArgumentNullException.ThrowIfNull(task);
+
+        task.HideWhenCompleted = hideWhenCompleted;
+        return task;
+    }
+
+    /// <summary>
+    /// Sets the task's tag.
+    /// </summary>
+    /// <param name="task">The task.</param>
+    /// <param name="tag">The tag.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static ProgressTask Tag(this ProgressTask task, object? tag)
+    {
+        ArgumentNullException.ThrowIfNull(task);
+
+        task.Tag = tag;
         return task;
     }
 }
