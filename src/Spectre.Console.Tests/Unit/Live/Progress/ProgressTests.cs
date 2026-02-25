@@ -13,7 +13,10 @@ public sealed class ProgressTests
             .EmitAnsiSequences();
 
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(true);
 
@@ -41,7 +44,10 @@ public sealed class ProgressTests
             .EmitAnsiSequences();
 
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
@@ -71,11 +77,8 @@ public sealed class ProgressTests
         var progress = new Progress(console)
             .Columns(new ProgressColumn[]
             {
-                    new TaskDescriptionColumn(),
-                    new ProgressBarColumn(),
-                    new PercentageColumn(),
-                    new RemainingTimeColumn(),
-                    new SpinnerColumn(),
+                new TaskDescriptionColumn(), new ProgressBarColumn(), new PercentageColumn(), new RemainingTimeColumn(),
+                new SpinnerColumn(),
             })
             .AutoRefresh(false)
             .AutoClear(false);
@@ -101,7 +104,10 @@ public sealed class ProgressTests
 
         var task = default(ProgressTask);
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
@@ -128,7 +134,10 @@ public sealed class ProgressTests
 
         var task = default(ProgressTask);
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
@@ -154,7 +163,10 @@ public sealed class ProgressTests
 
         var task = default(ProgressTask);
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
@@ -181,7 +193,10 @@ public sealed class ProgressTests
 
         var task = default(ProgressTask);
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
@@ -206,7 +221,10 @@ public sealed class ProgressTests
 
         var task = default(ProgressTask);
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
@@ -237,7 +255,10 @@ public sealed class ProgressTests
         var taskInProgress2 = default(ProgressTask);
 
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false)
             .HideCompleted(true);
@@ -273,7 +294,10 @@ public sealed class ProgressTests
 
         var task = default(ProgressTask);
         var progress = new Progress(console)
-            .Columns(new[] { new RemainingTimeColumn() })
+            .Columns(new[]
+            {
+                new RemainingTimeColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
@@ -323,15 +347,10 @@ public sealed class ProgressTests
         // Then
         console.Output.SplitLines().Select(x => x.Trim()).ToArray()
             .ShouldBeEquivalentTo(new[]
-                {
-                    "[?25l",
-                    "foo1",
-                    "afterFoo1",
-                    "foo2",
-                    "beforeFoo3",
-                    "foo3",
-                    "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h",
-                });
+            {
+                "[?25l", "foo1", "afterFoo1", "foo2", "beforeFoo3", "foo3",
+                "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h",
+            });
     }
 
     [Fact]
@@ -363,12 +382,7 @@ public sealed class ProgressTests
         console.Output.SplitLines().Select(x => x.Trim()).ToArray()
             .ShouldBeEquivalentTo(new[]
             {
-                "[?25l",
-                "foo1",
-                "afterFoo1",
-                "foo2",
-                "beforeFoo3",
-                "foo3",
+                "[?25l", "foo1", "afterFoo1", "foo2", "beforeFoo3", "foo3",
                 "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h",
             });
     }
@@ -379,7 +393,10 @@ public sealed class ProgressTests
         // Given
         var console = new TestConsole().Interactive();
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
@@ -406,7 +423,10 @@ public sealed class ProgressTests
         object? capturedTag = null;
 
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false)
             .UseRenderHook((renderable, tasks) =>
@@ -432,11 +452,14 @@ public sealed class ProgressTests
         // Given
         var console = new TestConsole().Interactive();
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
-        // When & Then
+        // When, Then
         progress.Start(ctx =>
         {
             var task = ctx.AddTask("foo");
@@ -458,7 +481,10 @@ public sealed class ProgressTests
             .EmitAnsiSequences();
 
         var progress = new Progress(console)
-            .Columns(new[] { new TaskDescriptionColumn() })
+            .Columns(new[]
+            {
+                new TaskDescriptionColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
@@ -485,7 +511,10 @@ public sealed class ProgressTests
             .EmitAnsiSequences();
 
         var progress = new Progress(console)
-            .Columns(new[] { new TaskDescriptionColumn() })
+            .Columns(new[]
+            {
+                new TaskDescriptionColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false)
             .HideCompleted(true);
@@ -516,7 +545,10 @@ public sealed class ProgressTests
             .EmitAnsiSequences();
 
         var progress = new Progress(console)
-            .Columns(new[] { new TaskDescriptionColumn() })
+            .Columns(new[]
+            {
+                new TaskDescriptionColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false)
             .HideCompleted(false);
@@ -532,6 +564,7 @@ public sealed class ProgressTests
             task2.Value = task2.MaxValue;
         });
         Thread.Sleep(200);
+
         // Then
         console.Output.ShouldNotContain("foo");
         console.Output.ShouldContain("bar");
@@ -543,33 +576,35 @@ public sealed class ProgressTests
         // Given
         var console = new TestConsole().Interactive();
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
         var task = default(ProgressTask);
 
-        double? speed=0;
+        double? speed = 0;
+
         // When
         progress.Start(ctx =>
         {
-            task = ctx.AddTask("foo",maxValue:5000);
+            task = ctx.AddTask("foo", maxValue: 5000);
             task.MaxSamplesKept = 3;
             task.Increment(400);
             task.Increment(10);
             task.Increment(10);
             Thread.Sleep(100);
             task.Increment(10);
-            
-            speed = task.Speed;
 
+            speed = task.Speed;
         });
-        
 
         // Then
         task.ShouldNotBeNull();
         speed.ShouldNotBeNull();
-        speed.Value.ShouldBeInRange(270,320); // 30 over 100ms = 300 over 1 sec
+        speed.Value.ShouldBeInRange(270, 320); // 30 over 100ms = 300 over 1 sec
     }
 
     [Fact]
@@ -578,7 +613,10 @@ public sealed class ProgressTests
         // Given
         var console = new TestConsole().Interactive().Width(10);
         var progress = new Progress(console)
-            .Columns(new[] { new RemainingTimeColumn() })
+            .Columns(new[]
+            {
+                new RemainingTimeColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
@@ -603,7 +641,10 @@ public sealed class ProgressTests
         // Given
         var console = new TestConsole().Interactive();
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
@@ -632,7 +673,10 @@ public sealed class ProgressTests
         // Given
         var console = new TestConsole().Interactive();
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
@@ -649,7 +693,7 @@ public sealed class ProgressTests
             task.Increment(10);
             Thread.Sleep(100);
             task.Increment(10);
-            
+
             speedBeforeStop = task.Speed;
             task.StopTask();
         });
@@ -657,7 +701,7 @@ public sealed class ProgressTests
         // Then
         task.ShouldNotBeNull();
         speedBeforeStop.ShouldNotBeNull();
-        speedBeforeStop.Value.ShouldBeInRange(180,230); // at 40/200ms  that is 200/s or so
+        speedBeforeStop.Value.ShouldBeInRange(180, 230); // at 40/200ms  that is 200/s or so
 
         // Wait a bit and check speed is not lost
         Thread.Sleep(1000);
@@ -670,7 +714,10 @@ public sealed class ProgressTests
         // Given
         var console = new TestConsole().Interactive();
         var progress = new Progress(console)
-            .Columns(new[] { new ProgressBarColumn() })
+            .Columns(new[]
+            {
+                new ProgressBarColumn()
+            })
             .AutoRefresh(false)
             .AutoClear(false);
 
@@ -687,7 +734,6 @@ public sealed class ProgressTests
 
         // Then
         task.ShouldNotBeNull();
-        task.Speed.Value.ShouldBeGreaterThan(0);
+        task.Speed.ShouldNotBeNull().ShouldBeGreaterThan(0);
     }
-
 }

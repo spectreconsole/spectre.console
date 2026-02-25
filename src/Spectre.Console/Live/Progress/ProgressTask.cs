@@ -107,6 +107,13 @@ public sealed class ProgressTask : IProgress<double>
     public TimeSpan? RemainingTime => GetRemainingTime();
 
     /// <summary>
+    /// Gets or sets the maximum time a calculated speed value is cached.
+    /// When estimating speed, if the oldest sample is older than this value, the current time is used as the end of the timespan instead.
+    /// This causes the predicted speed to naturally decay if no new samples are received.
+    /// </summary>
+    public TimeSpan MaxTimeForSpeedCache { get; set; } = TimeSpan.FromSeconds(1);
+
+    /// <summary>
     /// Gets or sets a value indicating whether the ProgressBar shows
     /// actual values or generic, continuous progress feedback.
     /// </summary>
@@ -248,6 +255,7 @@ public sealed class ProgressTask : IProgress<double>
             Samples.Add(new ProgressSample(timestamp, Value - startValue));
         }
     }
+
     private double GetPercentage()
     {
         if (MaxValue == 0)
@@ -260,12 +268,6 @@ public sealed class ProgressTask : IProgress<double>
         return percentage;
     }
 
-    /// <summary>
-    /// Gets or sets the maximum time a calculated speed value is cached.
-    /// When estimating speed, if the oldest sample is older than this value, the current time is used as the end of the timespan instead.
-    /// This causes the predicted speed to naturally decay if no new samples are received.
-    /// </summary>
-    public TimeSpan MaxTimeForSpeedCache { get; set; } = TimeSpan.FromSeconds(1);
     /// <summary>
     /// Dumps the task state to Debug output for diagnostics.
     /// </summary>

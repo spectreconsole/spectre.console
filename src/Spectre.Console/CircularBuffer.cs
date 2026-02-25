@@ -15,14 +15,10 @@
 #pragma warning disable SA1600 // Elements should be documented
 #pragma warning disable SA1128 // Put constructor initializers on their own line
 #pragma warning disable RCS1079 // Implement the functionality instead of throwing new NotImplementedException
+#pragma warning disable IDE0005 // Using directive is unnecessary
 
 // This was taken from https://github.com/dotnet/aspire/blob/a99edf17f50cbd2717f708706448e33a53825476/src/Shared/CircularBuffer.cs its license is also MIT.  This is the same exact circularbuffer that VS uses in Microsoft.VisualStudio.Utilities (at least a cursory decompiling shows it to be such): https://learn.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.utilities.circularbuffer-1?view=visualstudiosdk-2022. Minor fix for .netstandard 2.0
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Spectre.Console;
@@ -334,3 +330,18 @@ public sealed class CircularBuffer<T> : IList<T>, ICollection<T>, IEnumerable<T>
         public int Capacity => _collection.Capacity;
     }
 }
+
+#pragma warning restore SA1512 // Single-line comments should not be followed by blank line
+#pragma warning restore SA1513 // Closing brace should be followed by blank line
+#pragma warning restore SA1515 // Single-line comment should be preceded by blank line
+#pragma warning restore SA1028 // Code should not contain trailing whitespace
+#pragma warning restore SA1401 // Field should be private
+#pragma warning restore SA1503 // Braces should not be omitted
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning restore SA1507 // Code should not contain multiple blank lines in a row
+#pragma warning restore SA1618 // Generic type parameters should be documented
+#pragma warning restore SA1623 // Property summary documentation should match accessors
+#pragma warning restore SA1600 // Elements should be documented
+#pragma warning restore SA1128 // Put constructor initializers on their own line
+#pragma warning restore RCS1079 // Implement the functionality instead of throwing new NotImplementedException
+#pragma warning disable IDE0005 // Using directive is unnecessary
