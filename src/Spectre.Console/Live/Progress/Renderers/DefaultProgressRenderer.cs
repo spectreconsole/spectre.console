@@ -102,7 +102,7 @@ internal sealed class DefaultProgressRenderer : ProgressRenderer
             var layout = new Grid();
             layout.AddColumn();
 
-            foreach (var task in tasks.Where(tsk => !(_hideCompleted && tsk.IsFinished)))
+            foreach (var task in tasks.Where(tsk => !((tsk.HideWhenCompleted ?? _hideCompleted) && tsk.IsFinished)))
             {
                 var columns = _columns.Select(column => column.Render(renderContext, task, delta));
                 grid.AddRow(columns.ToArray());

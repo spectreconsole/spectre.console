@@ -5,7 +5,7 @@ namespace Spectre.Console;
 /// </summary>
 public sealed class ProgressTask : IProgress<double>
 {
-    private readonly List<ProgressSample> _samples;
+    private readonly Lazy<CircularBuffer<ProgressSample>> lazySamples;
     private readonly object _lock;
     private readonly TimeProvider _timeProvider;
 
@@ -13,10 +13,26 @@ public sealed class ProgressTask : IProgress<double>
     private string _description;
     private double _value;
 
+    private volatile bool samplesChanged;
+
+    private double? _cachedLastSpeed;
+    private DateTime _lastSpeedCalculation = DateTime.MinValue;
+    private CircularBuffer<ProgressSample> Samples => lazySamples.Value;
+
     /// <summary>
     /// Gets the task ID.
     /// </summary>
     public int Id { get; }
+
+    /// <summary>
+    /// Gets or sets optional user tag data.
+    /// </summary>
+    public object? Tag { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to override the default hiding behavior of this task when completed.
+    /// </summary>
+    public bool? HideWhenCompleted { get; set; }
 
     /// <summary>
     /// Gets or sets the task description.
@@ -91,6 +107,13 @@ public sealed class ProgressTask : IProgress<double>
     public TimeSpan? RemainingTime => GetRemainingTime();
 
     /// <summary>
+    /// Gets or sets the maximum time a calculated speed value is cached.
+    /// When estimating speed, if the oldest sample is older than this value, the current time is used as the end of the timespan instead.
+    /// This causes the predicted speed to naturally decay if no new samples are received.
+    /// </summary>
+    public TimeSpan MaxTimeForSpeedCache { get; set; } = TimeSpan.FromSeconds(1);
+
+    /// <summary>
     /// Gets or sets a value indicating whether the ProgressBar shows
     /// actual values or generic, continuous progress feedback.
     /// </summary>
@@ -106,7 +129,7 @@ public sealed class ProgressTask : IProgress<double>
     /// <param name="timeProvider">The time provider to use. Defaults to <see cref="TimeProvider.System"/>.</param>
     public ProgressTask(int id, string description, double maxValue, bool autoStart = true, TimeProvider? timeProvider = null)
     {
-        _samples = [];
+        lazySamples = new(() => new CircularBuffer<ProgressSample>(MaxSamplesKept) { UniqueRemovedCheck = false });
         _lock = new object();
         _timeProvider = timeProvider ?? TimeProvider.System;
         _maxValue = maxValue;
@@ -163,6 +186,18 @@ public sealed class ProgressTask : IProgress<double>
         Update(increment: value);
     }
 
+    /// <summary>
+    /// Gets or sets the maximum age of samples kept for calculating speed and estimated time remaining.
+    /// Samples older than this value are discarded to more accurately reflect the current speed.
+    /// </summary>
+    public TimeSpan MaxSamplingAge { get; set; } = TimeSpan.FromSeconds(30);
+
+    /// <summary>
+    /// Gets or sets the maximum number of samples to keep for calculating speed and estimated time remaining.
+    /// If set to 0, no samples are kept.
+    /// </summary>
+    public int MaxSamplesKept { get; set; } = 1000;
+
     private void Update(
         string? description = null,
         double? maxValue = null,
@@ -205,22 +240,19 @@ public sealed class ProgressTask : IProgress<double>
                 _value = _maxValue;
             }
 
+            if (MaxSamplesKept == 0)
+            {
+                return;
+            }
+
             var timestamp = _timeProvider.GetLocalNow().LocalDateTime;
-            var threshold = timestamp - TimeSpan.FromSeconds(30);
-
-            // Remove samples that's too old
-            while (_samples.Count > 0 && _samples[0].Timestamp < threshold)
+            samplesChanged = true;
+            if (Samples.Count == 0 && StartTime != null)
             {
-                _samples.RemoveAt(0);
+                Samples.Add(new ProgressSample(StartTime.Value, 0));
             }
 
-            // Keep maximum of 1000 samples
-            while (_samples.Count > 1000)
-            {
-                _samples.RemoveAt(0);
-            }
-
-            _samples.Add(new ProgressSample(timestamp, Value - startValue));
+            Samples.Add(new ProgressSample(timestamp, Value - startValue));
         }
     }
 
@@ -236,28 +268,77 @@ public sealed class ProgressTask : IProgress<double>
         return percentage;
     }
 
-    private double? GetSpeed()
+    /// <summary>
+    /// Dumps the task state to Debug output for diagnostics.
+    /// </summary>
+    [Conditional("DEBUG")]
+    public void DumpTask()
     {
+        Debug.WriteLine($"Task Id: {Id}");
+        Debug.WriteLine($"Description: {Description}");
+        Debug.WriteLine($"MaxValue: {MaxValue}");
+        Debug.WriteLine($"Value: {Value}");
+        Debug.WriteLine($"StartTime: {StartTime}");
+        Debug.WriteLine($"StopTime: {StopTime}");
+        Debug.WriteLine($"IsStarted: {IsStarted}");
+        Debug.WriteLine($"IsFinished: {IsFinished}");
+        Debug.WriteLine($"Percentage: {Percentage}");
+        Debug.WriteLine($"Speed: {Speed}");
+        Debug.WriteLine($"ElapsedTime: {ElapsedTime}");
+        Debug.WriteLine($"RemainingTime: {RemainingTime}");
+        Debug.WriteLine($"IsIndeterminate: {IsIndeterminate}");
+        Debug.WriteLine($"Buffer:");
         lock (_lock)
         {
-            if (StartTime == null)
+            foreach (var sample in Samples)
             {
-                return null;
+                Debug.WriteLine($"  Timestamp: {sample.Timestamp}, Value: {sample.Value}");
+            }
+        }
+    }
+    private double? GetSpeed()
+    {
+        var now = _timeProvider.GetLocalNow().LocalDateTime;
+        if (!samplesChanged && (now - _lastSpeedCalculation) < MaxTimeForSpeedCache)
+        {
+            return _cachedLastSpeed;
+        }
+
+        lock (_lock)
+        {
+            if (StartTime == null || !lazySamples.IsValueCreated || Samples.Count == 0 || StopTime != null)
+            {
+                return _cachedLastSpeed;
             }
 
-            if (_samples.Count == 0)
+            _lastSpeedCalculation = now;
+            samplesChanged = false;
+
+            var threshold = now - MaxSamplingAge;
+            var validSamples = Samples.Where(a => a.Timestamp >= threshold).ToList();
+            if (validSamples.Count == 0)
             {
-                return null;
+                return _cachedLastSpeed = null;
             }
 
-            var totalTime = _samples.Last().Timestamp - _samples[0].Timestamp;
+            var first = validSamples[0];
+            var newestSampleTime = Samples[Samples.Count - 1].Timestamp;
+            if (StopTime == null)
+            {
+                if (now - newestSampleTime > MaxTimeForSpeedCache)
+                {
+                    newestSampleTime = now;
+                }
+            }
+
+            var totalTime = newestSampleTime - first.Timestamp;
             if (totalTime == TimeSpan.Zero)
             {
-                return null;
+                return _cachedLastSpeed = null;
             }
 
-            var totalCompleted = _samples.Sum(x => x.Value);
-            return totalCompleted / totalTime.TotalSeconds;
+            var totalCompleted = validSamples.Sum(x => x.Value);
+            return _cachedLastSpeed = totalCompleted / totalTime.TotalSeconds;
         }
     }
 
