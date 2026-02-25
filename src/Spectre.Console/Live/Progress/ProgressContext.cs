@@ -9,6 +9,7 @@ public sealed class ProgressContext
     private readonly object _taskLock;
     private readonly IAnsiConsole _console;
     private readonly ProgressRenderer _renderer;
+    private readonly TimeProvider _timeProvider;
     private int _taskId;
 
     /// <summary>
@@ -25,12 +26,13 @@ public sealed class ProgressContext
         }
     }
 
-    internal ProgressContext(IAnsiConsole console, ProgressRenderer renderer)
+    internal ProgressContext(IAnsiConsole console, ProgressRenderer renderer, TimeProvider timeProvider)
     {
         _tasks = [];
         _taskLock = new object();
         _console = console ?? throw new ArgumentNullException(nameof(console));
         _renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
+        _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
 
     /// <summary>
@@ -182,7 +184,7 @@ public sealed class ProgressContext
     {
         ArgumentNullException.ThrowIfNull(settings);
 
-        var task = new ProgressTask(_taskId++, description, settings.MaxValue, settings.AutoStart);
+        var task = new ProgressTask(_taskId++, description, settings.MaxValue, settings.AutoStart, _timeProvider);
 
         _tasks.Insert(position, task);
 

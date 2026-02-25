@@ -18,7 +18,7 @@ para Python.
 
 * Desenvolvida com testes unitários em mente.
 * Suporta tabelas, grades, painéis, e uma linguagem de marcação inspirada em [rich](https://github.com/willmcgugan/rich).
-* Suporta os parâmetros SRG mais comuns quando se trata de estilo de texto, 
+* Suporta os parâmetros SGR mais comuns quando se trata de estilo de texto, 
   como negrito, esmaecido, itálico, sublinhado, tachado 
   e texto piscando.
 * Suporta cores de 3/4/8/24 bits no terminal.
