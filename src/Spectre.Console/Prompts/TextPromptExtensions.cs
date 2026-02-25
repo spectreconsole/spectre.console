@@ -98,6 +98,20 @@ public static class TextPromptExtensions
     }
 
     /// <summary>
+    /// Whether or not to write the default value as an editable text input.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="state">Whether or not the default value should be editable.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static TextPrompt<T> DefaultInput<T>(this TextPrompt<T> obj, bool state)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+        obj.DefaultInput = state;
+        return obj;
+    }
+
+    /// <summary>
     /// Hides the default value.
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>

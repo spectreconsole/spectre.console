@@ -410,4 +410,26 @@ public sealed class TextPromptTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    [Expectation("InvalidDefaultChoice")]
+    public Task Should_Return_Error_If_Default_Choice_Invalid()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Input.PushTextWithEnter("");
+        console.Input.PushTextWithEnter("a");
+
+        // When
+        console.Prompt(
+            new TextPrompt<string>("Favorite fruit?")
+                .AddChoice("Banana")
+                .AddChoice("Orange")
+                .DefaultValue("Banan")
+                .ShowDefaultValue(true)
+                .DefaultInput(true));
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
 }
