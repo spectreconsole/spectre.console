@@ -268,34 +268,6 @@ public sealed class ProgressTask : IProgress<double>
         return percentage;
     }
 
-    /// <summary>
-    /// Dumps the task state to Debug output for diagnostics.
-    /// </summary>
-    [Conditional("DEBUG")]
-    public void DumpTask()
-    {
-        Debug.WriteLine($"Task Id: {Id}");
-        Debug.WriteLine($"Description: {Description}");
-        Debug.WriteLine($"MaxValue: {MaxValue}");
-        Debug.WriteLine($"Value: {Value}");
-        Debug.WriteLine($"StartTime: {StartTime}");
-        Debug.WriteLine($"StopTime: {StopTime}");
-        Debug.WriteLine($"IsStarted: {IsStarted}");
-        Debug.WriteLine($"IsFinished: {IsFinished}");
-        Debug.WriteLine($"Percentage: {Percentage}");
-        Debug.WriteLine($"Speed: {Speed}");
-        Debug.WriteLine($"ElapsedTime: {ElapsedTime}");
-        Debug.WriteLine($"RemainingTime: {RemainingTime}");
-        Debug.WriteLine($"IsIndeterminate: {IsIndeterminate}");
-        Debug.WriteLine($"Buffer:");
-        lock (_lock)
-        {
-            foreach (var sample in Samples)
-            {
-                Debug.WriteLine($"  Timestamp: {sample.Timestamp}, Value: {sample.Value}");
-            }
-        }
-    }
     private double? GetSpeed()
     {
         var now = _timeProvider.GetLocalNow().LocalDateTime;
