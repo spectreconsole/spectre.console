@@ -67,7 +67,7 @@ internal sealed class ListPrompt<T>
                 {
                     break;
                 }
-                else if(result == ListPromptInputResult.Abort)
+                else if (result == ListPromptInputResult.Abort)
                 {
                     state.Cancel();
                     break;
