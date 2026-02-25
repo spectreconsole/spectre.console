@@ -60,16 +60,13 @@ public sealed class AnsiMarkup
         while (tokenizer.MoveNext())
         {
             var token = tokenizer.Current;
-            if (token == null)
-            {
-                break;
-            }
 
             if (token.Kind == MarkupTokenKind.Open)
             {
                 var parsed = AnsiMarkupTagParser.Parse(token.Value);
                 link ??= parsed.Link;
-                stack.Push(parsed.Style);
+                stack.Push(style.Value);
+                style = style.Value.Combine(parsed.Style);
             }
             else if (token.Kind == MarkupTokenKind.Close)
             {
@@ -79,12 +76,11 @@ public sealed class AnsiMarkup
                         $"Encountered closing tag when none was expected near position {token.Position}.");
                 }
 
-                stack.Pop();
+                style = stack.Pop();
             }
             else if (token.Kind == MarkupTokenKind.Text)
             {
-                var effectiveStyle = style.Combine(stack.Reverse());
-                if (result.Count > 0 && result[^1].Style.Equals(effectiveStyle))
+                if (result.Count > 0 && result[^1].Style.Equals(style))
                 {
                     // Merge segments
                     result[^1].Text += token.Value;
@@ -93,7 +89,7 @@ public sealed class AnsiMarkup
                 {
                     result.Add(
                         new AnsiMarkupSegment(
-                        token.Value, effectiveStyle, link));
+                        token.Value, style.Value, link));
                 }
             }
             else
@@ -233,11 +229,11 @@ file sealed class MarkupTokenizer : IDisposable
 {
     private readonly StringBuffer _reader;
 
-    public MarkupToken? Current { get; private set; }
+    public MarkupToken Current { get => field!; private set; }
 
     public MarkupTokenizer(string text)
     {
-        _reader = new StringBuffer(text ?? throw new ArgumentNullException(nameof(text)));
+        _reader = new StringBuffer(text);
     }
 
     public void Dispose()
@@ -252,16 +248,18 @@ file sealed class MarkupTokenizer : IDisposable
             return false;
         }
 
-        var current = _reader.Peek();
-        return current == '[' ? ReadMarkup() : ReadText();
+        Current = _reader.Peek() == '['
+            ? ReadMarkup()
+            : ReadText();
+
+        return true;
     }
 
-    private bool ReadText()
+    private MarkupToken ReadText()
     {
         var position = _reader.Position;
         var builder = new StringBuilder();
 
-        var encounteredClosing = false;
         while (!_reader.Eof)
         {
             var current = _reader.Peek();
@@ -274,18 +272,8 @@ file sealed class MarkupTokenizer : IDisposable
             // If we find a closing tag (']') there must be two of them.
             if (current == ']')
             {
-                if (encounteredClosing)
-                {
-                    _reader.Read();
-                    encounteredClosing = false;
-                    continue;
-                }
-
-                encounteredClosing = true;
-            }
-            else
-            {
-                if (encounteredClosing)
+                _reader.Read();
+                if (_reader.Peek() != ']')
                 {
                     throw new InvalidOperationException(
                         $"Encountered unescaped ']' token at position {_reader.Position}");
@@ -295,133 +283,98 @@ file sealed class MarkupTokenizer : IDisposable
             builder.Append(_reader.Read());
         }
 
-        if (encounteredClosing)
-        {
-            throw new InvalidOperationException($"Encountered unescaped ']' token at position {_reader.Position}");
-        }
-
-        Current = new MarkupToken(MarkupTokenKind.Text, builder.ToString(), position);
-        return true;
+        return new MarkupToken(MarkupTokenKind.Text, builder.ToString(), position);
     }
 
-    private bool ReadMarkup()
+    private MarkupToken ReadMarkup()
     {
         var position = _reader.Position;
 
+        // Read initial opening bracket
         _reader.Read();
 
         if (_reader.Eof)
         {
-            throw new InvalidOperationException($"Encountered malformed markup tag at position {_reader.Position}.");
+            ThrowMalformed(_reader.Position);
         }
 
-        var current = _reader.Peek();
-        switch (current)
+        switch (_reader.Peek())
         {
             case '[':
                 // No markup but instead escaped markup in text.
                 _reader.Read();
-                Current = new MarkupToken(MarkupTokenKind.Text, "[", position);
-                return true;
+                return new MarkupToken(MarkupTokenKind.Text, "[", position);
             case '/':
                 // Markup closed.
                 _reader.Read();
 
                 if (_reader.Eof)
                 {
-                    throw new InvalidOperationException(
-                        $"Encountered malformed markup tag at position {_reader.Position}.");
+                    ThrowMalformed(_reader.Position);
                 }
 
-                current = _reader.Peek();
-                if (current != ']')
+                if (_reader.Read() != ']')
                 {
-                    throw new InvalidOperationException(
-                        $"Encountered malformed markup tag at position {_reader.Position}.");
+                    ThrowMalformed(_reader.Position - 1);
                 }
 
-                _reader.Read();
-                Current = new MarkupToken(MarkupTokenKind.Close, string.Empty, position);
-                return true;
+                return new MarkupToken(MarkupTokenKind.Close, string.Empty, position);
         }
 
         // Read the "content" of the markup until we find the end-of-markup
         var builder = new StringBuilder();
-        var encounteredOpening = false;
-        var encounteredClosing = false;
+        var currentStylePartCanContainMarkup = false;
         while (!_reader.Eof)
         {
-            var currentStylePartCanContainMarkup =
-                builder.ToString()
-                    .Split(' ')
-                    .Last()
-                    .StartsWith("link=", StringComparison.OrdinalIgnoreCase);
-            current = _reader.Peek();
+            var current = _reader.Read();
 
-            if (currentStylePartCanContainMarkup)
+            if (current == ']')
             {
-                switch (current)
+                if (!currentStylePartCanContainMarkup || _reader.Peek() != ']')
                 {
-                    case ']' when !encounteredOpening:
-                        if (encounteredClosing)
-                        {
-                            builder.Append(_reader.Read());
-                            encounteredClosing = false;
-                            continue;
-                        }
-
-                        _reader.Read();
-                        encounteredClosing = true;
-                        continue;
-
-                    case '[' when !encounteredClosing:
-                        if (encounteredOpening)
-                        {
-                            builder.Append(_reader.Read());
-                            encounteredOpening = false;
-                            continue;
-                        }
-
-                        _reader.Read();
-                        encounteredOpening = true;
-                        continue;
+                    // Not parsing a link or not escaped. Markup closed
+                    break;
                 }
+
+                _reader.Read();
             }
-            else
+
+            if (current == '[')
             {
-                switch (current)
+                if (!currentStylePartCanContainMarkup || _reader.Peek() != '[')
                 {
-                    case ']':
-                        _reader.Read();
-                        encounteredClosing = true;
-                        break;
-                    case '[':
-                        _reader.Read();
-                        encounteredOpening = true;
-                        break;
+                    ThrowMalformed(_reader.Position - 1);
                 }
+
+                _reader.Read();
             }
 
-            if (encounteredClosing)
+            builder.Append(current);
+
+            const string LinkPrefix = "link=";
+            if (current == ' ')
             {
-                break;
+                currentStylePartCanContainMarkup = false;
             }
-
-            if (encounteredOpening)
+            // Only check if we're not already parsing a link & we added the last character of the prefix
+            else if (!currentStylePartCanContainMarkup && current == LinkPrefix[^1] && builder.Length >= LinkPrefix.Length)
             {
-                throw new InvalidOperationException(
-                    $"Encountered malformed markup tag at position {_reader.Position - 1}.");
+                currentStylePartCanContainMarkup =
+                    (builder.Length == LinkPrefix.Length || builder[^(LinkPrefix.Length + 1)] == ' ')
+                    && builder.ToString(builder.Length - LinkPrefix.Length, LinkPrefix.Length)
+                        .Equals(LinkPrefix, StringComparison.OrdinalIgnoreCase);
             }
-
-            builder.Append(_reader.Read());
         }
 
         if (_reader.Eof)
         {
-            throw new InvalidOperationException($"Encountered malformed markup tag at position {_reader.Position}.");
+            ThrowMalformed(_reader.Position);
         }
 
-        Current = new MarkupToken(MarkupTokenKind.Open, builder.ToString(), position);
-        return true;
+        return new MarkupToken(MarkupTokenKind.Open, builder.ToString(), position);
     }
+
+    [DoesNotReturn]
+    private static void ThrowMalformed(int pos) =>
+        throw new InvalidOperationException($"Encountered malformed markup tag at position {pos}.");
 }
