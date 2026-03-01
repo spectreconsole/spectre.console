@@ -155,6 +155,69 @@ public sealed class SelectionPromptTests
         result.ShouldBe("Item 2");
         console.Output.ShouldContain($"{ESC}[38;5;12m> {ESC}[0m{ESC}[1;38;5;12;48;5;11mItem {ESC}[0m{ESC}[38;5;12m2{ESC}[0m ");
     }
+
+    [Fact]
+    public void Should_Return_CancelResult_On_Cancel_FuncVersion()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        // When
+        var prompt = new SelectionPrompt<string>()
+                .Title("Select one")
+                .Mode(SelectionMode.Leaf)
+                .AddChoiceGroup("Group one", "A", "B")
+                .AddChoiceGroup("Group two", "C", "D")
+                .AddCancelResult(() => "E");
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe("E");
+    }
+
+    [Fact]
+    public void Should_Return_CancelResult_On_Cancel_ValueVersion()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        // When
+        var prompt = new SelectionPrompt<string>()
+                .Title("Select one")
+                .Mode(SelectionMode.Leaf)
+                .AddChoiceGroup("Group one", "A", "B")
+                .AddChoiceGroup("Group two", "C", "D")
+                .AddCancelResult("E");
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe("E");
+    }
+
+    [Fact]
+    public void Should_Ignore_Escape_If_CancelResult_Not_Set()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new SelectionPrompt<string>()
+                .Title("Select one")
+                .Mode(SelectionMode.Leaf)
+                .AddChoiceGroup("Group one", "A", "B")
+                .AddChoiceGroup("Group two", "C", "D");
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe("A");
+    }
 }
 
 file sealed class CustomSelectionItem
