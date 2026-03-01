@@ -6,7 +6,7 @@ namespace Spectre.Console;
 public sealed class ProgressContext
 {
     private readonly List<ProgressTask> _tasks;
-    private readonly object _taskLock;
+    private readonly Lock _taskLock;
     private readonly IAnsiConsole _console;
     private readonly ProgressRenderer _renderer;
     private readonly TimeProvider _timeProvider;
@@ -29,7 +29,7 @@ public sealed class ProgressContext
     internal ProgressContext(IAnsiConsole console, ProgressRenderer renderer, TimeProvider timeProvider)
     {
         _tasks = [];
-        _taskLock = new object();
+        _taskLock = LockFactory.Create();
         _console = console ?? throw new ArgumentNullException(nameof(console));
         _renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
         _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));

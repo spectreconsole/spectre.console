@@ -15,7 +15,7 @@ public sealed class LiveDisplayContext
         _console = console ?? throw new ArgumentNullException(nameof(console));
 
         Live = new LiveRenderable(_console, target);
-        Lock = new object();
+        Lock = new();
     }
 
     /// <summary>

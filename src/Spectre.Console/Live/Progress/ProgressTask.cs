@@ -6,7 +6,7 @@ namespace Spectre.Console;
 public sealed class ProgressTask : IProgress<double>
 {
     private readonly Lazy<CircularBuffer<ProgressSample>> lazySamples;
-    private readonly object _lock;
+    private readonly Lock _lock;
     private readonly TimeProvider _timeProvider;
 
     private double _maxValue;
@@ -130,7 +130,7 @@ public sealed class ProgressTask : IProgress<double>
     public ProgressTask(int id, string description, double maxValue, bool autoStart = true, TimeProvider? timeProvider = null)
     {
         lazySamples = new(() => new CircularBuffer<ProgressSample>(MaxSamplesKept) { UniqueRemovedCheck = false });
-        _lock = new object();
+        _lock = LockFactory.Create();
         _timeProvider = timeProvider ?? TimeProvider.System;
         _maxValue = maxValue;
         _value = 0;

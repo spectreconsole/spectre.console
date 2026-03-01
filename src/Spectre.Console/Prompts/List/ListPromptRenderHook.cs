@@ -17,7 +17,7 @@ internal sealed class ListPromptRenderHook<T> : IRenderHook
         _builder = builder ?? throw new ArgumentNullException(nameof(builder));
 
         _live = new LiveRenderable(console);
-        _lock = new object();
+        _lock = new();
         _dirty = true;
     }
 
