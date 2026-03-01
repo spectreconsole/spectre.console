@@ -2,7 +2,8 @@
 name: Feature request
 about: Suggest an idea for this project
 title: ''
-labels: ["feature", "needs triage"]
+labels: ["needs triage"]
+type: ["feature"]
 assignees: ''
 
 ---
