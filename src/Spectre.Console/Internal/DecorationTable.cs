@@ -37,10 +37,7 @@ internal static class DecorationTable
                 continue;
             }
 
-            if (!_reverseLookup.ContainsKey(decoration.Value))
-            {
-                _reverseLookup[decoration.Value] = name;
-            }
+            _reverseLookup.TryAdd(decoration.Value, name);
         }
     }
 

@@ -410,4 +410,25 @@ public sealed class TextPromptTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    [Expectation("ClearOnFinish")]
+    public Task Should_Clear_Prompt_Line_When_ClearOnFinish_Is_Enabled()
+    {
+        // Given
+        var console = new TestConsole
+        {
+            EmitAnsiSequences = true,
+        };
+        console.Input.PushTextWithEnter("secret-value");
+
+        // When
+        console.Prompt(
+            new TextPrompt<string>("Enter a value")
+                .Secret()
+                .ClearOnFinish());
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
 }

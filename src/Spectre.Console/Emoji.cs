@@ -28,7 +28,6 @@ public static partial class Emoji
         _remappings[tag] = emoji;
     }
 
-#if NETSTANDARD2_0
     /// <summary>
     /// Replaces emoji markup with corresponding unicode characters.
     /// </summary>
@@ -36,55 +35,42 @@ public static partial class Emoji
     /// <returns>A string with emoji codes replaced with actual emoji.</returns>
     public static string Replace(string value)
     {
-        return Replace(value.AsSpan());
-    }
-#endif
-
-    /// <summary>
-    /// Replaces emoji markup with corresponding unicode characters.
-    /// </summary>
-    /// <param name="value">A string with emojis codes, e.g. "Hello :smiley:!".</param>
-    /// <returns>A string with emoji codes replaced with actual emoji.</returns>
-    public static string Replace(ReadOnlySpan<char> value)
-    {
-        var output = new StringBuilder();
         var colonPos = value.IndexOf(':');
         if (colonPos == -1)
         {
             // No colons, no emoji. return what was passed in with no changes.
-            return value.ToString();
+            return value;
         }
 
-        while ((colonPos = value.IndexOf(':')) != -1)
+        var span = value.AsSpan();
+        StringBuilder? output = null;
+
+        var index = colonPos + 1;
+        int nextColonPos;
+        while ((nextColonPos = span.IndexOf(':', index)) != -1)
         {
-            // Append text up to colon
-            output.AppendSpan(value.Slice(0, colonPos));
-
-            // Set value equal to that colon and the rest of the string
-            value = value.Slice(colonPos);
-
-            // Find colon after that. if no colon, break out
-            var nextColonPos = value.IndexOf(':', 1);
-            if (nextColonPos == -1)
-            {
-                break;
-            }
-
-            // Get the emoji text minus the colons
-            var emojiKey = value.Slice(1, nextColonPos - 1).ToString();
+            var emojiKey = span.Slice(index, nextColonPos - index).ToString();
             if (TryGetEmoji(emojiKey, out var emojiValue))
             {
+                output ??= new StringBuilder();
+                output.AppendSpan(span[..(index - 1)]);
                 output.Append(emojiValue);
-                value = value.Slice(nextColonPos + 1);
+
+                span = span.Slice(nextColonPos + 1);
+                index = 0;
             }
             else
             {
-                output.Append(':');
-                value = value.Slice(1);
+                index = nextColonPos + 1;
             }
         }
 
-        output.AppendSpan(value);
+        if (output == null)
+        {
+            return value;
+        }
+
+        output.AppendSpan(span);
         return output.ToString();
     }
 

@@ -172,6 +172,19 @@ public sealed class ProgressContext
     }
 
     /// <summary>
+    /// Removes the task from the task collection.
+    /// </summary>
+    /// <param name="task">The task to remove.</param>
+    /// <returns><c>true</c> if the task was successfully removed; otherwise, <c>false</c>.</returns>
+    public bool RemoveTask(ProgressTask task)
+    {
+        lock (_taskLock)
+        {
+            return _tasks.Remove(task);
+        }
+    }
+
+    /// <summary>
     /// Refreshes the current progress.
     /// </summary>
     public void Refresh()

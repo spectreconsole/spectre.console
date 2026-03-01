@@ -304,4 +304,19 @@ public static class TextPromptExtensions
         obj.ChoicesStyle = style;
         return obj;
     }
+
+    /// <summary>
+    /// Clears the prompt line after successful input.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="clear">Whether the prompt line should be cleared</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static TextPrompt<T> ClearOnFinish<T>(this TextPrompt<T> obj, bool clear = true)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+
+        obj.ClearOnFinish = clear;
+        return obj;
+    }
 }
