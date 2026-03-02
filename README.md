@@ -15,7 +15,7 @@ It is heavily inspired by the excellent Python library, [Rich](https://github.co
 1. [.NET Foundation](#net-foundation)
 1. [License](#license)
 
-## Features
+## Features  
 
 * Supports tables, grids, panels, and a [Rich](https://github.com/willmcgugan/rich) inspired markup language.
 * Supports the most common SGR parameters when it comes to text 
