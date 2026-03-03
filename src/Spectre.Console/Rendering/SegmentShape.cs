@@ -16,7 +16,7 @@ internal readonly struct SegmentShape
         ArgumentNullException.ThrowIfNull(lines);
 
         var height = lines.Count;
-        var width = lines.Max(l => Segment.CellCount(l));
+        var width = lines.Count > 0 ? lines.Max(l => Segment.CellCount(l)) : 0;
 
         return new SegmentShape(width, height);
     }
