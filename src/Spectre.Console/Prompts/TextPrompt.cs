@@ -1,13 +1,17 @@
+using Spectre.Console.Rendering.Prompts;
+
 namespace Spectre.Console;
 
 /// <summary>
 /// Represents a prompt.
 /// </summary>
 /// <typeparam name="T">The prompt result type.</typeparam>
-public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
+public sealed class TextPrompt<T> : IPrompt<T>, IRenderable, IHasCulture
 {
     private readonly string _prompt;
     private readonly StringComparer? _comparer;
+    // State: holds the current input being edited
+    private string _currentInput = string.Empty;
 
     /// <summary>
     /// Gets or sets the prompt style.
@@ -59,21 +63,9 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     public bool ShowDefaultValue { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets the default value editable state that allows the injection of the DefaultValue in the text field.
-    /// If true this places the DefaultValue in the input buffer which can then be edited by the user.
-    /// </summary>
-    public bool EditableDefaultValue { get; set; }
-
-    /// <summary>
     /// Gets or sets a value indicating whether or not an empty result is valid.
     /// </summary>
     public bool AllowEmpty { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the prompt line
-    /// should be cleared after a successful input.
-    /// </summary>
-    public bool ClearOnFinish { get; set; }
 
     /// <summary>
     /// Gets or sets the converter to get the display string for a choice. By default
@@ -109,7 +101,88 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     public TextPrompt(string prompt, StringComparer? comparer = null)
     {
         _prompt = prompt ?? throw new System.ArgumentNullException(nameof(prompt));
-        _comparer = comparer ?? StringComparer.OrdinalIgnoreCase;
+        _comparer = comparer;
+    }
+
+    /// <summary>
+    /// Measures the renderable width requirements.
+    /// </summary>
+    public Measurement Measure(RenderOptions options, int maxWidth)
+    {
+        // Minimal renderable width: prompt + input field
+        // This is a conservative estimate; actual width depends on prompt text
+        var promptWidth = _prompt.Length + 1;  // +1 for space after prompt
+        return new Measurement(Math.Min(10, maxWidth), maxWidth);
+    }
+
+    /// <summary>
+    /// Renders the prompt UI: prompt text + current input field.
+    /// </summary>
+    public IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
+    {
+        var segments = new List<Segment>();
+
+        // Build the prompt prefix (text + choices + default)
+        var promptText = BuildPromptText();
+        segments.AddRange(((IRenderable)new Markup(promptText)).Render(options, maxWidth));
+
+        // Build and render the input field
+        var inputRenderable = BuildInputField();
+        segments.AddRange(inputRenderable.Render(options, maxWidth));
+
+        return segments;
+    }
+
+    /// <summary>
+    /// Builds the prompt prefix text (includes choices, default value, etc.).
+    /// </summary>
+    private string BuildPromptText()
+    {
+        var builder = new StringBuilder();
+        builder.Append(_prompt.TrimEnd());
+
+        var appendSuffix = false;
+
+        if (ShowChoices && Choices.Count > 0)
+        {
+            appendSuffix = true;
+            var converter = Converter ?? TypeConverterHelper.ConvertToString;
+            var choices = string.Join("/", Choices.Select(choice => converter(choice)));
+            var choicesStyle = ChoicesStyle?.ToMarkup() ?? "blue";
+            builder.AppendFormat(CultureInfo.InvariantCulture, " [{0}][[{1}]][/]", choicesStyle, choices);
+        }
+
+        if (ShowDefaultValue && DefaultValue != null)
+        {
+            appendSuffix = true;
+            var converter = Converter ?? TypeConverterHelper.ConvertToString;
+            var defaultValueStyle = DefaultValueStyle?.ToMarkup() ?? "green";
+            var defaultValue = converter(DefaultValue.Value);
+
+            builder.AppendFormat(
+                CultureInfo.InvariantCulture,
+                " [{0}]({1})[/]",
+                defaultValueStyle,
+                IsSecret ? defaultValue.Mask(Mask) : defaultValue);
+        }
+
+        var markup = builder.ToString().Trim();
+        if (appendSuffix)
+        {
+            markup += ":";
+        }
+
+        return markup + " ";
+    }
+
+    /// <summary>
+    /// Builds the input field renderable (the editable text area).
+    /// </summary>
+    private IRenderable BuildInputField()
+    {
+        var promptStyle = PromptStyle ?? Style.Plain;
+        var displayText = IsSecret ? _currentInput.Mask(Mask) : _currentInput;
+        return new Text(displayText, promptStyle);
     }
 
     /// <summary>
@@ -130,81 +203,102 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
 
         return await console.RunExclusive(async () =>
         {
-            var promptStyle = PromptStyle ?? Style.Plain;
+            // Validate environment
+            //if (!console.Profile.Capabilities.Interactive)
+            //{
+            //    throw new NotSupportedException(
+            //        "Cannot show text prompt since the current terminal isn't interactive.");
+            //}
+
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
             var choices = Choices.Select(choice => converter(choice)).ToList();
             var choiceMap = Choices.ToDictionary(choice => converter(choice), choice => choice, _comparer);
 
-            WritePrompt(console);
-
-            while (true)
+            // Initialize with default input if applicable
+            #if DEFAULT_INPUT_BRANCH
+            if (DefaultInput && DefaultValue != null)
             {
-                string input;
-                if (EditableDefaultValue && DefaultValue != null)
-                {
-                    input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken, converter(DefaultValue.Value)).ConfigureAwait(false);
-                }
-                else
-                {
-                    input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken).ConfigureAwait(false);
-                }
-
-
-
-                // Nothing entered?
-                if (string.IsNullOrWhiteSpace(input))
-                {
-                    if (DefaultValue != null)
-                    {
-                        var defaultValue = converter(DefaultValue.Value);
-                        console.Write(IsSecret ? defaultValue.Mask(Mask) : defaultValue, promptStyle);
-                        console.WriteLine();
-
-                        ClearPromptLine(console);
-                        return DefaultValue.Value;
-                    }
-
-                    if (!AllowEmpty)
-                    {
-                        continue;
-                    }
-                }
-
-                console.WriteLine();
-
-                T? result;
-                if (Choices.Count > 0)
-                {
-                    if (choiceMap.TryGetValue(input, out result) && result != null)
-                    {
-                        ClearPromptLine(console);
-                        return result;
-                    }
-                    else
-                    {
-                        console.MarkupLine(InvalidChoiceMessage);
-                        WritePrompt(console);
-                        continue;
-                    }
-                }
-                else if (!TypeConverterHelper.TryConvertFromStringWithCulture<T>(input, Culture, out result) || result == null)
-                {
-                    console.MarkupLine(ValidationErrorMessage);
-                    WritePrompt(console);
-                    continue;
-                }
-
-                // Run all validators
-                if (!ValidateResult(result, out var validationMessage))
-                {
-                    console.MarkupLine(validationMessage);
-                    WritePrompt(console);
-                    continue;
-                }
-
-                ClearPromptLine(console);
-                return result;
+                _currentInput = converter(DefaultValue.Value);
             }
+            else
+            {
+                _currentInput = string.Empty;
+            }
+            #endif
+
+            // Create and attach render hook for interactive rendering
+            var hook = new TextPromptRenderHook<T>(console, () => BuildInputRenderable());
+
+            using (new RenderHookScope(console, hook))
+            {
+                console.Cursor.Hide();
+                hook.Refresh();  // Initial render
+
+                while (true)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    var rawKey = await console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
+                    if (rawKey == null)
+                    {
+                        continue;
+                    }
+
+                    // Process the key and check if we should submit
+                    if (HandleInputKey(rawKey.Value))
+                    {
+                        break;  // User pressed Enter
+                    }
+
+                    hook.Refresh();  // Redraw with updated state
+                }
+            }
+
+            hook.Clear();
+            console.Cursor.Show();
+            console.WriteLine();
+
+            // Parse and validate the result
+            var input = _currentInput;
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                if (DefaultValue != null)
+                {
+                    return DefaultValue.Value;
+                }
+
+                if (!AllowEmpty)
+                {
+                    // Re-prompt? For now, return the input
+                }
+            }
+
+            T? result;
+            if (Choices.Count > 0)
+            {
+                if (choiceMap.TryGetValue(input, out result) && result != null)
+                {
+                    return result;
+                }
+
+                throw new InvalidOperationException($"'{input}' is not a valid choice.");
+            }
+            else if (!TypeConverterHelper.TryConvertFromStringWithCulture<T>(input, Culture, out result) || result == null)
+            {
+                throw new InvalidOperationException($"Unable to convert '{input}' to type {typeof(T).Name}.");
+            }
+
+            if (Validator != null)
+            {
+                var validationResult = Validator(result);
+                if (!validationResult.Successful)
+                {
+                    throw new InvalidOperationException(validationResult.Message ?? ValidationErrorMessage);
+                }
+            }
+
+            return result;
         }).ConfigureAwait(false);
     }
 
@@ -219,10 +313,10 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
         var builder = new StringBuilder();
         builder.Append(_prompt.TrimEnd());
 
-        var hasPromptDetails = false;
+        var appendSuffix = false;
         if (ShowChoices && Choices.Count > 0)
         {
-            hasPromptDetails = true;
+            appendSuffix = true;
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
             var choices = string.Join("/", Choices.Select(choice => converter(choice)));
             var choicesStyle = ChoicesStyle?.ToMarkup() ?? "blue";
@@ -231,7 +325,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
 
         if (ShowDefaultValue && DefaultValue != null)
         {
-            hasPromptDetails = true;
+            appendSuffix = true;
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
             var defaultValueStyle = DefaultValueStyle?.ToMarkup() ?? "green";
             var defaultValue = converter(DefaultValue.Value);
@@ -244,55 +338,12 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
         }
 
         var markup = builder.ToString().Trim();
-        if (ShouldAppendColon(markup, hasPromptDetails))
+        if (appendSuffix)
         {
             markup += ":";
         }
 
         console.Markup(markup + " ");
-    }
-
-    /// <summary>
-    /// A colon should be appended when prompt details are rendered, or when a plain prompt does not already end with punctuation.
-    /// </summary>
-    /// <param name="markup">The prompt markup.</param>
-    /// <param name="hasPromptDetails">Whether the prompt includes choices or a default value.</param>
-    /// <returns>Whether a colon should be appended.</returns>
-    private static bool ShouldAppendColon(string markup, bool hasPromptDetails)
-    {
-        if (hasPromptDetails)
-        {
-            return true;
-        }
-
-        var prompt = Markup.Remove(markup).TrimEnd();
-        return prompt.Length > 0 && char.IsLetterOrDigit(prompt[^1]);
-    }
-
-    /// <summary>
-    /// Clears the prompt line when enabled.
-    /// </summary>
-    /// <param name="console">The console to clear the prompt from.</param>
-    private void ClearPromptLine(IAnsiConsole console)
-    {
-        if (!ClearOnFinish)
-        {
-            return;
-        }
-
-        ArgumentNullException.ThrowIfNull(console);
-
-        if (!console.Profile.Capabilities.Ansi)
-        {
-            return;
-        }
-
-        console.Cursor.MoveUp();
-        console.Write(ControlCode.Create(console, writer =>
-        {
-            writer.Write("\r");
-            writer.EraseInLine(2);
-        }));
     }
 
     private bool ValidateResult(T value, [NotNullWhen(false)] out string? message)
@@ -309,5 +360,95 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
 
         message = null;
         return true;
+    }
+
+    /// <summary>
+    /// Processes a single key input and updates state.
+    /// Returns true if the user pressed Enter (submit), false otherwise.
+    /// </summary>
+    private bool HandleInputKey(ConsoleKeyInfo key)
+    {
+        if (key.Key == ConsoleKey.Enter)
+        {
+            return true;  // Submit
+        }
+
+        if (key.Key == ConsoleKey.Backspace)
+        {
+            if (_currentInput.Length > 0)
+            {
+                _currentInput = _currentInput[..^1];
+            }
+            return false;
+        }
+
+        // Handle Tab for autocomplete (if choices available)
+        if (key.Key == ConsoleKey.Tab && Choices.Count > 0)
+        {
+            var converter = Converter ?? TypeConverterHelper.ConvertToString;
+            var choiceStrings = Choices.Select(c => converter(c)).ToList();
+            var replacement = AutoComplete(choiceStrings, _currentInput);
+            if (!string.IsNullOrEmpty(replacement))
+            {
+                _currentInput = replacement;
+            }
+            return false;
+        }
+
+        // Add regular characters
+        if (!char.IsControl(key.KeyChar))
+        {
+            _currentInput += key.KeyChar;
+            return false;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Autocomplete logic (from original TextPrompt).
+    /// </summary>
+    private string AutoComplete(List<string> choices, string text)
+    {
+        if (choices.Count == 0) return string.Empty;
+
+        // Find exact match
+        var found = choices.Find(i => i == text);
+        if (found != null)
+        {
+            // Cycle to next choice
+            var index = choices.IndexOf(found);
+            index = (index + 1) % choices.Count;
+            return choices[index];
+        }
+
+        // Find prefix match
+        var next = choices.Find(i => i.StartsWith(text, StringComparison.InvariantCultureIgnoreCase));
+        if (next != null)
+        {
+            return next;
+        }
+
+        // Use first if empty
+        if (string.IsNullOrEmpty(text))
+        {
+            return choices[0];
+        }
+
+        return string.Empty;
+    }
+
+    /// <summary>
+    /// Builds the renderable for the input field (called by RenderHook).
+    /// This is separate from Render() to keep the hook focused.
+    /// </summary>
+    private IRenderable BuildInputRenderable()
+    {
+        var promptStyle = PromptStyle ?? Style.Plain;
+        var displayText = IsSecret ? _currentInput.Mask(Mask) : _currentInput;
+
+        // Add a cursor indicator if desired
+        var text = new Text(displayText + "_", promptStyle);
+        return text;
     }
 }
