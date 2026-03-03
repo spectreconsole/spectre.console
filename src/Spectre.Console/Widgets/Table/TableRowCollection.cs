@@ -7,7 +7,7 @@ public sealed class TableRowCollection : IReadOnlyList<TableRow>
 {
     private readonly Table _table;
     private readonly IList<TableRow> _list;
-    private readonly object _lock;
+    private readonly Lock _lock;
 
     /// <inheritdoc/>
     TableRow IReadOnlyList<TableRow>.this[int index]
@@ -39,7 +39,7 @@ public sealed class TableRowCollection : IReadOnlyList<TableRow>
     {
         _table = table ?? throw new ArgumentNullException(nameof(table));
         _list = new List<TableRow>();
-        _lock = new object();
+        _lock = LockFactory.Create();
     }
 
     /// <summary>

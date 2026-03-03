@@ -18,7 +18,7 @@ internal sealed class DefaultProgressRenderer : ProgressRenderer
         _console = console ?? throw new ArgumentNullException(nameof(console));
         _columns = columns ?? throw new ArgumentNullException(nameof(columns));
         _live = new LiveRenderable(console);
-        _lock = new object();
+        _lock = new();
         _stopwatch = new Stopwatch();
         _lastUpdate = TimeSpan.Zero;
         _hideCompleted = hideCompleted;
