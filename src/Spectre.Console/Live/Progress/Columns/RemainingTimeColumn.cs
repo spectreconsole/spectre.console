@@ -2,6 +2,7 @@ namespace Spectre.Console;
 
 /// <summary>
 /// A column showing the remaining time of a task.
+/// Displays "**:**:**" if the task is indeterminate or the remaining time is greater than 99 hours.
 /// </summary>
 public sealed class RemainingTimeColumn : ProgressColumn
 {
@@ -22,7 +23,7 @@ public sealed class RemainingTimeColumn : ProgressColumn
             return new Markup("--:--:--");
         }
 
-        if (remaining.Value.TotalHours > 99)
+        if (remaining.Value.TotalHours > 99 || task.IsIndeterminate)
         {
             return new Markup("**:**:**");
         }

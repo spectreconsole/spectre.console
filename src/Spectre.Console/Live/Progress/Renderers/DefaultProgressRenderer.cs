@@ -18,7 +18,7 @@ internal sealed class DefaultProgressRenderer : ProgressRenderer
         _console = console ?? throw new ArgumentNullException(nameof(console));
         _columns = columns ?? throw new ArgumentNullException(nameof(columns));
         _live = new LiveRenderable(console);
-        _lock = new object();
+        _lock = new();
         _stopwatch = new Stopwatch();
         _lastUpdate = TimeSpan.Zero;
         _hideCompleted = hideCompleted;
@@ -102,7 +102,7 @@ internal sealed class DefaultProgressRenderer : ProgressRenderer
             var layout = new Grid();
             layout.AddColumn();
 
-            foreach (var task in tasks.Where(tsk => !(_hideCompleted && tsk.IsFinished)))
+            foreach (var task in tasks.Where(tsk => !((tsk.HideWhenCompleted ?? _hideCompleted) && tsk.IsFinished)))
             {
                 var columns = _columns.Select(column => column.Render(renderContext, task, delta));
                 grid.AddRow(columns.ToArray());

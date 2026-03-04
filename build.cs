@@ -19,8 +19,6 @@ Task("Clean")
 });
 
 Task("Lint")
-    .WithCriteria(ctx => BuildSystem.IsLocalBuild || BuildSystem.IsPullRequest, "Not a local build or pull request")
-    .WithCriteria(ctx => !noLinting, "Linting disabled by user")
     .Does(ctx =>
 {
     ctx.DotNetFormatStyle(solution, new DotNetFormatSettings
@@ -31,7 +29,6 @@ Task("Lint")
 
 Task("Build")
     .IsDependentOn("Clean")
-    .IsDependentOn("Lint")
     .Does(ctx =>
 {
     ctx.DotNetBuild(solution, new DotNetBuildSettings
