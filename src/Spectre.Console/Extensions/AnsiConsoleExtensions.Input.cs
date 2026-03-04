@@ -5,7 +5,7 @@ namespace Spectre.Console;
 /// </summary>
 public static partial class AnsiConsoleExtensions
 {
-    internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, char? mask, IEnumerable<string>? items = null, CancellationToken cancellationToken = default)
+    internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, char? mask, IEnumerable<string>? items = null, CancellationToken cancellationToken = default, string? initialInput = null)
     {
         ArgumentNullException.ThrowIfNull(console);
 
@@ -14,10 +14,31 @@ public static partial class AnsiConsoleExtensions
 
         var autocomplete = new List<string>(items ?? []);
 
+        Queue<ConsoleKeyInfo>? injectedQueue = null;
+        if (!string.IsNullOrEmpty(initialInput))
+        {
+            injectedQueue = new Queue<ConsoleKeyInfo>();
+            foreach (var ch in initialInput)
+            {
+                var control = char.IsUpper(ch);
+                injectedQueue.Enqueue(new ConsoleKeyInfo(ch, (ConsoleKey)ch, false, false, control));
+            }
+        }
+
         while (true)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var rawKey = await console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
+
+            ConsoleKeyInfo? rawKey;
+            if (injectedQueue != null && injectedQueue.Count > 0)
+            {
+                rawKey = injectedQueue.Dequeue();
+            }
+            else
+            {
+                rawKey = await console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
+            }
+
             if (rawKey == null)
             {
                 continue;
