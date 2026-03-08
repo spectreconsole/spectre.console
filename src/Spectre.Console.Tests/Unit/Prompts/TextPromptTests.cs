@@ -427,7 +427,7 @@ public sealed class TextPromptTests
                 .AddChoice("Orange")
                 .DefaultValue("Banan")
                 .ShowDefaultValue(true)
-                .DefaultInput(true));
+                .EditableDefaultValue(true));
 
         // Then
         return Verifier.Verify(console.Output);
