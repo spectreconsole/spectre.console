@@ -59,6 +59,12 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     public bool ShowDefaultValue { get; set; } = true;
 
     /// <summary>
+    /// Gets or sets the default value editable state that allows the injection of the DefaultValue in the text field.
+    /// If true this places the DefaultValue in the input buffer which can then be edited by the user.
+    /// </summary>
+    public bool EditableDefaultValue { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether or not an empty result is valid.
     /// </summary>
     public bool AllowEmpty { get; set; }
@@ -133,7 +139,17 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
 
             while (true)
             {
-                var input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken).ConfigureAwait(false);
+                string input;
+                if (EditableDefaultValue && DefaultValue != null)
+                {
+                    input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken, converter(DefaultValue.Value)).ConfigureAwait(false);
+                }
+                else
+                {
+                    input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken).ConfigureAwait(false);
+                }
+
+
 
                 // Nothing entered?
                 if (string.IsNullOrWhiteSpace(input))
