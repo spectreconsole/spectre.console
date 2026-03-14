@@ -3,18 +3,24 @@ namespace Spectre.Console.Json;
 internal sealed class JsonBuilderContext
 {
     public Paragraph Paragraph { get; }
-    public int Indentation { get; set; }
+    public int Level { get; set; }
+    public string Indentation { get; set; }
     public JsonTextStyles Styling { get; }
 
-    public JsonBuilderContext(JsonTextStyles styling)
+    public JsonBuilderContext(
+        JsonTextStyles styling, string indentation)
     {
         Paragraph = new Paragraph();
         Styling = styling;
+        Indentation = indentation;
     }
 
     public void InsertIndentation()
     {
-        Paragraph.Append(new string(' ', Indentation * 3));
+        for (var level = 0; level < Level; level++)
+        {
+            Paragraph.Append(Indentation);
+        }
     }
 }
 
@@ -26,7 +32,7 @@ internal sealed class JsonBuilder : JsonSyntaxVisitor<JsonBuilderContext>
     {
         context.Paragraph.Append("{", context.Styling.BracesStyle);
         context.Paragraph.Append("\n");
-        context.Indentation++;
+        context.Level++;
 
         foreach (var (_, _, last, property) in syntax.Members.Enumerate())
         {
@@ -41,7 +47,7 @@ internal sealed class JsonBuilder : JsonSyntaxVisitor<JsonBuilderContext>
             context.Paragraph.Append("\n");
         }
 
-        context.Indentation--;
+        context.Level--;
         context.InsertIndentation();
         context.Paragraph.Append("}", context.Styling.BracesStyle);
     }
@@ -50,7 +56,7 @@ internal sealed class JsonBuilder : JsonSyntaxVisitor<JsonBuilderContext>
     {
         context.Paragraph.Append("[", context.Styling.BracketsStyle);
         context.Paragraph.Append("\n");
-        context.Indentation++;
+        context.Level++;
 
         foreach (var (_, _, last, item) in syntax.Items.Enumerate())
         {
@@ -65,7 +71,7 @@ internal sealed class JsonBuilder : JsonSyntaxVisitor<JsonBuilderContext>
             context.Paragraph.Append("\n");
         }
 
-        context.Indentation--;
+        context.Level--;
         context.InsertIndentation();
         context.Paragraph.Append("]", context.Styling.BracketsStyle);
     }
