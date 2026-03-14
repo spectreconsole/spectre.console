@@ -30,4 +30,8 @@
     <AdditionalFiles Include="Data\colors.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Spectre.Console.Tests" />
+  </ItemGroup>
+
 </Project>

@@ -27,11 +27,34 @@ internal static class AnsiDetector
 
     public static (bool Ansi, bool Legacy) Detect(TextWriter buffer, AnsiSupport ansi)
     {
+        return Detect(
+            buffer,
+            ansi,
+            System.Console.IsOutputRedirected,
+            System.Console.IsErrorRedirected);
+    }
+
+    internal static (bool Ansi, bool Legacy) Detect(
+        TextWriter buffer,
+        AnsiSupport ansi,
+        bool isOutputRedirected,
+        bool isErrorRedirected)
+    {
         var supportsAnsi = ansi == AnsiSupport.Yes;
         var legacyConsole = false;
 
         if (ansi == AnsiSupport.Detect)
         {
+            if (buffer.IsStandardOut() && isOutputRedirected)
+            {
+                return (false, false);
+            }
+
+            if (buffer.IsStandardError() && isErrorRedirected)
+            {
+                return (false, false);
+            }
+
             (supportsAnsi, legacyConsole) = AnsiDetector.Detect(buffer.IsStandardError(), true);
             return (supportsAnsi, legacyConsole);
         }
