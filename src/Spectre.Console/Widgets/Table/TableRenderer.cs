@@ -61,7 +61,7 @@ internal static class TableRenderer
                             cellWidth += columnWidths[columnIndex + i];
 
                             // Add padding from intermediate columns
-                            if (context.ShowBorder || context.IsGrid)
+                            if ((context.ShowBorder && context.Border.UsePadding) || context.IsGrid)
                             {
                                 cellWidth += context.Columns[columnIndex + i].Padding.GetLeftSafe();
                                 cellWidth += context.Columns[columnIndex + i].Padding.GetRightSafe();
@@ -93,8 +93,11 @@ internal static class TableRenderer
             if (isFirstRow && context.ShowBorder)
             {
                 var separator = context.Border.GetColumnRow(TablePart.Top, columnWidths, context.Columns);
-                result.Add(new Segment(separator, context.BorderStyle));
-                result.Add(Segment.LineBreak);
+                if (!string.IsNullOrEmpty(separator))
+                {
+                    result.Add(new Segment(separator, context.BorderStyle));
+                    result.Add(Segment.LineBreak);
+                }
             }
 
             // Show footer separator?
@@ -156,7 +159,7 @@ internal static class TableRenderer
                     }
 
                     // Pad column on left side.
-                    if (context.ShowBorder || context.IsGrid)
+                    if ((context.ShowBorder && context.Border.UsePadding) || context.IsGrid)
                     {
                         var leftPadding = context.Columns[actualColumnIndex].Padding.GetLeftSafe();
                         if (leftPadding > 0)
@@ -177,7 +180,7 @@ internal static class TableRenderer
 
                     // Pad column on the right side (use the LAST column in the span)
                     var rightColumnIndex = actualColumnIndex + cellSpan - 1;
-                    if (context.ShowBorder || (context.HideBorder && !isLastCell) ||
+                    if ((context.ShowBorder && context.Border.UsePadding) || (context.HideBorder && !isLastCell) ||
                         (context.HideBorder && isLastCell && context.IsGrid && context.PadRightCell))
                     {
                         var rightPadding = context.Columns[rightColumnIndex].Padding.GetRightSafe();
@@ -248,8 +251,11 @@ internal static class TableRenderer
             if (isLastRow && context.ShowBorder)
             {
                 var separator = context.Border.GetColumnRow(TablePart.Bottom, columnWidths, context.Columns);
-                result.Add(new Segment(separator, context.BorderStyle));
-                result.Add(Segment.LineBreak);
+                if (!string.IsNullOrEmpty(separator))
+                {
+                    result.Add(new Segment(separator, context.BorderStyle));
+                    result.Add(Segment.LineBreak);
+                }
             }
         }
 

@@ -92,6 +92,11 @@ public abstract partial class TableBorder
     public static TableBorder DoubleEdge { get; } = new DoubleEdgeTableBorder();
 
     /// <summary>
+    /// Gets a minimalist border.
+    /// </summary>
+    public static TableBorder Minimalist { get; } = new MinimalistTableBorder();
+
+    /// <summary>
     /// Gets a markdown border.
     /// </summary>
     public static TableBorder Markdown { get; } = new MarkdownTableBorder();

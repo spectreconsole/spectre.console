@@ -221,6 +221,18 @@ public static class HasTableBorderExtensions
     }
 
     /// <summary>
+    /// Display a minimalist border.
+    /// </summary>
+    /// <typeparam name="T">An object type with a border.</typeparam>
+    /// <param name="obj">The object to set the border for.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static T MinimalistBorder<T>(this T obj)
+        where T : class, IHasTableBorder
+    {
+        return Border(obj, TableBorder.Minimalist);
+    }
+
+    /// <summary>
     /// Display a markdown border.
     /// </summary>
     /// <typeparam name="T">An object type with a border.</typeparam>
