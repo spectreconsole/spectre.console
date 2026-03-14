@@ -136,6 +136,69 @@ public sealed class SegmentTests
         }
     }
 
+    public sealed class TheSplitLinesWithMaxWidthMethod
+    {
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2033")]
+        public void Should_Split_Fullwidth_Segment_Without_Exception()
+        {
+            // Given (reproduces GitHub issue #2033)
+            var segments = new List<Segment>
+            {
+                new Segment("测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"),
+            };
+
+            // When
+            var lines = Segment.SplitLines(segments, maxWidth: 10);
+
+            // Then
+            lines.Count.ShouldBe(7);
+            lines[0].CellCount().ShouldBe(10);
+            lines[1].CellCount().ShouldBe(10);
+            lines[2].CellCount().ShouldBe(10);
+            lines[3].CellCount().ShouldBe(10);
+            lines[4].CellCount().ShouldBe(10);
+            lines[5].CellCount().ShouldBe(10);
+            lines[6].CellCount().ShouldBe(4);
+        }
+
+        [Fact]
+        public void Should_Split_Fullwidth_Segment_At_Correct_Boundary()
+        {
+            // Given
+            var segments = new List<Segment>
+            {
+                new Segment("测试测试"), // 8 cells
+            };
+
+            // When
+            var lines = Segment.SplitLines(segments, maxWidth: 6);
+
+            // Then
+            lines.Count.ShouldBe(2);
+            lines[0][0].Text.ShouldBe("测试测"); // 6 cells
+            lines[1][0].Text.ShouldBe("试"); // 2 cells
+        }
+
+        [Fact]
+        public void Should_Split_Fullwidth_Segment_With_Odd_MaxWidth()
+        {
+            // Given
+            var segments = new List<Segment>
+            {
+                new Segment("测试测试"), // 8 cells
+            };
+
+            // When
+            var lines = Segment.SplitLines(segments, maxWidth: 5);
+
+            // Then
+            lines.Count.ShouldBe(2);
+            lines[0][0].Text.ShouldBe("测试测"); // 6 cells
+            lines[1][0].Text.ShouldBe("试"); // 2 cells
+        }
+    }
+
     public sealed class TheSplitOverflowMethod
     {
         [Fact]
