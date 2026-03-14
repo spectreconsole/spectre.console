@@ -1000,4 +1000,38 @@ public sealed class TableTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2033")]
+    public void Should_Not_Throw_When_Rendering_Long_CJK_Header_In_Narrow_Console()
+    {
+        // Given
+        var console = new TestConsole().Width(50);
+        var table = new Table()
+            .AddColumn("测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试");
+
+        // When
+        var result = Record.Exception(() => console.Write(table));
+
+        // Then
+        result.ShouldBeNull();
+    }
+
+    [Fact]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2033")]
+    public void Should_Not_Throw_When_Rendering_Multiple_Long_CJK_Headers_In_Narrow_Console()
+    {
+        // Given
+        var console = new TestConsole().Width(50);
+        var table = new Table()
+            .AddColumn("测试测试测试测试测试测试测试测试")
+            .AddColumn("测试测试测试测试测试测试测试测试")
+            .AddColumn("测试测试测试测试测试测试测试测试");
+
+        // When
+        var result = Record.Exception(() => console.Write(table));
+
+        // Then
+        result.ShouldBeNull();
+    }
 }

@@ -222,8 +222,7 @@ public class Segment
             var lineLength = line.CellCount();
             if (lineLength + segmentLength > maxWidth)
             {
-                var diff = -(maxWidth - (lineLength + segmentLength));
-                var offset = segment.Text.Length - diff;
+                var offset = maxWidth - lineLength;
 
                 var (first, second) = segment.Split(offset);
 
