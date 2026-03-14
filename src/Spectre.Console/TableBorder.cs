@@ -21,6 +21,11 @@ public abstract partial class TableBorder
     public virtual bool SupportsRowSeparator { get; } = true;
 
     /// <summary>
+    /// Gets a value indicating whether or not the border uses cell padding.
+    /// </summary>
+    public virtual bool UsePadding { get; } = true;
+
+    /// <summary>
     /// Gets the string representation of a specified table border part.
     /// </summary>
     /// <param name="part">The part to get the character representation for.</param>

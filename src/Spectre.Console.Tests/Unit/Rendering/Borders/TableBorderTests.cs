@@ -786,6 +786,47 @@ public sealed class TableBorderTests
         }
     }
 
+    public sealed class MinimalistBorder
+    {
+        [Fact]
+        public void Should_Return_Correct_Visibility()
+        {
+            // Given, When
+            var visibility = TableBorder.Minimalist.Visible;
+
+            // Then
+            visibility.ShouldBeTrue();
+        }
+
+        public sealed class TheSafeGetBorderMethod
+        {
+            [Fact]
+            public void Should_Return_Safe_Border()
+            {
+                // Given, When
+                var border = TableBorder.Minimalist.GetSafeBorder(safe: true);
+
+                // Then
+                border.ShouldBeSameAs(TableBorder.Minimalist);
+            }
+        }
+
+        [Fact]
+        [Expectation("MinimalistBorder")]
+        public Task Should_Render_As_Expected()
+        {
+            // Given
+            var console = new TestConsole();
+            var table = Fixture.GetTable().MinimalistBorder();
+
+            // When
+            console.Write(table);
+
+            // Then
+            return Verifier.Verify(console.Output);
+        }
+    }
+
     private static class Fixture
     {
         public static Table GetTable(Justify? header1 = null, Justify? header2 = null)

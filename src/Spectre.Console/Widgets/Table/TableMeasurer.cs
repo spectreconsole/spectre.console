@@ -35,11 +35,12 @@ internal sealed class TableMeasurer : TableAccessor
     public int GetNonColumnWidth()
     {
         var hideBorder = !_border.Visible;
+        var usePadding = _border.UsePadding;
         var separators = hideBorder ? 0 : Columns.Count - 1;
-        var edges = hideBorder ? 0 : EdgeCount;
-        var padding = Columns.Select(x => x.Padding?.GetWidth() ?? 0).Sum();
+        var edges = hideBorder || !usePadding ? 0 : EdgeCount;
+        var padding = !usePadding ? 0 : Columns.Select(x => x.Padding?.GetWidth() ?? 0).Sum();
 
-        if (!_padRightCell)
+        if (usePadding && !_padRightCell)
         {
             padding -= Columns.Last().Padding.GetRightSafe();
         }
