@@ -198,9 +198,10 @@ public sealed class AnsiMarkupSegment
     /// <inheritdoc />
     public override string ToString()
     {
+        var escaped = AnsiMarkup.Escape(Text);
         return !Style.Equals(Style.Plain)
-            ? $"[{Style.ToMarkup()}]{Text}[/]"
-            : Text;
+            ? $"[{Style.ToMarkup()}]{escaped}[/]"
+            : escaped;
     }
 }
 

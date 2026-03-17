@@ -218,6 +218,53 @@ public sealed class SelectionPromptTests
         // Then
         selection.ShouldBe("A");
     }
+
+    [Fact]
+    public void Should_Not_Throw_When_Searching_With_Escaped_Brackets_In_Choices()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushText("M");
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new SelectionPrompt<string>()
+            .Title("Select a subscription")
+            .UseConverter(s => s.EscapeMarkup())
+            .EnableSearch()
+            .AddChoices(
+                "MSFT-Provisioning-01[Prod] (guid-1)",
+                "Normal Subscription (guid-2)");
+        var result = prompt.Show(console);
+
+        // Then
+        result.ShouldBe("MSFT-Provisioning-01[Prod] (guid-1)");
+    }
+
+    [Fact]
+    public void Should_Search_And_Select_Item_With_Brackets()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushText("Dev");
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new SelectionPrompt<string>()
+            .Title("Select")
+            .UseConverter(s => s.EscapeMarkup())
+            .EnableSearch()
+            .AddChoices(
+                "[Prod] Production",
+                "[Dev] Development",
+                "Staging");
+        var result = prompt.Show(console);
+
+        // Then
+        result.ShouldBe("[Dev] Development");
+    }
 }
 
 file sealed class CustomSelectionItem
