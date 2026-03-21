@@ -7,10 +7,10 @@ public sealed class AnsiParser
 {
     private readonly Action<AnsiToken> _callback;
     private readonly List<char> _collect = [];
-    private readonly List<char> _osc = [];
     private readonly List<int> _parameters = [0];
     private readonly List<bool> _parameterSeparators = [true];
     private readonly StringBuilder _parametersRaw = new();
+    private readonly OscParser _oscParser;
     private bool _hasParameter;
     private AnsiParserState _currentState;
 
@@ -22,6 +22,7 @@ public sealed class AnsiParser
     {
         _callback = callback ?? throw new ArgumentNullException(nameof(callback));
         _currentState = AnsiParserState.Ground;
+        _oscParser = new OscParser();
     }
 
     /// <summary>
@@ -38,7 +39,17 @@ public sealed class AnsiParser
             switch (_currentState)
             {
                 case AnsiParserState.OscString:
-                    EmitOscEnd();
+                    var command = _oscParser.End(code);
+                    if (command != null)
+                    {
+                        _callback(new AnsiToken.Osc(command));
+                    }
+                    break;
+                case AnsiParserState.DcsPassthrough:
+                    _callback(new AnsiToken.DcsUnhook());
+                    break;
+                case AnsiParserState.SosPmApcString:
+                    _callback(new AnsiToken.ApcEnd());
                     break;
             }
         }
@@ -89,106 +100,56 @@ public sealed class AnsiParser
                     Final: code,
                     ParamsRaw: _parametersRaw.ToString()));
                 break;
-            case AnsiTransitionAction.Clear:
-                _hasParameter = false;
-                _parametersRaw.Clear();
-                _parameters.Clear();
-                _parameters.Add(0);
-                _osc.Clear();
-                _collect.Clear();
-                break;
-            case AnsiTransitionAction.OscStart:
-                _osc.Clear();
-                break;
             case AnsiTransitionAction.OscPut:
-                if (code >= 0x20)
-                {
-                    _osc.Add(code);
-                }
-
+                _oscParser.Next(code);
                 break;
-            case AnsiTransitionAction.OscEnd:
-                EmitOscEnd();
-                break;
-            case AnsiTransitionAction.DscHook:
             case AnsiTransitionAction.DscPut:
-            case AnsiTransitionAction.DscUnhook:
-                // Ignore DSC for now
+                _callback(new AnsiToken.DcsPut(code));
+                break;
+            case AnsiTransitionAction.ApcPut:
+                _callback(new AnsiToken.ApcPut(code));
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
 
+        // Perform exit event
+        if (_currentState != nextState)
+        {
+            switch (nextState)
+            {
+                case AnsiParserState.Escape:
+                case AnsiParserState.DcsEntry:
+                case AnsiParserState.CsiEntry:
+                    Clear();
+                    break;
+                case AnsiParserState.OscString:
+                    _oscParser.Reset();
+                    break;
+                case AnsiParserState.DcsPassthrough:
+                    _callback(new AnsiToken.Csi(
+                        Collect: [.. _collect],
+                        Params: _hasParameter ? [.. _parameters] : [],
+                        Final: code,
+                        ParamsRaw: _parametersRaw.ToString()));
+                    break;
+                case AnsiParserState.SosPmApcString:
+                    _callback(new AnsiToken.ApcStart());
+                    break;
+            }
+        }
+
         _currentState = nextState;
     }
 
-    private void EmitOscEnd()
+    private void Clear()
     {
-        // Learned about CAN/SUB from SwiftTerm, but not sure why...
-        if (_osc.Count > 0 && _osc[0] != 0x18 /*CAN*/ && _osc[0] != 0x1A /*SUB*/)
-        {
-            int oscCode;
-            var content = string.Empty;
-
-            var osc = new string(_osc.ToArray());
-            var idx = osc.IndexOf(';');
-            if (idx != -1)
-            {
-                oscCode = int.Parse(osc[..idx]);
-                content = osc[idx..];
-            }
-            else
-            {
-                oscCode = int.Parse(osc);
-            }
-
-            _callback(
-                new AnsiToken.Osc(
-                    Code: (char)oscCode,
-                    Data: [.. content.ToArray()]));
-        }
+        _hasParameter = false;
+        _parametersRaw.Clear();
+        _parameters.Clear();
+        _parameters.Add(0);
+        _collect.Clear();
     }
-}
-
-/// <summary>
-/// Represents a parsed ANSI/VT token.
-/// </summary>
-public abstract record AnsiToken
-{
-    /// <summary>
-    /// Prints a (unicode codepoint) character to the screen.
-    /// </summary>
-    /// <param name="Code"></param>
-    public record Print(char Code) : AnsiToken;
-
-    /// <summary>
-    /// Executes the C0 or C1 function.
-    /// </summary>
-    /// <param name="Code"></param>
-    public record Execute(char Code) : AnsiToken;
-
-    /// <summary>
-    /// Execute an ESC command.
-    /// </summary>
-    /// <param name="Collect"></param>
-    /// <param name="Final"></param>
-    public record Esc(List<char> Collect, char Final) : AnsiToken;
-
-    /// <summary>
-    /// Executes a CSI command.
-    /// </summary>
-    /// <param name="Collect"></param>
-    /// <param name="Params"></param>
-    /// <param name="Final"></param>
-    /// <param name="ParamsRaw"></param>
-    public record Csi(List<char> Collect, List<int> Params, char Final, string ParamsRaw) : AnsiToken;
-
-    /// <summary>
-    /// Executes a OSC command.
-    /// </summary>
-    /// <param name="Code"></param>
-    /// <param name="Data"></param>
-    public record Osc(char Code, List<char> Data) : AnsiToken;
 }
 
 internal enum AnsiParserState
@@ -219,13 +180,9 @@ internal enum AnsiTransitionAction
     Param,
     EscDispatch,
     CsiDispatch,
-    DscPut,
-    Clear,
-    OscStart,
     OscPut,
-    OscEnd,
-    DscHook,
-    DscUnhook,
+    DscPut,
+    ApcPut,
 }
 
 internal readonly record struct AnsiTransition(
@@ -264,16 +221,16 @@ internal sealed class AnsiTransitionTable
             Add(0x9F, state, AnsiParserState.SosPmApcString, AnsiTransitionAction.None);
 
             // -> Escape
-            Add(0x1B, state, AnsiParserState.Escape, AnsiTransitionAction.Clear);
+            Add(0x1B, state, AnsiParserState.Escape, AnsiTransitionAction.None);
 
             // -> DcsEntry
-            Add(0x90, state, AnsiParserState.DcsEntry, AnsiTransitionAction.Clear);
+            Add(0x90, state, AnsiParserState.DcsEntry, AnsiTransitionAction.None);
 
             // -> OscString
-            Add(0x9D, state, AnsiParserState.OscString, AnsiTransitionAction.OscStart);
+            Add(0x9D, state, AnsiParserState.OscString, AnsiTransitionAction.None);
 
             // -> CsiEntry
-            Add(0x9B, state, AnsiParserState.CsiEntry, AnsiTransitionAction.Clear);
+            Add(0x9B, state, AnsiParserState.CsiEntry, AnsiTransitionAction.None);
         }
 
         // Ground
@@ -326,24 +283,24 @@ internal sealed class AnsiTransitionTable
             Add(0x5F, AnsiParserState.Escape, AnsiParserState.SosPmApcString, AnsiTransitionAction.None);
 
             // -> DcsEntry
-            Add(0x50, AnsiParserState.Escape, AnsiParserState.DcsEntry, AnsiTransitionAction.Clear);
+            Add(0x50, AnsiParserState.Escape, AnsiParserState.DcsEntry, AnsiTransitionAction.None);
 
             // -> OscString
-            Add(0x5D, AnsiParserState.Escape, AnsiParserState.OscString, AnsiTransitionAction.OscStart);
+            Add(0x5D, AnsiParserState.Escape, AnsiParserState.OscString, AnsiTransitionAction.None);
 
             // -> CsiEntry
-            Add(0x5B, AnsiParserState.Escape, AnsiParserState.CsiEntry, AnsiTransitionAction.Clear);
+            Add(0x5B, AnsiParserState.Escape, AnsiParserState.CsiEntry, AnsiTransitionAction.None);
         }
 
         // SosPmApcString
         {
-            Add(0x19, AnsiParserState.SosPmApcString, AnsiParserState.SosPmApcString, AnsiTransitionAction.Ignore);
+            Add(0x19, AnsiParserState.SosPmApcString, AnsiParserState.SosPmApcString, AnsiTransitionAction.ApcPut);
             Add(0x00..0x17, AnsiParserState.SosPmApcString, AnsiParserState.SosPmApcString,
-                AnsiTransitionAction.Ignore);
+                AnsiTransitionAction.ApcPut);
             Add(0x1C..0x1F, AnsiParserState.SosPmApcString, AnsiParserState.SosPmApcString,
-                AnsiTransitionAction.Ignore);
+                AnsiTransitionAction.ApcPut);
             Add(0x20..0x7F, AnsiParserState.SosPmApcString, AnsiParserState.SosPmApcString,
-                AnsiTransitionAction.Ignore);
+                AnsiTransitionAction.ApcPut);
         }
 
         // DcsEntry
@@ -365,7 +322,7 @@ internal sealed class AnsiTransitionTable
             Add(0x3C..0x3F, AnsiParserState.DcsEntry, AnsiParserState.DcsParam, AnsiTransitionAction.Collect);
 
             // -> DcsPassthrough
-            Add(0x40..0x7E, AnsiParserState.DcsEntry, AnsiParserState.DcsPassthrough, AnsiTransitionAction.DscHook);
+            Add(0x40..0x7E, AnsiParserState.DcsEntry, AnsiParserState.DcsPassthrough, AnsiTransitionAction.None);
         }
 
         // DcsIntermediate
@@ -381,8 +338,7 @@ internal sealed class AnsiTransitionTable
             Add(0x30..0x3F, AnsiParserState.DcsIntermediate, AnsiParserState.DcsIgnore, AnsiTransitionAction.None);
 
             // -> DcsPassthrough
-            Add(0x40..0x7E, AnsiParserState.DcsIntermediate, AnsiParserState.DcsPassthrough,
-                AnsiTransitionAction.DscHook);
+            Add(0x40..0x7E, AnsiParserState.DcsIntermediate, AnsiParserState.DcsPassthrough, AnsiTransitionAction.None);
         }
 
         // DcsIgnore
@@ -410,7 +366,7 @@ internal sealed class AnsiTransitionTable
             Add(0x20..0x2F, AnsiParserState.DcsParam, AnsiParserState.DcsIntermediate, AnsiTransitionAction.Collect);
 
             // -> DcsPassthrough
-            Add(0x40..0x7E, AnsiParserState.DcsParam, AnsiParserState.DcsPassthrough, AnsiTransitionAction.DscHook);
+            Add(0x40..0x7E, AnsiParserState.DcsParam, AnsiParserState.DcsPassthrough, AnsiTransitionAction.None);
         }
 
         // DcsPassthrough
@@ -423,9 +379,6 @@ internal sealed class AnsiTransitionTable
             Add(0x20..0x7E, AnsiParserState.DcsPassthrough, AnsiParserState.DcsPassthrough,
                 AnsiTransitionAction.DscPut);
             Add(0x7F, AnsiParserState.DcsPassthrough, AnsiParserState.DcsPassthrough, AnsiTransitionAction.Ignore);
-
-            // -> Ground
-            Add(0x9C, AnsiParserState.DcsPassthrough, AnsiParserState.Ground, AnsiTransitionAction.DscUnhook);
         }
 
         // CsiParam
