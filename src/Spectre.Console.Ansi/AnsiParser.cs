@@ -1,5 +1,8 @@
 namespace Spectre.Console.Ansi;
 
+/// <summary>
+/// A ANSI/VT input parser based on the VT500-series.
+/// </summary>
 public sealed class AnsiParser
 {
     private readonly Action<AnsiToken> _callback;
@@ -11,139 +14,180 @@ public sealed class AnsiParser
     private bool _hasParameter;
     private AnsiParserState _currentState;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AnsiMarkup"/> class.
+    /// </summary>
+    /// <param name="callback">The callback to be used for parsed tokens.</param>
     public AnsiParser(Action<AnsiToken> callback)
     {
         _callback = callback ?? throw new ArgumentNullException(nameof(callback));
         _currentState = AnsiParserState.Ground;
     }
 
+    /// <summary>
+    /// Processes the specified code.
+    /// </summary>
+    /// <param name="code">The code to process.</param>
     public void Next(char code)
     {
-        var effect = AnsiTransitionTable.Shared.GetTransition(_currentState, code);
+        var (nextState, action) = AnsiTransitionTable.Shared.GetTransition(_currentState, code);
 
-        var nextState = effect.State;
-        var action = effect.Action;
-
-        try
+        // Perform entry event
+        if (_currentState != nextState)
         {
-            switch (action)
+            switch (_currentState)
             {
-                case AnsiTransitionAction.None:
-                case AnsiTransitionAction.Ignore:
-                    // Do nothing
+                case AnsiParserState.OscString:
+                    EmitOscEnd();
                     break;
-                case AnsiTransitionAction.Print:
-                    _callback(new AnsiToken.Print(code));
-                    break;
-                case AnsiTransitionAction.Execute:
-                    _callback(new AnsiToken.Execute(code));
-                    break;
-                case AnsiTransitionAction.Collect:
-                    _collect.Add(code);
-                    break;
-                case AnsiTransitionAction.Param:
-                    _parametersRaw.Append(code);
-
-                    if (code is ';' or ':')
-                    {
-                        _parameters.Add(0);
-                        _parameterSeparators.Add(code is ';');
-                    }
-                    else
-                    {
-                        Debug.Assert(char.IsDigit(code), "Expected digit");
-
-                        var accumulator = (_parameters[^1] * 10) + code - 48;
-
-                        _parameters[^1] =
-                            accumulator > (int.MaxValue / 10) - 10
-                                ? 0
-                                : accumulator;
-
-                        _hasParameter = true;
-                    }
-
-                    break;
-                case AnsiTransitionAction.EscDispatch:
-                    _callback(new AnsiToken.Esc([.. _collect], code));
-                    break;
-                case AnsiTransitionAction.CsiDispatch:
-                    _callback(new AnsiToken.Csi(
-                        [.. _collect],
-                        _hasParameter ? [.. _parameters] : [],
-                        code,
-                        _parametersRaw.ToString()));
-                    break;
-                case AnsiTransitionAction.Clear:
-                    _hasParameter = false;
-                    _parametersRaw.Clear();
-                    _parameters.Clear();
-                    _parameters.Add(0);
-                    _osc.Clear();
-                    _collect.Clear();
-                    break;
-                case AnsiTransitionAction.OscStart:
-                    _osc.Clear();
-                    break;
-                case AnsiTransitionAction.OscPut:
-                    if (code >= 0x20)
-                    {
-                        _osc.Add(code);
-                    }
-
-                    break;
-                case AnsiTransitionAction.OscEnd:
-                    // Learned about CAN/SUB from SwiftTerm, but not sure why...
-                    if (_osc.Count > 0 && _osc[0] != 0x18 /*CAN*/ && _osc[0] != 0x1A /*SUB*/)
-                    {
-                        int oscCode;
-                        var content = string.Empty;
-
-                        var osc = new string(_osc.ToArray());
-                        var idx = osc.IndexOf(';');
-                        if (idx != -1)
-                        {
-                            oscCode = int.Parse(osc[..idx]);
-                            content = osc[idx..];
-                        }
-                        else
-                        {
-                            oscCode = int.Parse(osc);
-                        }
-
-                        _callback(
-                            new AnsiToken.Osc(
-                                (char)oscCode,
-                                [.. content.ToArray()]));
-                    }
-
-                    break;
-                case AnsiTransitionAction.DscHook:
-                case AnsiTransitionAction.DscPut:
-                case AnsiTransitionAction.DscUnhook:
-                    // Ignore DSC for now
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
-        finally
+
+        // Perform the action
+        switch (action)
         {
-            _currentState = nextState;
+            case AnsiTransitionAction.None:
+            case AnsiTransitionAction.Ignore:
+                // Do nothing
+                break;
+            case AnsiTransitionAction.Print:
+                _callback(new AnsiToken.Print(code));
+                break;
+            case AnsiTransitionAction.Execute:
+                _callback(new AnsiToken.Execute(code));
+                break;
+            case AnsiTransitionAction.Collect:
+                _collect.Add(code);
+                break;
+            case AnsiTransitionAction.Param:
+                _parametersRaw.Append(code);
+
+                if (code is ';' or ':')
+                {
+                    _parameters.Add(0);
+                    _parameterSeparators.Add(code is ';');
+                }
+                else
+                {
+                    Debug.Assert(char.IsDigit(code), "Expected digit");
+
+                    var accumulator = (_parameters[^1] * 10) + code - 48;
+                    _parameters[^1] = accumulator > (int.MaxValue / 10) - 10 ? 0 : accumulator;
+                    _hasParameter = true;
+                }
+
+                break;
+            case AnsiTransitionAction.EscDispatch:
+                _callback(new AnsiToken.Esc(
+                    Collect: [.. _collect],
+                    Final: code));
+                break;
+            case AnsiTransitionAction.CsiDispatch:
+                _callback(new AnsiToken.Csi(
+                    Collect: [.. _collect],
+                    Params: _hasParameter ? [.. _parameters] : [],
+                    Final: code,
+                    ParamsRaw: _parametersRaw.ToString()));
+                break;
+            case AnsiTransitionAction.Clear:
+                _hasParameter = false;
+                _parametersRaw.Clear();
+                _parameters.Clear();
+                _parameters.Add(0);
+                _osc.Clear();
+                _collect.Clear();
+                break;
+            case AnsiTransitionAction.OscStart:
+                _osc.Clear();
+                break;
+            case AnsiTransitionAction.OscPut:
+                if (code >= 0x20)
+                {
+                    _osc.Add(code);
+                }
+
+                break;
+            case AnsiTransitionAction.OscEnd:
+                EmitOscEnd();
+                break;
+            case AnsiTransitionAction.DscHook:
+            case AnsiTransitionAction.DscPut:
+            case AnsiTransitionAction.DscUnhook:
+                // Ignore DSC for now
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        _currentState = nextState;
+    }
+
+    private void EmitOscEnd()
+    {
+        // Learned about CAN/SUB from SwiftTerm, but not sure why...
+        if (_osc.Count > 0 && _osc[0] != 0x18 /*CAN*/ && _osc[0] != 0x1A /*SUB*/)
+        {
+            int oscCode;
+            var content = string.Empty;
+
+            var osc = new string(_osc.ToArray());
+            var idx = osc.IndexOf(';');
+            if (idx != -1)
+            {
+                oscCode = int.Parse(osc[..idx]);
+                content = osc[idx..];
+            }
+            else
+            {
+                oscCode = int.Parse(osc);
+            }
+
+            _callback(
+                new AnsiToken.Osc(
+                    Code: (char)oscCode,
+                    Data: [.. content.ToArray()]));
         }
     }
 }
 
+/// <summary>
+/// Represents a parsed ANSI/VT token.
+/// </summary>
 public abstract record AnsiToken
 {
+    /// <summary>
+    /// Prints a (unicode codepoint) character to the screen.
+    /// </summary>
+    /// <param name="Code"></param>
     public record Print(char Code) : AnsiToken;
 
+    /// <summary>
+    /// Executes the C0 or C1 function.
+    /// </summary>
+    /// <param name="Code"></param>
     public record Execute(char Code) : AnsiToken;
 
+    /// <summary>
+    /// Execute an ESC command.
+    /// </summary>
+    /// <param name="Collect"></param>
+    /// <param name="Final"></param>
     public record Esc(List<char> Collect, char Final) : AnsiToken;
 
+    /// <summary>
+    /// Executes a CSI command.
+    /// </summary>
+    /// <param name="Collect"></param>
+    /// <param name="Params"></param>
+    /// <param name="Final"></param>
+    /// <param name="ParamsRaw"></param>
     public record Csi(List<char> Collect, List<int> Params, char Final, string ParamsRaw) : AnsiToken;
 
+    /// <summary>
+    /// Executes a OSC command.
+    /// </summary>
+    /// <param name="Code"></param>
+    /// <param name="Data"></param>
     public record Osc(char Code, List<char> Data) : AnsiToken;
 }
 
@@ -462,9 +506,6 @@ internal sealed class AnsiTransitionTable
             Add(0x00..0x17, AnsiParserState.OscString, AnsiParserState.OscString, AnsiTransitionAction.Ignore);
             Add(0x1C..0x1F, AnsiParserState.OscString, AnsiParserState.OscString, AnsiTransitionAction.Ignore);
             Add(0x20..0x7F, AnsiParserState.OscString, AnsiParserState.OscString, AnsiTransitionAction.OscPut);
-
-            // -> Ground
-            Add(0x9C, AnsiParserState.OscString, AnsiParserState.Ground, AnsiTransitionAction.OscEnd);
         }
     }
 
