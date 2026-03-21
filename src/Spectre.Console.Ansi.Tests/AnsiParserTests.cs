@@ -124,6 +124,16 @@ public sealed class AnsiParserTests
                 csi.Final.ShouldBe('p');
             });
     }
+
+    [Fact(DisplayName = "osc: ESC [ ? 2026 $ p")]
+    public void Osc_Sequence_1()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]8;id=123;https://spectreconsole.net\e\\\e[1;3m\e[38;5;11mSpectre Console\e[0m\e]8;;\e\\");
+
+        // Then
+        result.Count.ShouldBe(20);
+    }
 }
 
 internal sealed class AnsiParserFixture
