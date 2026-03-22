@@ -1,14 +1,13 @@
 namespace Spectre.Console.Ansi;
 
 /// <summary>
-/// A ANSI/VT input parser based on the VT500-series.
+/// An ANSI/VT input parser based on the VT500-series.
 /// </summary>
 public sealed class AnsiParser
 {
     private readonly Action<AnsiToken> _callback;
-    private readonly List<char> _collect = [];
+    private readonly List<char> _intermediates = [];
     private readonly List<int> _parameters = [0];
-    private readonly List<bool> _parameterSeparators = [true];
     private readonly StringBuilder _parametersRaw = new();
     private readonly OscParser _oscParser;
     private bool _hasParameter;
@@ -42,14 +41,11 @@ public sealed class AnsiParser
                     var command = _oscParser.End(code);
                     if (command != null)
                     {
-                        _callback(new AnsiToken.Osc(command));
+                        _callback(new AnsiToken.Osc(Command: command));
                     }
                     break;
                 case AnsiParserState.DcsPassthrough:
                     _callback(new AnsiToken.DcsUnhook());
-                    break;
-                case AnsiParserState.SosPmApcString:
-                    _callback(new AnsiToken.ApcEnd());
                     break;
             }
         }
@@ -62,13 +58,13 @@ public sealed class AnsiParser
                 // Do nothing
                 break;
             case AnsiTransitionAction.Print:
-                _callback(new AnsiToken.Print(code));
+                _callback(new AnsiToken.Print(Character: code));
                 break;
             case AnsiTransitionAction.Execute:
-                _callback(new AnsiToken.Execute(code));
+                _callback(new AnsiToken.Execute(Function: code));
                 break;
             case AnsiTransitionAction.Collect:
-                _collect.Add(code);
+                _intermediates.Add(code);
                 break;
             case AnsiTransitionAction.Param:
                 _parametersRaw.Append(code);
@@ -76,7 +72,6 @@ public sealed class AnsiParser
                 if (code is ';' or ':')
                 {
                     _parameters.Add(0);
-                    _parameterSeparators.Add(code is ';');
                 }
                 else
                 {
@@ -90,12 +85,12 @@ public sealed class AnsiParser
                 break;
             case AnsiTransitionAction.EscDispatch:
                 _callback(new AnsiToken.Esc(
-                    Collect: [.. _collect],
+                    Intermediates: [.. _intermediates],
                     Final: code));
                 break;
             case AnsiTransitionAction.CsiDispatch:
                 _callback(new AnsiToken.Csi(
-                    Collect: [.. _collect],
+                    Intermediates: [.. _intermediates],
                     Params: _hasParameter ? [.. _parameters] : [],
                     Final: code,
                     ParamsRaw: _parametersRaw.ToString()));
@@ -104,13 +99,8 @@ public sealed class AnsiParser
                 _oscParser.Next(code);
                 break;
             case AnsiTransitionAction.DscPut:
-                _callback(new AnsiToken.DcsPut(code));
+                _callback(new AnsiToken.DcsPut(Code: code));
                 break;
-            case AnsiTransitionAction.ApcPut:
-                _callback(new AnsiToken.ApcPut(code));
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
         }
 
         // Perform exit event
@@ -128,13 +118,10 @@ public sealed class AnsiParser
                     break;
                 case AnsiParserState.DcsPassthrough:
                     _callback(new AnsiToken.DcsHook(
-                        Collect: [.. _collect],
+                        Intermediates: [.. _intermediates],
                         Params: _hasParameter ? [.. _parameters] : [],
                         Final: code,
                         ParamsRaw: _parametersRaw.ToString()));
-                    break;
-                case AnsiParserState.SosPmApcString:
-                    _callback(new AnsiToken.ApcStart());
                     break;
             }
         }
@@ -148,7 +135,7 @@ public sealed class AnsiParser
         _parametersRaw.Clear();
         _parameters.Clear();
         _parameters.Add(0);
-        _collect.Clear();
+        _intermediates.Clear();
     }
 }
 
@@ -182,7 +169,6 @@ internal enum AnsiTransitionAction
     CsiDispatch,
     OscPut,
     DscPut,
-    ApcPut,
 }
 
 internal readonly record struct AnsiTransition(
@@ -294,13 +280,13 @@ internal sealed class AnsiTransitionTable
 
         // SosPmApcString
         {
-            Add(0x19, AnsiParserState.SosPmApcString, AnsiParserState.SosPmApcString, AnsiTransitionAction.ApcPut);
+            Add(0x19, AnsiParserState.SosPmApcString, AnsiParserState.SosPmApcString, AnsiTransitionAction.Ignore);
             Add(0x00..0x17, AnsiParserState.SosPmApcString, AnsiParserState.SosPmApcString,
-                AnsiTransitionAction.ApcPut);
+                AnsiTransitionAction.Ignore);
             Add(0x1C..0x1F, AnsiParserState.SosPmApcString, AnsiParserState.SosPmApcString,
-                AnsiTransitionAction.ApcPut);
+                AnsiTransitionAction.Ignore);
             Add(0x20..0x7F, AnsiParserState.SosPmApcString, AnsiParserState.SosPmApcString,
-                AnsiTransitionAction.ApcPut);
+                AnsiTransitionAction.Ignore);
         }
 
         // DcsEntry
