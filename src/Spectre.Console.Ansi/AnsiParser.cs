@@ -127,7 +127,7 @@ public sealed class AnsiParser
                     _oscParser.Reset();
                     break;
                 case AnsiParserState.DcsPassthrough:
-                    _callback(new AnsiToken.Csi(
+                    _callback(new AnsiToken.DcsHook(
                         Collect: [.. _collect],
                         Params: _hasParameter ? [.. _parameters] : [],
                         Final: code,
