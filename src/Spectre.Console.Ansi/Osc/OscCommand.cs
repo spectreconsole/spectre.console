@@ -16,4 +16,10 @@ public record OscCommand
     /// Represents a hyperlink end.
     /// </summary>
     public record HyperLinkEnd : OscCommand;
+
+    /// <summary>
+    /// Represent an unknown OSC command.
+    /// </summary>
+    /// <param name="Data">The OSC command data.</param>
+    public record Unknown(string Data) : OscCommand;
 }
