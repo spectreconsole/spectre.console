@@ -8,7 +8,6 @@ namespace Spectre.Console.Ansi.Tests;
 public static class ShouldlyExtensions
 {
     /// <summary>
-    /// Performs the specified action on the given object and then returns the object.
     /// Useful for fluent testing patterns where additional assertions or operations
     /// are chained together in a readable manner.
     /// </summary>
