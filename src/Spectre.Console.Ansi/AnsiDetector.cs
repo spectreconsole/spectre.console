@@ -22,7 +22,8 @@ internal static class AnsiDetector
         new("konsole"), // Konsole
         new("bvterm"), // Bitvise SSH Client
         new("^st-256color"), // Suckless Simple Terminal, st
-        new("alacritty") // Alacritty
+        new("alacritty"), // Alacritty
+        new("ghostty"), // Ghostty
     ];
 
     public static (bool Ansi, bool Legacy) Detect(TextWriter buffer, AnsiSupport ansi)
