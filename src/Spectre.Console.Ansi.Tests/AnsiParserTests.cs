@@ -232,4 +232,24 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Osc>()
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkEnd>();
     }
+
+    [Fact(DisplayName = "osc 8: Hyperlink start and end")]
+    public void Osc_Sequence_8()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]8;;https://example.com\e\\TEXT\e]8;;\e\\");
+
+        // Then
+        result.Count.ShouldBe(8);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>();
+        result[1].ShouldBeOfType<AnsiToken.Esc>();
+        result[2].ShouldBeOfType<AnsiToken.Print>();
+        result[3].ShouldBeOfType<AnsiToken.Print>();
+        result[4].ShouldBeOfType<AnsiToken.Print>();
+        result[5].ShouldBeOfType<AnsiToken.Print>();
+        result[6].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.HyperLinkEnd>();
+        result[7].ShouldBeOfType<AnsiToken.Esc>();
+    }
 }
