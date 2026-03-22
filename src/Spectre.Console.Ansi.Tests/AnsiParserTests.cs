@@ -252,4 +252,20 @@ public sealed class AnsiParserTests
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkEnd>();
         result[7].ShouldBeOfType<AnsiToken.Esc>();
     }
+
+    [Fact(DisplayName = "osc 123: Unknown")]
+    public void Osc_Sequence_9()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]123;;lol\e\\");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.Unknown>()
+            .And(osc =>
+            {
+                osc.Data.ShouldBe("123;;lol");
+            });
+    }
 }
