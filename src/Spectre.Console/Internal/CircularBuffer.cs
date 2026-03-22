@@ -29,7 +29,7 @@ namespace Spectre.Console;
 /// </summary>
 [DebuggerDisplay("Count = {Count}")]
 [DebuggerTypeProxy(typeof(CircularBuffer<>.CircularBufferDebugView))]
-public sealed class CircularBuffer<T> : IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable
+internal sealed class CircularBuffer<T> : IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable
 {
     // Internal for testing.
     internal readonly List<T> _buffer;
