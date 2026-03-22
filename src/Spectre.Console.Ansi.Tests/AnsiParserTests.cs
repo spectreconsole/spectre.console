@@ -193,7 +193,7 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "osc 8: Hyperlink with empty key and id set")]
+    [Fact(DisplayName = "osc 8: Hyperlink with empty key but id set")]
     public void Osc_Sequence_5()
     {
         // Given, When
