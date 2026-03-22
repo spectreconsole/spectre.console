@@ -273,7 +273,7 @@ public class Segment
                             line = [];
                         }
 
-                        text = string.Concat(parts.Skip(1).Take(parts.Length - 1));
+                        text = string.Join('\n', parts.Skip(1).Take(parts.Length - 1));
                     }
                     else
                     {

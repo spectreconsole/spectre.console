@@ -197,6 +197,41 @@ public sealed class SegmentTests
             lines[0][0].Text.ShouldBe("测试测"); // 6 cells
             lines[1][0].Text.ShouldBe("试"); // 2 cells
         }
+
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/1785")]
+        public void Should_Respect_Multiple_Linebreaks_In_A_Segment()
+        {
+            // Given
+            var segments = new[]
+            {
+                new Segment("Foo\nBar"),
+                new Segment("Baz"),
+                new Segment("Qux\nTra\nLate"),
+                new Segment("Corgi"),
+            };
+
+            // When
+            var lines = Segment.SplitLines(segments, maxWidth: 80);
+
+            // Then
+            lines.Count.ShouldBe(4);
+
+            lines[0].Count.ShouldBe(1);
+            lines[0][0].Text.ShouldBe("Foo");
+
+            lines[1].Count.ShouldBe(3);
+            lines[1][0].Text.ShouldBe("Bar");
+            lines[1][1].Text.ShouldBe("Baz");
+            lines[1][2].Text.ShouldBe("Qux");
+
+            lines[2].Count.ShouldBe(1);
+            lines[2][0].Text.ShouldBe("Tra");
+
+            lines[3].Count.ShouldBe(2);
+            lines[3][0].Text.ShouldBe("Late");
+            lines[3][1].Text.ShouldBe("Corgi");
+        }
     }
 
     public sealed class TheSplitOverflowMethod
