@@ -7,10 +7,7 @@ public sealed class AnsiParserFixture
         var result = new List<AnsiToken>();
         var parser = new AnsiParser(token => result.Add(token));
 
-        foreach (var character in text)
-        {
-            parser.Next(character);
-        }
+        parser.Next(text);
 
         return result;
     }

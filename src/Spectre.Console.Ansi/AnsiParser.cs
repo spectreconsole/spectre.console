@@ -25,6 +25,18 @@ public sealed class AnsiParser
     }
 
     /// <summary>
+    /// Processes the specified text.
+    /// </summary>
+    /// <param name="text">The text to process.</param>
+    public void Next(string text)
+    {
+        foreach (var character in text)
+        {
+            Next(character);
+        }
+    }
+
+    /// <summary>
     /// Processes the specified code.
     /// </summary>
     /// <param name="code">The code to process.</param>
@@ -43,6 +55,7 @@ public sealed class AnsiParser
                     {
                         _callback(new AnsiToken.Osc(Command: command));
                     }
+
                     break;
                 case AnsiParserState.DcsPassthrough:
                     _callback(new AnsiToken.DcsUnhook());
