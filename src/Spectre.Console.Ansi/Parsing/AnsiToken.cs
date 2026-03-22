@@ -33,9 +33,7 @@ public abstract record AnsiToken
     /// <param name="ParamsRaw"></param>
     public record Csi(List<char> Collect, List<int> Params, char Final, string ParamsRaw) : AnsiToken;
 
-    public record Osc(OscCommand command) : AnsiToken;
-
-    public record OscOld(char Code, List<char> Data) : AnsiToken;
+    public record Osc(OscCommand Command) : AnsiToken;
 
     public record DcsHook(List<char> Collect, List<int> Params, char Final, string ParamsRaw) : AnsiToken;
 
