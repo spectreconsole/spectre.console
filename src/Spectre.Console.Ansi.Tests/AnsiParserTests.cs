@@ -125,29 +125,111 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "osc: ESC [ ? 2026 $ p")]
+    [Fact(DisplayName = "osc 8: Hyperlink")]
     public void Osc_Sequence_1()
     {
         // Given, When
-        var result = AnsiParserFixture.Parse("\e]8;;http://example.com\e\\TEXT\e]8;;\e\\");
+        var result = AnsiParserFixture.Parse("\e]8;;https://example.com\e\\");
 
         // Then
-        result.Count.ShouldBe(22);
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
+            .And(osc =>
+            {
+                osc.Id.ShouldBeNull();
+                osc.Url.ShouldBe("https://example.com");
+            });
     }
-}
 
-internal sealed class AnsiParserFixture
-{
-    public static List<AnsiToken> Parse(string text)
+    [Fact(DisplayName = "osc 8: Hyperlink with ID")]
+    public void Osc_Sequence_2()
     {
-        var result = new List<AnsiToken>();
-        var parser = new AnsiParser(token => result.Add(token));
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]8;id=123;https://example.com\e\\");
 
-        foreach (var character in text)
-        {
-            parser.Next(character);
-        }
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
+            .And(osc =>
+            {
+                osc.Id.ShouldBe("123");
+                osc.Url.ShouldBe("https://example.com");
+            });
+    }
 
-        return result;
+    [Fact(DisplayName = "osc 8: Hyperlink with empty ID")]
+    public void Osc_Sequence_3()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]8;id=;https://example.com\e\\");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
+            .And(osc =>
+            {
+                osc.Id.ShouldBeNull();
+                osc.Url.ShouldBe("https://example.com");
+            });
+    }
+
+    [Fact(DisplayName = "osc 8: Hyperlink with empty key")]
+    public void Osc_Sequence_4()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]8;id;https://example.com\e\\");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
+            .And(osc =>
+            {
+                osc.Id.ShouldBeNull();
+                osc.Url.ShouldBe("https://example.com");
+            });
+    }
+
+    [Fact(DisplayName = "osc 8: Hyperlink with empty key and id set")]
+    public void Osc_Sequence_5()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]8;=value;id=foo;https://example.com\e\\");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
+            .And(osc =>
+            {
+                osc.Id.ShouldBe("foo");
+                osc.Url.ShouldBe("https://example.com");
+            });
+    }
+
+    [Fact(DisplayName = "osc 8: Hyperlink with empty url")]
+    public void Osc_Sequence_6()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]8;id=foo;\e\\");
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Esc>();
+    }
+
+    [Fact(DisplayName = "osc 8: Hyperlink end")]
+    public void Osc_Sequence_7()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]8;;\e\\");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.HyperLinkEnd>();
     }
 }
