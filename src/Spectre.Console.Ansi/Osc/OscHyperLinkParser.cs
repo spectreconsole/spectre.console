@@ -33,7 +33,7 @@ internal static class OscHyperLinkParser
                 ? parameters.Trim()
                 : parameters[..semicolonIndex].Trim();
 
-            if (key.SequenceEqual("id"))
+            if (key is "id")
             {
                 id = value.IsEmpty ? null : value.ToString();
             }
@@ -51,8 +51,8 @@ internal static class OscHyperLinkParser
             return new OscCommand.HyperLinkEnd();
         }
 
-        return uri.Length == 0
-            ? null
-            : new OscCommand.HyperLinkStart(id, uri.ToString());
+        return uri.Length != 0
+            ? new OscCommand.HyperLinkStart(Id: id, Uri: uri.ToString())
+            : null;
     }
 }

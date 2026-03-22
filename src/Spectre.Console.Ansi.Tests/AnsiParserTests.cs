@@ -13,7 +13,7 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Esc>()
             .And(esc =>
             {
-                esc.Collect.ShouldBe(['(']);
+                esc.Intermediates.ShouldBe(['(']);
                 esc.Final.ShouldBe('B');
             });
     }
@@ -29,7 +29,7 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Csi>()
             .And(csi =>
             {
-                csi.Collect.Count.ShouldBe(0);
+                csi.Intermediates.Count.ShouldBe(0);
                 csi.ParamsRaw.ShouldBe("");
                 csi.Params.Count.ShouldBe(0);
                 csi.Final.ShouldBe('H');
@@ -47,7 +47,7 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Csi>()
             .And(csi =>
             {
-                csi.Collect.Count.ShouldBe(0);
+                csi.Intermediates.Count.ShouldBe(0);
 
                 csi.ParamsRaw.ShouldBe("1;4");
                 csi.Params.Count.ShouldBe(2);
@@ -69,7 +69,7 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Csi>()
             .And(csi =>
             {
-                csi.Collect.Count.ShouldBe(0);
+                csi.Intermediates.Count.ShouldBe(0);
 
                 csi.ParamsRaw.ShouldBe("38:2");
                 csi.Params.Count.ShouldBe(2);
@@ -91,7 +91,7 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Csi>()
             .And(csi =>
             {
-                csi.Collect.Count.ShouldBe(0);
+                csi.Intermediates.Count.ShouldBe(0);
 
                 csi.ParamsRaw.ShouldBe("38;2");
                 csi.Params.Count.ShouldBe(2);
@@ -113,9 +113,9 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Csi>()
             .And(csi =>
             {
-                csi.Collect.Count.ShouldBe(2);
-                csi.Collect[0].ShouldBe('?');
-                csi.Collect[1].ShouldBe('$');
+                csi.Intermediates.Count.ShouldBe(2);
+                csi.Intermediates[0].ShouldBe('?');
+                csi.Intermediates[1].ShouldBe('$');
 
                 csi.ParamsRaw.ShouldBe("2026");
                 csi.Params.Count.ShouldBe(1);
@@ -138,7 +138,7 @@ public sealed class AnsiParserTests
             .And(osc =>
             {
                 osc.Id.ShouldBeNull();
-                osc.Url.ShouldBe("https://example.com");
+                osc.Uri.ShouldBe("https://example.com");
             });
     }
 
@@ -155,7 +155,7 @@ public sealed class AnsiParserTests
             .And(osc =>
             {
                 osc.Id.ShouldBe("123");
-                osc.Url.ShouldBe("https://example.com");
+                osc.Uri.ShouldBe("https://example.com");
             });
     }
 
@@ -172,7 +172,7 @@ public sealed class AnsiParserTests
             .And(osc =>
             {
                 osc.Id.ShouldBeNull();
-                osc.Url.ShouldBe("https://example.com");
+                osc.Uri.ShouldBe("https://example.com");
             });
     }
 
@@ -189,7 +189,7 @@ public sealed class AnsiParserTests
             .And(osc =>
             {
                 osc.Id.ShouldBeNull();
-                osc.Url.ShouldBe("https://example.com");
+                osc.Uri.ShouldBe("https://example.com");
             });
     }
 
@@ -206,7 +206,7 @@ public sealed class AnsiParserTests
             .And(osc =>
             {
                 osc.Id.ShouldBe("foo");
-                osc.Url.ShouldBe("https://example.com");
+                osc.Uri.ShouldBe("https://example.com");
             });
     }
 
