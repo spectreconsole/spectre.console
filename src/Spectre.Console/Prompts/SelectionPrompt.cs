@@ -207,11 +207,8 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
 
             var indent = new string(' ', item.Node.Depth * 2);
 
-            var text = (Converter ?? TypeConverterHelper.ConvertToString)?.Invoke(item.Node.Data) ?? item.Node.Data.ToString() ?? "?";
-            if (current)
-            {
-                text = text.RemoveMarkup().EscapeMarkup();
-            }
+            var raw = (Converter ?? TypeConverterHelper.ConvertToString)?.Invoke(item.Node.Data) ?? item.Node.Data.ToString() ?? "?";
+            var text = raw.RemoveMarkup().EscapeMarkup();
 
             if (searchText.Length > 0 && !(item.Node.IsGroup && Mode == SelectionMode.Leaf))
             {
