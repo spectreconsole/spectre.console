@@ -324,8 +324,7 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorPosition(int row, int column)
     {
-        WriteCsi($"{row};{column}", 'H');
-        return this;
+        return WriteCsi($"{row};{column}", 'H');
     }
 
     /// <summary>
@@ -337,8 +336,7 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorHome()
     {
-        WriteCsi("H");
-        return this;
+        return WriteCsi("H");
     }
 
     /// <summary>
@@ -353,8 +351,7 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorUp(int steps)
     {
-        WriteCsi(steps, 'A');
-        return this;
+        return WriteCsi(steps, 'A');
     }
 
     /// <summary>
@@ -370,8 +367,7 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorDown(int steps)
     {
-        WriteCsi(steps, 'B');
-        return this;
+        return WriteCsi(steps, 'B');
     }
 
     /// <summary>
@@ -386,8 +382,22 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorRight(int steps)
     {
-        WriteCsi(steps, 'C');
-        return this;
+        return CursorForward(steps);
+    }
+
+    /// <summary>
+    /// This control function moves the cursor to the right by a specified number of columns
+    /// by emitting <c>CSI n C</c>.
+    /// The cursor stops at the right border of the page.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt100-ug/chapter3.html#CUF"/>.
+    /// </remarks>
+    /// <param name="steps">The number of steps to move the cursor right.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter CursorForward(int steps)
+    {
+        return WriteCsi(steps, 'C');
     }
 
     /// <summary>
@@ -402,8 +412,22 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorLeft(int steps)
     {
-        WriteCsi(steps, 'D');
-        return this;
+        return CursorBackward(steps);
+    }
+
+    /// <summary>
+    /// This control function moves the cursor to the left by a specified number of columns
+    /// by emitting <c>CSI n D</c>.
+    /// The cursor stops at the left border of the page.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt100-ug/chapter3.html#CUB"/>.
+    /// </remarks>
+    /// <param name="steps">The number of steps to move the cursor left.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter CursorBackward(int steps)
+    {
+        return WriteCsi(steps, 'D');
     }
 
     /// <summary>
@@ -415,8 +439,7 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter ShowCursor()
     {
-        WriteCsi(25, 'h', decPrivateMode: true);
-        return this;
+        return WriteCsi(25, 'h', decPrivateMode: true);
     }
 
     /// <summary>
@@ -428,36 +451,49 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter HideCursor()
     {
-        WriteCsi(25, 'l', decPrivateMode: true);
-        return this;
+        return WriteCsi(25, 'l', decPrivateMode: true);
     }
 
     /// <summary>
-    /// Saves current cursor position for SCO console mode
-    /// by emitting <c>CSI s</c>
+    /// Saves current cursor position for SCO console mode by emitting <c>CSI s</c> (SCOSC)
+    /// if staying on page, otherwise <c>ESC 7</c> (DECSC).
     /// </summary>
     /// <remarks>
-    /// See <see href="https://vt100.net/docs/vt510-rm/SCOSC.html"/>.
+    /// See <see href="https://vt100.net/docs/vt510-rm/SCOSC.html"/> and
+    /// <see href="https://vt100.net/docs/vt510-rm/DECSC.html"/>.
     /// </remarks>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public AnsiWriter SaveCursor()
+    public AnsiWriter SaveCursor(bool stayOnPage = true)
     {
-        WriteCsi("s");
-        return this;
+        if (stayOnPage)
+        {
+            // SCOSC
+            return WriteCsi("s");
+        }
+
+        // DECSC
+        return WriteEsc("7");
     }
 
     /// <summary>
     /// Moves cursor to the position saved by save cursor command in SCO console mode
-    /// by emitting <c>CSI u</c>
+    /// by emitting <c>CSI u</c> (SCORC) if staying on page, otherwise <c>ESC 8</c> (DECRC).
     /// </summary>
     /// <remarks>
-    /// See <see href="https://vt100.net/docs/vt510-rm/SCORC.html"/>.
+    /// See <see href="https://vt100.net/docs/vt510-rm/SCORC.html"/> and
+    /// <see href="https://vt100.net/docs/vt510-rm/DECRC.html"/>.
     /// </remarks>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public AnsiWriter RestoreCursor()
+    public AnsiWriter RestoreCursor(bool stayOnPage = true)
     {
-        WriteCsi("u");
-        return this;
+        if (stayOnPage)
+        {
+            // SCORC
+            return WriteCsi("u");
+        }
+
+        // DECRC
+        return WriteEsc("8");
     }
 
     /// <summary>
@@ -470,8 +506,7 @@ public sealed class AnsiWriter
     /// <param name="position">The horizontal position.</param>
     public AnsiWriter CursorHorizontalAbsolute(int position)
     {
-        WriteCsi(position, 'G');
-        return this;
+        return WriteCsi(position, 'G');
     }
 
     /// <summary>
@@ -480,8 +515,7 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter EnterAltScreen()
     {
-        WriteCsi(1049, 'h', decPrivateMode: true);
-        return this;
+        return WriteCsi(1049, 'h', decPrivateMode: true);
     }
 
     /// <summary>
@@ -490,8 +524,7 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter ExitAltScreen()
     {
-        WriteCsi(1049, 'l', decPrivateMode: true);
-        return this;
+        return WriteCsi(1049, 'l', decPrivateMode: true);
     }
 
     /// <summary>
@@ -522,8 +555,7 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter EraseInLine(int mode = 0)
     {
-        WriteCsi(mode, 'K');
-        return this;
+        return WriteCsi(mode, 'K');
     }
 
     /// <summary>
@@ -552,8 +584,7 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter EraseInDisplay(int mode = 0)
     {
-        WriteCsi(mode, 'J');
-        return this;
+        return WriteCsi(mode, 'J');
     }
 
     /// <summary>
@@ -562,50 +593,299 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter ClearScrollback()
     {
-        WriteCsi(3, 'J');
-        return this;
+        return EraseInDisplay(3);
     }
 
-    private bool WriteSgr(params List<byte> codes)
+    /// <summary>
+    /// Move the active position n tabs backward
+    /// by emitting <c>CSI n Z</c>.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/CBT.html"/>.
+    /// </remarks>
+    /// <param name="tabs">The number of tabs to move backwards</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter CursorBackwardTabulation(int tabs = 1)
     {
-        if (!Capabilities.Ansi || codes.Count == 0)
-        {
-            return false;
-        }
-
-        WriteCsi(string.Join(";", codes), 'm');
-        return true;
+        return WriteCsi(tabs, 'Z');
     }
 
-    private bool WriteCsi(int value, char terminator, bool decPrivateMode = false)
+    /// <summary>
+    /// Move the active position n tabs forward
+    /// by emitting <c>CSI n I</c>.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/CHT.html"/>.
+    /// </remarks>
+    /// <param name="tabs">The number of tabs to move forward</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter CursorHorizontalTabulation(int tabs = 1)
+    {
+        return WriteCsi(tabs, 'I');
+    }
+
+    /// <summary>
+    /// Move the cursor to the next line
+    /// by emitting <c>CSI n E</c>.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/CNL.html"/>.
+    /// </remarks>
+    /// <param name="lines">The number of lines to move</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter CursorNextLine(int lines = 1)
+    {
+        return WriteCsi(lines, 'E');
+    }
+
+    /// <summary>
+    /// Move the cursor to the preceding line
+    /// by emitting <c>CSI n F</c>.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/CPL.html"/>.
+    /// </remarks>
+    /// <param name="lines">The number of lines to move</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter CursorPreviousLine(int lines = 1)
+    {
+        return WriteCsi(lines, 'F');
+    }
+
+    /// <summary>
+    /// Moves the cursor down one line in the same column by emitting <c>ESC D</c>.
+    /// If the cursor is at the bottom margin, then the screen performs a scroll-up.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/IND.html"/>.
+    /// </remarks>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter Index()
+    {
+        return WriteEsc("D");
+    }
+
+    /// <summary>
+    /// Moves the cursor up one line in the same column by emitting <c>ESC M</c>.
+    /// If the cursor is at the top margin, then the screen performs a scroll-down.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt100-ug/chapter3.html#RI"/>.
+    /// </remarks>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter ReverseIndex()
+    {
+        return WriteEsc("M");
+    }
+
+    /// <summary>
+    /// This control function deletes one or more characters from the cursor position to the right
+    /// by emitting <c>CSI n P</c>.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/DCH.html"/>.
+    /// </remarks>
+    /// <param name="characters">
+    /// The number of characters to delete. If <paramref name="characters"/> is greater than the number of characters between the cursor and the right margin, then DCH only deletes the remaining characters.
+    /// </param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter DeleteCharacter(int characters = 1)
+    {
+        return WriteCsi(characters, 'P');
+    }
+
+    /// <summary>
+    /// Select the style of the cursor on the screen by emitting <c>CSI n SP q</c>
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/DECSCUSR.html"/>.
+    /// </remarks>
+    /// <param name="style">
+    /// The style of the cursor
+    /// <list type="bullet|number|table">
+    ///     <item>
+    ///         <term>0</term>
+    ///         <description>Terminal default.</description>
+    ///     </item>
+    ///     <item>
+    ///         <term>1</term>
+    ///         <description>Blinking block.</description>
+    ///     </item>
+    ///     <item>
+    ///         <term>2</term>
+    ///         <description>Steady block.</description>
+    ///     </item>
+    ///     <item>
+    ///         <term>3</term>
+    ///         <description>Blinking underline.</description>
+    ///     </item>
+    ///     <item>
+    ///         <term>5</term>
+    ///         <description>Steady underline.</description>
+    ///     </item>
+    ///     <item>
+    ///         <term>6</term>
+    ///         <description>Steady vertical bar.</description>
+    ///     </item>
+    /// </list>
+    /// </param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter SetCursorStyle(int style = 0)
+    {
+        return WriteCsi($"{style} ", 'q');
+    }
+
+    /// <summary>
+    /// This control function deletes one or more lines in the scrolling region
+    /// by emitting <c>CSI n M</c>, starting with the line that has the cursor.
+    /// As lines are deleted, lines below the cursor and in the scrolling region move up.
+    /// The terminal adds blank lines with no visual character attributes at the bottom of the scrolling region.
+    /// If <c>lines</c> is greater than the number of lines remaining on the page, DL deletes only the remaining lines.
+    /// DL has no effect outside the scrolling margins.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/DL.html"/>.
+    /// </remarks>
+    /// <param name="lines">The number of lines to delete.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter DeleteLine(int lines = 0)
+    {
+        return WriteCsi(lines, 'M');
+    }
+
+    /// <summary>
+    /// Erases one or more characters from the cursor position to the right by emitting <c>CSI n X</c> (ECH).
+    /// ECH clears character attributes from erased character positions.
+    /// ECH works inside or outside the scrolling margins.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/ECH.html"/>.
+    /// </remarks>
+    /// <param name="characters">The number of characters to erase. A value of 0 or 1 erases one character.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter EraseCharacter(int characters = 1)
+    {
+        return WriteCsi(characters, 'X');
+    }
+
+    /// <summary>
+    /// inserts one or more space (SP) characters starting at the cursor position
+    /// by emitting <c>CSI n @</c> (ICH).
+    /// The ICH sequence inserts blank characters with the normal character attribute.
+    /// The cursor remains at the beginning of the blank characters.
+    /// Text between the cursor and right margin moves to the right.
+    /// Characters scrolled past the right margin are lost. ICH has no effect outside the scrolling margins.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/ICH.html"/>.
+    /// </remarks>
+    /// <param name="characters">The number of characters to insert.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter InsertCharacter(int characters = 1)
+    {
+        return WriteCsi(characters, '@');
+    }
+
+    /// <summary>
+    /// Inserts one or more blank lines, starting at the cursor by emitting <c>CSI n L</c> (IL).
+    /// As lines are inserted, lines below the cursor and in the scrolling region move down.
+    /// Lines scrolled off the page are lost. IL has no effect outside the page margins.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/IL.html"/>.
+    /// </remarks>
+    /// <param name="lines">The number of lines to insert.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter InsertLine(int lines = 1)
+    {
+        return WriteCsi(lines, 'L');
+    }
+
+    /// <summary>
+    /// Moves the user window up a specified number of lines in page memory
+    /// by emitting <c>CSI n T</c>.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/SD.html"/>.
+    /// </remarks>
+    /// <param name="lines">
+    /// The number of lines to move the user window up in page memory.
+    /// <c>lines</c> new lines appear at the top of the display.
+    /// <c>lines</c> old lines disappear at the bottom of the display.
+    /// You cannot pan past the top margin of the current page.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter ScrollDown(int lines = 1)
+    {
+        return WriteCsi(lines, 'T');
+    }
+
+    /// <summary>
+    /// Moves the user window down a specified number of lines in page memory
+    /// by emitting <c>CSI n S</c>.
+    /// </summary>
+    /// <remarks>
+    /// See <see href="https://vt100.net/docs/vt510-rm/SU.html"/>.
+    /// </remarks>
+    /// <param name="lines">
+    /// The number of lines to move the user window down in page memory.
+    /// <c>lines</c> new lines appear at the bottom of the display.
+    /// <c>lines</c> old lines disappear at the top of the display.
+    /// You cannot pan past the bottom margin of the current page.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public AnsiWriter ScrollUp(int lines = 1)
+    {
+        return WriteCsi(lines, 'S');
+    }
+
+    private AnsiWriter WriteCsi(int value, char terminator, bool decPrivateMode = false)
     {
         return WriteCsi($"{value}{terminator}", decPrivateMode);
     }
 
-    private bool WriteCsi(string parameters, char terminator, bool decPrivateMode = false)
+    private AnsiWriter WriteCsi(string parameters, char terminator, bool decPrivateMode = false)
     {
-        return WriteCsi($"{parameters}{terminator}");
+        return WriteCsi($"{parameters}{terminator}", decPrivateMode);
     }
 
-    private bool WriteCsi(string parameters, bool decPrivateMode = false)
+    private AnsiWriter WriteCsi(string parameters, bool decPrivateMode = false)
+    {
+        if (Capabilities.Ansi)
+        {
+            Write(decPrivateMode ? $"\e[?{parameters}" : $"\e[{parameters}");
+        }
+
+        return this;
+    }
+
+    private AnsiWriter WriteOsc(string parameters)
+    {
+        if (Capabilities.Ansi)
+        {
+            Write($"\e]{parameters}");
+        }
+
+        return this;
+    }
+
+    private AnsiWriter WriteEsc(string value)
+    {
+        return Write($"\e{value}");
+    }
+
+    private bool WriteSgr(params List<byte> codes)
     {
         if (!Capabilities.Ansi)
         {
             return false;
         }
 
-        Write(decPrivateMode ? $"\e[?{parameters}" : $"\e[{parameters}");
-        return true;
-    }
-
-    private bool WriteOsc(string parameters)
-    {
-        if (!Capabilities.Ansi)
+        var parameters = string.Join(";", codes);
+        if (string.IsNullOrWhiteSpace(parameters))
         {
             return false;
         }
 
-        Write($"\e]{parameters}");
+        WriteCsi(parameters, 'm');
         return true;
     }
 }

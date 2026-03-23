@@ -157,6 +157,68 @@ public sealed class AnsiMarkupTests
             // Then
             result.ShouldBe(value);
         }
+
+        [Fact]
+        public void Should_Not_Corrupt_Escaped_Brackets_When_Highlighting()
+        {
+            // Given
+            var value = "MSFT-Provisioning-01[[Prod]] (guid-2)";
+            var searchText = "M";
+
+            // When
+            var result = AnsiMarkup.Highlight(value, searchText, _highlightStyle);
+
+            // Then
+            // The result should be valid markup that can be parsed without throwing
+            var exception = Record.Exception(() => AnsiMarkup.Parse(result));
+            exception.ShouldBeNull();
+        }
+
+        [Theory]
+        [InlineData("Hello [[World]]", "World", "Hello [[[bold on yellow]World[/]]]")]
+        [InlineData("[[Prod]] Service", "Prod", "[[[bold on yellow]Prod[/]]] Service")]
+        [InlineData("Item [[A]] and [[B]]", "A", "Item [[[bold on yellow]A[/]]] and [[B]]")]
+        public void Should_Produce_Valid_Markup_With_Escaped_Brackets(
+            string value, string searchText, string expected)
+        {
+            // Given, When
+            var result = AnsiMarkup.Highlight(value, searchText, _highlightStyle);
+
+            // Then
+            result.ShouldBe(expected);
+        }
+
+        [Fact]
+        public void Should_Highlight_Text_Adjacent_To_Escaped_Brackets()
+        {
+            // Given
+            var value = "MSFT[[Prod]]Service";
+            var searchText = "MSFT";
+
+            // When
+            var result = AnsiMarkup.Highlight(value, searchText, _highlightStyle);
+
+            // Then
+            var exception = Record.Exception(() => AnsiMarkup.Parse(result));
+            exception.ShouldBeNull();
+            result.ShouldBe("[bold on yellow]MSFT[/][[Prod]]Service");
+        }
+
+        [Fact]
+        public void Should_Highlight_Text_After_Escaped_Brackets()
+        {
+            // Given
+            var value = "[[Dev]] Environment";
+            var searchText = "Env";
+
+            // When
+            var result = AnsiMarkup.Highlight(value, searchText, _highlightStyle);
+
+            // Then
+            var exception = Record.Exception(() => AnsiMarkup.Parse(result));
+            exception.ShouldBeNull();
+            result.ShouldBe("[[Dev]] [bold on yellow]Env[/]ironment");
+        }
     }
 
     public sealed class TheWriteMethod
