@@ -378,4 +378,66 @@ public static class CalendarExtensions
         calendar.ShowHeader = false;
         return calendar;
     }
+    /// <summary>
+/// Removes a calendar event.
+/// </summary>
+/// <param name="calendar">The calendar to remove the calendar event from.</param>
+/// <param name="date">The calendar event date.</param>
+/// <returns>The same instance so that multiple calls can be chained.</returns>
+public static Calendar RemoveCalendarEvent(this Calendar calendar, DateTime date)
+{
+    return RemoveCalendarEvent(calendar, string.Empty, date.Year, date.Month, date.Day);
+}
+
+/// <summary>
+/// Removes a calendar event.
+/// </summary>
+/// <param name="calendar">The calendar to remove the calendar event from.</param>
+/// <param name="description">The calendar event description.</param>
+/// <param name="date">The calendar event date.</param>
+/// <returns>The same instance so that multiple calls can be chained.</returns>
+public static Calendar RemoveCalendarEvent(this Calendar calendar, string description, DateTime date)
+{
+    return RemoveCalendarEvent(calendar, description, date.Year, date.Month, date.Day);
+}
+
+/// <summary>
+/// Removes a calendar event.
+/// </summary>
+/// <param name="calendar">The calendar to remove the calendar event from.</param>
+/// <param name="year">The year of the calendar event.</param>
+/// <param name="month">The month of the calendar event.</param>
+/// <param name="day">The day of the calendar event.</param>
+/// <returns>The same instance so that multiple calls can be chained.</returns>
+public static Calendar RemoveCalendarEvent(this Calendar calendar, int year, int month, int day)
+{
+    return RemoveCalendarEvent(calendar, string.Empty, year, month, day);
+}
+
+/// <summary>
+/// Removes a calendar event.
+/// </summary>
+/// <param name="calendar">The calendar.</param>
+/// <param name="description">The calendar event description.</param>
+/// <param name="year">The year of the calendar event.</param>
+/// <param name="month">The month of the calendar event.</param>
+/// <param name="day">The day of the calendar event.</param>
+/// <returns>The same instance so that multiple calls can be chained.</returns>
+public static Calendar RemoveCalendarEvent(this Calendar calendar, string description, int year, int month, int day)
+{
+    ArgumentNullException.ThrowIfNull(calendar);
+
+    var calendarEvent = calendar.CalendarEvents
+        .FirstOrDefault(e => e.Description == description
+                          && e.Year == year
+                          && e.Month == month
+                          && e.Day == day);
+
+    if (calendarEvent != null)
+    {
+        calendar.CalendarEvents.Remove(calendarEvent);
+    }
+
+    return calendar;
+}
 }

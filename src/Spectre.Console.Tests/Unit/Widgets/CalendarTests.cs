@@ -97,4 +97,65 @@ public sealed class CalendarTests
         // Then
         return Verifier.Verify(console.Output);
     }
+    [Fact]
+public void Should_Remove_Calendar_Event_By_Date()
+{
+    // Given
+    var calendar = new Calendar(2020, 10)
+        .AddCalendarEvent(new DateTime(2020, 10, 3))
+        .AddCalendarEvent(new DateTime(2020, 10, 12));
+
+    // When
+    calendar.RemoveCalendarEvent(new DateTime(2020, 10, 3));
+
+    // Then
+    Assert.Single(calendar.CalendarEvents);
+    Assert.Equal(12, calendar.CalendarEvents[0].Day);
+}
+
+[Fact]
+public void Should_Remove_Calendar_Event_By_Year_Month_Day()
+{
+    // Given
+    var calendar = new Calendar(2020, 10)
+        .AddCalendarEvent(new DateTime(2020, 10, 3))
+        .AddCalendarEvent(new DateTime(2020, 10, 12));
+
+    // When
+    calendar.RemoveCalendarEvent(2020, 10, 3);
+
+    // Then
+    Assert.Single(calendar.CalendarEvents);
+    Assert.Equal(12, calendar.CalendarEvents[0].Day);
+}
+
+[Fact]
+public void Should_Remove_Calendar_Event_By_Description_And_Date()
+{
+    // Given
+    var calendar = new Calendar(2020, 10)
+        .AddCalendarEvent("Meeting", new DateTime(2020, 10, 3))
+        .AddCalendarEvent("Holiday", new DateTime(2020, 10, 12));
+
+    // When
+    calendar.RemoveCalendarEvent("Meeting", new DateTime(2020, 10, 3));
+
+    // Then
+    Assert.Single(calendar.CalendarEvents);
+    Assert.Equal(12, calendar.CalendarEvents[0].Day);
+}
+
+[Fact]
+public void Should_Do_Nothing_When_Removing_Nonexistent_Calendar_Event()
+{
+    // Given
+    var calendar = new Calendar(2020, 10)
+        .AddCalendarEvent(new DateTime(2020, 10, 3));
+
+    // When
+calendar.RemoveCalendarEvent(new DateTime(2020, 11, 5));
+
+    // Then
+    Assert.Single(calendar.CalendarEvents);
+}
 }
