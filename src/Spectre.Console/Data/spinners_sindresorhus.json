@@ -971,9 +971,9 @@
     "interval": 300,
     "unicode": true,
     "frames": [
-      "ဝ",
-      "၀"
-    ]
+  "▫",
+  "▪"
+]
   },
   "toggle7": {
     "interval": 80,
