@@ -46,6 +46,13 @@ public sealed class AnsiConsoleSettings
     /// <summary>
     /// Initializes a new instance of the <see cref="AnsiConsoleSettings"/> class.
     /// </summary>
+    /// 
+    /// 
+    /// /// <summary>
+    /// Gets or sets a value indicating whether or not
+    /// line wrapping should be disabled. Useful when output is being redirected.
+    /// </summary>
+    public bool NoWrap { get; set; }
     public AnsiConsoleSettings()
     {
         Enrichment = new ProfileEnrichment();

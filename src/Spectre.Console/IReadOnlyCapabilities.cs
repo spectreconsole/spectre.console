@@ -27,4 +27,10 @@ public interface IReadOnlyCapabilities : IReadOnlyAnsiCapabilities
     /// or not the console supports Unicode.
     /// </summary>
     bool Unicode { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether or not
+    /// line wrapping is disabled.
+    /// </summary>
+    bool NoWrap { get; }
 }

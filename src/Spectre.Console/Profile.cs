@@ -72,7 +72,7 @@ public sealed class Profile
     /// </summary>
     public int Width
     {
-        get => _width ?? _out.Width;
+        get => Capabilities.NoWrap ? int.MaxValue : (_width ?? _out.Width);
         set
         {
             if (value <= 0)

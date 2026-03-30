@@ -159,4 +159,48 @@ public partial class AnsiConsoleTests
             Should.NotThrow(When);
         }
     }
+    public sealed class NoWrap
+    {
+        [Fact]
+        public void Should_Not_Wrap_Long_Lines_When_NoWrap_Is_Enabled()
+        {
+            // Given
+            var console = new TestConsole();
+            console.Profile.Width = 20;
+            console.Profile.Capabilities.NoWrap = true;
+
+            // When
+            console.Write("This is a long line that exceeds the console width");
+
+            // Then
+            console.Output.ShouldBe("This is a long line that exceeds the console width");
+        }
+
+        [Fact]
+        public void Should_Wrap_Long_Lines_When_NoWrap_Is_Disabled()
+        {
+            // Given
+            var console = new TestConsole();
+            console.Profile.Width = 20;
+            console.Profile.Capabilities.NoWrap = false;
+
+            // When
+            console.Write("This is a long line that exceeds the console width");
+
+            // Then
+            console.Output.ShouldContain("\n");
+        }
+
+        [Fact]
+        public void Should_Report_MaxValue_Width_When_NoWrap_Is_Enabled()
+        {
+            // Given
+            var console = new TestConsole();
+            console.Profile.Width = 80;
+            console.Profile.Capabilities.NoWrap = true;
+
+            // When / Then
+            console.Profile.Width.ShouldBe(int.MaxValue);
+        }
+    }
 }

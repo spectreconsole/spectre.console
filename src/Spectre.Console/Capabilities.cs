@@ -29,6 +29,12 @@ public sealed class Capabilities : AnsiCapabilities, IReadOnlyCapabilities
     public bool Unicode { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether or not
+    /// line wrapping is disabled.
+    /// </summary>
+    public bool NoWrap { get; set; }
+
+    /// <summary>
     /// Creates a <see cref="Capabilities"/> instance from the provided arguments.
     /// </summary>
     /// <param name="writer">The text writer to use.</param>
@@ -54,6 +60,7 @@ public sealed class Capabilities : AnsiCapabilities, IReadOnlyCapabilities
             ColorSystem = ansiCaps.ColorSystem,
             Ansi = ansiCaps.Ansi,
             Links = ansiCaps.Links,
+            NoWrap = settings.NoWrap,
 #pragma warning disable CS0618 // Type or member is obsolete
             Legacy = false,
 #pragma warning restore CS0618 // Type or member is obsolete

@@ -11,6 +11,7 @@ internal sealed class EncoderCapabilities : IReadOnlyCapabilities
     public bool Interactive => false;
     public bool Unicode => true;
     public bool AlternateBuffer => false;
+    public bool NoWrap => false;
 
     public EncoderCapabilities(ColorSystem colors)
     {
