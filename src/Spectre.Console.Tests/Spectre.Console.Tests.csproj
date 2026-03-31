@@ -12,6 +12,8 @@
     <None Remove="Data\example.json" />
     <None Remove="Data\starwars.flf" />
     <None Remove="Data\poison.flf" />
+    <None Remove="Data\banner.flf" />
+    <EmbeddedResource Include="Data\banner.flf" />
   </ItemGroup>
 
   <ItemGroup>

@@ -21,6 +21,7 @@
     <Project Path="Extensions/Spectre.Console.Json/Spectre.Console.Json.csproj" />
   </Folder>
   <Project Path="Benchmarks/Benchmarks.csproj" />
+  <Project Path="Sandbox/Sandbox.csproj" />
   <Project Path="Spectre.Console.Ansi.Tests/Spectre.Console.Ansi.Tests.csproj" />
   <Project Path="Spectre.Console.Ansi/Spectre.Console.Ansi.csproj" />
   <Project Path="Spectre.Console.SourceGenerator/Spectre.Console.SourceGenerator.csproj" />
