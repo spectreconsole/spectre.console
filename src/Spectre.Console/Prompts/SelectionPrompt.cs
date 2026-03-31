@@ -27,6 +27,11 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     public bool WrapAround { get; set; } = false;
 
     /// <summary>
+    /// Gets or sets the index of the initially selected item.
+    /// Defaults to <c>0</c>.
+    /// </summary>
+    public int InitialIndex { get; set; } = 0;
+    /// <summary>
     /// Gets or sets the highlight style of the selected choice.
     /// </summary>
     public Style? HighlightStyle { get; set; }
@@ -105,8 +110,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
         var converter = Converter ?? TypeConverterHelper.ConvertToString;
-        var result = await prompt.Show(_tree, converter, Mode, true, SearchEnabled, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
-
+        var result = await prompt.Show(_tree, converter, Mode, true, SearchEnabled, PageSize, WrapAround, InitialIndex, cancellationToken).ConfigureAwait(false);
         if (result.IsCancelled && CancelResult is not null)
         {
             return CancelResult();

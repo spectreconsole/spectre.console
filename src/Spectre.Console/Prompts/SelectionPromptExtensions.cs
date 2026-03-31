@@ -282,4 +282,19 @@ public static class SelectionPromptExtensions
         obj.Converter = displaySelector;
         return obj;
     }
+    /// <summary>
+    /// Sets the index of the initially selected item.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="index">The index of the initially selected item.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static SelectionPrompt<T> InitialIndex<T>(this SelectionPrompt<T> obj, int index)
+        where T : notnull
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+
+        obj.InitialIndex = index;
+        return obj;
+    }
 }

@@ -265,6 +265,58 @@ public sealed class SelectionPromptTests
         // Then
         result.ShouldBe("[Dev] Development");
     }
+    [Fact]
+    public void Should_Start_At_Default_Index_Zero()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new SelectionPrompt<string>()
+            .AddChoices("Apple", "Banana", "Cherry");
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe("Apple");
+    }
+
+    [Fact]
+    public void Should_Start_At_Specified_Initial_Index()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new SelectionPrompt<string>()
+            .AddChoices("Apple", "Banana", "Cherry")
+            .InitialIndex(2);
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe("Cherry");
+    }
+
+    [Fact]
+    public void Should_Clamp_Initial_Index_To_Valid_Range()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new SelectionPrompt<string>()
+            .AddChoices("Apple", "Banana", "Cherry")
+            .InitialIndex(99);
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe("Cherry");
+    }
 }
 
 file sealed class CustomSelectionItem

@@ -49,6 +49,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     /// <summary>
     /// Gets or sets the text that instructs the user of how to select items.
     /// </summary>
+    ///
     public string? InstructionsText { get; set; }
 
     /// <summary>
@@ -57,6 +58,11 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     /// </summary>
     public SelectionMode Mode { get; set; } = SelectionMode.Leaf;
 
+    /// <summary>
+    /// Gets or sets the index of the initially selected item.
+    /// Defaults to <c>0</c>.
+    /// </summary>
+    public int InitialIndex { get; set; } = 0;
     internal ListPromptTree<T> Tree { get; }
 
     /// <summary>
@@ -100,9 +106,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
         var converter = Converter ?? TypeConverterHelper.ConvertToString;
-        var result = await prompt.Show(Tree, converter, Mode, false, false, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
-
-        if (result.IsCancelled && CancelResult is not null)
+        var result = await prompt.Show(Tree, converter, Mode, false, false, PageSize, WrapAround, InitialIndex, cancellationToken).ConfigureAwait(false); if (result.IsCancelled && CancelResult is not null)
         {
             return CancelResult();
         }

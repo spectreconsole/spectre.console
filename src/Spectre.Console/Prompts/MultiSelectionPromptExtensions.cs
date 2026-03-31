@@ -363,4 +363,20 @@ public static class MultiSelectionPromptExtensions
 
         return obj.AddCancelResult([]);
     }
+
+    /// <summary>
+    /// Sets the index of the initially selected item.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="index">The index of the initially selected item.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static MultiSelectionPrompt<T> InitialIndex<T>(this MultiSelectionPrompt<T> obj, int index)
+        where T : notnull
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+
+        obj.InitialIndex = index;
+        return obj;
+    }
 }
