@@ -1,7 +1,7 @@
 namespace Spectre.Console;
 
 /// <summary>
-/// Represents a FIGlet font.
+/// Represents a Figlet font.
 /// </summary>
 public sealed class FigletFont
 {
@@ -31,7 +31,20 @@ public sealed class FigletFont
     public int MaxWidth { get; }
 
     /// <summary>
-    /// Gets the default FIGlet font.
+    /// Gets the hardblank character used in this font's glyph definitions.
+    /// Hardblanks are rendered as spaces in output but are treated as opaque
+    /// (non-space) characters during fitting and smushing.
+    /// </summary>
+    public char Hardblank { get; }
+
+    /// <summary>
+    /// Gets the horizontal smushing rules encoded as bit flags (bits 0–5, values 1–32).
+    /// A value of 0 means universal smushing (any two non-space characters smush, right wins).
+    /// </summary>
+    public int SmushingRules { get; }
+
+    /// <summary>
+    /// Gets the default Figlet font.
     /// </summary>
     public static FigletFont Default => _standard.Value;
 
@@ -56,13 +69,29 @@ public sealed class FigletFont
         Height = header.Height;
         Baseline = header.Baseline;
         MaxWidth = header.MaxLength;
+        Hardblank = header.Hardblank;
+
+        // Bits 0–5 (values 1, 2, 4, 8, 16, 32) encode the six horizontal smushing rules.
+        // A result of 0 means no specific rules are defined, i.e. use universal smushing.
+        if (header.FullLayout.HasValue)
+        {
+            SmushingRules = header.FullLayout.Value & 63;
+        }
+        else if (header.OldLayout > 0)
+        {
+            SmushingRules = header.OldLayout & 63;
+        }
+        else
+        {
+            SmushingRules = 0;
+        }
     }
 
     /// <summary>
-    /// Loads a FIGlet font from the specified stream.
+    /// Loads a Figlet font from the specified stream.
     /// </summary>
-    /// <param name="stream">The stream to load the FIGlet font from.</param>
-    /// <returns>The loaded FIGlet font.</returns>
+    /// <param name="stream">The stream to load the Figlet font from.</param>
+    /// <returns>The loaded Figlet font.</returns>
     public static FigletFont Load(Stream stream)
     {
         using (var reader = new StreamReader(stream))
@@ -72,20 +101,20 @@ public sealed class FigletFont
     }
 
     /// <summary>
-    /// Loads a FIGlet font from disk.
+    /// Loads a Figlet font from disk.
     /// </summary>
-    /// <param name="path">The path of the FIGlet font to load.</param>
-    /// <returns>The loaded FIGlet font.</returns>
+    /// <param name="path">The path of the Figlet font to load.</param>
+    /// <returns>The loaded Figlet font.</returns>
     public static FigletFont Load(string path)
     {
         return Parse(File.ReadAllText(path));
     }
 
     /// <summary>
-    /// Parses a FIGlet font from the specified <see cref="string"/>.
+    /// Parses a Figlet font from the specified <see cref="string"/>.
     /// </summary>
-    /// <param name="source">The FIGlet font source.</param>
-    /// <returns>The parsed FIGlet font.</returns>
+    /// <param name="source">The Figlet font source.</param>
+    /// <returns>The parsed Figlet font.</returns>
     public static FigletFont Parse(string source)
     {
         return FigletFontParser.Parse(source);
@@ -93,19 +122,7 @@ public sealed class FigletFont
 
     internal int GetWidth(string text)
     {
-        var width = 0;
-        foreach (var character in text)
-        {
-            width += GetCharacter(character)?.Width ?? 0;
-        }
-
-        return width;
-    }
-
-    internal FigletCharacter? GetCharacter(char character)
-    {
-        _characters.TryGetValue(character, out var result);
-        return result;
+        return text.Sum(character => GetCharacter(character)?.Width ?? 0);
     }
 
     internal IEnumerable<FigletCharacter> GetCharacters(string text)
@@ -121,6 +138,12 @@ public sealed class FigletFont
             }
         }
 
+        return result;
+    }
+
+    private FigletCharacter? GetCharacter(char character)
+    {
+        _characters.TryGetValue(character, out var result);
         return result;
     }
 }
