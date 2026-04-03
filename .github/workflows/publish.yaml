@@ -30,13 +30,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Azure login
-        uses: azure/login@v3
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          allow-no-subscriptions: true
-
       - name: Setup .NET SDK (global.json)
         uses: actions/setup-dotnet@v5
 
@@ -44,7 +37,4 @@ jobs:
         shell: bash
         run: |
           dotnet tool restore
-          dotnet make publish --sign \
-            --nuget-key="${{secrets.NUGET_SIGNING_API_KEY}}" \
-            --keyvaultUrl="${{secrets.SIGN_KEYVAULT_URL}}" \
-            --keyvaultCertificate="${{secrets.SIGN_KEYVAULT_CERTIFICATE}}"
+          dotnet make publish --nuget-key="${{secrets.NUGET_API_KEY}}"
