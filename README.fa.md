@@ -50,7 +50,7 @@ To see `Spectre.Console` in action, please see the
 <h2 id="license">مجوز</h2>
 
 <div dir="ltr">
-Copyright © Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi, Frank Ray
+Copyright © Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi
 </div>
 
 همانطور که Spectre.Console تحت مجوز MIT ارائه شده است؛ برای کسب اطلاعات بیشتر به مجوز مراجعه کنید.

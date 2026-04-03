@@ -43,7 +43,7 @@ To see `Spectre.Console` in action, please see the
 
 ## 开源许可
 
-版权所有 © Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi, Frank Ray
+版权所有 © Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi
 
 Spectre.Console 基于 MIT 协议提供。查看 LICENSE 文件了解更多信息。
 
