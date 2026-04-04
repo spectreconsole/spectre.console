@@ -1,4 +1,0 @@
-Error: Could not match 'baz' with an argument.
-
-       giraffe foo bar baz
-                       ^^^ Could not match to argument

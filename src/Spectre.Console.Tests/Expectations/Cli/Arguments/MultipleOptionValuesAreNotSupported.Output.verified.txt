@@ -1,5 +1,0 @@
-Error: An error occured when parsing template.
-       Multiple option values are not supported.
-
-       -f|--foo <FOO> <BAR>
-                      ^^^^^ Too many option values

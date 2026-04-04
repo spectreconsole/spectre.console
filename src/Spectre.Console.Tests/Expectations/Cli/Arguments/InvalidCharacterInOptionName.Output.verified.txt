@@ -1,5 +1,0 @@
-Error: An error occured when parsing template.
-       Encountered invalid character '$' in option name.
-
-       --f$oo
-          ^ Invalid character

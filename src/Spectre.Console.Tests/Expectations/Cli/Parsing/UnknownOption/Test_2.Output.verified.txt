@@ -1,4 +1,0 @@
-Error: Unknown option 'u'.
-
-       dog -u
-           ^^ Unknown option
