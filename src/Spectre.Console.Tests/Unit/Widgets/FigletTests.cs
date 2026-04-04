@@ -99,4 +99,63 @@ public sealed class FigletTests
         // Then
         await Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    [Expectation("Render_Fitted")]
+    public async Task Should_Render_Fitted_Text_Correctly()
+    {
+        // Given
+        var console = new TestConsole().Width(120);
+        var text = new FigletText(FigletFont.Default, "Spectre.Console")
+        {
+            LayoutMode = FigletLayoutMode.Fitted,
+        };
+
+        // When
+        console.Write(text);
+
+        // Then
+        await Verifier.Verify(console.Output);
+    }
+
+    [Theory]
+    [InlineData("starwars.flf")]
+    [InlineData("poison.flf")]
+    [Expectation("Render_Smushed_Universal")]
+    public async Task Should_Render_Smushed_Text_Correctly_Using_Universal_Smushing_Rules(string fontfile)
+    {
+        // Given
+        var console = new TestConsole().Width(120);
+        var font = FigletFont.Load(EmbeddedResourceReader.LoadResourceStream($"Spectre.Console.Tests/Data/{fontfile}"));
+        var text = new FigletText(font, "Spectre.Console")
+        {
+            LayoutMode = FigletLayoutMode.Smushed,
+        };
+
+        // When
+        console.Write(text);
+
+        // Then
+        await Verifier.Verify(console.Output)
+            .UseParameters(fontfile);
+    }
+
+    [Fact]
+    [Expectation("Render_Smushed")]
+    public async Task Should_Render_Smushed_Text_Correctly_Using_Font_Smushing_Rules()
+    {
+        // Given
+        var console = new TestConsole().Width(120);
+        var font = FigletFont.Load(EmbeddedResourceReader.LoadResourceStream("Spectre.Console.Tests/Data/banner.flf"));
+        var text = new FigletText(font, "Spectre.Console")
+        {
+            LayoutMode = FigletLayoutMode.Smushed,
+        };
+
+        // When
+        console.Write(text);
+
+        // Then
+        await Verifier.Verify(console.Output);
+    }
 }

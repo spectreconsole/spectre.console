@@ -38,7 +38,7 @@ internal static class FigletFontParser
 
             if (hasOverriddenIndex && !indexOverridden)
             {
-                throw new InvalidOperationException("Unknown index for FIGlet character");
+                continue;
             }
 
             buffer.Add(line.Replace(header.Hardblank, ' ').TrimEnd('@'));
@@ -67,7 +67,6 @@ internal static class FigletFontParser
         var style = NumberStyles.Integer;
         if (index.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
         {
-            // TODO: ReplaceExact should not be used
             index = index.ReplaceExact("0x", string.Empty).ReplaceExact("0x", string.Empty);
             style = NumberStyles.HexNumber;
         }
@@ -93,6 +92,12 @@ internal static class FigletFontParser
             throw new InvalidOperationException("Invalid Figlet font header signature");
         }
 
+        int? fullLayout = null;
+        if (parts.Length > 7 && int.TryParse(parts[7], NumberStyles.Integer, CultureInfo.InvariantCulture, out var fl))
+        {
+            fullLayout = fl;
+        }
+
         return new FigletHeader
         {
             Hardblank = parts[0][5],
@@ -101,6 +106,7 @@ internal static class FigletFontParser
             MaxLength = int.Parse(parts[3], CultureInfo.InvariantCulture),
             OldLayout = int.Parse(parts[4], CultureInfo.InvariantCulture),
             CommentLines = int.Parse(parts[5], CultureInfo.InvariantCulture),
+            FullLayout = fullLayout,
         };
     }
 
