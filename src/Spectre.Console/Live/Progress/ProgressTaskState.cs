@@ -6,7 +6,7 @@ namespace Spectre.Console;
 public sealed class ProgressTaskState
 {
     private readonly Dictionary<string, object> _state;
-    private readonly Lock _lock;
+    private readonly object _lock;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ProgressTaskState"/> class.
@@ -14,7 +14,7 @@ public sealed class ProgressTaskState
     public ProgressTaskState()
     {
         _state = new Dictionary<string, object>();
-        _lock = LockFactory.Create();
+        _lock = new object();
     }
 
     /// <summary>
