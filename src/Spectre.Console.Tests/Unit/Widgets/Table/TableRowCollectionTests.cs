@@ -215,6 +215,7 @@ public sealed class TableRowCollectionTests
     public sealed class TheUpdateMethod
     {
         [Fact]
+        [Expectation("Update", "String")]
         public Task Should_Update_Row_With_String()
         {
             // Given
@@ -237,6 +238,7 @@ public sealed class TableRowCollectionTests
         }
 
         [Fact]
+        [Expectation("Update", "Renderable")]
         public Task Should_Update_Row_With_Renderable()
         {
             // Given
