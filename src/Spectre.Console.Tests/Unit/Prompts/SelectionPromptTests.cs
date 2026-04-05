@@ -265,6 +265,30 @@ public sealed class SelectionPromptTests
         // Then
         result.ShouldBe("[Dev] Development");
     }
+
+    [Fact]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/1653")]
+    public void Should_Not_Throw_When_Searching_With_Brackets()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushText("0");
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var prompt = new SelectionPrompt<string>()
+            .Title("Test")
+            .EnableSearch();
+
+        prompt.AddChoice("[[01]] First");
+        prompt.AddChoice("[[02]] Second");
+
+        // When
+        var exception = Record.Exception(() => prompt.Show(console));
+
+        // Then
+        exception.ShouldBeNull();
+    }
 }
 
 file sealed class CustomSelectionItem
