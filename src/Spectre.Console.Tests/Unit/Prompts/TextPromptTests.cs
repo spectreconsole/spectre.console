@@ -453,4 +453,24 @@ public sealed class TextPromptTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Theory]
+    [InlineData("yes")]
+    [InlineData("Yes")]
+    [InlineData("YES")]
+    public async Task Uses_case_insensitive_comparison_when_no_comparer_is_passed(string input)
+    {
+        // Given
+        var console = new TestConsole { EmitAnsiSequences = true, };
+        console.Input.PushTextWithEnter(input);
+
+        var prompt = new TextPrompt<string>("Was the tool helpful?")
+            .AddChoices(["Yes", "Partially", "No"]);
+
+        // When
+        var result = await console.PromptAsync(prompt);
+
+        // Then
+        result.ShouldBe("Yes");
+    }
 }
