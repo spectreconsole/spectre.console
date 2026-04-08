@@ -60,6 +60,12 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     internal ListPromptTree<T> Tree { get; }
 
     /// <summary>
+    /// Gets or sets the choice to show as selected when the prompt is first displayed.
+    /// By default the first choice is selected.
+    /// </summary>
+    public T? DefaultValue { get; set; }
+
+    /// <summary>
     /// Gets or sets a Func that will be triggered if Cancel is triggered by the 'ESC' key.
     /// </summary>
     public Func<List<T>>? CancelResult { get; set; }
@@ -292,5 +298,16 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
 
         // Combine all items
         return new Rows(list);
+    }
+
+    /// <inheritdoc/>
+    int IListPromptStrategy<T>.CalculateInitialIndex(IReadOnlyList<ListPromptItem<T>> nodes)
+    {
+        if (DefaultValue is not null)
+        {
+            return Tree.IndexOf(DefaultValue) ?? 0;
+        }
+
+        return 0;
     }
 }

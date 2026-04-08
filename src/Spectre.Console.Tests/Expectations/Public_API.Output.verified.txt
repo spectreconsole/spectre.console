@@ -2324,6 +2324,8 @@
             where T :  notnull { }
         public static Spectre.Console.MultiSelectionPrompt<T> AddChoices<T>(this Spectre.Console.MultiSelectionPrompt<T> obj, T choice, System.Action<Spectre.Console.IMultiSelectionItem<T>> configurator)
             where T :  notnull { }
+        public static Spectre.Console.MultiSelectionPrompt<T> DefaultValue<T>(this Spectre.Console.MultiSelectionPrompt<T> obj, T? defaultValue)
+            where T :  notnull { }
         public static Spectre.Console.MultiSelectionPrompt<T> HighlightStyle<T>(this Spectre.Console.MultiSelectionPrompt<T> obj, Spectre.Console.Style highlightStyle)
             where T :  notnull { }
         public static Spectre.Console.MultiSelectionPrompt<T> InstructionsText<T>(this Spectre.Console.MultiSelectionPrompt<T> obj, string? text)
@@ -2355,6 +2357,7 @@
         public MultiSelectionPrompt(System.Collections.Generic.IEqualityComparer<T>? comparer = null) { }
         public System.Func<System.Collections.Generic.List<T>>? CancelResult { get; set; }
         public System.Func<T, string>? Converter { get; set; }
+        public T DefaultValue { get; set; }
         public Spectre.Console.Style? HighlightStyle { get; set; }
         public string? InstructionsText { get; set; }
         public Spectre.Console.SelectionMode Mode { get; set; }
@@ -2698,6 +2701,8 @@
             where T :  notnull { }
         public static Spectre.Console.SelectionPrompt<T> AddChoices<T>(this Spectre.Console.SelectionPrompt<T> obj, params T[] choices)
             where T :  notnull { }
+        public static Spectre.Console.SelectionPrompt<T> DefaultValue<T>(this Spectre.Console.SelectionPrompt<T> obj, T? defaultValue)
+            where T :  notnull { }
         public static Spectre.Console.SelectionPrompt<T> DisableSearch<T>(this Spectre.Console.SelectionPrompt<T> obj)
             where T :  notnull { }
         public static Spectre.Console.SelectionPrompt<T> EnableSearch<T>(this Spectre.Console.SelectionPrompt<T> obj)
@@ -2722,9 +2727,10 @@
     public sealed class SelectionPrompt<T> : Spectre.Console.IPrompt<T>
         where T :  notnull
     {
-        public SelectionPrompt() { }
+        public SelectionPrompt(System.Collections.Generic.IEqualityComparer<T>? comparer = null) { }
         public System.Func<T>? CancelResult { get; set; }
         public System.Func<T, string>? Converter { get; set; }
+        public T DefaultValue { get; set; }
         public Spectre.Console.Style? DisabledStyle { get; set; }
         public Spectre.Console.Style? HighlightStyle { get; set; }
         public Spectre.Console.SelectionMode Mode { get; set; }
