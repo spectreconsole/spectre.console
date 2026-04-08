@@ -36,4 +36,11 @@ internal interface IListPromptStrategy<T>
     /// <returns>A <see cref="IRenderable"/> representing the items.</returns>
     public IRenderable Render(IAnsiConsole console, bool scrollable, int cursorIndex,
         IEnumerable<(int Index, ListPromptItem<T> Node)> items, bool skipUnselectableItems, string searchText);
+
+    /// <summary>
+    /// Calculates the state's initial index.
+    /// </summary>
+    /// <param name="nodes">The nodes that will be shown in the list.</param>
+    /// <returns>The initial index that should be used.</returns>
+    public int CalculateInitialIndex(IReadOnlyList<ListPromptItem<T>> nodes);
 }

@@ -250,6 +250,260 @@ public sealed class MultiSelectionPromptTests
         // Then
         selection.ShouldBe([]);
     }
+
+    [Fact]
+    public void Should_Initially_Select_The_First_Item_When_No_Default_Is_Specified()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new MultiSelectionPrompt<string>()
+                .AddChoices("First", "Second", "Third");
+
+        prompt.Show(console);
+
+        // Then
+        console.Lines.ShouldBe([
+            "> [ ] First                                 ",
+            "  [ ] Second                                ",
+            "  [ ] Third                                 ",
+            "                                            ",
+            "(Press <space> to select, <enter> to accept)> [X] First                                 ",
+            "  [ ] Second                                ",
+            "  [ ] Third                                 ",
+            "                                            ",
+            "(Press <space> to select, <enter> to accept)",
+        ]);
+    }
+
+    [Fact]
+    public void Should_Initially_Select_The_Default_Item_When_It_Exists_In_The_Choices()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new MultiSelectionPrompt<string>()
+                .Title("Select one")
+                .AddChoices("First", "Second", "Third")
+                .DefaultValue("Second");
+
+        prompt.Show(console);
+
+        // Then
+        console.Lines.ShouldBe([
+            "Select one                                  ",
+            "                                            ",
+            "  [ ] First                                 ",
+            "> [ ] Second                                ",
+            "  [ ] Third                                 ",
+            "                                            ",
+            "(Press <space> to select, <enter> to accept)Select one                                  ",
+            "                                            ",
+            "  [ ] First                                 ",
+            "> [X] Second                                ",
+            "  [ ] Third                                 ",
+            "                                            ",
+            "(Press <space> to select, <enter> to accept)",]);
+    }
+
+    [Fact]
+    public void Should_Initially_Select_The_First_Item_When_Default_Does_Not_Exist_In_The_Choices()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new MultiSelectionPrompt<string>()
+                .Title("Select one")
+                .AddChoices("First", "Second", "Third")
+                .DefaultValue("Fourth");
+
+        prompt.Show(console);
+
+        // Then
+        console.Lines.ShouldBe([
+            "Select one                                  ",
+            "                                            ",
+            "> [ ] First                                 ",
+            "  [ ] Second                                ",
+            "  [ ] Third                                 ",
+            "                                            ",
+            "(Press <space> to select, <enter> to accept)Select one                                  ",
+            "                                            ",
+            "> [X] First                                 ",
+            "  [ ] Second                                ",
+            "  [ ] Third                                 ",
+            "                                            ",
+            "(Press <space> to select, <enter> to accept)",
+        ]);
+    }
+
+    [Fact]
+    public void Should_Initially_Select_The_Default_Item_When_Scrolling_Is_Required_And_Item_Is_Not_Last()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new MultiSelectionPrompt<string>()
+                .Title("Select one")
+                .AddChoices("First", "Second", "Third", "Fourth", "Fifth", "Sixth")
+                .DefaultValue("Third")
+                .PageSize(3);
+
+        prompt.Show(console);
+
+        // Then
+        console.Lines.ShouldBe([
+            "Select one                                  ",
+            "                                            ",
+            "  [ ] Second                                ",
+            "> [ ] Third                                 ",
+            "  [ ] Fourth                                ",
+            "                                            ",
+            "(Move up and down to reveal more choices)   ",
+            "(Press <space> to select, <enter> to accept)Select one                                  ", "                                            ", "  [ ] Second                                ", "> [X] Third                                 ", "  [ ] Fourth                                ", "                                            ", "(Move up and down to reveal more choices)   ",
+            "(Press <space> to select, <enter> to accept)",
+        ]);
+    }
+
+    [Fact]
+    public void Should_Initially_Select_The_Default_Item_When_Scrolling_Is_Required_And_Item_Is_Last()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new MultiSelectionPrompt<string>()
+                .Title("Select one")
+                .AddChoices("First", "Second", "Third", "Fourth", "Fifth", "Sixth")
+                .DefaultValue("Sixth")
+                .PageSize(3);
+
+        prompt.Show(console);
+
+        // Then
+        console.Lines.ShouldBe([
+            "Select one                                  ",
+            "                                            ",
+            "  [ ] Fourth                                ",
+            "  [ ] Fifth                                 ",
+            "> [ ] Sixth                                 ",
+            "                                            ",
+            "(Move up and down to reveal more choices)   ",
+            "(Press <space> to select, <enter> to accept)Select one                                  ",
+            "                                            ",
+            "  [ ] Fourth                                ",
+            "  [ ] Fifth                                 ",
+            "> [X] Sixth                                 ",
+            "                                            ",
+            "(Move up and down to reveal more choices)   ",
+            "(Press <space> to select, <enter> to accept)",
+        ]);
+    }
+
+    [Fact]
+    public void Should_Initially_Select_The_Default_Value_When_Skipping_Unselectable_Items_And_Default_Value_Is_Leaf()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new MultiSelectionPrompt<string>()
+                .Title("Select one")
+                .AddChoiceGroup("Group one", "First", "Second")
+                .AddChoiceGroup("Group two", "Third", "Fourth")
+                .Mode(SelectionMode.Leaf)
+                .DefaultValue("Third");
+
+        prompt.Show(console);
+
+        // Then
+        console.Lines.ShouldBe([
+            "Select one                                  ",
+            "                                            ",
+            "  [ ] Group one                             ",
+            "    [ ] First                               ",
+            "    [ ] Second                              ",
+            "  [ ] Group two                             ",
+            "  > [ ] Third                               ",
+            "    [ ] Fourth                              ",
+            "                                            ",
+            "(Press <space> to select, <enter> to accept)Select one                                  ",
+            "                                            ",
+            "  [ ] Group one                             ",
+            "    [ ] First                               ",
+            "    [ ] Second                              ",
+            "  [ ] Group two                             ",
+            "  > [X] Third                               ",
+            "    [ ] Fourth                              ",
+            "                                            ",
+            "(Press <space> to select, <enter> to accept)",
+        ]);
+    }
+
+    [Fact]
+    public void Should_Initially_Select_The_First_Leaf_When_Skipping_Unselectable_Items_And_Default_Value_Is_Not_Leaf()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new MultiSelectionPrompt<string>()
+                .Title("Select one")
+                .AddChoiceGroup("Group one", "First", "Second")
+                .AddChoiceGroup("Group two", "Third", "Fourth")
+                .Mode(SelectionMode.Leaf)
+                .DefaultValue("Group two");
+
+        prompt.Show(console);
+
+        // Then
+        console.Lines.ShouldBe([
+            "Select one                                  ",
+            "                                            ",
+            "  [ ] Group one                             ",
+            "    [ ] First                               ",
+            "    [ ] Second                              ",
+            "> [ ] Group two                             ",
+            "    [ ] Third                               ",
+            "    [ ] Fourth                              ",
+            "                                            ",
+            "(Press <space> to select, <enter> to accept)Select one                                  ",
+            "                                            ",
+            "  [ ] Group one                             ",
+            "    [ ] First                               ",
+            "    [ ] Second                              ",
+            "> [X] Group two                             ",
+            "    [X] Third                               ",
+            "    [X] Fourth                              ",
+            "                                            ",
+            "(Press <space> to select, <enter> to accept)",
+        ]);
+    }
 }
 
 file sealed class CustomItem

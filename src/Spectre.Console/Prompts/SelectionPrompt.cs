@@ -69,6 +69,12 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     public bool SearchEnabled { get; set; }
 
     /// <summary>
+    /// Gets or sets the choice to show as selected when the prompt is first displayed.
+    /// By default the first choice is selected.
+    /// </summary>
+    public T? DefaultValue { get; set; }
+
+    /// <summary>
     /// Gets or sets a Func that will be triggered if Cancel is triggered by the 'ESC' key.
     /// </summary>
     public Func<T>? CancelResult { get; set; }
@@ -76,9 +82,13 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     /// <summary>
     /// Initializes a new instance of the <see cref="SelectionPrompt{T}"/> class.
     /// </summary>
-    public SelectionPrompt()
+    /// <param name="comparer">
+    /// The <see cref="IEqualityComparer{T}"/> implementation to use when comparing items,
+    /// or <c>null</c> to use the default <see cref="IEqualityComparer{T}"/> for the type of the item.
+    /// </param>
+    public SelectionPrompt(IEqualityComparer<T>? comparer = null)
     {
-        _tree = new ListPromptTree<T>(EqualityComparer<T>.Default);
+        _tree = new ListPromptTree<T>(comparer ?? EqualityComparer<T>.Default);
     }
 
     /// <summary>
@@ -242,5 +252,16 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
         }
 
         return new Rows(list);
+    }
+
+    /// <inheritdoc/>
+    int IListPromptStrategy<T>.CalculateInitialIndex(IReadOnlyList<ListPromptItem<T>> nodes)
+    {
+        if (DefaultValue is not null)
+        {
+            return _tree.IndexOf(DefaultValue) ?? 0;
+        }
+
+        return 0;
     }
 }

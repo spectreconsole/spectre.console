@@ -29,6 +29,22 @@ internal sealed class ListPromptTree<T>
         return null;
     }
 
+    public int? IndexOf(T item)
+    {
+        var index = 0;
+        foreach (var node in Traverse())
+        {
+            if (_comparer.Equals(item, node.Data))
+            {
+                return index;
+            }
+
+            index++;
+        }
+
+        return null;
+    }
+
     public void Add(ListPromptItem<T> node)
     {
         _roots.Add(node);
