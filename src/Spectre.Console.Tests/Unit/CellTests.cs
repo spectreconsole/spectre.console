@@ -11,8 +11,10 @@ public sealed class CellTests
     [InlineData("❤️‍🔥", 2)]          // U+2764 + FE0F + ZWJ + U+1F525 (heart on fire)
     [InlineData("🇩🇪", 2)]           // Regional Indicator pair (flag)
     [InlineData("", 0)]               // empty string
+    [InlineData("Hello World", 11)]
     public void GetCellLength_Returns_Correct_Display_Width(string text, int expectedWidth)
     {
         Cell.GetCellLength(text).ShouldBe(expectedWidth);
     }
+
 }

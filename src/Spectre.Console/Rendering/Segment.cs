@@ -108,6 +108,7 @@ public class Segment
         {
             return 0;
         }
+        if (Text == "\n") return 1;
 
         return Cell.GetCellLength(Text);
     }
@@ -160,10 +161,12 @@ public class Segment
         if (offset > 0)
         {
             var accumulated = 0;
-            foreach (var character in Text)
+            var enumerator = StringInfo.GetTextElementEnumerator(Text);
+            while (enumerator.MoveNext())
             {
-                index++;
-                accumulated += Cell.GetCellLength(character);
+                var cluster = enumerator.GetTextElement();
+                accumulated += Cell.GetCellLength(cluster);
+                index += cluster.Length;
                 if (accumulated >= offset)
                 {
                     break;
@@ -429,16 +432,18 @@ public class Segment
 
         var builder = new StringBuilder();
         var accumulatedCellWidth = 0;
-        foreach (var character in segment.Text)
+        var truncateEnumerator = StringInfo.GetTextElementEnumerator(segment.Text);
+        while (truncateEnumerator.MoveNext())
         {
-            var characterWidth = UnicodeCalculator.GetWidth(character);
-            if (accumulatedCellWidth + characterWidth > maxWidth)
+            var cluster = truncateEnumerator.GetTextElement();
+            var clusterWidth = Cell.GetCellLength(cluster);
+            if (accumulatedCellWidth + clusterWidth > maxWidth)
             {
                 break;
             }
 
-            builder.Append(character);
-            accumulatedCellWidth += characterWidth;
+            builder.Append(cluster);
+            accumulatedCellWidth += clusterWidth;
         }
 
         if (builder.Length == 0)
@@ -571,17 +576,20 @@ public class Segment
 
         var length = 0;
         var sb = new StringBuilder();
-        foreach (var ch in text)
+        var splitEnumerator = StringInfo.GetTextElementEnumerator(text);
+        while (splitEnumerator.MoveNext())
         {
-            if (length + UnicodeCalculator.GetWidth(ch) > maxCellLength)
+            var cluster = splitEnumerator.GetTextElement();
+            var clusterWidth = Cell.GetCellLength(cluster);
+            if (length + clusterWidth > maxCellLength)
             {
                 list.Add(sb.ToString());
                 sb.Clear();
                 length = 0;
             }
 
-            length += UnicodeCalculator.GetWidth(ch);
-            sb.Append(ch);
+            length += clusterWidth;
+            sb.Append(cluster);
         }
 
         list.Add(sb.ToString());
