@@ -1034,4 +1034,23 @@ public sealed class TableTests
         // Then
         result.ShouldBeNull();
     }
+
+    [Fact]
+    [Expectation("Render_Wide_Emoji_Hearts")]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/1847")]
+    public Task Should_Render_Table_With_Wide_Emoji_Correctly()
+    {
+        // Given
+        var console = new TestConsole();
+        var table = new Table();
+        table.AddColumns("hearts", "length", "LengthInTextElements");
+        table.AddRow("wide ❤️", "2", "1");
+        table.AddRow("normal ♥", "1", "1");
+
+        // When
+        console.Write(table);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
 }
