@@ -5,8 +5,8 @@ public partial class AnsiConsoleTests
     public sealed class Markup
     {
         [Theory]
-        [InlineData("[yellow]Hello[/]", "[93mHello[0m")]
-        [InlineData("[yellow]Hello [italic]World[/]![/]", "[93mHello [0m[3;93mWorld[0m[93m![0m")]
+        [InlineData("[yellow]Hello[/]", "\e[93mHello\e[0m")]
+        [InlineData("[yellow]Hello [italic]World[/]![/]", "\e[93mHello \e[0m\e[3;93mWorld\e[0m\e[93m!\e[0m")]
         public void Should_Output_Expected_Ansi_For_Markup(string markup, string expected)
         {
             // Given
@@ -32,7 +32,7 @@ public partial class AnsiConsoleTests
             console.Markup("[link=https://patriksvensson.se]Click to visit my blog[/]");
 
             // Then
-            console.Output.ShouldMatch("]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\\\\Click to visit my blog]8;;\\\\");
+            console.Output.ShouldMatch("\e]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\e\\\\Click to visit my blog\e]8;;\e\\\\");
         }
 
         [Fact]
@@ -46,7 +46,7 @@ public partial class AnsiConsoleTests
             console.Markup("[link]https://patriksvensson.se[/]");
 
             // Then
-            console.Output.ShouldMatch("]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\\\\https:\\/\\/patriksvensson\\.se]8;;\\\\");
+            console.Output.ShouldMatch("\e]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\e\\\\https:\\/\\/patriksvensson\\.se\e]8;;\e\\\\");
         }
 
         [Fact]
@@ -61,7 +61,7 @@ public partial class AnsiConsoleTests
             console.Markup($"[link]{Path.EscapeMarkup()}[/]");
 
             // Then
-            console.Output.ShouldMatch("]8;id=[0-9]*;file:\\/\\/c:\\/temp\\/\\[x\\].txt\\\\file:\\/\\/c:\\/temp\\/\\[x\\].txt]8;;\\\\");
+            console.Output.ShouldMatch("\e]8;id=[0-9]*;file:\\/\\/c:\\/temp\\/\\[x\\].txt\e\\\\file:\\/\\/c:\\/temp\\/\\[x\\].txt\e]8;;\e\\\\");
         }
 
         [Fact]
@@ -76,11 +76,11 @@ public partial class AnsiConsoleTests
             console.Markup($"[link={Path.EscapeMarkup()}]{Path.EscapeMarkup()}[/]");
 
             // Then
-            console.Output.ShouldMatch("]8;id=[0-9]*;file:\\/\\/c:\\/temp\\/\\[x\\].txt\\\\file:\\/\\/c:\\/temp\\/\\[x\\].txt]8;;\\\\");
+            console.Output.ShouldMatch("\e]8;id=[0-9]*;file:\\/\\/c:\\/temp\\/\\[x\\].txt\e\\\\file:\\/\\/c:\\/temp\\/\\[x\\].txt\e]8;;\e\\\\");
         }
 
         [Theory]
-        [InlineData("[yellow]Hello [[ World[/]", "[93mHello [ World[0m")]
+        [InlineData("[yellow]Hello [[ World[/]", "\e[93mHello [ World\e[0m")]
         public void Should_Be_Able_To_Escape_Tags(string markup, string expected)
         {
             // Given
