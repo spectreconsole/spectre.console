@@ -1473,12 +1473,12 @@ namespace Spectre.Console
             public const string AbButtonBloodType = "\U0001F18E";
             
             /// <summary>
-            /// Gets the "A button (blood type)" emoji. 🅰
+            /// Gets the "A button (blood type)" emoji. 🅰️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>a_button_blood_type</c>
             /// </remarks>
-            public const string AButtonBloodType = "\U0001F170";
+            public const string AButtonBloodType = "\U0001F170\uFE0F";
             
             /// <summary>
             /// Gets the "Accordion" emoji. 🪗
@@ -1497,12 +1497,12 @@ namespace Spectre.Console
             public const string AdhesiveBandage = "\U0001FA79";
             
             /// <summary>
-            /// Gets the "Admission tickets" emoji. 🎟
+            /// Gets the "Admission tickets" emoji. 🎟️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>admission_tickets</c>
             /// </remarks>
-            public const string AdmissionTickets = "\U0001F39F";
+            public const string AdmissionTickets = "\U0001F39F\uFE0F";
             
             /// <summary>
             /// Gets the "Aerial tramway" emoji. 🚡
@@ -1513,7 +1513,7 @@ namespace Spectre.Console
             public const string AerialTramway = "\U0001F6A1";
             
             /// <summary>
-            /// Gets the "Airplane" emoji. ✈
+            /// Gets the "Airplane" emoji. ✈️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>airplane</c>
@@ -1537,7 +1537,7 @@ namespace Spectre.Console
             public const string AirplaneDeparture = "\U0001F6EB";
             
             /// <summary>
-            /// Gets the "Alarm clock" emoji. ⏰
+            /// Gets the "Alarm clock" emoji. ⏰️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>alarm_clock</c>
@@ -1545,15 +1545,15 @@ namespace Spectre.Console
             public const string AlarmClock = "\U000023F0";
             
             /// <summary>
-            /// Gets the "Alembic" emoji. ⚗
+            /// Gets the "Alembic" emoji. ⚗️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>alembic</c>
             /// </remarks>
-            public const string Alembic = "\U00002697";
+            public const string Alembic = "\U00002697\uFE0F";
             
             /// <summary>
-            /// Gets the "Alien" emoji. 👽
+            /// Gets the "Alien" emoji. 👽️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>alien</c>
@@ -1569,7 +1569,7 @@ namespace Spectre.Console
             public const string AlienMonster = "\U0001F47E";
             
             /// <summary>
-            /// Gets the "Ambulance" emoji. 🚑
+            /// Gets the "Ambulance" emoji. 🚑️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>ambulance</c>
@@ -1601,7 +1601,7 @@ namespace Spectre.Console
             public const string AnatomicalHeart = "\U0001FAC0";
             
             /// <summary>
-            /// Gets the "Anchor" emoji. ⚓
+            /// Gets the "Anchor" emoji. ⚓️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>anchor</c>
@@ -1665,7 +1665,7 @@ namespace Spectre.Console
             public const string AnxiousFaceWithSweat = "\U0001F630";
             
             /// <summary>
-            /// Gets the "Aquarius" emoji. ♒
+            /// Gets the "Aquarius" emoji. ♒️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>aquarius</c>
@@ -1673,7 +1673,7 @@ namespace Spectre.Console
             public const string Aquarius = "\U00002652";
             
             /// <summary>
-            /// Gets the "Aries" emoji. ♈
+            /// Gets the "Aries" emoji. ♈️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>aries</c>
@@ -1713,12 +1713,12 @@ namespace Spectre.Console
             public const string AtmSign = "\U0001F3E7";
             
             /// <summary>
-            /// Gets the "Atom symbol" emoji. ⚛
+            /// Gets the "Atom symbol" emoji. ⚛️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>atom_symbol</c>
             /// </remarks>
-            public const string AtomSymbol = "\U0000269B";
+            public const string AtomSymbol = "\U0000269B\uFE0F";
             
             /// <summary>
             /// Gets the "Automobile" emoji. 🚗
@@ -1785,7 +1785,7 @@ namespace Spectre.Console
             public const string BabyChick = "\U0001F424";
             
             /// <summary>
-            /// Gets the "Baby symbol" emoji. 🚼
+            /// Gets the "Baby symbol" emoji. 🚼️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>baby_symbol</c>
@@ -1801,7 +1801,7 @@ namespace Spectre.Console
             public const string BackArrow = "\U0001F519";
             
             /// <summary>
-            /// Gets the "Backhand index pointing down" emoji. 👇
+            /// Gets the "Backhand index pointing down" emoji. 👇️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>backhand_index_pointing_down</c>
@@ -1809,7 +1809,7 @@ namespace Spectre.Console
             public const string BackhandIndexPointingDown = "\U0001F447";
             
             /// <summary>
-            /// Gets the "Backhand index pointing left" emoji. 👈
+            /// Gets the "Backhand index pointing left" emoji. 👈️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>backhand_index_pointing_left</c>
@@ -1817,7 +1817,7 @@ namespace Spectre.Console
             public const string BackhandIndexPointingLeft = "\U0001F448";
             
             /// <summary>
-            /// Gets the "Backhand index pointing right" emoji. 👉
+            /// Gets the "Backhand index pointing right" emoji. 👉️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>backhand_index_pointing_right</c>
@@ -1825,7 +1825,7 @@ namespace Spectre.Console
             public const string BackhandIndexPointingRight = "\U0001F449";
             
             /// <summary>
-            /// Gets the "Backhand index pointing up" emoji. 👆
+            /// Gets the "Backhand index pointing up" emoji. 👆️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>backhand_index_pointing_up</c>
@@ -1889,12 +1889,12 @@ namespace Spectre.Console
             public const string BaguetteBread = "\U0001F956";
             
             /// <summary>
-            /// Gets the "Balance scale" emoji. ⚖
+            /// Gets the "Balance scale" emoji. ⚖️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>balance_scale</c>
             /// </remarks>
-            public const string BalanceScale = "\U00002696";
+            public const string BalanceScale = "\U00002696\uFE0F";
             
             /// <summary>
             /// Gets the "Bald" emoji. 🦲
@@ -1921,12 +1921,12 @@ namespace Spectre.Console
             public const string Balloon = "\U0001F388";
             
             /// <summary>
-            /// Gets the "Ballot box with ballot" emoji. 🗳
+            /// Gets the "Ballot box with ballot" emoji. 🗳️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>ballot_box_with_ballot</c>
             /// </remarks>
-            public const string BallotBoxWithBallot = "\U0001F5F3";
+            public const string BallotBoxWithBallot = "\U0001F5F3\uFE0F";
             
             /// <summary>
             /// Gets the "Banana" emoji. 🍌
@@ -1969,7 +1969,7 @@ namespace Spectre.Console
             public const string BarChart = "\U0001F4CA";
             
             /// <summary>
-            /// Gets the "Baseball" emoji. ⚾
+            /// Gets the "Baseball" emoji. ⚾️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>baseball</c>
@@ -2017,20 +2017,20 @@ namespace Spectre.Console
             public const string Battery = "\U0001F50B";
             
             /// <summary>
-            /// Gets the "B button (blood type)" emoji. 🅱
+            /// Gets the "B button (blood type)" emoji. 🅱️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>b_button_blood_type</c>
             /// </remarks>
-            public const string BButtonBloodType = "\U0001F171";
+            public const string BButtonBloodType = "\U0001F171\uFE0F";
             
             /// <summary>
-            /// Gets the "Beach with umbrella" emoji. 🏖
+            /// Gets the "Beach with umbrella" emoji. 🏖️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>beach_with_umbrella</c>
             /// </remarks>
-            public const string BeachWithUmbrella = "\U0001F3D6";
+            public const string BeachWithUmbrella = "\U0001F3D6\uFE0F";
             
             /// <summary>
             /// Gets the "Beaming face with smiling eyes" emoji. 😁
@@ -2073,12 +2073,12 @@ namespace Spectre.Console
             public const string Beaver = "\U0001F9AB";
             
             /// <summary>
-            /// Gets the "Bed" emoji. 🛏
+            /// Gets the "Bed" emoji. 🛏️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>bed</c>
             /// </remarks>
-            public const string Bed = "\U0001F6CF";
+            public const string Bed = "\U0001F6CF\uFE0F";
             
             /// <summary>
             /// Gets the "Beer mug" emoji. 🍺
@@ -2105,12 +2105,12 @@ namespace Spectre.Console
             public const string Bell = "\U0001F514";
             
             /// <summary>
-            /// Gets the "Bellhop bell" emoji. 🛎
+            /// Gets the "Bellhop bell" emoji. 🛎️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>bellhop_bell</c>
             /// </remarks>
-            public const string BellhopBell = "\U0001F6CE";
+            public const string BellhopBell = "\U0001F6CE\uFE0F";
             
             /// <summary>
             /// Gets the "Bell pepper" emoji. 🫑
@@ -2145,7 +2145,7 @@ namespace Spectre.Console
             public const string BeverageBox = "\U0001F9C3";
             
             /// <summary>
-            /// Gets the "Bicycle" emoji. 🚲
+            /// Gets the "Bicycle" emoji. 🚲️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>bicycle</c>
@@ -2169,15 +2169,15 @@ namespace Spectre.Console
             public const string BilledCap = "\U0001F9E2";
             
             /// <summary>
-            /// Gets the "Biohazard" emoji. ☣
+            /// Gets the "Biohazard" emoji. ☣️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>biohazard</c>
             /// </remarks>
-            public const string Biohazard = "\U00002623";
+            public const string Biohazard = "\U00002623\uFE0F";
             
             /// <summary>
-            /// Gets the "Bird" emoji. 🐦
+            /// Gets the "Bird" emoji. 🐦️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>bird</c>
@@ -2209,7 +2209,7 @@ namespace Spectre.Console
             public const string BitingLip = "\U0001FAE6";
             
             /// <summary>
-            /// Gets the "Black circle" emoji. ⚫
+            /// Gets the "Black circle" emoji. ⚫️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>black_circle</c>
@@ -2233,7 +2233,7 @@ namespace Spectre.Console
             public const string BlackHeart = "\U0001F5A4";
             
             /// <summary>
-            /// Gets the "Black large square" emoji. ⬛
+            /// Gets the "Black large square" emoji. ⬛️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>black_large_square</c>
@@ -2241,7 +2241,7 @@ namespace Spectre.Console
             public const string BlackLargeSquare = "\U00002B1B";
             
             /// <summary>
-            /// Gets the "Black medium-small square" emoji. ◾
+            /// Gets the "Black medium-small square" emoji. ◾️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>black_medium_small_square</c>
@@ -2249,15 +2249,15 @@ namespace Spectre.Console
             public const string BlackMediumSmallSquare = "\U000025FE";
             
             /// <summary>
-            /// Gets the "Black medium square" emoji. ◼
+            /// Gets the "Black medium square" emoji. ◼️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>black_medium_square</c>
             /// </remarks>
-            public const string BlackMediumSquare = "\U000025FC";
+            public const string BlackMediumSquare = "\U000025FC\uFE0F";
             
             /// <summary>
-            /// Gets the "Black nib" emoji. ✒
+            /// Gets the "Black nib" emoji. ✒️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>black_nib</c>
@@ -2265,12 +2265,12 @@ namespace Spectre.Console
             public const string BlackNib = "\U00002712";
             
             /// <summary>
-            /// Gets the "Black small square" emoji. ▪
+            /// Gets the "Black small square" emoji. ▪️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>black_small_square</c>
             /// </remarks>
-            public const string BlackSmallSquare = "\U000025AA";
+            public const string BlackSmallSquare = "\U000025AA\uFE0F";
             
             /// <summary>
             /// Gets the "Black square button" emoji. 🔲
@@ -2345,7 +2345,7 @@ namespace Spectre.Console
             public const string Boar = "\U0001F417";
             
             /// <summary>
-            /// Gets the "Bomb" emoji. 💣
+            /// Gets the "Bomb" emoji. 💣️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>bomb</c>
@@ -2377,7 +2377,7 @@ namespace Spectre.Console
             public const string BookmarkTabs = "\U0001F4D1";
             
             /// <summary>
-            /// Gets the "Books" emoji. 📚
+            /// Gets the "Books" emoji. 📚️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>books</c>
@@ -2593,12 +2593,12 @@ namespace Spectre.Console
             public const string Bug = "\U0001F41B";
             
             /// <summary>
-            /// Gets the "Building construction" emoji. 🏗
+            /// Gets the "Building construction" emoji. 🏗️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>building_construction</c>
             /// </remarks>
-            public const string BuildingConstruction = "\U0001F3D7";
+            public const string BuildingConstruction = "\U0001F3D7\uFE0F";
             
             /// <summary>
             /// Gets the "Bullet train" emoji. 🚅
@@ -2705,7 +2705,7 @@ namespace Spectre.Console
             public const string Camel = "\U0001F42A";
             
             /// <summary>
-            /// Gets the "Camera" emoji. 📷
+            /// Gets the "Camera" emoji. 📷️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>camera</c>
@@ -2721,15 +2721,15 @@ namespace Spectre.Console
             public const string CameraWithFlash = "\U0001F4F8";
             
             /// <summary>
-            /// Gets the "Camping" emoji. 🏕
+            /// Gets the "Camping" emoji. 🏕️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>camping</c>
             /// </remarks>
-            public const string Camping = "\U0001F3D5";
+            public const string Camping = "\U0001F3D5\uFE0F";
             
             /// <summary>
-            /// Gets the "Cancer" emoji. ♋
+            /// Gets the "Cancer" emoji. ♋️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>cancer</c>
@@ -2737,12 +2737,12 @@ namespace Spectre.Console
             public const string Cancer = "\U0000264B";
             
             /// <summary>
-            /// Gets the "Candle" emoji. 🕯
+            /// Gets the "Candle" emoji. 🕯️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>candle</c>
             /// </remarks>
-            public const string Candle = "\U0001F56F";
+            public const string Candle = "\U0001F56F\uFE0F";
             
             /// <summary>
             /// Gets the "Candy" emoji. 🍬
@@ -2769,7 +2769,7 @@ namespace Spectre.Console
             public const string Canoe = "\U0001F6F6";
             
             /// <summary>
-            /// Gets the "Capricorn" emoji. ♑
+            /// Gets the "Capricorn" emoji. ♑️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>capricorn</c>
@@ -2777,12 +2777,12 @@ namespace Spectre.Console
             public const string Capricorn = "\U00002651";
             
             /// <summary>
-            /// Gets the "Card file box" emoji. 🗃
+            /// Gets the "Card file box" emoji. 🗃️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>card_file_box</c>
             /// </remarks>
-            public const string CardFileBox = "\U0001F5C3";
+            public const string CardFileBox = "\U0001F5C3\uFE0F";
             
             /// <summary>
             /// Gets the "Card index" emoji. 📇
@@ -2793,12 +2793,12 @@ namespace Spectre.Console
             public const string CardIndex = "\U0001F4C7";
             
             /// <summary>
-            /// Gets the "Card index dividers" emoji. 🗂
+            /// Gets the "Card index dividers" emoji. 🗂️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>card_index_dividers</c>
             /// </remarks>
-            public const string CardIndexDividers = "\U0001F5C2";
+            public const string CardIndexDividers = "\U0001F5C2\uFE0F";
             
             /// <summary>
             /// Gets the "Carousel horse" emoji. 🎠
@@ -2841,7 +2841,7 @@ namespace Spectre.Console
             public const string Castle = "\U0001F3F0";
             
             /// <summary>
-            /// Gets the "Cat" emoji. 🐈
+            /// Gets the "Cat" emoji. 🐈️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>cat</c>
@@ -2873,12 +2873,12 @@ namespace Spectre.Console
             public const string CatWithWrySmile = "\U0001F63C";
             
             /// <summary>
-            /// Gets the "Chains" emoji. ⛓
+            /// Gets the "Chains" emoji. ⛓️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>chains</c>
             /// </remarks>
-            public const string Chains = "\U000026D3";
+            public const string Chains = "\U000026D3\uFE0F";
             
             /// <summary>
             /// Gets the "Chair" emoji. 🪑
@@ -2913,15 +2913,15 @@ namespace Spectre.Console
             public const string ChartIncreasingWithYen = "\U0001F4B9";
             
             /// <summary>
-            /// Gets the "Check box with check" emoji. ☑
+            /// Gets the "Check box with check" emoji. ☑️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>check_box_with_check</c>
             /// </remarks>
-            public const string CheckBoxWithCheck = "\U00002611";
+            public const string CheckBoxWithCheck = "\U00002611\uFE0F";
             
             /// <summary>
-            /// Gets the "Check mark" emoji. ✔
+            /// Gets the "Check mark" emoji. ✔️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>check_mark</c>
@@ -2929,7 +2929,7 @@ namespace Spectre.Console
             public const string CheckMark = "\U00002714";
             
             /// <summary>
-            /// Gets the "Check mark button" emoji. ✅
+            /// Gets the "Check mark button" emoji. ✅️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>check_mark_button</c>
@@ -2969,12 +2969,12 @@ namespace Spectre.Console
             public const string CherryBlossom = "\U0001F338";
             
             /// <summary>
-            /// Gets the "Chess pawn" emoji. ♟
+            /// Gets the "Chess pawn" emoji. ♟️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>chess_pawn</c>
             /// </remarks>
-            public const string ChessPawn = "\U0000265F";
+            public const string ChessPawn = "\U0000265F\uFE0F";
             
             /// <summary>
             /// Gets the "Chestnut" emoji. 🌰
@@ -3009,12 +3009,12 @@ namespace Spectre.Console
             public const string ChildrenCrossing = "\U0001F6B8";
             
             /// <summary>
-            /// Gets the "Chipmunk" emoji. 🐿
+            /// Gets the "Chipmunk" emoji. 🐿️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>chipmunk</c>
             /// </remarks>
-            public const string Chipmunk = "\U0001F43F";
+            public const string Chipmunk = "\U0001F43F\uFE0F";
             
             /// <summary>
             /// Gets the "Chocolate bar" emoji. 🍫
@@ -3041,7 +3041,7 @@ namespace Spectre.Console
             public const string ChristmasTree = "\U0001F384";
             
             /// <summary>
-            /// Gets the "Church" emoji. ⛪
+            /// Gets the "Church" emoji. ⛪️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>church</c>
@@ -3065,12 +3065,12 @@ namespace Spectre.Console
             public const string Cinema = "\U0001F3A6";
             
             /// <summary>
-            /// Gets the "Circled M" emoji. Ⓜ
+            /// Gets the "Circled M" emoji. Ⓜ️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>circled_m</c>
             /// </remarks>
-            public const string CircledM = "\U000024C2";
+            public const string CircledM = "\U000024C2\uFE0F";
             
             /// <summary>
             /// Gets the "Circus tent" emoji. 🎪
@@ -3081,12 +3081,12 @@ namespace Spectre.Console
             public const string CircusTent = "\U0001F3AA";
             
             /// <summary>
-            /// Gets the "Cityscape" emoji. 🏙
+            /// Gets the "Cityscape" emoji. 🏙️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>cityscape</c>
             /// </remarks>
-            public const string Cityscape = "\U0001F3D9";
+            public const string Cityscape = "\U0001F3D9\uFE0F";
             
             /// <summary>
             /// Gets the "Cityscape at dusk" emoji. 🌆
@@ -3097,15 +3097,15 @@ namespace Spectre.Console
             public const string CityscapeAtDusk = "\U0001F306";
             
             /// <summary>
-            /// Gets the "Clamp" emoji. 🗜
+            /// Gets the "Clamp" emoji. 🗜️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>clamp</c>
             /// </remarks>
-            public const string Clamp = "\U0001F5DC";
+            public const string Clamp = "\U0001F5DC\uFE0F";
             
             /// <summary>
-            /// Gets the "Clapper board" emoji. 🎬
+            /// Gets the "Clapper board" emoji. 🎬️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>clapper_board</c>
@@ -3121,12 +3121,12 @@ namespace Spectre.Console
             public const string ClappingHands = "\U0001F44F";
             
             /// <summary>
-            /// Gets the "Classical building" emoji. 🏛
+            /// Gets the "Classical building" emoji. 🏛️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>classical_building</c>
             /// </remarks>
-            public const string ClassicalBuilding = "\U0001F3DB";
+            public const string ClassicalBuilding = "\U0001F3DB\uFE0F";
             
             /// <summary>
             /// Gets the "CL button" emoji. 🆑
@@ -3153,7 +3153,7 @@ namespace Spectre.Console
             public const string ClinkingGlasses = "\U0001F942";
             
             /// <summary>
-            /// Gets the "Clipboard" emoji. 📋
+            /// Gets the "Clipboard" emoji. 📋️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>clipboard</c>
@@ -3177,7 +3177,7 @@ namespace Spectre.Console
             public const string ClosedBook = "\U0001F4D5";
             
             /// <summary>
-            /// Gets the "Closed mailbox with lowered flag" emoji. 📪
+            /// Gets the "Closed mailbox with lowered flag" emoji. 📪️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>closed_mailbox_with_lowered_flag</c>
@@ -3185,7 +3185,7 @@ namespace Spectre.Console
             public const string ClosedMailboxWithLoweredFlag = "\U0001F4EA";
             
             /// <summary>
-            /// Gets the "Closed mailbox with raised flag" emoji. 📫
+            /// Gets the "Closed mailbox with raised flag" emoji. 📫️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>closed_mailbox_with_raised_flag</c>
@@ -3201,44 +3201,44 @@ namespace Spectre.Console
             public const string ClosedUmbrella = "\U0001F302";
             
             /// <summary>
-            /// Gets the "Cloud" emoji. ☁
+            /// Gets the "Cloud" emoji. ☁️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>cloud</c>
             /// </remarks>
-            public const string Cloud = "\U00002601";
+            public const string Cloud = "\U00002601\uFE0F";
             
             /// <summary>
-            /// Gets the "Cloud with lightning" emoji. 🌩
+            /// Gets the "Cloud with lightning" emoji. 🌩️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>cloud_with_lightning</c>
             /// </remarks>
-            public const string CloudWithLightning = "\U0001F329";
+            public const string CloudWithLightning = "\U0001F329\uFE0F";
             
             /// <summary>
-            /// Gets the "Cloud with lightning and rain" emoji. ⛈
+            /// Gets the "Cloud with lightning and rain" emoji. ⛈️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>cloud_with_lightning_and_rain</c>
             /// </remarks>
-            public const string CloudWithLightningAndRain = "\U000026C8";
+            public const string CloudWithLightningAndRain = "\U000026C8\uFE0F";
             
             /// <summary>
-            /// Gets the "Cloud with rain" emoji. 🌧
+            /// Gets the "Cloud with rain" emoji. 🌧️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>cloud_with_rain</c>
             /// </remarks>
-            public const string CloudWithRain = "\U0001F327";
+            public const string CloudWithRain = "\U0001F327\uFE0F";
             
             /// <summary>
-            /// Gets the "Cloud with snow" emoji. 🌨
+            /// Gets the "Cloud with snow" emoji. 🌨️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>cloud_with_snow</c>
             /// </remarks>
-            public const string CloudWithSnow = "\U0001F328";
+            public const string CloudWithSnow = "\U0001F328\uFE0F";
             
             /// <summary>
             /// Gets the "Clown face" emoji. 🤡
@@ -3249,12 +3249,12 @@ namespace Spectre.Console
             public const string ClownFace = "\U0001F921";
             
             /// <summary>
-            /// Gets the "Club suit" emoji. ♣
+            /// Gets the "Club suit" emoji. ♣️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>club_suit</c>
             /// </remarks>
-            public const string ClubSuit = "\U00002663";
+            public const string ClubSuit = "\U00002663\uFE0F";
             
             /// <summary>
             /// Gets the "Clutch bag" emoji. 👝
@@ -3281,7 +3281,7 @@ namespace Spectre.Console
             public const string Cockroach = "\U0001FAB3";
             
             /// <summary>
-            /// Gets the "Cocktail glass" emoji. 🍸
+            /// Gets the "Cocktail glass" emoji. 🍸️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>cocktail_glass</c>
@@ -3297,12 +3297,12 @@ namespace Spectre.Console
             public const string Coconut = "\U0001F965";
             
             /// <summary>
-            /// Gets the "Coffin" emoji. ⚰
+            /// Gets the "Coffin" emoji. ⚰️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>coffin</c>
             /// </remarks>
-            public const string Coffin = "\U000026B0";
+            public const string Coffin = "\U000026B0\uFE0F";
             
             /// <summary>
             /// Gets the "Coin" emoji. 🪙
@@ -3329,12 +3329,12 @@ namespace Spectre.Console
             public const string Collision = "\U0001F4A5";
             
             /// <summary>
-            /// Gets the "Comet" emoji. ☄
+            /// Gets the "Comet" emoji. ☄️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>comet</c>
             /// </remarks>
-            public const string Comet = "\U00002604";
+            public const string Comet = "\U00002604\uFE0F";
             
             /// <summary>
             /// Gets the "Compass" emoji. 🧭
@@ -3353,12 +3353,12 @@ namespace Spectre.Console
             public const string ComputerDisk = "\U0001F4BD";
             
             /// <summary>
-            /// Gets the "Computer mouse" emoji. 🖱
+            /// Gets the "Computer mouse" emoji. 🖱️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>computer_mouse</c>
             /// </remarks>
-            public const string ComputerMouse = "\U0001F5B1";
+            public const string ComputerMouse = "\U0001F5B1\uFE0F";
             
             /// <summary>
             /// Gets the "Confetti ball" emoji. 🎊
@@ -3401,12 +3401,12 @@ namespace Spectre.Console
             public const string ConstructionWorker = "\U0001F477";
             
             /// <summary>
-            /// Gets the "Control knobs" emoji. 🎛
+            /// Gets the "Control knobs" emoji. 🎛️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>control_knobs</c>
             /// </remarks>
-            public const string ControlKnobs = "\U0001F39B";
+            public const string ControlKnobs = "\U0001F39B\uFE0F";
             
             /// <summary>
             /// Gets the "Convenience store" emoji. 🏪
@@ -3449,12 +3449,12 @@ namespace Spectre.Console
             public const string CoolButton = "\U0001F192";
             
             /// <summary>
-            /// Gets the "Copyright" emoji. ©
+            /// Gets the "Copyright" emoji. ©️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>copyright</c>
             /// </remarks>
-            public const string Copyright = "\U000000A9";
+            public const string Copyright = "\U000000A9\uFE0F";
             
             /// <summary>
             /// Gets the "Coral" emoji. 🪸
@@ -3465,12 +3465,12 @@ namespace Spectre.Console
             public const string Coral = "\U0001FAB8";
             
             /// <summary>
-            /// Gets the "Couch and lamp" emoji. 🛋
+            /// Gets the "Couch and lamp" emoji. 🛋️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>couch_and_lamp</c>
             /// </remarks>
-            public const string CouchAndLamp = "\U0001F6CB";
+            public const string CouchAndLamp = "\U0001F6CB\uFE0F";
             
             /// <summary>
             /// Gets the "Counterclockwise arrows button" emoji. 🔄
@@ -3521,15 +3521,15 @@ namespace Spectre.Console
             public const string Crab = "\U0001F980";
             
             /// <summary>
-            /// Gets the "Crayon" emoji. 🖍
+            /// Gets the "Crayon" emoji. 🖍️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>crayon</c>
             /// </remarks>
-            public const string Crayon = "\U0001F58D";
+            public const string Crayon = "\U0001F58D\uFE0F";
             
             /// <summary>
-            /// Gets the "Credit card" emoji. 💳
+            /// Gets the "Credit card" emoji. 💳️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>credit_card</c>
@@ -3593,15 +3593,15 @@ namespace Spectre.Console
             public const string CrossedFlags = "\U0001F38C";
             
             /// <summary>
-            /// Gets the "Crossed swords" emoji. ⚔
+            /// Gets the "Crossed swords" emoji. ⚔️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>crossed_swords</c>
             /// </remarks>
-            public const string CrossedSwords = "\U00002694";
+            public const string CrossedSwords = "\U00002694\uFE0F";
             
             /// <summary>
-            /// Gets the "Cross mark" emoji. ❌
+            /// Gets the "Cross mark" emoji. ❌️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>cross_mark</c>
@@ -3609,7 +3609,7 @@ namespace Spectre.Console
             public const string CrossMark = "\U0000274C";
             
             /// <summary>
-            /// Gets the "Cross mark button" emoji. ❎
+            /// Gets the "Cross mark button" emoji. ❎️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>cross_mark_button</c>
@@ -3697,7 +3697,7 @@ namespace Spectre.Console
             public const string CurlyHair = "\U0001F9B1";
             
             /// <summary>
-            /// Gets the "Curly loop" emoji. ➰
+            /// Gets the "Curly loop" emoji. ➰️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>curly_loop</c>
@@ -3753,12 +3753,12 @@ namespace Spectre.Console
             public const string Cyclone = "\U0001F300";
             
             /// <summary>
-            /// Gets the "Dagger" emoji. 🗡
+            /// Gets the "Dagger" emoji. 🗡️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>dagger</c>
             /// </remarks>
-            public const string Dagger = "\U0001F5E1";
+            public const string Dagger = "\U0001F5E1\uFE0F";
             
             /// <summary>
             /// Gets the "Dango" emoji. 🍡
@@ -3825,52 +3825,52 @@ namespace Spectre.Console
             public const string DepartmentStore = "\U0001F3EC";
             
             /// <summary>
-            /// Gets the "Derelict house" emoji. 🏚
+            /// Gets the "Derelict house" emoji. 🏚️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>derelict_house</c>
             /// </remarks>
-            public const string DerelictHouse = "\U0001F3DA";
+            public const string DerelictHouse = "\U0001F3DA\uFE0F";
             
             /// <summary>
-            /// Gets the "Desert" emoji. 🏜
+            /// Gets the "Desert" emoji. 🏜️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>desert</c>
             /// </remarks>
-            public const string Desert = "\U0001F3DC";
+            public const string Desert = "\U0001F3DC\uFE0F";
             
             /// <summary>
-            /// Gets the "Desert island" emoji. 🏝
+            /// Gets the "Desert island" emoji. 🏝️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>desert_island</c>
             /// </remarks>
-            public const string DesertIsland = "\U0001F3DD";
+            public const string DesertIsland = "\U0001F3DD\uFE0F";
             
             /// <summary>
-            /// Gets the "Desktop computer" emoji. 🖥
+            /// Gets the "Desktop computer" emoji. 🖥️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>desktop_computer</c>
             /// </remarks>
-            public const string DesktopComputer = "\U0001F5A5";
+            public const string DesktopComputer = "\U0001F5A5\uFE0F";
             
             /// <summary>
-            /// Gets the "Detective" emoji. 🕵
+            /// Gets the "Detective" emoji. 🕵️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>detective</c>
             /// </remarks>
-            public const string Detective = "\U0001F575";
+            public const string Detective = "\U0001F575\uFE0F";
             
             /// <summary>
-            /// Gets the "Diamond suit" emoji. ♦
+            /// Gets the "Diamond suit" emoji. ♦️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>diamond_suit</c>
             /// </remarks>
-            public const string DiamondSuit = "\U00002666";
+            public const string DiamondSuit = "\U00002666\uFE0F";
             
             /// <summary>
             /// Gets the "Diamond with a dot" emoji. 💠
@@ -3910,10 +3910,10 @@ namespace Spectre.Console
             /// <remarks>
             /// Lookup: <c>distorted_face</c>
             /// </remarks>
-            public const string DistortedFace = "\U0001FAEA";
+            public const string DistortedFace = "\U0001FAEA\uFE0F";
             
             /// <summary>
-            /// Gets the "Divide" emoji. ➗
+            /// Gets the "Divide" emoji. ➗️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>divide</c>
@@ -3961,7 +3961,7 @@ namespace Spectre.Console
             public const string Dodo = "\U0001F9A4";
             
             /// <summary>
-            /// Gets the "Dog" emoji. 🐕
+            /// Gets the "Dog" emoji. 🐕️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>dog</c>
@@ -4025,7 +4025,7 @@ namespace Spectre.Console
             public const string DottedSixPointedStar = "\U0001F52F";
             
             /// <summary>
-            /// Gets the "Double curly loop" emoji. ➿
+            /// Gets the "Double curly loop" emoji. ➿️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>double_curly_loop</c>
@@ -4033,12 +4033,12 @@ namespace Spectre.Console
             public const string DoubleCurlyLoop = "\U000027BF";
             
             /// <summary>
-            /// Gets the "Double exclamation mark" emoji. ‼
+            /// Gets the "Double exclamation mark" emoji. ‼️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>double_exclamation_mark</c>
             /// </remarks>
-            public const string DoubleExclamationMark = "\U0000203C";
+            public const string DoubleExclamationMark = "\U0000203C\uFE0F";
             
             /// <summary>
             /// Gets the "Doughnut" emoji. 🍩
@@ -4049,15 +4049,15 @@ namespace Spectre.Console
             public const string Doughnut = "\U0001F369";
             
             /// <summary>
-            /// Gets the "Dove" emoji. 🕊
+            /// Gets the "Dove" emoji. 🕊️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>dove</c>
             /// </remarks>
-            public const string Dove = "\U0001F54A";
+            public const string Dove = "\U0001F54A\uFE0F";
             
             /// <summary>
-            /// Gets the "Down arrow" emoji. ⬇
+            /// Gets the "Down arrow" emoji. ⬇️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>down_arrow</c>
@@ -4073,20 +4073,20 @@ namespace Spectre.Console
             public const string DowncastFaceWithSweat = "\U0001F613";
             
             /// <summary>
-            /// Gets the "Down-left arrow" emoji. ↙
+            /// Gets the "Down-left arrow" emoji. ↙️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>down_left_arrow</c>
             /// </remarks>
-            public const string DownLeftArrow = "\U00002199";
+            public const string DownLeftArrow = "\U00002199\uFE0F";
             
             /// <summary>
-            /// Gets the "Down-right arrow" emoji. ↘
+            /// Gets the "Down-right arrow" emoji. ↘️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>down_right_arrow</c>
             /// </remarks>
-            public const string DownRightArrow = "\U00002198";
+            public const string DownRightArrow = "\U00002198\uFE0F";
             
             /// <summary>
             /// Gets the "Downwards button" emoji. 🔽
@@ -4185,7 +4185,7 @@ namespace Spectre.Console
             public const string Eagle = "\U0001F985";
             
             /// <summary>
-            /// Gets the "Ear" emoji. 👂
+            /// Gets the "Ear" emoji. 👂️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>ear</c>
@@ -4225,7 +4225,7 @@ namespace Spectre.Console
             public const string Eggplant = "\U0001F346";
             
             /// <summary>
-            /// Gets the "Eight o’clock" emoji. 🕗
+            /// Gets the "Eight o’clock" emoji. 🕗️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>eight_o_clock</c>
@@ -4233,7 +4233,7 @@ namespace Spectre.Console
             public const string EightOClock = "\U0001F557";
             
             /// <summary>
-            /// Gets the "Eight-pointed star" emoji. ✴
+            /// Gets the "Eight-pointed star" emoji. ✴️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>eight_pointed_star</c>
@@ -4241,7 +4241,7 @@ namespace Spectre.Console
             public const string EightPointedStar = "\U00002734";
             
             /// <summary>
-            /// Gets the "Eight-spoked asterisk" emoji. ✳
+            /// Gets the "Eight-spoked asterisk" emoji. ✳️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>eight_spoked_asterisk</c>
@@ -4249,7 +4249,7 @@ namespace Spectre.Console
             public const string EightSpokedAsterisk = "\U00002733";
             
             /// <summary>
-            /// Gets the "Eight-thirty" emoji. 🕣
+            /// Gets the "Eight-thirty" emoji. 🕣️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>eight_thirty</c>
@@ -4257,12 +4257,12 @@ namespace Spectre.Console
             public const string EightThirty = "\U0001F563";
             
             /// <summary>
-            /// Gets the "Eject button" emoji. ⏏
+            /// Gets the "Eject button" emoji. ⏏️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>eject_button</c>
             /// </remarks>
-            public const string EjectButton = "\U000023CF";
+            public const string EjectButton = "\U000023CF\uFE0F";
             
             /// <summary>
             /// Gets the "Electric plug" emoji. 🔌
@@ -4289,7 +4289,7 @@ namespace Spectre.Console
             public const string Elevator = "\U0001F6D7";
             
             /// <summary>
-            /// Gets the "Eleven o’clock" emoji. 🕚
+            /// Gets the "Eleven o’clock" emoji. 🕚️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>eleven_o_clock</c>
@@ -4297,7 +4297,7 @@ namespace Spectre.Console
             public const string ElevenOClock = "\U0001F55A";
             
             /// <summary>
-            /// Gets the "Eleven-thirty" emoji. 🕦
+            /// Gets the "Eleven-thirty" emoji. 🕦️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>eleven_thirty</c>
@@ -4345,7 +4345,7 @@ namespace Spectre.Console
             public const string EnragedFace = "\U0001F621";
             
             /// <summary>
-            /// Gets the "Envelope" emoji. ✉
+            /// Gets the "Envelope" emoji. ✉️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>envelope</c>
@@ -4385,12 +4385,12 @@ namespace Spectre.Console
             public const string Ewe = "\U0001F411";
             
             /// <summary>
-            /// Gets the "Exclamation question mark" emoji. ⁉
+            /// Gets the "Exclamation question mark" emoji. ⁉️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>exclamation_question_mark</c>
             /// </remarks>
-            public const string ExclamationQuestionMark = "\U00002049";
+            public const string ExclamationQuestionMark = "\U00002049\uFE0F";
             
             /// <summary>
             /// Gets the "Exploding head" emoji. 🤯
@@ -4409,12 +4409,12 @@ namespace Spectre.Console
             public const string ExpressionlessFace = "\U0001F611";
             
             /// <summary>
-            /// Gets the "Eye" emoji. 👁
+            /// Gets the "Eye" emoji. 👁️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>eye</c>
             /// </remarks>
-            public const string Eye = "\U0001F441";
+            public const string Eye = "\U0001F441\uFE0F";
             
             /// <summary>
             /// Gets the "Eyes" emoji. 👀
@@ -4609,7 +4609,7 @@ namespace Spectre.Console
             public const string FaceWithTongue = "\U0001F61B";
             
             /// <summary>
-            /// Gets the "Factory" emoji. 🏭
+            /// Gets the "Factory" emoji. 🏭️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>factory</c>
@@ -4641,7 +4641,7 @@ namespace Spectre.Console
             public const string FallenLeaf = "\U0001F342";
             
             /// <summary>
-            /// Gets the "Family" emoji. 👪
+            /// Gets the "Family" emoji. 👪️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>family</c>
@@ -4649,7 +4649,7 @@ namespace Spectre.Console
             public const string Family = "\U0001F46A";
             
             /// <summary>
-            /// Gets the "Fast down button" emoji. ⏬
+            /// Gets the "Fast down button" emoji. ⏬️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>fast_down_button</c>
@@ -4657,7 +4657,7 @@ namespace Spectre.Console
             public const string FastDownButton = "\U000023EC";
             
             /// <summary>
-            /// Gets the "Fast-forward button" emoji. ⏩
+            /// Gets the "Fast-forward button" emoji. ⏩️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>fast_forward_button</c>
@@ -4665,7 +4665,7 @@ namespace Spectre.Console
             public const string FastForwardButton = "\U000023E9";
             
             /// <summary>
-            /// Gets the "Fast reverse button" emoji. ⏪
+            /// Gets the "Fast reverse button" emoji. ⏪️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>fast_reverse_button</c>
@@ -4673,7 +4673,7 @@ namespace Spectre.Console
             public const string FastReverseButton = "\U000023EA";
             
             /// <summary>
-            /// Gets the "Fast up button" emoji. ⏫
+            /// Gets the "Fast up button" emoji. ⏫️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>fast_up_button</c>
@@ -4705,12 +4705,12 @@ namespace Spectre.Console
             public const string Feather = "\U0001FAB6";
             
             /// <summary>
-            /// Gets the "Female sign" emoji. ♀
+            /// Gets the "Female sign" emoji. ♀️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>female_sign</c>
             /// </remarks>
-            public const string FemaleSign = "\U00002640";
+            public const string FemaleSign = "\U00002640\uFE0F";
             
             /// <summary>
             /// Gets the "Ferris wheel" emoji. 🎡
@@ -4721,12 +4721,12 @@ namespace Spectre.Console
             public const string FerrisWheel = "\U0001F3A1";
             
             /// <summary>
-            /// Gets the "Ferry" emoji. ⛴
+            /// Gets the "Ferry" emoji. ⛴️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>ferry</c>
             /// </remarks>
-            public const string Ferry = "\U000026F4";
+            public const string Ferry = "\U000026F4\uFE0F";
             
             /// <summary>
             /// Gets the "Field hockey" emoji. 🏑
@@ -4742,15 +4742,15 @@ namespace Spectre.Console
             /// <remarks>
             /// Lookup: <c>fight_cloud</c>
             /// </remarks>
-            public const string FightCloud = "\U0001FAEF";
+            public const string FightCloud = "\U0001FAEF\uFE0F";
             
             /// <summary>
-            /// Gets the "File cabinet" emoji. 🗄
+            /// Gets the "File cabinet" emoji. 🗄️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>file_cabinet</c>
             /// </remarks>
-            public const string FileCabinet = "\U0001F5C4";
+            public const string FileCabinet = "\U0001F5C4\uFE0F";
             
             /// <summary>
             /// Gets the "File folder" emoji. 📁
@@ -4761,20 +4761,20 @@ namespace Spectre.Console
             public const string FileFolder = "\U0001F4C1";
             
             /// <summary>
-            /// Gets the "Film frames" emoji. 🎞
+            /// Gets the "Film frames" emoji. 🎞️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>film_frames</c>
             /// </remarks>
-            public const string FilmFrames = "\U0001F39E";
+            public const string FilmFrames = "\U0001F39E\uFE0F";
             
             /// <summary>
-            /// Gets the "Film projector" emoji. 📽
+            /// Gets the "Film projector" emoji. 📽️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>film_projector</c>
             /// </remarks>
-            public const string FilmProjector = "\U0001F4FD";
+            public const string FilmProjector = "\U0001F4FD\uFE0F";
             
             /// <summary>
             /// Gets the "Fingerprint" emoji. 🫆
@@ -4849,7 +4849,7 @@ namespace Spectre.Console
             public const string FirstQuarterMoonFace = "\U0001F31B";
             
             /// <summary>
-            /// Gets the "Fish" emoji. 🐟
+            /// Gets the "Fish" emoji. 🐟️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>fish</c>
@@ -4873,7 +4873,7 @@ namespace Spectre.Console
             public const string FishingPole = "\U0001F3A3";
             
             /// <summary>
-            /// Gets the "Five o’clock" emoji. 🕔
+            /// Gets the "Five o’clock" emoji. 🕔️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>five_o_clock</c>
@@ -4881,7 +4881,7 @@ namespace Spectre.Console
             public const string FiveOClock = "\U0001F554";
             
             /// <summary>
-            /// Gets the "Five-thirty" emoji. 🕠
+            /// Gets the "Five-thirty" emoji. 🕠️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>five_thirty</c>
@@ -4889,7 +4889,7 @@ namespace Spectre.Console
             public const string FiveThirty = "\U0001F560";
             
             /// <summary>
-            /// Gets the "Flag in hole" emoji. ⛳
+            /// Gets the "Flag in hole" emoji. ⛳️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>flag_in_hole</c>
@@ -4929,12 +4929,12 @@ namespace Spectre.Console
             public const string FlatShoe = "\U0001F97F";
             
             /// <summary>
-            /// Gets the "Fleur-de-lis" emoji. ⚜
+            /// Gets the "Fleur-de-lis" emoji. ⚜️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>fleur_de_lis</c>
             /// </remarks>
-            public const string FleurDeLis = "\U0000269C";
+            public const string FleurDeLis = "\U0000269C\uFE0F";
             
             /// <summary>
             /// Gets the "Flexed biceps" emoji. 💪
@@ -5001,12 +5001,12 @@ namespace Spectre.Console
             public const string FlyingSaucer = "\U0001F6F8";
             
             /// <summary>
-            /// Gets the "Fog" emoji. 🌫
+            /// Gets the "Fog" emoji. 🌫️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>fog</c>
             /// </remarks>
-            public const string Fog = "\U0001F32B";
+            public const string Fog = "\U0001F32B\uFE0F";
             
             /// <summary>
             /// Gets the "Foggy" emoji. 🌁
@@ -5065,12 +5065,12 @@ namespace Spectre.Console
             public const string ForkAndKnife = "\U0001F374";
             
             /// <summary>
-            /// Gets the "Fork and knife with plate" emoji. 🍽
+            /// Gets the "Fork and knife with plate" emoji. 🍽️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>fork_and_knife_with_plate</c>
             /// </remarks>
-            public const string ForkAndKnifeWithPlate = "\U0001F37D";
+            public const string ForkAndKnifeWithPlate = "\U0001F37D\uFE0F";
             
             /// <summary>
             /// Gets the "Fortune cookie" emoji. 🥠
@@ -5081,7 +5081,7 @@ namespace Spectre.Console
             public const string FortuneCookie = "\U0001F960";
             
             /// <summary>
-            /// Gets the "Fountain" emoji. ⛲
+            /// Gets the "Fountain" emoji. ⛲️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>fountain</c>
@@ -5089,12 +5089,12 @@ namespace Spectre.Console
             public const string Fountain = "\U000026F2";
             
             /// <summary>
-            /// Gets the "Fountain pen" emoji. 🖋
+            /// Gets the "Fountain pen" emoji. 🖋️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>fountain_pen</c>
             /// </remarks>
-            public const string FountainPen = "\U0001F58B";
+            public const string FountainPen = "\U0001F58B\uFE0F";
             
             /// <summary>
             /// Gets the "Four leaf clover" emoji. 🍀
@@ -5105,7 +5105,7 @@ namespace Spectre.Console
             public const string FourLeafClover = "\U0001F340";
             
             /// <summary>
-            /// Gets the "Four o’clock" emoji. 🕓
+            /// Gets the "Four o’clock" emoji. 🕓️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>four_o_clock</c>
@@ -5113,7 +5113,7 @@ namespace Spectre.Console
             public const string FourOClock = "\U0001F553";
             
             /// <summary>
-            /// Gets the "Four-thirty" emoji. 🕟
+            /// Gets the "Four-thirty" emoji. 🕟️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>four_thirty</c>
@@ -5129,12 +5129,12 @@ namespace Spectre.Console
             public const string Fox = "\U0001F98A";
             
             /// <summary>
-            /// Gets the "Framed picture" emoji. 🖼
+            /// Gets the "Framed picture" emoji. 🖼️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>framed_picture</c>
             /// </remarks>
-            public const string FramedPicture = "\U0001F5BC";
+            public const string FramedPicture = "\U0001F5BC\uFE0F";
             
             /// <summary>
             /// Gets the "FREE button" emoji. 🆓
@@ -5177,12 +5177,12 @@ namespace Spectre.Console
             public const string FrontFacingBabyChick = "\U0001F425";
             
             /// <summary>
-            /// Gets the "Frowning face" emoji. ☹
+            /// Gets the "Frowning face" emoji. ☹️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>frowning_face</c>
             /// </remarks>
-            public const string FrowningFace = "\U00002639";
+            public const string FrowningFace = "\U00002639\uFE0F";
             
             /// <summary>
             /// Gets the "Frowning face with open mouth" emoji. 😦
@@ -5193,7 +5193,7 @@ namespace Spectre.Console
             public const string FrowningFaceWithOpenMouth = "\U0001F626";
             
             /// <summary>
-            /// Gets the "Fuel pump" emoji. ⛽
+            /// Gets the "Fuel pump" emoji. ⛽️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>fuel_pump</c>
@@ -5201,7 +5201,7 @@ namespace Spectre.Console
             public const string FuelPump = "\U000026FD";
             
             /// <summary>
-            /// Gets the "Full moon" emoji. 🌕
+            /// Gets the "Full moon" emoji. 🌕️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>full_moon</c>
@@ -5217,12 +5217,12 @@ namespace Spectre.Console
             public const string FullMoonFace = "\U0001F31D";
             
             /// <summary>
-            /// Gets the "Funeral urn" emoji. ⚱
+            /// Gets the "Funeral urn" emoji. ⚱️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>funeral_urn</c>
             /// </remarks>
-            public const string FuneralUrn = "\U000026B1";
+            public const string FuneralUrn = "\U000026B1\uFE0F";
             
             /// <summary>
             /// Gets the "Game die" emoji. 🎲
@@ -5241,15 +5241,15 @@ namespace Spectre.Console
             public const string Garlic = "\U0001F9C4";
             
             /// <summary>
-            /// Gets the "Gear" emoji. ⚙
+            /// Gets the "Gear" emoji. ⚙️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>gear</c>
             /// </remarks>
-            public const string Gear = "\U00002699";
+            public const string Gear = "\U00002699\uFE0F";
             
             /// <summary>
-            /// Gets the "Gemini" emoji. ♊
+            /// Gets the "Gemini" emoji. ♊️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>gemini</c>
@@ -5305,7 +5305,7 @@ namespace Spectre.Console
             public const string Girl = "\U0001F467";
             
             /// <summary>
-            /// Gets the "Glasses" emoji. 👓
+            /// Gets the "Glasses" emoji. 👓️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>glasses</c>
@@ -5321,7 +5321,7 @@ namespace Spectre.Console
             public const string GlassOfMilk = "\U0001F95B";
             
             /// <summary>
-            /// Gets the "Globe showing Americas" emoji. 🌎
+            /// Gets the "Globe showing Americas" emoji. 🌎️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>globe_showing_americas</c>
@@ -5329,7 +5329,7 @@ namespace Spectre.Console
             public const string GlobeShowingAmericas = "\U0001F30E";
             
             /// <summary>
-            /// Gets the "Globe showing Asia-Australia" emoji. 🌏
+            /// Gets the "Globe showing Asia-Australia" emoji. 🌏️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>globe_showing_asia_australia</c>
@@ -5337,7 +5337,7 @@ namespace Spectre.Console
             public const string GlobeShowingAsiaAustralia = "\U0001F30F";
             
             /// <summary>
-            /// Gets the "Globe showing Europe-Africa" emoji. 🌍
+            /// Gets the "Globe showing Europe-Africa" emoji. 🌍️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>globe_showing_europe_africa</c>
@@ -5417,7 +5417,7 @@ namespace Spectre.Console
             public const string Gorilla = "\U0001F98D";
             
             /// <summary>
-            /// Gets the "Graduation cap" emoji. 🎓
+            /// Gets the "Graduation cap" emoji. 🎓️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>graduation_cap</c>
@@ -5598,7 +5598,7 @@ namespace Spectre.Console
             /// <remarks>
             /// Lookup: <c>hairy_creature</c>
             /// </remarks>
-            public const string HairyCreature = "\U0001FAC8";
+            public const string HairyCreature = "\U0001FAC8\uFE0F";
             
             /// <summary>
             /// Gets the "Hamburger" emoji. 🍔
@@ -5617,20 +5617,20 @@ namespace Spectre.Console
             public const string Hammer = "\U0001F528";
             
             /// <summary>
-            /// Gets the "Hammer and pick" emoji. ⚒
+            /// Gets the "Hammer and pick" emoji. ⚒️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>hammer_and_pick</c>
             /// </remarks>
-            public const string HammerAndPick = "\U00002692";
+            public const string HammerAndPick = "\U00002692\uFE0F";
             
             /// <summary>
-            /// Gets the "Hammer and wrench" emoji. 🛠
+            /// Gets the "Hammer and wrench" emoji. 🛠️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>hammer_and_wrench</c>
             /// </remarks>
-            public const string HammerAndWrench = "\U0001F6E0";
+            public const string HammerAndWrench = "\U0001F6E0\uFE0F";
             
             /// <summary>
             /// Gets the "Hamsa" emoji. 🪬
@@ -5665,12 +5665,12 @@ namespace Spectre.Console
             public const string Handshake = "\U0001F91D";
             
             /// <summary>
-            /// Gets the "Hand with fingers splayed" emoji. 🖐
+            /// Gets the "Hand with fingers splayed" emoji. 🖐️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>hand_with_fingers_splayed</c>
             /// </remarks>
-            public const string HandWithFingersSplayed = "\U0001F590";
+            public const string HandWithFingersSplayed = "\U0001F590\uFE0F";
             
             /// <summary>
             /// Gets the "Hand with index finger and thumb crossed" emoji. 🫰
@@ -5697,7 +5697,7 @@ namespace Spectre.Console
             public const string HatchingChick = "\U0001F423";
             
             /// <summary>
-            /// Gets the "Headphone" emoji. 🎧
+            /// Gets the "Headphone" emoji. 🎧️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>headphone</c>
@@ -5729,7 +5729,7 @@ namespace Spectre.Console
             public const string HeartDecoration = "\U0001F49F";
             
             /// <summary>
-            /// Gets the "Heart exclamation" emoji. ❣
+            /// Gets the "Heart exclamation" emoji. ❣️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>heart_exclamation</c>
@@ -5745,12 +5745,12 @@ namespace Spectre.Console
             public const string HeartHands = "\U0001FAF6";
             
             /// <summary>
-            /// Gets the "Heart suit" emoji. ♥
+            /// Gets the "Heart suit" emoji. ♥️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>heart_suit</c>
             /// </remarks>
-            public const string HeartSuit = "\U00002665";
+            public const string HeartSuit = "\U00002665\uFE0F";
             
             /// <summary>
             /// Gets the "Heart with arrow" emoji. 💘
@@ -5833,7 +5833,7 @@ namespace Spectre.Console
             public const string HighSpeedTrain = "\U0001F684";
             
             /// <summary>
-            /// Gets the "High voltage" emoji. ⚡
+            /// Gets the "High voltage" emoji. ⚡️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>high_voltage</c>
@@ -5865,15 +5865,15 @@ namespace Spectre.Console
             public const string Hippopotamus = "\U0001F99B";
             
             /// <summary>
-            /// Gets the "Hole" emoji. 🕳
+            /// Gets the "Hole" emoji. 🕳️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>hole</c>
             /// </remarks>
-            public const string Hole = "\U0001F573";
+            public const string Hole = "\U0001F573\uFE0F";
             
             /// <summary>
-            /// Gets the "Hollow red circle" emoji. ⭕
+            /// Gets the "Hollow red circle" emoji. ⭕️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>hollow_red_circle</c>
@@ -5945,7 +5945,7 @@ namespace Spectre.Console
             public const string Hospital = "\U0001F3E5";
             
             /// <summary>
-            /// Gets the "Hot beverage" emoji. ☕
+            /// Gets the "Hot beverage" emoji. ☕️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>hot_beverage</c>
@@ -5977,23 +5977,23 @@ namespace Spectre.Console
             public const string HotFace = "\U0001F975";
             
             /// <summary>
-            /// Gets the "Hot pepper" emoji. 🌶
+            /// Gets the "Hot pepper" emoji. 🌶️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>hot_pepper</c>
             /// </remarks>
-            public const string HotPepper = "\U0001F336";
+            public const string HotPepper = "\U0001F336\uFE0F";
             
             /// <summary>
-            /// Gets the "Hot springs" emoji. ♨
+            /// Gets the "Hot springs" emoji. ♨️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>hot_springs</c>
             /// </remarks>
-            public const string HotSprings = "\U00002668";
+            public const string HotSprings = "\U00002668\uFE0F";
             
             /// <summary>
-            /// Gets the "Hourglass done" emoji. ⌛
+            /// Gets the "Hourglass done" emoji. ⌛️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>hourglass_done</c>
@@ -6001,7 +6001,7 @@ namespace Spectre.Console
             public const string HourglassDone = "\U0000231B";
             
             /// <summary>
-            /// Gets the "Hourglass not done" emoji. ⏳
+            /// Gets the "Hourglass not done" emoji. ⏳️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>hourglass_not_done</c>
@@ -6009,7 +6009,7 @@ namespace Spectre.Console
             public const string HourglassNotDone = "\U000023F3";
             
             /// <summary>
-            /// Gets the "House" emoji. 🏠
+            /// Gets the "House" emoji. 🏠️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>house</c>
@@ -6017,12 +6017,12 @@ namespace Spectre.Console
             public const string House = "\U0001F3E0";
             
             /// <summary>
-            /// Gets the "Houses" emoji. 🏘
+            /// Gets the "Houses" emoji. 🏘️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>houses</c>
             /// </remarks>
-            public const string Houses = "\U0001F3D8";
+            public const string Houses = "\U0001F3D8\uFE0F";
             
             /// <summary>
             /// Gets the "House with garden" emoji. 🏡
@@ -6089,12 +6089,12 @@ namespace Spectre.Console
             public const string IceHockey = "\U0001F3D2";
             
             /// <summary>
-            /// Gets the "Ice skate" emoji. ⛸
+            /// Gets the "Ice skate" emoji. ⛸️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>ice_skate</c>
             /// </remarks>
-            public const string IceSkate = "\U000026F8";
+            public const string IceSkate = "\U000026F8\uFE0F";
             
             /// <summary>
             /// Gets the "ID button" emoji. 🆔
@@ -6113,7 +6113,7 @@ namespace Spectre.Console
             public const string IdentificationCard = "\U0001FAAA";
             
             /// <summary>
-            /// Gets the "Inbox tray" emoji. 📥
+            /// Gets the "Inbox tray" emoji. 📥️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>inbox_tray</c>
@@ -6137,28 +6137,28 @@ namespace Spectre.Console
             public const string IndexPointingAtTheViewer = "\U0001FAF5";
             
             /// <summary>
-            /// Gets the "Index pointing up" emoji. ☝
+            /// Gets the "Index pointing up" emoji. ☝️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>index_pointing_up</c>
             /// </remarks>
-            public const string IndexPointingUp = "\U0000261D";
+            public const string IndexPointingUp = "\U0000261D\uFE0F";
             
             /// <summary>
-            /// Gets the "Infinity" emoji. ♾
+            /// Gets the "Infinity" emoji. ♾️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>infinity</c>
             /// </remarks>
-            public const string Infinity = "\U0000267E";
+            public const string Infinity = "\U0000267E\uFE0F";
             
             /// <summary>
-            /// Gets the "Information" emoji. ℹ
+            /// Gets the "Information" emoji. ℹ️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>information</c>
             /// </remarks>
-            public const string Information = "\U00002139";
+            public const string Information = "\U00002139\uFE0F";
             
             /// <summary>
             /// Gets the "Input latin letters" emoji. 🔤
@@ -6241,7 +6241,7 @@ namespace Spectre.Console
             public const string JapaneseCastle = "\U0001F3EF";
             
             /// <summary>
-            /// Gets the "Japanese “congratulations” button" emoji. ㊗
+            /// Gets the "Japanese “congratulations” button" emoji. ㊗️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>japanese_congratulations_button</c>
@@ -6265,7 +6265,7 @@ namespace Spectre.Console
             public const string JapaneseDolls = "\U0001F38E";
             
             /// <summary>
-            /// Gets the "Japanese “free of charge” button" emoji. 🈚
+            /// Gets the "Japanese “free of charge” button" emoji. 🈚️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>japanese_free_of_charge_button</c>
@@ -6281,12 +6281,12 @@ namespace Spectre.Console
             public const string JapaneseHereButton = "\U0001F201";
             
             /// <summary>
-            /// Gets the "Japanese “monthly amount” button" emoji. 🈷
+            /// Gets the "Japanese “monthly amount” button" emoji. 🈷️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>japanese_monthly_amount_button</c>
             /// </remarks>
-            public const string JapaneseMonthlyAmountButton = "\U0001F237";
+            public const string JapaneseMonthlyAmountButton = "\U0001F237\uFE0F";
             
             /// <summary>
             /// Gets the "Japanese “not free of charge” button" emoji. 🈶
@@ -6337,7 +6337,7 @@ namespace Spectre.Console
             public const string JapaneseProhibitedButton = "\U0001F232";
             
             /// <summary>
-            /// Gets the "Japanese “reserved” button" emoji. 🈯
+            /// Gets the "Japanese “reserved” button" emoji. 🈯️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>japanese_reserved_button</c>
@@ -6345,7 +6345,7 @@ namespace Spectre.Console
             public const string JapaneseReservedButton = "\U0001F22F";
             
             /// <summary>
-            /// Gets the "Japanese “secret” button" emoji. ㊙
+            /// Gets the "Japanese “secret” button" emoji. ㊙️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>japanese_secret_button</c>
@@ -6353,12 +6353,12 @@ namespace Spectre.Console
             public const string JapaneseSecretButton = "\U00003299";
             
             /// <summary>
-            /// Gets the "Japanese “service charge” button" emoji. 🈂
+            /// Gets the "Japanese “service charge” button" emoji. 🈂️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>japanese_service_charge_button</c>
             /// </remarks>
-            public const string JapaneseServiceChargeButton = "\U0001F202";
+            public const string JapaneseServiceChargeButton = "\U0001F202\uFE0F";
             
             /// <summary>
             /// Gets the "Japanese symbol for beginner" emoji. 🔰
@@ -6409,12 +6409,12 @@ namespace Spectre.Console
             public const string Joker = "\U0001F0CF";
             
             /// <summary>
-            /// Gets the "Joystick" emoji. 🕹
+            /// Gets the "Joystick" emoji. 🕹️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>joystick</c>
             /// </remarks>
-            public const string Joystick = "\U0001F579";
+            public const string Joystick = "\U0001F579\uFE0F";
             
             /// <summary>
             /// Gets the "Kaaba" emoji. 🕋
@@ -6441,12 +6441,12 @@ namespace Spectre.Console
             public const string Key = "\U0001F511";
             
             /// <summary>
-            /// Gets the "Keyboard" emoji. ⌨
+            /// Gets the "Keyboard" emoji. ⌨️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>keyboard</c>
             /// </remarks>
-            public const string Keyboard = "\U00002328";
+            public const string Keyboard = "\U00002328\uFE0F";
             
             /// <summary>
             /// Gets the "Keycap: 10" emoji. 🔟
@@ -6577,12 +6577,12 @@ namespace Spectre.Console
             public const string LabCoat = "\U0001F97C";
             
             /// <summary>
-            /// Gets the "Label" emoji. 🏷
+            /// Gets the "Label" emoji. 🏷️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>label</c>
             /// </remarks>
-            public const string Label = "\U0001F3F7";
+            public const string Label = "\U0001F3F7\uFE0F";
             
             /// <summary>
             /// Gets the "Lacrosse" emoji. 🥍
@@ -6614,10 +6614,10 @@ namespace Spectre.Console
             /// <remarks>
             /// Lookup: <c>landslide</c>
             /// </remarks>
-            public const string Landslide = "\U0001F6D8";
+            public const string Landslide = "\U0001F6D8\uFE0F";
             
             /// <summary>
-            /// Gets the "Laptop" emoji. 💻
+            /// Gets the "Laptop" emoji. 💻️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>laptop</c>
@@ -6649,7 +6649,7 @@ namespace Spectre.Console
             public const string LastQuarterMoon = "\U0001F317";
             
             /// <summary>
-            /// Gets the "Last quarter moon face" emoji. 🌜
+            /// Gets the "Last quarter moon face" emoji. 🌜️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>last_quarter_moon_face</c>
@@ -6657,15 +6657,15 @@ namespace Spectre.Console
             public const string LastQuarterMoonFace = "\U0001F31C";
             
             /// <summary>
-            /// Gets the "Last track button" emoji. ⏮
+            /// Gets the "Last track button" emoji. ⏮️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>last_track_button</c>
             /// </remarks>
-            public const string LastTrackButton = "\U000023EE";
+            public const string LastTrackButton = "\U000023EE\uFE0F";
             
             /// <summary>
-            /// Gets the "Latin cross" emoji. ✝
+            /// Gets the "Latin cross" emoji. ✝️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>latin_cross</c>
@@ -6705,7 +6705,7 @@ namespace Spectre.Console
             public const string Ledger = "\U0001F4D2";
             
             /// <summary>
-            /// Gets the "Left arrow" emoji. ⬅
+            /// Gets the "Left arrow" emoji. ⬅️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>left_arrow</c>
@@ -6713,12 +6713,12 @@ namespace Spectre.Console
             public const string LeftArrow = "\U00002B05";
             
             /// <summary>
-            /// Gets the "Left arrow curving right" emoji. ↪
+            /// Gets the "Left arrow curving right" emoji. ↪️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>left_arrow_curving_right</c>
             /// </remarks>
-            public const string LeftArrowCurvingRight = "\U000021AA";
+            public const string LeftArrowCurvingRight = "\U000021AA\uFE0F";
             
             /// <summary>
             /// Gets the "Left-facing fist" emoji. 🤛
@@ -6737,20 +6737,20 @@ namespace Spectre.Console
             public const string LeftLuggage = "\U0001F6C5";
             
             /// <summary>
-            /// Gets the "Left-right arrow" emoji. ↔
+            /// Gets the "Left-right arrow" emoji. ↔️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>left_right_arrow</c>
             /// </remarks>
-            public const string LeftRightArrow = "\U00002194";
+            public const string LeftRightArrow = "\U00002194\uFE0F";
             
             /// <summary>
-            /// Gets the "Left speech bubble" emoji. 🗨
+            /// Gets the "Left speech bubble" emoji. 🗨️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>left_speech_bubble</c>
             /// </remarks>
-            public const string LeftSpeechBubble = "\U0001F5E8";
+            public const string LeftSpeechBubble = "\U0001F5E8\uFE0F";
             
             /// <summary>
             /// Gets the "Leftwards hand" emoji. 🫲
@@ -6785,7 +6785,7 @@ namespace Spectre.Console
             public const string Lemon = "\U0001F34B";
             
             /// <summary>
-            /// Gets the "Leo" emoji. ♌
+            /// Gets the "Leo" emoji. ♌️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>leo</c>
@@ -6801,15 +6801,15 @@ namespace Spectre.Console
             public const string Leopard = "\U0001F406";
             
             /// <summary>
-            /// Gets the "Level slider" emoji. 🎚
+            /// Gets the "Level slider" emoji. 🎚️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>level_slider</c>
             /// </remarks>
-            public const string LevelSlider = "\U0001F39A";
+            public const string LevelSlider = "\U0001F39A\uFE0F";
             
             /// <summary>
-            /// Gets the "Libra" emoji. ♎
+            /// Gets the "Libra" emoji. ♎️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>libra</c>
@@ -6857,12 +6857,12 @@ namespace Spectre.Console
             public const string Link = "\U0001F517";
             
             /// <summary>
-            /// Gets the "Linked paperclips" emoji. 🖇
+            /// Gets the "Linked paperclips" emoji. 🖇️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>linked_paperclips</c>
             /// </remarks>
-            public const string LinkedPaperclips = "\U0001F587";
+            public const string LinkedPaperclips = "\U0001F587\uFE0F";
             
             /// <summary>
             /// Gets the "Lion" emoji. 🦁
@@ -6913,7 +6913,7 @@ namespace Spectre.Console
             public const string Lobster = "\U0001F99E";
             
             /// <summary>
-            /// Gets the "Locked" emoji. 🔒
+            /// Gets the "Locked" emoji. 🔒️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>locked</c>
@@ -7073,7 +7073,7 @@ namespace Spectre.Console
             public const string Magnet = "\U0001F9F2";
             
             /// <summary>
-            /// Gets the "Magnifying glass tilted left" emoji. 🔍
+            /// Gets the "Magnifying glass tilted left" emoji. 🔍️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>magnifying_glass_tilted_left</c>
@@ -7089,7 +7089,7 @@ namespace Spectre.Console
             public const string MagnifyingGlassTiltedRight = "\U0001F50E";
             
             /// <summary>
-            /// Gets the "Mahjong red dragon" emoji. 🀄
+            /// Gets the "Mahjong red dragon" emoji. 🀄️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>mahjong_red_dragon</c>
@@ -7097,12 +7097,12 @@ namespace Spectre.Console
             public const string MahjongRedDragon = "\U0001F004";
             
             /// <summary>
-            /// Gets the "Male sign" emoji. ♂
+            /// Gets the "Male sign" emoji. ♂️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>male_sign</c>
             /// </remarks>
-            public const string MaleSign = "\U00002642";
+            public const string MaleSign = "\U00002642\uFE0F";
             
             /// <summary>
             /// Gets the "Mammoth" emoji. 🦣
@@ -7145,12 +7145,12 @@ namespace Spectre.Console
             public const string MansShoe = "\U0001F45E";
             
             /// <summary>
-            /// Gets the "Mantelpiece clock" emoji. 🕰
+            /// Gets the "Mantelpiece clock" emoji. 🕰️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>mantelpiece_clock</c>
             /// </remarks>
-            public const string MantelpieceClock = "\U0001F570";
+            public const string MantelpieceClock = "\U0001F570\uFE0F";
             
             /// <summary>
             /// Gets the "Manual wheelchair" emoji. 🦽
@@ -7225,12 +7225,12 @@ namespace Spectre.Console
             public const string MechanicalLeg = "\U0001F9BF";
             
             /// <summary>
-            /// Gets the "Medical symbol" emoji. ⚕
+            /// Gets the "Medical symbol" emoji. ⚕️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>medical_symbol</c>
             /// </remarks>
-            public const string MedicalSymbol = "\U00002695";
+            public const string MedicalSymbol = "\U00002695\uFE0F";
             
             /// <summary>
             /// Gets the "Medium-dark skin tone" emoji. 🏾
@@ -7305,7 +7305,7 @@ namespace Spectre.Console
             public const string Menorah = "\U0001F54E";
             
             /// <summary>
-            /// Gets the "Men’s room" emoji. 🚹
+            /// Gets the "Men’s room" emoji. 🚹️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>mens_room</c>
@@ -7321,7 +7321,7 @@ namespace Spectre.Console
             public const string Merperson = "\U0001F9DC";
             
             /// <summary>
-            /// Gets the "Metro" emoji. 🚇
+            /// Gets the "Metro" emoji. 🚇️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>metro</c>
@@ -7369,12 +7369,12 @@ namespace Spectre.Console
             public const string MilitaryHelmet = "\U0001FA96";
             
             /// <summary>
-            /// Gets the "Military medal" emoji. 🎖
+            /// Gets the "Military medal" emoji. 🎖️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>military_medal</c>
             /// </remarks>
-            public const string MilitaryMedal = "\U0001F396";
+            public const string MilitaryMedal = "\U0001F396\uFE0F";
             
             /// <summary>
             /// Gets the "Milky way" emoji. 🌌
@@ -7393,7 +7393,7 @@ namespace Spectre.Console
             public const string Minibus = "\U0001F690";
             
             /// <summary>
-            /// Gets the "Minus" emoji. ➖
+            /// Gets the "Minus" emoji. ➖️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>minus</c>
@@ -7449,7 +7449,7 @@ namespace Spectre.Console
             public const string MobilePhoneWithArrow = "\U0001F4F2";
             
             /// <summary>
-            /// Gets the "Money bag" emoji. 💰
+            /// Gets the "Money bag" emoji. 💰️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>money_bag</c>
@@ -7537,20 +7537,20 @@ namespace Spectre.Console
             public const string Mosquito = "\U0001F99F";
             
             /// <summary>
-            /// Gets the "Motor boat" emoji. 🛥
+            /// Gets the "Motor boat" emoji. 🛥️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>motor_boat</c>
             /// </remarks>
-            public const string MotorBoat = "\U0001F6E5";
+            public const string MotorBoat = "\U0001F6E5\uFE0F";
             
             /// <summary>
-            /// Gets the "Motorcycle" emoji. 🏍
+            /// Gets the "Motorcycle" emoji. 🏍️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>motorcycle</c>
             /// </remarks>
-            public const string Motorcycle = "\U0001F3CD";
+            public const string Motorcycle = "\U0001F3CD\uFE0F";
             
             /// <summary>
             /// Gets the "Motorized wheelchair" emoji. 🦼
@@ -7569,20 +7569,20 @@ namespace Spectre.Console
             public const string MotorScooter = "\U0001F6F5";
             
             /// <summary>
-            /// Gets the "Motorway" emoji. 🛣
+            /// Gets the "Motorway" emoji. 🛣️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>motorway</c>
             /// </remarks>
-            public const string Motorway = "\U0001F6E3";
+            public const string Motorway = "\U0001F6E3\uFE0F";
             
             /// <summary>
-            /// Gets the "Mountain" emoji. ⛰
+            /// Gets the "Mountain" emoji. ⛰️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>mountain</c>
             /// </remarks>
-            public const string Mountain = "\U000026F0";
+            public const string Mountain = "\U000026F0\uFE0F";
             
             /// <summary>
             /// Gets the "Mountain cableway" emoji. 🚠
@@ -7657,7 +7657,7 @@ namespace Spectre.Console
             public const string MrsClaus = "\U0001F936";
             
             /// <summary>
-            /// Gets the "Multiply" emoji. ✖
+            /// Gets the "Multiply" emoji. ✖️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>multiply</c>
@@ -7729,12 +7729,12 @@ namespace Spectre.Console
             public const string NameBadge = "\U0001F4DB";
             
             /// <summary>
-            /// Gets the "National park" emoji. 🏞
+            /// Gets the "National park" emoji. 🏞️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>national_park</c>
             /// </remarks>
-            public const string NationalPark = "\U0001F3DE";
+            public const string NationalPark = "\U0001F3DE\uFE0F";
             
             /// <summary>
             /// Gets the "Nauseated face" emoji. 🤢
@@ -7785,7 +7785,7 @@ namespace Spectre.Console
             public const string NestWithEggs = "\U0001FABA";
             
             /// <summary>
-            /// Gets the "Neutral face" emoji. 😐
+            /// Gets the "Neutral face" emoji. 😐️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>neutral_face</c>
@@ -7825,12 +7825,12 @@ namespace Spectre.Console
             public const string Newspaper = "\U0001F4F0";
             
             /// <summary>
-            /// Gets the "Next track button" emoji. ⏭
+            /// Gets the "Next track button" emoji. ⏭️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>next_track_button</c>
             /// </remarks>
-            public const string NextTrackButton = "\U000023ED";
+            public const string NextTrackButton = "\U000023ED\uFE0F";
             
             /// <summary>
             /// Gets the "NG button" emoji. 🆖
@@ -7849,7 +7849,7 @@ namespace Spectre.Console
             public const string NightWithStars = "\U0001F303";
             
             /// <summary>
-            /// Gets the "Nine o’clock" emoji. 🕘
+            /// Gets the "Nine o’clock" emoji. 🕘️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>nine_o_clock</c>
@@ -7857,7 +7857,7 @@ namespace Spectre.Console
             public const string NineOClock = "\U0001F558";
             
             /// <summary>
-            /// Gets the "Nine-thirty" emoji. 🕤
+            /// Gets the "Nine-thirty" emoji. 🕤️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>nine_thirty</c>
@@ -7881,7 +7881,7 @@ namespace Spectre.Console
             public const string NoBicycles = "\U0001F6B3";
             
             /// <summary>
-            /// Gets the "No entry" emoji. ⛔
+            /// Gets the "No entry" emoji. ⛔️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>no_entry</c>
@@ -7937,7 +7937,7 @@ namespace Spectre.Console
             public const string Nose = "\U0001F443";
             
             /// <summary>
-            /// Gets the "No smoking" emoji. 🚭
+            /// Gets the "No smoking" emoji. 🚭️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>no_smoking</c>
@@ -7969,12 +7969,12 @@ namespace Spectre.Console
             public const string NutAndBolt = "\U0001F529";
             
             /// <summary>
-            /// Gets the "O button (blood type)" emoji. 🅾
+            /// Gets the "O button (blood type)" emoji. 🅾️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>o_button_blood_type</c>
             /// </remarks>
-            public const string OButtonBloodType = "\U0001F17E";
+            public const string OButtonBloodType = "\U0001F17E\uFE0F";
             
             /// <summary>
             /// Gets the "Octopus" emoji. 🐙
@@ -8009,12 +8009,12 @@ namespace Spectre.Console
             public const string Ogre = "\U0001F479";
             
             /// <summary>
-            /// Gets the "Oil drum" emoji. 🛢
+            /// Gets the "Oil drum" emoji. 🛢️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>oil_drum</c>
             /// </remarks>
-            public const string OilDrum = "\U0001F6E2";
+            public const string OilDrum = "\U0001F6E2\uFE0F";
             
             /// <summary>
             /// Gets the "OK button" emoji. 🆗
@@ -8041,12 +8041,12 @@ namespace Spectre.Console
             public const string OlderPerson = "\U0001F9D3";
             
             /// <summary>
-            /// Gets the "Old key" emoji. 🗝
+            /// Gets the "Old key" emoji. 🗝️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>old_key</c>
             /// </remarks>
-            public const string OldKey = "\U0001F5DD";
+            public const string OldKey = "\U0001F5DD\uFE0F";
             
             /// <summary>
             /// Gets the "Old man" emoji. 👴
@@ -8073,12 +8073,12 @@ namespace Spectre.Console
             public const string Olive = "\U0001FAD2";
             
             /// <summary>
-            /// Gets the "Om" emoji. 🕉
+            /// Gets the "Om" emoji. 🕉️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>om</c>
             /// </remarks>
-            public const string Om = "\U0001F549";
+            public const string Om = "\U0001F549\uFE0F";
             
             /// <summary>
             /// Gets the "ON! arrow" emoji. 🔛
@@ -8089,7 +8089,7 @@ namespace Spectre.Console
             public const string OnArrow = "\U0001F51B";
             
             /// <summary>
-            /// Gets the "Oncoming automobile" emoji. 🚘
+            /// Gets the "Oncoming automobile" emoji. 🚘️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>oncoming_automobile</c>
@@ -8097,7 +8097,7 @@ namespace Spectre.Console
             public const string OncomingAutomobile = "\U0001F698";
             
             /// <summary>
-            /// Gets the "Oncoming bus" emoji. 🚍
+            /// Gets the "Oncoming bus" emoji. 🚍️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>oncoming_bus</c>
@@ -8113,7 +8113,7 @@ namespace Spectre.Console
             public const string OncomingFist = "\U0001F44A";
             
             /// <summary>
-            /// Gets the "Oncoming police car" emoji. 🚔
+            /// Gets the "Oncoming police car" emoji. 🚔️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>oncoming_police_car</c>
@@ -8129,7 +8129,7 @@ namespace Spectre.Console
             public const string OncomingTaxi = "\U0001F696";
             
             /// <summary>
-            /// Gets the "One o’clock" emoji. 🕐
+            /// Gets the "One o’clock" emoji. 🕐️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>one_o_clock</c>
@@ -8145,7 +8145,7 @@ namespace Spectre.Console
             public const string OnePieceSwimsuit = "\U0001FA71";
             
             /// <summary>
-            /// Gets the "One-thirty" emoji. 🕜
+            /// Gets the "One-thirty" emoji. 🕜️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>one_thirty</c>
@@ -8185,7 +8185,7 @@ namespace Spectre.Console
             public const string OpenHands = "\U0001F450";
             
             /// <summary>
-            /// Gets the "Open mailbox with lowered flag" emoji. 📭
+            /// Gets the "Open mailbox with lowered flag" emoji. 📭️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>open_mailbox_with_lowered_flag</c>
@@ -8193,7 +8193,7 @@ namespace Spectre.Console
             public const string OpenMailboxWithLoweredFlag = "\U0001F4ED";
             
             /// <summary>
-            /// Gets the "Open mailbox with raised flag" emoji. 📬
+            /// Gets the "Open mailbox with raised flag" emoji. 📬️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>open_mailbox_with_raised_flag</c>
@@ -8201,7 +8201,7 @@ namespace Spectre.Console
             public const string OpenMailboxWithRaisedFlag = "\U0001F4EC";
             
             /// <summary>
-            /// Gets the "Ophiuchus" emoji. ⛎
+            /// Gets the "Ophiuchus" emoji. ⛎️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>ophiuchus</c>
@@ -8209,7 +8209,7 @@ namespace Spectre.Console
             public const string Ophiuchus = "\U000026CE";
             
             /// <summary>
-            /// Gets the "Optical disk" emoji. 💿
+            /// Gets the "Optical disk" emoji. 💿️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>optical_disk</c>
@@ -8262,15 +8262,15 @@ namespace Spectre.Console
             /// <remarks>
             /// Lookup: <c>orca</c>
             /// </remarks>
-            public const string Orca = "\U0001FACD";
+            public const string Orca = "\U0001FACD\uFE0F";
             
             /// <summary>
-            /// Gets the "Orthodox cross" emoji. ☦
+            /// Gets the "Orthodox cross" emoji. ☦️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>orthodox_cross</c>
             /// </remarks>
-            public const string OrthodoxCross = "\U00002626";
+            public const string OrthodoxCross = "\U00002626\uFE0F";
             
             /// <summary>
             /// Gets the "Otter" emoji. 🦦
@@ -8281,7 +8281,7 @@ namespace Spectre.Console
             public const string Otter = "\U0001F9A6";
             
             /// <summary>
-            /// Gets the "Outbox tray" emoji. 📤
+            /// Gets the "Outbox tray" emoji. 📤️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>outbox_tray</c>
@@ -8313,7 +8313,7 @@ namespace Spectre.Console
             public const string Oyster = "\U0001F9AA";
             
             /// <summary>
-            /// Gets the "Package" emoji. 📦
+            /// Gets the "Package" emoji. 📦️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>package</c>
@@ -8329,7 +8329,7 @@ namespace Spectre.Console
             public const string PageFacingUp = "\U0001F4C4";
             
             /// <summary>
-            /// Gets the "Pager" emoji. 📟
+            /// Gets the "Pager" emoji. 📟️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>pager</c>
@@ -8345,12 +8345,12 @@ namespace Spectre.Console
             public const string PageWithCurl = "\U0001F4C3";
             
             /// <summary>
-            /// Gets the "Paintbrush" emoji. 🖌
+            /// Gets the "Paintbrush" emoji. 🖌️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>paintbrush</c>
             /// </remarks>
-            public const string Paintbrush = "\U0001F58C";
+            public const string Paintbrush = "\U0001F58C\uFE0F";
             
             /// <summary>
             /// Gets the "Palm down hand" emoji. 🫳
@@ -8425,7 +8425,7 @@ namespace Spectre.Console
             public const string Parrot = "\U0001F99C";
             
             /// <summary>
-            /// Gets the "Part alternation mark" emoji. 〽
+            /// Gets the "Part alternation mark" emoji. 〽️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>part_alternation_mark</c>
@@ -8449,12 +8449,12 @@ namespace Spectre.Console
             public const string PartyPopper = "\U0001F389";
             
             /// <summary>
-            /// Gets the "Passenger ship" emoji. 🛳
+            /// Gets the "Passenger ship" emoji. 🛳️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>passenger_ship</c>
             /// </remarks>
-            public const string PassengerShip = "\U0001F6F3";
+            public const string PassengerShip = "\U0001F6F3\uFE0F";
             
             /// <summary>
             /// Gets the "Passport control" emoji. 🛂
@@ -8465,12 +8465,12 @@ namespace Spectre.Console
             public const string PassportControl = "\U0001F6C2";
             
             /// <summary>
-            /// Gets the "Pause button" emoji. ⏸
+            /// Gets the "Pause button" emoji. ⏸️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>pause_button</c>
             /// </remarks>
-            public const string PauseButton = "\U000023F8";
+            public const string PauseButton = "\U000023F8\uFE0F";
             
             /// <summary>
             /// Gets the "Paw prints" emoji. 🐾
@@ -8481,20 +8481,20 @@ namespace Spectre.Console
             public const string PawPrints = "\U0001F43E";
             
             /// <summary>
-            /// Gets the "P button" emoji. 🅿
+            /// Gets the "P button" emoji. 🅿️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>p_button</c>
             /// </remarks>
-            public const string PButton = "\U0001F17F";
+            public const string PButton = "\U0001F17F\uFE0F";
             
             /// <summary>
-            /// Gets the "Peace symbol" emoji. ☮
+            /// Gets the "Peace symbol" emoji. ☮️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>peace_symbol</c>
             /// </remarks>
-            public const string PeaceSymbol = "\U0000262E";
+            public const string PeaceSymbol = "\U0000262E\uFE0F";
             
             /// <summary>
             /// Gets the "Peach" emoji. 🍑
@@ -8537,15 +8537,15 @@ namespace Spectre.Console
             public const string Pear = "\U0001F350";
             
             /// <summary>
-            /// Gets the "Pen" emoji. 🖊
+            /// Gets the "Pen" emoji. 🖊️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>pen</c>
             /// </remarks>
-            public const string Pen = "\U0001F58A";
+            public const string Pen = "\U0001F58A\uFE0F";
             
             /// <summary>
-            /// Gets the "Pencil" emoji. ✏
+            /// Gets the "Pencil" emoji. ✏️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>pencil</c>
@@ -8593,7 +8593,7 @@ namespace Spectre.Console
             public const string PeopleWrestling = "\U0001F93C";
             
             /// <summary>
-            /// Gets the "Performing arts" emoji. 🎭
+            /// Gets the "Performing arts" emoji. 🎭️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>performing_arts</c>
@@ -8641,12 +8641,12 @@ namespace Spectre.Console
             public const string PersonBlondHair = "\U0001F471";
             
             /// <summary>
-            /// Gets the "Person bouncing ball" emoji. ⛹
+            /// Gets the "Person bouncing ball" emoji. ⛹️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>person_bouncing_ball</c>
             /// </remarks>
-            public const string PersonBouncingBall = "\U000026F9";
+            public const string PersonBouncingBall = "\U000026F9\uFE0F";
             
             /// <summary>
             /// Gets the "Person bowing" emoji. 🙇
@@ -8729,12 +8729,12 @@ namespace Spectre.Console
             public const string PersonGettingMassage = "\U0001F486";
             
             /// <summary>
-            /// Gets the "Person golfing" emoji. 🏌
+            /// Gets the "Person golfing" emoji. 🏌️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>person_golfing</c>
             /// </remarks>
-            public const string PersonGolfing = "\U0001F3CC";
+            public const string PersonGolfing = "\U0001F3CC\uFE0F";
             
             /// <summary>
             /// Gets the "Person in bed" emoji. 🛌
@@ -8761,12 +8761,12 @@ namespace Spectre.Console
             public const string PersonInSteamyRoom = "\U0001F9D6";
             
             /// <summary>
-            /// Gets the "Person in suit levitating" emoji. 🕴
+            /// Gets the "Person in suit levitating" emoji. 🕴️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>person_in_suit_levitating</c>
             /// </remarks>
-            public const string PersonInSuitLevitating = "\U0001F574";
+            public const string PersonInSuitLevitating = "\U0001F574\uFE0F";
             
             /// <summary>
             /// Gets the "Person in tuxedo" emoji. 🤵
@@ -8793,12 +8793,12 @@ namespace Spectre.Console
             public const string PersonKneeling = "\U0001F9CE";
             
             /// <summary>
-            /// Gets the "Person lifting weights" emoji. 🏋
+            /// Gets the "Person lifting weights" emoji. 🏋️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>person_lifting_weights</c>
             /// </remarks>
-            public const string PersonLiftingWeights = "\U0001F3CB";
+            public const string PersonLiftingWeights = "\U0001F3CB\uFE0F";
             
             /// <summary>
             /// Gets the "Person mountain biking" emoji. 🚵
@@ -8873,7 +8873,7 @@ namespace Spectre.Console
             public const string PersonStanding = "\U0001F9CD";
             
             /// <summary>
-            /// Gets the "Person surfing" emoji. 🏄
+            /// Gets the "Person surfing" emoji. 🏄️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>person_surfing</c>
@@ -8881,7 +8881,7 @@ namespace Spectre.Console
             public const string PersonSurfing = "\U0001F3C4";
             
             /// <summary>
-            /// Gets the "Person swimming" emoji. 🏊
+            /// Gets the "Person swimming" emoji. 🏊️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>person_swimming</c>
@@ -8953,12 +8953,12 @@ namespace Spectre.Console
             public const string PetriDish = "\U0001F9EB";
             
             /// <summary>
-            /// Gets the "Pick" emoji. ⛏
+            /// Gets the "Pick" emoji. ⛏️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>pick</c>
             /// </remarks>
-            public const string Pick = "\U000026CF";
+            public const string Pick = "\U000026CF\uFE0F";
             
             /// <summary>
             /// Gets the "Pickup truck" emoji. 🛻
@@ -9073,7 +9073,7 @@ namespace Spectre.Console
             public const string PinkHeart = "\U0001FA77";
             
             /// <summary>
-            /// Gets the "Pisces" emoji. ♓
+            /// Gets the "Pisces" emoji. ♓️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>pisces</c>
@@ -9105,12 +9105,12 @@ namespace Spectre.Console
             public const string PlaceOfWorship = "\U0001F6D0";
             
             /// <summary>
-            /// Gets the "Play button" emoji. ▶
+            /// Gets the "Play button" emoji. ▶️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>play_button</c>
             /// </remarks>
-            public const string PlayButton = "\U000025B6";
+            public const string PlayButton = "\U000025B6\uFE0F";
             
             /// <summary>
             /// Gets the "Playground slide" emoji. 🛝
@@ -9121,12 +9121,12 @@ namespace Spectre.Console
             public const string PlaygroundSlide = "\U0001F6DD";
             
             /// <summary>
-            /// Gets the "Play or pause button" emoji. ⏯
+            /// Gets the "Play or pause button" emoji. ⏯️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>play_or_pause_button</c>
             /// </remarks>
-            public const string PlayOrPauseButton = "\U000023EF";
+            public const string PlayOrPauseButton = "\U000023EF\uFE0F";
             
             /// <summary>
             /// Gets the "Pleading face" emoji. 🥺
@@ -9145,7 +9145,7 @@ namespace Spectre.Console
             public const string Plunger = "\U0001FAA0";
             
             /// <summary>
-            /// Gets the "Plus" emoji. ➕
+            /// Gets the "Plus" emoji. ➕️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>plus</c>
@@ -9345,12 +9345,12 @@ namespace Spectre.Console
             public const string Princess = "\U0001F478";
             
             /// <summary>
-            /// Gets the "Printer" emoji. 🖨
+            /// Gets the "Printer" emoji. 🖨️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>printer</c>
             /// </remarks>
-            public const string Printer = "\U0001F5A8";
+            public const string Printer = "\U0001F5A8\uFE0F";
             
             /// <summary>
             /// Gets the "Prohibited" emoji. 🚫
@@ -9433,15 +9433,15 @@ namespace Spectre.Console
             public const string Raccoon = "\U0001F99D";
             
             /// <summary>
-            /// Gets the "Racing car" emoji. 🏎
+            /// Gets the "Racing car" emoji. 🏎️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>racing_car</c>
             /// </remarks>
-            public const string RacingCar = "\U0001F3CE";
+            public const string RacingCar = "\U0001F3CE\uFE0F";
             
             /// <summary>
-            /// Gets the "Radio" emoji. 📻
+            /// Gets the "Radio" emoji. 📻️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>radio</c>
@@ -9449,12 +9449,12 @@ namespace Spectre.Console
             public const string Radio = "\U0001F4FB";
             
             /// <summary>
-            /// Gets the "Radioactive" emoji. ☢
+            /// Gets the "Radioactive" emoji. ☢️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>radioactive</c>
             /// </remarks>
-            public const string Radioactive = "\U00002622";
+            public const string Radioactive = "\U00002622\uFE0F";
             
             /// <summary>
             /// Gets the "Radio button" emoji. 🔘
@@ -9473,12 +9473,12 @@ namespace Spectre.Console
             public const string RailwayCar = "\U0001F683";
             
             /// <summary>
-            /// Gets the "Railway track" emoji. 🛤
+            /// Gets the "Railway track" emoji. 🛤️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>railway_track</c>
             /// </remarks>
-            public const string RailwayTrack = "\U0001F6E4";
+            public const string RailwayTrack = "\U0001F6E4\uFE0F";
             
             /// <summary>
             /// Gets the "Rainbow" emoji. 🌈
@@ -9497,7 +9497,7 @@ namespace Spectre.Console
             public const string RaisedBackOfHand = "\U0001F91A";
             
             /// <summary>
-            /// Gets the "Raised fist" emoji. ✊
+            /// Gets the "Raised fist" emoji. ✊️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>raised_fist</c>
@@ -9505,7 +9505,7 @@ namespace Spectre.Console
             public const string RaisedFist = "\U0000270A";
             
             /// <summary>
-            /// Gets the "Raised hand" emoji. ✋
+            /// Gets the "Raised hand" emoji. ✋️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>raised_hand</c>
@@ -9553,20 +9553,20 @@ namespace Spectre.Console
             public const string Receipt = "\U0001F9FE";
             
             /// <summary>
-            /// Gets the "Record button" emoji. ⏺
+            /// Gets the "Record button" emoji. ⏺️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>record_button</c>
             /// </remarks>
-            public const string RecordButton = "\U000023FA";
+            public const string RecordButton = "\U000023FA\uFE0F";
             
             /// <summary>
-            /// Gets the "Recycling symbol" emoji. ♻
+            /// Gets the "Recycling symbol" emoji. ♻️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>recycling_symbol</c>
             /// </remarks>
-            public const string RecyclingSymbol = "\U0000267B";
+            public const string RecyclingSymbol = "\U0000267B\uFE0F";
             
             /// <summary>
             /// Gets the "Red apple" emoji. 🍎
@@ -9593,7 +9593,7 @@ namespace Spectre.Console
             public const string RedEnvelope = "\U0001F9E7";
             
             /// <summary>
-            /// Gets the "Red exclamation mark" emoji. ❗
+            /// Gets the "Red exclamation mark" emoji. ❗️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>red_exclamation_mark</c>
@@ -9609,7 +9609,7 @@ namespace Spectre.Console
             public const string RedHair = "\U0001F9B0";
             
             /// <summary>
-            /// Gets the "Red heart" emoji. ❤
+            /// Gets the "Red heart" emoji. ❤️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>red_heart</c>
@@ -9625,7 +9625,7 @@ namespace Spectre.Console
             public const string RedPaperLantern = "\U0001F3EE";
             
             /// <summary>
-            /// Gets the "Red question mark" emoji. ❓
+            /// Gets the "Red question mark" emoji. ❓️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>red_question_mark</c>
@@ -9865,12 +9865,12 @@ namespace Spectre.Console
             public const string RegionalIndicatorZ = "\U0001F1FF";
             
             /// <summary>
-            /// Gets the "Registered" emoji. ®
+            /// Gets the "Registered" emoji. ®️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>registered</c>
             /// </remarks>
-            public const string Registered = "\U000000AE";
+            public const string Registered = "\U000000AE\uFE0F";
             
             /// <summary>
             /// Gets the "Relieved face" emoji. 😌
@@ -9881,12 +9881,12 @@ namespace Spectre.Console
             public const string RelievedFace = "\U0001F60C";
             
             /// <summary>
-            /// Gets the "Reminder ribbon" emoji. 🎗
+            /// Gets the "Reminder ribbon" emoji. 🎗️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>reminder_ribbon</c>
             /// </remarks>
-            public const string ReminderRibbon = "\U0001F397";
+            public const string ReminderRibbon = "\U0001F397\uFE0F";
             
             /// <summary>
             /// Gets the "Repeat button" emoji. 🔁
@@ -9905,12 +9905,12 @@ namespace Spectre.Console
             public const string RepeatSingleButton = "\U0001F502";
             
             /// <summary>
-            /// Gets the "Rescue worker’s helmet" emoji. ⛑
+            /// Gets the "Rescue worker’s helmet" emoji. ⛑️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>rescue_workers_helmet</c>
             /// </remarks>
-            public const string RescueWorkersHelmet = "\U000026D1";
+            public const string RescueWorkersHelmet = "\U000026D1\uFE0F";
             
             /// <summary>
             /// Gets the "Restroom" emoji. 🚻
@@ -9921,12 +9921,12 @@ namespace Spectre.Console
             public const string Restroom = "\U0001F6BB";
             
             /// <summary>
-            /// Gets the "Reverse button" emoji. ◀
+            /// Gets the "Reverse button" emoji. ◀️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>reverse_button</c>
             /// </remarks>
-            public const string ReverseButton = "\U000025C0";
+            public const string ReverseButton = "\U000025C0\uFE0F";
             
             /// <summary>
             /// Gets the "Revolving hearts" emoji. 💞
@@ -9969,15 +9969,15 @@ namespace Spectre.Console
             public const string RiceCracker = "\U0001F358";
             
             /// <summary>
-            /// Gets the "Right anger bubble" emoji. 🗯
+            /// Gets the "Right anger bubble" emoji. 🗯️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>right_anger_bubble</c>
             /// </remarks>
-            public const string RightAngerBubble = "\U0001F5EF";
+            public const string RightAngerBubble = "\U0001F5EF\uFE0F";
             
             /// <summary>
-            /// Gets the "Right arrow" emoji. ➡
+            /// Gets the "Right arrow" emoji. ➡️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>right_arrow</c>
@@ -9985,7 +9985,7 @@ namespace Spectre.Console
             public const string RightArrow = "\U000027A1";
             
             /// <summary>
-            /// Gets the "Right arrow curving down" emoji. ⤵
+            /// Gets the "Right arrow curving down" emoji. ⤵️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>right_arrow_curving_down</c>
@@ -9993,15 +9993,15 @@ namespace Spectre.Console
             public const string RightArrowCurvingDown = "\U00002935";
             
             /// <summary>
-            /// Gets the "Right arrow curving left" emoji. ↩
+            /// Gets the "Right arrow curving left" emoji. ↩️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>right_arrow_curving_left</c>
             /// </remarks>
-            public const string RightArrowCurvingLeft = "\U000021A9";
+            public const string RightArrowCurvingLeft = "\U000021A9\uFE0F";
             
             /// <summary>
-            /// Gets the "Right arrow curving up" emoji. ⤴
+            /// Gets the "Right arrow curving up" emoji. ⤴️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>right_arrow_curving_up</c>
@@ -10089,12 +10089,12 @@ namespace Spectre.Console
             public const string Rocket = "\U0001F680";
             
             /// <summary>
-            /// Gets the "Rolled-up newspaper" emoji. 🗞
+            /// Gets the "Rolled-up newspaper" emoji. 🗞️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>rolled_up_newspaper</c>
             /// </remarks>
-            public const string RolledUpNewspaper = "\U0001F5DE";
+            public const string RolledUpNewspaper = "\U0001F5DE\uFE0F";
             
             /// <summary>
             /// Gets the "Roller coaster" emoji. 🎢
@@ -10153,12 +10153,12 @@ namespace Spectre.Console
             public const string Rose = "\U0001F339";
             
             /// <summary>
-            /// Gets the "Rosette" emoji. 🏵
+            /// Gets the "Rosette" emoji. 🏵️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>rosette</c>
             /// </remarks>
-            public const string Rosette = "\U0001F3F5";
+            public const string Rosette = "\U0001F3F5\uFE0F";
             
             /// <summary>
             /// Gets the "Round pushpin" emoji. 📍
@@ -10217,7 +10217,7 @@ namespace Spectre.Console
             public const string SafetyVest = "\U0001F9BA";
             
             /// <summary>
-            /// Gets the "Sagittarius" emoji. ♐
+            /// Gets the "Sagittarius" emoji. ♐️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>sagittarius</c>
@@ -10225,7 +10225,7 @@ namespace Spectre.Console
             public const string Sagittarius = "\U00002650";
             
             /// <summary>
-            /// Gets the "Sailboat" emoji. ⛵
+            /// Gets the "Sailboat" emoji. ⛵️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>sailboat</c>
@@ -10281,12 +10281,12 @@ namespace Spectre.Console
             public const string Sari = "\U0001F97B";
             
             /// <summary>
-            /// Gets the "Satellite" emoji. 🛰
+            /// Gets the "Satellite" emoji. 🛰️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>satellite</c>
             /// </remarks>
-            public const string Satellite = "\U0001F6F0";
+            public const string Satellite = "\U0001F6F0\uFE0F";
             
             /// <summary>
             /// Gets the "Satellite antenna" emoji. 📡
@@ -10329,7 +10329,7 @@ namespace Spectre.Console
             public const string School = "\U0001F3EB";
             
             /// <summary>
-            /// Gets the "Scissors" emoji. ✂
+            /// Gets the "Scissors" emoji. ✂️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>scissors</c>
@@ -10337,7 +10337,7 @@ namespace Spectre.Console
             public const string Scissors = "\U00002702";
             
             /// <summary>
-            /// Gets the "Scorpio" emoji. ♏
+            /// Gets the "Scorpio" emoji. ♏️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>scorpio</c>
@@ -10417,7 +10417,7 @@ namespace Spectre.Console
             public const string Selfie = "\U0001F933";
             
             /// <summary>
-            /// Gets the "Seven o’clock" emoji. 🕖
+            /// Gets the "Seven o’clock" emoji. 🕖️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>seven_o_clock</c>
@@ -10425,7 +10425,7 @@ namespace Spectre.Console
             public const string SevenOClock = "\U0001F556";
             
             /// <summary>
-            /// Gets the "Seven-thirty" emoji. 🕢
+            /// Gets the "Seven-thirty" emoji. 🕢️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>seven_thirty</c>
@@ -10457,12 +10457,12 @@ namespace Spectre.Console
             public const string ShallowPanOfFood = "\U0001F958";
             
             /// <summary>
-            /// Gets the "Shamrock" emoji. ☘
+            /// Gets the "Shamrock" emoji. ☘️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>shamrock</c>
             /// </remarks>
-            public const string Shamrock = "\U00002618";
+            public const string Shamrock = "\U00002618\uFE0F";
             
             /// <summary>
             /// Gets the "Shark" emoji. 🦈
@@ -10489,20 +10489,20 @@ namespace Spectre.Console
             public const string SheafOfRice = "\U0001F33E";
             
             /// <summary>
-            /// Gets the "Shield" emoji. 🛡
+            /// Gets the "Shield" emoji. 🛡️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>shield</c>
             /// </remarks>
-            public const string Shield = "\U0001F6E1";
+            public const string Shield = "\U0001F6E1\uFE0F";
             
             /// <summary>
-            /// Gets the "Shinto shrine" emoji. ⛩
+            /// Gets the "Shinto shrine" emoji. ⛩️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>shinto_shrine</c>
             /// </remarks>
-            public const string ShintoShrine = "\U000026E9";
+            public const string ShintoShrine = "\U000026E9\uFE0F";
             
             /// <summary>
             /// Gets the "Ship" emoji. 🚢
@@ -10521,12 +10521,12 @@ namespace Spectre.Console
             public const string ShootingStar = "\U0001F320";
             
             /// <summary>
-            /// Gets the "Shopping bags" emoji. 🛍
+            /// Gets the "Shopping bags" emoji. 🛍️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>shopping_bags</c>
             /// </remarks>
-            public const string ShoppingBags = "\U0001F6CD";
+            public const string ShoppingBags = "\U0001F6CD\uFE0F";
             
             /// <summary>
             /// Gets the "Shopping cart" emoji. 🛒
@@ -10601,7 +10601,7 @@ namespace Spectre.Console
             public const string SignOfTheHorns = "\U0001F918";
             
             /// <summary>
-            /// Gets the "Six o’clock" emoji. 🕕
+            /// Gets the "Six o’clock" emoji. 🕕️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>six_o_clock</c>
@@ -10609,7 +10609,7 @@ namespace Spectre.Console
             public const string SixOClock = "\U0001F555";
             
             /// <summary>
-            /// Gets the "Six-thirty" emoji. 🕡
+            /// Gets the "Six-thirty" emoji. 🕡️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>six_thirty</c>
@@ -10625,12 +10625,12 @@ namespace Spectre.Console
             public const string Skateboard = "\U0001F6F9";
             
             /// <summary>
-            /// Gets the "Skier" emoji. ⛷
+            /// Gets the "Skier" emoji. ⛷️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>skier</c>
             /// </remarks>
-            public const string Skier = "\U000026F7";
+            public const string Skier = "\U000026F7\uFE0F";
             
             /// <summary>
             /// Gets the "Skis" emoji. 🎿
@@ -10649,12 +10649,12 @@ namespace Spectre.Console
             public const string Skull = "\U0001F480";
             
             /// <summary>
-            /// Gets the "Skull and crossbones" emoji. ☠
+            /// Gets the "Skull and crossbones" emoji. ☠️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>skull_and_crossbones</c>
             /// </remarks>
-            public const string SkullAndCrossbones = "\U00002620";
+            public const string SkullAndCrossbones = "\U00002620\uFE0F";
             
             /// <summary>
             /// Gets the "Skunk" emoji. 🦨
@@ -10721,12 +10721,12 @@ namespace Spectre.Console
             public const string SlotMachine = "\U0001F3B0";
             
             /// <summary>
-            /// Gets the "Small airplane" emoji. 🛩
+            /// Gets the "Small airplane" emoji. 🛩️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>small_airplane</c>
             /// </remarks>
-            public const string SmallAirplane = "\U0001F6E9";
+            public const string SmallAirplane = "\U0001F6E9\uFE0F";
             
             /// <summary>
             /// Gets the "Small blue diamond" emoji. 🔹
@@ -10753,12 +10753,12 @@ namespace Spectre.Console
             public const string SmilingCatWithHeartEyes = "\U0001F63B";
             
             /// <summary>
-            /// Gets the "Smiling face" emoji. ☺
+            /// Gets the "Smiling face" emoji. ☺️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>smiling_face</c>
             /// </remarks>
-            public const string SmilingFace = "\U0000263A";
+            public const string SmilingFace = "\U0000263A\uFE0F";
             
             /// <summary>
             /// Gets the "Smiling face with halo" emoji. 😇
@@ -10857,7 +10857,7 @@ namespace Spectre.Console
             public const string SneezingFace = "\U0001F927";
             
             /// <summary>
-            /// Gets the "Snowboarder" emoji. 🏂
+            /// Gets the "Snowboarder" emoji. 🏂️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>snowboarder</c>
@@ -10865,15 +10865,15 @@ namespace Spectre.Console
             public const string Snowboarder = "\U0001F3C2";
             
             /// <summary>
-            /// Gets the "Snow-capped mountain" emoji. 🏔
+            /// Gets the "Snow-capped mountain" emoji. 🏔️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>snow_capped_mountain</c>
             /// </remarks>
-            public const string SnowCappedMountain = "\U0001F3D4";
+            public const string SnowCappedMountain = "\U0001F3D4\uFE0F";
             
             /// <summary>
-            /// Gets the "Snowflake" emoji. ❄
+            /// Gets the "Snowflake" emoji. ❄️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>snowflake</c>
@@ -10881,15 +10881,15 @@ namespace Spectre.Console
             public const string Snowflake = "\U00002744";
             
             /// <summary>
-            /// Gets the "Snowman" emoji. ☃
+            /// Gets the "Snowman" emoji. ☃️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>snowman</c>
             /// </remarks>
-            public const string Snowman = "\U00002603";
+            public const string Snowman = "\U00002603\uFE0F";
             
             /// <summary>
-            /// Gets the "Snowman without snow" emoji. ⛄
+            /// Gets the "Snowman without snow" emoji. ⛄️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>snowman_without_snow</c>
@@ -10905,7 +10905,7 @@ namespace Spectre.Console
             public const string Soap = "\U0001F9FC";
             
             /// <summary>
-            /// Gets the "Soccer ball" emoji. ⚽
+            /// Gets the "Soccer ball" emoji. ⚽️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>soccer_ball</c>
@@ -10953,12 +10953,12 @@ namespace Spectre.Console
             public const string SosButton = "\U0001F198";
             
             /// <summary>
-            /// Gets the "Spade suit" emoji. ♠
+            /// Gets the "Spade suit" emoji. ♠️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>spade_suit</c>
             /// </remarks>
-            public const string SpadeSuit = "\U00002660";
+            public const string SpadeSuit = "\U00002660\uFE0F";
             
             /// <summary>
             /// Gets the "Spaghetti" emoji. 🍝
@@ -10969,7 +10969,7 @@ namespace Spectre.Console
             public const string Spaghetti = "\U0001F35D";
             
             /// <summary>
-            /// Gets the "Sparkle" emoji. ❇
+            /// Gets the "Sparkle" emoji. ❇️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>sparkle</c>
@@ -10985,7 +10985,7 @@ namespace Spectre.Console
             public const string Sparkler = "\U0001F387";
             
             /// <summary>
-            /// Gets the "Sparkles" emoji. ✨
+            /// Gets the "Sparkles" emoji. ✨️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>sparkles</c>
@@ -11009,7 +11009,7 @@ namespace Spectre.Console
             public const string SpeakerHighVolume = "\U0001F50A";
             
             /// <summary>
-            /// Gets the "Speaker low volume" emoji. 🔈
+            /// Gets the "Speaker low volume" emoji. 🔈️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>speaker_low_volume</c>
@@ -11025,12 +11025,12 @@ namespace Spectre.Console
             public const string SpeakerMediumVolume = "\U0001F509";
             
             /// <summary>
-            /// Gets the "Speaking head" emoji. 🗣
+            /// Gets the "Speaking head" emoji. 🗣️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>speaking_head</c>
             /// </remarks>
-            public const string SpeakingHead = "\U0001F5E3";
+            public const string SpeakingHead = "\U0001F5E3\uFE0F";
             
             /// <summary>
             /// Gets the "Speak-no-evil monkey" emoji. 🙊
@@ -11057,36 +11057,36 @@ namespace Spectre.Console
             public const string Speedboat = "\U0001F6A4";
             
             /// <summary>
-            /// Gets the "Spider" emoji. 🕷
+            /// Gets the "Spider" emoji. 🕷️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>spider</c>
             /// </remarks>
-            public const string Spider = "\U0001F577";
+            public const string Spider = "\U0001F577\uFE0F";
             
             /// <summary>
-            /// Gets the "Spider web" emoji. 🕸
+            /// Gets the "Spider web" emoji. 🕸️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>spider_web</c>
             /// </remarks>
-            public const string SpiderWeb = "\U0001F578";
+            public const string SpiderWeb = "\U0001F578\uFE0F";
             
             /// <summary>
-            /// Gets the "Spiral calendar" emoji. 🗓
+            /// Gets the "Spiral calendar" emoji. 🗓️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>spiral_calendar</c>
             /// </remarks>
-            public const string SpiralCalendar = "\U0001F5D3";
+            public const string SpiralCalendar = "\U0001F5D3\uFE0F";
             
             /// <summary>
-            /// Gets the "Spiral notepad" emoji. 🗒
+            /// Gets the "Spiral notepad" emoji. 🗒️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>spiral_notepad</c>
             /// </remarks>
-            public const string SpiralNotepad = "\U0001F5D2";
+            public const string SpiralNotepad = "\U0001F5D2\uFE0F";
             
             /// <summary>
             /// Gets the "Spiral shell" emoji. 🐚
@@ -11161,15 +11161,15 @@ namespace Spectre.Console
             public const string SquintingFaceWithTongue = "\U0001F61D";
             
             /// <summary>
-            /// Gets the "Stadium" emoji. 🏟
+            /// Gets the "Stadium" emoji. 🏟️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>stadium</c>
             /// </remarks>
-            public const string Stadium = "\U0001F3DF";
+            public const string Stadium = "\U0001F3DF\uFE0F";
             
             /// <summary>
-            /// Gets the "Star" emoji. ⭐
+            /// Gets the "Star" emoji. ⭐️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>star</c>
@@ -11177,15 +11177,15 @@ namespace Spectre.Console
             public const string Star = "\U00002B50";
             
             /// <summary>
-            /// Gets the "Star and crescent" emoji. ☪
+            /// Gets the "Star and crescent" emoji. ☪️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>star_and_crescent</c>
             /// </remarks>
-            public const string StarAndCrescent = "\U0000262A";
+            public const string StarAndCrescent = "\U0000262A\uFE0F";
             
             /// <summary>
-            /// Gets the "Star of David" emoji. ✡
+            /// Gets the "Star of David" emoji. ✡️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>star_of_david</c>
@@ -11233,12 +11233,12 @@ namespace Spectre.Console
             public const string Stethoscope = "\U0001FA7A";
             
             /// <summary>
-            /// Gets the "Stop button" emoji. ⏹
+            /// Gets the "Stop button" emoji. ⏹️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>stop_button</c>
             /// </remarks>
-            public const string StopButton = "\U000023F9";
+            public const string StopButton = "\U000023F9\uFE0F";
             
             /// <summary>
             /// Gets the "Stop sign" emoji. 🛑
@@ -11249,12 +11249,12 @@ namespace Spectre.Console
             public const string StopSign = "\U0001F6D1";
             
             /// <summary>
-            /// Gets the "Stopwatch" emoji. ⏱
+            /// Gets the "Stopwatch" emoji. ⏱️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>stopwatch</c>
             /// </remarks>
-            public const string Stopwatch = "\U000023F1";
+            public const string Stopwatch = "\U000023F1\uFE0F";
             
             /// <summary>
             /// Gets the "Straight ruler" emoji. 📏
@@ -11273,12 +11273,12 @@ namespace Spectre.Console
             public const string Strawberry = "\U0001F353";
             
             /// <summary>
-            /// Gets the "Studio microphone" emoji. 🎙
+            /// Gets the "Studio microphone" emoji. 🎙️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>studio_microphone</c>
             /// </remarks>
-            public const string StudioMicrophone = "\U0001F399";
+            public const string StudioMicrophone = "\U0001F399\uFE0F";
             
             /// <summary>
             /// Gets the "Stuffed flatbread" emoji. 🥙
@@ -11289,15 +11289,15 @@ namespace Spectre.Console
             public const string StuffedFlatbread = "\U0001F959";
             
             /// <summary>
-            /// Gets the "Sun" emoji. ☀
+            /// Gets the "Sun" emoji. ☀️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>sun</c>
             /// </remarks>
-            public const string Sun = "\U00002600";
+            public const string Sun = "\U00002600\uFE0F";
             
             /// <summary>
-            /// Gets the "Sun behind cloud" emoji. ⛅
+            /// Gets the "Sun behind cloud" emoji. ⛅️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>sun_behind_cloud</c>
@@ -11305,28 +11305,28 @@ namespace Spectre.Console
             public const string SunBehindCloud = "\U000026C5";
             
             /// <summary>
-            /// Gets the "Sun behind large cloud" emoji. 🌥
+            /// Gets the "Sun behind large cloud" emoji. 🌥️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>sun_behind_large_cloud</c>
             /// </remarks>
-            public const string SunBehindLargeCloud = "\U0001F325";
+            public const string SunBehindLargeCloud = "\U0001F325\uFE0F";
             
             /// <summary>
-            /// Gets the "Sun behind rain cloud" emoji. 🌦
+            /// Gets the "Sun behind rain cloud" emoji. 🌦️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>sun_behind_rain_cloud</c>
             /// </remarks>
-            public const string SunBehindRainCloud = "\U0001F326";
+            public const string SunBehindRainCloud = "\U0001F326\uFE0F";
             
             /// <summary>
-            /// Gets the "Sun behind small cloud" emoji. 🌤
+            /// Gets the "Sun behind small cloud" emoji. 🌤️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>sun_behind_small_cloud</c>
             /// </remarks>
-            public const string SunBehindSmallCloud = "\U0001F324";
+            public const string SunBehindSmallCloud = "\U0001F324\uFE0F";
             
             /// <summary>
             /// Gets the "Sunflower" emoji. 🌻
@@ -11337,12 +11337,12 @@ namespace Spectre.Console
             public const string Sunflower = "\U0001F33B";
             
             /// <summary>
-            /// Gets the "Sunglasses" emoji. 🕶
+            /// Gets the "Sunglasses" emoji. 🕶️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>sunglasses</c>
             /// </remarks>
-            public const string Sunglasses = "\U0001F576";
+            public const string Sunglasses = "\U0001F576\uFE0F";
             
             /// <summary>
             /// Gets the "Sunrise" emoji. 🌅
@@ -11481,7 +11481,7 @@ namespace Spectre.Console
             public const string Tangerine = "\U0001F34A";
             
             /// <summary>
-            /// Gets the "Taurus" emoji. ♉
+            /// Gets the "Taurus" emoji. ♉️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>taurus</c>
@@ -11529,12 +11529,12 @@ namespace Spectre.Console
             public const string TeddyBear = "\U0001F9F8";
             
             /// <summary>
-            /// Gets the "Telephone" emoji. ☎
+            /// Gets the "Telephone" emoji. ☎️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>telephone</c>
             /// </remarks>
-            public const string Telephone = "\U0000260E";
+            public const string Telephone = "\U0000260E\uFE0F";
             
             /// <summary>
             /// Gets the "Telephone receiver" emoji. 📞
@@ -11553,7 +11553,7 @@ namespace Spectre.Console
             public const string Telescope = "\U0001F52D";
             
             /// <summary>
-            /// Gets the "Television" emoji. 📺
+            /// Gets the "Television" emoji. 📺️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>television</c>
@@ -11569,7 +11569,7 @@ namespace Spectre.Console
             public const string Tennis = "\U0001F3BE";
             
             /// <summary>
-            /// Gets the "Ten o’clock" emoji. 🕙
+            /// Gets the "Ten o’clock" emoji. 🕙️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>ten_o_clock</c>
@@ -11577,7 +11577,7 @@ namespace Spectre.Console
             public const string TenOClock = "\U0001F559";
             
             /// <summary>
-            /// Gets the "Tent" emoji. ⛺
+            /// Gets the "Tent" emoji. ⛺️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>tent</c>
@@ -11585,7 +11585,7 @@ namespace Spectre.Console
             public const string Tent = "\U000026FA";
             
             /// <summary>
-            /// Gets the "Ten-thirty" emoji. 🕥
+            /// Gets the "Ten-thirty" emoji. 🕥️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>ten_thirty</c>
@@ -11601,12 +11601,12 @@ namespace Spectre.Console
             public const string TestTube = "\U0001F9EA";
             
             /// <summary>
-            /// Gets the "Thermometer" emoji. 🌡
+            /// Gets the "Thermometer" emoji. 🌡️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>thermometer</c>
             /// </remarks>
-            public const string Thermometer = "\U0001F321";
+            public const string Thermometer = "\U0001F321\uFE0F";
             
             /// <summary>
             /// Gets the "Thinking face" emoji. 🤔
@@ -11649,7 +11649,7 @@ namespace Spectre.Console
             public const string Thread = "\U0001F9F5";
             
             /// <summary>
-            /// Gets the "Three o’clock" emoji. 🕒
+            /// Gets the "Three o’clock" emoji. 🕒️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>three_o_clock</c>
@@ -11657,7 +11657,7 @@ namespace Spectre.Console
             public const string ThreeOClock = "\U0001F552";
             
             /// <summary>
-            /// Gets the "Three-thirty" emoji. 🕞
+            /// Gets the "Three-thirty" emoji. 🕞️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>three_thirty</c>
@@ -11665,7 +11665,7 @@ namespace Spectre.Console
             public const string ThreeThirty = "\U0001F55E";
             
             /// <summary>
-            /// Gets the "Thumbs down" emoji. 👎
+            /// Gets the "Thumbs down" emoji. 👎️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>thumbs_down</c>
@@ -11673,7 +11673,7 @@ namespace Spectre.Console
             public const string ThumbsDown = "\U0001F44E";
             
             /// <summary>
-            /// Gets the "Thumbs up" emoji. 👍
+            /// Gets the "Thumbs up" emoji. 👍️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>thumbs_up</c>
@@ -11705,12 +11705,12 @@ namespace Spectre.Console
             public const string TigerFace = "\U0001F42F";
             
             /// <summary>
-            /// Gets the "Timer clock" emoji. ⏲
+            /// Gets the "Timer clock" emoji. ⏲️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>timer_clock</c>
             /// </remarks>
-            public const string TimerClock = "\U000023F2";
+            public const string TimerClock = "\U000023F2\uFE0F";
             
             /// <summary>
             /// Gets the "Tired face" emoji. 😫
@@ -11793,20 +11793,20 @@ namespace Spectre.Console
             public const string TopHat = "\U0001F3A9";
             
             /// <summary>
-            /// Gets the "Tornado" emoji. 🌪
+            /// Gets the "Tornado" emoji. 🌪️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>tornado</c>
             /// </remarks>
-            public const string Tornado = "\U0001F32A";
+            public const string Tornado = "\U0001F32A\uFE0F";
             
             /// <summary>
-            /// Gets the "Trackball" emoji. 🖲
+            /// Gets the "Trackball" emoji. 🖲️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>trackball</c>
             /// </remarks>
-            public const string Trackball = "\U0001F5B2";
+            public const string Trackball = "\U0001F5B2\uFE0F";
             
             /// <summary>
             /// Gets the "Tractor" emoji. 🚜
@@ -11817,12 +11817,12 @@ namespace Spectre.Console
             public const string Tractor = "\U0001F69C";
             
             /// <summary>
-            /// Gets the "Trade mark" emoji. ™
+            /// Gets the "Trade mark" emoji. ™️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>trade_mark</c>
             /// </remarks>
-            public const string TradeMark = "\U00002122";
+            public const string TradeMark = "\U00002122\uFE0F";
             
             /// <summary>
             /// Gets the "Train" emoji. 🚆
@@ -11849,12 +11849,12 @@ namespace Spectre.Console
             public const string TramCar = "\U0001F68B";
             
             /// <summary>
-            /// Gets the "Transgender symbol" emoji. ⚧
+            /// Gets the "Transgender symbol" emoji. ⚧️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>transgender_symbol</c>
             /// </remarks>
-            public const string TransgenderSymbol = "\U000026A7";
+            public const string TransgenderSymbol = "\U000026A7\uFE0F";
             
             /// <summary>
             /// Gets the "Treasure chest" emoji. 🪎
@@ -11862,7 +11862,7 @@ namespace Spectre.Console
             /// <remarks>
             /// Lookup: <c>treasure_chest</c>
             /// </remarks>
-            public const string TreasureChest = "\U0001FA8E";
+            public const string TreasureChest = "\U0001FA8E\uFE0F";
             
             /// <summary>
             /// Gets the "T-Rex" emoji. 🦖
@@ -11918,10 +11918,10 @@ namespace Spectre.Console
             /// <remarks>
             /// Lookup: <c>trombone</c>
             /// </remarks>
-            public const string Trombone = "\U0001FA8A";
+            public const string Trombone = "\U0001FA8A\uFE0F";
             
             /// <summary>
-            /// Gets the "Trophy" emoji. 🏆
+            /// Gets the "Trophy" emoji. 🏆️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>trophy</c>
@@ -11993,7 +11993,7 @@ namespace Spectre.Console
             public const string Turtle = "\U0001F422";
             
             /// <summary>
-            /// Gets the "Twelve o’clock" emoji. 🕛
+            /// Gets the "Twelve o’clock" emoji. 🕛️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>twelve_o_clock</c>
@@ -12001,7 +12001,7 @@ namespace Spectre.Console
             public const string TwelveOClock = "\U0001F55B";
             
             /// <summary>
-            /// Gets the "Twelve-thirty" emoji. 🕧
+            /// Gets the "Twelve-thirty" emoji. 🕧️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>twelve_thirty</c>
@@ -12025,7 +12025,7 @@ namespace Spectre.Console
             public const string TwoHumpCamel = "\U0001F42B";
             
             /// <summary>
-            /// Gets the "Two o’clock" emoji. 🕑
+            /// Gets the "Two o’clock" emoji. 🕑️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>two_o_clock</c>
@@ -12033,7 +12033,7 @@ namespace Spectre.Console
             public const string TwoOClock = "\U0001F551";
             
             /// <summary>
-            /// Gets the "Two-thirty" emoji. 🕝
+            /// Gets the "Two-thirty" emoji. 🕝️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>two_thirty</c>
@@ -12041,23 +12041,23 @@ namespace Spectre.Console
             public const string TwoThirty = "\U0001F55D";
             
             /// <summary>
-            /// Gets the "Umbrella" emoji. ☂
+            /// Gets the "Umbrella" emoji. ☂️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>umbrella</c>
             /// </remarks>
-            public const string Umbrella = "\U00002602";
+            public const string Umbrella = "\U00002602\uFE0F";
             
             /// <summary>
-            /// Gets the "Umbrella on ground" emoji. ⛱
+            /// Gets the "Umbrella on ground" emoji. ⛱️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>umbrella_on_ground</c>
             /// </remarks>
-            public const string UmbrellaOnGround = "\U000026F1";
+            public const string UmbrellaOnGround = "\U000026F1\uFE0F";
             
             /// <summary>
-            /// Gets the "Umbrella with rain drops" emoji. ☔
+            /// Gets the "Umbrella with rain drops" emoji. ☔️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>umbrella_with_rain_drops</c>
@@ -12081,7 +12081,7 @@ namespace Spectre.Console
             public const string Unicorn = "\U0001F984";
             
             /// <summary>
-            /// Gets the "Unlocked" emoji. 🔓
+            /// Gets the "Unlocked" emoji. 🔓️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>unlocked</c>
@@ -12089,7 +12089,7 @@ namespace Spectre.Console
             public const string Unlocked = "\U0001F513";
             
             /// <summary>
-            /// Gets the "Up arrow" emoji. ⬆
+            /// Gets the "Up arrow" emoji. ⬆️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>up_arrow</c>
@@ -12105,28 +12105,28 @@ namespace Spectre.Console
             public const string UpButton = "\U0001F199";
             
             /// <summary>
-            /// Gets the "Up-down arrow" emoji. ↕
+            /// Gets the "Up-down arrow" emoji. ↕️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>up_down_arrow</c>
             /// </remarks>
-            public const string UpDownArrow = "\U00002195";
+            public const string UpDownArrow = "\U00002195\uFE0F";
             
             /// <summary>
-            /// Gets the "Up-left arrow" emoji. ↖
+            /// Gets the "Up-left arrow" emoji. ↖️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>up_left_arrow</c>
             /// </remarks>
-            public const string UpLeftArrow = "\U00002196";
+            public const string UpLeftArrow = "\U00002196\uFE0F";
             
             /// <summary>
-            /// Gets the "Up-right arrow" emoji. ↗
+            /// Gets the "Up-right arrow" emoji. ↗️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>up_right_arrow</c>
             /// </remarks>
-            public const string UpRightArrow = "\U00002197";
+            public const string UpRightArrow = "\U00002197\uFE0F";
             
             /// <summary>
             /// Gets the "Upside-down face" emoji. 🙃
@@ -12169,7 +12169,7 @@ namespace Spectre.Console
             public const string VibrationMode = "\U0001F4F3";
             
             /// <summary>
-            /// Gets the "Victory hand" emoji. ✌
+            /// Gets the "Victory hand" emoji. ✌️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>victory_hand</c>
@@ -12177,7 +12177,7 @@ namespace Spectre.Console
             public const string VictoryHand = "\U0000270C";
             
             /// <summary>
-            /// Gets the "Video camera" emoji. 📹
+            /// Gets the "Video camera" emoji. 📹️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>video_camera</c>
@@ -12193,7 +12193,7 @@ namespace Spectre.Console
             public const string Videocassette = "\U0001F4FC";
             
             /// <summary>
-            /// Gets the "Video game" emoji. 🎮
+            /// Gets the "Video game" emoji. 🎮️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>video_game</c>
@@ -12209,7 +12209,7 @@ namespace Spectre.Console
             public const string Violin = "\U0001F3BB";
             
             /// <summary>
-            /// Gets the "Virgo" emoji. ♍
+            /// Gets the "Virgo" emoji. ♍️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>virgo</c>
@@ -12273,23 +12273,23 @@ namespace Spectre.Console
             public const string WaningGibbousMoon = "\U0001F316";
             
             /// <summary>
-            /// Gets the "Warning" emoji. ⚠
+            /// Gets the "Warning" emoji. ⚠️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>warning</c>
             /// </remarks>
-            public const string Warning = "\U000026A0";
+            public const string Warning = "\U000026A0\uFE0F";
             
             /// <summary>
-            /// Gets the "Wastebasket" emoji. 🗑
+            /// Gets the "Wastebasket" emoji. 🗑️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>wastebasket</c>
             /// </remarks>
-            public const string Wastebasket = "\U0001F5D1";
+            public const string Wastebasket = "\U0001F5D1\uFE0F";
             
             /// <summary>
-            /// Gets the "Watch" emoji. ⌚
+            /// Gets the "Watch" emoji. ⌚️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>watch</c>
@@ -12345,7 +12345,7 @@ namespace Spectre.Console
             public const string WavingHand = "\U0001F44B";
             
             /// <summary>
-            /// Gets the "Wavy dash" emoji. 〰
+            /// Gets the "Wavy dash" emoji. 〰️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>wavy_dash</c>
@@ -12409,7 +12409,7 @@ namespace Spectre.Console
             public const string Wheel = "\U0001F6DE";
             
             /// <summary>
-            /// Gets the "Wheelchair symbol" emoji. ♿
+            /// Gets the "Wheelchair symbol" emoji. ♿️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>wheelchair_symbol</c>
@@ -12417,12 +12417,12 @@ namespace Spectre.Console
             public const string WheelchairSymbol = "\U0000267F";
             
             /// <summary>
-            /// Gets the "Wheel of dharma" emoji. ☸
+            /// Gets the "Wheel of dharma" emoji. ☸️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>wheel_of_dharma</c>
             /// </remarks>
-            public const string WheelOfDharma = "\U00002638";
+            public const string WheelOfDharma = "\U00002638\uFE0F";
             
             /// <summary>
             /// Gets the "White cane" emoji. 🦯
@@ -12433,7 +12433,7 @@ namespace Spectre.Console
             public const string WhiteCane = "\U0001F9AF";
             
             /// <summary>
-            /// Gets the "White circle" emoji. ⚪
+            /// Gets the "White circle" emoji. ⚪️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>white_circle</c>
@@ -12441,7 +12441,7 @@ namespace Spectre.Console
             public const string WhiteCircle = "\U000026AA";
             
             /// <summary>
-            /// Gets the "White exclamation mark" emoji. ❕
+            /// Gets the "White exclamation mark" emoji. ❕️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>white_exclamation_mark</c>
@@ -12449,12 +12449,12 @@ namespace Spectre.Console
             public const string WhiteExclamationMark = "\U00002755";
             
             /// <summary>
-            /// Gets the "White flag" emoji. 🏳
+            /// Gets the "White flag" emoji. 🏳️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>white_flag</c>
             /// </remarks>
-            public const string WhiteFlag = "\U0001F3F3";
+            public const string WhiteFlag = "\U0001F3F3\uFE0F";
             
             /// <summary>
             /// Gets the "White flower" emoji. 💮
@@ -12481,7 +12481,7 @@ namespace Spectre.Console
             public const string WhiteHeart = "\U0001F90D";
             
             /// <summary>
-            /// Gets the "White large square" emoji. ⬜
+            /// Gets the "White large square" emoji. ⬜️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>white_large_square</c>
@@ -12489,7 +12489,7 @@ namespace Spectre.Console
             public const string WhiteLargeSquare = "\U00002B1C";
             
             /// <summary>
-            /// Gets the "White medium-small square" emoji. ◽
+            /// Gets the "White medium-small square" emoji. ◽️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>white_medium_small_square</c>
@@ -12497,15 +12497,15 @@ namespace Spectre.Console
             public const string WhiteMediumSmallSquare = "\U000025FD";
             
             /// <summary>
-            /// Gets the "White medium square" emoji. ◻
+            /// Gets the "White medium square" emoji. ◻️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>white_medium_square</c>
             /// </remarks>
-            public const string WhiteMediumSquare = "\U000025FB";
+            public const string WhiteMediumSquare = "\U000025FB\uFE0F";
             
             /// <summary>
-            /// Gets the "White question mark" emoji. ❔
+            /// Gets the "White question mark" emoji. ❔️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>white_question_mark</c>
@@ -12513,12 +12513,12 @@ namespace Spectre.Console
             public const string WhiteQuestionMark = "\U00002754";
             
             /// <summary>
-            /// Gets the "White small square" emoji. ▫
+            /// Gets the "White small square" emoji. ▫️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>white_small_square</c>
             /// </remarks>
-            public const string WhiteSmallSquare = "\U000025AB";
+            public const string WhiteSmallSquare = "\U000025AB\uFE0F";
             
             /// <summary>
             /// Gets the "White square button" emoji. 🔳
@@ -12545,12 +12545,12 @@ namespace Spectre.Console
             public const string WindChime = "\U0001F390";
             
             /// <summary>
-            /// Gets the "Wind face" emoji. 🌬
+            /// Gets the "Wind face" emoji. 🌬️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>wind_face</c>
             /// </remarks>
-            public const string WindFace = "\U0001F32C";
+            public const string WindFace = "\U0001F32C\uFE0F";
             
             /// <summary>
             /// Gets the "Window" emoji. 🪟
@@ -12681,7 +12681,7 @@ namespace Spectre.Console
             public const string WomenHoldingHands = "\U0001F46D";
             
             /// <summary>
-            /// Gets the "Women’s room" emoji. 🚺
+            /// Gets the "Women’s room" emoji. 🚺️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>womens_room</c>
@@ -12705,12 +12705,12 @@ namespace Spectre.Console
             public const string WoozyFace = "\U0001F974";
             
             /// <summary>
-            /// Gets the "World map" emoji. 🗺
+            /// Gets the "World map" emoji. 🗺️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>world_map</c>
             /// </remarks>
-            public const string WorldMap = "\U0001F5FA";
+            public const string WorldMap = "\U0001F5FA\uFE0F";
             
             /// <summary>
             /// Gets the "Worm" emoji. 🪱
@@ -12745,7 +12745,7 @@ namespace Spectre.Console
             public const string Wrench = "\U0001F527";
             
             /// <summary>
-            /// Gets the "Writing hand" emoji. ✍
+            /// Gets the "Writing hand" emoji. ✍️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>writing_hand</c>
@@ -12809,12 +12809,12 @@ namespace Spectre.Console
             public const string YenBanknote = "\U0001F4B4";
             
             /// <summary>
-            /// Gets the "Yin yang" emoji. ☯
+            /// Gets the "Yin yang" emoji. ☯️
             /// </summary>
             /// <remarks>
             /// Lookup: <c>yin_yang</c>
             /// </remarks>
-            public const string YinYang = "\U0000262F";
+            public const string YinYang = "\U0000262F\uFE0F";
             
             /// <summary>
             /// Gets the "Yo-yo" emoji. 🪀
