@@ -469,9 +469,9 @@ public class Segment
                 continue;
             }
 
-            // Same style?
+            // Same style and link?
             if (segmentBuilder.StyleEquals(segment.Style) && !segmentBuilder.IsLineBreak() &&
-                !segmentBuilder.IsControlCode())
+                !segmentBuilder.IsControlCode() && segmentBuilder.HasSameLink(segment.Link))
             {
                 segmentBuilder.Append(segment.Text);
                 continue;
@@ -624,6 +624,16 @@ public class Segment
             _textBuilder.Clear();
             _textBuilder.Append(segment.Text);
             _originalSegment = segment;
+        }
+
+        public bool HasSameLink(Link? link)
+        {
+            if (link == null && _originalSegment.Link == null)
+            {
+                return true;
+            }
+
+            return _originalSegment.Link?.Equals(link) ?? false;
         }
     }
 }

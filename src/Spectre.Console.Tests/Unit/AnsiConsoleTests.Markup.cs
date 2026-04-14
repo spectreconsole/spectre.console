@@ -174,5 +174,50 @@ public partial class AnsiConsoleTests
             // Then
             console.Output.ShouldBe(expected);
         }
+
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2083")]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2078")]
+        public void Should_Preserve_Links_When_Multiple_Segments_Are_Merged()
+        {
+            // Given
+            var console = new TestConsole()
+                .Width(8)
+                .SupportsAnsi(true)
+                .EmitAnsiSequences();
+
+            // When
+            console.Write(
+                Align.Center(
+                    new Spectre.Console.Markup(
+                        "[link=https://example.com/readme.md]Docs[/]")));
+
+            // Then
+            console.Output.ShouldMatch(
+                "  \e]8;id=[0-9]*;https:\\/\\/example\\.com\\/readme.md\e\\\\Docs\e]8;;\e\\\\  ");
+        }
+
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2083")]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2078")]
+        public void Should_Preserve_Links_Over_Line_Breaks_When_Multiple_Segments_Are_Merged()
+        {
+            // Given
+            var console = new TestConsole()
+                .Width(8)
+                .SupportsAnsi(true)
+                .EmitAnsiSequences();
+
+            // When
+            console.Write(
+                Align.Center(
+                    new Spectre.Console.Markup(
+                        "[link=https://example.com/readme.md]Foo and Bar[/]")));
+
+            // Then
+            console.Output.ShouldMatch(
+                "\e]8;id=[0-9]*;https:\\/\\/example\\.com\\/readme.md\e\\\\Foo and \e]8;;\e\\\\\n" +
+                "  \e]8;id=[0-9]*;https:\\/\\/example\\.com\\/readme.md\e\\\\Bar\e]8;;\e\\\\   ");
+        }
     }
 }
