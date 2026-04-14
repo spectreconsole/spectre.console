@@ -32,7 +32,8 @@ public partial class AnsiConsoleTests
             console.Markup("[link=https://patriksvensson.se]Click to visit my blog[/]");
 
             // Then
-            console.Output.ShouldMatch("\e]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\e\\\\Click to visit my blog\e]8;;\e\\\\");
+            console.Output.ShouldMatch(
+                "\e]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\e\\\\Click to visit my blog\e]8;;\e\\\\");
         }
 
         [Fact]
@@ -46,7 +47,8 @@ public partial class AnsiConsoleTests
             console.Markup("[link]https://patriksvensson.se[/]");
 
             // Then
-            console.Output.ShouldMatch("\e]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\e\\\\https:\\/\\/patriksvensson\\.se\e]8;;\e\\\\");
+            console.Output.ShouldMatch(
+                "\e]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\e\\\\https:\\/\\/patriksvensson\\.se\e]8;;\e\\\\");
         }
 
         [Fact]
@@ -61,7 +63,8 @@ public partial class AnsiConsoleTests
             console.Markup($"[link]{Path.EscapeMarkup()}[/]");
 
             // Then
-            console.Output.ShouldMatch("\e]8;id=[0-9]*;file:\\/\\/c:\\/temp\\/\\[x\\].txt\e\\\\file:\\/\\/c:\\/temp\\/\\[x\\].txt\e]8;;\e\\\\");
+            console.Output.ShouldMatch(
+                "\e]8;id=[0-9]*;file:\\/\\/c:\\/temp\\/\\[x\\].txt\e\\\\file:\\/\\/c:\\/temp\\/\\[x\\].txt\e]8;;\e\\\\");
         }
 
         [Fact]
@@ -76,7 +79,8 @@ public partial class AnsiConsoleTests
             console.Markup($"[link={Path.EscapeMarkup()}]{Path.EscapeMarkup()}[/]");
 
             // Then
-            console.Output.ShouldMatch("\e]8;id=[0-9]*;file:\\/\\/c:\\/temp\\/\\[x\\].txt\e\\\\file:\\/\\/c:\\/temp\\/\\[x\\].txt\e]8;;\e\\\\");
+            console.Output.ShouldMatch(
+                "\e]8;id=[0-9]*;file:\\/\\/c:\\/temp\\/\\[x\\].txt\e\\\\file:\\/\\/c:\\/temp\\/\\[x\\].txt\e]8;;\e\\\\");
         }
 
         [Theory]
@@ -193,7 +197,7 @@ public partial class AnsiConsoleTests
                         "[link=https://example.com/readme.md]Docs[/]")));
 
             // Then
-            console.Output.ShouldMatch(
+            console.Output.NormalizeLineEndings().ShouldMatch(
                 "  \e]8;id=[0-9]*;https:\\/\\/example\\.com\\/readme.md\e\\\\Docs\e]8;;\e\\\\  ");
         }
 
@@ -215,7 +219,7 @@ public partial class AnsiConsoleTests
                         "[link=https://example.com/readme.md]Foo and Bar[/]")));
 
             // Then
-            console.Output.ShouldMatch(
+            console.Output.NormalizeLineEndings().ShouldMatch(
                 "\e]8;id=[0-9]*;https:\\/\\/example\\.com\\/readme.md\e\\\\Foo and \e]8;;\e\\\\\n" +
                 "  \e]8;id=[0-9]*;https:\\/\\/example\\.com\\/readme.md\e\\\\Bar\e]8;;\e\\\\   ");
         }
