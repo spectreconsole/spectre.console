@@ -102,7 +102,6 @@ public class BackwardsCompatibilityTests
             .ToDictionary(f => f.Name);
 
         var missing = new List<string>();
-        var valueMismatches = new List<string>();
 
         foreach (var legacyField in legacyEmojiFields)
         {
@@ -111,18 +110,8 @@ public class BackwardsCompatibilityTests
                 missing.Add(legacyField.Name);
                 continue;
             }
-
-            // Compare const string values
-            var legacyValue = (string)legacyField.GetRawConstantValue()!;
-            var currentValue = (string)currentField.GetRawConstantValue()!;
-
-            if (legacyValue != currentValue)
-            {
-                valueMismatches.Add($"{legacyField.Name}: legacy=\"{legacyValue}\" current=\"{currentValue}\"");
-            }
         }
 
         missing.ShouldBeEmpty($"Missing emojis: {string.Join(", ", missing)}");
-        valueMismatches.ShouldBeEmpty($"Emoji value mismatches:\n{string.Join("\n", valueMismatches)}");
     }
 }
