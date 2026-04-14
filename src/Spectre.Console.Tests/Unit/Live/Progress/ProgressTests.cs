@@ -24,11 +24,11 @@ public sealed class ProgressTests
         console.Output
             .NormalizeLineEndings()
             .ShouldBe(
-                "[?25l" + // Hide cursor
+                "\e[?25l" + // Hide cursor
                 "          \n" + // Top padding
-                "[38;5;8m━━━━━━━━━━[0m\n" + // Task
+                "\e[38;5;8m━━━━━━━━━━\e[0m\n" + // Task
                 "          " + // Bottom padding
-                "[2K[1A[2K[1A[2K[?25h"); // Clear + show cursor
+                "\e[2K\e[1A\e[2K\e[1A\e[2K\e[?25h"); // Clear + show cursor
     }
 
     [Fact]
@@ -52,11 +52,11 @@ public sealed class ProgressTests
         console.Output
             .NormalizeLineEndings()
             .ShouldBe(
-                "[?25l" + // Hide cursor
+                "\e[?25l" + // Hide cursor
                 "          \n" + // Top padding
-                "[38;5;8m━━━━━━━━━━[0m\n" + // Task
+                "\e[38;5;8m━━━━━━━━━━\e[0m\n" + // Task
                 "          \n" + // Bottom padding
-                "[?25h"); // show cursor
+                "\e[?25h"); // show cursor
     }
 
     [Fact]
@@ -249,12 +249,12 @@ public sealed class ProgressTests
         console.Output
             .NormalizeLineEndings()
             .ShouldBe(
-                "[?25l" + // Hide cursor
+                "\e[?25l" + // Hide cursor
                 "          \n" + // top padding
-                "[38;5;8m━━━━━━━━━━[0m\n" + // taskInProgress1
-                "[38;5;11m━━[0m[38;5;8m━━━━━━━━[0m\n" + // taskInProgress2
+                "\e[38;5;8m━━━━━━━━━━\e[0m\n" + // taskInProgress1
+                "\e[38;5;11m━━\e[0m\e[38;5;8m━━━━━━━━\e[0m\n" + // taskInProgress2
                 "          \n" + // bottom padding
-                "[?25h"); // show cursor
+                "\e[?25h"); // show cursor
     }
 
     [Fact]
@@ -316,8 +316,8 @@ public sealed class ProgressTests
         console.Output.SplitLines().Select(x => x.Trim()).ToArray()
             .ShouldBeEquivalentTo(new[]
             {
-                "[?25l", "foo1", "afterFoo1", "foo2", "beforeFoo3", "foo3",
-                "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h",
+                "\e[?25l", "foo1", "afterFoo1", "foo2", "beforeFoo3", "foo3",
+                "\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[1A\e[2K\e[?25h",
             });
     }
 
@@ -350,7 +350,7 @@ public sealed class ProgressTests
         console.Output.SplitLines().Select(x => x.Trim()).ToArray()
             .ShouldBeEquivalentTo(new[]
             {
-                "[?25l", "foo1", "afterFoo1", "foo2", "beforeFoo3", "foo3",
+                "\e[?25l", "foo1", "afterFoo1", "foo2", "beforeFoo3", "foo3",
                 "[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[?25h",
             });
     }

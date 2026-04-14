@@ -14,11 +14,11 @@ public sealed partial class AnsiConsoleTests
                 .EmitAnsiSequences();
 
             // When
-            console.WriteAnsi("[101mHello[0m");
+            console.WriteAnsi("\e[101mHello\e[0m");
 
             // Then
             console.Output.NormalizeLineEndings()
-                .ShouldBe("[101mHello[0m");
+                .ShouldBe("\e[101mHello\e[0m");
         }
 
         [Fact]
@@ -31,7 +31,7 @@ public sealed partial class AnsiConsoleTests
                 .EmitAnsiSequences();
 
             // When
-            console.WriteAnsi("[101mHello[0m");
+            console.WriteAnsi("\e[101mHello\e[0m");
 
             // Then
             console.Output.NormalizeLineEndings()
@@ -49,7 +49,7 @@ public sealed partial class AnsiConsoleTests
             var result = console.ToAnsi(markup);
 
             // Then
-            result.ShouldBe("[38;5;11mHello [0m[38;5;12mWorld[0m[38;5;11m![0m");
+            result.ShouldBe("\e[38;5;11mHello \e[0m\e[38;5;12mWorld\e[0m\e[38;5;11m!\e[0m");
         }
     }
 }

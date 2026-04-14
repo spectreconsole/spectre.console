@@ -17,7 +17,7 @@ public partial class AnsiConsoleTests
             console.MarkupInterpolated($"[Green]{Path}[/]");
 
             // Then
-            console.Output.ShouldBe($"[32m{Path}[0m");
+            console.Output.ShouldBe($"\e[32m{Path}\e[0m");
         }
 
         [Fact]
@@ -34,7 +34,7 @@ public partial class AnsiConsoleTests
 
             // Then
             var pathAsRegEx = Regex.Replace(Path, "([/\\[\\]\\\\])", "\\$1", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            console.Output.ShouldMatch($"\\]8;id=[0-9]+;{pathAsRegEx}\\\\{pathAsRegEx}\\]8;;\\\\");
+            console.Output.ShouldMatch($"\e\\]8;id=[0-9]+;{pathAsRegEx}\e\\\\{pathAsRegEx}\e\\]8;;\e\\\\");
         }
     }
 }

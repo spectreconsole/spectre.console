@@ -7,10 +7,10 @@ public partial class AnsiConsoleTests
         public sealed class TheMoveMethod
         {
             [Theory]
-            [InlineData(CursorDirection.Up, "Hello[2AWorld")]
-            [InlineData(CursorDirection.Down, "Hello[2BWorld")]
-            [InlineData(CursorDirection.Right, "Hello[2CWorld")]
-            [InlineData(CursorDirection.Left, "Hello[2DWorld")]
+            [InlineData(CursorDirection.Up, "Hello\e[2AWorld")]
+            [InlineData(CursorDirection.Down, "Hello\e[2BWorld")]
+            [InlineData(CursorDirection.Right, "Hello\e[2CWorld")]
+            [InlineData(CursorDirection.Left, "Hello\e[2DWorld")]
             public void Should_Return_Correct_Ansi_Code(CursorDirection direction, string expected)
             {
                 // Given
@@ -40,7 +40,7 @@ public partial class AnsiConsoleTests
                 console.Write("World");
 
                 // Then
-                console.Output.ShouldBe("Hello[3;5HWorld");
+                console.Output.ShouldBe("Hello\e[3;5HWorld");
             }
         }
     }

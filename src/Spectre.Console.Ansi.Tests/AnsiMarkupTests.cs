@@ -238,8 +238,8 @@ public sealed class AnsiMarkupTests
         }
 
         [Theory]
-        [InlineData("[yellow]Hello[/]", "[93mHello[0m")]
-        [InlineData("[yellow]Hello [italic]World[/]![/]", "[93mHello [0m[3;93mWorld[0m[93m![0m")]
+        [InlineData("[yellow]Hello[/]", "\e[93mHello\e[0m")]
+        [InlineData("[yellow]Hello [italic]World[/]![/]", "\e[93mHello \e[0m\e[3;93mWorld\e[0m\e[93m!\e[0m")]
         public void Should_Output_Expected_Ansi_For_Markup(string text, string expected)
         {
             // Given
@@ -265,7 +265,7 @@ public sealed class AnsiMarkupTests
 
             // Then
             fixture.Output.ShouldMatch(
-                "]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\\\\Click to visit my blog]8;;\\\\");
+                "\e]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\e\\\\Click to visit my blog\e]8;;\e\\\\");
         }
 
         [Fact]
@@ -279,7 +279,7 @@ public sealed class AnsiMarkupTests
 
             // Then
             fixture.Output.ShouldMatch(
-                "]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\\\\https:\\/\\/patriksvensson\\.se]8;;\\\\");
+                "\e]8;id=[0-9]*;https:\\/\\/patriksvensson\\.se\e\\\\https:\\/\\/patriksvensson\\.se\e]8;;\e\\\\");
         }
 
         [Fact]
@@ -294,7 +294,7 @@ public sealed class AnsiMarkupTests
 
             // Then
             fixture.Output.ShouldMatch(
-                "]8;id=[0-9]*;file:\\/\\/c:\\/temp\\/\\[x\\].txt\\\\file:\\/\\/c:\\/temp\\/\\[x\\].txt]8;;\\\\");
+                "\e]8;id=[0-9]*;file:\\/\\/c:\\/temp\\/\\[x\\].txt\e\\\\file:\\/\\/c:\\/temp\\/\\[x\\].txt\e]8;;\e\\\\");
         }
 
         [Fact]
@@ -310,7 +310,7 @@ public sealed class AnsiMarkupTests
 
             // Then
             fixture.Output.ShouldMatch(
-                "]8;id=[0-9]*;file:\\/\\/c:\\/temp\\/\\[x\\].txt\\\\file:\\/\\/c:\\/temp\\/\\[x\\].txt]8;;\\\\");
+                "\e]8;id=[0-9]*;file:\\/\\/c:\\/temp\\/\\[x\\].txt\e\\\\file:\\/\\/c:\\/temp\\/\\[x\\].txt\e]8;;\e\\\\");
         }
 
         [Theory]
