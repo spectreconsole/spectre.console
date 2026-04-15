@@ -108,7 +108,11 @@ public class Segment
         {
             return 0;
         }
-        if (Text == "\n") return 1;
+
+        if (Text == "\n") 
+        {
+            return 1;
+        }
 
         return Cell.GetCellLength(Text);
     }
