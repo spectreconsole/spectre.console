@@ -1,4 +1,4 @@
 ﻿GenericException<IAnsiConsole>: Throwing!
-  at bool MethodThatThrowsGenericException<T>() in /xyz/ in Exceptions.cs:nn
-  at void <Should_Write_GenericException>b__8_0() in /xyz/ in ExceptionTests.cs:nn
-  at Exception GetException(Action action) in /xyz/ in ExceptionTests.cs:nn
+  at bool MethodThatThrowsGenericException<T>() in Exceptions.cs:100      
+  at void <Should_Write_GenericException>b__8_0() in ExceptionTests.cs:200
+  at Exception GetException(Action action) in ExceptionTests.cs:300       

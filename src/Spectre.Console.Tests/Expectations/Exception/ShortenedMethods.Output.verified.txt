@@ -1,4 +1,4 @@
 System.InvalidOperationException: Throwing!
-  at bool MethodThatThrows(int? number) in /xyz/Exceptions.cs:nn
-  at void <Should_Write_Exception_With_Shortened_Methods>b__2_0() in /xyz/ExceptionTests.cs:nn
-  at Exception GetException(Action action) in /xyz/ExceptionTests.cs:nn
+  at bool MethodThatThrows(int? number) in /xyz/Exceptions.cs:100                              
+  at void <Should_Write_Exception_With_Shortened_Methods>b__2_0() in /xyz/ExceptionTests.cs:200
+  at Exception GetException(Action action) in /xyz/ExceptionTests.cs:300                       

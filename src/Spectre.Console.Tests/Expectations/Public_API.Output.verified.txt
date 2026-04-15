@@ -1897,11 +1897,24 @@
         ShortenEverything = 7,
         NoStackTrace = 16,
     }
+    [System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode")]
+    [System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2070:RequiresUnreferencedCode")]
+    [System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2075:RequiresUnreferencedCode")]
+    [System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050:RequiresUnreferencedCode")]
+    public class ExceptionInfoResolver
+    {
+        public ExceptionInfoResolver() { }
+        public virtual int GetFileLineNumber(System.Diagnostics.StackFrame frame) { }
+        public virtual string? GetFileName(System.Diagnostics.StackFrame frame) { }
+        public virtual string GetMethodName(System.Reflection.MethodBase method) { }
+        public virtual string GetParameterName(System.Reflection.ParameterInfo parameter) { }
+    }
     public sealed class ExceptionSettings
     {
         public ExceptionSettings() { }
-        public Spectre.Console.ExceptionFormats Format { get; set; }
-        public Spectre.Console.ExceptionStyle Style { get; set; }
+        public Spectre.Console.ExceptionFormats Format { get; init; }
+        public Spectre.Console.ExceptionInfoResolver Resolver { get; init; }
+        public Spectre.Console.ExceptionStyle Style { get; init; }
     }
     public sealed class ExceptionStyle
     {
