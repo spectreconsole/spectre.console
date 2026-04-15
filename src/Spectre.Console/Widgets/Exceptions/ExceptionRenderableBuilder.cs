@@ -5,7 +5,7 @@ namespace Spectre.Console;
 [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2070:RequiresUnreferencedCode")]
 [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2075:RequiresUnreferencedCode")]
 [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050:RequiresUnreferencedCode")]
-internal static class ExceptionFormatter
+internal static class ExceptionRenderableBuilder
 {
     public const string AotWarning = "ExceptionFormatter is currently not supported for AOT.";
 
@@ -38,6 +38,7 @@ internal static class ExceptionFormatter
     private static Grid GetStackFrames(Exception ex, ExceptionSettings settings)
     {
         var styles = settings.Style;
+        var resolver = settings.Resolver ?? new ExceptionInfoResolver();
 
         var grid = new Grid();
         grid.AddColumn(new GridColumn().PadLeft(2).PadRight(0).NoWrap());
@@ -83,7 +84,7 @@ internal static class ExceptionFormatter
                 continue;
             }
 
-            var methodName = GetMethodName(ref method, out var isAsync);
+            var methodName = GetMethodName(resolver, ref method, out var isAsync);
             if (isAsync)
             {
                 builder.Append("async ");
@@ -92,16 +93,16 @@ internal static class ExceptionFormatter
             if (method is MethodInfo mi)
             {
                 var returnParameter = mi.ReturnParameter;
-                builder.AppendWithStyle(styles.ParameterType, GetParameterName(returnParameter).EscapeMarkup());
+                builder.AppendWithStyle(styles.ParameterType, resolver.GetParameterName(returnParameter).EscapeMarkup());
                 builder.Append(' ');
             }
 
             Emphasize(builder, methodName, ['.'], styles.Method, shortenMethods, settings);
             builder.AppendWithStyle(styles.Parenthesis, "(");
-            AppendParameters(builder, method, settings);
+            AppendParameters(resolver, builder, method, settings);
             builder.AppendWithStyle(styles.Parenthesis, ")");
 
-            var path = frame.GetFileName();
+            var path = resolver.GetFileName(frame);
             if (path != null)
             {
                 builder.Append(' ');
@@ -112,7 +113,7 @@ internal static class ExceptionFormatter
                 AppendPath(builder, path, settings);
 
                 // Line number
-                var lineNumber = frame.GetFileLineNumber();
+                var lineNumber = resolver.GetFileLineNumber(frame);
                 if (lineNumber != 0)
                 {
                     builder.AppendWithStyle(styles.Dimmed, ":");
@@ -145,12 +146,12 @@ internal static class ExceptionFormatter
         }
     }
 
-    private static void AppendParameters(StringBuilder builder, MethodBase? method, ExceptionSettings settings)
+    private static void AppendParameters(ExceptionInfoResolver resolver, StringBuilder builder, MethodBase? method, ExceptionSettings settings)
     {
         var typeColor = settings.Style.ParameterType.ToMarkup();
         var nameColor = settings.Style.ParameterName.ToMarkup();
         var parameters = method?.GetParameters()
-            .Select(x => $"[{typeColor}]{GetParameterName(x).EscapeMarkup()}[/] [{nameColor}]{x.Name?.EscapeMarkup()}[/]");
+            .Select(x => $"[{typeColor}]{resolver.GetParameterName(x).EscapeMarkup()}[/] [{nameColor}]{x.Name?.EscapeMarkup()}[/]");
 
         if (parameters != null)
         {
@@ -271,116 +272,7 @@ internal static class ExceptionFormatter
         }
     }
 
-    private static string GetPrefix(ParameterInfo parameter)
-    {
-        if (Attribute.IsDefined(parameter, typeof(ParamArrayAttribute), false))
-        {
-            return "params";
-        }
-
-        if (parameter.IsOut)
-        {
-            return "out";
-        }
-
-        if (parameter.IsIn)
-        {
-            return "in";
-        }
-
-        if (parameter.ParameterType.IsByRef)
-        {
-            return "ref";
-        }
-
-        return string.Empty;
-    }
-
-    private static string GetParameterName(ParameterInfo parameter)
-    {
-        var prefix = GetPrefix(parameter);
-        var parameterType = parameter.ParameterType;
-
-        string typeName;
-        if (parameterType.IsGenericType && TryGetTupleName(parameter, parameterType, out var s))
-        {
-            typeName = s;
-        }
-        else
-        {
-            if (parameterType.IsByRef && parameterType.GetElementType() is { } elementType)
-            {
-                parameterType = elementType;
-            }
-
-            typeName = TypeNameHelper.GetTypeDisplayName(parameterType);
-        }
-
-        return string.IsNullOrWhiteSpace(prefix) ? typeName : $"{prefix} {typeName}";
-    }
-
-    private static bool TryGetTupleName(ParameterInfo parameter, Type parameterType, [NotNullWhen(true)] out string? tupleName)
-    {
-        var customAttribs = parameter.GetCustomAttributes(inherit: false);
-
-        var tupleNameAttribute = customAttribs
-            .OfType<Attribute>()
-            .FirstOrDefault(a =>
-            {
-                var attributeType = a.GetType();
-                return attributeType.Namespace == "System.Runtime.CompilerServices" &&
-                       attributeType.Name == "TupleElementNamesAttribute";
-            });
-
-        if (tupleNameAttribute != null)
-        {
-            var propertyInfo = tupleNameAttribute.GetType()
-                .GetProperty("TransformNames", BindingFlags.Instance | BindingFlags.Public)!;
-            var tupleNames = propertyInfo.GetValue(tupleNameAttribute) as IList<string>;
-            if (tupleNames?.Count > 0)
-            {
-                var args = parameterType.GetGenericArguments();
-                var sb = new StringBuilder();
-
-                sb.Append('(');
-                for (var i = 0; i < args.Length; i++)
-                {
-                    if (i > 0)
-                    {
-                        sb.Append(", ");
-                    }
-
-                    sb.Append(TypeNameHelper.GetTypeDisplayName(args[i]));
-
-                    if (i >= tupleNames.Count)
-                    {
-                        continue;
-                    }
-
-                    var argName = tupleNames[i];
-
-                    sb.Append(' ');
-                    sb.Append(argName);
-                }
-
-                sb.Append(')');
-
-                tupleName = sb.ToString();
-                return true;
-            }
-        }
-        else if (parameterType.Namespace == "System" && parameterType.Name.Contains("ValueTuple`"))
-        {
-            var args = parameterType.GetGenericArguments().Select(i => TypeNameHelper.GetTypeDisplayName(i));
-            tupleName = $"({string.Join(", ", args)})";
-            return true;
-        }
-
-        tupleName = null;
-        return false;
-    }
-
-    private static string GetMethodName(ref MethodBase method, out bool isAsync)
+    private static string GetMethodName(ExceptionInfoResolver resolver, ref MethodBase method, out bool isAsync)
     {
         var declaringType = method.DeclaringType;
 
@@ -389,7 +281,7 @@ internal static class ExceptionFormatter
             isAsync = typeof(IAsyncStateMachine).IsAssignableFrom(declaringType);
             if (isAsync || typeof(IEnumerator).IsAssignableFrom(declaringType))
             {
-                TryResolveStateMachineMethod(ref method, out declaringType);
+                TryResolveStateMachineMethod(method, out declaringType);
             }
         }
         else
@@ -397,29 +289,11 @@ internal static class ExceptionFormatter
             isAsync = false;
         }
 
-        var builder = new StringBuilder(256);
-
-        var fullName = method.DeclaringType?.FullName;
-        if (fullName != null)
-        {
-            // See https://github.com/dotnet/runtime/blob/v6.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L247-L253
-            builder.Append(fullName.Replace('+', '.'));
-            builder.Append('.');
-        }
-
-        builder.Append(method.Name);
-        if (method.IsGenericMethod)
-        {
-            builder.Append('<');
-            builder.Append(string.Join(",", method.GetGenericArguments().Select(t => t.Name)));
-            builder.Append('>');
-        }
-
-        return builder.ToString();
+        return resolver.GetMethodName(method);
     }
 
-    [RequiresDynamicCode(ExceptionFormatter.AotWarning)]
-    private static bool TryResolveStateMachineMethod(ref MethodBase method, out Type declaringType)
+    [RequiresDynamicCode(ExceptionRenderableBuilder.AotWarning)]
+    private static bool TryResolveStateMachineMethod(MethodBase method, out Type declaringType)
     {
         // https://github.com/dotnet/runtime/blob/v6.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L400-L455
         declaringType = method.DeclaringType ??

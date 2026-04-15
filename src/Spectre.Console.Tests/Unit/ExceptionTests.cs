@@ -12,10 +12,15 @@ public sealed class ExceptionTests
         var dex = GetException(() => TestExceptions.MethodThatThrows(null));
 
         // When
-        var result = console.WriteNormalizedException(dex);
+        console.WriteException(dex, new ExceptionSettings
+        {
+            Format = ExceptionFormats.Default,
+            Resolver = new ExceptionScrubber(),
+        });
+
 
         // Then
-        return Verifier.Verify(result);
+        return Verifier.Verify(console.Output);
     }
 
     [Fact]
@@ -27,10 +32,14 @@ public sealed class ExceptionTests
         var dex = GetException(() => TestExceptions.MethodThatThrows(null));
 
         // When
-        var result = console.WriteNormalizedException(dex, ExceptionFormats.ShortenTypes);
+        console.WriteException(dex, new ExceptionSettings
+        {
+            Format = ExceptionFormats.ShortenTypes,
+            Resolver = new ExceptionScrubber(),
+        });
 
         // Then
-        return Verifier.Verify(result);
+        return Verifier.Verify(console.Output);
     }
 
     [Fact]
@@ -42,10 +51,14 @@ public sealed class ExceptionTests
         var dex = GetException(() => TestExceptions.MethodThatThrows(null));
 
         // When
-        var result = console.WriteNormalizedException(dex, ExceptionFormats.ShortenMethods);
+        console.WriteException(dex, new ExceptionSettings
+        {
+            Format = ExceptionFormats.ShortenMethods,
+            Resolver = new ExceptionScrubber(),
+        });
 
         // Then
-        return Verifier.Verify(result);
+        return Verifier.Verify(console.Output);
     }
 
     [Fact]
@@ -57,10 +70,14 @@ public sealed class ExceptionTests
         var dex = GetException(() => TestExceptions.ThrowWithInnerException());
 
         // When
-        var result = console.WriteNormalizedException(dex);
+        console.WriteException(dex, new ExceptionSettings
+        {
+            Format = ExceptionFormats.Default,
+            Resolver = new ExceptionScrubber(),
+        });
 
         // Then
-        return Verifier.Verify(result);
+        return Verifier.Verify(console.Output);
     }
 
     [Fact]
@@ -72,10 +89,14 @@ public sealed class ExceptionTests
         var dex = GetException(() => TestExceptions.ThrowWithGenericInnerException());
 
         // When
-        var result = console.WriteNormalizedException(dex);
+        console.WriteException(dex, new ExceptionSettings
+        {
+            Format = ExceptionFormats.Default,
+            Resolver = new ExceptionScrubber(),
+        });
 
         // Then
-        return Verifier.Verify(result);
+        return Verifier.Verify(console.Output);
     }
 
     [Fact]
@@ -87,10 +108,14 @@ public sealed class ExceptionTests
         var dex = GetException(() => TestExceptions.GenericMethodWithOutThatThrows<int>(out _));
 
         // When
-        var result = console.WriteNormalizedException(dex, ExceptionFormats.ShortenTypes);
+        console.WriteException(dex, new ExceptionSettings
+        {
+            Format = ExceptionFormats.ShortenTypes,
+            Resolver = new ExceptionScrubber(),
+        });
 
         // Then
-        return Verifier.Verify(result);
+        return Verifier.Verify(console.Output);
     }
 
     [Fact]
@@ -102,10 +127,14 @@ public sealed class ExceptionTests
         var dex = GetException(() => TestExceptions.GetTuplesWithInnerException<int>((0, "value")));
 
         // When
-        var result = console.WriteNormalizedException(dex, ExceptionFormats.ShortenTypes);
+        console.WriteException(dex, new ExceptionSettings
+        {
+            Format = ExceptionFormats.ShortenTypes,
+            Resolver = new ExceptionScrubber(),
+        });
 
         // Then
-        return Verifier.Verify(result);
+        return Verifier.Verify(console.Output);
     }
 
     [Fact]
@@ -117,10 +146,14 @@ public sealed class ExceptionTests
         var dex = GetException(TestExceptions.ThrowWithInnerException);
 
         // When
-        var result = console.WriteNormalizedException(dex, ExceptionFormats.NoStackTrace);
+        console.WriteException(dex, new ExceptionSettings
+        {
+            Format = ExceptionFormats.NoStackTrace,
+            Resolver = new ExceptionScrubber(),
+        });
 
         // Then
-        return Verifier.Verify(result);
+        return Verifier.Verify(console.Output);
     }
 
     [Theory]
@@ -136,10 +169,14 @@ public sealed class ExceptionTests
         var dex = GetException(() => TestExceptions.MethodThatThrowsGenericException<IAnsiConsole>());
 
         // When
-        var result = console.WriteNormalizedException(dex, exceptionFormats);
+        console.WriteException(dex, new ExceptionSettings
+        {
+            Format = exceptionFormats,
+            Resolver = new ExceptionScrubber(),
+        });
 
         // Then
-        return Verifier.Verify(result).UseParameters(exceptionFormats);
+        return Verifier.Verify(console.Output).UseParameters(exceptionFormats);
     }
 
     public static Exception GetException(Action action)
