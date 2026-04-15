@@ -1,0 +1,6 @@
+﻿┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ GenericException<IAnsiConsole>: Throwing!                                                                            │
+│   at bool MethodThatThrowsGenericException<T>() in Exceptions.cs:100                                                 │
+│   at void <Exception_Within_Expanded_Panel_Should_Expand_As_Expected>b__10_0() in ExceptionTests.cs:200              │
+│   at Exception GetException(Action action) in ExceptionTests.cs:300                                                  │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
