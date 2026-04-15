@@ -20,14 +20,20 @@ internal static class ExceptionRenderableBuilder
     {
         ArgumentNullException.ThrowIfNull(exception);
 
-        return new Rows(GetMessage(exception, settings), GetStackFrames(exception, settings)).Expand();
+        var renderable = new Rows(
+                GetMessage(exception, settings),
+                GetStackFrames(exception, settings))
+            .Collapse();
+
+        return renderable;
     }
 
     private static Markup GetMessage(Exception ex, ExceptionSettings settings)
     {
         var shortenTypes = (settings.Format & ExceptionFormats.ShortenTypes) != 0;
         var exceptionType = ex.GetType();
-        var exceptionTypeName = TypeNameHelper.GetTypeDisplayName(exceptionType, fullName: !shortenTypes, includeSystemNamespace: true);
+        var exceptionTypeName =
+            TypeNameHelper.GetTypeDisplayName(exceptionType, fullName: !shortenTypes, includeSystemNamespace: true);
         var type = new StringBuilder();
         Emphasize(type, exceptionTypeName, ['.'], settings.Style.Exception, shortenTypes, settings, limit: '<');
 
@@ -93,7 +99,8 @@ internal static class ExceptionRenderableBuilder
             if (method is MethodInfo mi)
             {
                 var returnParameter = mi.ReturnParameter;
-                builder.AppendWithStyle(styles.ParameterType, resolver.GetParameterName(returnParameter).EscapeMarkup());
+                builder.AppendWithStyle(styles.ParameterType,
+                    resolver.GetParameterName(returnParameter).EscapeMarkup());
                 builder.Append(' ');
             }
 
@@ -146,12 +153,14 @@ internal static class ExceptionRenderableBuilder
         }
     }
 
-    private static void AppendParameters(ExceptionInfoResolver resolver, StringBuilder builder, MethodBase? method, ExceptionSettings settings)
+    private static void AppendParameters(ExceptionInfoResolver resolver, StringBuilder builder, MethodBase? method,
+        ExceptionSettings settings)
     {
         var typeColor = settings.Style.ParameterType.ToMarkup();
         var nameColor = settings.Style.ParameterName.ToMarkup();
         var parameters = method?.GetParameters()
-            .Select(x => $"[{typeColor}]{resolver.GetParameterName(x).EscapeMarkup()}[/] [{nameColor}]{x.Name?.EscapeMarkup()}[/]");
+            .Select(x =>
+                $"[{typeColor}]{resolver.GetParameterName(x).EscapeMarkup()}[/] [{nameColor}]{x.Name?.EscapeMarkup()}[/]");
 
         if (parameters != null)
         {
@@ -193,7 +202,9 @@ internal static class ExceptionRenderableBuilder
     {
         var limitIndex = limit.HasValue ? input.IndexOf(limit.Value) : -1;
 
-        var index = limitIndex != -1 ? input[..limitIndex].LastIndexOfAny(separators) : input.LastIndexOfAny(separators);
+        var index = limitIndex != -1
+            ? input[..limitIndex].LastIndexOfAny(separators)
+            : input.LastIndexOfAny(separators);
         if (index != -1)
         {
             if (!compact)

@@ -1,0 +1,6 @@
+﻿┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ GenericException<IAnsiConsole>: Throwing!                                              │
+│   at bool MethodThatThrowsGenericException<T>() in Exceptions.cs:100                   │
+│   at void <Should_Take_Up_Minimum_Space_When_Wrapped>b__9_0() in ExceptionTests.cs:200 │
+│   at Exception GetException(Action action) in ExceptionTests.cs:300                    │
+└────────────────────────────────────────────────────────────────────────────────────────┘

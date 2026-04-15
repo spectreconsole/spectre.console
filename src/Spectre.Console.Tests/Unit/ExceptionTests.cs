@@ -179,7 +179,50 @@ public sealed class ExceptionTests
         return Verifier.Verify(console.Output).UseParameters(exceptionFormats);
     }
 
-    public static Exception GetException(Action action)
+    [Fact]
+    [Expectation("MinimumSpace")]
+    public Task Should_Take_Up_Minimum_Space_When_Wrapped()
+    {
+        // Given
+        var console = new TestConsole().Width(1024);
+        var dex = GetException(() => TestExceptions.MethodThatThrowsGenericException<IAnsiConsole>());
+
+        // When
+        console.Write(
+            new Panel(
+                dex.GetRenderable(new ExceptionSettings
+                {
+                    Format = ExceptionFormats.ShortenEverything,
+                    Resolver = new ExceptionScrubber(),
+                })));
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Expanded_Panel")]
+    public Task Exception_Within_Expanded_Panel_Should_Expand_As_Expected()
+    {
+        // Given
+        var console = new TestConsole().Width(120);
+        var dex = GetException(() => TestExceptions.MethodThatThrowsGenericException<IAnsiConsole>());
+
+        // When
+        console.Write(
+            new Panel(
+                    dex.GetRenderable(new ExceptionSettings
+                    {
+                        Format = ExceptionFormats.ShortenEverything,
+                        Resolver = new ExceptionScrubber(),
+                    }))
+                .Expand());
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    private static Exception GetException(Action action)
     {
         try
         {
