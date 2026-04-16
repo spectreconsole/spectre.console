@@ -54,7 +54,8 @@ public sealed class AnsiMarkup
         using var tokenizer = new MarkupTokenizer(markup);
 
         var result = new List<AnsiMarkupSegment>();
-        var stack = new Stack<Style>();
+        var styleStack = new Stack<Style>();
+        var linkStack = new Stack<Link?>();
         var link = default(Link?);
 
         while (tokenizer.MoveNext())
@@ -64,25 +65,27 @@ public sealed class AnsiMarkup
             if (token.Kind == MarkupTokenKind.Open)
             {
                 var parsed = AnsiMarkupTagParser.Parse(token.Value);
-                link ??= parsed.Link;
-                stack.Push(style.Value);
+                linkStack.Push(link);
+                link = parsed.Link ?? link;
+                styleStack.Push(style.Value);
                 style = style.Value.Combine(parsed.Style);
             }
             else if (token.Kind == MarkupTokenKind.Close)
             {
-                if (stack.Count == 0)
+                if (styleStack.Count == 0)
                 {
                     throw new InvalidOperationException(
                         $"Encountered closing tag when none was expected near position {token.Position}.");
                 }
 
-                style = stack.Pop();
+                style = styleStack.Pop();
+                link = linkStack.Pop();
             }
             else if (token.Kind == MarkupTokenKind.Text)
             {
-                if (result.Count > 0 && result[^1].Style.Equals(style))
+                if (result.Count > 0 && result[^1].Style.Equals(style) && Equals(result[^1].Link, link))
                 {
-                    // Merge segments
+                    // Merge segments with same style and link
                     result[^1].Text += token.Value;
                 }
                 else
@@ -98,7 +101,7 @@ public sealed class AnsiMarkup
             }
         }
 
-        if (stack.Count > 0)
+        if (styleStack.Count > 0)
         {
             throw new InvalidOperationException("Unbalanced markup stack. Did you forget to close a tag?");
         }
