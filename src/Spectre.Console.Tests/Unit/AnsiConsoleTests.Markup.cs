@@ -223,5 +223,41 @@ public partial class AnsiConsoleTests
                 "\e]8;id=[0-9]*;https:\\/\\/example\\.com\\/readme.md\e\\\\Foo and \e]8;;\e\\\\\n" +
                 "  \e]8;id=[0-9]*;https:\\/\\/example\\.com\\/readme.md\e\\\\Bar\e]8;;\e\\\\   ");
         }
+
+        [Fact]
+        public void Should_Not_Apply_Link_To_Text_After_Link_Close_Tag()
+        {
+            // Given
+            var console = new TestConsole()
+                .EmitAnsiSequences();
+
+            // When - text after the [/] closing tag should NOT have the link
+            console.Markup("Before [link=https://example.com]LINK[/] After");
+
+            // Then
+            // The link should only wrap "LINK", not " After"
+            var output = console.Output;
+            output.ShouldMatch(@"Before \e\]8;id=\d+;https://example\.com\e\\LINK\e\]8;;\e\\ After");
+        }
+
+        [Fact]
+        public void Should_Properly_Handle_Nested_Link_With_Styles()
+        {
+            // Given
+            var console = new TestConsole()
+                .EmitAnsiSequences();
+
+            // When - link with styled text inside
+            console.Markup("[link=https://example.com][bold]Bold Link[/][/] Plain");
+
+            // Then
+            // The link should only wrap "Bold Link", not " Plain"
+            var output = console.Output;
+
+            // Check that "Plain" is NOT inside a link
+            var linkEndIndex = output.LastIndexOf("\u001b]8;;\u001b\\");
+            var plainIndex = output.IndexOf("Plain");
+            plainIndex.ShouldBeGreaterThan(linkEndIndex, "Plain should appear after the link ends");
+        }
     }
 }
