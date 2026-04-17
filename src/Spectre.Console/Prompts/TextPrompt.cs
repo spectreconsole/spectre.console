@@ -102,6 +102,11 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     internal DefaultPromptValue<T>? DefaultValue { get; set; }
 
     /// <summary>
+    /// Gets or sets a Func that will be triggered if Cancel is triggered by the 'ESC' key.
+    /// </summary>
+    public Func<T>? CancelResult { get; set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="TextPrompt{T}"/> class.
     /// </summary>
     /// <param name="prompt">The prompt markup text.</param>
@@ -139,7 +144,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
 
             while (true)
             {
-                string input;
+                string? input;
                 if (EditableDefaultValue && DefaultValue != null)
                 {
                     input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken, converter(DefaultValue.Value)).ConfigureAwait(false);
@@ -149,7 +154,15 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
                     input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken).ConfigureAwait(false);
                 }
 
-
+                // input == null => 'Esc' pressed
+                if (input is null)
+                {
+                    if (CancelResult is not null)
+                    {
+                        return CancelResult();
+                    }
+                    continue;
+                }
 
                 // Nothing entered?
                 if (string.IsNullOrWhiteSpace(input))

@@ -473,4 +473,78 @@ public sealed class TextPromptTests
         // Then
         result.ShouldBe("Yes");
     }
+
+    [Fact]
+    public void Should_Return_CancelResult_On_Cancel_DirectFuncVersion()
+    {
+        // Given
+        const string Expected = "Cancelled";
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        // When
+        var prompt = new TextPrompt<string>("Title");
+
+        prompt.CancelResult = () => Expected;
+
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe(Expected);
+    }
+
+    [Fact]
+    public void Should_Return_CancelResult_On_Cancel_FuncVersion()
+    {
+        // Given
+        const string Expected = "Cancelled";
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        // When
+        var prompt = new TextPrompt<string>("Title")
+                .AddCancelResult(() => Expected);
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe(Expected);
+    }
+
+    [Fact]
+    public void Should_Return_CancelResult_On_Cancel_ValueVersion()
+    {
+        // Given
+        const string Expected = "Cancelled";
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        // When
+        var prompt = new TextPrompt<string>("Title")
+                .AddCancelResult(Expected);
+
+        var result = prompt.Show(console);
+
+        // Then
+        result.ShouldBe(Expected);
+    }
+
+    [Fact]
+    public void Should_Ignore_Escape_If_CancelResult_Not_Set()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new TextPrompt<string>("Title").AllowEmpty();
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe(string.Empty);
+    }
 }
