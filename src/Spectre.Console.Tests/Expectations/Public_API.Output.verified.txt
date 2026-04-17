@@ -1,4 +1,4 @@
-﻿namespace Spectre.Console
+namespace Spectre.Console
 {
     public sealed class Align : Spectre.Console.Rendering.Renderable
     {
@@ -3106,6 +3106,10 @@
     }
     public static class TextPromptExtensions
     {
+        public static Spectre.Console.TextPrompt<T> AddCancelResult<T>(this Spectre.Console.TextPrompt<T> obj, System.Func<T> cancelResultFunc)
+            where T :  notnull { }
+        public static Spectre.Console.TextPrompt<T> AddCancelResult<T>(this Spectre.Console.TextPrompt<T> obj, T cancelResult)
+            where T :  notnull { }
         public static Spectre.Console.TextPrompt<T> AddChoice<T>(this Spectre.Console.TextPrompt<T> obj, T choice) { }
         public static Spectre.Console.TextPrompt<T> AddChoices<T>(this Spectre.Console.TextPrompt<T> obj, System.Collections.Generic.IEnumerable<T> choices) { }
         public static Spectre.Console.TextPrompt<T> AllowEmpty<T>(this Spectre.Console.TextPrompt<T> obj) { }
@@ -3133,6 +3137,7 @@
     {
         public TextPrompt(string prompt, System.StringComparer? comparer = null) { }
         public bool AllowEmpty { get; set; }
+        public System.Func<T>? CancelResult { get; set; }
         public System.Collections.Generic.List<T> Choices { get; }
         public Spectre.Console.Style? ChoicesStyle { get; set; }
         public bool ClearOnFinish { get; set; }
