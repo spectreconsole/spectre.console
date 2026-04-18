@@ -1941,12 +1941,20 @@
     {
         public int Baseline { get; }
         public int Count { get; }
+        public char Hardblank { get; }
         public int Height { get; }
         public int MaxWidth { get; }
+        public int SmushingRules { get; }
         public static Spectre.Console.FigletFont Default { get; }
         public static Spectre.Console.FigletFont Load(System.IO.Stream stream) { }
         public static Spectre.Console.FigletFont Load(string path) { }
         public static Spectre.Console.FigletFont Parse(string source) { }
+    }
+    public enum FigletLayoutMode
+    {
+        FullSize = 0,
+        Fitted = 1,
+        Smushed = 2,
     }
     public sealed class FigletText : Spectre.Console.Rendering.Renderable, Spectre.Console.IHasJustification
     {
@@ -1954,12 +1962,17 @@
         public FigletText(Spectre.Console.FigletFont font, string text) { }
         public Spectre.Console.Color? Color { get; set; }
         public Spectre.Console.Justify? Justification { get; set; }
+        public Spectre.Console.FigletLayoutMode LayoutMode { get; set; }
         public bool Pad { get; set; }
         protected override System.Collections.Generic.IEnumerable<Spectre.Console.Rendering.Segment> Render(Spectre.Console.Rendering.RenderOptions options, int maxWidth) { }
     }
     public static class FigletTextExtensions
     {
         public static Spectre.Console.FigletText Color(this Spectre.Console.FigletText text, Spectre.Console.Color? color) { }
+        public static Spectre.Console.FigletText Fitted(this Spectre.Console.FigletText text) { }
+        public static Spectre.Console.FigletText FullSize(this Spectre.Console.FigletText text) { }
+        public static Spectre.Console.FigletText LayoutMode(this Spectre.Console.FigletText text, Spectre.Console.FigletLayoutMode mode) { }
+        public static Spectre.Console.FigletText Smushed(this Spectre.Console.FigletText text) { }
     }
     public enum FileSizeBase
     {
