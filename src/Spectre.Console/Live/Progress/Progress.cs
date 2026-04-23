@@ -34,6 +34,13 @@ public sealed class Progress
     public bool HideCompleted { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether or not to exclude the
+    /// vertical padding in the display.
+    /// Defaults to <c>false</c>.
+    /// </summary>
+    public bool ExcludeVerticalPadding { get; set; }
+
+    /// <summary>
     /// Gets or sets the refresh rate if <c>AutoRefresh</c> is enabled.
     /// Defaults to 10 times/second.
     /// </summary>
@@ -160,7 +167,7 @@ public sealed class Progress
         if (interactive)
         {
             var columns = new List<ProgressColumn>(Columns);
-            return new DefaultProgressRenderer(_console, columns, RefreshRate, HideCompleted, RenderHook);
+            return new DefaultProgressRenderer(_console, columns, RefreshRate, HideCompleted, ExcludeVerticalPadding, RenderHook);
         }
         else
         {
@@ -256,6 +263,22 @@ public static class ProgressExtensions
         ArgumentNullException.ThrowIfNull(progress);
 
         progress.HideCompleted = enabled;
+
+        return progress;
+    }
+
+    /// <summary>
+    /// Sets whether or not to exclude the vertical padding in the display.
+    /// If enabled, the progress display will not include vertical padding.
+    /// </summary>
+    /// <param name="progress">The <see cref="Progress"/> instance.</param>
+    /// <param name="enabled">Whether or not to exclude the vertical padding.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Progress ExcludeVerticalPadding(this Progress progress, bool enabled)
+    {
+        ArgumentNullException.ThrowIfNull(progress);
+
+        progress.ExcludeVerticalPadding = enabled;
 
         return progress;
     }

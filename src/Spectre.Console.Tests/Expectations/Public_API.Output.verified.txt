@@ -2530,6 +2530,7 @@
         public Progress(Spectre.Console.IAnsiConsole console, System.TimeProvider? timeProvider = null) { }
         public bool AutoClear { get; set; }
         public bool AutoRefresh { get; set; }
+        public bool ExcludeVerticalPadding { get; set; }
         public bool HideCompleted { get; set; }
         public System.TimeSpan RefreshRate { get; set; }
         public System.Func<Spectre.Console.Rendering.IRenderable, System.Collections.Generic.IReadOnlyList<Spectre.Console.ProgressTask>, Spectre.Console.Rendering.IRenderable> RenderHook { get; set; }
@@ -2580,6 +2581,7 @@
         public static Spectre.Console.Progress AutoClear(this Spectre.Console.Progress progress, bool enabled) { }
         public static Spectre.Console.Progress AutoRefresh(this Spectre.Console.Progress progress, bool enabled) { }
         public static Spectre.Console.Progress Columns(this Spectre.Console.Progress progress, params Spectre.Console.ProgressColumn[] columns) { }
+        public static Spectre.Console.Progress ExcludeVerticalPadding(this Spectre.Console.Progress progress, bool enabled) { }
         public static Spectre.Console.Progress HideCompleted(this Spectre.Console.Progress progress, bool enabled) { }
         public static Spectre.Console.Progress UseRenderHook(this Spectre.Console.Progress progress, System.Func<Spectre.Console.Rendering.IRenderable, System.Collections.Generic.IReadOnlyList<Spectre.Console.ProgressTask>, Spectre.Console.Rendering.IRenderable> renderHook) { }
     }
