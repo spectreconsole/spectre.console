@@ -219,10 +219,10 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
         var builder = new StringBuilder();
         builder.Append(_prompt.TrimEnd());
 
-        var appendSuffix = false;
+        var hasPromptDetails = false;
         if (ShowChoices && Choices.Count > 0)
         {
-            appendSuffix = true;
+            hasPromptDetails = true;
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
             var choices = string.Join("/", Choices.Select(choice => converter(choice)));
             var choicesStyle = ChoicesStyle?.ToMarkup() ?? "blue";
@@ -231,7 +231,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
 
         if (ShowDefaultValue && DefaultValue != null)
         {
-            appendSuffix = true;
+            hasPromptDetails = true;
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
             var defaultValueStyle = DefaultValueStyle?.ToMarkup() ?? "green";
             var defaultValue = converter(DefaultValue.Value);
@@ -244,12 +244,29 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
         }
 
         var markup = builder.ToString().Trim();
-        if (appendSuffix)
+        if (ShouldAppendColon(markup, hasPromptDetails))
         {
             markup += ":";
         }
 
         console.Markup(markup + " ");
+    }
+
+    /// <summary>
+    /// A colon should be appended when prompt details are rendered, or when a plain prompt does not already end with punctuation.
+    /// </summary>
+    /// <param name="markup">The prompt markup.</param>
+    /// <param name="hasPromptDetails">Whether the prompt includes choices or a default value.</param>
+    /// <returns>Whether a colon should be appended.</returns>
+    private static bool ShouldAppendColon(string markup, bool hasPromptDetails)
+    {
+        if (hasPromptDetails)
+        {
+            return true;
+        }
+
+        var prompt = Markup.Remove(markup).TrimEnd();
+        return prompt.Length > 0 && char.IsLetterOrDigit(prompt[^1]);
     }
 
     /// <summary>

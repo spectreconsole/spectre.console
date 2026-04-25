@@ -320,6 +320,22 @@ public sealed class TextPromptTests
     }
 
     [Fact]
+    [Expectation("Issue_1638")]
+    public Task Should_Append_Colon_When_No_Default_Value_Is_Set()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Input.PushTextWithEnter("input");
+
+        // When
+        console.Prompt(
+            new TextPrompt<string>("no default, with suffix"));
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
     [Expectation("DefaultValueStyleNotSet")]
     public Task Uses_default_style_for_default_value_if_no_style_is_set()
     {
