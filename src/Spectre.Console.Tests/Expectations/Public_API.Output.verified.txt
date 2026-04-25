@@ -7,6 +7,7 @@
         public Spectre.Console.HorizontalAlignment Horizontal { get; set; }
         public Spectre.Console.VerticalAlignment? Vertical { get; set; }
         public int? Width { get; set; }
+        protected override Spectre.Console.Rendering.Measurement Measure(Spectre.Console.Rendering.RenderOptions options, int maxWidth) { }
         protected override System.Collections.Generic.IEnumerable<Spectre.Console.Rendering.Segment> Render(Spectre.Console.Rendering.RenderOptions options, int maxWidth) { }
         public static Spectre.Console.Align Center(Spectre.Console.Rendering.IRenderable renderable, Spectre.Console.VerticalAlignment? vertical = default) { }
         public static Spectre.Console.Align Left(Spectre.Console.Rendering.IRenderable renderable, Spectre.Console.VerticalAlignment? vertical = default) { }
