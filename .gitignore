@@ -54,6 +54,7 @@ src/.idea/**/uiDesigner.xml
 [Dd]ebug/
 [Rr]elease/
 x64/
+*.lscache
 *_i.c
 *_p.c
 *.ilk

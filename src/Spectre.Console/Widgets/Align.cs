@@ -75,6 +75,14 @@ public sealed class Align : Renderable
     }
 
     /// <inheritdoc/>
+    protected override Measurement Measure(RenderOptions options, int maxWidth)
+    {
+        var width = Math.Min(Width ?? maxWidth, maxWidth);
+        var measurement = _renderable.Measure(options with { Height = null }, width);
+        return new Measurement(Math.Min(measurement.Min, width), width);
+    }
+
+    /// <inheritdoc/>
     protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
         var rendered = _renderable.Render(options with { Height = null }, maxWidth);

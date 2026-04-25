@@ -146,4 +146,21 @@ public sealed class AlignTests
             return Verifier.Verify(console.Output);
         }
     }
+    public sealed class Measure
+    {
+        [Fact]
+        public void Should_Return_Explicit_Width_When_Set()
+        {
+            // Given
+            var console = new TestConsole().Size(new Size(40, 15));
+            var align = Align.Left(new Panel("Hello World!")).Width(20);
+
+            // When
+            var measurement = ((IRenderable)align)
+                .Measure(RenderOptions.Create(console), 40);
+
+            // Then
+            Assert.Equal(20, measurement.Max);
+        }
+    }
 }
