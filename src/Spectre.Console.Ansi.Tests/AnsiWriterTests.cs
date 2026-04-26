@@ -157,6 +157,19 @@ public sealed class AnsiWriterTests
             // Then
             fixture.Output.ShouldBe("\e[4A");
         }
+
+        [Fact]
+        public void Should_Not_Write_Ansi_For_Zero_Steps()
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            fixture.Writer.CursorUp(0);
+
+            // Then
+            fixture.Output.ShouldBeEmpty();
+        }
     }
 
     public sealed class CursorPosition

@@ -351,6 +351,11 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorUp(int steps)
     {
+        if (steps == 0)
+        {
+            return this;
+        }
+
         return WriteCsi(steps, 'A');
     }
 
