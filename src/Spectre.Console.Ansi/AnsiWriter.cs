@@ -351,6 +351,11 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorUp(int steps)
     {
+        if (steps == 0)
+        {
+            return this;
+        }
+
         return WriteCsi(steps, 'A');
     }
 
@@ -367,6 +372,11 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorDown(int steps)
     {
+        if (steps == 0)
+        {
+            return this;
+        }
+
         return WriteCsi(steps, 'B');
     }
 
@@ -397,6 +407,11 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorForward(int steps)
     {
+        if (steps == 0)
+        {
+            return this;
+        }
+
         return WriteCsi(steps, 'C');
     }
 
@@ -427,6 +442,11 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorBackward(int steps)
     {
+        if (steps == 0)
+        {
+            return this;
+        }
+
         return WriteCsi(steps, 'D');
     }
 
@@ -607,6 +627,11 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorBackwardTabulation(int tabs = 1)
     {
+        if (tabs == 0)
+        {
+            return this;
+        }
+
         return WriteCsi(tabs, 'Z');
     }
 
@@ -621,6 +646,11 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorHorizontalTabulation(int tabs = 1)
     {
+        if (tabs == 0)
+        {
+            return this;
+        }
+
         return WriteCsi(tabs, 'I');
     }
 
@@ -635,6 +665,11 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorNextLine(int lines = 1)
     {
+        if (lines == 0)
+        {
+            return this;
+        }
+
         return WriteCsi(lines, 'E');
     }
 
@@ -649,6 +684,11 @@ public sealed class AnsiWriter
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public AnsiWriter CursorPreviousLine(int lines = 1)
     {
+        if (lines == 0)
+        {
+            return this;
+        }
+
         return WriteCsi(lines, 'F');
     }
 
