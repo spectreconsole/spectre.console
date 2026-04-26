@@ -77,6 +77,19 @@ public sealed class AnsiWriterTests
             // Then
             fixture.Output.ShouldBe("\e[4D");
         }
+
+        [Fact]
+        public void Should_Not_Write_Ansi_For_Zero_Steps()
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            fixture.Writer.CursorLeft(0);
+
+            // Then
+            fixture.Output.ShouldBeEmpty();
+        }
     }
 
     public sealed class CursorBackward
@@ -92,6 +105,19 @@ public sealed class AnsiWriterTests
 
             // Then
             fixture.Output.ShouldBe("\e[4D");
+        }
+
+        [Fact]
+        public void Should_Not_Write_Ansi_For_Zero_Steps()
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            fixture.Writer.CursorBackward(0);
+
+            // Then
+            fixture.Output.ShouldBeEmpty();
         }
     }
 
@@ -109,6 +135,19 @@ public sealed class AnsiWriterTests
             // Then
             fixture.Output.ShouldBe("\e[4C");
         }
+
+        [Fact]
+        public void Should_Not_Write_Ansi_For_Zero_Steps()
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            fixture.Writer.CursorRight(0);
+
+            // Then
+            fixture.Output.ShouldBeEmpty();
+        }
     }
 
     public sealed class CursorForward
@@ -125,6 +164,19 @@ public sealed class AnsiWriterTests
             // Then
             fixture.Output.ShouldBe("\e[4C");
         }
+
+        [Fact]
+        public void Should_Not_Write_Ansi_For_Zero_Steps()
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            fixture.Writer.CursorForward(0);
+
+            // Then
+            fixture.Output.ShouldBeEmpty();
+        }
     }
 
     public sealed class CursorDown
@@ -140,6 +192,19 @@ public sealed class AnsiWriterTests
 
             // Then
             fixture.Output.ShouldBe("\e[4B");
+        }
+
+        [Fact]
+        public void Should_Not_Write_Ansi_For_Zero_Steps()
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            fixture.Writer.CursorDown(0);
+
+            // Then
+            fixture.Output.ShouldBeEmpty();
         }
     }
 
@@ -404,6 +469,19 @@ public sealed class AnsiWriterTests
             // Then
             fixture.Output.ShouldBe("\e[4Z");
         }
+
+        [Fact]
+        public void Should_Not_Write_Ansi_For_Zero_Tabs()
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            fixture.Writer.CursorBackwardTabulation(0);
+
+            // Then
+            fixture.Output.ShouldBeEmpty();
+        }
     }
 
     public sealed class CursorHorizontalTabulation
@@ -419,6 +497,19 @@ public sealed class AnsiWriterTests
 
             // Then
             fixture.Output.ShouldBe("\e[4I");
+        }
+
+        [Fact]
+        public void Should_Not_Write_Ansi_For_Zero_Tabs()
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            fixture.Writer.CursorHorizontalTabulation(0);
+
+            // Then
+            fixture.Output.ShouldBeEmpty();
         }
     }
 
@@ -436,6 +527,19 @@ public sealed class AnsiWriterTests
             // Then
             fixture.Output.ShouldBe("\e[4E");
         }
+
+        [Fact]
+        public void Should_Not_Write_Ansi_For_Zero_Lines()
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            fixture.Writer.CursorNextLine(0);
+
+            // Then
+            fixture.Output.ShouldBeEmpty();
+        }
     }
 
     public sealed class CursorPreviousLine
@@ -451,6 +555,19 @@ public sealed class AnsiWriterTests
 
             // Then
             fixture.Output.ShouldBe("\e[4F");
+        }
+
+        [Fact]
+        public void Should_Not_Write_Ansi_For_Zero_Lines()
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            fixture.Writer.CursorPreviousLine(0);
+
+            // Then
+            fixture.Output.ShouldBeEmpty();
         }
     }
 
