@@ -2581,8 +2581,9 @@
         public static Spectre.Console.Progress AutoClear(this Spectre.Console.Progress progress, bool enabled) { }
         public static Spectre.Console.Progress AutoRefresh(this Spectre.Console.Progress progress, bool enabled) { }
         public static Spectre.Console.Progress Columns(this Spectre.Console.Progress progress, params Spectre.Console.ProgressColumn[] columns) { }
-        public static Spectre.Console.Progress ExcludeVerticalPadding(this Spectre.Console.Progress progress, bool enabled) { }
+        public static Spectre.Console.Progress ExcludeVerticalPadding(this Spectre.Console.Progress progress) { }
         public static Spectre.Console.Progress HideCompleted(this Spectre.Console.Progress progress, bool enabled) { }
+        public static Spectre.Console.Progress IncludeVerticalPadding(this Spectre.Console.Progress progress) { }
         public static Spectre.Console.Progress UseRenderHook(this Spectre.Console.Progress progress, System.Func<Spectre.Console.Rendering.IRenderable, System.Collections.Generic.IReadOnlyList<Spectre.Console.ProgressTask>, Spectre.Console.Rendering.IRenderable> renderHook) { }
     }
     public sealed class ProgressTask : System.IProgress<double>
