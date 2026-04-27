@@ -268,17 +268,29 @@ public static class ProgressExtensions
     }
 
     /// <summary>
+    /// Sets whether or not to exclude the vertical padding in the display.
+    /// If enabled, the progress display will not include vertical padding.
+    /// </summary>
+    /// <param name="progress">The <see cref="Progress"/> instance.</param>
+    /// <param name="enabled">Whether or not to exclude the vertical padding.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Progress ExcludeVerticalPadding(this Progress progress, bool enabled)
+    {
+        ArgumentNullException.ThrowIfNull(progress);
+
+        progress.ExcludeVerticalPadding = enabled;
+
+        return progress;
+    }
+
+    /// <summary>
     /// Excludes the vertical padding in the display.
     /// </summary>
     /// <param name="progress">The <see cref="Progress"/> instance.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static Progress ExcludeVerticalPadding(this Progress progress)
     {
-        ArgumentNullException.ThrowIfNull(progress);
-
-        progress.ExcludeVerticalPadding = true;
-
-        return progress;
+        return progress.ExcludeVerticalPadding(true);
     }
 
     /// <summary>
@@ -288,10 +300,6 @@ public static class ProgressExtensions
     /// <returns>The same instance so that multiple calls can be chained.</returns>
     public static Progress IncludeVerticalPadding(this Progress progress)
     {
-        ArgumentNullException.ThrowIfNull(progress);
-
-        progress.ExcludeVerticalPadding = false;
-
-        return progress;
+        return progress.ExcludeVerticalPadding(false);
     }
 }
