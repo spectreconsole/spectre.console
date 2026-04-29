@@ -63,10 +63,14 @@ internal sealed class LiveRenderable : Renderable
             return ControlCode.Create(options.Capabilities, w =>
             {
                 w.Write("\r"); // More efficient than CHA (CSI 1 G)?
-                if (linesToMoveUp > 0)
+
+                for (var line = 0; line < linesToMoveUp; line++)
                 {
-                    w.CursorUp(linesToMoveUp);
+                    w.CursorUp(1);
+                    w.EraseInLine(2);
                 }
+
+                w.EraseInLine(2);
             });
         }
     }
