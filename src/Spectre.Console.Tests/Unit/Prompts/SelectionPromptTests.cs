@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Spectre.Console.Tests.Unit;
 
 public sealed class SelectionPromptTests
@@ -669,6 +671,110 @@ public sealed class SelectionPromptTests
             "    Third   ",
             "    Fourth  ",
         ]);
+    }
+
+    [Fact]
+    public async Task Should_Select_The_First_Leaf_Item_When_Shown_As_Renderable()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var prompt = new SelectionPrompt<string>()
+            .Title("Select one")
+            .Mode(SelectionMode.Leaf)
+            .AddChoiceGroup("Group one", "A", "B")
+            .AddChoiceGroup("Group two", "C", "D");
+
+        // When
+        var selection = await prompt.ShowAsRenderableAsync(console, CancellationToken.None);
+
+        // Then
+        selection.ShouldBe("A");
+    }
+
+    [Fact]
+    public async Task Should_Select_The_First_Item_When_Shown_As_Renderable_With_Wrapper()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.EmitAnsiSequences();
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var prompt = new SelectionPrompt<string>()
+            .Title("Select one")
+            .AddChoices("First", "Second");
+
+        // When
+        var selection = await prompt.ShowAsRenderableAsync(console, renderable => new Panel(renderable).Header("Wrapped Prompt"), CancellationToken.None);
+
+        // Then
+        selection.ShouldBe("First");
+        console.Output.ShouldContain("Wrapped");
+    }
+
+    [Fact]
+    public async Task Should_Return_CancelResult_When_Shown_As_Renderable()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        var prompt = new SelectionPrompt<string>()
+            .Title("Select one")
+            .AddChoiceGroup("Group one", "A", "B")
+            .AddCancelResult(() => "E");
+
+        // When
+        var selection = await prompt.ShowAsRenderableAsync(console, CancellationToken.None);
+
+        // Then
+        selection.ShouldBe("E");
+    }
+
+    [Fact]
+    public async Task Should_Ignore_Escape_When_Shown_As_Renderable_And_CancelResult_Not_Set()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var prompt = new SelectionPrompt<string>()
+            .Title("Select one")
+            .AddChoiceGroup("Group one", "A", "B");
+
+        // When
+        var selection = await prompt.ShowAsRenderableAsync(console, CancellationToken.None);
+
+        // Then
+        selection.ShouldBe("A");
+    }
+
+    [Fact]
+    public async Task Should_Search_And_Select_Item_When_Shown_As_Renderable()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.EmitAnsiSequences();
+        console.Input.PushText("2");
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var prompt = new SelectionPrompt<string>()
+            .Title("Select one")
+            .EnableSearch()
+            .AddChoices("Item 1", "Item 2");
+
+        // When
+        var selection = await prompt.ShowAsRenderableAsync(console, CancellationToken.None);
+
+        // Then
+        selection.ShouldBe("Item 2");
     }
 }
 

@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Spectre.Console.Tests.Unit;
 
 public sealed class MultiSelectionPromptTests
@@ -504,7 +506,88 @@ public sealed class MultiSelectionPromptTests
             "(Press <space> to select, <enter> to accept)",
         ]);
     }
-}
+    [Fact]
+    public async Task Should_Return_All_Selected_Items_When_Shown_As_Renderable()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.DownArrow);
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var prompt = new MultiSelectionPrompt<string>();
+        prompt.AddChoices(["A", "B", "C", "D"]);
+
+        // When
+        var selection = await prompt.ShowAsRenderableAsync(console, CancellationToken.None);
+
+        // Then
+        selection.ShouldBe(["A", "B"]);
+    }
+
+    [Fact]
+    public async Task Should_Return_CancelResult_When_Shown_As_Renderable()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.DownArrow);
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        var prompt = new MultiSelectionPrompt<string>();
+        prompt.AddChoices(["A", "B", "C", "D"]);
+        prompt.AddCancelResult(() => ["E"]);
+
+        // When
+        var selection = await prompt.ShowAsRenderableAsync(console, CancellationToken.None);
+
+        // Then
+        selection.ShouldBe(["E"]);
+    }
+
+    [Fact]
+    public async Task Should_Select_Items_When_Shown_As_Renderable_With_Wrapper()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.EmitAnsiSequences();
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var prompt = new MultiSelectionPrompt<string>();
+        prompt.AddChoices(["A", "B"]);
+
+        // When
+        var selection = await prompt.ShowAsRenderableAsync(console, renderable => new Panel(renderable).Header("Wrapped Multi"), CancellationToken.None);
+
+        // Then
+        selection.ShouldBe(["A"]);
+        console.Output.ShouldContain("Wrapped Multi");
+    }
+
+    [Fact]
+    public async Task Should_Initially_Select_The_First_Item_When_Shown_As_Renderable()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var prompt = new MultiSelectionPrompt<string>();
+        prompt.AddChoices(["A", "B", "C"]);
+
+        // When
+        var selection = await prompt.ShowAsRenderableAsync(console, CancellationToken.None);
+
+        // Then
+        selection.ShouldBe(["A"]);
+    }}
 
 file sealed class CustomItem
 {

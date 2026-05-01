@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace Spectre.Console.Tests.Unit;
 
 [ExpectationPath("Prompts/Text")]
@@ -31,6 +33,58 @@ public sealed class TextPromptTests
 
         // Then
         return Verifier.Verify(console.Lines);
+    }
+
+    [Fact]
+    public async Task Should_Render_Invalid_Choice_Message_Inside_Panel_When_ShowAsRenderableAsync()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.EmitAnsiSequences();
+        console.Input.PushTextWithEnter("Apple");
+        console.Input.PushTextWithEnter("Banana");
+
+        var prompt = new TextPrompt<string>("Favorite fruit?")
+            .InvalidChoiceMessage("[red]Please select one of the available options[/]")
+            .AddChoice("Banana")
+            .AddChoice("Orange");
+
+        // When
+        await prompt.ShowAsRenderableAsync(
+            console,
+            new Panel(prompt).Header("Fruit").RoundedBorder(),
+            CancellationToken.None);
+
+        // Then
+        console.Output.ShouldContain("Please select one of the available options");
+        console.Output.ShouldContain("Fruit");
+    }
+
+    [Fact]
+    public async Task Should_Accept_Valid_Renderable_Choice_After_Invalid_Attempt()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.EmitAnsiSequences();
+        console.Input.PushTextWithEnter("Apple");
+        console.Input.PushTextWithEnter("Banana");
+
+        var prompt = new TextPrompt<string>("Favorite fruit?")
+            .InvalidChoiceMessage("[red]Please select one of the available options[/]")
+            .AddChoice("Banana")
+            .AddChoice("Orange");
+
+        // When
+        var result = await prompt.ShowAsRenderableAsync(
+            console,
+            new Panel(prompt).Header("Fruit").RoundedBorder(),
+            CancellationToken.None);
+
+        // Then
+        result.ShouldBe("Banana");
+        console.Output.ShouldContain("Please select one of the available options");
     }
 
     [Fact]
