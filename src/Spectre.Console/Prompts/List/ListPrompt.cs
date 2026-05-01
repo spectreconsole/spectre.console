@@ -20,6 +20,7 @@ internal sealed class ListPrompt<T>
         bool searchEnabled,
         int requestedPageSize,
         bool wrapAround,
+        Func<IRenderable, IRenderable>? wrapper,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(tree);
@@ -53,7 +54,11 @@ internal sealed class ListPrompt<T>
             skipUnselectableItems,
             searchEnabled,
             _strategy.CalculateInitialIndex(nodes));
-        var hook = new ListPromptRenderHook<T>(_console, () => BuildRenderable(state));
+        var hook = new ListPromptRenderHook<T>(_console, () =>
+        {
+            var renderable = BuildRenderable(state);
+            return wrapper?.Invoke(renderable) ?? renderable;
+        });
 
         using (new RenderHookScope(_console, hook))
         {

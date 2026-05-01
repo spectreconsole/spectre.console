@@ -73,6 +73,44 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
         return ShowAsync(console, CancellationToken.None).GetAwaiter().GetResult();
     }
 
+    /// <summary>
+    /// Shows the prompt as a renderable with live input updates.
+    /// </summary>
+    /// <param name="console">The console to show the prompt in.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The user input converted to the expected type.</returns>
+    public Task<bool> ShowAsRenderableAsync(IAnsiConsole console, CancellationToken cancellationToken)
+    {
+        return ShowAsRenderableAsync(console, null, cancellationToken);
+    }
+
+    /// <summary>
+    /// Shows the prompt as a renderable with live input updates.
+    /// </summary>
+    /// <param name="console">The console to show the prompt in.</param>
+    /// <param name="wrapper">A wrapper for the rendered prompt, for example a panel.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The user input converted to the expected type.</returns>
+    public async Task<bool> ShowAsRenderableAsync(IAnsiConsole console, IRenderable? wrapper, CancellationToken cancellationToken)
+    {
+        var comparer = Comparer ?? StringComparer.CurrentCultureIgnoreCase;
+
+        var prompt = new TextPrompt<char>(_prompt, comparer)
+            .InvalidChoiceMessage(InvalidChoiceMessage)
+            .ValidationErrorMessage(InvalidChoiceMessage)
+            .ShowChoices(ShowChoices)
+            .ChoicesStyle(ChoicesStyle)
+            .ShowDefaultValue(ShowDefaultValue)
+            .DefaultValue(DefaultValue ? Yes : No)
+            .DefaultValueStyle(DefaultValueStyle)
+            .AddChoice(Yes)
+            .AddChoice(No);
+
+        var result = await prompt.ShowAsRenderableAsync(console, wrapper, cancellationToken).ConfigureAwait(false);
+
+        return comparer.Compare(Yes.ToString(), result.ToString()) == 0;
+    }
+
     /// <inheritdoc/>
     public async Task<bool> ShowAsync(IAnsiConsole console, CancellationToken cancellationToken)
     {

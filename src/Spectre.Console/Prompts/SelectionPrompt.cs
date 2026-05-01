@@ -109,13 +109,45 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
         return ShowAsync(console, CancellationToken.None).GetAwaiter().GetResult();
     }
 
+    /// <summary>
+    /// Shows the prompt as a renderable with live input updates.
+    /// </summary>
+    /// <param name="console">The console to show the prompt in.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The user input converted to the expected type.</returns>
+    public Task<T> ShowAsRenderableAsync(IAnsiConsole console, CancellationToken cancellationToken)
+    {
+        return ShowAsRenderableAsync(console, null, cancellationToken);
+    }
+
+    /// <summary>
+    /// Shows the prompt as a renderable with live input updates.
+    /// </summary>
+    /// <param name="console">The console to show the prompt in.</param>
+    /// <param name="wrapper">A wrapper for the rendered list, for example a panel.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The user input converted to the expected type.</returns>
+    public async Task<T> ShowAsRenderableAsync(IAnsiConsole console, Func<IRenderable, IRenderable>? wrapper, CancellationToken cancellationToken)
+    {
+        var prompt = new ListPrompt<T>(console, this);
+        var converter = Converter ?? TypeConverterHelper.ConvertToString;
+        var result = await prompt.Show(_tree, converter, Mode, true, SearchEnabled, PageSize, WrapAround, wrapper, cancellationToken).ConfigureAwait(false);
+
+        if (result.IsCancelled && CancelResult is not null)
+        {
+            return CancelResult();
+        }
+
+        return result.Items[result.Index].Data;
+    }
+
     /// <inheritdoc/>
     public async Task<T> ShowAsync(IAnsiConsole console, CancellationToken cancellationToken)
     {
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
         var converter = Converter ?? TypeConverterHelper.ConvertToString;
-        var result = await prompt.Show(_tree, converter, Mode, true, SearchEnabled, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
+        var result = await prompt.Show(_tree, converter, Mode, true, SearchEnabled, PageSize, WrapAround, null, cancellationToken).ConfigureAwait(false);
 
         if (result.IsCancelled && CancelResult is not null)
         {

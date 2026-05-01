@@ -12,6 +12,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IRenderable, IHasCulture
     private readonly StringComparer? _comparer;
     // State: holds the current input being edited
     private string _currentInput = string.Empty;
+    private string? _message;
 
     /// <summary>
     /// Gets or sets the prompt style.
@@ -141,6 +142,12 @@ public sealed class TextPrompt<T> : IPrompt<T>, IRenderable, IHasCulture
         // Build and render the input field
         var inputRenderable = BuildInputField();
         segments.AddRange(inputRenderable.Render(options, maxWidth));
+
+        if (!string.IsNullOrWhiteSpace(_message))
+        {
+            segments.Add(Segment.LineBreak);
+            segments.AddRange(((IRenderable)new Markup(_message)).Render(options, maxWidth));
+        }
 
         return segments;
     }
@@ -329,6 +336,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IRenderable, IHasCulture
             _currentInput = DefaultInput && DefaultValue != null
                 ? converter(DefaultValue.Value)
                 : string.Empty;
+            _message = null;
 
             var hook = new TextPromptRenderHook<T>(console, () => renderable);
             using (new RenderHookScope(console, hook))
@@ -344,6 +352,11 @@ public sealed class TextPrompt<T> : IPrompt<T>, IRenderable, IHasCulture
                     if (rawKey == null)
                     {
                         continue;
+                    }
+
+                    if (_message != null)
+                    {
+                        _message = null;
                     }
 
                     if (HandleInputKey(rawKey.Value))
@@ -379,7 +392,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IRenderable, IHasCulture
                                 return result;
                             }
 
-                            console.MarkupLine(InvalidChoiceMessage);
+                            _message = InvalidChoiceMessage;
                             _currentInput = string.Empty;
                             hook.Refresh();
                             continue;
@@ -387,7 +400,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IRenderable, IHasCulture
 
                         if (!TypeConverterHelper.TryConvertFromStringWithCulture<T>(input, Culture, out result) || result == null)
                         {
-                            console.MarkupLine(ValidationErrorMessage);
+                            _message = ValidationErrorMessage;
                             _currentInput = string.Empty;
                             hook.Refresh();
                             continue;
@@ -395,7 +408,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IRenderable, IHasCulture
 
                         if (!ValidateResult(result, out var validationMessage))
                         {
-                            console.MarkupLine(validationMessage);
+                            _message = validationMessage;
                             _currentInput = string.Empty;
                             hook.Refresh();
                             continue;
