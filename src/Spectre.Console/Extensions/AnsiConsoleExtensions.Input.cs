@@ -5,6 +5,9 @@ namespace Spectre.Console;
 /// </summary>
 public static partial class AnsiConsoleExtensions
 {
+    private static int? _inputHistoryIndex;
+    private static string _inputReplacedByHistory = string.Empty;
+
     internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, char? mask, IEnumerable<string>? items = null, CancellationToken cancellationToken = default, string? initialInput = null)
     {
         ArgumentNullException.ThrowIfNull(console);
@@ -47,6 +50,7 @@ public static partial class AnsiConsoleExtensions
             var key = rawKey.Value;
             if (key.Key == ConsoleKey.Enter)
             {
+                console.InputHistory.Add(text);
                 return text;
             }
 
@@ -87,6 +91,39 @@ public static partial class AnsiConsoleExtensions
                 }
 
                 continue;
+            }
+
+            if (key.Key == ConsoleKey.UpArrow && console.InputHistory.Count > 0)
+            {
+                if (_inputHistoryIndex.HasValue)
+                {
+                    _inputHistoryIndex = _inputHistoryIndex.Value != 0 ? _inputHistoryIndex - 1 : 0;
+                }
+                else
+                {
+                    _inputHistoryIndex = console.InputHistory.Count - 1;
+                    _inputReplacedByHistory = text;
+                }
+
+                var replace = console.InputHistory[_inputHistoryIndex.Value];
+                console.Write("\b \b".Repeat(text.Length), style);
+                console.Write(replace);
+                text = replace;
+                continue;
+            }
+
+            if (key.Key == ConsoleKey.DownArrow && console.InputHistory.Count > 0)
+            {
+                if (_inputHistoryIndex.HasValue)
+                {
+                    _inputHistoryIndex = _inputHistoryIndex.Value != console.InputHistory.Count - 1 ? _inputHistoryIndex + 1 : null;
+
+                    var replace = _inputHistoryIndex.HasValue ? console.InputHistory[_inputHistoryIndex.Value] : _inputReplacedByHistory;
+                    console.Write("\b \b".Repeat(text.Length), style);
+                    console.Write(replace);
+                    text = replace;
+                    continue;
+                }
             }
 
             if (!char.IsControl(key.KeyChar))

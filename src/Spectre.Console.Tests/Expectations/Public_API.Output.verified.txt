@@ -2129,6 +2129,7 @@
         Spectre.Console.IAnsiConsoleCursor Cursor { get; }
         Spectre.Console.IExclusivityMode ExclusivityMode { get; }
         Spectre.Console.IAnsiConsoleInput Input { get; }
+        System.Collections.Generic.List<string> InputHistory { get; }
         Spectre.Console.Rendering.RenderPipeline Pipeline { get; }
         Spectre.Console.Profile Profile { get; }
         void Clear(bool home);
@@ -2643,6 +2644,7 @@
         public Spectre.Console.IAnsiConsoleCursor Cursor { get; }
         public Spectre.Console.IExclusivityMode ExclusivityMode { get; }
         public Spectre.Console.IAnsiConsoleInput Input { get; }
+        public System.Collections.Generic.List<string> InputHistory { get; }
         public Spectre.Console.Rendering.RenderPipeline Pipeline { get; }
         public Spectre.Console.Profile Profile { get; }
         public void Clear(bool home) { }
