@@ -18,6 +18,91 @@ public sealed class TextPromptTests
     }
 
     [Fact]
+    public void Should_Add_Valid_Text_To_History()
+    {
+        // Given
+        var history = new PromptHistory();
+        var console = new TestConsole();
+        console.Input.PushTextWithEnter("Hello World");
+
+        // When
+        var result = console.Prompt(new TextPrompt<string>("Enter text:") { History = history });
+
+        // Then
+        result.ShouldBe("Hello World");
+        history.Entries.ShouldBe(new[] { "Hello World" });
+    }
+
+    [Fact]
+    public void Should_Not_Add_Invalid_Text_To_History()
+    {
+        // Given
+        var history = new PromptHistory();
+        var console = new TestConsole();
+        console.Input.PushTextWithEnter("bad");
+        console.Input.PushTextWithEnter("99");
+
+        // When
+        console.Prompt(new TextPrompt<int>("Age?") { History = history });
+
+        // Then
+        history.Entries.ShouldBe(new[] { "99" });
+    }
+
+    [Fact]
+    public void Should_Not_Add_Secret_Text_To_History_By_Default()
+    {
+        // Given
+        var history = new PromptHistory();
+        var console = new TestConsole();
+        console.Input.PushTextWithEnter("secret");
+
+        // When
+        var result = console.Prompt(new TextPrompt<string>("Password?") { History = history }.Secret());
+
+        // Then
+        result.ShouldBe("secret");
+        history.Entries.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public void Should_Cycle_Through_History_With_Arrow_Keys()
+    {
+        // Given
+        var history = new PromptHistory();
+        history.Add("first");
+        history.Add("second");
+
+        var console = new TestConsole();
+        console.Input.PushKey(ConsoleKey.UpArrow);
+        console.Input.PushKey(ConsoleKey.UpArrow);
+        console.Input.PushKey(ConsoleKey.DownArrow);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var result = console.Prompt(new TextPrompt<string>("Enter text:") { History = history });
+
+        // Then
+        result.ShouldBe("second");
+    }
+
+    [Fact]
+    public void Should_Store_Confirmation_Input_In_History()
+    {
+        // Given
+        var history = new PromptHistory();
+        var console = new TestConsole();
+        console.Input.PushTextWithEnter("y");
+
+        // When
+        var result = console.Prompt(new ConfirmationPrompt("Continue?") { History = history });
+
+        // Then
+        result.ShouldBe(true);
+        history.Entries.ShouldBe(new[] { "y" });
+    }
+
+    [Fact]
     [Expectation("ConversionError")]
     public Task Should_Return_Validation_Error_If_Value_Cannot_Be_Converted()
     {

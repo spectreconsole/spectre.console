@@ -40,14 +40,12 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
     public bool ShowDefaultValue { get; set; } = true;
 
     /// <summary>
-    /// Gets or sets the style in which the default value is displayed.
-    /// Defaults to green when <see langword="null"/>.
+    /// Gets or sets the style in which the default value is displayed. Defaults to green when <see langword="null"/>.
     /// </summary>
     public Style? DefaultValueStyle { get; set; }
 
     /// <summary>
-    /// Gets or sets the style in which the list of choices is displayed.
-    /// Defaults to blue when <see langword="null"/>.
+    /// Gets or sets the style in which the list of choices is displayed. Defaults to blue when <see langword="null"/>.
     /// </summary>
     public Style? ChoicesStyle { get; set; }
 
@@ -56,6 +54,11 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
     /// enter key is required after input
     /// </summary>
     public bool RequireEnter { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the prompt history.
+    /// </summary>
+    public PromptHistory? History { get; set; } = PromptHistory.Default;
 
     /// <summary>
     /// Gets or sets the string comparer to use when comparing user input
@@ -95,6 +98,7 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
             .DefaultValue(DefaultValue ? Yes : No)
             .DefaultValueStyle(DefaultValueStyle)
             .UseInputHandler(RequireEnter ? null : SingleKeyInputHandler)
+            .History(History)
             .AddChoice(Yes)
             .AddChoice(No);
 
@@ -106,8 +110,9 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
     private static async Task<string> SingleKeyInputHandler(
         IAnsiConsole console, Style? style, bool secret,
         char? mask, IEnumerable<string>? items = null,
-        string? initialInput = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        string? initialInput = null, PromptHistory? history = null
+        )
     {
         var key = await console.Input.ReadKeyAsync(true, cancellationToken);
         if (key != null)
