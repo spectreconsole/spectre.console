@@ -11,6 +11,7 @@ internal sealed class AnsiConsoleFacade : IAnsiConsole
     public IAnsiConsoleInput Input { get; }
     public IExclusivityMode ExclusivityMode { get; }
     public RenderPipeline Pipeline { get; }
+    public List<string> InputHistory { get; }
 
     public AnsiConsoleFacade(Profile profile, IExclusivityMode exclusivityMode)
     {
@@ -18,6 +19,7 @@ internal sealed class AnsiConsoleFacade : IAnsiConsole
         Input = new DefaultInput(Profile);
         ExclusivityMode = exclusivityMode ?? throw new ArgumentNullException(nameof(exclusivityMode));
         Pipeline = new RenderPipeline();
+        InputHistory = [];
 
         _renderLock = new object();
         _ansiBackend = new AnsiConsoleBackend(this);
