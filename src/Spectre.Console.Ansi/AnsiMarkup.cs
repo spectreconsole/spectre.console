@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace Spectre.Console;
 
 /// <summary>
@@ -25,7 +27,14 @@ public sealed class AnsiMarkup
     {
         foreach (var segment in Parse(markup, style))
         {
-            _writer.Write(segment.Text, segment.Style, segment.Link);
+            if (segment.IsControlCode)
+            {
+                _writer.Write(segment.Text);
+            }
+            else
+            {
+                _writer.Write(segment.Text, segment.Style, segment.Link);
+            }
         }
     }
 
@@ -64,6 +73,12 @@ public sealed class AnsiMarkup
 
             if (token.Kind == MarkupTokenKind.Open)
             {
+                if (token.Value.StartsWith("clear:", StringComparison.OrdinalIgnoreCase))
+                {
+                    result.Add(AnsiMarkupSegment.Control(ParseClearDirective(token.Value)));
+                    continue;
+                }
+
                 var parsed = AnsiMarkupTagParser.Parse(token.Value);
                 linkStack.Push(link);
                 link = parsed.Link ?? link;
@@ -83,7 +98,7 @@ public sealed class AnsiMarkup
             }
             else if (token.Kind == MarkupTokenKind.Text)
             {
-                if (result.Count > 0 && result[^1].Style.Equals(style) && Equals(result[^1].Link, link))
+                if (result.Count > 0 && !result[^1].IsControlCode && result[^1].Style.Equals(style) && Equals(result[^1].Link, link))
                 {
                     // Merge segments with same style and link
                     result[^1].Text += token.Value;
@@ -107,6 +122,44 @@ public sealed class AnsiMarkup
         }
 
         return result;
+    }
+
+    private static string ParseClearDirective(string text)
+    {
+        if (!text.StartsWith("clear:", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException($"Could not parse clear directive '{text}'.");
+        }
+
+        var value = text[6..].Trim();
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw new InvalidOperationException($"Could not parse clear directive '{text}'.");
+        }
+
+        var normalized = value.ToLowerInvariant();
+        return normalized switch
+        {
+            "to eol" or "eol" => "\x1B[K",
+            "line" or "entire line" or "entireline" => "\x1B[2K",
+            "to eos" or "eos" => "\x1B[0J",
+            "screen" or "entire screen" or "entirescreen" or "full screen" => "\x1B[H\x1B[2J",
+            _ => ParseClearRowDirective(value),
+        };
+    }
+
+    private static string ParseClearRowDirective(string value)
+    {
+        if (value.Length > 0 && value[0] == '#')
+        {
+            var rowText = value[1..].Trim();
+            if (int.TryParse(rowText, NumberStyles.Integer, CultureInfo.InvariantCulture, out var row) && row > 0)
+            {
+                return $"\x1B[{row};1H";
+            }
+        }
+
+        throw new InvalidOperationException($"Could not parse clear directive 'clear:{value}'.");
     }
 
     /// <summary>
@@ -186,16 +239,33 @@ public sealed class AnsiMarkupSegment
     public Link? Link { get; }
 
     /// <summary>
+    /// Gets a value indicating whether the segment contains control codes.
+    /// </summary>
+    public bool IsControlCode { get; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="AnsiMarkupSegment"/> class.
     /// </summary>
     /// <param name="text">The text.</param>
     /// <param name="style">The style.</param>
     /// <param name="link">The link.</param>
-    public AnsiMarkupSegment(string text, Style style, Link? link)
+    /// <param name="isControlCode">Whether this segment represents control codes.</param>
+    public AnsiMarkupSegment(string text, Style style, Link? link, bool isControlCode = false)
     {
         Text = text;
         Style = style;
         Link = link;
+        IsControlCode = isControlCode;
+    }
+
+    /// <summary>
+    /// Creates a new segment for raw control codes.
+    /// </summary>
+    /// <param name="control">The control code text.</param>
+    /// <returns>The control segment.</returns>
+    public static AnsiMarkupSegment Control(string control)
+    {
+        return new AnsiMarkupSegment(control, Style.Plain, null, true);
     }
 
     /// <inheritdoc />
@@ -328,6 +398,7 @@ file sealed class MarkupTokenizer : IDisposable
         // Read the "content" of the markup until we find the end-of-markup
         var builder = new StringBuilder();
         var currentStylePartCanContainMarkup = false;
+        var closed = false;
         while (!_reader.Eof)
         {
             var current = _reader.Read();
@@ -337,6 +408,7 @@ file sealed class MarkupTokenizer : IDisposable
                 if (!currentStylePartCanContainMarkup || _reader.Peek() != ']')
                 {
                     // Not parsing a link or not escaped. Markup closed
+                    closed = true;
                     break;
                 }
 
@@ -370,7 +442,7 @@ file sealed class MarkupTokenizer : IDisposable
             }
         }
 
-        if (_reader.Eof)
+        if (!closed)
         {
             ThrowMalformed(_reader.Position);
         }

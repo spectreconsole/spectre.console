@@ -95,6 +95,24 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
         return this;
     }
 
+    /// <summary>
+    /// Appends raw control codes to the paragraph.
+    /// </summary>
+    /// <param name="control">The control code text.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public Paragraph AppendControl(string control)
+    {
+        ArgumentNullException.ThrowIfNull(control);
+
+        if (_lines.Count == 0)
+        {
+            _lines.Add(new SegmentLine());
+        }
+
+        _lines[^1].Add(Segment.Control(control));
+        return this;
+    }
+
     /// <inheritdoc/>
     protected override Measurement Measure(RenderOptions options, int maxWidth)
     {

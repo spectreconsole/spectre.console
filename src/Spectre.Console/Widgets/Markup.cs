@@ -42,7 +42,14 @@ public sealed class Markup : Renderable, IHasJustification, IOverflowable
         _paragraph = new Paragraph();
         foreach (var segment in AnsiMarkup.Parse(text, style))
         {
-            _paragraph.Append(Emoji.Replace(segment.Text), segment.Style, segment.Link);
+            if (segment.IsControlCode)
+            {
+                _paragraph.AppendControl(segment.Text);
+            }
+            else
+            {
+                _paragraph.Append(Emoji.Replace(segment.Text), segment.Style, segment.Link);
+            }
         }
     }
 
