@@ -393,6 +393,7 @@
         public static Spectre.Console.ConfirmationPrompt DefaultValueStyle(this Spectre.Console.ConfirmationPrompt obj, Spectre.Console.Style? style) { }
         public static Spectre.Console.ConfirmationPrompt HideChoices(this Spectre.Console.ConfirmationPrompt obj) { }
         public static Spectre.Console.ConfirmationPrompt HideDefaultValue(this Spectre.Console.ConfirmationPrompt obj) { }
+        public static Spectre.Console.ConfirmationPrompt History(this Spectre.Console.ConfirmationPrompt obj, Spectre.Console.PromptHistory? history) { }
         public static Spectre.Console.ConfirmationPrompt InvalidChoiceMessage(this Spectre.Console.ConfirmationPrompt obj, string message) { }
         public static Spectre.Console.ConfirmationPrompt No(this Spectre.Console.ConfirmationPrompt obj, char character) { }
         public static Spectre.Console.ConfirmationPrompt RequireEnter(this Spectre.Console.ConfirmationPrompt obj, bool require = true) { }
