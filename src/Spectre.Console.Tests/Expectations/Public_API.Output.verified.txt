@@ -2495,6 +2495,7 @@
         public int Lines { get; }
         public Spectre.Console.Overflow? Overflow { get; set; }
         public Spectre.Console.Paragraph Append(string text, Spectre.Console.Style? style = default, Spectre.Console.Link? link = null) { }
+        public Spectre.Console.Paragraph AppendControl(string control) { }
         protected override Spectre.Console.Rendering.Measurement Measure(Spectre.Console.Rendering.RenderOptions options, int maxWidth) { }
         protected override System.Collections.Generic.IEnumerable<Spectre.Console.Rendering.Segment> Render(Spectre.Console.Rendering.RenderOptions options, int maxWidth) { }
     }
