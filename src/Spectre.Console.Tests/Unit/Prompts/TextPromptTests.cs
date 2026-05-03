@@ -24,7 +24,6 @@ public sealed class TextPromptTests
         var history = new PromptHistory();
         var console = new TestConsole();
         console.Input.PushTextWithEnter("Hello World");
-
         // When
         var result = console.Prompt(new TextPrompt<string>("Enter text:") { History = history });
 
