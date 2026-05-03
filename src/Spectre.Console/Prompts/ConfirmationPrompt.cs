@@ -284,4 +284,18 @@ public static class ConfirmationPromptExtensions
         obj.RequireEnter = require;
         return obj;
     }
+
+    /// <summary>
+    /// Uses the provided prompt history for this prompt.
+    /// </summary>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="history">The prompt history instance.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static ConfirmationPrompt History(this ConfirmationPrompt obj, PromptHistory? history)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+
+        obj.History = history;
+        return obj;
+    }
 }
