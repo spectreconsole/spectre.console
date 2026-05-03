@@ -254,6 +254,108 @@ public sealed class AnsiMarkupTests
                 .ShouldBe(expected);
         }
 
+        [Theory]
+        [InlineData("[clear:to eol]", "\x1B[K")]
+        [InlineData("[clear:eol]", "\x1B[K")]
+        [InlineData("[clear:screen]", "\x1B[H\x1B[2J")]
+        [InlineData("[clear:to eos]", "\x1B[0J")]
+        [InlineData("[clear:#23]", "\x1B[23;1H")]
+        public void Should_Output_Expected_Ansi_For_Clear_Directives(string text, string expected)
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            fixture.Markup.Write(text);
+
+            // Then
+            fixture.Output
+                .ShouldBe(expected);
+        }
+
+        [Theory]
+        [InlineData("[move:to 10]", "\x1B[10;1H")]
+        [InlineData("[move:10;20]", "\x1B[10;20H")]
+        [InlineData("[move:up 3]", "\x1B[3A")]
+        [InlineData("[move:down 4]", "\x1B[4B")]
+        [InlineData("[move:right 5]", "\x1B[5C")]
+        [InlineData("[move:left 2]", "\x1B[2D")]
+        [InlineData("[move:home]", "\x1B[H")]
+        public void Should_Output_Expected_Ansi_For_Move_Directives(string text, string expected)
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            fixture.Markup.Write(text);
+
+            // Then
+            fixture.Output
+                .ShouldBe(expected);
+        }
+
+        [Theory]
+        [InlineData("[move:up blue]")]
+        [InlineData("[move:down abc]")]
+        [InlineData("[move:left -5]")]
+        [InlineData("[move:to]")]
+        [InlineData("[move:to -1]")]
+        [InlineData("[move:to 0]")]
+        [InlineData("[move:a;b]")]
+        [InlineData("[move:10;0]")]
+        [InlineData("[move:0;10]")]
+        [InlineData("[move:-1;5]")]
+        [InlineData("[move:1;-5]")]
+        [InlineData("[move:]]")]
+        [InlineData("[move:unknown]")]
+        public void Should_Throw_For_Invalid_Move_Directives(string text)
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            var exception = Record.Exception(() => fixture.Markup.Write(text));
+
+            // Then
+            exception.ShouldNotBeNull();
+            exception.ShouldBeOfType<InvalidOperationException>();
+            exception.Message.ShouldContain("Could not parse move directive");
+        }
+
+        [Theory]
+        [InlineData("[escnext][clear:to eol]", "")]
+        [InlineData("[escnext][move:up 2]", "")]
+        [InlineData("[escnext][escnext]", "[escnext]")]
+        public void Should_Skip_Self_Closing_Markup_When_Escaped(string text, string expected)
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            fixture.Markup.Write(text);
+
+            // Then
+            fixture.Output
+                .ShouldBe(expected);
+        }
+
+        [Theory]
+        [InlineData("[wnext][clear:to eol]", "[clear:to eol]")]
+        [InlineData("[wnext][move:up 2]", "[move:up 2]")]
+        [InlineData("[wnext][wnext]", "[wnext]")]
+        public void Should_Write_Next_Markup_As_Raw_Text_When_Wnext(string text, string expected)
+        {
+            // Given
+            var fixture = new AnsiFixture();
+
+            // When
+            fixture.Markup.Write(text);
+
+            // Then
+            fixture.Output
+                .ShouldBe(expected);
+        }
+
         [Fact]
         public void Should_Output_Expected_Ansi_For_Link_With_Url_And_Text()
         {
