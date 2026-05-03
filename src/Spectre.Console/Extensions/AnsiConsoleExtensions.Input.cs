@@ -5,7 +5,8 @@ namespace Spectre.Console;
 /// </summary>
 public static partial class AnsiConsoleExtensions
 {
-    internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, char? mask, IEnumerable<string>? items = null, CancellationToken cancellationToken = default, string? initialInput = null)
+    internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, char? mask,
+        IEnumerable<string>? items = null, string? initialInput = null, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(console);
 
@@ -98,7 +99,8 @@ public static partial class AnsiConsoleExtensions
         }
     }
 
-    private static string AutoComplete(List<string> autocomplete, string text, AutoCompleteDirection autoCompleteDirection)
+    private static string AutoComplete(List<string> autocomplete, string text,
+        AutoCompleteDirection autoCompleteDirection)
     {
         var found = autocomplete.Find(i => i == text);
         var replace = string.Empty;
@@ -126,7 +128,8 @@ public static partial class AnsiConsoleExtensions
         return replace;
     }
 
-    private static string GetAutocompleteValue(AutoCompleteDirection autoCompleteDirection, IList<string> autocomplete, string found)
+    private static string GetAutocompleteValue(AutoCompleteDirection autoCompleteDirection, IList<string> autocomplete,
+        string found)
     {
         var foundAutocompleteIndex = autocomplete.IndexOf(found);
         var index = autoCompleteDirection switch

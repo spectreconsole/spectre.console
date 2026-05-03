@@ -333,4 +333,13 @@ public static class TextPromptExtensions
         obj.ClearOnFinish = clear;
         return obj;
     }
+
+    internal static TextPrompt<T> UseInputHandler<T>(
+        this TextPrompt<T> obj, TextPromptInputHandler? inputHandler)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+
+        obj.InputHandler = inputHandler;
+        return obj;
+    }
 }

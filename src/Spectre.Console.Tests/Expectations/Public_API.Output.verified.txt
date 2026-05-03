@@ -379,6 +379,7 @@
         public Spectre.Console.Style? DefaultValueStyle { get; set; }
         public string InvalidChoiceMessage { get; set; }
         public char No { get; set; }
+        public bool RequireEnter { get; set; }
         public bool ShowChoices { get; set; }
         public bool ShowDefaultValue { get; set; }
         public char Yes { get; set; }
@@ -393,6 +394,7 @@
         public static Spectre.Console.ConfirmationPrompt HideDefaultValue(this Spectre.Console.ConfirmationPrompt obj) { }
         public static Spectre.Console.ConfirmationPrompt InvalidChoiceMessage(this Spectre.Console.ConfirmationPrompt obj, string message) { }
         public static Spectre.Console.ConfirmationPrompt No(this Spectre.Console.ConfirmationPrompt obj, char character) { }
+        public static Spectre.Console.ConfirmationPrompt RequireEnter(this Spectre.Console.ConfirmationPrompt obj, bool require = true) { }
         public static Spectre.Console.ConfirmationPrompt ShowChoices(this Spectre.Console.ConfirmationPrompt obj) { }
         public static Spectre.Console.ConfirmationPrompt ShowChoices(this Spectre.Console.ConfirmationPrompt obj, bool show) { }
         public static Spectre.Console.ConfirmationPrompt ShowDefaultValue(this Spectre.Console.ConfirmationPrompt obj) { }

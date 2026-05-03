@@ -96,10 +96,8 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     /// </summary>
     public Style? ChoicesStyle { get; set; }
 
-    /// <summary>
-    /// Gets or sets the default value.
-    /// </summary>
     internal DefaultPromptValue<T>? DefaultValue { get; set; }
+    internal TextPromptInputHandler? InputHandler { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TextPrompt{T}"/> class.
@@ -134,6 +132,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
             var choices = Choices.Select(choice => converter(choice)).ToList();
             var choiceMap = Choices.ToDictionary(choice => converter(choice), choice => choice, _comparer);
+            var inputhandler = InputHandler ?? AnsiConsoleExtensions.ReadLine;
 
             WritePrompt(console);
 
@@ -142,14 +141,16 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
                 string input;
                 if (EditableDefaultValue && DefaultValue != null)
                 {
-                    input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken, converter(DefaultValue.Value)).ConfigureAwait(false);
+                    input = await inputhandler(console, promptStyle, IsSecret, Mask, choices,
+                            converter(DefaultValue.Value), cancellationToken)
+                        .ConfigureAwait(false);
                 }
                 else
                 {
-                    input = await console.ReadLine(promptStyle, IsSecret, Mask, choices, cancellationToken).ConfigureAwait(false);
+                    input = await inputhandler(console, promptStyle, IsSecret, Mask, choices,
+                            null, cancellationToken)
+                        .ConfigureAwait(false);
                 }
-
-
 
                 // Nothing entered?
                 if (string.IsNullOrWhiteSpace(input))
@@ -187,7 +188,8 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
                         continue;
                     }
                 }
-                else if (!TypeConverterHelper.TryConvertFromStringWithCulture<T>(input, Culture, out result) || result == null)
+                else if (!TypeConverterHelper.TryConvertFromStringWithCulture<T>(input, Culture, out result) ||
+                         result == null)
                 {
                     console.MarkupLine(ValidationErrorMessage);
                     WritePrompt(console);
