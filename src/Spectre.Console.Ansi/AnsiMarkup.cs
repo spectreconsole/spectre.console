@@ -66,6 +66,8 @@ public sealed class AnsiMarkup
         var styleStack = new Stack<Style>();
         var linkStack = new Stack<Link?>();
         var link = default(Link?);
+        var skipNextSelfClosingMarkup = false;
+        var writeNextAsRaw = false;
 
         while (tokenizer.MoveNext())
         {
@@ -73,9 +75,46 @@ public sealed class AnsiMarkup
 
             if (token.Kind == MarkupTokenKind.Open)
             {
+                if (writeNextAsRaw)
+                {
+                    result.Add(new AnsiMarkupSegment($"[{token.Value}]", style.Value, null));
+                    writeNextAsRaw = false;
+                    continue;
+                }
+
+                if (token.Value.Equals("escnext", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (skipNextSelfClosingMarkup)
+                    {
+                        result.Add(new AnsiMarkupSegment("[escnext]", style.Value, null));
+                        skipNextSelfClosingMarkup = false;
+                        continue;
+                    }
+                    skipNextSelfClosingMarkup = true;
+                    continue;
+                }
+
+                if (token.Value.Equals("wnext", StringComparison.OrdinalIgnoreCase))
+                {
+                    writeNextAsRaw = true;
+                    continue;
+                }
+
+                if (skipNextSelfClosingMarkup)
+                {
+                    skipNextSelfClosingMarkup = false;
+                    continue;
+                }
+
                 if (token.Value.StartsWith("clear:", StringComparison.OrdinalIgnoreCase))
                 {
                     result.Add(AnsiMarkupSegment.Control(ParseClearDirective(token.Value)));
+                    continue;
+                }
+
+                if (token.Value.StartsWith("move:", StringComparison.OrdinalIgnoreCase))
+                {
+                    result.Add(AnsiMarkupSegment.Control(ParseMoveDirective(token.Value)));
                     continue;
                 }
 
@@ -160,6 +199,72 @@ public sealed class AnsiMarkup
         }
 
         throw new InvalidOperationException($"Could not parse clear directive 'clear:{value}'.");
+    }
+
+    private static string ParseMoveDirective(string text)
+    {
+        if (!text.StartsWith("move:", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException($"Could not parse move directive '{text}'.");
+        }
+
+        var value = text[5..].Trim();
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw new InvalidOperationException($"Could not parse move directive '{text}'.");
+        }
+
+        var normalized = value.ToLowerInvariant();
+        return normalized switch
+        {
+            "home" or "origin" => "\x1B[H",
+            _ when normalized.StartsWith("to ") => ParseMoveToDirective(normalized[3..].Trim()),
+            _ when normalized.StartsWith("up ") => ParseMoveRelativeDirective(normalized[3..].Trim(), 'A'),
+            _ when normalized.StartsWith("down ") => ParseMoveRelativeDirective(normalized[5..].Trim(), 'B'),
+            _ when normalized.StartsWith("left ") => ParseMoveRelativeDirective(normalized[5..].Trim(), 'D'),
+            _ when normalized.StartsWith("right ") => ParseMoveRelativeDirective(normalized[6..].Trim(), 'C'),
+            _ when normalized.StartsWith("forward ") => ParseMoveRelativeDirective(normalized[8..].Trim(), 'C'),
+            _ when normalized.StartsWith("backward ") => ParseMoveRelativeDirective(normalized[9..].Trim(), 'D'),
+            _ when normalized.Contains(';') => ParseMoveToDirective(normalized),
+            _ when int.TryParse(normalized, NumberStyles.Integer, CultureInfo.InvariantCulture, out var row) && row > 0 => $"\x1B[{row};1H",
+            _ => throw new InvalidOperationException($"Could not parse move directive 'move:{value}'."),
+        };
+    }
+
+    private static string ParseMoveToDirective(string value)
+    {
+        if (value.Contains(';'))
+        {
+            var parts = value.Split(';', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length == 2 &&
+                int.TryParse(parts[0].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var row) && row > 0 &&
+                int.TryParse(parts[1].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var column) && column > 0)
+            {
+                return $"\x1B[{row};{column}H";
+            }
+        }
+
+        if (int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var singleRow) && singleRow > 0)
+        {
+            return $"\x1B[{singleRow};1H";
+        }
+
+        throw new InvalidOperationException($"Could not parse move directive 'move:{value}'.");
+    }
+
+    private static string ParseMoveRelativeDirective(string value, char direction)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return $"\x1B[1{direction}";
+        }
+
+        if (int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var steps) && steps >= 0)
+        {
+            return $"\x1B[{steps}{direction}";
+        }
+
+        throw new InvalidOperationException($"Could not parse move directive 'move:{value}'.");
     }
 
     /// <summary>
