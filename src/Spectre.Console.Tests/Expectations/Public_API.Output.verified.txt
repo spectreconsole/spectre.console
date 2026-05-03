@@ -383,6 +383,8 @@
         public bool ShowDefaultValue { get; set; }
         public char Yes { get; set; }
         public bool Show(Spectre.Console.IAnsiConsole console) { }
+        public System.Threading.Tasks.Task<bool> ShowAsRenderableAsync(Spectre.Console.IAnsiConsole console, System.Threading.CancellationToken cancellationToken) { }
+        public System.Threading.Tasks.Task<bool> ShowAsRenderableAsync(Spectre.Console.IAnsiConsole console, Spectre.Console.Rendering.IRenderable? wrapper, System.Threading.CancellationToken cancellationToken) { }
         public System.Threading.Tasks.Task<bool> ShowAsync(Spectre.Console.IAnsiConsole console, System.Threading.CancellationToken cancellationToken) { }
     }
     public static class ConfirmationPromptExtensions
@@ -2384,6 +2386,8 @@
         public T? GetParent(T item) { }
         public System.Collections.Generic.IEnumerable<T> GetParents(T item) { }
         public System.Collections.Generic.List<T> Show(Spectre.Console.IAnsiConsole console) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<T>> ShowAsRenderableAsync(Spectre.Console.IAnsiConsole console, System.Threading.CancellationToken cancellationToken) { }
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<T>> ShowAsRenderableAsync(Spectre.Console.IAnsiConsole console, System.Func<Spectre.Console.Rendering.IRenderable, Spectre.Console.Rendering.IRenderable>? wrapper, System.Threading.CancellationToken cancellationToken) { }
         public System.Threading.Tasks.Task<System.Collections.Generic.List<T>> ShowAsync(Spectre.Console.IAnsiConsole console, System.Threading.CancellationToken cancellationToken) { }
     }
     public enum Overflow
@@ -2761,6 +2765,8 @@
         public bool WrapAround { get; set; }
         public Spectre.Console.ISelectionItem<T> AddChoice(T item) { }
         public T Show(Spectre.Console.IAnsiConsole console) { }
+        public System.Threading.Tasks.Task<T> ShowAsRenderableAsync(Spectre.Console.IAnsiConsole console, System.Threading.CancellationToken cancellationToken) { }
+        public System.Threading.Tasks.Task<T> ShowAsRenderableAsync(Spectre.Console.IAnsiConsole console, System.Func<Spectre.Console.Rendering.IRenderable, Spectre.Console.Rendering.IRenderable>? wrapper, System.Threading.CancellationToken cancellationToken) { }
         public System.Threading.Tasks.Task<T> ShowAsync(Spectre.Console.IAnsiConsole console, System.Threading.CancellationToken cancellationToken) { }
     }
     [System.Diagnostics.DebuggerDisplay("{Width,nq}x{Height,nq}")]
@@ -3134,7 +3140,7 @@
         public static Spectre.Console.TextPrompt<T> ValidationErrorMessage<T>(this Spectre.Console.TextPrompt<T> obj, string message) { }
         public static Spectre.Console.TextPrompt<T> WithConverter<T>(this Spectre.Console.TextPrompt<T> obj, System.Func<T, string>? displaySelector) { }
     }
-    public sealed class TextPrompt<T> : Spectre.Console.IHasCulture, Spectre.Console.IPrompt<T>
+    public sealed class TextPrompt<T> : Spectre.Console.IHasCulture, Spectre.Console.IPrompt<T>, Spectre.Console.Rendering.IRenderable
     {
         public TextPrompt(string prompt, System.StringComparer? comparer = null) { }
         public bool AllowEmpty { get; set; }
@@ -3153,7 +3159,11 @@
         public bool ShowDefaultValue { get; set; }
         public string ValidationErrorMessage { get; set; }
         public System.Func<T, Spectre.Console.ValidationResult>? Validator { get; set; }
+        public Spectre.Console.Rendering.Measurement Measure(Spectre.Console.Rendering.RenderOptions options, int maxWidth) { }
+        public System.Collections.Generic.IEnumerable<Spectre.Console.Rendering.Segment> Render(Spectre.Console.Rendering.RenderOptions options, int maxWidth) { }
         public T Show(Spectre.Console.IAnsiConsole console) { }
+        public System.Threading.Tasks.Task<T> ShowAsRenderableAsync(Spectre.Console.IAnsiConsole console, System.Threading.CancellationToken cancellationToken) { }
+        public System.Threading.Tasks.Task<T> ShowAsRenderableAsync(Spectre.Console.IAnsiConsole console, Spectre.Console.Rendering.IRenderable? wrapper, System.Threading.CancellationToken cancellationToken) { }
         public System.Threading.Tasks.Task<T> ShowAsync(Spectre.Console.IAnsiConsole console, System.Threading.CancellationToken cancellationToken) { }
     }
     public sealed class TransferSpeedColumn : Spectre.Console.ProgressColumn
