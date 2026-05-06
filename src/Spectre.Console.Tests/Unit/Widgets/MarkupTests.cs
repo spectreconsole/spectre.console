@@ -174,4 +174,51 @@ public sealed class MarkupTests
 └─────────────────┘
 ".NormalizeLineEndings());
     }
+    [Fact]
+    public void MarkupInterpolated_Should_Not_Throw_When_Object_ToString_Contains_Brackets()
+    {
+        // Given
+        var console = new TestConsole();
+        var obj = new CoolThing();
+
+        // When
+        Exception ex = Record.Exception(() => console.MarkupInterpolated($"This is a {obj}"));
+
+        // Then
+        ex.ShouldBeNull();
+        console.Output.NormalizeLineEndings().ShouldBe("This is a This[contains, braces].");
+    }
+
+    [Fact]
+    public void MarkupInterpolated_Should_Preserve_Null_For_Custom_Formatter()
+    {
+        // Given
+        var console = new TestConsole();
+        string? value = null;
+
+        // When
+        Exception ex = Record.Exception(() => console.MarkupInterpolated(new NullAwareFormatProvider(), $"Value: {value}"));
+
+        // Then
+        ex.ShouldBeNull();
+        console.Output.NormalizeLineEndings().ShouldBe("Value: <null>");
+    }
+
+    private class CoolThing
+    {
+        public override string ToString() => "This[contains, braces].";
+    }
+
+    private sealed class NullAwareFormatProvider : IFormatProvider, ICustomFormatter
+    {
+        public object? GetFormat(Type? formatType)
+        {
+            return formatType == typeof(ICustomFormatter) ? this : null;
+        }
+
+        public string Format(string? format, object? arg, IFormatProvider? formatProvider)
+        {
+            return arg is null ? "<null>" : arg.ToString() ?? string.Empty;
+        }
+    }
 }

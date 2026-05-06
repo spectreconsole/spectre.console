@@ -107,7 +107,15 @@ public sealed class Markup : Renderable, IHasJustification, IOverflowable
 
     internal static string EscapeInterpolated(IFormatProvider provider, FormattableString value)
     {
-        object?[] args = value.GetArguments().Select(arg => arg is string s ? s.EscapeMarkup() : arg).ToArray();
+        object?[] args = value.GetArguments()
+            .Select(arg => arg switch
+            {
+                null => null,
+                string text => text.EscapeMarkup(),
+                IFormattable => arg,
+                _ => arg.ToString()?.EscapeMarkup(),
+            })
+            .ToArray();
         return string.Format(provider, value.Format, args);
     }
 }
