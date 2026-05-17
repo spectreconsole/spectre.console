@@ -677,4 +677,68 @@ public sealed class TextPromptTests
         // Then
         result.ShouldBeEquivalentTo(ValidationResult.Success());
     }
+
+    [Fact]
+    public void Validate_MixedOverloads_WithThreeValidators_Returns_ThirdValidationError()
+    {
+        // Given
+        var prompt = new TextPrompt<string>("Enter:");
+        var secondInvoked = false;
+        var thirdInvoked = false;
+
+        prompt
+            .Validate(s => s.Length >= 3, "too short")
+            .Validate(s =>
+            {
+                secondInvoked = true;
+                return s.Contains("a")
+                    ? ValidationResult.Success()
+                    : ValidationResult.Error("missing a");
+            })
+            .Validate(s =>
+            {
+                thirdInvoked = true;
+                return s.EndsWith("z");
+            }, "must end with z");
+
+        // When
+        var result = prompt.Validator?.Invoke("abc");
+
+        // Then
+        result.ShouldBeEquivalentTo(ValidationResult.Error("must end with z"));
+        secondInvoked.ShouldBeTrue();
+        thirdInvoked.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void Validate_MixedOverloads_WithThreeValidators_Returns_Success_When_All_Validators_Pass()
+    {
+        // Given
+        var prompt = new TextPrompt<string>("Enter:");
+        var secondInvoked = false;
+        var thirdInvoked = false;
+
+        prompt
+            .Validate(s => s.Length >= 3, "too short")
+            .Validate(s =>
+            {
+                secondInvoked = true;
+                return s.Contains("a")
+                    ? ValidationResult.Success()
+                    : ValidationResult.Error("missing a");
+            })
+            .Validate(s =>
+            {
+                thirdInvoked = true;
+                return s.EndsWith("z");
+            }, "must end with z");
+
+        // When
+        var result = prompt.Validator?.Invoke("abz");
+
+        // Then
+        result.ShouldBeEquivalentTo(ValidationResult.Success());
+        secondInvoked.ShouldBeTrue();
+        thirdInvoked.ShouldBeTrue();
+    }
 }
