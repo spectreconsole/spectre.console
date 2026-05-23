@@ -133,6 +133,22 @@ public sealed class GridTests
     }
 
     [Fact]
+    [Expectation("Render_Expanded")]
+    public Task Should_Render_Grid_Expanded_If_Set()
+    {
+        var console = new TestConsole().Width(20);
+        var grid = new Grid().Expand();
+        grid.AddColumns(2);
+        grid.AddRow(new Text("Hello"), new Text("World").RightJustified());
+
+        // When
+        console.Write(grid);
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
     [Expectation("Render_Alignment")]
     public Task Should_Render_Grid_Column_Alignment_Correctly()
     {
