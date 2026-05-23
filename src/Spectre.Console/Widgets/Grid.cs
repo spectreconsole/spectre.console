@@ -104,6 +104,7 @@ public sealed class Grid : JustInTimeRenderable, IExpandable
     {
         var table = new Table
         {
+            Expand = Expand,
             Border = TableBorder.None,
             ShowHeaders = false,
             IsGrid = true,
@@ -163,7 +164,6 @@ public static class GridExtensions
     public static Grid AddColumns(this Grid grid, params GridColumn[] columns)
     {
         ArgumentNullException.ThrowIfNull(grid);
-
         ArgumentNullException.ThrowIfNull(columns);
 
         foreach (var column in columns)
@@ -199,7 +199,6 @@ public static class GridExtensions
     public static Grid AddRow(this Grid grid, params string[] columns)
     {
         ArgumentNullException.ThrowIfNull(grid);
-
         ArgumentNullException.ThrowIfNull(columns);
 
         grid.AddRow(columns.Select(column => new Markup(column)).ToArray());
