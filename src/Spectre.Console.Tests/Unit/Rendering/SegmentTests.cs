@@ -30,7 +30,8 @@ public sealed class SegmentTests
         {
             // Given
             var style = new Style(Color.Red, Color.Green, Decoration.Bold);
-            var segment = new Segment(text, style);
+            var link = new Link("https://example.com");
+            var segment = new Segment(text, style, link);
 
             // When
             var (first, second) = segment.Split(offset);
@@ -38,8 +39,10 @@ public sealed class SegmentTests
             // Then
             first.Text.ShouldBe(expectedFirst);
             first.Style.ShouldBe(style);
+            first.Link.ShouldBe(link);
             second?.Text.ShouldBe(expectedSecond);
             second?.Style.ShouldBe(style);
+            second?.Link.ShouldBe(link);
         }
     }
 
@@ -266,6 +269,95 @@ public sealed class SegmentTests
             result.Count.ShouldBe(1);
             result[0].CellCount().ShouldBeLessThanOrEqualTo(10);
             result[0].Text.EndsWith("…", StringComparison.Ordinal).ShouldBeFalse();
+        }
+    }
+
+    public sealed class LinkPreservation
+    {
+        private static readonly Link _link = new("https://example.com/readme.md");
+
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2124")]
+        public void Should_Preserve_Link_When_Splitting_Lines_By_Width()
+        {
+            // Given
+            var segment = new Segment("abcdefghijklmnop", Style.Plain, _link);
+
+            // When
+            var lines = Segment.SplitLines([segment], maxWidth: 4);
+
+            // Then
+            lines.Count.ShouldBeGreaterThan(1);
+            lines.ShouldAllBe(line => line.All(p => p.Link == _link));
+        }
+
+        [Fact]
+        public void Should_Preserve_Link_When_Folding_Overflow()
+        {
+            // Given
+            var segment = new Segment("abcdefghijklmnop", Style.Plain, _link);
+
+            // When
+            var result = Segment.SplitOverflow(segment, Overflow.Fold, maxWidth: 4);
+
+            // Then
+            result.ShouldAllBe(part => part.Link == _link);
+        }
+
+        [Fact]
+        public void Should_Preserve_Link_On_Ellipsis_When_Overflowing()
+        {
+            // Given
+            var segment = new Segment("abcdefghijklmnop", Style.Plain, _link);
+
+            // When
+            var result = Segment.SplitOverflow(segment, Overflow.Ellipsis, maxWidth: 5);
+
+            // Then
+            result.Count.ShouldBe(1);
+            result[0].Text.ShouldEndWith("…");
+            result[0].Link.ShouldBe(_link);
+        }
+
+        [Fact]
+        public void Should_Preserve_Link_When_Truncating()
+        {
+            // Given
+            var segment = new Segment("abcdefghijklmnop", Style.Plain, _link);
+
+            // When
+            var truncated = Segment.Truncate(segment, maxWidth: 4);
+
+            // Then
+            truncated.ShouldNotBeNull();
+            truncated.Text.ShouldBe("abcd");
+            truncated.Link.ShouldBe(_link);
+        }
+
+        [Fact]
+        public void Should_Preserve_Link_When_Cloning()
+        {
+            // Given
+            var segment = new Segment("abc", Style.Plain, _link);
+
+            // When
+            var result = segment.Clone();
+
+            // Then
+            result.Link.ShouldBe(_link);
+        }
+
+        [Fact]
+        public void Should_Preserve_Link_When_Stripping_Line_Endings()
+        {
+            // Given
+            var segment = new Segment("abc\n", Style.Plain, _link);
+
+            // When
+            var result = segment.StripLineEndings();
+
+            // Then
+            result.Link.ShouldBe(_link);
         }
     }
 }
