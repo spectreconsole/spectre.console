@@ -2297,6 +2297,13 @@
         public static Spectre.Console.Layout Ratio(this Spectre.Console.Layout layout, int ratio) { }
         public static Spectre.Console.Layout Size(this Spectre.Console.Layout layout, int size) { }
     }
+    public sealed class LineNumbers : Spectre.Console.Rendering.Renderable
+    {
+        public LineNumbers(params Spectre.Console.Rendering.IRenderable[] items) { }
+        public LineNumbers(System.Collections.Generic.IEnumerable<Spectre.Console.Rendering.IRenderable> children) { }
+        protected override Spectre.Console.Rendering.Measurement Measure(Spectre.Console.Rendering.RenderOptions options, int maxWidth) { }
+        protected override System.Collections.Generic.IEnumerable<Spectre.Console.Rendering.Segment> Render(Spectre.Console.Rendering.RenderOptions options, int maxWidth) { }
+    }
     public sealed class LiveDisplay
     {
         public LiveDisplay(Spectre.Console.IAnsiConsole console, Spectre.Console.Rendering.IRenderable target) { }
