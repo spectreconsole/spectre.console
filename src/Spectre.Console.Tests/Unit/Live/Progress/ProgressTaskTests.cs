@@ -106,4 +106,36 @@ public sealed class ProgressTaskTests
         task.Speed.ShouldNotBeNull();
         task.Speed!.Value.ShouldBe(10.0, tolerance: 0.001);
     }
+
+    [Fact]
+    public void IsFinished_Should_Ignore_Value_When_Task_Is_Indeterminate()
+    {
+        // Given
+        var task = new ProgressTask(1, "Foo", 100)
+        {
+            IsIndeterminate = true,
+            Value = 100,
+        };
+
+        // Then
+        task.IsFinished.ShouldBeFalse();
+        task.Percentage.ShouldBe(0);
+    }
+
+    [Fact]
+    public void StopTask_Should_Finish_Indeterminate_Task()
+    {
+        // Given
+        var task = new ProgressTask(1, "Foo", 100)
+        {
+            IsIndeterminate = true,
+        };
+
+        // When
+        task.StopTask();
+
+        // Then
+        task.IsFinished.ShouldBeTrue();
+        task.Percentage.ShouldBe(100);
+    }
 }

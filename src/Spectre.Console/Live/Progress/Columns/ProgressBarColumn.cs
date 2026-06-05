@@ -43,6 +43,7 @@ public sealed class ProgressBarColumn : ProgressColumn
             RemainingStyle = RemainingStyle,
             IndeterminateStyle = IndeterminateStyle,
             IsIndeterminate = task.IsIndeterminate,
+            IsFinished = task.IsFinished,
         };
     }
 }

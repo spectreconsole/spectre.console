@@ -47,4 +47,28 @@ public class ProgressBarTests
         // Then
         await Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    public void Should_Render_Indeterminate_When_Value_Reaches_MaxValue()
+    {
+        // Given
+        var console = new TestConsole()
+            .SupportsUnicode(false)
+            .Colors(ColorSystem.NoColors);
+
+        var bar = new ProgressBar()
+        {
+            Width = 20,
+            Value = 100,
+            MaxValue = 100,
+            IsIndeterminate = true,
+        };
+
+        // When
+        console.Write(bar);
+
+        // Then
+        console.Output.ShouldContain(" ");
+        console.Output.ShouldNotBe(new string('-', 20));
+    }
 }

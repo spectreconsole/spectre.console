@@ -14,6 +14,7 @@ internal sealed class ProgressBar : Renderable, IHasCulture
     public char AsciiBar { get; set; } = '-';
     public bool ShowValue { get; set; }
     public bool IsIndeterminate { get; set; }
+    public bool IsFinished { get; set; }
     public CultureInfo? Culture { get; set; }
     public Func<double, CultureInfo, string>? ValueFormatter { get; set; }
 
@@ -34,7 +35,7 @@ internal sealed class ProgressBar : Renderable, IHasCulture
     {
         var width = Math.Min(Width ?? maxWidth, maxWidth);
         var completedBarCount = Math.Min(MaxValue, Math.Max(0, Value));
-        var isCompleted = completedBarCount >= MaxValue;
+        var isCompleted = IsFinished || (!IsIndeterminate && completedBarCount >= MaxValue);
 
         if (IsIndeterminate && !isCompleted)
         {

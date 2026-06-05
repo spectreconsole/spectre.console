@@ -84,7 +84,7 @@ public sealed class ProgressTask : IProgress<double>
     /// <summary>
     /// Gets a value indicating whether or not the task has finished.
     /// </summary>
-    public bool IsFinished => StopTime != null || Value >= MaxValue;
+    public bool IsFinished => StopTime != null || (!IsIndeterminate && Value >= MaxValue);
 
     /// <summary>
     /// Gets the percentage done of the task.
@@ -259,6 +259,11 @@ public sealed class ProgressTask : IProgress<double>
 
     private double GetPercentage()
     {
+        if (IsIndeterminate)
+        {
+            return IsFinished ? 100 : 0;
+        }
+
         if (MaxValue == 0)
         {
             return 100;

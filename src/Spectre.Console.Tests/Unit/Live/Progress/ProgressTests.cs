@@ -258,6 +258,32 @@ public sealed class ProgressTests
     }
 
     [Fact]
+    public void Should_Not_Hide_Indeterminate_Task_When_Value_Reaches_MaxValue()
+    {
+        // Given
+        var console = new TestConsole()
+            .Interactive()
+            .EmitAnsiSequences();
+
+        var progress = new Progress(console)
+            .Columns(new TaskDescriptionColumn())
+            .AutoRefresh(false)
+            .AutoClear(false)
+            .HideCompleted(true);
+
+        // When
+        progress.Start(ctx =>
+        {
+            var task = ctx.AddTask("foo");
+            task.IsIndeterminate = true;
+            task.Value = task.MaxValue;
+        });
+
+        // Then
+        console.Output.ShouldContain("foo");
+    }
+
+    [Fact]
     public void Should_Report_Max_Remaining_Time_For_Extremely_Small_Progress()
     {
         // Given
