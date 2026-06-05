@@ -231,11 +231,10 @@ public partial class AnsiConsoleTests
             var console = new TestConsole()
                 .EmitAnsiSequences();
 
-            // When - text after the [/] closing tag should NOT have the link
+            // When
             console.Markup("Before [link=https://example.com]LINK[/] After");
 
             // Then
-            // The link should only wrap "LINK", not " After"
             var output = console.Output;
             output.ShouldMatch(@"Before \e\]8;id=\d+;https://example\.com\e\\LINK\e\]8;;\e\\ After");
         }
@@ -247,17 +246,38 @@ public partial class AnsiConsoleTests
             var console = new TestConsole()
                 .EmitAnsiSequences();
 
-            // When - link with styled text inside
+            // When
             console.Markup("[link=https://example.com][bold]Bold Link[/][/] Plain");
 
             // Then
-            // The link should only wrap "Bold Link", not " Plain"
             var output = console.Output;
-
-            // Check that "Plain" is NOT inside a link
-            var linkEndIndex = output.LastIndexOf("\u001b]8;;\u001b\\");
-            var plainIndex = output.IndexOf("Plain");
+            var linkEndIndex = output.LastIndexOf("\e]8;;\e\\", StringComparison.Ordinal);
+            var plainIndex = output.IndexOf("Plain", StringComparison.Ordinal);
             plainIndex.ShouldBeGreaterThan(linkEndIndex, "Plain should appear after the link ends");
+        }
+
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2124")]
+        public void Should_Preserve_Link_When_Wrapped_Inside_Grid_Cell()
+        {
+            // Given
+            var console = new TestConsole()
+                .Width(10)
+                .SupportsAnsi(true)
+                .EmitAnsiSequences();
+
+            var grid = new Grid();
+            grid.AddColumn();
+            grid.AddRow("[link=https://example.com/readme.md]pneumonoultramicroscopicsilicovolcanoconiosis[/]");
+
+            // When
+            console.Write(grid);
+
+            // Then
+            Regex.Matches(
+                    console.Output.NormalizeLineEndings(),
+                    "https://example.com/readme.md")
+                .Count.ShouldBeGreaterThan(1);
         }
     }
 }
