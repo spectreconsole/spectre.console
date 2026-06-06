@@ -29,14 +29,35 @@ public sealed class LineNumbers : Renderable
     protected override Measurement Measure(RenderOptions options, int maxWidth)
     {
         var measurements = _children.Select(c => c.Measure(options, maxWidth)).ToArray();
-        if (measurements.Length > 0)
+        if (measurements.Length == 0)
         {
-            return new Measurement(
-                measurements.Max(c => c.Min),
-                measurements.Max(c => c.Max));
+            return new Measurement(0, 0);
         }
 
-        return new Measurement(0, 0);
+        var totalLines = 0;
+
+        if (_children.Count > 0)
+        {
+            totalLines = 1;
+        }
+
+        foreach (var child in _children)
+        {
+            var childSegments = child.Render(options, maxWidth);
+            foreach (var (_, _, _, segment) in childSegments.Enumerate())
+            {
+                if (segment.IsLineBreak)
+                {
+                    totalLines++;
+                }
+            }
+        }
+
+        var padding = totalLines > 0 ? GetPadding(totalLines) : 0;
+
+        return new Measurement(
+            measurements.Max(c => c.Min + padding),
+            measurements.Max(c => c.Max + padding));
     }
 
     /// <inheritdoc/>
@@ -56,7 +77,7 @@ public sealed class LineNumbers : Renderable
 
         var lineNumber = 1;
         var totalLines = segments.Count(s => s.IsLineBreak) + 1;
-        var padding = totalLines.ToString().Length + 1;
+        var padding = GetPadding(totalLines);
 
         if (segments.Count > 0)
         {
@@ -81,5 +102,10 @@ public sealed class LineNumbers : Renderable
     {
         var paddedLineNumber = lineNumber.ToString().PadRight(padding);
         return new Segment(paddedLineNumber);
+    }
+
+    private static int GetPadding(int totalLines)
+    {
+        return totalLines.ToString().Length + 1;
     }
 }
