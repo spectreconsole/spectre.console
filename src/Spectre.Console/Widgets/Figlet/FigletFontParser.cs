@@ -19,10 +19,14 @@ internal static class FigletFontParser
         var hasOverriddenIndex = false;
         var buffer = new List<string>();
         var characters = new List<FigletCharacter>();
+        var accumulatedHeight = 0;
+
+        var eolMarker = ParseEndOfLineMarker(lines, header);
 
         foreach (var line in lines.Skip(header.CommentLines + 1))
         {
-            if (!line.EndsWith("@", StringComparison.Ordinal))
+            // This might be an index?
+            if (!line.EndsWith(eolMarker))
             {
                 var words = line.SplitWords();
                 if (words.Length > 0 && TryParseIndex(words[0], out var newIndex))
@@ -30,20 +34,20 @@ internal static class FigletFontParser
                     index = newIndex;
                     indexOverridden = true;
                     hasOverriddenIndex = true;
+                    accumulatedHeight = 0;
                     continue;
                 }
-
-                continue;
             }
 
             if (hasOverriddenIndex && !indexOverridden)
             {
-                throw new InvalidOperationException("Unknown index for FIGlet character");
+                continue;
             }
 
-            buffer.Add(line.Replace(header.Hardblank, ' ').TrimEnd('@'));
+            buffer.Add(line.TrimEnd(eolMarker));
+            accumulatedHeight++;
 
-            if (line.EndsWith("@@", StringComparison.Ordinal))
+            if (accumulatedHeight == header.Height)
             {
                 characters.Add(new FigletCharacter(index, buffer));
                 buffer.Clear();
@@ -56,10 +60,26 @@ internal static class FigletFontParser
                 // Reset the flag so we know if we're trying to parse
                 // a character that wasn't prefixed with an ASCII index.
                 indexOverridden = false;
+
+                // Reset the accumulated height
+                accumulatedHeight = 0;
             }
         }
 
         return new FigletFont(characters, header);
+    }
+
+    private static char ParseEndOfLineMarker(string[] lines, FigletHeader header)
+    {
+        var firstEndLine = lines.Skip(header.CommentLines + 1).Take(1).FirstOrDefault();
+        var endChar = firstEndLine?.Trim().LastOrDefault();
+        if (endChar == null)
+        {
+            // Default
+            return '@';
+        }
+
+        return endChar.Value;
     }
 
     private static bool TryParseIndex(string index, out int result)
@@ -67,8 +87,7 @@ internal static class FigletFontParser
         var style = NumberStyles.Integer;
         if (index.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
         {
-            // TODO: ReplaceExact should not be used
-            index = index.ReplaceExact("0x", string.Empty).ReplaceExact("0x", string.Empty);
+            index = index.ReplaceExact("0x", string.Empty);
             style = NumberStyles.HexNumber;
         }
 
@@ -93,6 +112,12 @@ internal static class FigletFontParser
             throw new InvalidOperationException("Invalid Figlet font header signature");
         }
 
+        int? fullLayout = null;
+        if (parts.Length > 7 && int.TryParse(parts[7], NumberStyles.Integer, CultureInfo.InvariantCulture, out var fl))
+        {
+            fullLayout = fl;
+        }
+
         return new FigletHeader
         {
             Hardblank = parts[0][5],
@@ -101,6 +126,7 @@ internal static class FigletFontParser
             MaxLength = int.Parse(parts[3], CultureInfo.InvariantCulture),
             OldLayout = int.Parse(parts[4], CultureInfo.InvariantCulture),
             CommentLines = int.Parse(parts[5], CultureInfo.InvariantCulture),
+            FullLayout = fullLayout,
         };
     }
 

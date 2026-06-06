@@ -178,9 +178,20 @@ public static class TextPromptExtensions
     public static TextPrompt<T> Validate<T>(this TextPrompt<T> obj, Func<T, bool> validator, string? message = null)
     {
         ArgumentNullException.ThrowIfNull(obj);
+        ArgumentNullException.ThrowIfNull(validator);
 
+        var previous = obj.Validator;
         obj.Validator = result =>
         {
+            if (previous is not null)
+            {
+                var previousResult = previous(result);
+                if (!previousResult.Successful)
+                {
+                    return previousResult;
+                }
+            }
+
             if (validator(result))
             {
                 return ValidationResult.Success();
@@ -202,8 +213,23 @@ public static class TextPromptExtensions
     public static TextPrompt<T> Validate<T>(this TextPrompt<T> obj, Func<T, ValidationResult> validator)
     {
         ArgumentNullException.ThrowIfNull(obj);
+        ArgumentNullException.ThrowIfNull(validator);
 
-        obj.Validator = validator;
+        var previous = obj.Validator;
+
+        obj.Validator = result =>
+        {
+            if (previous is not null)
+            {
+                var previousResult = previous(result);
+                if (!previousResult.Successful)
+                {
+                    return previousResult;
+                }
+            }
+
+            return validator(result);
+        };
 
         return obj;
     }
@@ -331,6 +357,15 @@ public static class TextPromptExtensions
         ArgumentNullException.ThrowIfNull(obj);
 
         obj.ClearOnFinish = clear;
+        return obj;
+    }
+
+    internal static TextPrompt<T> UseInputHandler<T>(
+        this TextPrompt<T> obj, TextPromptInputHandler? inputHandler)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+
+        obj.InputHandler = inputHandler;
         return obj;
     }
 }

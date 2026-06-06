@@ -14,10 +14,6 @@ internal sealed class FigletCharacter
 
         var min = Lines.Min(x => x.Length);
         var max = Lines.Max(x => x.Length);
-        if (min != max)
-        {
-            throw new InvalidOperationException($"Figlet character #{code} has varying width");
-        }
 
         Width = max;
         Height = Lines.Count;

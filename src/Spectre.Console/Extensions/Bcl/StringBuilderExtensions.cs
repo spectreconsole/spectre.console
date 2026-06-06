@@ -14,10 +14,10 @@ internal static class StringBuilderExtensions
         if (style != null)
         {
             return builder.Append('[')
-            .Append(style.Value.ToMarkup())
-            .Append(']')
-            .Append(value.EscapeMarkup())
-            .Append("[/]");
+                .Append(style.Value.ToMarkup())
+                .Append(']')
+                .Append(value.EscapeMarkup())
+                .Append("[/]");
         }
 
         return builder.Append(value);
@@ -32,5 +32,18 @@ internal static class StringBuilderExtensions
 #else
         builder.Append(span);
 #endif
+    }
+
+    public static int CountTrailing(this StringBuilder current, char[] characters)
+    {
+        var trailing = 0;
+        for (var index = current.Length - 1;
+             index >= 0 && characters.Any(c => current[index] == c);
+             index--)
+        {
+            trailing++;
+        }
+
+        return trailing;
     }
 }

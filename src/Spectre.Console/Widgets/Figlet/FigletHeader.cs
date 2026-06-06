@@ -8,4 +8,5 @@ internal sealed class FigletHeader
     public int MaxLength { get; set; }
     public int OldLayout { get; set; }
     public int CommentLines { get; set; }
+    public int? FullLayout { get; set; }
 }

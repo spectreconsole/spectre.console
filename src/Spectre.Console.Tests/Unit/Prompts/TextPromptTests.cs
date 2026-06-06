@@ -579,4 +579,256 @@ public sealed class TextPromptTests
         // Then
         result.ShouldBe("User input");
     }
+
+    [Fact]
+    public void Validate_BoolOverload_ShortCircuits()
+    {
+        // Given
+        var prompt = new TextPrompt<string>("Enter:");
+        var secondInvoked = false;
+
+        prompt
+            .Validate(s => s.Length >= 3, "too short")
+            .Validate(s =>
+            {
+                secondInvoked = true;
+                return s.Contains("a");
+            }, "missing a");
+
+        // When
+        var result = prompt.Validator?.Invoke("ab");
+
+        // Then
+        result.ShouldBeEquivalentTo(ValidationResult.Error("too short"));
+        secondInvoked.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void Validate_BoolOverload_Returns_Chained_Validation_Error()
+    {
+        // Given
+        var prompt = new TextPrompt<string>("Enter:");
+        var secondInvoked = false;
+
+        prompt
+            .Validate(s => s.Length >= 3, "too short")
+            .Validate(s =>
+            {
+                secondInvoked = true;
+                return s.Contains("a");
+            }, "missing a");
+
+        // When
+        var result = prompt.Validator?.Invoke("bbc");
+
+        // Then
+        result.ShouldBeEquivalentTo(ValidationResult.Error("missing a"));
+        secondInvoked.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void Validate_BoolOverload_Returns_Success_When_All_Validators_Pass()
+    {
+        // Given
+        var prompt = new TextPrompt<string>("Enter:");
+
+        prompt
+            .Validate(s => s.Length >= 3, "too short")
+            .Validate(s => s.Contains("a"), "missing a");
+
+        // When
+        var result = prompt.Validator?.Invoke("abc");
+
+        // Then
+        result.ShouldBeEquivalentTo(ValidationResult.Success());
+    }
+
+    [Fact]
+    public void Validate_FuncOverload_ShortCircuits()
+    {
+        // Given
+        var prompt = new TextPrompt<string>("Enter:");
+        var secondInvoked = false;
+
+        prompt
+            .Validate(s => s.Length < 3 ? ValidationResult.Error("too short") : ValidationResult.Success())
+            .Validate(s =>
+            {
+                secondInvoked = true;
+                return s.Contains("a") ? ValidationResult.Success() : ValidationResult.Error("missing a");
+            } );
+
+        // When
+        var result = prompt.Validator?.Invoke("ab");
+
+        // Then
+        result.ShouldBeEquivalentTo(ValidationResult.Error("too short"));
+        secondInvoked.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void Validate_FuncOverload_Returns_Chained_Validation_Error()
+    {
+        // Given
+        var prompt = new TextPrompt<string>("Enter:");
+        var secondInvoked = false;
+
+        prompt
+            .Validate(s => s.Length < 3 ? ValidationResult.Error("too short") : ValidationResult.Success())
+            .Validate(s =>
+            {
+                secondInvoked = true;
+                return s.Contains("a") ? ValidationResult.Success() : ValidationResult.Error("missing a");
+            } );
+
+        // When
+        var result = prompt.Validator?.Invoke("bbc");
+
+        // Then
+        result.ShouldBeEquivalentTo(ValidationResult.Error("missing a"));
+        secondInvoked.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void Validate_FuncOverload_Returns_Success_When_All_Validators_Pass()
+    {
+        // Given
+        var prompt = new TextPrompt<string>("Enter:");
+
+        prompt
+            .Validate(s => s.Length < 3 ? ValidationResult.Error("too short") : ValidationResult.Success())
+            .Validate(s => s.Contains("a") ? ValidationResult.Success() : ValidationResult.Error("missing a") );
+
+        // When
+        var result = prompt.Validator?.Invoke("abc");
+
+        // Then
+        result.ShouldBeEquivalentTo(ValidationResult.Success());
+    }
+
+    [Fact]
+    public void Validate_MixedOverloads_ShortCircuits()
+    {
+        // Given
+        var prompt = new TextPrompt<string>("Enter:");
+        var secondInvoked = false;
+
+        prompt
+            .Validate(s => s.Length >= 3, "too short")            .Validate(s =>
+            {
+                secondInvoked = true;
+                return s.Contains("a") ? ValidationResult.Success() : ValidationResult.Error("missing a");
+            } );
+
+        // When
+        var result = prompt.Validator?.Invoke("ab");
+
+        // Then
+        result.ShouldBeEquivalentTo(ValidationResult.Error("too short"));
+        secondInvoked.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void Validate_MixedOverloads_Returns_Chained_Validation_Error()
+    {
+        // Given
+        var prompt = new TextPrompt<string>("Enter:");
+        var secondInvoked = false;
+
+        prompt
+            .Validate(s => s.Length >= 3, "too short")
+            .Validate(s =>
+            {
+                secondInvoked = true;
+                return s.Contains("a") ? ValidationResult.Success() : ValidationResult.Error("missing a");
+            } );
+
+        // When
+        var result = prompt.Validator?.Invoke("bbc");
+
+        // Then
+        result.ShouldBeEquivalentTo(ValidationResult.Error("missing a"));
+        secondInvoked.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void Validate_MixedOverloads_Returns_Success_When_All_Validators_Pass()
+    {
+        // Given
+        var prompt = new TextPrompt<string>("Enter:");
+
+        prompt
+            .Validate(s => s.Length >= 3, "too short")
+            .Validate(s => s.Contains("a") ? ValidationResult.Success() : ValidationResult.Error("missing a") );
+
+        // When
+        var result = prompt.Validator?.Invoke("abc");
+
+        // Then
+        result.ShouldBeEquivalentTo(ValidationResult.Success());
+    }
+
+    [Fact]
+    public void Validate_MixedOverloads_WithThreeValidators_Returns_ThirdValidationError()
+    {
+        // Given
+        var prompt = new TextPrompt<string>("Enter:");
+        var secondInvoked = false;
+        var thirdInvoked = false;
+
+        prompt
+            .Validate(s => s.Length >= 3, "too short")
+            .Validate(s =>
+            {
+                secondInvoked = true;
+                return s.Contains("a")
+                    ? ValidationResult.Success()
+                    : ValidationResult.Error("missing a");
+            })
+            .Validate(s =>
+            {
+                thirdInvoked = true;
+                return s.EndsWith("z");
+            }, "must end with z");
+
+        // When
+        var result = prompt.Validator?.Invoke("abc");
+
+        // Then
+        result.ShouldBeEquivalentTo(ValidationResult.Error("must end with z"));
+        secondInvoked.ShouldBeTrue();
+        thirdInvoked.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void Validate_MixedOverloads_WithThreeValidators_Returns_Success_When_All_Validators_Pass()
+    {
+        // Given
+        var prompt = new TextPrompt<string>("Enter:");
+        var secondInvoked = false;
+        var thirdInvoked = false;
+
+        prompt
+            .Validate(s => s.Length >= 3, "too short")
+            .Validate(s =>
+            {
+                secondInvoked = true;
+                return s.Contains("a")
+                    ? ValidationResult.Success()
+                    : ValidationResult.Error("missing a");
+            })
+            .Validate(s =>
+            {
+                thirdInvoked = true;
+                return s.EndsWith("z");
+            }, "must end with z");
+
+        // When
+        var result = prompt.Validator?.Invoke("abz");
+
+        // Then
+        result.ShouldBeEquivalentTo(ValidationResult.Success());
+        secondInvoked.ShouldBeTrue();
+        thirdInvoked.ShouldBeTrue();
+    }
 }

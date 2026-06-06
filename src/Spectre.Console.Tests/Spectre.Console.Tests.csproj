@@ -7,11 +7,18 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Data\example.json" />
-    <EmbeddedResource Include="Data\starwars.flf" />
-    <EmbeddedResource Include="Data\poison.flf" />
+    <EmbeddedResource Include="Data\figlet\fonts.zip" />
     <None Remove="Data\example.json" />
     <None Remove="Data\starwars.flf" />
     <None Remove="Data\poison.flf" />
+    <None Remove="Data\banner.flf" />
+    <None Remove="Data\B1FF.flf" />
+    <None Remove="Data\fonts.zip" />
+    <EmbeddedResource Include="Data\figlet\big.flf" />
+    <None Remove="Data\figlet\poison.flf" />
+    <EmbeddedResource Include="Data\figlet\poison.flf" />
+    <None Remove="Data\figlet\star_wars.flf" />
+    <EmbeddedResource Include="Data\figlet\star_wars.flf" />
   </ItemGroup>
 
   <ItemGroup>
