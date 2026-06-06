@@ -1,7 +1,7 @@
 ﻿namespace Spectre.Console;
 
 /// <summary>
-/// Renders things in rows.
+/// Renders things with line numbers.
 /// </summary>
 public sealed class LineNumbers : Renderable
 {
@@ -49,7 +49,9 @@ public sealed class LineNumbers : Renderable
         {
             var childSegments = child.Render(options, maxWidth);
             foreach (var (_, _, _, segment) in childSegments.Enumerate())
+            {
                 segments.Add(segment);
+            }
         }
 
         var lineNumber = 1;
@@ -57,7 +59,9 @@ public sealed class LineNumbers : Renderable
         var padding = totalLines.ToString().Length + 1;
 
         if (segments.Count > 0)
+        {
             result.Add(GetLineNumber(lineNumber, padding));
+        }
 
         foreach (var segment in segments)
         {
