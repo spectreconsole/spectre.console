@@ -187,7 +187,7 @@ internal sealed class TableMeasurer : TableAccessor
                 var columnDifference = maxColumn - secondMaxColumn;
 
                 var ratios = widths.Zip(wrappable, (width, allowWrap) => width == maxColumn && allowWrap ? 1 : 0).ToList();
-                if (!ratios.Any(x => x != 0) || columnDifference == 0)
+                if (!ratios.Any(x => x != 0) || columnDifference <= 0)
                 {
                     break;
                 }

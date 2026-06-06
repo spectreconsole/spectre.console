@@ -625,6 +625,27 @@ public sealed class TableTests
     }
 
     [Fact]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2131")]
+    public void Should_Not_Hang_When_Wrappable_Column_Is_Already_Collapsed()
+    {
+        // Given
+        var console = new TestConsole().Width(20);
+        var table = new Table()
+            .HideHeaders()
+            .HideFooters();
+
+        table.AddColumn(new TableColumn("Hidden").Width(0));
+        table.AddColumn(new TableColumn("Description").NoWrap());
+        table.AddRow(string.Empty, new string('A', 80));
+
+        // When
+        console.Write(table);
+
+        // Then
+        console.Output.ShouldNotBeEmpty();
+    }
+
+    [Fact]
     [Expectation("Render_Multiline")]
     public Task Should_Render_Table_With_Multiple_Rows_In_Cell_Correctly()
     {
