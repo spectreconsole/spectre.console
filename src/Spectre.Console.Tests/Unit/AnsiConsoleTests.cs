@@ -26,6 +26,33 @@ public partial class AnsiConsoleTests
 
     public sealed class Write
     {
+        [Theory]
+        [InlineData("{Pt.1} (TEST ~ 855D)")]
+        [InlineData("{")]
+        [InlineData("test {0}")]
+        [InlineData("test {0} {1}")]
+        public void Should_Treat_String_Value_As_Literal_Text(string value)
+        {
+            // Given
+            var previous = AnsiConsole.Console;
+            var console = new TestConsole();
+
+            try
+            {
+                AnsiConsole.Console = console;
+
+                // When
+                AnsiConsole.Write(value);
+            }
+            finally
+            {
+                AnsiConsole.Console = previous;
+            }
+
+            // Then
+            console.Output.ShouldBe(value);
+        }
+
         [Fact]
         public void Should_Combine_Decoration_And_Colors()
         {

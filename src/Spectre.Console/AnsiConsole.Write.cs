@@ -22,7 +22,7 @@ public static partial class AnsiConsole
     /// <param name="value">The value to write.</param>
     public static void Write(string value)
     {
-        Write(value, CurrentStyle);
+        Console.Write(value, CurrentStyle);
     }
 
     /// <summary>
