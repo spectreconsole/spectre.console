@@ -11,6 +11,10 @@ namespace Spectre.Console.SourceGenerator.Colors;
 [Generator]
 public class ColorGenerator : IIncrementalGenerator
 {
+    // UTF-8 without a BOM, matching the repository's source file convention
+    // and keeping the checked-in generated files deterministic.
+    private static readonly Encoding Utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+
     /// <inheritdoc />
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -50,15 +54,15 @@ public class ColorGenerator : IIncrementalGenerator
 
             // Generate Color.Generated.g.cs
             var colorSource = ColorEmitter.EmitColorProperties(colorModels);
-            spc.AddSource("Color.Generated.g.cs", SourceText.From(colorSource, Encoding.UTF8));
+            spc.AddSource("Color.Generated.g.cs", SourceText.From(colorSource, Utf8NoBom));
 
             // Generate ColorPalette.Generated.g.cs
             var paletteSource = ColorEmitter.EmitColorPalette(colorModels);
-            spc.AddSource("ColorPalette.Generated.g.cs", SourceText.From(paletteSource, Encoding.UTF8));
+            spc.AddSource("ColorPalette.Generated.g.cs", SourceText.From(paletteSource, Utf8NoBom));
 
             // Generate ColorTable.Generated.g.cs
             var tableSource = ColorEmitter.EmitColorTable(colorModels);
-            spc.AddSource("ColorTable.Generated.g.cs", SourceText.From(tableSource, Encoding.UTF8));
+            spc.AddSource("ColorTable.Generated.g.cs", SourceText.From(tableSource, Utf8NoBom));
         });
     }
 }

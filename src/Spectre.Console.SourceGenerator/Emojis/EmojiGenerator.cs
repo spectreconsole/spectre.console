@@ -11,6 +11,10 @@ namespace Spectre.Console.SourceGenerator.Emojis;
 [Generator]
 public class EmojiGenerator : IIncrementalGenerator
 {
+    // UTF-8 without a BOM, matching the repository's source file convention
+    // and keeping the checked-in generated files deterministic.
+    private static readonly Encoding Utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+
     /// <inheritdoc />
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -50,7 +54,7 @@ public class EmojiGenerator : IIncrementalGenerator
             }
 
             var source = EmojiEmitter.Emit(models[0]);
-            spc.AddSource("Emoji.Generated.g.cs", SourceText.From(source, Encoding.UTF8));
+            spc.AddSource("Emoji.Generated.g.cs", SourceText.From(source, Utf8NoBom));
         });
     }
 }
