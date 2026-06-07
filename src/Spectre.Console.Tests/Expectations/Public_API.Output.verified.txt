@@ -231,10 +231,27 @@
         protected BoxBorder() { }
         public virtual Spectre.Console.BoxBorder? SafeBorder { get; }
         public static Spectre.Console.BoxBorder Ascii { get; }
+        public static Spectre.Console.BoxBorder Beveled { get; }
+        public static Spectre.Console.BoxBorder Dashed { get; }
+        public static Spectre.Console.BoxBorder DashedWide { get; }
+        public static Spectre.Console.BoxBorder Dotted { get; }
         public static Spectre.Console.BoxBorder Double { get; }
+        public static Spectre.Console.BoxBorder DoubleHorizontal { get; }
+        public static Spectre.Console.BoxBorder DoubleVertical { get; }
         public static Spectre.Console.BoxBorder Heavy { get; }
+        public static Spectre.Console.BoxBorder HeavyDashed { get; }
+        public static Spectre.Console.BoxBorder HeavyDashedWide { get; }
+        public static Spectre.Console.BoxBorder HeavyDotted { get; }
+        public static Spectre.Console.BoxBorder HeavyHorizontal { get; }
+        public static Spectre.Console.BoxBorder HeavyVertical { get; }
+        public static Spectre.Console.BoxBorder McGuganHorizontal { get; }
+        public static Spectre.Console.BoxBorder McGuganVertical { get; }
+        public static Spectre.Console.BoxBorder Near { get; }
         public static Spectre.Console.BoxBorder None { get; }
         public static Spectre.Console.BoxBorder Rounded { get; }
+        public static Spectre.Console.BoxBorder RoundedDashed { get; }
+        public static Spectre.Console.BoxBorder RoundedDashedWide { get; }
+        public static Spectre.Console.BoxBorder RoundedDotted { get; }
         public static Spectre.Console.BoxBorder Square { get; }
         public abstract string GetPart(Spectre.Console.Rendering.BoxBorderPart part);
     }
@@ -2032,15 +2049,49 @@
     {
         public static T AsciiBorder<T>(this T obj)
             where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T BeveledBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
         public static T Border<T>(this T obj, Spectre.Console.BoxBorder border)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T DashedBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T DashedWideBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T DottedBorder<T>(this T obj)
             where T :  class, Spectre.Console.IHasBoxBorder { }
         public static T DoubleBorder<T>(this T obj)
             where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T DoubleHorizontalBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T DoubleVerticalBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
         public static T HeavyBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T HeavyDashedBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T HeavyDashedWideBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T HeavyDottedBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T HeavyHorizontalBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T HeavyVerticalBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T McGuganHorizontalBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T McGuganVerticalBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T NearBorder<T>(this T obj)
             where T :  class, Spectre.Console.IHasBoxBorder { }
         public static T NoBorder<T>(this T obj)
             where T :  class, Spectre.Console.IHasBoxBorder { }
         public static T RoundedBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T RoundedDashedBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T RoundedDashedWideBorder<T>(this T obj)
+            where T :  class, Spectre.Console.IHasBoxBorder { }
+        public static T RoundedDottedBorder<T>(this T obj)
             where T :  class, Spectre.Console.IHasBoxBorder { }
         public static T SquareBorder<T>(this T obj)
             where T :  class, Spectre.Console.IHasBoxBorder { }
@@ -3279,6 +3330,12 @@ namespace Spectre.Console.Rendering
         public AsciiTreeGuide() { }
         public override string GetPart(Spectre.Console.Rendering.TreeGuidePart part) { }
     }
+    public sealed class BeveledBoxBorder : Spectre.Console.BoxBorder
+    {
+        public BeveledBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
+    }
     public sealed class BoldLineTreeGuide : Spectre.Console.TreeGuide
     {
         public BoldLineTreeGuide() { }
@@ -3296,6 +3353,24 @@ namespace Spectre.Console.Rendering
         Bottom = 6,
         BottomRight = 7,
     }
+    public sealed class DashedBoxBorder : Spectre.Console.BoxBorder
+    {
+        public DashedBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
+    }
+    public sealed class DashedWideBoxBorder : Spectre.Console.BoxBorder
+    {
+        public DashedWideBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
+    }
+    public sealed class DottedBoxBorder : Spectre.Console.BoxBorder
+    {
+        public DottedBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
+    }
     public sealed class DoubleBoxBorder : Spectre.Console.BoxBorder
     {
         public DoubleBoxBorder() { }
@@ -3305,6 +3380,12 @@ namespace Spectre.Console.Rendering
     {
         public DoubleEdgeTableBorder() { }
         public override string GetPart(Spectre.Console.Rendering.TableBorderPart part) { }
+    }
+    public sealed class DoubleHorizontalBoxBorder : Spectre.Console.BoxBorder
+    {
+        public DoubleHorizontalBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
     }
     public sealed class DoubleLineTreeGuide : Spectre.Console.TreeGuide
     {
@@ -3317,9 +3398,33 @@ namespace Spectre.Console.Rendering
         public DoubleTableBorder() { }
         public override string GetPart(Spectre.Console.Rendering.TableBorderPart part) { }
     }
+    public sealed class DoubleVerticalBoxBorder : Spectre.Console.BoxBorder
+    {
+        public DoubleVerticalBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
+    }
     public sealed class HeavyBoxBorder : Spectre.Console.BoxBorder
     {
         public HeavyBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
+    }
+    public sealed class HeavyDashedBoxBorder : Spectre.Console.BoxBorder
+    {
+        public HeavyDashedBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
+    }
+    public sealed class HeavyDashedWideBoxBorder : Spectre.Console.BoxBorder
+    {
+        public HeavyDashedWideBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
+    }
+    public sealed class HeavyDottedBoxBorder : Spectre.Console.BoxBorder
+    {
+        public HeavyDottedBoxBorder() { }
         public override Spectre.Console.BoxBorder? SafeBorder { get; }
         public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
     }
@@ -3335,11 +3440,23 @@ namespace Spectre.Console.Rendering
         public override Spectre.Console.TableBorder? SafeBorder { get; }
         public override string GetPart(Spectre.Console.Rendering.TableBorderPart part) { }
     }
+    public sealed class HeavyHorizontalBoxBorder : Spectre.Console.BoxBorder
+    {
+        public HeavyHorizontalBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
+    }
     public sealed class HeavyTableBorder : Spectre.Console.TableBorder
     {
         public HeavyTableBorder() { }
         public override Spectre.Console.TableBorder? SafeBorder { get; }
         public override string GetPart(Spectre.Console.Rendering.TableBorderPart part) { }
+    }
+    public sealed class HeavyVerticalBoxBorder : Spectre.Console.BoxBorder
+    {
+        public HeavyVerticalBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
     }
     public sealed class HorizontalTableBorder : Spectre.Console.TableBorder
     {
@@ -3385,6 +3502,18 @@ namespace Spectre.Console.Rendering
         public override string GetColumnRow(Spectre.Console.Rendering.TablePart part, System.Collections.Generic.IReadOnlyList<int> widths, System.Collections.Generic.IReadOnlyList<Spectre.Console.IColumn> columns) { }
         public override string GetPart(Spectre.Console.Rendering.TableBorderPart part) { }
     }
+    public sealed class McGuganHorizontalBoxBorder : Spectre.Console.BoxBorder
+    {
+        public McGuganHorizontalBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
+    }
+    public sealed class McGuganVerticalBoxBorder : Spectre.Console.BoxBorder
+    {
+        public McGuganVerticalBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
+    }
     public readonly struct Measurement : System.IEquatable<Spectre.Console.Rendering.Measurement>
     {
         public Measurement(int min, int max) { }
@@ -3419,6 +3548,12 @@ namespace Spectre.Console.Rendering
         public override bool UsePadding { get; }
         public override string GetColumnRow(Spectre.Console.Rendering.TablePart part, System.Collections.Generic.IReadOnlyList<int> widths, System.Collections.Generic.IReadOnlyList<Spectre.Console.IColumn> columns) { }
         public override string GetPart(Spectre.Console.Rendering.TableBorderPart part) { }
+    }
+    public sealed class NearBoxBorder : Spectre.Console.BoxBorder
+    {
+        public NearBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
     }
     public sealed class NoBoxBorder : Spectre.Console.BoxBorder
     {
@@ -3469,6 +3604,24 @@ namespace Spectre.Console.Rendering
     public sealed class RoundedBoxBorder : Spectre.Console.BoxBorder
     {
         public RoundedBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
+    }
+    public sealed class RoundedDashedBoxBorder : Spectre.Console.BoxBorder
+    {
+        public RoundedDashedBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
+    }
+    public sealed class RoundedDashedWideBoxBorder : Spectre.Console.BoxBorder
+    {
+        public RoundedDashedWideBoxBorder() { }
+        public override Spectre.Console.BoxBorder? SafeBorder { get; }
+        public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
+    }
+    public sealed class RoundedDottedBoxBorder : Spectre.Console.BoxBorder
+    {
+        public RoundedDottedBoxBorder() { }
         public override Spectre.Console.BoxBorder? SafeBorder { get; }
         public override string GetPart(Spectre.Console.Rendering.BoxBorderPart part) { }
     }
