@@ -106,7 +106,58 @@ public sealed class AnsiMarkup
             throw new InvalidOperationException("Unbalanced markup stack. Did you forget to close a tag?");
         }
 
+        // Try resolving auto links (if any)
+        ResolveAutoLinks(result);
+
         return result;
+    }
+
+    private static void ResolveAutoLinks(List<AnsiMarkupSegment> segments)
+    {
+        for (var segmentIndex = 0; segmentIndex < segments.Count; segmentIndex++)
+        {
+            var currentLink = segments[segmentIndex].Link;
+            if (currentLink?.Url.Equals(Constants.EmptyLink, StringComparison.Ordinal) != true)
+            {
+                // Not a link
+                continue;
+            }
+
+            // Find out where the link ends
+            var lastKnownLinkIndex = segmentIndex + 1;
+            while (lastKnownLinkIndex < segments.Count && ReferenceEquals(segments[lastKnownLinkIndex].Link, currentLink))
+            {
+                lastKnownLinkIndex++;
+            }
+
+            string url;
+            if (lastKnownLinkIndex - segmentIndex == 1)
+            {
+                // This is a plain [link]url[/], so just grab the text
+                url = segments[segmentIndex].Text;
+            }
+            else
+            {
+                // Build the URL using the text from the segments
+                var builder = new StringBuilder();
+                for (var i = segmentIndex; i < lastKnownLinkIndex; i++)
+                {
+                    builder.Append(segments[i].Text);
+                }
+
+                url = builder.ToString();
+            }
+
+            // Set all segments to the same link
+            var resolved = new Link(url);
+            for (var i = segmentIndex; i < lastKnownLinkIndex; i++)
+            {
+                segments[i].Link = resolved;
+            }
+
+            // Continue at the next part
+            segmentIndex = lastKnownLinkIndex - 1;
+        }
     }
 
     /// <summary>
@@ -183,7 +234,7 @@ public sealed class AnsiMarkupSegment
     /// <summary>
     /// Gets the segment link.
     /// </summary>
-    public Link? Link { get; }
+    public Link? Link { get; internal set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AnsiMarkupSegment"/> class.

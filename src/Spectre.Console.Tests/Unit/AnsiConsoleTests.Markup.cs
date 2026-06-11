@@ -266,9 +266,9 @@ public partial class AnsiConsoleTests
                 .SupportsAnsi(true)
                 .EmitAnsiSequences();
 
-            var grid = new Grid();
-            grid.AddColumn();
-            grid.AddRow("[link=https://example.com/readme.md]pneumonoultramicroscopicsilicovolcanoconiosis[/]");
+            var grid = new Grid()
+                .AddColumn()
+                .AddRow("[link=https://example.com/readme.md]pneumonoultramicroscopicsilicovolcanoconiosis[/]");
 
             // When
             console.Write(grid);
@@ -278,6 +278,56 @@ public partial class AnsiConsoleTests
                     console.Output.NormalizeLineEndings(),
                     "https://example.com/readme.md")
                 .Count.ShouldBeGreaterThan(1);
+        }
+
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2145")]
+        public void Should_Preserve_Auto_Link_When_Wrapped_Inside_Grid_Cell()
+        {
+            // Given
+            var console = new TestConsole()
+                .Width(10)
+                .SupportsAnsi(true)
+                .EmitAnsiSequences();
+
+            var grid = new Grid()
+                .AddColumn()
+                .AddRow("[link]https://example.com/readme.md[/]");
+
+            // When
+            console.Write(grid);
+
+            // Then
+            Regex.Matches(
+                    console.Output.NormalizeLineEndings(),
+                    "https://example.com/readme.md")
+                .Count.ShouldBeGreaterThan(1);
+        }
+
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2145")]
+        public void Should_Resolve_Auto_Link_Url_From_Display_Text()
+        {
+            // Given, When
+            var segments = AnsiMarkup.Parse("[link]https://example.com/readme.md[/]").ToList();
+
+            // Then
+            segments.Count.ShouldBe(1);
+            segments[0].Link.ShouldNotBeNull();
+            segments[0].Link!.Url.ShouldBe("https://example.com/readme.md");
+        }
+
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2145")]
+        public void Should_Resolve_Auto_Link_Url_From_Full_Text_When_Nested()
+        {
+            // Given, When
+            var segments = AnsiMarkup.Parse("[link]https://[bold]example[/].com[/]").ToList();
+
+            // Then
+            segments.Count.ShouldBeGreaterThan(1);
+            segments.ShouldAllBe(segment => segment.Link!.Url == "https://example.com");
+            segments.Select(segment => segment.Link!.Id).Distinct().Count().ShouldBe(1);
         }
     }
 }

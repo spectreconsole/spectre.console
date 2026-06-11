@@ -79,8 +79,7 @@ public sealed class AnsiWriter
         {
             if (link != null)
             {
-                var url = link.Url.Equals(Constants.EmptyLink) ? text : link.Url;
-                BeginLink(url, link.Id);
+                BeginLink(link.Url, link.Id);
             }
 
             _styleBuffer.Clear();
