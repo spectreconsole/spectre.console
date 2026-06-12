@@ -60,6 +60,15 @@ For more information see the [.NET Foundation Code of Conduct](https://dotnetfou
 
 This project is supported by the [.NET Foundation](https://dotnetfoundation.org).
 
+## Translations
+
+- [English](README.md)
+- [日本語 (Japanese)](README.jp.md)
+- [Português (Brazilian Portuguese)](README.pt-BR.md)
+- [中文 (Chinese)](README.zh.md)
+- [فارسی (Farsi)](README.fa.md)
+- [Türkçe (Turkish)](README.tr.md)
+
 ## License
 
 Copyright © Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi
