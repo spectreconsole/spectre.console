@@ -43,6 +43,15 @@ public static class TestExceptions
         MethodThatThrows(0);
         return ("key", []);
     }
+
+    public static async Task MethodThatThrowsAsync()
+    {
+        await Task.Yield();
+        throw new InvalidOperationException("Throwing async!");
+    }
+
+    public static void ThrowFromAsync() =>
+        MethodThatThrowsAsync().GetAwaiter().GetResult();
 }
 
 #pragma warning disable CS9113 // Parameter is unread.

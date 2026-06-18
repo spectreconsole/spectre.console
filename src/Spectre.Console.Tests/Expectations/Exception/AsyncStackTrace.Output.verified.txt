@@ -1,0 +1,4 @@
+InvalidOperationException: Throwing async!
+  at async Task MethodThatThrowsAsync() in Exceptions.cs:100       
+  at void ThrowFromAsync() in Exceptions.cs:200                    
+  at Exception GetException(Action action) in ExceptionTests.cs:300

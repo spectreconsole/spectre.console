@@ -292,7 +292,7 @@ internal static class ExceptionRenderableBuilder
             isAsync = typeof(IAsyncStateMachine).IsAssignableFrom(declaringType);
             if (isAsync || typeof(IEnumerator).IsAssignableFrom(declaringType))
             {
-                TryResolveStateMachineMethod(method, out declaringType);
+                TryResolveStateMachineMethod(ref method, out declaringType);
             }
         }
         else
@@ -304,7 +304,7 @@ internal static class ExceptionRenderableBuilder
     }
 
     [RequiresDynamicCode(ExceptionRenderableBuilder.AotWarning)]
-    private static bool TryResolveStateMachineMethod(MethodBase method, out Type declaringType)
+    private static bool TryResolveStateMachineMethod(ref MethodBase method, out Type declaringType)
     {
         // https://github.com/dotnet/runtime/blob/v6.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L400-L455
         declaringType = method.DeclaringType ??
