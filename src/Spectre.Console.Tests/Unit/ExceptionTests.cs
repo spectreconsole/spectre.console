@@ -222,6 +222,25 @@ public sealed class ExceptionTests
         return Verifier.Verify(console.Output);
     }
 
+    [Fact]
+    [Expectation("AsyncStackTrace")]
+    public Task Should_Write_Async_Exception_With_Resolved_Method_Names()
+    {
+        // Given
+        var console = new TestConsole().Width(1024);
+        var dex = GetException(TestExceptions.ThrowFromAsync);
+
+        // When
+        console.WriteException(dex, new ExceptionSettings
+        {
+            Format = ExceptionFormats.ShortenEverything | ExceptionFormats.ShowLinks,
+            Resolver = new ExceptionScrubber(),
+        });
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
     private static Exception GetException(Action action)
     {
         try
