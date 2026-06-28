@@ -1,0 +1,9 @@
+﻿                                        
+* Building AppHost...                   
+  playground\HealthChecks\HealthChecksSa
+  ndbox.AppHost\AppHost.csproj          
+                                                                                
+* Building AppHost...                   
+  playground\HealthChecks\HealthChecksSa
+  ndbox.AppHost\AppHost.csproj          
+                                        
