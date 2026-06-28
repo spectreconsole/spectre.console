@@ -3138,6 +3138,7 @@
         public TaskDescriptionColumn() { }
         public Spectre.Console.Justify Alignment { get; set; }
         protected override bool NoWrap { get; }
+        public bool Wrap { get; set; }
         public override Spectre.Console.Rendering.IRenderable Render(Spectre.Console.Rendering.RenderOptions options, Spectre.Console.ProgressTask task, System.TimeSpan deltaTime) { }
     }
     [System.Diagnostics.DebuggerDisplay("{_text,nq}")]

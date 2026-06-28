@@ -105,7 +105,11 @@ public sealed class Status
         progress.Columns(new ProgressColumn[]
         {
                 spinnerColumn,
-                new TaskDescriptionColumn(),
+                new TaskDescriptionColumn
+                {
+                    Wrap = true,
+                    Alignment = Justify.Left,
+                },
         });
 
         return await progress.StartAsync(async ctx =>

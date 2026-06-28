@@ -48,4 +48,29 @@ public sealed class StatusTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Fact]
+    [Expectation("Render_LongText")]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2152")]
+    public Task Should_Wrap_Status_Text_That_Exceeds_The_Console_Width()
+    {
+        // Given
+        var console = new TestConsole()
+            .Width(40)
+            .Interactive();
+
+        var status = new Status(console)
+        {
+            AutoRefresh = false,
+            Spinner = new DummySpinner1(),
+        };
+
+        // When
+        status.Start(
+            "Building AppHost... playground\\HealthChecks\\HealthChecksSandbox.AppHost\\AppHost.csproj",
+            ctx => ctx.Refresh());
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
 }
