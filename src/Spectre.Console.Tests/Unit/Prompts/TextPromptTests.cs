@@ -741,4 +741,21 @@ public sealed class TextPromptTests
         secondInvoked.ShouldBeTrue();
         thirdInvoked.ShouldBeTrue();
     }
+
+    [Fact]
+    public void Should_Accept_Non_Ascii_Default_Value_When_Editable()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var result = console.Prompt(
+            new TextPrompt<string>("Enter text:")
+                .DefaultValue("ㅎ")
+                .EditableDefaultValue(true));
+
+        // Then
+        result.ShouldBe("ㅎ");
+    }
 }
