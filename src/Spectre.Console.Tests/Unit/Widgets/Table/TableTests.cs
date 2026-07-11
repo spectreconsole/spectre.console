@@ -1053,4 +1053,24 @@ public sealed class TableTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Fact(Timeout = 3000)]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2131")]
+    public async Task CollapseWidths_Should_Terminate_When_Wrappable_Columns_Collapse_To_Zero()
+    {
+        // Given
+        var widths = new List<int> { 0, 0, 100 };
+        var wrappable = new List<bool> { true, true, false };
+
+        var method = typeof(TableMeasurer).GetMethod(
+            "CollapseWidths",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+
+        // When
+        var result = await Task.Run(() =>
+            (List<int>)method!.Invoke(null, new object[] { widths, wrappable, 5 })!);
+
+        // Then
+        result.ShouldAllBe(w => w >= 0);
+    }
 }
