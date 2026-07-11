@@ -1053,4 +1053,30 @@ public sealed class TableTests
         // Then
         return Verifier.Verify(console.Output);
     }
+
+    [Fact(Timeout = 3000)]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2131")]
+    public Task CollapseWidths_Should_Terminate_When_Wrappable_Columns_Collapse_To_Zero()
+    {
+        return Task.Run(() =>
+        {
+            // Given
+            var console = new TestConsole().Width(20);
+            var table = new Table().NoBorder();
+
+            var col1 = new TableColumn(string.Empty) { Padding = new Padding(0, 0, 0, 0) };
+            var col2 = new TableColumn(string.Empty) { Padding = new Padding(0, 0, 0, 0) };
+            var col3 = new TableColumn(string.Empty) { NoWrap = true, Width = 100, Padding = new Padding(0, 0, 0, 0) };
+
+            table.AddColumn(col1);
+            table.AddColumn(col2);
+            table.AddColumn(col3);
+
+            // When
+            console.Write(table);
+
+            // Then
+            console.Output.ShouldNotBeNullOrEmpty();
+        });
+    }
 }
