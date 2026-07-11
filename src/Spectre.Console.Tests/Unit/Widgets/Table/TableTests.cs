@@ -1056,21 +1056,27 @@ public sealed class TableTests
 
     [Fact(Timeout = 3000)]
     [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2131")]
-    public async Task CollapseWidths_Should_Terminate_When_Wrappable_Columns_Collapse_To_Zero()
+    public Task CollapseWidths_Should_Terminate_When_Wrappable_Columns_Collapse_To_Zero()
     {
-        // Given
-        var widths = new List<int> { 0, 0, 100 };
-        var wrappable = new List<bool> { true, true, false };
+        return Task.Run(() =>
+        {
+            // Given
+            var console = new TestConsole().Width(20);
+            var table = new Table().NoBorder();
 
-        var method = typeof(TableMeasurer).GetMethod(
-            "CollapseWidths",
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+            var col1 = new TableColumn(string.Empty) { Padding = new Padding(0, 0, 0, 0) };
+            var col2 = new TableColumn(string.Empty) { Padding = new Padding(0, 0, 0, 0) };
+            var col3 = new TableColumn(string.Empty) { NoWrap = true, Width = 100, Padding = new Padding(0, 0, 0, 0) };
 
-        // When
-        var result = await Task.Run(() =>
-            (List<int>)method!.Invoke(null, new object[] { widths, wrappable, 5 })!);
+            table.AddColumn(col1);
+            table.AddColumn(col2);
+            table.AddColumn(col3);
 
-        // Then
-        result.ShouldAllBe(w => w >= 0);
+            // When
+            console.Write(table);
+
+            // Then
+            console.Output.ShouldNotBeNullOrEmpty();
+        });
     }
 }
