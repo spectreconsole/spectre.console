@@ -394,6 +394,7 @@
         public System.StringComparer Comparer { get; set; }
         public bool DefaultValue { get; set; }
         public Spectre.Console.Style? DefaultValueStyle { get; set; }
+        public Spectre.Console.PromptHistory? History { get; set; }
         public string InvalidChoiceMessage { get; set; }
         public char No { get; set; }
         public bool RequireEnter { get; set; }
@@ -409,6 +410,7 @@
         public static Spectre.Console.ConfirmationPrompt DefaultValueStyle(this Spectre.Console.ConfirmationPrompt obj, Spectre.Console.Style? style) { }
         public static Spectre.Console.ConfirmationPrompt HideChoices(this Spectre.Console.ConfirmationPrompt obj) { }
         public static Spectre.Console.ConfirmationPrompt HideDefaultValue(this Spectre.Console.ConfirmationPrompt obj) { }
+        public static Spectre.Console.ConfirmationPrompt History(this Spectre.Console.ConfirmationPrompt obj, Spectre.Console.PromptHistory? history) { }
         public static Spectre.Console.ConfirmationPrompt InvalidChoiceMessage(this Spectre.Console.ConfirmationPrompt obj, string message) { }
         public static Spectre.Console.ConfirmationPrompt No(this Spectre.Console.ConfirmationPrompt obj, char character) { }
         public static Spectre.Console.ConfirmationPrompt RequireEnter(this Spectre.Console.ConfirmationPrompt obj, bool require = true) { }
@@ -2703,6 +2705,17 @@
         public T Update<T>(string key, System.Func<T, T> func)
             where T :  struct { }
     }
+    public sealed class PromptHistory
+    {
+        public PromptHistory(int capacity = 32) { }
+        public bool Enabled { get; set; }
+        public System.Collections.Generic.IReadOnlyList<string> Entries { get; }
+        public bool IgnoreSecret { get; set; }
+        public static Spectre.Console.PromptHistory Default { get; }
+        public event System.EventHandler<string>? EntryAdded;
+        public void Add(string entry) { }
+        public void Clear() { }
+    }
     public class Recorder : Spectre.Console.IAnsiConsole, System.IDisposable
     {
         public Recorder(Spectre.Console.IAnsiConsole console) { }
@@ -3185,9 +3198,11 @@
         public static Spectre.Console.TextPrompt<T> ClearOnFinish<T>(this Spectre.Console.TextPrompt<T> obj, bool clear = true) { }
         public static Spectre.Console.TextPrompt<T> DefaultValue<T>(this Spectre.Console.TextPrompt<T> obj, T value) { }
         public static Spectre.Console.TextPrompt<T> DefaultValueStyle<T>(this Spectre.Console.TextPrompt<T> obj, Spectre.Console.Style? style) { }
+        public static Spectre.Console.TextPrompt<T> DisableHistory<T>(this Spectre.Console.TextPrompt<T> obj) { }
         public static Spectre.Console.TextPrompt<T> EditableDefaultValue<T>(this Spectre.Console.TextPrompt<T> obj, bool state) { }
         public static Spectre.Console.TextPrompt<T> HideChoices<T>(this Spectre.Console.TextPrompt<T> obj) { }
         public static Spectre.Console.TextPrompt<T> HideDefaultValue<T>(this Spectre.Console.TextPrompt<T> obj) { }
+        public static Spectre.Console.TextPrompt<T> History<T>(this Spectre.Console.TextPrompt<T> obj, Spectre.Console.PromptHistory? history) { }
         public static Spectre.Console.TextPrompt<T> InvalidChoiceMessage<T>(this Spectre.Console.TextPrompt<T> obj, string message) { }
         public static Spectre.Console.TextPrompt<T> PromptStyle<T>(this Spectre.Console.TextPrompt<T> obj, Spectre.Console.Style style) { }
         public static Spectre.Console.TextPrompt<T> Secret<T>(this Spectre.Console.TextPrompt<T> obj) { }
@@ -3212,6 +3227,7 @@
         public System.Globalization.CultureInfo? Culture { get; set; }
         public Spectre.Console.Style? DefaultValueStyle { get; set; }
         public bool EditableDefaultValue { get; set; }
+        public Spectre.Console.PromptHistory? History { get; set; }
         public string InvalidChoiceMessage { get; set; }
         public bool IsSecret { get; set; }
         public char? Mask { get; set; }
