@@ -491,6 +491,96 @@ public sealed class TextPromptTests
     }
 
     [Fact]
+    public void Should_Add_Entered_Text_To_Input_History()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Input.PushTextWithEnter("Hello World");
+
+        // When
+        var result = console.Prompt(new TextPrompt<string>("Enter text:"));
+
+        // Then
+        console.InputHistory.Count.ShouldBe(1);
+        console.InputHistory[0].ShouldBe("Hello World");
+    }
+
+    [Fact]
+    public void Should_Return_Correct_Input_After_Pressing_Pressing_Up_Arrow()
+    {
+        // Given
+        var console = new TestConsole { EmitAnsiSequences = true, };
+        console.Input.PushTextWithEnter("First input");
+
+        var firstPrompt = new TextPrompt<string>("First prompt");
+        console.Prompt(firstPrompt);
+
+        console.Input.PushKey(ConsoleKey.UpArrow);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var secondPrompt = new TextPrompt<string>("Second prompt");
+
+        // When
+        var result = console.Prompt(secondPrompt);
+
+        // Then
+        result.ShouldBe("First input");
+    }
+
+    [Fact]
+    public void Should_Return_Correct_Input_After_Pressing_Pressing_Down_Arrow()
+    {
+        // Given
+        var console = new TestConsole { EmitAnsiSequences = true, };
+        console.Input.PushTextWithEnter("First input");
+
+        var firstPrompt = new TextPrompt<string>("First prompt");
+        console.Prompt(firstPrompt);
+
+        console.Input.PushTextWithEnter("Second input");
+
+        var secondPrompt = new TextPrompt<string>("Second prompt");
+        console.Prompt(secondPrompt);
+
+        console.Input.PushKey(ConsoleKey.UpArrow);
+        console.Input.PushKey(ConsoleKey.UpArrow);
+        console.Input.PushKey(ConsoleKey.DownArrow);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var thirdPrompt = new TextPrompt<string>("Third prompt");
+
+        // When
+        var result = console.Prompt(thirdPrompt);
+
+        // Then
+        result.ShouldBe("Second input");
+    }
+
+    [Fact]
+    public void User_Input_Should_Persist_After_Pressing_Down_Arrow()
+    {
+        // Given
+        var console = new TestConsole { EmitAnsiSequences = true, };
+        console.Input.PushTextWithEnter("First input");
+
+        var firstPrompt = new TextPrompt<string>("First prompt");
+        console.Prompt(firstPrompt);
+
+        console.Input.PushText("User input");
+        console.Input.PushKey(ConsoleKey.UpArrow);
+        console.Input.PushKey(ConsoleKey.DownArrow);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var secondPrompt = new TextPrompt<string>("Second prompt");
+
+        // When
+        var result = console.Prompt(secondPrompt);
+
+        // Then
+        result.ShouldBe("User input");
+    }
+
+    [Fact]
     public void Validate_BoolOverload_ShortCircuits()
     {
         // Given
