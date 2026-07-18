@@ -268,4 +268,100 @@ public sealed class AnsiParserTests
                 osc.Data.ShouldBe("123;;lol");
             });
     }
+
+    [Fact(DisplayName = "print: accented latin")]
+    public void Print_AccentedLatin()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("aä"); // "aä"
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('a'));
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0x00E4));
+    }
+
+    [Fact(DisplayName = "print: box-drawing characters")]
+    public void Print_BoxDrawing()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("─│┌"); // "─│┌"
+
+        // Then
+        result.Count.ShouldBe(3);
+        result[0].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0x2500));
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0x2502));
+        result[2].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0x250C));
+    }
+
+    [Fact(DisplayName = "print: CJK character")]
+    public void Print_Cjk()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("日"); // "日"
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0x65E5));
+    }
+
+    [Fact(DisplayName = "print: astral codepoint combines surrogate pair")]
+    public void Print_Astral()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\U0001F600"); // "😀"
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0x1F600));
+    }
+
+    [Fact(DisplayName = "print: astral codepoint between ascii")]
+    public void Print_AstralBetweenAscii()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("a\U0001F600b");
+
+        // Then
+        result.Count.ShouldBe(3);
+        result[0].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('a'));
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0x1F600));
+        result[2].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('b'));
+    }
+
+    [Fact(DisplayName = "print: non-ascii resumes after CSI")]
+    public void Print_ResumesAfterCsi()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e[0m─"); // SGR reset, then "─"
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Csi>().And(csi => csi.Final.ShouldBe('m'));
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0x2500));
+    }
+
+    [Fact(DisplayName = "print: ToUtf16 encodes a BMP codepoint as one char")]
+    public void Print_ToUtf16_Bmp()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("─"); // "─"
+
+        // Then
+        var print = result[0].ShouldBeOfType<AnsiToken.Print>();
+        print.ToUtf16().ShouldBe("─");
+        print.ToUtf16().Length.ShouldBe(1);
+    }
+
+    [Fact(DisplayName = "print: ToUtf16 encodes an astral codepoint as a surrogate pair")]
+    public void Print_ToUtf16_Astral()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\U0001F600"); // "😀"
+
+        // Then
+        var print = result[0].ShouldBeOfType<AnsiToken.Print>();
+        print.ToUtf16().ShouldBe("\U0001F600");
+        print.ToUtf16().Length.ShouldBe(2);
+    }
 }

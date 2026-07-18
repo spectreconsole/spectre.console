@@ -5,12 +5,15 @@ namespace Spectre.Console.Ansi;
 /// </summary>
 public sealed class AnsiParser
 {
+    private const int ReplacementCodepoint = 0xFFFD;
+
     private readonly Action<AnsiToken> _callback;
     private readonly List<char> _intermediates = [];
     private readonly List<int> _parameters = [0];
     private readonly StringBuilder _parametersRaw = new();
     private readonly OscParser _oscParser;
     private bool _hasParameter;
+    private char _highSurrogate;
     private AnsiParserState _currentState;
 
     /// <summary>
@@ -42,6 +45,14 @@ public sealed class AnsiParser
     /// <param name="code">The code to process.</param>
     public void Next(char code)
     {
+        // A stashed high surrogate must be immediately followed by a low surrogate to form a
+        // scalar value. If the next character is anything else, the high surrogate was unpaired
+        if (_highSurrogate != '\0' && !char.IsLowSurrogate(code))
+        {
+            _highSurrogate = '\0';
+            _callback(new AnsiToken.Print(ReplacementCodepoint));
+        }
+
         var (nextState, action) = AnsiTransitionTable.Shared.GetTransition(_currentState, code);
 
         // Perform entry event
@@ -71,7 +82,7 @@ public sealed class AnsiParser
                 // Do nothing
                 break;
             case AnsiTransitionAction.Print:
-                _callback(new AnsiToken.Print(Character: code));
+                EmitPrint(code);
                 break;
             case AnsiTransitionAction.Execute:
                 _callback(new AnsiToken.Execute(Function: code));
@@ -149,6 +160,34 @@ public sealed class AnsiParser
         _parameters.Clear();
         _parameters.Add(0);
         _intermediates.Clear();
+    }
+
+    private void EmitPrint(char code)
+    {
+        if (char.IsHighSurrogate(code))
+        {
+            // Wait for the trailing low surrogate before emitting a scalar value
+            _highSurrogate = code;
+            return;
+        }
+
+        if (char.IsLowSurrogate(code))
+        {
+            if (_highSurrogate != '\0')
+            {
+                _callback(new AnsiToken.Print(char.ConvertToUtf32(_highSurrogate, code)));
+                _highSurrogate = '\0';
+            }
+            else
+            {
+                // Low surrogate without a preceding high surrogate
+                _callback(new AnsiToken.Print(ReplacementCodepoint));
+            }
+
+            return;
+        }
+
+        _callback(new AnsiToken.Print(code));
     }
 }
 
@@ -470,7 +509,28 @@ internal sealed class AnsiTransitionTable
             return transition;
         }
 
+        // The transition table only covers the C0, C1 and GL ranges (0x00-0x9F). Because the
+        // input is already decoded to UTF-16, any codepoint at or above 0xA0 is a graphic
+        // character (GR and beyond); classify it by how the current state treats printable input
+        if (code >= 0xA0)
+        {
+            return new AnsiTransition(state, GetPrintableAction(state));
+        }
+
         return new AnsiTransition(state, AnsiTransitionAction.None);
+    }
+
+    // How a graphic (printable) character is handled in each state. States that collect or
+    // ignore control sequences never expect graphic input, so they ignore it in place
+    private static AnsiTransitionAction GetPrintableAction(AnsiParserState state)
+    {
+        return state switch
+        {
+            AnsiParserState.Ground => AnsiTransitionAction.Print,
+            AnsiParserState.OscString => AnsiTransitionAction.OscPut,
+            AnsiParserState.DcsPassthrough => AnsiTransitionAction.DscPut,
+            _ => AnsiTransitionAction.Ignore,
+        };
     }
 
     private void Add(

@@ -6,10 +6,28 @@ namespace Spectre.Console.Ansi;
 public abstract record AnsiToken
 {
     /// <summary>
-    /// Prints a (Unicode codepoint) character to the screen.
+    /// Prints a Unicode scalar value (codepoint) to the screen.
     /// </summary>
-    /// <param name="Character">The character to print.</param>
-    public record Print(char Character) : AnsiToken;
+    /// <param name="Codepoint">
+    /// The Unicode codepoint to print. Astral codepoints, encoded as UTF-16
+    /// surrogate pairs in the input, are combined into a single scalar value.
+    /// </param>
+    public record Print(int Codepoint) : AnsiToken
+    {
+        /// <summary>
+        /// Converts the <see cref="Codepoint"/> to its UTF-16 representation, suitable
+        /// for writing to a <see cref="System.IO.TextWriter"/> or a <see cref="string"/>.
+        /// </summary>
+        /// <returns>
+        /// A string of one or two <see cref="char"/> values; an astral codepoint is
+        /// returned as a UTF-16 surrogate pair. The parser only ever emits valid Unicode
+        /// scalar values, so this never throws.
+        /// </returns>
+        public string ToUtf16()
+        {
+            return char.ConvertFromUtf32(Codepoint);
+        }
+    }
 
     /// <summary>
     /// Executes the specified function.
