@@ -236,7 +236,7 @@ public sealed class AnsiParserTests
     public void Osc_Sequence_5()
     {
         // Given, When
-        var result = AnsiParserFixture.Parse("\e]8;=value;id=foo;https://example.com\e\\");
+        var result = AnsiParserFixture.Parse("\e]8;=value:id=foo;https://example.com\e\\");
 
         // Then
         result.Count.ShouldBe(2);
@@ -305,6 +305,40 @@ public sealed class AnsiParserTests
             .And(osc =>
             {
                 osc.Data.ShouldBe("123;;lol");
+            });
+    }
+
+    [Fact(DisplayName = "osc 8: Hyperlink with semicolon in URI")]
+    public void Osc_Hyperlink_Semicolon_In_Uri()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]8;;http://example.com/a;b\e\\");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
+            .And(osc =>
+            {
+                osc.Id.ShouldBeNull();
+                osc.Uri.ShouldBe("http://example.com/a;b");
+            });
+    }
+
+    [Fact(DisplayName = "osc 8: Hyperlink with colon-separated params")]
+    public void Osc_Hyperlink_Colon_Separated_Params()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]8;id=abc:foo=bar;http://x\e\\");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
+            .And(osc =>
+            {
+                osc.Id.ShouldBe("abc");
+                osc.Uri.ShouldBe("http://x");
             });
     }
 

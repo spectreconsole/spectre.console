@@ -6,44 +6,36 @@ internal static class OscHyperLinkParser
     {
         string? id = null;
 
-        // Find the final ';' which separates params from the URI.
-        var lastSemicolon = buffer.LastIndexOf(';');
-        if (lastSemicolon < 0)
+        // The URI is everything after the first ';'. Per the OSC 8 spec the params
+        // section precedes it, and the URI itself may legally contain ';'.
+        var separator = buffer.IndexOf(';');
+        if (separator < 0)
         {
             return new OscCommand.HyperLinkStart(null, buffer.ToString());
         }
 
-        var parameters = buffer[..lastSemicolon];
-        var uri = buffer[(lastSemicolon + 1)..];
+        var parameters = buffer[..separator];
+        var uri = buffer[(separator + 1)..];
 
-        // Parse key=value pairs from the params section.
+        // Params are a ':'-separated list of key=value pairs.
         while (!parameters.IsEmpty)
         {
-            var equalsIndex = parameters.IndexOf('=');
-            if (equalsIndex < 0)
+            var colonIndex = parameters.IndexOf(':');
+            var pair = colonIndex < 0 ? parameters : parameters[..colonIndex];
+
+            var equalsIndex = pair.IndexOf('=');
+            if (equalsIndex >= 0 && pair[..equalsIndex].Trim() is "id")
             {
-                break;
-            }
-
-            var key = parameters[..equalsIndex].Trim();
-            parameters = parameters[(equalsIndex + 1)..];
-
-            var semicolonIndex = parameters.IndexOf(';');
-            var value = semicolonIndex < 0
-                ? parameters.Trim()
-                : parameters[..semicolonIndex].Trim();
-
-            if (key is "id")
-            {
+                var value = pair[(equalsIndex + 1)..].Trim();
                 id = value.IsEmpty ? null : value.ToString();
             }
 
-            if (semicolonIndex < 0)
+            if (colonIndex < 0)
             {
                 break;
             }
 
-            parameters = parameters[(semicolonIndex + 1)..];
+            parameters = parameters[(colonIndex + 1)..];
         }
 
         if (id == null && uri.Length == 0)
