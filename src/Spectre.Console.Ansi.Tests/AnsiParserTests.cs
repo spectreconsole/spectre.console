@@ -125,6 +125,45 @@ public sealed class AnsiParserTests
             });
     }
 
+    [Fact(DisplayName = "csi: ESC [ ; H")]
+    public void Csi_Empty_Params()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e[;H");
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Csi>()
+            .And(csi =>
+            {
+                csi.ParamsRaw.ShouldBe(";");
+                csi.Params.Count.ShouldBe(2);
+                csi.Params[0].ShouldBe(0);
+                csi.Params[1].ShouldBe(0);
+                csi.Final.ShouldBe('H');
+            });
+    }
+
+    [Fact(DisplayName = "csi: ESC [ ;; H")]
+    public void Csi_Multiple_Empty_Params()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e[;;H");
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Csi>()
+            .And(csi =>
+            {
+                csi.ParamsRaw.ShouldBe(";;");
+                csi.Params.Count.ShouldBe(3);
+                csi.Params[0].ShouldBe(0);
+                csi.Params[1].ShouldBe(0);
+                csi.Params[2].ShouldBe(0);
+                csi.Final.ShouldBe('H');
+            });
+    }
+
     [Fact(DisplayName = "osc 8: Hyperlink")]
     public void Osc_Sequence_1()
     {

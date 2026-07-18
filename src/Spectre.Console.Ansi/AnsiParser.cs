@@ -93,6 +93,11 @@ public sealed class AnsiParser
             case AnsiTransitionAction.Param:
                 _parametersRaw.Append(code);
 
+                // A separator marks a parameter position, so set this for separators too.
+                // An all-empty section like "ESC [ ; H" then reports its default positions
+                // instead of collapsing to no params
+                _hasParameter = true;
+
                 if (code is ';' or ':')
                 {
                     _parameters.Add(0);
@@ -103,7 +108,6 @@ public sealed class AnsiParser
 
                     var accumulator = (_parameters[^1] * 10) + code - 48;
                     _parameters[^1] = accumulator > (int.MaxValue / 10) - 10 ? 0 : accumulator;
-                    _hasParameter = true;
                 }
 
                 break;
