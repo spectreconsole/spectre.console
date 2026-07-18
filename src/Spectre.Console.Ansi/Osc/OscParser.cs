@@ -4,9 +4,9 @@ internal sealed class OscParser
 {
     private const int MaxBufferSize = 2048;
 
-    private char[] _buffer = new char[MaxBufferSize];
+    private readonly char[] _buffer = new char[MaxBufferSize];
     private int _bufferIndex = 0;
-    private char[] _everything = new char[MaxBufferSize];
+    private readonly char[] _everything = new char[MaxBufferSize];
     private int _index = 0;
     private bool _writeToBuffer = false;
     private State _state = State.Start;
@@ -20,8 +20,8 @@ internal sealed class OscParser
 
     public void Reset()
     {
-        _buffer = new char[MaxBufferSize];
-        _everything = new char[MaxBufferSize];
+        // Reuse the buffers instead of reallocating. Every read is bounded by the
+        // indices below, so stale data from a previous sequence is never observed.
         _bufferIndex = 0;
         _index = 0;
         _writeToBuffer = false;

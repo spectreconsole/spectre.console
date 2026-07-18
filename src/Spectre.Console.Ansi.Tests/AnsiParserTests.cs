@@ -270,7 +270,7 @@ public sealed class AnsiParserTests
     }
 
     [Fact(DisplayName = "osc 0: terminated by BEL")]
-    public void Osc_TerminatedByBel()
+    public void Osc_Terminated_By_BEL()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]0;title\a"); // OSC 0 window title, BEL terminator
@@ -283,7 +283,7 @@ public sealed class AnsiParserTests
     }
 
     [Fact(DisplayName = "osc 8: Hyperlink terminated by BEL")]
-    public void Osc_HyperlinkTerminatedByBel()
+    public void Osc_Hyperlink_Terminated_By_BEL()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]8;;https://example.com\a");
@@ -300,7 +300,7 @@ public sealed class AnsiParserTests
     }
 
     [Fact(DisplayName = "osc: BEL terminator returns to ground")]
-    public void Osc_BelReturnsToGround()
+    public void Osc_BEL_Returns_To_Ground()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]0;t\aX"); // OSC ... BEL, then a printable
@@ -311,8 +311,24 @@ public sealed class AnsiParserTests
         result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('X'));
     }
 
+    [Fact(DisplayName = "osc: buffers are reused across sequences without leaking")]
+    public void Osc_Reuses_Buffers_Without_Leaking()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]123;longlonglong\a\e]9;x\a");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.Unknown>()
+            .And(osc => osc.Data.ShouldBe("123;longlonglong"));
+        result[1].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.Unknown>()
+            .And(osc => osc.Data.ShouldBe("9;x"));
+    }
+
     [Fact(DisplayName = "print: accented latin")]
-    public void Print_AccentedLatin()
+    public void Print_Accented_Latin()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("aä"); // "aä"
@@ -324,7 +340,7 @@ public sealed class AnsiParserTests
     }
 
     [Fact(DisplayName = "print: box-drawing characters")]
-    public void Print_BoxDrawing()
+    public void Print_Box_Drawing()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("─│┌"); // "─│┌"
@@ -359,7 +375,7 @@ public sealed class AnsiParserTests
     }
 
     [Fact(DisplayName = "print: astral codepoint between ascii")]
-    public void Print_AstralBetweenAscii()
+    public void Print_Astral_Between_Ascii()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("a\U0001F600b");
@@ -372,7 +388,7 @@ public sealed class AnsiParserTests
     }
 
     [Fact(DisplayName = "print: non-ascii resumes after CSI")]
-    public void Print_ResumesAfterCsi()
+    public void Print_Resumes_After_Csi()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e[0m─"); // SGR reset, then "─"
