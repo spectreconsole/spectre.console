@@ -55,7 +55,7 @@ public sealed class AnsiParser
 
         var (nextState, action) = AnsiTransitionTable.Shared.GetTransition(_currentState, code);
 
-        // Perform entry event
+        // Perform the exit action of the current state
         if (_currentState != nextState)
         {
             switch (_currentState)
@@ -74,7 +74,7 @@ public sealed class AnsiParser
             }
         }
 
-        // Perform the action
+        // Perform the transition action
         switch (action)
         {
             case AnsiTransitionAction.None:
@@ -127,7 +127,7 @@ public sealed class AnsiParser
                 break;
         }
 
-        // Perform exit event
+        // Perform the entry action of the next state
         if (_currentState != nextState)
         {
             switch (nextState)
@@ -225,11 +225,7 @@ internal enum AnsiTransitionAction
 
 internal readonly record struct AnsiTransition(
     AnsiParserState State,
-    AnsiTransitionAction Action)
-{
-    public AnsiParserState State { get; } = State;
-    public AnsiTransitionAction Action { get; } = Action;
-}
+    AnsiTransitionAction Action);
 
 internal sealed class AnsiTransitionTable
 {
