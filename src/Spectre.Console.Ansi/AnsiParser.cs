@@ -493,6 +493,9 @@ internal sealed class AnsiTransitionTable
             Add(0x00..0x17, AnsiParserState.OscString, AnsiParserState.OscString, AnsiTransitionAction.Ignore);
             Add(0x1C..0x1F, AnsiParserState.OscString, AnsiParserState.OscString, AnsiTransitionAction.Ignore);
             Add(0x20..0x7F, AnsiParserState.OscString, AnsiParserState.OscString, AnsiTransitionAction.OscPut);
+
+            // -> Ground (BEL terminates OSC; xterm extension, not in the Williams diagram)
+            Add(0x07, AnsiParserState.OscString, AnsiParserState.Ground, AnsiTransitionAction.None);
         }
     }
 

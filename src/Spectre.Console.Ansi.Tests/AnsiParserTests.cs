@@ -269,6 +269,48 @@ public sealed class AnsiParserTests
             });
     }
 
+    [Fact(DisplayName = "osc 0: terminated by BEL")]
+    public void Osc_TerminatedByBel()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]0;title\a"); // OSC 0 window title, BEL terminator
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.Unknown>()
+            .And(osc => osc.Data.ShouldBe("0;title"));
+    }
+
+    [Fact(DisplayName = "osc 8: Hyperlink terminated by BEL")]
+    public void Osc_HyperlinkTerminatedByBel()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]8;;https://example.com\a");
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
+            .And(osc =>
+            {
+                osc.Id.ShouldBeNull();
+                osc.Uri.ShouldBe("https://example.com");
+            });
+    }
+
+    [Fact(DisplayName = "osc: BEL terminator returns to ground")]
+    public void Osc_BelReturnsToGround()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]0;t\aX"); // OSC ... BEL, then a printable
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>();
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('X'));
+    }
+
     [Fact(DisplayName = "print: accented latin")]
     public void Print_AccentedLatin()
     {
