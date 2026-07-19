@@ -7,7 +7,7 @@ internal static class OscHyperLinkParser
         string? id = null;
 
         // The URI is everything after the first ';'. Per the OSC 8 spec the params
-        // section precedes it, and the URI itself may legally contain ';'.
+        // section precedes it, and the URI itself may legally contain ';'
         var separator = buffer.IndexOf(';');
         if (separator < 0)
         {

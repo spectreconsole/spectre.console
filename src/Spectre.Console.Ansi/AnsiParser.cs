@@ -71,7 +71,7 @@ public sealed class AnsiParser
                     // dispatches the accumulated command.
                     if (!IsAbort(code))
                     {
-                        var command = _oscParser.End(code);
+                        var command = _oscParser.End();
                         if (command != null)
                         {
                             _callback(new AnsiToken.Osc(Command: command));

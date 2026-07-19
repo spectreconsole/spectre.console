@@ -7,10 +7,8 @@ internal sealed class OscParser
     private const int MaxBufferSize = 2048;
 
     private readonly char[] _buffer = new char[MaxBufferSize];
-    private int _bufferIndex = 0;
-    private readonly char[] _everything = new char[MaxBufferSize];
-    private int _index = 0;
-    private bool _writeToBuffer = false;
+    private int _length;
+    private int _payloadStart;
     private State _state = State.Start;
 
     private enum State
@@ -18,87 +16,57 @@ internal sealed class OscParser
         Invalid = 0,
         Start = 1,
         Osc8 = 2,
+        HyperLink = 3,
     }
 
     public void Reset()
     {
-        // Reuse the buffers instead of reallocating. Every read is bounded by the
-        // indices below, so stale data from a previous sequence is never observed.
-        _bufferIndex = 0;
-        _index = 0;
-        _writeToBuffer = false;
+        // Reuse the buffer; every read is bounded by _length, so stale data is never observed.
+        _length = 0;
+        _payloadStart = 0;
         _state = State.Start;
     }
 
     public void Next(char code)
     {
-        // Keep track of everything so we can submit unknown OSC commands.
-        // Not pretty, but it solves the problem. We should perhaps rethink this parser.
-        if (_index < MaxBufferSize)
+        // Accumulate the whole string so an unknown OSC command can be reported in full.
+        if (_length < MaxBufferSize)
         {
-            _everything[_index] = code;
-            _index++;
-        }
-
-        if (_state == State.Invalid)
-        {
-            return;
-        }
-
-        if (_writeToBuffer)
-        {
-            if (_bufferIndex < MaxBufferSize)
-            {
-                _buffer[_bufferIndex] = code;
-                _bufferIndex++;
-            }
-
-            return;
+            _buffer[_length] = code;
+            _length++;
         }
 
         switch (_state)
         {
-            case State.Invalid:
-                break;
             case State.Start:
-                switch (code)
-                {
-                    case '8':
-                        _state = State.Osc8;
-                        break;
-                    default:
-                        _state = State.Invalid;
-                        break;
-                }
-
+                _state = code == '8' ? State.Osc8 : State.Invalid;
                 break;
             case State.Osc8:
-                switch (code)
+                if (code == ';')
                 {
-                    case ';':
-                        _writeToBuffer = true;
-                        break;
-                    default:
-                        _state = State.Invalid;
-                        break;
+                    // The OSC 8 payload (params and URI) starts just after the "8;" prefix.
+                    _payloadStart = _length;
+                    _state = State.HyperLink;
+                }
+                else
+                {
+                    _state = State.Invalid;
                 }
 
                 break;
         }
     }
 
-    public OscCommand? End(char terminator)
+    public OscCommand? End()
     {
-        if (_state == State.Osc8 && _bufferIndex > 0)
+        switch (_state)
         {
-            return OscHyperLinkParser.Parse(_buffer.AsSpan(0, _bufferIndex));
+            case State.HyperLink when _length > _payloadStart:
+                return OscHyperLinkParser.Parse(_buffer.AsSpan(_payloadStart, _length - _payloadStart));
+            case State.Invalid when _length > 0:
+                return new OscCommand.Unknown(Data: new string(_buffer, 0, _length));
+            default:
+                return null;
         }
-
-        if (_state == State.Invalid && _index > 0)
-        {
-            return new OscCommand.Unknown(Data: new string(_everything, 0, _index));
-        }
-
-        return null;
     }
 }

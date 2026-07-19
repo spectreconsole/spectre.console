@@ -3,7 +3,7 @@ namespace Spectre.Console.Ansi;
 /// <summary>
 /// Represents an OSC command.
 /// </summary>
-public record OscCommand
+public abstract record OscCommand
 {
     /// <summary>
     /// Represents a hyperlink start.
