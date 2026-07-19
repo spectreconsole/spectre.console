@@ -2,6 +2,8 @@ namespace Spectre.Console.Ansi;
 
 internal sealed class OscParser
 {
+    // Upper bound on an OSC string. Anything longer is silently truncated to this length,
+    // which caps both the OSC 8 URI and the raw data of an unknown OSC command.
     private const int MaxBufferSize = 2048;
 
     private readonly char[] _buffer = new char[MaxBufferSize];
