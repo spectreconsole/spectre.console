@@ -6,6 +6,7 @@ namespace Spectre.Console.Ansi;
 public sealed class AnsiParser
 {
     private const int ReplacementCodepoint = 0xFFFD;
+    private const int MaxParameterValue = 65535;
 
     private readonly Action<AnsiToken> _callback;
     private readonly List<char> _intermediates = [];
@@ -106,8 +107,8 @@ public sealed class AnsiParser
                 {
                     Debug.Assert(char.IsDigit(code), "Expected digit");
 
-                    var accumulator = (_parameters[^1] * 10) + code - 48;
-                    _parameters[^1] = accumulator > (int.MaxValue / 10) - 10 ? 0 : accumulator;
+                    var accumulator = (_parameters[^1] * 10L) + (code - 48);
+                    _parameters[^1] = accumulator > MaxParameterValue ? MaxParameterValue : (int)accumulator;
                 }
 
                 break;

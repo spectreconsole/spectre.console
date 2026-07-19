@@ -164,6 +164,23 @@ public sealed class AnsiParserTests
             });
     }
 
+    [Fact(DisplayName = "csi: parameter overflow saturates")]
+    public void Csi_Parameter_Overflow_Saturates()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e[99999999999m");
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Csi>()
+            .And(csi =>
+            {
+                csi.Params.Count.ShouldBe(1);
+                csi.Params[0].ShouldBe(65535);
+                csi.Final.ShouldBe('m');
+            });
+    }
+
     [Fact(DisplayName = "osc 8: Hyperlink")]
     public void Osc_Sequence_1()
     {
