@@ -168,6 +168,33 @@ public sealed class AnsiParser
         _currentState = nextState;
     }
 
+    /// <summary>
+    /// Emits any buffered output. Call this once at the end of the input stream so a trailing
+    /// unpaired high surrogate is emitted (as the Unicode replacement character) instead of
+    /// being silently held back while it waits for a low surrogate that never arrives.
+    /// </summary>
+    public void Flush()
+    {
+        if (_highSurrogate != '\0')
+        {
+            _highSurrogate = '\0';
+            _callback(new AnsiToken.Print(ReplacementCodepoint));
+        }
+    }
+
+    /// <summary>
+    /// Resets the parser to its initial ground state, discarding any partially parsed sequence
+    /// and buffered state. Use this to recover from malformed input or to reuse the instance for
+    /// an unrelated stream. No tokens are emitted.
+    /// </summary>
+    public void Reset()
+    {
+        _currentState = AnsiParserState.Ground;
+        _highSurrogate = '\0';
+        _oscParser.Reset();
+        Clear();
+    }
+
     private void Clear()
     {
         _hasParameter = false;

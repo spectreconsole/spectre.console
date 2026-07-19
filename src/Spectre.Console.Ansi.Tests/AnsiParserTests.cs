@@ -216,6 +216,57 @@ public sealed class AnsiParserTests
         a.GetHashCode().ShouldBe(b.GetHashCode());
     }
 
+    [Fact(DisplayName = "flush: emits a trailing lone high surrogate")]
+    public void Flush_Trailing_High_Surrogate()
+    {
+        // Given
+        var result = new List<AnsiToken>();
+        var parser = new AnsiParser(result.Add);
+        parser.Next((char)0xD83D); // lone high surrogate, buffered awaiting its pair
+
+        // When
+        result.Count.ShouldBe(0);
+        parser.Flush();
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0xFFFD));
+    }
+
+    [Fact(DisplayName = "reset: recovers mid-sequence")]
+    public void Reset_Mid_Sequence()
+    {
+        // Given
+        var result = new List<AnsiToken>();
+        var parser = new AnsiParser(result.Add);
+        parser.Next("\e[12"); // an unterminated CSI
+        result.Count.ShouldBe(0);
+
+        // When
+        parser.Reset();
+        parser.Next("A"); // prints from Ground
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('A'));
+    }
+
+    [Fact(DisplayName = "reset: discards a pending high surrogate")]
+    public void Reset_Discards_Pending_Surrogate()
+    {
+        // Given
+        var result = new List<AnsiToken>();
+        var parser = new AnsiParser(result.Add);
+        parser.Next((char)0xD83D); // pending high surrogate
+
+        // When
+        parser.Reset();
+        parser.Flush();
+
+        // Then
+        result.ShouldBeEmpty();
+    }
+
     [Fact(DisplayName = "osc 8: Hyperlink")]
     public void Osc_Sequence_1()
     {
