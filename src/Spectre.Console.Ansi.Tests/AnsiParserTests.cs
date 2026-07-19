@@ -452,6 +452,17 @@ public sealed class AnsiParserTests
             .And(osc => osc.Data.ShouldBe("9;x"));
     }
 
+    [Fact(DisplayName = "osc: CAN aborts without dispatching")]
+    public void Osc_Can_Aborts()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]0;title\u0018"); // CAN mid-OSC
+
+        // Then
+        result.Exists(t => t is AnsiToken.Osc).ShouldBeFalse();
+        result.Exists(t => t is AnsiToken.Execute e && e.Function == '\u0018').ShouldBeTrue();
+    }
+
     [Fact(DisplayName = "print: accented latin")]
     public void Print_Accented_Latin()
     {

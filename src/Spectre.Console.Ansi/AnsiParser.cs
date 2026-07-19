@@ -67,10 +67,15 @@ public sealed class AnsiParser
             switch (_currentState)
             {
                 case AnsiParserState.OscString:
-                    var command = _oscParser.End(code);
-                    if (command != null)
+                    // CAN and SUB abort the string; only a normal terminator (ST/BEL)
+                    // dispatches the accumulated command.
+                    if (!IsAbort(code))
                     {
-                        _callback(new AnsiToken.Osc(Command: command));
+                        var command = _oscParser.End(code);
+                        if (command != null)
+                        {
+                            _callback(new AnsiToken.Osc(Command: command));
+                        }
                     }
 
                     break;
@@ -198,6 +203,13 @@ public sealed class AnsiParser
         }
 
         _callback(new AnsiToken.Print(code));
+    }
+
+    private static bool IsAbort(char code)
+    {
+        // CAN (0x18) and SUB (0x1A) abort any in-progress
+        // sequence per the VT500 state machine
+        return code is '\u0018' or '\u001A';
     }
 }
 
