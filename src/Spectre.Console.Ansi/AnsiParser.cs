@@ -3,6 +3,11 @@ namespace Spectre.Console.Ansi;
 /// <summary>
 /// An ANSI/VT input parser based on the VT500-series.
 /// </summary>
+/// <remarks>
+/// Instances are stateful and not thread-safe: a single parser must not be used from
+/// multiple threads, and the callback must not re-enter <see cref="Next(char)"/> or
+/// <see cref="Next(string)"/> on the same instance.
+/// </remarks>
 public sealed class AnsiParser
 {
     private const int ReplacementCodepoint = 0xFFFD;
@@ -18,7 +23,7 @@ public sealed class AnsiParser
     private AnsiParserState _currentState;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AnsiMarkup"/> class.
+    /// Initializes a new instance of the <see cref="AnsiParser"/> class.
     /// </summary>
     /// <param name="callback">The callback to be used for parsed tokens.</param>
     public AnsiParser(Action<AnsiToken> callback)
