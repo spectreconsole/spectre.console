@@ -40,7 +40,33 @@ public abstract record AnsiToken
     /// </summary>
     /// <param name="Intermediates">Intermediate bytes.</param>
     /// <param name="Final">The final byte identifying the ESC command.</param>
-    public record Esc(List<char> Intermediates, char Final) : AnsiToken;
+    public record Esc(IReadOnlyList<char> Intermediates, char Final) : AnsiToken
+    {
+        /// <inheritdoc/>
+        public virtual bool Equals(Esc? other)
+        {
+            return other is not null
+                && base.Equals(other)
+                && Intermediates.SequenceEqual(other.Intermediates)
+                && Final == other.Final;
+        }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash = base.GetHashCode();
+                hash = (hash * 397) ^ Final.GetHashCode();
+                foreach (var intermediate in Intermediates)
+                {
+                    hash = (hash * 397) ^ intermediate.GetHashCode();
+                }
+
+                return hash;
+            }
+        }
+    }
 
     /// <summary>
     /// Executes a CSI command.
@@ -49,7 +75,45 @@ public abstract record AnsiToken
     /// <param name="Params">The parameters.</param>
     /// <param name="Final">The final byte identifying the CSI command.</param>
     /// <param name="ParamsRaw">The raw parameters.</param>
-    public record Csi(List<char> Intermediates, List<int> Params, char Final, string ParamsRaw) : AnsiToken;
+    public record Csi(
+        IReadOnlyList<char> Intermediates,
+        IReadOnlyList<int> Params,
+        char Final,
+        string ParamsRaw) : AnsiToken
+    {
+        /// <inheritdoc/>
+        public virtual bool Equals(Csi? other)
+        {
+            return other is not null
+                && base.Equals(other)
+                && Intermediates.SequenceEqual(other.Intermediates)
+                && Params.SequenceEqual(other.Params)
+                && Final == other.Final
+                && ParamsRaw == other.ParamsRaw;
+        }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash = base.GetHashCode();
+                hash = (hash * 397) ^ Final.GetHashCode();
+                hash = (hash * 397) ^ ParamsRaw.GetHashCode();
+                foreach (var intermediate in Intermediates)
+                {
+                    hash = (hash * 397) ^ intermediate.GetHashCode();
+                }
+
+                foreach (var parameter in Params)
+                {
+                    hash = (hash * 397) ^ parameter;
+                }
+
+                return hash;
+            }
+        }
+    }
 
     /// <summary>
     /// Executes an OSC command.
@@ -64,7 +128,45 @@ public abstract record AnsiToken
     /// <param name="Params">The parameters.</param>
     /// <param name="Final">The final byte identifying the DCS command.</param>
     /// <param name="ParamsRaw">The raw parameters.</param>
-    public record DcsHook(List<char> Intermediates, List<int> Params, char Final, string ParamsRaw) : AnsiToken;
+    public record DcsHook(
+        IReadOnlyList<char> Intermediates,
+        IReadOnlyList<int> Params,
+        char Final,
+        string ParamsRaw) : AnsiToken
+    {
+        /// <inheritdoc/>
+        public virtual bool Equals(DcsHook? other)
+        {
+            return other is not null
+                && base.Equals(other)
+                && Intermediates.SequenceEqual(other.Intermediates)
+                && Params.SequenceEqual(other.Params)
+                && Final == other.Final
+                && ParamsRaw == other.ParamsRaw;
+        }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash = base.GetHashCode();
+                hash = (hash * 397) ^ Final.GetHashCode();
+                hash = (hash * 397) ^ ParamsRaw.GetHashCode();
+                foreach (var intermediate in Intermediates)
+                {
+                    hash = (hash * 397) ^ intermediate.GetHashCode();
+                }
+
+                foreach (var parameter in Params)
+                {
+                    hash = (hash * 397) ^ parameter;
+                }
+
+                return hash;
+            }
+        }
+    }
 
     /// <summary>
     /// Puts a byte into the selected handler.

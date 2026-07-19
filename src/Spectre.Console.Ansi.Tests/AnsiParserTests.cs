@@ -181,6 +181,41 @@ public sealed class AnsiParserTests
             });
     }
 
+    [Fact(DisplayName = "token: identical CSI tokens are equal")]
+    public void Token_Csi_Value_Equality()
+    {
+        // Given, When
+        var a = AnsiParserFixture.Parse("\e[1;2m")[0];
+        var b = AnsiParserFixture.Parse("\e[1;2m")[0];
+
+        // Then
+        a.ShouldBe(b);
+        a.GetHashCode().ShouldBe(b.GetHashCode());
+    }
+
+    [Fact(DisplayName = "token: differing CSI tokens are not equal")]
+    public void Token_Csi_Value_Inequality()
+    {
+        // Given, When
+        var a = AnsiParserFixture.Parse("\e[1;2m")[0];
+        var b = AnsiParserFixture.Parse("\e[1;3m")[0];
+
+        // Then
+        a.ShouldNotBe(b);
+    }
+
+    [Fact(DisplayName = "token: identical ESC tokens are equal")]
+    public void Token_Esc_Value_Equality()
+    {
+        // Given, When
+        var a = AnsiParserFixture.Parse("\e(B")[0];
+        var b = AnsiParserFixture.Parse("\e(B")[0];
+
+        // Then
+        a.ShouldBe(b);
+        a.GetHashCode().ShouldBe(b.GetHashCode());
+    }
+
     [Fact(DisplayName = "osc 8: Hyperlink")]
     public void Osc_Sequence_1()
     {
