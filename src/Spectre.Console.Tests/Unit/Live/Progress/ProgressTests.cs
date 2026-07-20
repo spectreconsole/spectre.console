@@ -139,6 +139,57 @@ public sealed class ProgressTests
     }
 
     [Fact]
+    public void Adding_Task_With_Negative_Max_Value_Should_Throw()
+    {
+        // Given
+        var console = new TestConsole()
+            .Interactive();
+
+        var progress = new Progress(console)
+            .Columns(new ProgressBarColumn())
+            .AutoRefresh(false)
+            .AutoClear(false);
+
+        // When
+        var exception = Record.Exception(() =>
+        {
+            progress.Start(ctx =>
+            {
+                ctx.AddTask("foo", maxValue: -1);
+            });
+        });
+
+        // Then
+        exception.ShouldBeOfType<ArgumentOutOfRangeException>();
+    }
+
+    [Fact]
+    public void Setting_Max_Value_To_Negative_Value_Should_Throw()
+    {
+        // Given
+        var console = new TestConsole()
+            .Interactive();
+
+        var progress = new Progress(console)
+            .Columns(new ProgressBarColumn())
+            .AutoRefresh(false)
+            .AutoClear(false);
+
+        // When
+        var exception = Record.Exception(() =>
+        {
+            progress.Start(ctx =>
+            {
+                var task = ctx.AddTask("foo");
+                task.MaxValue = -1;
+            });
+        });
+
+        // Then
+        exception.ShouldBeOfType<ArgumentOutOfRangeException>();
+    }
+
+    [Fact]
     public void Setting_Value_Should_Override_Incremented_Value()
     {
         // Given
