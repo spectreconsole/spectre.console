@@ -31,7 +31,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup .NET SDK (global.json)
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
 
       - name: Publish
         shell: bash
