@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -49,10 +50,14 @@ public class SpinnerGenerator : IIncrementalGenerator
                     return EquatableArray<SpinnerModel>.Empty;
                 }
 
-                return SpinnerParser.ParseAll(defaultJsonFiles[0], sindreJsonFiles[0]);
+                var parsedSpinners = SpinnerParser.ParseAll(defaultJsonFiles[0], sindreJsonFiles[0]);
+                var validSpinners = parsedSpinners
+                    .Where(IsValidSpinner)
+                    .ToArray();
+
+                return new EquatableArray<SpinnerModel>(validSpinners);
             });
 
-        // Register source output - only emit, no parsing (parsing is cached above)
         context.RegisterSourceOutput(spinners, static (spc, models) =>
         {
             if (models.IsEmpty)
@@ -63,5 +68,21 @@ public class SpinnerGenerator : IIncrementalGenerator
             var source = SpinnerEmitter.Emit(models);
             spc.AddSource("Spinner.Generated.g.cs", SourceText.From(source, Utf8NoBom));
         });
+    }
+    /// <summary>
+    /// Determines whether a spinner model contains valid animation frames.
+    /// A spinner is considered invalid if it has fewer than two frames or if all frames are identical.
+    /// </summary>
+    /// <param name="spinner">The spinner model to validate.</param>
+    /// <returns><c>true</c> if the spinner has animated frames; otherwise, <c>false</c>.</returns>
+    private static bool IsValidSpinner(SpinnerModel spinner)
+    {
+        if (spinner?.Frames == null || spinner.Frames.Count < 2)
+        {
+            return false;
+        }
+
+        var firstFrame = spinner.Frames[0];
+        return spinner.Frames.Any(frame => !string.Equals(frame, firstFrame, StringComparison.Ordinal));
     }
 }
