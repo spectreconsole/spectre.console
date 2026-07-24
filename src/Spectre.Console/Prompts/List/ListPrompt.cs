@@ -53,43 +53,58 @@ internal sealed class ListPrompt<T>
             skipUnselectableItems,
             searchEnabled,
             _strategy.CalculateInitialIndex(nodes));
+
         var hook = new ListPromptRenderHook<T>(_console, () => BuildRenderable(state));
 
-        using (new RenderHookScope(_console, hook))
+        try
         {
-            _console.Cursor.Hide();
-            hook.Refresh();
-
-            while (true)
+            using (new RenderHookScope(_console, hook))
             {
-                cancellationToken.ThrowIfCancellationRequested();
-                var rawKey = await _console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
-                if (rawKey == null)
+                try
                 {
-                    continue;
-                }
-
-                var key = rawKey.Value;
-                var result = _strategy.HandleInput(key, state);
-                if (result == ListPromptInputResult.Submit)
-                {
-                    break;
-                }
-                else if (result == ListPromptInputResult.Abort)
-                {
-                    state.Cancel();
-                    break;
-                }
-
-                if (state.Update(key) || result == ListPromptInputResult.Refresh)
-                {
+                    _console.Cursor.Hide();
                     hook.Refresh();
+
+                    while (true)
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+                        var rawKey = await _console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
+                        if (rawKey == null)
+                        {
+                            continue;
+                        }
+
+                        var key = rawKey.Value;
+
+                        var result = _strategy.HandleInput(key, state);
+
+                        if (result == ListPromptInputResult.Submit)
+                        {
+                            break;
+                        }
+                        else if (result == ListPromptInputResult.Abort)
+                        {
+                            state.Cancel();
+                            break;
+                        }
+                        var stateUpdated = state.Update(key);
+
+                        if (stateUpdated || result == ListPromptInputResult.Refresh)
+                        {
+                            hook.Refresh();
+                        }
+                    }
+                }
+                finally
+                {
+                    _console.Cursor.Show();
                 }
             }
         }
-
-        hook.Clear();
-        _console.Cursor.Show();
+        finally
+        {
+            hook.Clear();
+        }
 
         return state;
     }
@@ -127,7 +142,8 @@ internal sealed class ListPrompt<T>
         // Build the renderable
         return _strategy.Render(
             _console,
-            scrollable, cursorIndex,
+            scrollable,
+            cursorIndex,
             state.Items.Skip(skip).Take(take)
                 .Select((node, index) => (index, node)),
             state.SkipUnselectableItems,
