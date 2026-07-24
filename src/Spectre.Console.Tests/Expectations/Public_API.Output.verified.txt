@@ -341,6 +341,10 @@
         public static Spectre.Console.Calendar HeaderStyle(this Spectre.Console.Calendar calendar, Spectre.Console.Style? style) { }
         public static Spectre.Console.Calendar HideHeader(this Spectre.Console.Calendar calendar) { }
         public static Spectre.Console.Calendar HighlightStyle(this Spectre.Console.Calendar calendar, Spectre.Console.Style? style) { }
+        public static Spectre.Console.Calendar RemoveCalendarEvent(this Spectre.Console.Calendar calendar, System.DateTime date) { }
+        public static Spectre.Console.Calendar RemoveCalendarEvent(this Spectre.Console.Calendar calendar, string description, System.DateTime date) { }
+        public static Spectre.Console.Calendar RemoveCalendarEvent(this Spectre.Console.Calendar calendar, int year, int month, int day) { }
+        public static Spectre.Console.Calendar RemoveCalendarEvent(this Spectre.Console.Calendar calendar, string description, int year, int month, int day) { }
         public static Spectre.Console.Calendar ShowHeader(this Spectre.Console.Calendar calendar) { }
     }
     public sealed class Canvas : Spectre.Console.Rendering.Renderable
