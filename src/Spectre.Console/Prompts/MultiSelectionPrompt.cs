@@ -125,7 +125,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             Tree,
             converter,
             Mode,
-            false, // singleSelection
+            false,
             SearchEnabled,
             PageSize,
             WrapAround,
@@ -329,7 +329,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         // Add the grid of choices to the render list.
         list.Add(grid);
 
-        // Espaciador antes de la sección inferior (Search / Scroll / Instrucciones)
+        // Spacer before bottom section (Search / Scroll / Instructions)
         list.Add(Text.Empty);
 
         if (SearchEnabled)
