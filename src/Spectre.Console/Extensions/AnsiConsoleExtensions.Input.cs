@@ -22,7 +22,8 @@ public static partial class AnsiConsoleExtensions
             foreach (var ch in initialInput)
             {
                 var control = char.IsUpper(ch);
-                injectedQueue.Enqueue(new ConsoleKeyInfo(ch, (ConsoleKey)ch, false, false, control));
+                var key = (int)ch <= 255 ? (ConsoleKey)ch : (ConsoleKey)0;
+                injectedQueue.Enqueue(new ConsoleKeyInfo(ch, key, false, false, control));
             }
         }
 

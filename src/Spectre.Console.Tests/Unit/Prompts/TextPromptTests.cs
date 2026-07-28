@@ -53,6 +53,23 @@ public sealed class TextPromptTests
     }
 
     [Fact]
+    public void Should_Not_Throw_When_Editable_Default_Value_Contains_Non_Ascii_Characters()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var result = console.Prompt(
+            new TextPrompt<string>("Language?")
+                .DefaultValue("日本語")
+                .EditableDefaultValue(true));
+
+        // Then
+        result.ShouldBe("日本語");
+    }
+
+    [Fact]
     [Expectation("InvalidChoice")]
     public Task Should_Return_Error_If_An_Invalid_Choice_Is_Made()
     {
