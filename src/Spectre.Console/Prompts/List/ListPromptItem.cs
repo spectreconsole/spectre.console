@@ -1,6 +1,6 @@
 namespace Spectre.Console;
 
-internal sealed class ListPromptItem<T> : IMultiSelectionItem<T>
+internal sealed class ListPromptItem<T> : IMultiSelectionItem<T>, IDisableableSelectionItem<T>
     where T : notnull
 {
     public T Data { get; }
@@ -8,6 +8,7 @@ internal sealed class ListPromptItem<T> : IMultiSelectionItem<T>
     public List<ListPromptItem<T>> Children { get; }
     public int Depth { get; }
     public bool IsSelected { get; set; }
+    public bool IsDisabled { get; set; }
 
     public bool IsGroup => Children.Count > 0;
 
@@ -22,6 +23,12 @@ internal sealed class ListPromptItem<T> : IMultiSelectionItem<T>
     public IMultiSelectionItem<T> Select()
     {
         IsSelected = true;
+        return this;
+    }
+
+    public IDisableableSelectionItem<T> Disable()
+    {
+        IsDisabled = true;
         return this;
     }
 

@@ -42,7 +42,7 @@ internal sealed class ListPromptState<T>
             _leafIndexes =
                 Items
                     .Select((item, index) => new { item, index })
-                    .Where(x => !x.item.IsGroup)
+                    .Where(x => !x.item.IsGroup && !x.item.IsDisabled)
                     .Select(x => x.index)
                     .ToList()
                     .AsReadOnly();
@@ -142,7 +142,8 @@ internal sealed class ListPromptState<T>
 
                 var item = Items.FirstOrDefault(x =>
                     _converter.Invoke(x.Data).Contains(search, StringComparison.OrdinalIgnoreCase)
-                    && (!x.IsGroup || Mode != SelectionMode.Leaf));
+                    && (!x.IsGroup || Mode != SelectionMode.Leaf)
+                    && !x.IsDisabled);
 
                 if (item != null)
                 {
@@ -159,7 +160,8 @@ internal sealed class ListPromptState<T>
 
                 var item = Items.FirstOrDefault(x =>
                     _converter.Invoke(x.Data).Contains(search, StringComparison.OrdinalIgnoreCase) &&
-                    (!x.IsGroup || Mode != SelectionMode.Leaf));
+                    (!x.IsGroup || Mode != SelectionMode.Leaf) &&
+                    !x.IsDisabled);
 
                 if (item != null)
                 {
