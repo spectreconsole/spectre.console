@@ -12,6 +12,9 @@ public sealed class CellTests
     [InlineData("🇩🇪", 2)]           // Regional Indicator pair (flag)
     [InlineData("", 0)]               // empty string
     [InlineData("Hello World", 11)]
+    [InlineData("e\u0301", 1)]        // e + combining acute accent (U+0301)
+    [InlineData("Hello \u4E16\u754C", 10)] // mixed ASCII + CJK wide
+    [InlineData("\u0007", -1)]          // C0 control character
     public void GetCellLength_Returns_Correct_Display_Width(string text, int expectedWidth)
     {
         Cell.GetCellLength(text).ShouldBe(expectedWidth);
