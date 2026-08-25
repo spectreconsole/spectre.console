@@ -26,7 +26,37 @@ internal static class Cell
     public static int GetCellLength(string text)
     {
 #if !NETSTANDARD2_0
-        return UnicodeCalculator.GetWidth(text);
+        // Strings without surrogate pairs, zero width joiners (U+200D) or
+        // variation selector 16 (U+FE0F) measure as the sum of their individual
+        // UTF-16 code unit widths, which the cache below answers without the
+        // per-call rune enumeration UnicodeCalculator.GetWidth(string) performs.
+        var sum = 0;
+        for (var i = 0; i < text.Length; i++)
+        {
+            var current = text[i];
+            if (char.IsSurrogate(current) || current == '\u200D' || current == '\uFE0F')
+            {
+                return UnicodeCalculator.GetWidth(text);
+            }
+
+            var width = _runeWidthCache[current];
+            if (width == Sentinel)
+            {
+                width = (sbyte)UnicodeCalculator.GetWidth(current);
+                _runeWidthCache[current] = width;
+            }
+
+            if (width < 0)
+            {
+                // UnicodeCalculator.GetWidth(string) returns -1 for the whole
+                // string when it contains C0/C1 control characters.
+                return -1;
+            }
+
+            sum += width;
+        }
+
+        return sum;
 #else
         var sum = 0;
         foreach (var rune in text)
