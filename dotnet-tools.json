@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "verify.tool": {
-      "version": "0.8.0",
+      "version": "0.9.1",
       "commands": [
         "dotnet-verify"
       ],
