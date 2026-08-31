@@ -21,8 +21,8 @@ public static partial class AnsiConsoleExtensions
             injectedQueue = new Queue<ConsoleKeyInfo>();
             foreach (var ch in initialInput)
             {
-                var control = char.IsUpper(ch);
-                injectedQueue.Enqueue(new ConsoleKeyInfo(ch, (ConsoleKey)ch, false, false, control));
+                var consoleKey = (int)ch <= 0xFF ? (ConsoleKey)ch : ConsoleKey.Packet;
+                injectedQueue.Enqueue(new ConsoleKeyInfo(ch, consoleKey, false, false, false));
             }
         }
 
@@ -60,7 +60,7 @@ public static partial class AnsiConsoleExtensions
                 if (!string.IsNullOrEmpty(replace))
                 {
                     // Render the suggestion
-                    console.Write("\b \b".Repeat(text.Length), style);
+                    console.Write("\b \b".Repeat(Cell.GetCellLength(text)), style);
                     console.Write(replace);
                     text = replace;
                     continue;
@@ -71,19 +71,15 @@ public static partial class AnsiConsoleExtensions
             {
                 if (text.Length > 0)
                 {
-                    var lastChar = text.Last();
-                    text = text.Substring(0, text.Length - 1);
+                    var charsToRemove = text.Length >= 2 && char.IsHighSurrogate(text[text.Length - 2]) && char.IsLowSurrogate(text[text.Length - 1]) ? 2 : 1;
+                    var lastRuneText = text.Substring(text.Length - charsToRemove);
+                    text = text.Substring(0, text.Length - charsToRemove);
 
                     if (mask != null)
                     {
-                        if (UnicodeCalculator.GetWidth(lastChar) == 1)
-                        {
-                            console.Write("\b \b");
-                        }
-                        else if (UnicodeCalculator.GetWidth(lastChar) == 2)
-                        {
-                            console.Write("\b \b\b \b");
-                        }
+                        var cellWidth = secret ? 1 : Cell.GetCellLength(lastRuneText);
+                        if (cellWidth >= 1) console.Write("\b \b");
+                        if (cellWidth >= 2) console.Write("\b \b");
                     }
                 }
 
