@@ -187,6 +187,15 @@ public sealed class ProgressTask : IProgress<double>
     }
 
     /// <summary>
+    /// Increments the task's max value in a thread-safe manner.
+    /// </summary>
+    /// <param name="value">The value to increment the max value with.</param>
+    public void IncrementMaxValue(double value)
+    {
+        Update(incrementMaxValue: value);
+    }
+
+    /// <summary>
     /// Gets or sets the maximum age of samples kept for calculating speed and estimated time remaining.
     /// Samples older than this value are discarded to more accurately reflect the current speed.
     /// </summary>
@@ -200,6 +209,7 @@ public sealed class ProgressTask : IProgress<double>
 
     private void Update(
         string? description = null,
+        double? incrementMaxValue = null,
         double? maxValue = null,
         double? increment = null,
         double? value = null)
@@ -217,6 +227,11 @@ public sealed class ProgressTask : IProgress<double>
                 }
 
                 _description = description;
+            }
+
+            if (incrementMaxValue != null)
+            {
+                _maxValue += incrementMaxValue.Value;
             }
 
             if (maxValue != null)
@@ -398,6 +413,20 @@ public static class ProgressTaskExtensions
         ArgumentNullException.ThrowIfNull(task);
 
         task.MaxValue = value;
+        return task;
+    }
+
+    /// <summary>
+    /// Increments the max value of the task.
+    /// </summary>
+    /// <param name="task">The task.</param>
+    /// <param name="value">The amount to increment the max value by.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static ProgressTask IncrementMaxValue(this ProgressTask task, double value)
+    {
+        ArgumentNullException.ThrowIfNull(task);
+
+        task.IncrementMaxValue(value);
         return task;
     }
 

@@ -2681,6 +2681,7 @@
         public object? Tag { get; set; }
         public double Value { get; set; }
         public void Increment(double value) { }
+        public void IncrementMaxValue(double value) { }
         public void StartTask() { }
         public void StopTask() { }
     }
@@ -2688,6 +2689,7 @@
     {
         public static Spectre.Console.ProgressTask Description(this Spectre.Console.ProgressTask task, string description) { }
         public static Spectre.Console.ProgressTask HideWhenCompleted(this Spectre.Console.ProgressTask task, bool hideWhenCompleted = true) { }
+        public static Spectre.Console.ProgressTask IncrementMaxValue(this Spectre.Console.ProgressTask task, double value) { }
         public static Spectre.Console.ProgressTask IsIndeterminate(this Spectre.Console.ProgressTask task, bool indeterminate = true) { }
         public static Spectre.Console.ProgressTask MaxValue(this Spectre.Console.ProgressTask task, double value) { }
         public static Spectre.Console.ProgressTask Tag(this Spectre.Console.ProgressTask task, object? tag) { }
