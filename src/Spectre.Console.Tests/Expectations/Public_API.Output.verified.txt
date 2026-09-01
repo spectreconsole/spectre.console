@@ -2448,6 +2448,9 @@
         public string? MoreChoicesText { get; set; }
         public int PageSize { get; set; }
         public bool Required { get; set; }
+        public bool SearchEnabled { get; set; }
+        public Spectre.Console.Style? SearchHighlightStyle { get; set; }
+        public string? SearchPlaceholderText { get; set; }
         public string? Title { get; set; }
         public bool WrapAround { get; set; }
         public Spectre.Console.IMultiSelectionItem<T> AddChoice(T item) { }
