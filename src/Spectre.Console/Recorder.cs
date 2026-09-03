@@ -23,6 +23,9 @@ public class Recorder : IAnsiConsole, IDisposable
     /// <inheritdoc/>
     public RenderPipeline Pipeline => _console.Pipeline;
 
+    /// <inheritdoc/>
+    public List<string> InputHistory => _console.InputHistory;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Recorder"/> class.
     /// </summary>

@@ -31,6 +31,11 @@ public interface IAnsiConsole
     RenderPipeline Pipeline { get; }
 
     /// <summary>
+    /// Gets the input history
+    /// </summary>
+    List<string> InputHistory { get; }
+
+    /// <summary>
     /// Clears the console.
     /// </summary>
     /// <param name="home">If the cursor should be moved to the home position.</param>
