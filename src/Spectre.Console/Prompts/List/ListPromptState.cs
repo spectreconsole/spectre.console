@@ -166,6 +166,31 @@ internal sealed class ListPromptState<T>
                     index = Items.IndexOf(item);
                 }
             }
+
+            if (keyInfo.Key == ConsoleKey.Tab && !string.IsNullOrEmpty(SearchText))
+            {
+                var matches = Items.Select((item, i) => new { Item = item, Index = i })
+                    .Where(x =>
+                        _converter.Invoke(x.Item.Data).Contains(search, StringComparison.OrdinalIgnoreCase) &&
+                        (!x.Item.IsGroup || Mode != SelectionMode.Leaf))
+                    .Select(x => x.Index)
+                    .ToList();
+
+                if (matches.Count > 0)
+                {
+                    var matchIndex = matches.IndexOf(Index);
+
+                    if (matchIndex == -1)
+                    {
+                        index = matches[0];
+                    }
+                    else
+                    {
+                        var nextMatchIndex = (matchIndex + 1) % matches.Count;
+                        index = matches[nextMatchIndex];
+                    }
+                }
+            }
         }
 
         index = WrapAround
