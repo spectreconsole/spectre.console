@@ -137,6 +137,11 @@ public sealed class ProgressTask : IProgress<double>
         _description = description?.RemoveNewLines()?.Trim() ??
                        throw new ArgumentNullException(nameof(description));
 
+        if (_maxValue < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maxValue), "Max value must be zero or greater.");
+        }
+
         if (string.IsNullOrWhiteSpace(_description))
         {
             throw new ArgumentException("Task name cannot be empty", nameof(description));
@@ -221,6 +226,11 @@ public sealed class ProgressTask : IProgress<double>
 
             if (maxValue != null)
             {
+                if (maxValue.Value < 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(maxValue), "Max value must be zero or greater.");
+                }
+
                 _maxValue = maxValue.Value;
             }
 
