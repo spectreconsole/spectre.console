@@ -8,6 +8,21 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     where T : notnull
 {
     /// <summary>
+    /// Gets or sets a value indicating whether search is enabled.
+    /// </summary>
+    public bool SearchEnabled { get; set; }
+
+    /// <summary>
+    /// Gets or sets the text that will be displayed when no search text has been entered.
+    /// </summary>
+    public string? SearchPlaceholderText { get; set; }
+
+    /// <summary>
+    /// Gets or sets the style of highlighted search matches.
+    /// </summary>
+    public Style? SearchHighlightStyle { get; set; }
+
+    /// <summary>
     /// Gets or sets the title.
     /// </summary>
     public string? Title { get; set; }
@@ -106,7 +121,15 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         // Create the list prompt
         var prompt = new ListPrompt<T>(console, this);
         var converter = Converter ?? TypeConverterHelper.ConvertToString;
-        var result = await prompt.Show(Tree, converter, Mode, false, false, PageSize, WrapAround, cancellationToken).ConfigureAwait(false);
+        var result = await prompt.Show(
+            Tree,
+            converter,
+            Mode,
+            false,
+            SearchEnabled,
+            PageSize,
+            WrapAround,
+            cancellationToken).ConfigureAwait(false);
 
         if (result.IsCancelled && CancelResult is not null)
         {
@@ -172,31 +195,35 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
 
         if (key.Key == ConsoleKey.Enter)
         {
+            // Prevent submitting if selection is required and no items are selected
             if (Required && state.Items.None(x => x.IsSelected))
             {
-                // Selection not permitted
                 return ListPromptInputResult.None;
             }
 
-            // Submit
             return ListPromptInputResult.Submit;
         }
 
+        // Toggle selection state with Spacebar (or Packet keys)
         if (key.Key == ConsoleKey.Spacebar || key.Key == ConsoleKey.Packet)
         {
+            if (state.Items.Count == 0 || state.Index >= state.Items.Count)
+            {
+                return ListPromptInputResult.None;
+            }
+
             var current = state.Items[state.Index];
             var select = !current.IsSelected;
 
             if (Mode == SelectionMode.Leaf)
             {
-                // Select the node and all its children
+                // Select or deselect the current node and all of its child items
                 foreach (var item in current.Traverse(includeSelf: true))
                 {
                     item.IsSelected = select;
                 }
 
-                // Visit every parent and evaluate if its selection
-                // status need to be updated
+                // Evaluate status for parent items up the tree
                 var parent = current.Parent;
                 while (parent != null)
                 {
@@ -209,7 +236,6 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
                 current.IsSelected = !current.IsSelected;
             }
 
-            // Refresh the list
             return ListPromptInputResult.Refresh;
         }
 
@@ -227,10 +253,20 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             extra += 2;
         }
 
-        // Scrolling?
-        if (totalItemCount > requestedPageSize)
+        var scrollable = totalItemCount > requestedPageSize;
+        if (SearchEnabled || scrollable)
         {
-            // The scrolling instructions takes up one row
+            extra++;
+        }
+
+        if (SearchEnabled)
+        {
+            extra++;
+        }
+
+        if (scrollable)
+        {
+            // The scrolling instructions take up one row
             extra++;
         }
 
@@ -249,6 +285,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     {
         var list = new List<IRenderable>();
         var highlightStyle = HighlightStyle ?? Color.Blue;
+        var searchHighlightStyle = SearchHighlightStyle ?? new Style(foreground: Color.Default, background: Color.Yellow, Decoration.Bold);
 
         if (Title != null)
         {
@@ -277,6 +314,11 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
                 text = text.RemoveMarkup().EscapeMarkup();
             }
 
+            if (searchText.Length > 0)
+            {
+                text = AnsiMarkup.Highlight(text, searchText, searchHighlightStyle);
+            }
+
             var checkbox = item.Node.IsSelected
                 ? ListPromptConstants.GetSelectedCheckbox(item.Node.IsGroup, Mode, HighlightStyle)
                 : ListPromptConstants.Checkbox;
@@ -284,8 +326,19 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
             grid.AddRow(new Markup(indent + prompt + " " + checkbox + " " + text, style));
         }
 
+        // Add the grid of choices to the render list.
         list.Add(grid);
+
+        // Spacer before bottom section (Search / Scroll / Instructions)
         list.Add(Text.Empty);
+
+        if (SearchEnabled)
+        {
+            list.Add(new Markup(
+                searchText.Length > 0
+                    ? searchText.EscapeMarkup()
+                    : SearchPlaceholderText ?? ListPromptConstants.SearchPlaceholderMarkup));
+        }
 
         if (scrollable)
         {
@@ -294,9 +347,12 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
         }
 
         // Instructions
-        list.Add(new Markup(InstructionsText ?? ListPromptConstants.InstructionsMarkup));
+        if (InstructionsText != null || ListPromptConstants.InstructionsMarkup != null)
+        {
+            list.Add(new Markup(InstructionsText ?? ListPromptConstants.InstructionsMarkup));
+        }
 
-        // Combine all items
+        // Return the composed renderable rows
         return new Rows(list);
     }
 
