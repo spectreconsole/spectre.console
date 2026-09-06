@@ -29,6 +29,9 @@ public sealed class TestConsole : IAnsiConsole, IDisposable
     /// <inheritdoc/>
     IAnsiConsoleInput IAnsiConsole.Input => Input;
 
+    /// <inheritdoc/>
+    public List<string> InputHistory => _console.InputHistory;
+
     /// <summary>
     /// Gets the console output.
     /// </summary>
