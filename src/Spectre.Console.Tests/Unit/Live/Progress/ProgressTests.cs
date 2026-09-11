@@ -727,4 +727,100 @@ public sealed class ProgressTests
                 "          \n" + // Bottom padding
                 "\e[?25h"); // show cursor
     }
+
+    [Fact]
+    public void IsFinished_Should_Be_True_When_No_Tasks_Exist()
+    {
+        // Given
+        var console = new TestConsole().Interactive();
+        var progress = new Progress(console)
+            .Columns(new ProgressBarColumn())
+            .AutoRefresh(false)
+            .AutoClear(false);
+
+        var result = false;
+
+        // When
+        progress.Start(ctx =>
+        {
+            result = ctx.IsFinished;
+        });
+
+        // Then
+        result.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void IsFinished_Should_Be_False_When_Task_Has_Not_Started()
+    {
+        // Given
+        var console = new TestConsole().Interactive();
+        var progress = new Progress(console)
+            .Columns(new ProgressBarColumn())
+            .AutoRefresh(false)
+            .AutoClear(false);
+
+        var result = false;
+
+        // When
+        progress.Start(ctx =>
+        {
+            ctx.AddTask("foo", autoStart: false);
+            result = ctx.IsFinished;
+        });
+
+        // Then
+        result.ShouldBeFalse();
+    }
+
+    [Fact]
+    public void IsFinished_Should_Be_True_When_Task_Has_Started_And_Finished()
+    {
+        // Given
+        var console = new TestConsole().Interactive();
+        var progress = new Progress(console)
+            .Columns(new ProgressBarColumn())
+            .AutoRefresh(false)
+            .AutoClear(false);
+
+        var result = false;
+
+        // When
+        progress.Start(ctx =>
+        {
+            var task = ctx.AddTask("foo");
+            task.Value = task.MaxValue;
+            result = ctx.IsFinished;
+        });
+
+        // Then
+        result.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void IsFinished_Should_Be_False_When_One_Of_Multiple_Tasks_Has_Not_Started()
+    {
+        // Given
+        var console = new TestConsole().Interactive();
+        var progress = new Progress(console)
+            .Columns(new ProgressBarColumn())
+            .AutoRefresh(false)
+            .AutoClear(false);
+
+        var result = false;
+
+        // When
+        progress.Start(ctx =>
+        {
+            var started = ctx.AddTask("foo");
+            started.Value = started.MaxValue;
+
+            ctx.AddTask("bar", autoStart: false);
+
+            result = ctx.IsFinished;
+        });
+
+        // Then
+        result.ShouldBeFalse();
+    }
 }
