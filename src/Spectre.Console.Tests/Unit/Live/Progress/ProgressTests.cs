@@ -727,4 +727,17 @@ public sealed class ProgressTests
                 "          \n" + // Bottom padding
                 "\e[?25h"); // show cursor
     }
+
+    [Fact]
+    public void Should_Increment_Max_Value()
+    {
+        // Given
+        var task = new ProgressTask(1, "Test", 100);
+
+        // When
+        task.IncrementMaxValue(50);
+
+        // Then
+        task.MaxValue.ShouldBe(150);
+    }
 }
