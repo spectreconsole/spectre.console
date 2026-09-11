@@ -1,7 +1,32 @@
+using System.Reflection;
+
 namespace Spectre.Console.Tests.Unit;
 
 public sealed class MultiSelectionPromptTests
 {
+    [Fact]
+    public void Should_Show_Cursor_When_Hiding_It_Throws()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Profile.Capabilities.Ansi = true;
+
+        var cursor = new ThrowingCursor();
+        var setCursorMethod = typeof(TestConsole).GetMethod("SetCursor", BindingFlags.Instance | BindingFlags.NonPublic);
+        setCursorMethod!.Invoke(console, [cursor]);
+
+        var prompt = new MultiSelectionPrompt<string>();
+        prompt.AddChoices(["A", "B", "C"]);
+
+        // When
+        Action action = () => prompt.Show(console);
+
+        // Then
+        action.ShouldThrow<InvalidOperationException>();
+        cursor.Calls.ShouldContain("show");
+    }
+
     [Fact]
     public void Should_Not_Mark_Item_As_Selected_By_Default()
     {

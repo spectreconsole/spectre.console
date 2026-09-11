@@ -965,13 +965,13 @@ namespace Spectre.Console
             { "pig_nose", Emoji.Known.PigNose },
             { "pile_of_poo", Emoji.Known.PileOfPoo },
             { "pill", Emoji.Known.Pill },
-            { "piñata", Emoji.Known.Piñata },
             { "pinched_fingers", Emoji.Known.PinchedFingers },
             { "pinching_hand", Emoji.Known.PinchingHand },
             { "pineapple", Emoji.Known.Pineapple },
             { "pine_decoration", Emoji.Known.PineDecoration },
             { "ping_pong", Emoji.Known.PingPong },
             { "pink_heart", Emoji.Known.PinkHeart },
+            { "piñata", Emoji.Known.Piñata },
             { "pisces", Emoji.Known.Pisces },
             { "pizza", Emoji.Known.Pizza },
             { "placard", Emoji.Known.Placard },
@@ -9017,14 +9017,6 @@ namespace Spectre.Console
             public const string Pill = "\U0001F48A";
             
             /// <summary>
-            /// Gets the "Piñata" emoji. 🪅
-            /// </summary>
-            /// <remarks>
-            /// Lookup: <c>piñata</c>
-            /// </remarks>
-            public const string Piñata = "\U0001FA85";
-            
-            /// <summary>
             /// Gets the "Pinched fingers" emoji. 🤌
             /// </summary>
             /// <remarks>
@@ -9071,6 +9063,14 @@ namespace Spectre.Console
             /// Lookup: <c>pink_heart</c>
             /// </remarks>
             public const string PinkHeart = "\U0001FA77";
+            
+            /// <summary>
+            /// Gets the "Piñata" emoji. 🪅
+            /// </summary>
+            /// <remarks>
+            /// Lookup: <c>piñata</c>
+            /// </remarks>
+            public const string Piñata = "\U0001FA85";
             
             /// <summary>
             /// Gets the "Pisces" emoji. ♓️
