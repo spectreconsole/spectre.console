@@ -63,6 +63,52 @@ public sealed class AnsiWriterTests
         fixture.Output.ShouldBe("Spectre Console");
     }
 
+    [Fact]
+    public void Should_Not_Write_End_Link_Without_Begin_Link()
+    {
+        // Given
+        var fixture = new AnsiFixture();
+
+        // When
+        fixture.Writer.EndLink();
+
+        // Then
+        fixture.Output.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public void Should_Write_End_Link_After_Begin_Link()
+    {
+        // Given
+        var fixture = new AnsiFixture();
+
+        // When
+        fixture.Writer
+            .BeginLink("https://spectreconsole.net")
+            .EndLink();
+
+        // Then
+        fixture.Output.ShouldBe(
+            "\e]8;https://spectreconsole.net\e\\\e]8;;\e\\");
+    }
+
+    [Fact]
+    public void Should_Not_Write_End_Link_More_Than_Once()
+    {
+        // Given
+        var fixture = new AnsiFixture();
+
+        // When
+        fixture.Writer
+            .BeginLink("https://spectreconsole.net")
+            .EndLink()
+            .EndLink();
+
+        // Then
+        fixture.Output.ShouldBe(
+            "\e]8;https://spectreconsole.net\e\\\e]8;;\e\\");
+    }
+
     public sealed class CursorLeft
     {
         [Fact]
