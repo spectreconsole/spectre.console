@@ -92,9 +92,20 @@ public sealed class Panel : Renderable, IHasBoxBorder, IHasBorder, IExpandable, 
                 constrainedWidth);
         }
 
+        var panelWidth = childWidth.Max + edgeWidth;
+        if (Width == null && Header != null)
+        {
+            var title = Header.Text.NormalizeNewLines().ReplaceExact("\n", " ").Trim();
+            var titleWidth = ((IRenderable)new Markup(title)).Measure(options, maxWidth).Max;
+            if (titleWidth > 0)
+            {
+                panelWidth = Math.Max(panelWidth, Math.Min(titleWidth + 4, maxWidth));
+            }
+        }
+
         return new Measurement(
             childWidth.Min + edgeWidth,
-            childWidth.Max + edgeWidth);
+            panelWidth);
     }
 
     /// <inheritdoc/>
