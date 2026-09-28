@@ -25,6 +25,12 @@
     <NoWarn>$(NoWarn);CS8632</NoWarn>
   </PropertyGroup>
 
+  <!-- xUnit.net v3 test projects are executables, run through VSTest by dotnet test -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <OutputType>Exe</OutputType>
+    <IsTestingPlatformApplication>false</IsTestingPlatformApplication>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
