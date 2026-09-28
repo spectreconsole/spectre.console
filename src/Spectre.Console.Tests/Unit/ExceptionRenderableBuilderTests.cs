@@ -77,7 +77,7 @@ public sealed class ExceptionRenderableBuilderTests
         var result = Render("MyApp.Boom+<ThrowAsync>d__0", "MoveNext", text);
 
         // Then
-        result.ShouldBe("async MyApp.Boom.ThrowAsync(…)");
+        result.ShouldBe("MyApp.Boom.ThrowAsync(…)");
     }
 
     [Fact]
@@ -92,7 +92,7 @@ public sealed class ExceptionRenderableBuilderTests
         var result = Render("MyApp.Boom.<ThrowAsync>d__0", "MoveNext", text);
 
         // Then
-        result.ShouldBe("async MyApp.Boom.ThrowAsync(…)");
+        result.ShouldBe("MyApp.Boom.ThrowAsync(…)");
     }
 
     [Fact]
@@ -107,8 +107,8 @@ public sealed class ExceptionRenderableBuilderTests
         var lambda = Render("Ns.Outer+<>c+<<Run>b__0_0>d", "MoveNext", text);
 
         // Then
-        local.ShouldBe("async Ns.Outer.<Run>g__Local|0_1(…)");
-        lambda.ShouldBe("async Ns.Outer.<>c.<Run>b__0_0(…)");
+        local.ShouldBe("Ns.Outer.<Run>g__Local|0_1(…)");
+        lambda.ShouldBe("Ns.Outer.<>c.<Run>b__0_0(…)");
     }
 
     [Fact]
@@ -121,7 +121,7 @@ public sealed class ExceptionRenderableBuilderTests
         var result = Render("Ns.Outer+<Convert>d__3`1", "MoveNext", text);
 
         // Then
-        result.ShouldBe("async Ns.Outer.Convert(…)");
+        result.ShouldBe("Ns.Outer.Convert(…)");
     }
 
     [Fact]
