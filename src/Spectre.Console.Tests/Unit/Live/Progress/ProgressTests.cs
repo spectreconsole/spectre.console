@@ -823,4 +823,51 @@ public sealed class ProgressTests
         // Then
         result.ShouldBeFalse();
     }
+
+    [Fact]
+    public void IsFinished_Should_Be_True_When_Only_Unstarted_Indeterminate_Tasks_Exist()
+    {
+        // Given
+        var console = new TestConsole().Interactive();
+        var progress = new Progress(console)
+            .Columns(new ProgressBarColumn())
+            .AutoRefresh(false)
+            .AutoClear(false);
+
+        var result = false;
+
+        // When
+        progress.Start(ctx =>
+        {
+            ctx.AddTask("foo", autoStart: false).IsIndeterminate();
+            result = ctx.IsFinished;
+        });
+
+        // Then
+        result.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void IsFinished_Should_Be_False_When_Unstarted_Indeterminate_And_Unstarted_Determinate_Tasks_Exist()
+    {
+        // Given
+        var console = new TestConsole().Interactive();
+        var progress = new Progress(console)
+            .Columns(new ProgressBarColumn())
+            .AutoRefresh(false)
+            .AutoClear(false);
+
+        var result = false;
+
+        // When
+        progress.Start(ctx =>
+        {
+            ctx.AddTask("foo", autoStart: false).IsIndeterminate();
+            ctx.AddTask("bar", autoStart: false);
+            result = ctx.IsFinished;
+        });
+
+        // Then
+        result.ShouldBeFalse();
+    }
 }
