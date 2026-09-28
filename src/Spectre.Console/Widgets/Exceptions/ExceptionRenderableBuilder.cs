@@ -213,10 +213,10 @@ internal static class ExceptionRenderableBuilder
             return;
         }
 
-        if (TryResolveStateMachine(ref declaringType, ref name))
-        {
-            builder.Append("async ");
-        }
+        // No "async" prefix here, unlike the reflection path: iterators mangle identically to
+        // async methods and cannot be told apart without a MethodBase, so the label would be
+        // a guess.
+        TryResolveStateMachine(ref declaringType, ref name);
 
         // Same shape as ExceptionInfoResolver.GetMethodName: nested types joined with '.'.
         var methodName = declaringType == null
@@ -253,7 +253,7 @@ internal static class ExceptionRenderableBuilder
     /// </summary>
     /// <remarks>
     /// Iterators mangle identically to async methods and cannot be told apart without
-    /// reflection, so an iterator frame is labelled async too.
+    /// reflection, which is why the caller does not label the resolved method as async.
     /// </remarks>
     internal static bool TryResolveStateMachine(ref string? declaringType, ref string name)
     {
