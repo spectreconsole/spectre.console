@@ -22,5 +22,6 @@
     <PackageVersion Include="Verify.XunitV3" Version="31.12.5" />
     <PackageVersion Include="Wcwidth.Sources" Version="4.0.1" />
     <PackageVersion Include="xunit.v3" Version="4.0.1" />
+    <PackageVersion Include="xunit.v3.aot" Version="4.0.1" />
   </ItemGroup>
 </Project>
