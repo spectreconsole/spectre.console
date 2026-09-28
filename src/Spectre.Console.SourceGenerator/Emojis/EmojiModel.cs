@@ -75,7 +75,7 @@ internal static class EmojiParser
         }
 
         // Sort by name for consistent output
-        return new EquatableArray<EmojiModel>(emojis.OrderBy(e => e.Name));
+        return new EquatableArray<EmojiModel>(emojis.OrderBy(e => e.Name, StringComparer.OrdinalIgnoreCase));
     }
 
     private static string TransformName(string name)
