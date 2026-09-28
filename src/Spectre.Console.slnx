@@ -23,6 +23,7 @@
   <Project Path="Benchmarks/Benchmarks.csproj" />
   <Project Path="Spectre.Console.Ansi.Tests/Spectre.Console.Ansi.Tests.csproj" />
   <Project Path="Spectre.Console.Ansi/Spectre.Console.Ansi.csproj" />
+  <Project Path="Spectre.Console.NativeAot.Tests/Spectre.Console.NativeAot.Tests.csproj" />
   <Project Path="Spectre.Console.SourceGenerator/Spectre.Console.SourceGenerator.csproj" />
   <Project Path="Spectre.Console.Testing/Spectre.Console.Testing.csproj" />
   <Project Path="Spectre.Console.Tests/Spectre.Console.Tests.csproj" />

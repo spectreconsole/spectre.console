@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <PublishAot>true</PublishAot>
+    <!--
+      The tests only mean something once published, so keep this out of `dotnet test`.
+      Run it with `dotnet publish -c Release -o <dir>` and then the binary in <dir>,
+      which is still a Microsoft.Testing.Platform application.
+    -->
+    <IsTestProject>false</IsTestProject>
+    <IsTestingPlatformApplication>false</IsTestingPlatformApplication>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3.aot" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Spectre.Console.Testing\Spectre.Console.Testing.csproj" />
+    <ProjectReference Include="..\Spectre.Console\Spectre.Console.csproj" />
+  </ItemGroup>
+
+</Project>
