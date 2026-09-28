@@ -1,13 +1,27 @@
 namespace Spectre.Console;
 
-// ExceptionFormatter relies heavily on reflection of types unknown until runtime.
+// The reflection path below relies on metadata that trimming can remove. Every use of it
+// degrades to the metadata path when the information is missing, so the warnings are
+// suppressed here rather than pushed out to callers.
 [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2026:RequiresUnreferencedCode")]
 [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2070:RequiresUnreferencedCode")]
 [UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL2075:RequiresUnreferencedCode")]
-[UnconditionalSuppressMessage("AssemblyLoadTrimming", "IL3050:RequiresUnreferencedCode")]
 internal static class ExceptionRenderableBuilder
 {
-    public const string AotWarning = "ExceptionFormatter is currently not supported for AOT.";
+    // The same switch StackTrace.ToString() reads before it falls back to
+    // "in {module}:token 0x{token:x}+0x{iloffset:x}" for frames with no source information.
+    private const string ShowILOffsetsSwitch = "Switch.System.Diagnostics.StackTrace.ShowILOffsets";
+
+    // The runtime marks its own async plumbing [StackTraceHidden]. Without a MethodBase the
+    // attribute cannot be read, so these declaring types are recognised by name instead.
+    private static readonly string[] _hiddenTypePrefixes =
+    [
+        "System.Runtime.ExceptionServices.ExceptionDispatchInfo",
+        "System.Runtime.CompilerServices.TaskAwaiter",
+        "System.Runtime.CompilerServices.ValueTaskAwaiter",
+        "System.Runtime.CompilerServices.ConfiguredTaskAwaitable",
+        "System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable",
+    ];
 
     public static IRenderable Format(Exception exception, ExceptionSettings settings)
     {
@@ -64,69 +78,38 @@ internal static class ExceptionRenderableBuilder
             return grid;
         }
 
-        var stackTrace = new StackTrace(ex, fNeedFileInfo: true);
-        var allFrames = stackTrace.GetFrames();
-        if (allFrames.Length > 0 && allFrames[0]?.GetMethod() == null)
+        var frames = new StackTrace(ex, fNeedFileInfo: true).GetFrames() ?? [];
+        for (var i = 0; i < frames.Length; i++)
         {
-            // if we can't easily get the method for the frame, then we are in AOT
-            // fallback to using ToString method of each frame.
-            WriteAotFrames(grid, stackTrace.GetFrames(), styles);
-            return grid;
-        }
-
-        var frames = allFrames
-            .FilterStackFrames()
-            .ToList();
-
-        foreach (var frame in frames)
-        {
-            var builder = new StringBuilder();
-
-            // Method
-            var shortenMethods = (settings.Format & ExceptionFormats.ShortenMethods) != 0;
-            var method = frame.GetMethod();
-            if (method == null)
+            var frame = frames[i];
+            if (frame == null)
             {
                 continue;
             }
 
-            var methodName = GetMethodName(resolver, ref method, out var isAsync);
-            if (isAsync)
+            // The runtime never filters the last frame, so neither do we.
+            var isLast = i == frames.Length - 1;
+            var builder = new StringBuilder();
+
+            // GetMethod() returns null under NativeAOT, and for any frame whose reflection
+            // metadata has been trimmed away. Those frames still carry names in the stack
+            // trace metadata, which the metadata path reads instead.
+            var method = frame.GetMethod();
+            if (method != null)
             {
-                builder.Append("async ");
-            }
-
-            if (method is MethodInfo mi)
-            {
-                var returnParameter = mi.ReturnParameter;
-                builder.AppendWithStyle(styles.ParameterType,
-                    resolver.GetParameterName(returnParameter).EscapeMarkup());
-                builder.Append(' ');
-            }
-
-            Emphasize(builder, methodName, ['.'], styles.Method, shortenMethods, settings);
-            builder.AppendWithStyle(styles.Parenthesis, "(");
-            AppendParameters(resolver, builder, method, settings);
-            builder.AppendWithStyle(styles.Parenthesis, ")");
-
-            var path = resolver.GetFileName(frame);
-            if (path != null)
-            {
-                builder.Append(' ');
-                builder.AppendWithStyle(styles.Dimmed, "in");
-                builder.Append(' ');
-
-                // Path
-                AppendPath(builder, path, settings);
-
-                // Line number
-                var lineNumber = resolver.GetFileLineNumber(frame);
-                if (lineNumber != 0)
+                if (!isLast && !ShowInStackTrace(method))
                 {
-                    builder.AppendWithStyle(styles.Dimmed, ":");
-                    builder.AppendWithStyle(styles.LineNumber, lineNumber);
+                    continue;
                 }
+
+                AppendReflectedMethod(builder, ref method, resolver, settings);
             }
+            else if (!TryAppendMetadataMethod(builder, frame, isLast, settings))
+            {
+                continue;
+            }
+
+            AppendLocation(builder, frame, method, resolver, settings);
 
             grid.AddRow(
                 $"[{styles.Dimmed.ToMarkup()}]at[/]",
@@ -136,21 +119,274 @@ internal static class ExceptionRenderableBuilder
         return grid;
     }
 
-    private static void WriteAotFrames(Grid grid, StackFrame?[] frames, ExceptionStyle styles)
+    private static void AppendReflectedMethod(StringBuilder builder, ref MethodBase method,
+        ExceptionInfoResolver resolver, ExceptionSettings settings)
     {
-        foreach (var stackFrame in frames)
+        var styles = settings.Style;
+        var shortenMethods = (settings.Format & ExceptionFormats.ShortenMethods) != 0;
+
+        var methodName = GetMethodName(resolver, ref method, out var isAsync);
+        if (isAsync)
         {
-            if (stackFrame == null)
+            builder.Append("async ");
+        }
+
+        if (method is MethodInfo mi)
+        {
+            var returnParameter = mi.ReturnParameter;
+            builder.AppendWithStyle(styles.ParameterType,
+                resolver.GetParameterName(returnParameter).EscapeMarkup());
+            builder.Append(' ');
+        }
+
+        Emphasize(builder, methodName, ['.'], styles.Method, shortenMethods, settings);
+        builder.AppendWithStyle(styles.Parenthesis, "(");
+        AppendParameters(resolver, builder, method, settings);
+        builder.AppendWithStyle(styles.Parenthesis, ")");
+    }
+
+    private static bool TryAppendMetadataMethod(StringBuilder builder, StackFrame frame, bool isLast,
+        ExceptionSettings settings)
+    {
+        var text = StackFrameText.Parse(frame);
+        string? declaringType = null;
+        string? name = null;
+
+#if NET9_0_OR_GREATER
+        // The trim- and AOT-safe replacement for GetMethod(). It reads the names out of
+        // the stack trace metadata the compiler emits, and needs no MethodBase.
+        if (DiagnosticMethodInfo.Create(frame) is { } info)
+        {
+            declaringType = info.DeclaringTypeName;
+            name = info.Name;
+        }
+#endif
+
+        if (name == null)
+        {
+            // No metadata at all. Use whatever the frame is willing to say about itself,
+            // which is a qualified name on NativeAOT up to .NET 10, a synthetic
+            // "MyApp!<BaseAddress>+0x1a2b" when stack trace data was stripped,
+            // or nothing.
+            if (!text.HasMethod)
             {
-                continue;
+                return false;
             }
 
-            var s = stackFrame.ToString();
-            s = s.Replace(" in file:line:column <filename unknown>:0:0", string.Empty).TrimEnd();
-            grid.AddRow(
-                $"[{styles.Dimmed.ToMarkup()}]at[/]",
-                s.EscapeMarkup());
+            name = text.Name!;
+            if (!text.IsSynthetic)
+            {
+                var index = name.LastIndexOf('.');
+                if (index > 0)
+                {
+                    declaringType = name.Substring(0, index);
+                    name = name.Substring(index + 1);
+                }
+            }
         }
+
+        if (!isLast && IsHiddenByName(declaringType))
+        {
+            return false;
+        }
+
+        AppendMetadataMethod(builder, declaringType, name, text, settings);
+        return true;
+    }
+
+    /// <summary>
+    /// Renders a method from its names alone. The names come from the stack trace metadata
+    /// (or the frame text), and <paramref name="text"/> supplies whatever extras the runtime
+    /// put in <see cref="StackFrame.ToString()"/>: generic arguments and, on NativeAOT up to
+    /// .NET 10, parameter types. Parameter names and return types are not available.
+    /// </summary>
+    internal static void AppendMetadataMethod(StringBuilder builder, string? declaringType, string name,
+        StackFrameText text, ExceptionSettings settings)
+    {
+        var styles = settings.Style;
+
+        // A synthetic frame is an address, not a method, so generic arguments
+        // and a parameter list would be nonsense.
+        if (text.IsSynthetic)
+        {
+            builder.AppendWithStyle(styles.Method, name);
+            return;
+        }
+
+        // No "async" prefix here, unlike the reflection path: iterators mangle identically to
+        // async methods and cannot be told apart without a MethodBase, so the label would be
+        // a guess.
+        TryResolveStateMachine(ref declaringType, ref name);
+
+        // Same shape as ExceptionInfoResolver.GetMethodName: nested types joined with '.'.
+        var methodName = declaringType == null
+            ? name
+            : declaringType.Replace('+', '.') + "." + name;
+
+        var shortenMethods = (settings.Format & ExceptionFormats.ShortenMethods) != 0;
+        Emphasize(builder, methodName, ['.'], styles.Method, shortenMethods, settings);
+
+        if (text.GenericArguments is { Length: > 0 } genericArguments)
+        {
+            builder.AppendWithStyle(styles.Method, "<" + genericArguments + ">");
+        }
+
+        builder.AppendWithStyle(styles.Parenthesis, "(");
+        if (text.Signature == null)
+        {
+            // The runtime did not say, which is different from "no parameters".
+            builder.AppendWithStyle(styles.Dimmed, "…");
+        }
+        else if (text.Signature.Length > 0)
+        {
+            builder.AppendWithStyle(styles.ParameterType, text.Signature);
+        }
+
+        builder.AppendWithStyle(styles.Parenthesis, ")");
+    }
+
+    /// <summary>
+    /// Undoes the compiler's name mangling for async and iterator state machines using the
+    /// names alone: <c>Ns.Outer+&lt;ThrowAsync&gt;d__0</c> / <c>MoveNext</c> becomes
+    /// <c>Ns.Outer</c> / <c>ThrowAsync</c>. This is what <see cref="TryResolveStateMachineMethod"/>
+    /// does with reflection when a <see cref="MethodBase"/> is available.
+    /// </summary>
+    /// <remarks>
+    /// Iterators mangle identically to async methods and cannot be told apart without
+    /// reflection, which is why the caller does not label the resolved method as async.
+    /// </remarks>
+    internal static bool TryResolveStateMachine(ref string? declaringType, ref string name)
+    {
+        if (name != "MoveNext" || declaringType == null)
+        {
+            return false;
+        }
+
+        // The state machine type is "<{Method}>d__{N}" for a method declared in source, and a
+        // bare "<{Method}>d" for async local functions and lambdas, whose mangled method name
+        // already carries the ordinal: "<<Outer>g__Local|0_1>d", "<<Outer>b__0_0>d".
+        var close = declaringType.LastIndexOf('>');
+        if (close == -1)
+        {
+            return false;
+        }
+
+        var suffix = declaringType.Substring(close + 1);
+        if (suffix != "d" && !suffix.StartsWith("d__", StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        // Walk back to the balancing '<'. The method name inside may itself be mangled
+        // and contain brackets of its own.
+        var open = -1;
+        var depth = 0;
+        for (var i = close; i >= 0; i--)
+        {
+            var c = declaringType[i];
+            if (c == '>')
+            {
+                depth++;
+            }
+            else if (c == '<' && --depth == 0)
+            {
+                open = i;
+                break;
+            }
+        }
+
+        // "+<" from DiagnosticMethodInfo, ".<" from the frame text.
+        if (open <= 0 || (declaringType[open - 1] != '+' && declaringType[open - 1] != '.'))
+        {
+            return false;
+        }
+
+        name = declaringType.Substring(open + 1, close - open - 1);
+        declaringType = declaringType.Substring(0, open - 1);
+        return true;
+    }
+
+    internal static bool IsHiddenByName(string? declaringType)
+    {
+        if (declaringType == null)
+        {
+            return false;
+        }
+
+        foreach (var prefix in _hiddenTypePrefixes)
+        {
+            if (declaringType.StartsWith(prefix, StringComparison.Ordinal))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static void AppendLocation(StringBuilder builder, StackFrame frame, MethodBase? method,
+        ExceptionInfoResolver resolver, ExceptionSettings settings)
+    {
+        var styles = settings.Style;
+
+        var path = resolver.GetFileName(frame);
+        if (path != null)
+        {
+            builder.Append(' ');
+            builder.AppendWithStyle(styles.Dimmed, "in");
+            builder.Append(' ');
+
+            // Path
+            AppendPath(builder, path, settings);
+
+            // Line number
+            var lineNumber = resolver.GetFileLineNumber(frame);
+            if (lineNumber != 0)
+            {
+                builder.AppendWithStyle(styles.Dimmed, ":");
+                builder.AppendWithStyle(styles.LineNumber, lineNumber);
+            }
+
+            return;
+        }
+
+        // No symbols. StackTrace.ToString() falls back to the metadata token and IL offset
+        // when asked to, and so do we. Only CoreCLR frames have an IL offset.
+        if (method == null || !ShowILOffsets())
+        {
+            return;
+        }
+
+        var ilOffset = frame.GetILOffset();
+        if (ilOffset == StackFrame.OFFSET_UNKNOWN || method.ReflectedType is not { } reflectedType)
+        {
+            return;
+        }
+
+        int token;
+        try
+        {
+            token = method.MetadataToken;
+        }
+        catch (InvalidOperationException)
+        {
+            // Metadata token not available.
+            return;
+        }
+
+        builder.Append(' ');
+        builder.AppendWithStyle(styles.Dimmed, "in");
+        builder.Append(' ');
+        builder.AppendWithStyle(styles.Path, reflectedType.Module.ScopeName);
+        builder.AppendWithStyle(styles.Dimmed, ":token ");
+        builder.AppendWithStyle(styles.LineNumber, "0x" + token.ToString("x", CultureInfo.InvariantCulture));
+        builder.AppendWithStyle(styles.Dimmed, "+");
+        builder.AppendWithStyle(styles.LineNumber, "0x" + ilOffset.ToString("x", CultureInfo.InvariantCulture));
+    }
+
+    private static bool ShowILOffsets()
+    {
+        return AppContext.TryGetSwitch(ShowILOffsetsSwitch, out var enabled) && enabled;
     }
 
     private static void AppendParameters(ExceptionInfoResolver resolver, StringBuilder builder, MethodBase? method,
@@ -220,17 +456,11 @@ internal static class ExceptionRenderableBuilder
         }
     }
 
-    private static bool ShowInStackTrace(StackFrame frame)
+    private static bool ShowInStackTrace(MethodBase mb)
     {
         // NET 6 has an attribute of StackTraceHiddenAttribute that we can use to clean up the stack trace
         // cleanly. If the user is on an older version we'll fall back to all the stack frames being included.
 #if NET6_0_OR_GREATER
-        var mb = frame.GetMethod();
-        if (mb == null)
-        {
-            return false;
-        }
-
         if ((mb.MethodImplementationFlags & MethodImplAttributes.AggressiveInlining) != 0)
         {
             return false;
@@ -258,31 +488,6 @@ internal static class ExceptionRenderableBuilder
         return true;
     }
 
-    private static IEnumerable<StackFrame> FilterStackFrames(this IEnumerable<StackFrame?>? frames)
-    {
-        var allFrames = frames?.ToArray() ?? [];
-        var numberOfFrames = allFrames.Length;
-
-        for (var i = 0; i < numberOfFrames; i++)
-        {
-            var thisFrame = allFrames[i];
-            if (thisFrame == null)
-            {
-                continue;
-            }
-
-            // always include the last frame
-            if (i == numberOfFrames - 1)
-            {
-                yield return thisFrame;
-            }
-            else if (ShowInStackTrace(thisFrame))
-            {
-                yield return thisFrame;
-            }
-        }
-    }
-
     private static string GetMethodName(ExceptionInfoResolver resolver, ref MethodBase method, out bool isAsync)
     {
         var declaringType = method.DeclaringType;
@@ -303,7 +508,6 @@ internal static class ExceptionRenderableBuilder
         return resolver.GetMethodName(method);
     }
 
-    [RequiresDynamicCode(ExceptionRenderableBuilder.AotWarning)]
     private static bool TryResolveStateMachineMethod(ref MethodBase method, out Type declaringType)
     {
         // https://github.com/dotnet/runtime/blob/v6.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L400-L455
