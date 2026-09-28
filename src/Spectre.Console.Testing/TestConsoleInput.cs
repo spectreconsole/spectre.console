@@ -55,7 +55,7 @@ public sealed class TestConsoleInput : IAnsiConsoleInput
     /// <param name="input">The input.</param>
     public void PushKey(ConsoleKey input)
     {
-        _input.Enqueue(new ConsoleKeyInfo((char)input, input, false, false, false));
+        _input.Enqueue(new ConsoleKeyInfo(GetKeyChar(input), input, false, false, false));
     }
 
     /// <summary>
@@ -88,5 +88,19 @@ public sealed class TestConsoleInput : IAnsiConsoleInput
     public Task<ConsoleKeyInfo?> ReadKeyAsync(bool intercept, CancellationToken cancellationToken)
     {
         return Task.FromResult(ReadKey(intercept));
+    }
+
+    private static char GetKeyChar(ConsoleKey key)
+    {
+        // Navigation and function keys don't produce a character,
+        // so casting them to char would result in an unrelated one
+        // (e.g. UpArrow would become '&').
+        if (key is >= ConsoleKey.PageUp and <= ConsoleKey.Help
+            or >= ConsoleKey.F1 and <= ConsoleKey.F24)
+        {
+            return '\0';
+        }
+
+        return (char)key;
     }
 }
