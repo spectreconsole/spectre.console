@@ -89,7 +89,7 @@ public sealed class AnsiWriterTests
 
         // Then
         fixture.Output.ShouldBe(
-            "\e]8;https://spectreconsole.net\e\\\e]8;;\e\\");
+            "\e]8;;https://spectreconsole.net\e\\\e]8;;\e\\");
     }
 
     [Fact]
@@ -106,7 +106,7 @@ public sealed class AnsiWriterTests
 
         // Then
         fixture.Output.ShouldBe(
-            "\e]8;https://spectreconsole.net\e\\\e]8;;\e\\");
+            "\e]8;;https://spectreconsole.net\e\\\e]8;;\e\\");
     }
 
     public sealed class CursorLeft
