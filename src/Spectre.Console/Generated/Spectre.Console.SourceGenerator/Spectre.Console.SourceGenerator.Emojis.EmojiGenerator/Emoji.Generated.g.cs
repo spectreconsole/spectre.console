@@ -965,7 +965,6 @@ namespace Spectre.Console
             { "pig_nose", Emoji.Known.PigNose },
             { "pile_of_poo", Emoji.Known.PileOfPoo },
             { "pill", Emoji.Known.Pill },
-            { "piñata", Emoji.Known.Piñata },
             { "pinched_fingers", Emoji.Known.PinchedFingers },
             { "pinching_hand", Emoji.Known.PinchingHand },
             { "pineapple", Emoji.Known.Pineapple },
@@ -974,6 +973,7 @@ namespace Spectre.Console
             { "pink_heart", Emoji.Known.PinkHeart },
             { "pisces", Emoji.Known.Pisces },
             { "pizza", Emoji.Known.Pizza },
+            { "piñata", Emoji.Known.Piñata },
             { "placard", Emoji.Known.Placard },
             { "place_of_worship", Emoji.Known.PlaceOfWorship },
             { "play_button", Emoji.Known.PlayButton },
@@ -9087,6 +9087,14 @@ namespace Spectre.Console
             /// Lookup: <c>pizza</c>
             /// </remarks>
             public const string Pizza = "\U0001F355";
+            
+            /// <summary>
+            /// Gets the "Piñata" emoji. 🪅
+            /// </summary>
+            /// <remarks>
+            /// Lookup: <c>piñata</c>
+            /// </remarks>
+            public const string Piñata = "\U0001FA85";
             
             /// <summary>
             /// Gets the "Placard" emoji. 🪧

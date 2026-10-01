@@ -54,7 +54,7 @@ internal sealed class ListPrompt<T>
             searchEnabled,
             _strategy.CalculateInitialIndex(nodes));
 
-        var hook = new ListPromptRenderHook<T>(_console, () => BuildRenderable(state));
+        var hook = new ListPromptRenderHook(_console, () => BuildRenderable(state));
 
         try
         {

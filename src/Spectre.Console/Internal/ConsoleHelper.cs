@@ -7,7 +7,7 @@ internal static class ConsoleHelper
         try
         {
             var width = System.Console.BufferWidth;
-            if (width == 0)
+            if (width <= 0)
             {
                 width = defaultValue;
             }
@@ -24,8 +24,10 @@ internal static class ConsoleHelper
     {
         try
         {
+            // On Unix, the height is reported as -1 when output is
+            // redirected and the terminal doesn't provide a size.
             var height = System.Console.WindowHeight;
-            if (height == 0)
+            if (height <= 0)
             {
                 height = defaultValue;
             }
