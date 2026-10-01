@@ -1,7 +1,6 @@
 namespace Spectre.Console;
 
-internal sealed class ListPromptRenderHook<T> : IRenderHook
-    where T : notnull
+internal sealed class ListPromptRenderHook : IRenderHook
 {
     private readonly IAnsiConsole _console;
     private readonly Func<IRenderable> _builder;

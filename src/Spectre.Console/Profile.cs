@@ -72,7 +72,11 @@ public sealed class Profile
     /// </summary>
     public int Width
     {
-        get => _width ?? _out.Width;
+        get
+        {
+            var width = _width ?? _out.Width;
+            return width > 0 ? width : Constants.DefaultTerminalWidth;
+        }
         set
         {
             if (value <= 0)
@@ -89,7 +93,11 @@ public sealed class Profile
     /// </summary>
     public int Height
     {
-        get => _height ?? _out.Height;
+        get
+        {
+            var height = _height ?? _out.Height;
+            return height > 0 ? height : Constants.DefaultTerminalHeight;
+        }
         set
         {
             if (value <= 0)

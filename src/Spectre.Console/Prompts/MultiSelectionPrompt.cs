@@ -7,6 +7,9 @@ namespace Spectre.Console;
 public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrategy<T>
     where T : notnull
 {
+    private T? _defaultValue;
+    private bool _hasDefaultValue;
+
     /// <summary>
     /// Gets or sets a value indicating whether search is enabled.
     /// </summary>
@@ -78,7 +81,17 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     /// Gets or sets the choice to show as selected when the prompt is first displayed.
     /// By default the first choice is selected.
     /// </summary>
-    public T? DefaultValue { get; set; }
+    public T? DefaultValue
+    {
+        get => _defaultValue;
+        set
+        {
+            // For value types, an unset DefaultValue is default(T) rather than null,
+            // so we need to keep track of whether it has been set explicitly.
+            _defaultValue = value;
+            _hasDefaultValue = true;
+        }
+    }
 
     /// <summary>
     /// Gets or sets a Func that will be triggered if Cancel is triggered by the 'ESC' key.
@@ -359,7 +372,7 @@ public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrat
     /// <inheritdoc/>
     int IListPromptStrategy<T>.CalculateInitialIndex(IReadOnlyList<ListPromptItem<T>> nodes)
     {
-        if (DefaultValue is not null)
+        if (_hasDefaultValue && DefaultValue is not null)
         {
             return Tree.IndexOf(DefaultValue) ?? 0;
         }

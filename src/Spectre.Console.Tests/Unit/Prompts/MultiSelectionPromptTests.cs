@@ -350,6 +350,45 @@ public sealed class MultiSelectionPromptTests
     }
 
     [Fact]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2097")]
+    public void Should_Initially_Select_The_First_Item_When_No_Default_Is_Specified_For_Value_Type()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var result = new MultiSelectionPrompt<int>()
+            .AddChoices(-1, 0, 1)
+            .Show(console);
+
+        // Then
+        result.ShouldBe([-1]);
+    }
+
+    [Fact]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2097")]
+    public void Should_Initially_Select_The_Default_Item_When_Default_Is_The_Default_Of_The_Value_Type()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Spacebar);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var result = new MultiSelectionPrompt<int>()
+            .AddChoices(-1, 0, 1)
+            .DefaultValue(0)
+            .Show(console);
+
+        // Then
+        result.ShouldBe([0]);
+    }
+
+    [Fact]
     public void Should_Initially_Select_The_Default_Item_When_Scrolling_Is_Required_And_Item_Is_Not_Last()
     {
         // Given

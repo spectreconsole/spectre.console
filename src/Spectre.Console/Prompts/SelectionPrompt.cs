@@ -8,6 +8,8 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     where T : notnull
 {
     private readonly ListPromptTree<T> _tree;
+    private T? _defaultValue;
+    private bool _hasDefaultValue;
 
     /// <summary>
     /// Gets or sets the title.
@@ -72,7 +74,17 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     /// Gets or sets the choice to show as selected when the prompt is first displayed.
     /// By default the first choice is selected.
     /// </summary>
-    public T? DefaultValue { get; set; }
+    public T? DefaultValue
+    {
+        get => _defaultValue;
+        set
+        {
+            // For value types, an unset DefaultValue is default(T) rather than null,
+            // so we need to keep track of whether it has been set explicitly.
+            _defaultValue = value;
+            _hasDefaultValue = true;
+        }
+    }
 
     /// <summary>
     /// Gets or sets a Func that will be triggered if Cancel is triggered by the 'ESC' key.
@@ -257,7 +269,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
     /// <inheritdoc/>
     int IListPromptStrategy<T>.CalculateInitialIndex(IReadOnlyList<ListPromptItem<T>> nodes)
     {
-        if (DefaultValue is not null)
+        if (_hasDefaultValue && DefaultValue is not null)
         {
             return _tree.IndexOf(DefaultValue) ?? 0;
         }
