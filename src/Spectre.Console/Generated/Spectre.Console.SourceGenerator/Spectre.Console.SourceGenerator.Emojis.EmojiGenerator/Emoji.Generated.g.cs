@@ -9017,6 +9017,14 @@ namespace Spectre.Console
             public const string Pill = "\U0001F48A";
             
             /// <summary>
+            /// Gets the "Piñata" emoji. 🪅
+            /// </summary>
+            /// <remarks>
+            /// Lookup: <c>piñata</c>
+            /// </remarks>
+            public const string Piñata = "\U0001FA85";
+
+            /// <summary>
             /// Gets the "Pinched fingers" emoji. 🤌
             /// </summary>
             /// <remarks>
