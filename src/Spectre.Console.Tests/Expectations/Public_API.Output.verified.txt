@@ -2554,6 +2554,7 @@
         [System.Obsolete("Use markup instead.")]
         public Spectre.Console.PanelHeader SetStyle(string style) { }
     }
+    [System.Diagnostics.DebuggerDisplay("{DebuggerDisplay(),nq}")]
     public sealed class Paragraph : Spectre.Console.Rendering.Renderable, Spectre.Console.IHasJustification, Spectre.Console.IOverflowable
     {
         public Paragraph() { }
@@ -3145,7 +3146,7 @@
         public bool Wrap { get; set; }
         public override Spectre.Console.Rendering.IRenderable Render(Spectre.Console.Rendering.RenderOptions options, Spectre.Console.ProgressTask task, System.TimeSpan deltaTime) { }
     }
-    [System.Diagnostics.DebuggerDisplay("{_text,nq}")]
+    [System.Diagnostics.DebuggerDisplay("{_paragraph,nq}")]
     public sealed class Text : Spectre.Console.Rendering.Renderable, Spectre.Console.IHasJustification, Spectre.Console.IOverflowable
     {
         public Text(string text, Spectre.Console.Style? style = default) { }
