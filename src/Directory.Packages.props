@@ -12,7 +12,7 @@
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="Polyfill" Version="11.4.1" />
     <PackageVersion Include="PublicApiGenerator" Version="11.5.4" />
-    <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="5.0.0" />
+    <PackageVersion Include="Roslynator.Analyzers" PrivateAssets="All" Version="5.0.1" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.9.0" />
     <PackageVersion Include="System.Text.Json" Version="10.0.12" />
