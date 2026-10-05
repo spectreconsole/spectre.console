@@ -52,7 +52,8 @@ public class CanvasTests
         // Then
         await Verifier
             .Verify(console.Output)
-            .UseMethodName(supportsUnicode ? "Unicode" : "NonUnicode");
+            .UseMethodName(supportsUnicode ? "Unicode" : "NonUnicode")
+            .IgnoreParameters();
     }
 
     [Theory]
@@ -77,7 +78,8 @@ public class CanvasTests
         // Then
         await Verifier
             .Verify(console.Output)
-            .UseMethodName(supportsUnicode ? "Unicode" : "NonUnicode");
+            .UseMethodName(supportsUnicode ? "Unicode" : "NonUnicode")
+            .IgnoreParameters();
     }
 
     [Theory]
@@ -103,7 +105,8 @@ public class CanvasTests
         // Then
         await Verifier
             .Verify(console.Output)
-            .UseMethodName(supportsUnicode ? "Unicode" : "NonUnicode");
+            .UseMethodName(supportsUnicode ? "Unicode" : "NonUnicode")
+            .IgnoreParameters();
     }
 
     [Theory]
@@ -131,7 +134,8 @@ public class CanvasTests
         // Then
         await Verifier
             .Verify(console.Output)
-            .UseMethodName(supportsUnicode ? "Unicode" : "NonUnicode");
+            .UseMethodName(supportsUnicode ? "Unicode" : "NonUnicode")
+            .IgnoreParameters();
     }
 
     [Theory]
