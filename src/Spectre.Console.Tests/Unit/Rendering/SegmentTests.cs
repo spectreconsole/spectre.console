@@ -237,6 +237,52 @@ public sealed class SegmentTests
         }
     }
 
+    public sealed class TheSplitSegmentMethod
+    {
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2193")]
+        public void Should_Replace_A_Single_Wide_Cluster_With_An_Ellipsis_When_It_Cannot_Fit()
+        {
+            // Given, When
+            var result = Segment.SplitSegment("😄", maxCellLength: 1);
+
+            // Then
+            result.ShouldBe(["…"]);
+        }
+
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2193")]
+        public void Should_Replace_Adjacent_Wide_Clusters_With_Separate_Ellipses()
+        {
+            // Given, When
+            var result = Segment.SplitSegment("😄😃", maxCellLength: 1);
+
+            // Then
+            result.ShouldBe(["…", "…"]);
+        }
+
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2193")]
+        public void Should_Replace_A_Wide_Cluster_With_An_Ellipsis_Even_When_Not_First_In_Text()
+        {
+            // Given, When
+            var result = Segment.SplitSegment("Hello😄", maxCellLength: 1);
+
+            // Then
+            result.ShouldBe(["H", "e", "l", "l", "o", "…"]);
+        }
+
+        [Fact]
+        public void Should_Not_Replace_A_Cluster_That_Exactly_Fits_The_Max_Width()
+        {
+            // Given, When
+            var result = Segment.SplitSegment("😄", maxCellLength: 2);
+
+            // Then
+            result.ShouldBe(["😄"]);
+        }
+    }
+
     public sealed class TheSplitOverflowMethod
     {
         [Fact]
@@ -269,6 +315,35 @@ public sealed class SegmentTests
             result.Count.ShouldBe(1);
             result[0].CellCount().ShouldBeLessThanOrEqualTo(10);
             result[0].Text.EndsWith("…", StringComparison.Ordinal).ShouldBeFalse();
+        }
+
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2193")]
+        public void Should_Never_Return_A_Segment_Wider_Than_MaxWidth_When_Folding_A_Wide_Cluster()
+        {
+            // Given
+            var segment = new Segment("Hello 😄 world 😃");
+
+            // When
+            var result = Segment.SplitOverflow(segment, Overflow.Fold, maxWidth: 1);
+
+            // Then
+            result.ShouldAllBe(part => part.CellCount() <= 1);
+        }
+
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2193")]
+        public void Should_Fold_A_Standalone_Wide_Cluster_Into_An_Ellipsis()
+        {
+            // Given
+            var segment = new Segment("😄");
+
+            // When
+            var result = Segment.SplitOverflow(segment, Overflow.Fold, maxWidth: 1);
+
+            // Then
+            result.Count.ShouldBe(1);
+            result[0].Text.ShouldBe("…");
         }
     }
 
