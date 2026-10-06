@@ -42,6 +42,7 @@
         public static Spectre.Console.Color Foreground { get; set; }
         public static Spectre.Console.Profile Profile { get; }
         public static void AlternateScreen(System.Action action) { }
+        public static System.Threading.Tasks.Task AlternateScreenAsync(System.Func<System.Threading.Tasks.Task> action) { }
         public static T Ask<T>(string prompt) { }
         public static T Ask<T>(string prompt, T defaultValue) { }
         public static System.Threading.Tasks.Task<T> AskAsync<T>(string prompt, System.Threading.CancellationToken cancellationToken = default) { }
@@ -128,6 +129,7 @@
     public static class AnsiConsoleExtensions
     {
         public static void AlternateScreen(this Spectre.Console.IAnsiConsole console, System.Action action) { }
+        public static System.Threading.Tasks.Task AlternateScreenAsync(this Spectre.Console.IAnsiConsole console, System.Func<System.Threading.Tasks.Task> action) { }
         public static T Ask<T>(this Spectre.Console.IAnsiConsole console, string prompt) { }
         public static T Ask<T>(this Spectre.Console.IAnsiConsole console, string prompt, System.Globalization.CultureInfo? culture) { }
         public static System.Threading.Tasks.Task<T> AskAsync<T>(this Spectre.Console.IAnsiConsole console, string prompt, System.Threading.CancellationToken cancellationToken = default) { }
