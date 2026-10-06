@@ -741,4 +741,121 @@ public sealed class TextPromptTests
         secondInvoked.ShouldBeTrue();
         thirdInvoked.ShouldBeTrue();
     }
+
+    [Fact]
+    public void Should_Accept_Non_Ascii_Default_Value_When_Editable()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var result = console.Prompt(
+            new TextPrompt<string>("Enter text:")
+                .DefaultValue("ㅎ")
+                .EditableDefaultValue(true));
+
+        // Then
+        result.ShouldBe("ㅎ");
+    }
+
+    [Fact]
+    public void Should_Backspace_Remove_Surrogate_Pair_As_Single_Rune_Leaving_Preceding_Char()
+    {
+        // Given: "a😀" — 'a' then emoji (surrogate pair 😀)
+        var console = new TestConsole();
+        console.Input.PushKey(new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false));
+        console.Input.PushKey(new ConsoleKeyInfo('\uD83D', ConsoleKey.Packet, false, false, false));
+        console.Input.PushKey(new ConsoleKeyInfo('\uDE00', ConsoleKey.Packet, false, false, false));
+        console.Input.PushKey(ConsoleKey.Backspace);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var result = console.Prompt(new TextPrompt<string>("Enter:"));
+
+        // Then: both surrogate chars removed as one rune; 'a' remains
+        result.ShouldBe("a");
+    }
+
+    [Fact]
+    public void Should_Backspace_Remove_Lone_Emoji_Leaving_Empty_String()
+    {
+        // Given: only an emoji (surrogate pair); AllowEmpty so prompt accepts ""
+        var console = new TestConsole();
+        console.Input.PushKey(new ConsoleKeyInfo('\uD83D', ConsoleKey.Packet, false, false, false));
+        console.Input.PushKey(new ConsoleKeyInfo('\uDE00', ConsoleKey.Packet, false, false, false));
+        console.Input.PushKey(ConsoleKey.Backspace);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var result = console.Prompt(new TextPrompt<string>("Enter:").AllowEmpty());
+
+        // Then: both surrogate chars removed, nothing left
+        result.ShouldBe(string.Empty);
+    }
+
+    [Fact]
+    [Expectation("SecretValueBackspaceWideChar")]
+    public Task Should_Erase_One_Mask_Cell_Per_Backspace_For_Wide_Char_In_Secret_Mode()
+    {
+        // Given: type '한' (double-width CJK), backspace, enter — in secret mode
+        // Secret mode uses one mask char per input char regardless of source cell width,
+        // so backspace must erase exactly one mask cell (not two).
+        var console = new TestConsole();
+        console.Input.PushKey(new ConsoleKeyInfo('한', ConsoleKey.Packet, false, false, false));
+        console.Input.PushKey(ConsoleKey.Backspace);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var result = console.Prompt(new TextPrompt<string>("Enter:").Secret().AllowEmpty());
+
+        // Then
+        result.ShouldBe(string.Empty);
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("AutocompleteWideCharErase")]
+    public Task Should_Erase_By_Cell_Width_When_Autocomplete_Replaces_Wide_Char_Text()
+    {
+        // Given: type '한' (1 char, 2 cells wide), Tab to autocomplete to '한국어'
+        // The erase before writing the replacement must repeat Cell.GetCellLength("한") = 2
+        // times, not text.Length = 1 time, otherwise one ghost cell remains on screen.
+        var console = new TestConsole();
+        console.Input.PushKey(new ConsoleKeyInfo('한', ConsoleKey.Packet, false, false, false));
+        console.Input.PushKey(ConsoleKey.Tab);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        console.Prompt(
+            new TextPrompt<string>("Choose:")
+                .AddChoice("한국어")
+                .AddChoice("English"));
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    public void Should_Backspace_Through_Mixed_Width_Sequence_Peeling_One_Rune_At_A_Time()
+    {
+        // Given: "a한😀" — ASCII (1 cell) + CJK (1 char, 2 cells) + emoji (surrogate pair)
+        // Two backspaces peel the emoji (2 chars) and the CJK char, leaving only 'a'.
+        // Validates rune-by-rune removal without index or surrogate corruption.
+        var console = new TestConsole();
+        console.Input.PushKey(new ConsoleKeyInfo('a', ConsoleKey.A, false, false, false));
+        console.Input.PushKey(new ConsoleKeyInfo('한', ConsoleKey.Packet, false, false, false));
+        // 😀 = U+1F600 = surrogate pair 😀
+        console.Input.PushKey(new ConsoleKeyInfo('\uD83D', ConsoleKey.Packet, false, false, false));
+        console.Input.PushKey(new ConsoleKeyInfo('\uDE00', ConsoleKey.Packet, false, false, false));
+        console.Input.PushKey(ConsoleKey.Backspace); // removes emoji surrogate pair as one rune
+        console.Input.PushKey(ConsoleKey.Backspace); // removes '한'
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var result = console.Prompt(new TextPrompt<string>("Enter:"));
+
+        // Then: 'a' remains; emoji and CJK each removed as single runes
+        result.ShouldBe("a");
+    }
 }
