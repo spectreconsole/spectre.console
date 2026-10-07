@@ -182,6 +182,7 @@
         public Spectre.Console.ProfileEnrichment Enrichment { get; set; }
         public System.Collections.Generic.Dictionary<string, string>? EnvironmentVariables { get; set; }
         public Spectre.Console.IExclusivityMode? ExclusivityMode { get; set; }
+        public Spectre.Console.IAnsiConsoleInput? In { get; set; }
         public Spectre.Console.InteractionSupport Interactive { get; set; }
         public Spectre.Console.IAnsiConsoleOutput? Out { get; set; }
     }
