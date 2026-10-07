@@ -25,6 +25,12 @@
     <NoWarn>$(NoWarn);CS8632</NoWarn>
   </PropertyGroup>
 
+  <!-- xUnit.net v3 test projects are Microsoft.Testing.Platform executables -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <OutputType>Exe</OutputType>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
