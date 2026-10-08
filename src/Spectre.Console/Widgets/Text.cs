@@ -3,7 +3,6 @@ namespace Spectre.Console;
 /// <summary>
 /// A renderable piece of text.
 /// </summary>
-[DebuggerDisplay("{_text,nq}")]
 [SuppressMessage("Naming", "CA1724:Type names should not match namespaces")]
 public sealed class Text : Renderable, IHasJustification, IOverflowable
 {
