@@ -43,8 +43,7 @@ public sealed class Profile
             // Reset the width and height if this is a terminal.
             if (value.IsTerminal)
             {
-                _width = null;
-                _height = null;
+                ResetSize();
             }
         }
     }
@@ -133,6 +132,15 @@ public sealed class Profile
         _out = @out ?? throw new ArgumentNullException(nameof(@out));
         _capabilities = capabilities ?? throw new ArgumentNullException(nameof(capabilities));
         _encoding = encoding ?? throw new ArgumentNullException(nameof(encoding));
+    }
+
+    /// <summary>
+    /// Resets the console width and height to use the output size.
+    /// </summary>
+    public void ResetSize()
+    {
+        _width = null;
+        _height = null;
     }
 
     /// <summary>

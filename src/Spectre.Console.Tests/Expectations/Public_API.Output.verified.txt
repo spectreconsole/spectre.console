@@ -2588,6 +2588,7 @@
         public int Height { get; set; }
         public Spectre.Console.IAnsiConsoleOutput Out { get; set; }
         public int Width { get; set; }
+        public void ResetSize() { }
         public bool Supports(Spectre.Console.ColorSystem colorSystem) { }
     }
     public sealed class ProfileEnrichment
