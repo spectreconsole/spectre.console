@@ -242,7 +242,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
                 CultureInfo.InvariantCulture,
                 " [{0}]({1})[/]",
                 defaultValueStyle,
-                IsSecret ? defaultValue.Mask(Mask) : defaultValue);
+                (IsSecret ? defaultValue.Mask(Mask) : defaultValue).EscapeMarkup());
         }
 
         var markup = builder.ToString().Trim();
