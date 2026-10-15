@@ -141,6 +141,24 @@ public sealed class BreakdownChartTests
         await Verifier.Verify(console.Output);
     }
 
+    [Fact]
+    public void Should_Not_Render_Bar_When_All_Values_Are_Zero()
+    {
+        // Given
+        var console = new TestConsole().Width(40);
+        var chart = new BreakdownChart()
+            .AddItem("A", 0, Color.Red)
+            .AddItem("B", 0, Color.Blue);
+
+        // When
+        console.Write(chart);
+
+        // Then
+        console.Output.ShouldNotContain("█");
+        console.Output.ShouldContain("■ A 0");
+        console.Output.ShouldContain("■ B 0");
+    }
+
     public static class Fixture
     {
         public static BreakdownChart GetChart()
