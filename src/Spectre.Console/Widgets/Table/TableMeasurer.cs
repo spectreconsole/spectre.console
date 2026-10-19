@@ -24,7 +24,7 @@ internal sealed class TableMeasurer : TableAccessor
             totalCellWidth = Math.Min(_explicitWidth.Value, maxWidth);
         }
 
-        return totalCellWidth - GetNonColumnWidth();
+        return Math.Max(0, totalCellWidth - GetNonColumnWidth());
     }
 
     /// <summary>
@@ -57,6 +57,7 @@ internal sealed class TableMeasurer : TableAccessor
     {
         var width_ranges = Columns.Select(column => MeasureColumn(column, maxWidth)).ToArray();
         var widths = width_ranges.Select(range => range.Max).ToList();
+        ApplyProportionalWidths(widths, maxWidth);
 
         var tableWidth = widths.Sum();
         if (tableWidth > maxWidth)
@@ -76,7 +77,9 @@ internal sealed class TableMeasurer : TableAccessor
 
         if (tableWidth < maxWidth && Expand)
         {
-            var flexibleColumns = Columns.Select(column => column.Width == null).ToList();
+            var flexibleColumns = Columns
+                .Select(column => column.Width == null && column.ProportionalWidth == null)
+                .ToList();
             if (flexibleColumns.Any(isFlexible => isFlexible))
             {
                 var ratios = widths.Select((width, index) => flexibleColumns[index] ? Math.Max(width, 1) : 0).ToList();
@@ -86,6 +89,65 @@ internal sealed class TableMeasurer : TableAccessor
         }
 
         return widths;
+    }
+
+    private void ApplyProportionalWidths(List<int> widths, int maxWidth)
+    {
+        var proportionalColumns = Columns
+            .Select((column, index) => (Index: index, Width: column.ProportionalWidth))
+            .Where(column => column.Width != null)
+            .Select(column => (column.Index, Width: column.Width!.Value))
+            .ToList();
+
+        if (proportionalColumns.Count == 0)
+        {
+            return;
+        }
+
+        var consumedWidth = widths
+            .Where((_, index) => Columns[index].ProportionalWidth == null)
+            .Sum();
+        var availableWidth = Math.Max(0, maxWidth - consumedWidth);
+        var distributedWidths = DistributeProportionalWidths(
+            availableWidth,
+            proportionalColumns.Select(column => column.Width).ToList());
+
+        foreach (var (column, distributedWidth) in proportionalColumns.Zip(distributedWidths))
+        {
+            widths[column.Index] = distributedWidth;
+        }
+    }
+
+    private static List<int> DistributeProportionalWidths(int total, IReadOnlyList<ProportionalWidth> widths)
+    {
+        if (total == 0)
+        {
+            return widths.Select(_ => 0).ToList();
+        }
+
+        var maximumWeight = widths.Max(width => width.Weight);
+        var normalizedWeights = widths.Select(width => width.Weight / maximumWeight).ToList();
+        var totalWeight = normalizedWeights.Sum();
+        var shares = normalizedWeights
+            .Select((weight, index) =>
+            {
+                var exactWidth = total * weight / totalWeight;
+                var width = (int)Math.Floor(exactWidth);
+                return (Index: index, Width: width, Remainder: exactWidth - width);
+            })
+            .ToList();
+
+        var distributedWidths = shares.Select(share => share.Width).ToList();
+        var remaining = total - distributedWidths.Sum();
+        foreach (var share in shares
+                     .OrderByDescending(share => share.Remainder)
+                     .ThenBy(share => share.Index)
+                     .Take(remaining))
+        {
+            distributedWidths[share.Index]++;
+        }
+
+        return distributedWidths;
     }
 
     public Measurement MeasureColumn(TableColumn column, int maxWidth)

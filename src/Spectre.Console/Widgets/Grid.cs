@@ -114,13 +114,20 @@ public sealed class Grid : JustInTimeRenderable, IExpandable
 
         foreach (var column in _columns)
         {
-            table.AddColumn(new TableColumn(string.Empty)
+            var tableColumn = new TableColumn(string.Empty)
             {
                 Width = column.Width,
                 NoWrap = column.NoWrap,
                 Padding = column.Padding ?? new Padding(0, 0, 2, 0),
                 Alignment = column.Alignment,
-            });
+            };
+
+            if (column.ProportionalWidth is { } proportionalWidth)
+            {
+                tableColumn.SetProportionalWidth(proportionalWidth);
+            }
+
+            table.AddColumn(tableColumn);
         }
 
         foreach (var row in _rows)

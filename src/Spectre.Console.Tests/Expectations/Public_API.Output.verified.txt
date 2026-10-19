@@ -378,6 +378,8 @@
     {
         public static T NoWrap<T>(this T obj)
             where T :  class, Spectre.Console.IColumn { }
+        public static Spectre.Console.GridColumn Width(this Spectre.Console.GridColumn column, Spectre.Console.ProportionalWidth width) { }
+        public static Spectre.Console.TableColumn Width(this Spectre.Console.TableColumn column, Spectre.Console.ProportionalWidth width) { }
         public static T Width<T>(this T obj, int? width)
             where T :  class, Spectre.Console.IColumn { }
     }
@@ -2706,6 +2708,16 @@
             where T :  struct { }
         public T Update<T>(string key, System.Func<T, T> func)
             where T :  struct { }
+    }
+    public readonly struct ProportionalWidth : System.IEquatable<Spectre.Console.ProportionalWidth>
+    {
+        public ProportionalWidth(double weight) { }
+        public double Weight { get; }
+        public bool Equals(Spectre.Console.ProportionalWidth other) { }
+        public override bool Equals(object? obj) { }
+        public override int GetHashCode() { }
+        public static bool operator !=(Spectre.Console.ProportionalWidth left, Spectre.Console.ProportionalWidth right) { }
+        public static bool operator ==(Spectre.Console.ProportionalWidth left, Spectre.Console.ProportionalWidth right) { }
     }
     public class Recorder : Spectre.Console.IAnsiConsole, System.IDisposable
     {
