@@ -18,6 +18,23 @@ public sealed class TextPromptTests
     }
 
     [Fact]
+    public void Should_Escape_Markup_In_Default_Value()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var result = console.Prompt(
+            new TextPrompt<string>("Query:")
+                .DefaultValue("root['config'][0]"));
+
+        // Then
+        result.ShouldBe("root['config'][0]");
+        console.Output.ShouldContain("(root['config'][0])");
+    }
+
+    [Fact]
     [Expectation("ConversionError")]
     public Task Should_Return_Validation_Error_If_Value_Cannot_Be_Converted()
     {
