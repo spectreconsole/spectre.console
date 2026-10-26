@@ -37,3 +37,29 @@ jobs:
           name: verify-test-results
           path: |
             **/*.received.*
+
+  ###################################################
+  # NATIVE AOT
+  ###################################################
+
+  native-aot:
+    name: Native AOT
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET SDK (global.json)
+        uses: actions/setup-dotnet@v6
+
+      - name: Publish
+        shell: bash
+        run: |
+          dotnet publish src/Spectre.Console.NativeAot.Tests -c Release -o .artifacts/native-aot \
+            -p:TreatWarningsAsErrors=true
+
+      - name: Test
+        shell: bash
+        run: .artifacts/native-aot/Spectre.Console.NativeAot.Tests

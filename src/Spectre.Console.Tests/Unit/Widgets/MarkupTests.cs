@@ -182,7 +182,7 @@ public sealed class MarkupTests
         var obj = new CoolThing();
 
         // When
-        Exception ex = Record.Exception(() => console.MarkupInterpolated($"This is a {obj}"));
+        var ex = Record.Exception(() => console.MarkupInterpolated($"This is a {obj}"));
 
         // Then
         ex.ShouldBeNull();
@@ -197,7 +197,7 @@ public sealed class MarkupTests
         string? value = null;
 
         // When
-        Exception ex = Record.Exception(() => console.MarkupInterpolated(new NullAwareFormatProvider(), $"Value: {value}"));
+        var ex = Record.Exception(() => console.MarkupInterpolated(new NullAwareFormatProvider(), $"Value: {value}"));
 
         // Then
         ex.ShouldBeNull();
