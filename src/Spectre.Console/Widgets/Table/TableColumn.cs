@@ -7,6 +7,7 @@ public sealed class TableColumn : IColumn
 {
     private IRenderable _header = null!;
     private IRenderable? _footer;
+    private int? _width;
 
     /// <summary>
     /// Gets or sets the column header.
@@ -44,9 +45,20 @@ public sealed class TableColumn : IColumn
 
     /// <summary>
     /// Gets or sets the width of the column.
-    /// If <c>null</c>, the column will adapt to its contents.
+    /// If <c>null</c> and no proportional width has been configured,
+    /// the column will adapt to its contents.
     /// </summary>
-    public int? Width { get; set; }
+    public int? Width
+    {
+        get => _width;
+        set
+        {
+            _width = value;
+            ProportionalWidth = null;
+        }
+    }
+
+    internal ProportionalWidth? ProportionalWidth { get; private set; }
 
     /// <summary>
     /// Gets or sets the padding of the column.
@@ -85,6 +97,13 @@ public sealed class TableColumn : IColumn
         Padding = new Padding(1, 0, 1, 0);
         NoWrap = false;
         Alignment = null;
+    }
+
+    internal void SetProportionalWidth(ProportionalWidth width)
+    {
+        width.Validate();
+        _width = null;
+        ProportionalWidth = width;
     }
 }
 

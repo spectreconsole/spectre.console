@@ -1054,6 +1054,50 @@ public sealed class TableTests
         return Verifier.Verify(console.Output);
     }
 
+    [Theory]
+    [InlineData(Overflow.Crop, "0123456789", 1)]
+    [InlineData(Overflow.Ellipsis, "012345678\u2026", 1)]
+    [InlineData(Overflow.Fold, "0123456789", 2)]
+    public void Should_Respect_Cell_Overflow_In_Proportional_Column(
+        Overflow overflow,
+        string expectedFirstLine,
+        int expectedLineCount)
+    {
+        // Given
+        var console = new TestConsole().Width(10);
+        var table = new Table()
+            .NoBorder()
+            .HideHeaders()
+            .AddColumn(new TableColumn("").Padding(0, 0).NoWrap().Width(new ProportionalWidth(1)))
+            .AddRow(new Text("0123456789ABC").Overflow(overflow));
+
+        // When
+        console.Write(table);
+
+        // Then
+        console.Lines[0].ShouldBe(expectedFirstLine);
+        console.Lines.Count(line => line.Length > 0).ShouldBe(expectedLineCount);
+    }
+
+    [Fact]
+    public void Should_Wrap_Content_In_Proportional_Column()
+    {
+        // Given
+        var console = new TestConsole().Width(5);
+        var table = new Table()
+            .NoBorder()
+            .HideHeaders()
+            .AddColumn(new TableColumn("").Padding(0, 0).Width(new ProportionalWidth(1)))
+            .AddRow("Hello world");
+
+        // When
+        console.Write(table);
+
+        // Then
+        console.Lines.Count(line => line.Length > 0).ShouldBeGreaterThan(1);
+        console.Lines.ShouldAllBe(line => line.Length <= 5);
+    }
+
     [Fact(Timeout = 3000)]
     [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2131")]
     public Task CollapseWidths_Should_Terminate_When_Wrappable_Columns_Collapse_To_Zero()
