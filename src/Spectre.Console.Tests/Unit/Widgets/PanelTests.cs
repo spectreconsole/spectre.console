@@ -143,6 +143,97 @@ public sealed class PanelTests
     }
 
     [Fact]
+    [Expectation("Render_Header_Wider_Than_Content")]
+    public Task Should_Render_Header_Wider_Than_Content()
+    {
+        var console = new TestConsole().Width(40);
+
+        console.Write(new Panel("x")
+        {
+            Header = new PanelHeader("HDR"),
+        });
+
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Header_Collapse_In_Constrained_Parent")]
+    public Task Should_Collapse_Header_In_Constrained_Parent()
+    {
+        var console = new TestConsole().Width(40);
+        var grid = new Grid();
+        grid.AddColumn(new GridColumn { Width = 10 });
+        grid.AddRow(new Panel("Hello World")
+        {
+            Header = new PanelHeader("Configuration Settings"),
+        });
+
+        console.Write(grid);
+
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Header_Collapse_In_Table_Column")]
+    public Task Should_Collapse_Header_In_Table_Column()
+    {
+        var console = new TestConsole().Width(20);
+        var table = new Table();
+        table.AddColumn("A");
+        table.AddRow(new Panel("Hello World")
+        {
+            Header = new PanelHeader("Configuration Settings"),
+        });
+
+        console.Write(table);
+
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Header_Explicit_Width")]
+    public Task Should_Not_Grow_Explicit_Width_For_Header()
+    {
+        var console = new TestConsole().Width(40);
+
+        console.Write(new Panel("x")
+        {
+            Header = new PanelHeader("HDR"),
+            Width = 5,
+        });
+
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Header_Multiline")]
+    public Task Should_Measure_Header_On_One_Line()
+    {
+        var console = new TestConsole().Width(40);
+
+        console.Write(new Panel("x")
+        {
+            Header = new PanelHeader(" Line one\nLine two "),
+        });
+
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
+    [Expectation("Render_Empty_Header")]
+    public Task Should_Not_Grow_For_Empty_Header()
+    {
+        var console = new TestConsole().Width(40);
+
+        console.Write(new Panel("x")
+        {
+            Padding = new Padding(0, 0, 0, 0),
+        }.HeaderAlignment(Justify.Center));
+
+        return Verifier.Verify(console.Output);
+    }
+
+    [Fact]
     [Expectation("Render_Unicode")]
     public Task Should_Render_Panel_With_Unicode_Correctly()
     {
