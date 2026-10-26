@@ -96,9 +96,7 @@
         public static void Write(System.IFormatProvider provider, ulong value) { }
         public static void Write(string format, params object[] args) { }
         public static void Write(System.IFormatProvider provider, string format, params object[] args) { }
-        [System.Diagnostics.CodeAnalysis.RequiresDynamicCode("ExceptionFormatter is currently not supported for AOT.")]
         public static void WriteException(System.Exception exception, Spectre.Console.ExceptionFormats format = 0) { }
-        [System.Diagnostics.CodeAnalysis.RequiresDynamicCode("ExceptionFormatter is currently not supported for AOT.")]
         public static void WriteException(System.Exception exception, Spectre.Console.ExceptionSettings settings) { }
         public static void WriteLine() { }
         public static void WriteLine(bool value) { }
@@ -157,9 +155,7 @@
         public static void Write(this Spectre.Console.IAnsiConsole console, string text) { }
         public static void Write(this Spectre.Console.IAnsiConsole console, string text, Spectre.Console.Style? style) { }
         public static void WriteAnsi(this Spectre.Console.IAnsiConsole console, string sequence) { }
-        [System.Diagnostics.CodeAnalysis.RequiresDynamicCode("ExceptionFormatter is currently not supported for AOT.")]
         public static void WriteException(this Spectre.Console.IAnsiConsole console, System.Exception exception, Spectre.Console.ExceptionFormats format = 0) { }
-        [System.Diagnostics.CodeAnalysis.RequiresDynamicCode("ExceptionFormatter is currently not supported for AOT.")]
         public static void WriteException(this Spectre.Console.IAnsiConsole console, System.Exception exception, Spectre.Console.ExceptionSettings settings) { }
         public static void WriteLine(this Spectre.Console.IAnsiConsole console) { }
         public static void WriteLine(this Spectre.Console.IAnsiConsole console, string text) { }
@@ -1905,9 +1901,7 @@
     }
     public static class ExceptionExtensions
     {
-        [System.Diagnostics.CodeAnalysis.RequiresDynamicCode("ExceptionFormatter is currently not supported for AOT.")]
         public static Spectre.Console.Rendering.IRenderable GetRenderable(this System.Exception exception, Spectre.Console.ExceptionFormats format = 0) { }
-        [System.Diagnostics.CodeAnalysis.RequiresDynamicCode("ExceptionFormatter is currently not supported for AOT.")]
         public static Spectre.Console.Rendering.IRenderable GetRenderable(this System.Exception exception, Spectre.Console.ExceptionSettings settings) { }
     }
     [System.Flags]
