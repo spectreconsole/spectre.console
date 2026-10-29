@@ -18,6 +18,15 @@ public sealed class CellTests
     public void GetCellLength_Returns_Correct_Display_Width(string text, int expectedWidth)
     {
         Cell.GetCellLength(text).ShouldBe(expectedWidth);
+        Cell.GetCellLength(text.AsSpan()).ShouldBe(expectedWidth);
     }
 
+    [Theory]
+    [InlineData("ab中cd", 2, 1, 2)]           // CJK wide slice
+    [InlineData("ab❤️cd", 2, 2, 2)]     // emoji presentation slice falls back
+    [InlineData("\U0001F600xyz", 2, 3, 3)]        // ASCII slice after a surrogate pair
+    public void GetCellLength_Of_Span_Measures_Only_The_Slice(string text, int start, int length, int expectedWidth)
+    {
+        Cell.GetCellLength(text.AsSpan(start, length)).ShouldBe(expectedWidth);
+    }
 }
