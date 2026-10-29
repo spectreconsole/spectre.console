@@ -24,6 +24,12 @@ internal static class Cell
     }
 
     public static int GetCellLength(string text)
+        => GetCellLength(text.AsSpan(), text);
+
+    public static int GetCellLength(ReadOnlySpan<char> text)
+        => GetCellLength(text, null);
+
+    private static int GetCellLength(ReadOnlySpan<char> text, string? original)
     {
 #if !NETSTANDARD2_0
         // Strings without surrogate pairs, zero width joiners (U+200D) or
@@ -36,7 +42,9 @@ internal static class Cell
             var current = text[i];
             if (char.IsSurrogate(current) || current == '\u200D' || current == '\uFE0F')
             {
-                return UnicodeCalculator.GetWidth(text);
+                // UnicodeCalculator has no span overload, so only a span
+                // that needs grapheme-aware measurement is copied to a string.
+                return UnicodeCalculator.GetWidth(original ?? text.ToString());
             }
 
             var width = _runeWidthCache[current];
@@ -67,9 +75,6 @@ internal static class Cell
         return sum;
 #endif
     }
-
-    public static int GetCellLength(ReadOnlySpan<char> text)
-        => GetCellLength(text.ToString());
 
     public static int GetCellLength(char rune)
     {
