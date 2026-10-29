@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace Spectre.Console.Tests.Unit;
 
 public sealed class CellTests
@@ -29,4 +31,86 @@ public sealed class CellTests
     {
         Cell.GetCellLength(text.AsSpan(start, length)).ShouldBe(expectedWidth);
     }
+
+#if NET6_0_OR_GREATER
+    // The fast path in Cell.GetCellLength(string) mirrors which characters
+    // UnicodeCalculator.GetWidth(string) treats as sequences. If a Wcwidth
+    // update adds a new sequence rule for a BMP character, these fail and
+    // the fast path's fallback condition needs extending.
+    // Spectre.Console and Spectre.Console.Ansi each compile in their own copy
+    // of Wcwidth, so the copy Cell uses is looked up from Cell's assembly.
+    private static readonly MethodInfo _wcwidthGetWidth = typeof(Cell).Assembly
+        .GetType("Wcwidth.UnicodeCalculator", throwOnError: true)!
+        .GetMethods()
+        .Single(m => m.Name == "GetWidth" && m.GetParameters()[0].ParameterType == typeof(string));
+
+    private static int WcwidthGetWidth(string text)
+        => (int)_wcwidthGetWidth.Invoke(null, [text, null])!;
+
+    [Fact]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2194")]
+    public void GetCellLength_Matches_Wcwidth_For_Every_Bmp_Character()
+    {
+        var mismatches = new List<string>();
+        for (var c = 0; c <= char.MaxValue; c++)
+        {
+            if (char.IsSurrogate((char)c))
+            {
+                continue;
+            }
+
+            var text = ((char)c).ToString();
+            if (Cell.GetCellLength(text) != WcwidthGetWidth(text))
+            {
+                mismatches.Add($"U+{c:X4}");
+            }
+        }
+
+        mismatches.ShouldBeEmpty();
+    }
+
+    [Fact]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2194")]
+    public void GetCellLength_Matches_Wcwidth_For_Pairs_Of_Sequence_Sensitive_Characters()
+    {
+        var candidates = new List<char>
+        {
+            'a', ' ', 'é', '中', 'Ａ', // narrow, space, accented, CJK wide, fullwidth
+            '❤', '☺', '☹', '©', '#', // characters with VS16 emoji forms
+            'ᄀ', 'ᅠ', 'ᆨ', '가', // Hangul jamo and syllable
+        };
+
+        for (var c = 0; c <= char.MaxValue; c++)
+        {
+            var ch = (char)c;
+            if (char.IsSurrogate(ch))
+            {
+                continue;
+            }
+
+            var category = char.GetUnicodeCategory(ch);
+            if (category is UnicodeCategory.Format or UnicodeCategory.EnclosingMark
+                || (ch >= '︀' && ch <= '️')
+                || (category is UnicodeCategory.NonSpacingMark && ch < 'Ͱ'))
+            {
+                candidates.Add(ch);
+            }
+        }
+
+        var mismatches = new List<string>();
+        foreach (var first in candidates)
+        {
+            foreach (var second in candidates)
+            {
+                var text = new string([first, second]);
+                if (Cell.GetCellLength(text) != WcwidthGetWidth(text))
+                {
+                    mismatches.Add($"U+{(int)first:X4} U+{(int)second:X4}");
+                }
+            }
+        }
+
+        mismatches.ShouldBeEmpty();
+    }
+#endif
 }
