@@ -46,13 +46,14 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(ctx =>
 {
+    // Verbosity and NoLogo are MSBuild options, and under Microsoft.Testing.Platform
+    // dotnet test forwards them to the test applications, which reject them.
     ctx.DotNetTest(solution, new DotNetTestSettings
     {
         Configuration = configuration,
-        Verbosity = DotNetVerbosity.Minimal,
-        NoLogo = true,
         NoRestore = true,
         NoBuild = true,
+        PathType = DotNetTestPathType.Solution,
     });
 });
 

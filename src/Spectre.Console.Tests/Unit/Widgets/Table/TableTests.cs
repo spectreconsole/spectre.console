@@ -1077,6 +1077,6 @@ public sealed class TableTests
 
             // Then
             console.Output.ShouldNotBeNullOrEmpty();
-        });
+        }, TestContext.Current.CancellationToken);
     }
 }

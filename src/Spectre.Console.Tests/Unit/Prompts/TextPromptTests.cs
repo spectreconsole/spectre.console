@@ -484,7 +484,7 @@ public sealed class TextPromptTests
             .AddChoices(["Yes", "Partially", "No"]);
 
         // When
-        var result = await console.PromptAsync(prompt);
+        var result = await console.PromptAsync(prompt, TestContext.Current.CancellationToken);
 
         // Then
         result.ShouldBe("Yes");
