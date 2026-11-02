@@ -7,6 +7,7 @@ internal sealed class TableMeasurer : TableAccessor
     private readonly int? _explicitWidth;
     private readonly TableBorder _border;
     private readonly bool _padRightCell;
+    private readonly bool _isGrid;
 
     public TableMeasurer(Table table, RenderOptions options)
         : base(table, options)
@@ -14,6 +15,7 @@ internal sealed class TableMeasurer : TableAccessor
         _explicitWidth = table.Width;
         _border = table.Border;
         _padRightCell = table.PadRightCell;
+        _isGrid = table.IsGrid;
     }
 
     public int CalculateTotalCellWidth(int maxWidth)
@@ -124,8 +126,8 @@ internal sealed class TableMeasurer : TableAccessor
                         if (tableCell.ColumnSpan > 1)
                         {
                             // Distribute the measurement evenly across spanned columns
-                            var minPerColumn = cellMeasure.Min / tableCell.ColumnSpan;
-                            var maxPerColumn = cellMeasure.Max / tableCell.ColumnSpan;
+                            var minPerColumn = MeasureSpannedWidth(cellMeasure.Min, currentColumnIndex, tableCell.ColumnSpan);
+                            var maxPerColumn = MeasureSpannedWidth(cellMeasure.Max, currentColumnIndex, tableCell.ColumnSpan);
                             minWidths.Add(minPerColumn);
                             maxWidths.Add(maxPerColumn);
                         }
@@ -148,8 +150,8 @@ internal sealed class TableMeasurer : TableAccessor
                     // This column is covered by a spanning cell that started earlier
                     // Contribute a portion of the spanning cell's measurement
                     var cellMeasure = tableCell.Content.Measure(Options, maxWidth);
-                    var minPerColumn = cellMeasure.Min / tableCell.ColumnSpan;
-                    var maxPerColumn = cellMeasure.Max / tableCell.ColumnSpan;
+                    var minPerColumn = MeasureSpannedWidth(cellMeasure.Min, currentColumnIndex, tableCell.ColumnSpan);
+                    var maxPerColumn = MeasureSpannedWidth(cellMeasure.Max, currentColumnIndex, tableCell.ColumnSpan);
                     minWidths.Add(minPerColumn);
                     maxWidths.Add(maxPerColumn);
                     break;
@@ -165,6 +167,22 @@ internal sealed class TableMeasurer : TableAccessor
         return new Measurement(
             minWidths.Count > 0 ? minWidths.Max() : padding,
             maxWidths.Count > 0 ? maxWidths.Max() : maxWidth);
+    }
+
+    private int MeasureSpannedWidth(int width, int columnIndex, int span)
+    {
+        var extraWidth = 0;
+        for (var i = 1; i < span; i++)
+        {
+            extraWidth += _border.Visible ? 1 : 0;
+            if ((_border.Visible && _border.UsePadding) || _isGrid)
+            {
+                extraWidth += Columns[columnIndex + i - 1].Padding.GetRightSafe();
+                extraWidth += Columns[columnIndex + i].Padding.GetLeftSafe();
+            }
+        }
+
+        return (Math.Max(0, width - extraWidth) + span - 1) / span;
     }
 
     // Reduce widths so that the total is less or equal to the max width.

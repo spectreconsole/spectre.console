@@ -64,7 +64,7 @@ internal static class TableRenderer
                             if ((context.ShowBorder && context.Border.UsePadding) || context.IsGrid)
                             {
                                 cellWidth += context.Columns[columnIndex + i].Padding.GetLeftSafe();
-                                cellWidth += context.Columns[columnIndex + i].Padding.GetRightSafe();
+                                cellWidth += context.Columns[columnIndex + i - 1].Padding.GetRightSafe();
                             }
                         }
                     }
@@ -92,7 +92,7 @@ internal static class TableRenderer
             // Show top of header?
             if (isFirstRow && context.ShowBorder)
             {
-                var separator = context.Border.GetColumnRow(TablePart.Top, columnWidths, context.Columns);
+                var separator = RenderBorder(context, TablePart.Top, columnWidths, null, row);
                 if (!string.IsNullOrEmpty(separator))
                 {
                     result.Add(new Segment(separator, context.BorderStyle));
@@ -103,7 +103,7 @@ internal static class TableRenderer
             // Show footer separator?
             if (context.ShowFooters && isLastRow && context.ShowBorder && context.HasFooters)
             {
-                var textBorder = context.Border.GetColumnRow(TablePart.FooterSeparator, columnWidths, context.Columns);
+                var textBorder = RenderBorder(context, TablePart.FooterSeparator, columnWidths, context.Rows[index - 1], row);
                 if (!string.IsNullOrEmpty(textBorder))
                 {
                     result.Add(new Segment(textBorder, context.BorderStyle));
@@ -225,7 +225,7 @@ internal static class TableRenderer
             // Show header separator?
             if (isFirstRow && context.ShowBorder && context.ShowHeaders && context.HasRows)
             {
-                var separator = context.Border.GetColumnRow(TablePart.HeaderSeparator, columnWidths, context.Columns);
+                var separator = RenderBorder(context, TablePart.HeaderSeparator, columnWidths, row, context.Rows[index + 1]);
                 result.Add(new Segment(separator, context.BorderStyle));
                 result.Add(Segment.LineBreak);
             }
@@ -241,7 +241,7 @@ internal static class TableRenderer
                 var isRenderingFooter = hasVisibleFootes && isNextLastLine;
                 if (!isRenderingFooter)
                 {
-                    var separator = context.Border.GetColumnRow(TablePart.RowSeparator, columnWidths, context.Columns);
+                    var separator = RenderBorder(context, TablePart.RowSeparator, columnWidths, row, context.Rows[index + 1]);
                     result.Add(new Segment(separator, context.BorderStyle));
                     result.Add(Segment.LineBreak);
                 }
@@ -250,7 +250,7 @@ internal static class TableRenderer
             // Show bottom of footer?
             if (isLastRow && context.ShowBorder)
             {
-                var separator = context.Border.GetColumnRow(TablePart.Bottom, columnWidths, context.Columns);
+                var separator = RenderBorder(context, TablePart.Bottom, columnWidths, row, null);
                 if (!string.IsNullOrEmpty(separator))
                 {
                     result.Add(new Segment(separator, context.BorderStyle));
@@ -261,6 +261,74 @@ internal static class TableRenderer
 
         result.AddRange(RenderAnnotation(context, context.Caption, _defaultCaptionStyle));
         return result;
+    }
+
+    private static string RenderBorder(TableRendererContext context, TablePart part, List<int> widths,
+        TableRow? above, TableRow? below)
+    {
+        var border = context.Border;
+        var text = border.GetColumnRow(part, widths, context.Columns);
+        if (!(above?.OfType<TableCell>().Any(cell => cell.ColumnSpan > 1) ?? false)
+            && !(below?.OfType<TableCell>().Any(cell => cell.ColumnSpan > 1) ?? false))
+        {
+            return text;
+        }
+
+        var (leftPart, separatorPart, centerPart) = part switch
+        {
+            TablePart.Top => (TableBorderPart.HeaderTopLeft, TableBorderPart.HeaderTopSeparator, TableBorderPart.HeaderTop),
+            TablePart.HeaderSeparator => (TableBorderPart.HeaderBottomLeft, TableBorderPart.HeaderBottomSeparator, TableBorderPart.HeaderBottom),
+            TablePart.FooterSeparator => (TableBorderPart.FooterTopLeft, TableBorderPart.FooterTopSeparator, TableBorderPart.FooterTop),
+            TablePart.Bottom => (TableBorderPart.FooterBottomLeft, TableBorderPart.FooterBottomSeparator, TableBorderPart.FooterBottom),
+            _ => (TableBorderPart.RowLeft, TableBorderPart.RowSeparator, TableBorderPart.RowCenter),
+        };
+        var separator = border.GetPart(separatorPart);
+        if (separator.Length != 1 || border.GetPart(centerPart).Length != 1)
+        {
+            return text;
+        }
+
+        var aboveBoundaries = GetBoundaries(above);
+        var belowBoundaries = GetBoundaries(below);
+        var result = new StringBuilder(text);
+        var position = border.GetPart(leftPart).Length;
+        for (var i = 0; i < widths.Count - 1; i++)
+        {
+            position += widths[i] + (context.Columns[i].Padding?.GetWidth() ?? 0);
+            if (position >= result.Length || result[position] != separator[0])
+            {
+                return text;
+            }
+
+            var hasAbove = aboveBoundaries.Contains(i + 1);
+            var hasBelow = belowBoundaries.Contains(i + 1);
+            var replacement = hasAbove && hasBelow ? separator
+                : hasAbove ? border.GetPart(TableBorderPart.FooterBottomSeparator)
+                : hasBelow ? border.GetPart(TableBorderPart.HeaderTopSeparator)
+                : border.GetPart(centerPart);
+            if (replacement.Length == 1)
+            {
+                result[position] = replacement[0];
+            }
+            position++;
+        }
+
+        return result.ToString();
+    }
+
+    private static HashSet<int> GetBoundaries(TableRow? row)
+    {
+        var boundaries = new HashSet<int>();
+        var column = 0;
+        if (row != null)
+        {
+            foreach (var item in row)
+            {
+                column += item is TableCell cell ? cell.ColumnSpan : 1;
+                boundaries.Add(column);
+            }
+        }
+        return boundaries;
     }
 
     private static IEnumerable<Segment> RenderAnnotation(TableRendererContext context, TableTitle? header,
