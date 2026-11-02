@@ -153,6 +153,35 @@ public static class TextPromptExtensions
     }
 
     /// <summary>
+    /// Uses the provided prompt history for this prompt.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="history">The prompt history instance.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static TextPrompt<T> History<T>(this TextPrompt<T> obj, PromptHistory? history)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+
+        obj.History = history;
+        return obj;
+    }
+
+    /// <summary>
+    /// Disables prompt history for this prompt.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static TextPrompt<T> DisableHistory<T>(this TextPrompt<T> obj)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+
+        obj.History = null;
+        return obj;
+    }
+
+    /// <summary>
     /// Sets the default value of the prompt.
     /// </summary>
     /// <typeparam name="T">The prompt result type.</typeparam>
