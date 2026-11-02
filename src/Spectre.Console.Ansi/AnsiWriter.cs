@@ -287,7 +287,7 @@ public sealed class AnsiWriter
             WriteOsc(
                 linkId != null
                     ? $"8;id={linkId};{link}\e\\"
-                    : $"8;{link}\e\\");
+                    : $"8;;{link}\e\\");
         }
 
         return this;
