@@ -22,7 +22,9 @@ internal static class AnsiDetector
         new("konsole"), // Konsole
         new("bvterm"), // Bitvise SSH Client
         new("^st-256color"), // Suckless Simple Terminal, st
-        new("alacritty") // Alacritty
+        new("alacritty"), // Alacritty
+        new("^foot"), // foot
+        new("^wezterm") // WezTerm
     ];
 
     public static (bool Ansi, bool Legacy) Detect(TextWriter buffer, AnsiSupport ansi)
@@ -95,15 +97,17 @@ internal static class AnsiDetector
     {
         // Check if the terminal is of type ANSI/VT100/xterm compatible.
         var term = Environment.GetEnvironmentVariable("TERM");
-        if (!string.IsNullOrWhiteSpace(term))
+        if (IsAnsiTerminal(term))
         {
-            if (_regexes.Any(regex => regex.IsMatch(term)))
-            {
-                return (true, false);
-            }
+            return (true, false);
         }
 
         return (false, true);
+    }
+
+    internal static bool IsAnsiTerminal(string? term)
+    {
+        return !string.IsNullOrWhiteSpace(term) && _regexes.Any(regex => regex.IsMatch(term));
     }
 
     private static class Windows
