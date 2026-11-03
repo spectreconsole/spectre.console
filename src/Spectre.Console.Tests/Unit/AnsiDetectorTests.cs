@@ -2,6 +2,25 @@ namespace Spectre.Console.Tests.Unit;
 
 public sealed class AnsiDetectorTests
 {
+    [Theory]
+    [InlineData("foot")]
+    [InlineData("foot-extra")]
+    [InlineData("wezterm")]
+    public void Should_Support_Ansi_Terminals(string term)
+    {
+        AnsiDetector.IsAnsiTerminal(term).ShouldBeTrue();
+    }
+
+    [Theory]
+    [InlineData("dumb")]
+    [InlineData("unknown")]
+    [InlineData("vanilla")]
+    [InlineData("vt52")]
+    public void Should_Not_Support_Unknown_Terminals(string term)
+    {
+        AnsiDetector.IsAnsiTerminal(term).ShouldBeFalse();
+    }
+
     [Fact]
     public void Should_Not_Support_Ansi_When_Output_Is_Redirected()
     {
