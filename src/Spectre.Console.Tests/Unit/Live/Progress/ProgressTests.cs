@@ -32,6 +32,56 @@ public sealed class ProgressTests
     }
 
     [Fact]
+    public void Should_Render_Indeterminate_Task_Without_Percentage_In_Fallback_Mode()
+    {
+        // Given
+        var console = new TestConsole();
+        var time = new FakeTimeProvider(new DateTime(2024, 1, 1, 12, 0, 0));
+        var progress = new Progress(console, time).AutoRefresh(false);
+
+        // When
+        progress.Start(ctx =>
+        {
+            var task = ctx.AddTask("foo");
+            task.IsIndeterminate = true;
+            task.Increment(50);
+
+            ctx.Refresh();
+            time.Advance(TimeSpan.FromSeconds(31));
+            ctx.Refresh();
+        });
+
+        // Then
+        console.Output.ShouldContain("foo: in progress");
+        console.Output.ShouldNotContain("50%");
+        console.Output.SplitLines().Count(line => line.Contains("foo: in progress")).ShouldBe(2);
+    }
+
+    [Fact]
+    public void Should_Render_Percentage_When_Indeterminate_Task_Becomes_Determinate()
+    {
+        // Given
+        var console = new TestConsole();
+        var progress = new Progress(console).AutoRefresh(false);
+
+        // When
+        progress.Start(ctx =>
+        {
+            var task = ctx.AddTask("foo");
+            task.IsIndeterminate = true;
+            task.Increment(50);
+            ctx.Refresh();
+
+            task.IsIndeterminate = false;
+            ctx.Refresh();
+        });
+
+        // Then
+        console.Output.ShouldContain("foo: in progress");
+        console.Output.ShouldContain("foo: 50%");
+    }
+
+    [Fact]
     public void Should_Not_Auto_Clear_If_Specified()
     {
         // Given

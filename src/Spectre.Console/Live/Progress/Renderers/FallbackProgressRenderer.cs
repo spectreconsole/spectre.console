@@ -6,6 +6,7 @@ internal sealed class FallbackProgressRenderer : ProgressRenderer
     private static readonly double?[] _milestones = [FirstMilestone, 50, 75, 95, 96, 97, 98, 99, 100];
 
     private readonly Dictionary<int, double> _taskMilestones;
+    private readonly HashSet<int> _indeterminateTasks;
     private readonly object _lock;
     private readonly TimeProvider _timeProvider;
     private IRenderable? _renderable;
@@ -16,6 +17,7 @@ internal sealed class FallbackProgressRenderer : ProgressRenderer
     public FallbackProgressRenderer(TimeProvider timeProvider)
     {
         _taskMilestones = new Dictionary<int, double>();
+        _indeterminateTasks = new HashSet<int>();
         _lock = new object();
         _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
     }
@@ -25,7 +27,7 @@ internal sealed class FallbackProgressRenderer : ProgressRenderer
         lock (_lock)
         {
             var hasStartedTasks = false;
-            var updates = new List<(string, double)>();
+            var updates = new List<(string Name, string Value)>();
 
             foreach (var task in context.GetTasks())
             {
@@ -36,9 +38,21 @@ internal sealed class FallbackProgressRenderer : ProgressRenderer
 
                 hasStartedTasks = true;
 
-                if (TryAdvance(task.Id, task.Percentage))
+                if (task.IsIndeterminate)
                 {
-                    updates.Add((task.Description, task.Percentage));
+                    if (_indeterminateTasks.Add(task.Id))
+                    {
+                        _taskMilestones.TryAdd(task.Id, FirstMilestone);
+                        updates.Add(CreateUpdate(task));
+                    }
+
+                    continue;
+                }
+
+                var wasIndeterminate = _indeterminateTasks.Remove(task.Id);
+                if (TryAdvance(task.Id, task.Percentage) || wasIndeterminate)
+                {
+                    updates.Add(CreateUpdate(task));
                 }
             }
 
@@ -47,7 +61,7 @@ internal sealed class FallbackProgressRenderer : ProgressRenderer
             {
                 foreach (var task in context.GetTasks())
                 {
-                    updates.Add((task.Description, task.Percentage));
+                    updates.Add(CreateUpdate(task));
                 }
             }
 
@@ -104,14 +118,23 @@ internal sealed class FallbackProgressRenderer : ProgressRenderer
         return Array.Find(_milestones, p => p > percentage);
     }
 
-    private static IRenderable? BuildTaskGrid(List<(string Name, double Percentage)> updates)
+    private static (string Name, string Value) CreateUpdate(ProgressTask task)
+    {
+        var value = task.IsIndeterminate && !task.IsFinished
+            ? "in progress"
+            : $"{(int)task.Percentage}%";
+
+        return (task.Description, value);
+    }
+
+    private static IRenderable? BuildTaskGrid(List<(string Name, string Value)> updates)
     {
         if (updates.Count > 0)
         {
             var renderables = new List<IRenderable>();
-            foreach (var (name, percentage) in updates)
+            foreach (var (name, value) in updates)
             {
-                renderables.Add(new Markup($"[blue]{name}[/]: {(int)percentage}%"));
+                renderables.Add(new Markup($"[blue]{name}[/]: {value}"));
             }
 
             return new Rows(renderables);
