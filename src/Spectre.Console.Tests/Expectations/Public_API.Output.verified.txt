@@ -3145,7 +3145,6 @@
         public bool Wrap { get; set; }
         public override Spectre.Console.Rendering.IRenderable Render(Spectre.Console.Rendering.RenderOptions options, Spectre.Console.ProgressTask task, System.TimeSpan deltaTime) { }
     }
-    [System.Diagnostics.DebuggerDisplay("{_text,nq}")]
     public sealed class Text : Spectre.Console.Rendering.Renderable, Spectre.Console.IHasJustification, Spectre.Console.IOverflowable
     {
         public Text(string text, Spectre.Console.Style? style = default) { }
