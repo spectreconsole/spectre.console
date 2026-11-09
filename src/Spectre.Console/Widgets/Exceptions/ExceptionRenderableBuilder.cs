@@ -90,26 +90,10 @@ internal static class ExceptionRenderableBuilder
             // The runtime never filters the last frame, so neither do we.
             var isLast = i == frames.Length - 1;
             var builder = new StringBuilder();
-
-            // GetMethod() returns null under NativeAOT, and for any frame whose reflection
-            // metadata has been trimmed away. Those frames still carry names in the stack
-            // trace metadata, which the metadata path reads instead.
-            var method = frame.GetMethod();
-            if (method != null)
-            {
-                if (!isLast && !ShowInStackTrace(method))
-                {
-                    continue;
-                }
-
-                AppendReflectedMethod(builder, ref method, resolver, settings);
-            }
-            else if (!TryAppendMetadataMethod(builder, frame, isLast, settings))
+            if (!TryAppendFrame(builder, frame, isLast, resolver, settings))
             {
                 continue;
             }
-
-            AppendLocation(builder, frame, method, resolver, settings);
 
             grid.AddRow(
                 $"[{styles.Dimmed.ToMarkup()}]at[/]",
@@ -117,6 +101,49 @@ internal static class ExceptionRenderableBuilder
         }
 
         return grid;
+    }
+
+    /// <summary>
+    /// Renders one frame, choosing the reflection path or the metadata path. Returns
+    /// <see langword="false"/> when the frame is hidden and should not be rendered.
+    /// </summary>
+    internal static bool TryAppendFrame(StringBuilder builder, StackFrame frame, bool isLast,
+        ExceptionInfoResolver resolver, ExceptionSettings settings)
+    {
+        // GetMethod() returns null under NativeAOT, and for any frame whose reflection
+        // metadata has been trimmed away. Those frames still carry names in the stack
+        // trace metadata, which the metadata path reads instead.
+        var method = frame.GetMethod();
+        if (method != null)
+        {
+            if (!isLast && !ShowInStackTrace(method))
+            {
+                return false;
+            }
+
+            AppendReflectedMethod(builder, ref method, resolver, settings);
+            AppendLocation(builder, frame, method, resolver, settings);
+            return true;
+        }
+
+        if (!TryAppendMetadataMethod(builder, frame, isLast, settings, out var isSynthetic))
+        {
+            return false;
+        }
+
+        if (resolver.GetFileName(frame) != null)
+        {
+            AppendLocation(builder, frame, method: null, resolver, settings);
+        }
+        else if (!isSynthetic)
+        {
+            // No source location and no IL offset. The native offset is all that tells two
+            // frames in the same method apart, and it is what the runtime's own
+            // Exception.ToString() prints on NativeAOT. A synthetic frame is already an address.
+            AppendNativeOffset(builder, frame, settings);
+        }
+
+        return true;
     }
 
     private static void AppendReflectedMethod(StringBuilder builder, ref MethodBase method,
@@ -146,9 +173,10 @@ internal static class ExceptionRenderableBuilder
     }
 
     private static bool TryAppendMetadataMethod(StringBuilder builder, StackFrame frame, bool isLast,
-        ExceptionSettings settings)
+        ExceptionSettings settings, out bool isSynthetic)
     {
         var text = StackFrameText.Parse(frame);
+        isSynthetic = text.IsSynthetic;
         string? declaringType = null;
         string? name = null;
 
@@ -216,7 +244,16 @@ internal static class ExceptionRenderableBuilder
         // No "async" prefix here, unlike the reflection path: iterators mangle identically to
         // async methods and cannot be told apart without a MethodBase, so the label would be
         // a guess.
-        TryResolveStateMachine(ref declaringType, ref name);
+        //
+        // Once resolved, the generic arguments and signature in the frame text still describe
+        // MoveNext(), not the source method, so they say nothing about it.
+        var genericArguments = text.GenericArguments;
+        var signature = text.Signature;
+        if (TryResolveStateMachine(ref declaringType, ref name))
+        {
+            genericArguments = null;
+            signature = null;
+        }
 
         // Same shape as ExceptionInfoResolver.GetMethodName: nested types joined with '.'.
         var methodName = declaringType == null
@@ -226,20 +263,20 @@ internal static class ExceptionRenderableBuilder
         var shortenMethods = (settings.Format & ExceptionFormats.ShortenMethods) != 0;
         Emphasize(builder, methodName, ['.'], styles.Method, shortenMethods, settings);
 
-        if (text.GenericArguments is { Length: > 0 } genericArguments)
+        if (genericArguments is { Length: > 0 })
         {
             builder.AppendWithStyle(styles.Method, "<" + genericArguments + ">");
         }
 
         builder.AppendWithStyle(styles.Parenthesis, "(");
-        if (text.Signature == null)
+        if (signature == null)
         {
             // The runtime did not say, which is different from "no parameters".
             builder.AppendWithStyle(styles.Dimmed, "…");
         }
-        else if (text.Signature.Length > 0)
+        else if (signature.Length > 0)
         {
-            builder.AppendWithStyle(styles.ParameterType, text.Signature);
+            builder.AppendWithStyle(styles.ParameterType, signature);
         }
 
         builder.AppendWithStyle(styles.Parenthesis, ")");
@@ -382,6 +419,20 @@ internal static class ExceptionRenderableBuilder
         builder.AppendWithStyle(styles.LineNumber, "0x" + token.ToString("x", CultureInfo.InvariantCulture));
         builder.AppendWithStyle(styles.Dimmed, "+");
         builder.AppendWithStyle(styles.LineNumber, "0x" + ilOffset.ToString("x", CultureInfo.InvariantCulture));
+    }
+
+    private static void AppendNativeOffset(StringBuilder builder, StackFrame frame, ExceptionSettings settings)
+    {
+        var offset = frame.GetNativeOffset();
+        if (offset == StackFrame.OFFSET_UNKNOWN)
+        {
+            return;
+        }
+
+        builder.Append(' ');
+        builder.AppendWithStyle(settings.Style.Dimmed, "+");
+        builder.Append(' ');
+        builder.AppendWithStyle(settings.Style.LineNumber, "0x" + offset.ToString("x", CultureInfo.InvariantCulture));
     }
 
     private static bool ShowILOffsets()
