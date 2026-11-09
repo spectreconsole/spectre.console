@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 
 namespace Spectre.Console.Tests.Unit;
@@ -125,6 +126,23 @@ public sealed class ExceptionRenderableBuilderTests
     }
 
     [Fact]
+    public void Should_Not_Use_MoveNext_Signature_For_Resolved_State_Machine()
+    {
+        // Given
+        // NativeAOT up to .NET 10 names the state machine in the frame text and gives
+        // MoveNext's empty parameter list, which says nothing about RunAsync(int).
+        var text = StackFrameText.Parse(
+            "MyApp.Boom.<RunAsync>d__0.MoveNext() + 0x64 at offset 100 " +
+            "in file:line:column <filename unknown>:0:0\n");
+
+        // When
+        var result = Render("MyApp.Boom.<RunAsync>d__0", "MoveNext", text);
+
+        // Then
+        result.ShouldBe("MyApp.Boom.RunAsync(…)");
+    }
+
+    [Fact]
     public void Should_Not_Resolve_Types_That_Merely_End_In_A_Bracket_Suffix()
     {
         // Given
@@ -210,6 +228,105 @@ public sealed class ExceptionRenderableBuilderTests
         result.ShouldBe(expected);
     }
 
+    [Fact]
+    public void Should_Render_Native_Offset_When_Frame_Has_No_Source_Location()
+    {
+        // Given
+        // Two frames in the same method at different instructions.
+        var first = new MetadataOnlyFrame(
+            "MyApp.Boom.Twice(Int32) + 0x1c at offset 28 in file:line:column <filename unknown>:0:0\n",
+            nativeOffset: 0x1c);
+        var second = new MetadataOnlyFrame(
+            "MyApp.Boom.Twice(Int32) + 0x58 at offset 88 in file:line:column <filename unknown>:0:0\n",
+            nativeOffset: 0x58);
+
+        // When
+        var firstResult = RenderFrame(first);
+        var secondResult = RenderFrame(second);
+
+        // Then
+        firstResult.ShouldEndWith("Twice(Int32) + 0x1c");
+        secondResult.ShouldEndWith("Twice(Int32) + 0x58");
+    }
+
+    [Fact]
+    public void Should_Render_Source_Location_Instead_Of_Native_Offset_When_Available()
+    {
+        // Given
+        var frame = new MetadataOnlyFrame(
+            "Twice at offset 28 in file:line:column /src/Boom.cs:20:9\n",
+            nativeOffset: 0x1c,
+            fileName: "/src/Boom.cs",
+            lineNumber: 20);
+
+        // When
+        var result = RenderFrame(frame);
+
+        // Then
+        result.ShouldEndWith("(…) in /src/Boom.cs:20");
+        result.ShouldNotContain("0x1c");
+    }
+
+    [Fact]
+    public void Should_Not_Render_Native_Offset_For_Synthetic_Frame()
+    {
+        // Given
+        var frame = new MetadataOnlyFrame(
+            "MyApp!<BaseAddress>+0x1a2b at offset 0 in file:line:column <filename unknown>:0:0\n",
+            nativeOffset: 0);
+
+        // When
+        var result = RenderFrame(frame);
+
+        // Then
+        result.ShouldBe("MyApp!<BaseAddress>+0x1a2b");
+    }
+
+    [Fact]
+    public void Should_Hide_Runtime_Async_Plumbing_Unless_It_Is_The_Last_Frame()
+    {
+        // Given
+        var frame = new MetadataOnlyFrame(
+            "System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw() + 0x24 at offset 36 " +
+            "in file:line:column <filename unknown>:0:0\n",
+            nativeOffset: 0x24);
+
+        // When
+        var hidden = ExceptionRenderableBuilder.TryAppendFrame(
+            new StringBuilder(), frame, isLast: false, new ExceptionInfoResolver(), new ExceptionSettings());
+        var last = ExceptionRenderableBuilder.TryAppendFrame(
+            new StringBuilder(), frame, isLast: true, new ExceptionInfoResolver(), new ExceptionSettings());
+
+        // Then
+        hidden.ShouldBeFalse();
+        last.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void Should_Skip_Frame_With_No_Method()
+    {
+        // Given
+        var frame = new MetadataOnlyFrame("<null>\n", nativeOffset: StackFrame.OFFSET_UNKNOWN);
+
+        // When
+        var result = ExceptionRenderableBuilder.TryAppendFrame(
+            new StringBuilder(), frame, isLast: false, new ExceptionInfoResolver(), new ExceptionSettings());
+
+        // Then
+        result.ShouldBeFalse();
+    }
+
+    private static string RenderFrame(StackFrame frame)
+    {
+        var builder = new StringBuilder();
+        ExceptionRenderableBuilder.TryAppendFrame(builder, frame, isLast: true, new ExceptionInfoResolver(),
+            new ExceptionSettings()).ShouldBeTrue();
+
+        var console = new TestConsole().Width(1024);
+        console.Write(new Markup(builder.ToString()));
+        return console.Output;
+    }
+
     private static string Render(string? declaringType, string name, StackFrameText text,
         ExceptionFormats format = ExceptionFormats.Default)
     {
@@ -220,5 +337,21 @@ public sealed class ExceptionRenderableBuilderTests
         var console = new TestConsole().Width(1024);
         console.Write(new Markup(builder.ToString()));
         return console.Output;
+    }
+
+    /// <summary>
+    /// A frame with no <see cref="MethodBase"/>, as every frame is under NativeAOT, so the
+    /// builder takes the metadata path. <c>DiagnosticMethodInfo.Create</c> also returns
+    /// <see langword="null"/> for it on the JIT, so names come from the frame text.
+    /// </summary>
+    private sealed class MetadataOnlyFrame(string text, int nativeOffset, string? fileName = null, int lineNumber = 0)
+        : StackFrame
+    {
+        public override MethodBase? GetMethod() => null;
+        public override int GetNativeOffset() => nativeOffset;
+        public override int GetILOffset() => OFFSET_UNKNOWN;
+        public override string? GetFileName() => fileName;
+        public override int GetFileLineNumber() => lineNumber;
+        public override string ToString() => text;
     }
 }
