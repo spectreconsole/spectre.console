@@ -2602,6 +2602,8 @@
         public bool AutoClear { get; set; }
         public bool AutoRefresh { get; set; }
         public bool ExcludeVerticalPadding { get; set; }
+        public System.Func<Spectre.Console.ProgressTask, string> FallbackFormatter { get; set; }
+        public System.Collections.Generic.IReadOnlyList<double> FallbackMilestones { get; set; }
         public bool HideCompleted { get; set; }
         public System.TimeSpan RefreshRate { get; set; }
         public System.Func<Spectre.Console.Rendering.IRenderable, System.Collections.Generic.IReadOnlyList<Spectre.Console.ProgressTask>, Spectre.Console.Rendering.IRenderable> RenderHook { get; set; }
@@ -2654,8 +2656,10 @@
         public static Spectre.Console.Progress Columns(this Spectre.Console.Progress progress, params Spectre.Console.ProgressColumn[] columns) { }
         public static Spectre.Console.Progress ExcludeVerticalPadding(this Spectre.Console.Progress progress) { }
         public static Spectre.Console.Progress ExcludeVerticalPadding(this Spectre.Console.Progress progress, bool enabled) { }
+        public static Spectre.Console.Progress FallbackMilestones(this Spectre.Console.Progress progress, params double[] milestones) { }
         public static Spectre.Console.Progress HideCompleted(this Spectre.Console.Progress progress, bool enabled) { }
         public static Spectre.Console.Progress IncludeVerticalPadding(this Spectre.Console.Progress progress) { }
+        public static Spectre.Console.Progress UseFallbackFormatter(this Spectre.Console.Progress progress, System.Func<Spectre.Console.ProgressTask, string> formatter) { }
         public static Spectre.Console.Progress UseRenderHook(this Spectre.Console.Progress progress, System.Func<Spectre.Console.Rendering.IRenderable, System.Collections.Generic.IReadOnlyList<Spectre.Console.ProgressTask>, Spectre.Console.Rendering.IRenderable> renderHook) { }
     }
     public sealed class ProgressTask : System.IProgress<double>
