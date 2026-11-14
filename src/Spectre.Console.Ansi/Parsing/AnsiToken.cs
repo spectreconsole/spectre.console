@@ -32,14 +32,20 @@ public abstract record AnsiToken
     /// <summary>
     /// Executes the specified function.
     /// </summary>
-    /// <param name="Function">The C0/C1 function to execute.</param>
+    /// <param name="Function">
+    /// The C0/C1 function to execute. An ESC (0x1B) that doesn't start a sequence, such as a
+    /// single press of the Escape key, is reported this way too.
+    /// </param>
     public record Execute(char Function) : AnsiToken;
 
     /// <summary>
     /// Execute an ESC command.
     /// </summary>
     /// <param name="Intermediates">Intermediate bytes.</param>
-    /// <param name="Final">The final byte identifying the ESC command.</param>
+    /// <param name="Final">
+    /// The final character identifying the ESC command. An Alt-modified key arrives as ESC and
+    /// the character, so in interactive input this can also be a character outside ASCII.
+    /// </param>
     public record Esc(IReadOnlyList<char> Intermediates, char Final) : AnsiToken
     {
         /// <inheritdoc/>

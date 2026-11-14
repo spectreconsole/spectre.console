@@ -18,6 +18,73 @@ public sealed class AnsiParserTests
             });
     }
 
+    [Fact(DisplayName = "esc: ESC ESC [ A")]
+    public void Esc_Repeated_Escape()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e\e[A");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Execute>().And(e => e.Function.ShouldBe('\e'));
+        result[1].ShouldBeOfType<AnsiToken.Csi>().And(csi => csi.Final.ShouldBe('A'));
+    }
+
+    [Fact(DisplayName = "esc: ESC that ends an OSC string, then ESC \\")]
+    public void Esc_Repeated_After_Osc()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]0;title\e\e\\");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>();
+        result[1].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('\\'));
+    }
+
+    [Fact(DisplayName = "esc: ESC ä")]
+    public void Esc_Non_Ascii_Final()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\eäb"); // Alt+ä, then b
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Esc>()
+            .And(esc =>
+            {
+                esc.Intermediates.Count.ShouldBe(0);
+                esc.Final.ShouldBe('ä');
+            });
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('b'));
+    }
+
+    [Fact(DisplayName = "esc: ESC before an astral codepoint")]
+    public void Esc_Astral_Codepoint()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e\U0001F600b");
+
+        // Then
+        result.Count.ShouldBe(3);
+        result[0].ShouldBeOfType<AnsiToken.Execute>().And(e => e.Function.ShouldBe('\e'));
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0x1F600));
+        result[2].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('b'));
+    }
+
+    [Fact(DisplayName = "esc: ESC before a lone low surrogate")]
+    public void Esc_Lone_Low_Surrogate()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e\uDE00b");
+
+        // Then
+        result.Count.ShouldBe(3);
+        result[0].ShouldBeOfType<AnsiToken.Execute>().And(e => e.Function.ShouldBe('\e'));
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0xFFFD));
+        result[2].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('b'));
+    }
+
     [Fact(DisplayName = "csi: ESC [ H")]
     public void Csi_Sequence_1()
     {
@@ -231,6 +298,64 @@ public sealed class AnsiParserTests
         // Then
         result.Count.ShouldBe(1);
         result[0].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0xFFFD));
+    }
+
+    [Fact(DisplayName = "flush: emits a lone ESC")]
+    public void Flush_Lone_Escape()
+    {
+        // Given
+        var result = new List<AnsiToken>();
+        var parser = new AnsiParser(result.Add);
+        parser.Next("\e"); // a single press of the Escape key
+
+        // When
+        parser.Flush();
+        parser.Next("a"); // prints, since the parser is back in ground
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Execute>().And(e => e.Function.ShouldBe('\e'));
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('a'));
+    }
+
+    [Fact(DisplayName = "flush: keeps a partial CSI")]
+    public void Flush_Keeps_Partial_Csi()
+    {
+        // Given
+        var result = new List<AnsiToken>();
+        var parser = new AnsiParser(result.Add);
+        parser.Next("\e[1");
+
+        // When
+        parser.Flush();
+        parser.Next("A");
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Csi>()
+            .And(csi =>
+            {
+                csi.Params.ShouldBe([1]);
+                csi.Final.ShouldBe('A');
+            });
+    }
+
+    [Fact(DisplayName = "flush: keeps the ESC that ends an OSC string")]
+    public void Flush_Keeps_Osc_Terminator()
+    {
+        // Given
+        var result = new List<AnsiToken>();
+        var parser = new AnsiParser(result.Add);
+        parser.Next("\e]0;title\e"); // the backslash of the ST hasn't arrived yet
+
+        // When
+        parser.Flush();
+        parser.Next("\\");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>();
+        result[1].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('\\'));
     }
 
     [Fact(DisplayName = "reset: recovers mid-sequence")]

@@ -286,22 +286,26 @@ internal sealed class AnsiTransitionTable
         // character (GR and beyond); classify it by how the current state treats printable input
         if (code >= 0xA0)
         {
-            return new AnsiTransition(state, GetPrintableAction(state));
+            return GetPrintableTransition(state);
         }
 
         return new AnsiTransition(state, AnsiTransitionAction.None);
     }
 
-    // How a graphic (printable) character is handled in each state. States that collect or
-    // ignore control sequences never expect graphic input, so they ignore it in place
-    private static AnsiTransitionAction GetPrintableAction(AnsiParserState state)
+    // How a graphic (printable) character is handled in each state. Right after ESC it's a
+    // final, as 0x30-0x7E are, because an Alt-modified key such as Alt+ä arrives as ESC and the
+    // character; the parser deals with a surrogate there first, since a final is a single UTF-16
+    // code unit. States that collect or ignore control sequences never expect graphic input, so
+    // they ignore it in place
+    private static AnsiTransition GetPrintableTransition(AnsiParserState state)
     {
         return state switch
         {
-            AnsiParserState.Ground => AnsiTransitionAction.Print,
-            AnsiParserState.OscString => AnsiTransitionAction.OscPut,
-            AnsiParserState.DcsPassthrough => AnsiTransitionAction.DscPut,
-            _ => AnsiTransitionAction.Ignore,
+            AnsiParserState.Ground => new(state, AnsiTransitionAction.Print),
+            AnsiParserState.Escape => new(AnsiParserState.Ground, AnsiTransitionAction.EscDispatch),
+            AnsiParserState.OscString => new(state, AnsiTransitionAction.OscPut),
+            AnsiParserState.DcsPassthrough => new(state, AnsiTransitionAction.DscPut),
+            _ => new(state, AnsiTransitionAction.Ignore),
         };
     }
 

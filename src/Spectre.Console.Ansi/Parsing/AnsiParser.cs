@@ -12,6 +12,7 @@ public sealed class AnsiParser
 {
     private const int ReplacementCodepoint = 0xFFFD;
     private const int MaxParameterValue = 65535;
+    private const char EscapeCharacter = '\u001B';
 
     private readonly Action<AnsiToken> _callback;
     private readonly List<char> _intermediates = [];
@@ -19,6 +20,7 @@ public sealed class AnsiParser
     private readonly StringBuilder _parametersRaw = new();
     private readonly OscParser _oscParser;
     private bool _hasParameter;
+    private bool _escapeEndsString;
     private char _highSurrogate;
     private AnsiParserState _currentState;
 
@@ -57,6 +59,15 @@ public sealed class AnsiParser
         {
             _highSurrogate = '\0';
             _callback(new AnsiToken.Print(ReplacementCodepoint));
+        }
+
+        // An ESC followed by another ESC, or by a surrogate, starts no sequence (a final is a
+        // single UTF-16 code unit, so it can't hold an astral character). Abandon the ESC and
+        // handle this character from the ground state
+        if (_currentState == AnsiParserState.Escape &&
+            (code == EscapeCharacter || char.IsSurrogate(code)))
+        {
+            AbandonEscape();
         }
 
         var (nextState, action) = AnsiTransitionTable.Shared.GetTransition(_currentState, code);
@@ -148,6 +159,9 @@ public sealed class AnsiParser
             switch (nextState)
             {
                 case AnsiParserState.Escape:
+                    _escapeEndsString = EndsString(_currentState);
+                    Clear();
+                    break;
                 case AnsiParserState.DcsEntry:
                 case AnsiParserState.CsiEntry:
                     Clear();
@@ -169,16 +183,28 @@ public sealed class AnsiParser
     }
 
     /// <summary>
-    /// Emits any buffered output. Call this once at the end of the input stream so a trailing
-    /// unpaired high surrogate is emitted (as the Unicode replacement character) instead of
-    /// being silently held back while it waits for a low surrogate that never arrives.
+    /// Emits what the parser holds back while it waits for more input: a trailing unpaired high
+    /// surrogate, as the Unicode replacement character, and a lone ESC, as an
+    /// <see cref="AnsiToken.Execute"/> token for ESC (0x1B).
     /// </summary>
+    /// <remarks>
+    /// Call this at the end of the input, or when an interactive input source has nothing more
+    /// to read, so that a single press of the Escape key is reported. A partially parsed
+    /// sequence, such as ESC [ or the ESC that ends an OSC string, is kept so the rest of it can
+    /// still arrive.
+    /// </remarks>
     public void Flush()
     {
         if (_highSurrogate != '\0')
         {
             _highSurrogate = '\0';
             _callback(new AnsiToken.Print(ReplacementCodepoint));
+        }
+
+        // An ESC that ended a string still waits for the backslash of its terminator
+        if (_currentState == AnsiParserState.Escape && !_escapeEndsString)
+        {
+            AbandonEscape();
         }
     }
 
@@ -230,6 +256,30 @@ public sealed class AnsiParser
         }
 
         _callback(new AnsiToken.Print(code));
+    }
+
+    // Leaves an ESC that starts no sequence. A lone ESC, such as a press of the Escape key, is
+    // reported. An ESC that ended a string was the start of its terminator, so it's dropped
+    private void AbandonEscape()
+    {
+        _currentState = AnsiParserState.Ground;
+
+        if (!_escapeEndsString)
+        {
+            _callback(new AnsiToken.Execute(Function: EscapeCharacter));
+        }
+    }
+
+    private static bool EndsString(AnsiParserState state)
+    {
+        // An ESC inside a string normally starts the string terminator (ESC \)
+        return state is AnsiParserState.OscString
+            or AnsiParserState.SosPmApcString
+            or AnsiParserState.DcsEntry
+            or AnsiParserState.DcsParam
+            or AnsiParserState.DcsIntermediate
+            or AnsiParserState.DcsPassthrough
+            or AnsiParserState.DcsIgnore;
     }
 
     private static bool IsAbort(char code)
