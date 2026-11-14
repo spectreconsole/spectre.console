@@ -78,12 +78,12 @@ public abstract record AnsiToken
     /// Executes a CSI command.
     /// </summary>
     /// <param name="Intermediates">Intermediate bytes.</param>
-    /// <param name="Params">The parameters.</param>
+    /// <param name="Params">The parameters, each with its colon-separated subparameters.</param>
     /// <param name="Final">The final byte identifying the CSI command.</param>
     /// <param name="ParamsRaw">The raw parameters.</param>
     public record Csi(
         IReadOnlyList<char> Intermediates,
-        IReadOnlyList<int> Params,
+        IReadOnlyList<AnsiParameter> Params,
         char Final,
         string ParamsRaw) : AnsiToken
     {
@@ -113,7 +113,7 @@ public abstract record AnsiToken
 
                 foreach (var parameter in Params)
                 {
-                    hash = (hash * 397) ^ parameter;
+                    hash = (hash * 397) ^ parameter.GetHashCode();
                 }
 
                 return hash;
@@ -131,12 +131,12 @@ public abstract record AnsiToken
     /// Sets up a DCS handler.
     /// </summary>
     /// <param name="Intermediates">Intermediate bytes.</param>
-    /// <param name="Params">The parameters.</param>
+    /// <param name="Params">The parameters, each with its colon-separated subparameters.</param>
     /// <param name="Final">The final byte identifying the DCS command.</param>
     /// <param name="ParamsRaw">The raw parameters.</param>
     public record DcsHook(
         IReadOnlyList<char> Intermediates,
-        IReadOnlyList<int> Params,
+        IReadOnlyList<AnsiParameter> Params,
         char Final,
         string ParamsRaw) : AnsiToken
     {
@@ -166,7 +166,7 @@ public abstract record AnsiToken
 
                 foreach (var parameter in Params)
                 {
-                    hash = (hash * 397) ^ parameter;
+                    hash = (hash * 397) ^ parameter.GetHashCode();
                 }
 
                 return hash;

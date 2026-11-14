@@ -193,13 +193,13 @@ internal sealed class AnsiTransitionTable
             Add(0x19, AnsiParserState.CsiParam, AnsiParserState.CsiParam, AnsiTransitionAction.Execute);
             Add(0x00..0x17, AnsiParserState.CsiParam, AnsiParserState.CsiParam, AnsiTransitionAction.Execute);
             Add(0x1C..0x1F, AnsiParserState.CsiParam, AnsiParserState.CsiParam, AnsiTransitionAction.Execute);
-            Add(0x30..0x39, AnsiParserState.CsiParam, AnsiParserState.CsiParam, AnsiTransitionAction.Param);
-            Add(0x3B, AnsiParserState.CsiParam, AnsiParserState.CsiParam, AnsiTransitionAction.Param);
+            // 0x3A (':') differs from the spec, which ignores the sequence: it separates
+            // subparameters, as in SGR 4:3 and the kitty keyboard protocol
+            Add(0x30..0x3B, AnsiParserState.CsiParam, AnsiParserState.CsiParam, AnsiTransitionAction.Param);
             Add(0x7F, AnsiParserState.CsiParam, AnsiParserState.CsiParam, AnsiTransitionAction.Ignore);
 
-            // -> CsiIgnore (0x3A diffs from spec, but needed for ':')
+            // -> CsiIgnore
             Add(0x3C..0x3F, AnsiParserState.CsiParam, AnsiParserState.CsiIgnore, AnsiTransitionAction.None);
-            Add(0x3A, AnsiParserState.CsiParam, AnsiParserState.CsiParam, AnsiTransitionAction.Param);
 
             // -> CsiIntermediate
             Add(0x20..0x2F, AnsiParserState.CsiParam, AnsiParserState.CsiIntermediate, AnsiTransitionAction.Collect);
@@ -245,13 +245,9 @@ internal sealed class AnsiTransitionTable
             Add(0x1C..0x1F, AnsiParserState.CsiEntry, AnsiParserState.CsiEntry, AnsiTransitionAction.Execute);
             Add(0x7F, AnsiParserState.CsiEntry, AnsiParserState.CsiEntry, AnsiTransitionAction.Ignore);
 
-            // -> CsiParam
-            Add(0x30..0x39, AnsiParserState.CsiEntry, AnsiParserState.CsiParam, AnsiTransitionAction.Param);
-            Add(0x3B, AnsiParserState.CsiEntry, AnsiParserState.CsiParam, AnsiTransitionAction.Param);
+            // -> CsiParam (0x3A differs from the spec, as in CsiParam)
+            Add(0x30..0x3B, AnsiParserState.CsiEntry, AnsiParserState.CsiParam, AnsiTransitionAction.Param);
             Add(0x3C..0x3F, AnsiParserState.CsiEntry, AnsiParserState.CsiParam, AnsiTransitionAction.Collect);
-
-            // -> CsiIgnore
-            Add(0x3A, AnsiParserState.CsiEntry, AnsiParserState.CsiIgnore, AnsiTransitionAction.None);
 
             // -> CsiIntermediate
             Add(0x20..0x2F, AnsiParserState.CsiEntry, AnsiParserState.CsiIntermediate, AnsiTransitionAction.Collect);

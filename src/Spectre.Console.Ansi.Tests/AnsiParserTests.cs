@@ -117,9 +117,7 @@ public sealed class AnsiParserTests
                 csi.Intermediates.Count.ShouldBe(0);
 
                 csi.ParamsRaw.ShouldBe("1;4");
-                csi.Params.Count.ShouldBe(2);
-                csi.Params[0].ShouldBe(1);
-                csi.Params[1].ShouldBe(4);
+                csi.Params.ShouldBe([new(1), new(4)]);
 
                 csi.Final.ShouldBe('H');
             });
@@ -139,9 +137,7 @@ public sealed class AnsiParserTests
                 csi.Intermediates.Count.ShouldBe(0);
 
                 csi.ParamsRaw.ShouldBe("38:2");
-                csi.Params.Count.ShouldBe(2);
-                csi.Params[0].ShouldBe(38);
-                csi.Params[1].ShouldBe(2);
+                csi.Params.ShouldBe([new(38, [2])]);
 
                 csi.Final.ShouldBe('m');
             });
@@ -161,9 +157,7 @@ public sealed class AnsiParserTests
                 csi.Intermediates.Count.ShouldBe(0);
 
                 csi.ParamsRaw.ShouldBe("38;2");
-                csi.Params.Count.ShouldBe(2);
-                csi.Params[0].ShouldBe(38);
-                csi.Params[1].ShouldBe(2);
+                csi.Params.ShouldBe([new(38), new(2)]);
 
                 csi.Final.ShouldBe('m');
             });
@@ -185,8 +179,7 @@ public sealed class AnsiParserTests
                 csi.Intermediates[1].ShouldBe('$');
 
                 csi.ParamsRaw.ShouldBe("2026");
-                csi.Params.Count.ShouldBe(1);
-                csi.Params[0].ShouldBe(2026);
+                csi.Params.ShouldBe([new(2026)]);
 
                 csi.Final.ShouldBe('p');
             });
@@ -204,9 +197,7 @@ public sealed class AnsiParserTests
             .And(csi =>
             {
                 csi.ParamsRaw.ShouldBe(";");
-                csi.Params.Count.ShouldBe(2);
-                csi.Params[0].ShouldBe(0);
-                csi.Params[1].ShouldBe(0);
+                csi.Params.ShouldBe([new(0), new(0)]);
                 csi.Final.ShouldBe('H');
             });
     }
@@ -223,10 +214,7 @@ public sealed class AnsiParserTests
             .And(csi =>
             {
                 csi.ParamsRaw.ShouldBe(";;");
-                csi.Params.Count.ShouldBe(3);
-                csi.Params[0].ShouldBe(0);
-                csi.Params[1].ShouldBe(0);
-                csi.Params[2].ShouldBe(0);
+                csi.Params.ShouldBe([new(0), new(0), new(0)]);
                 csi.Final.ShouldBe('H');
             });
     }
@@ -242,9 +230,76 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Csi>()
             .And(csi =>
             {
-                csi.Params.Count.ShouldBe(1);
-                csi.Params[0].ShouldBe(65535);
+                csi.Params.ShouldBe([new(65535)]);
                 csi.Final.ShouldBe('m');
+            });
+    }
+
+    [Fact(DisplayName = "csi: ESC [ 4 : 3 m differs from ESC [ 4 ; 3 m")]
+    public void Csi_Subparameter_Differs_From_Parameter()
+    {
+        // Given, When
+        var curly = AnsiParserFixture.Parse("\e[4:3m")[0]; // curly underline
+        var italic = AnsiParserFixture.Parse("\e[4;3m")[0]; // underline, then italic
+
+        // Then
+        curly.ShouldBeOfType<AnsiToken.Csi>().Params.ShouldBe([new(4, [3])]);
+        italic.ShouldBeOfType<AnsiToken.Csi>().Params.ShouldBe([new(4), new(3)]);
+    }
+
+    [Fact(DisplayName = "csi: ESC [ 97 ; 5 : 1 u")]
+    public void Csi_Kitty_Keyboard_Subparameters()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e[97;5:1u"); // kitty keyboard: Ctrl+a pressed
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Csi>()
+            .And(csi =>
+            {
+                csi.Params.ShouldBe([new(97), new(5, [1])]);
+                csi.Final.ShouldBe('u');
+            });
+    }
+
+    [Fact(DisplayName = "csi: ESC [ 38 : 2 : : 255 : 0 : 0 m")]
+    public void Csi_Empty_Subparameter()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e[38:2::255:0:0m"); // RGB without a color space ID
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Csi>()
+            .And(csi => csi.Params.ShouldBe([new(38, [2, 0, 255, 0, 0])]));
+    }
+
+    [Fact(DisplayName = "csi: ESC [ : 3 m")]
+    public void Csi_Leading_Subparameter()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e[:3m");
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Csi>()
+            .And(csi => csi.Params.ShouldBe([new(0, [3])]));
+    }
+
+    [Fact(DisplayName = "dcs: ESC P 1 $ r")]
+    public void Dcs_Hook_Parameters()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\eP1$r0m\e\\"); // DECRPSS reply
+
+        // Then
+        result[0].ShouldBeOfType<AnsiToken.DcsHook>()
+            .And(hook =>
+            {
+                hook.Intermediates.ShouldBe(['$']);
+                hook.Params.ShouldBe([new(1)]);
+                hook.Final.ShouldBe('r');
             });
     }
 
@@ -335,7 +390,7 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Csi>()
             .And(csi =>
             {
-                csi.Params.ShouldBe([1]);
+                csi.Params.ShouldBe([new(1)]);
                 csi.Final.ShouldBe('A');
             });
     }

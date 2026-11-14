@@ -17,6 +17,7 @@ public sealed class AnsiParser
     private readonly Action<AnsiToken> _callback;
     private readonly List<char> _intermediates = [];
     private readonly List<int> _parameters = [0];
+    private readonly List<bool> _isSubparameter = [false];
     private readonly StringBuilder _parametersRaw = new();
     private readonly OscParser _oscParser;
     private bool _hasParameter;
@@ -122,7 +123,9 @@ public sealed class AnsiParser
 
                 if (code is ';' or ':')
                 {
+                    // A colon starts a subparameter of the current parameter, as in "4:3"
                     _parameters.Add(0);
+                    _isSubparameter.Add(code == ':');
                 }
                 else
                 {
@@ -141,7 +144,7 @@ public sealed class AnsiParser
             case AnsiTransitionAction.CsiDispatch:
                 _callback(new AnsiToken.Csi(
                     Intermediates: [.. _intermediates],
-                    Params: _hasParameter ? [.. _parameters] : [],
+                    Params: GetParameters(),
                     Final: code,
                     ParamsRaw: _parametersRaw.ToString()));
                 break;
@@ -172,7 +175,7 @@ public sealed class AnsiParser
                 case AnsiParserState.DcsPassthrough:
                     _callback(new AnsiToken.DcsHook(
                         Intermediates: [.. _intermediates],
-                        Params: _hasParameter ? [.. _parameters] : [],
+                        Params: GetParameters(),
                         Final: code,
                         ParamsRaw: _parametersRaw.ToString()));
                     break;
@@ -227,7 +230,39 @@ public sealed class AnsiParser
         _parametersRaw.Clear();
         _parameters.Clear();
         _parameters.Add(0);
+        _isSubparameter.Clear();
+        _isSubparameter.Add(false);
         _intermediates.Clear();
+    }
+
+    private IReadOnlyList<AnsiParameter> GetParameters()
+    {
+        if (!_hasParameter)
+        {
+            return [];
+        }
+
+        var parameters = new List<AnsiParameter>();
+        var index = 0;
+        while (index < _parameters.Count)
+        {
+            var value = _parameters[index++];
+
+            // The values after it that follow a colon are its subparameters
+            var start = index;
+            while (index < _parameters.Count && _isSubparameter[index])
+            {
+                index++;
+            }
+
+            IReadOnlyList<int> subparameters = index == start
+                ? []
+                : _parameters.GetRange(start, index - start).ToArray();
+
+            parameters.Add(new AnsiParameter(value, subparameters));
+        }
+
+        return [.. parameters];
     }
 
     private void EmitPrint(char code)
