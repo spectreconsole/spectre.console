@@ -62,13 +62,23 @@ public sealed class AnsiParser
             _callback(new AnsiToken.Print(ReplacementCodepoint));
         }
 
-        // An ESC followed by another ESC, or by a surrogate, starts no sequence (a final is a
-        // single UTF-16 code unit, so it can't hold an astral character). Abandon the ESC and
-        // handle this character from the ground state
-        if (_currentState == AnsiParserState.Escape &&
-            (code == EscapeCharacter || char.IsSurrogate(code)))
+        if (_currentState == AnsiParserState.Escape)
         {
-            AbandonEscape();
+            // A backslash after an ESC that ended a string completes its terminator (ESC \).
+            // The string has already been dispatched, so there is nothing more to emit
+            if (_escapeEndsString && code == '\\')
+            {
+                _currentState = AnsiParserState.Ground;
+                return;
+            }
+
+            // An ESC followed by another ESC, or by a surrogate, starts no sequence (a final is a
+            // single UTF-16 code unit, so it can't hold an astral character). Abandon the ESC and
+            // handle this character from the ground state
+            if (code == EscapeCharacter || char.IsSurrogate(code))
+            {
+                AbandonEscape();
+            }
         }
 
         var (nextState, action) = AnsiTransitionTable.Shared.GetTransition(_currentState, code);

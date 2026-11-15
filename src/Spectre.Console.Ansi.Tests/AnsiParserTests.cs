@@ -42,6 +42,17 @@ public sealed class AnsiParserTests
         result[1].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('\\'));
     }
 
+    [Fact(DisplayName = "esc: ESC \\ without a string")]
+    public void Esc_Bare_String_Terminator()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e\\"); // Alt+\ in interactive input
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('\\'));
+    }
+
     [Fact(DisplayName = "esc: ESC ä")]
     public void Esc_Non_Ascii_Final()
     {
@@ -303,6 +314,31 @@ public sealed class AnsiParserTests
             });
     }
 
+    [Fact(DisplayName = "dcs: terminated by ESC \\")]
+    public void Dcs_Terminated_By_String_Terminator()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\eP1$r0m\e\\");
+
+        // Then
+        result.Count.ShouldBe(4);
+        result[0].ShouldBeOfType<AnsiToken.DcsHook>();
+        result[1].ShouldBeOfType<AnsiToken.DcsPut>().And(put => put.Code.ShouldBe('0'));
+        result[2].ShouldBeOfType<AnsiToken.DcsPut>().And(put => put.Code.ShouldBe('m'));
+        result[3].ShouldBeOfType<AnsiToken.DcsUnhook>();
+    }
+
+    [Fact(DisplayName = "apc: ignored up to ESC \\")]
+    public void Apc_Ignored()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e_Gi=31;OK\e\\a"); // kitty graphics reply, then a
+
+        // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('a'));
+    }
+
     [Fact(DisplayName = "token: identical CSI tokens are equal")]
     public void Token_Csi_Value_Equality()
     {
@@ -408,9 +444,8 @@ public sealed class AnsiParserTests
         parser.Next("\\");
 
         // Then
-        result.Count.ShouldBe(2);
+        result.Count.ShouldBe(1);
         result[0].ShouldBeOfType<AnsiToken.Osc>();
-        result[1].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('\\'));
     }
 
     [Fact(DisplayName = "reset: recovers mid-sequence")]
@@ -454,7 +489,7 @@ public sealed class AnsiParserTests
         var result = AnsiParserFixture.Parse("\e]8;;https://example.com\e\\");
 
         // Then
-        result.Count.ShouldBe(2);
+        result.Count.ShouldBe(1);
         result[0].ShouldBeOfType<AnsiToken.Osc>()
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
             .And(osc =>
@@ -471,7 +506,7 @@ public sealed class AnsiParserTests
         var result = AnsiParserFixture.Parse("\e]8;id=123;https://example.com\e\\");
 
         // Then
-        result.Count.ShouldBe(2);
+        result.Count.ShouldBe(1);
         result[0].ShouldBeOfType<AnsiToken.Osc>()
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
             .And(osc =>
@@ -488,7 +523,7 @@ public sealed class AnsiParserTests
         var result = AnsiParserFixture.Parse("\e]8;id=;https://example.com\e\\");
 
         // Then
-        result.Count.ShouldBe(2);
+        result.Count.ShouldBe(1);
         result[0].ShouldBeOfType<AnsiToken.Osc>()
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
             .And(osc =>
@@ -505,7 +540,7 @@ public sealed class AnsiParserTests
         var result = AnsiParserFixture.Parse("\e]8;id;https://example.com\e\\");
 
         // Then
-        result.Count.ShouldBe(2);
+        result.Count.ShouldBe(1);
         result[0].ShouldBeOfType<AnsiToken.Osc>()
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
             .And(osc =>
@@ -522,7 +557,7 @@ public sealed class AnsiParserTests
         var result = AnsiParserFixture.Parse("\e]8;=value:id=foo;https://example.com\e\\");
 
         // Then
-        result.Count.ShouldBe(2);
+        result.Count.ShouldBe(1);
         result[0].ShouldBeOfType<AnsiToken.Osc>()
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
             .And(osc =>
@@ -539,8 +574,7 @@ public sealed class AnsiParserTests
         var result = AnsiParserFixture.Parse("\e]8;id=foo;\e\\");
 
         // Then
-        result.Count.ShouldBe(1);
-        result[0].ShouldBeOfType<AnsiToken.Esc>();
+        result.ShouldBeEmpty();
     }
 
     [Fact(DisplayName = "osc 8: Hyperlink end")]
@@ -550,7 +584,7 @@ public sealed class AnsiParserTests
         var result = AnsiParserFixture.Parse("\e]8;;\e\\");
 
         // Then
-        result.Count.ShouldBe(2);
+        result.Count.ShouldBe(1);
         result[0].ShouldBeOfType<AnsiToken.Osc>()
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkEnd>();
     }
@@ -562,17 +596,15 @@ public sealed class AnsiParserTests
         var result = AnsiParserFixture.Parse("\e]8;;https://example.com\e\\TEXT\e]8;;\e\\");
 
         // Then
-        result.Count.ShouldBe(8);
+        result.Count.ShouldBe(6);
         result[0].ShouldBeOfType<AnsiToken.Osc>()
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>();
-        result[1].ShouldBeOfType<AnsiToken.Esc>();
+        result[1].ShouldBeOfType<AnsiToken.Print>();
         result[2].ShouldBeOfType<AnsiToken.Print>();
         result[3].ShouldBeOfType<AnsiToken.Print>();
         result[4].ShouldBeOfType<AnsiToken.Print>();
-        result[5].ShouldBeOfType<AnsiToken.Print>();
-        result[6].ShouldBeOfType<AnsiToken.Osc>()
+        result[5].ShouldBeOfType<AnsiToken.Osc>()
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkEnd>();
-        result[7].ShouldBeOfType<AnsiToken.Esc>();
     }
 
     [Fact(DisplayName = "osc 123: Unknown")]
@@ -582,7 +614,7 @@ public sealed class AnsiParserTests
         var result = AnsiParserFixture.Parse("\e]123;;lol\e\\");
 
         // Then
-        result.Count.ShouldBe(2);
+        result.Count.ShouldBe(1);
         result[0].ShouldBeOfType<AnsiToken.Osc>()
             .And().Command.ShouldBeOfType<OscCommand.Unknown>()
             .And(osc =>
@@ -598,7 +630,7 @@ public sealed class AnsiParserTests
         var result = AnsiParserFixture.Parse("\e]8;;http://example.com/a;b\e\\");
 
         // Then
-        result.Count.ShouldBe(2);
+        result.Count.ShouldBe(1);
         result[0].ShouldBeOfType<AnsiToken.Osc>()
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
             .And(osc =>
@@ -615,7 +647,7 @@ public sealed class AnsiParserTests
         var result = AnsiParserFixture.Parse("\e]8;id=abc:foo=bar;http://x\e\\");
 
         // Then
-        result.Count.ShouldBe(2);
+        result.Count.ShouldBe(1);
         result[0].ShouldBeOfType<AnsiToken.Osc>()
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkStart>()
             .And(osc =>
