@@ -17,6 +17,24 @@ public sealed class TextPromptTests
         result.ShouldBe("Hello World");
     }
 
+    [Theory]
+    [InlineData("   ")]
+    [InlineData(" ")]
+    public void Should_Erase_Whitespace_And_Reprompt_On_Same_Line_If_Empty_Is_Not_Allowed(string whitespace)
+    {
+        // Given
+        var console = new TestConsole();
+        console.Input.PushTextWithEnter(whitespace);
+        console.Input.PushTextWithEnter("Hello");
+
+        // When
+        var result = console.Prompt(new TextPrompt<string>("Enter text:"));
+
+        // Then
+        result.ShouldBe("Hello");
+        console.Output.ShouldContain("Enter text: " + whitespace + "\b \b".Repeat(whitespace.Length) + "Hello");
+    }
+
     [Fact]
     [Expectation("ConversionError")]
     public Task Should_Return_Validation_Error_If_Value_Cannot_Be_Converted()
