@@ -298,6 +298,52 @@ public sealed class AnsiParserTests
             .And(csi => csi.Params.ShouldBe([new(0, [3])]));
     }
 
+    [Fact(DisplayName = "csi: parameter limit")]
+    public void Csi_Parameter_Limit()
+    {
+        // Given
+        static string Sequence(int count, char separator)
+        {
+            return "\e[" + string.Join(separator, Enumerable.Repeat("1", count)) + "m";
+        }
+
+        // When
+        var atLimit = AnsiParserFixture.Parse(Sequence(32, ';'));
+        var overLimit = AnsiParserFixture.Parse(Sequence(33, ';') + "a");
+        var overLimitWithSubparameters = AnsiParserFixture.Parse(Sequence(33, ':') + "a");
+
+        // Then
+        atLimit.Single().ShouldBeOfType<AnsiToken.Csi>().Params.Count.ShouldBe(32);
+        overLimit.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
+        overLimitWithSubparameters.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
+    }
+
+    [Fact(DisplayName = "csi: parameter character limit")]
+    public void Csi_Parameter_Character_Limit()
+    {
+        // Given, When
+        var atLimit = AnsiParserFixture.Parse("\e[" + new string('1', 256) + "m");
+        var overLimit = AnsiParserFixture.Parse("\e[" + new string('1', 257) + "ma");
+
+        // Then
+        atLimit.Single().ShouldBeOfType<AnsiToken.Csi>().Params.ShouldBe([new(65535)]);
+        overLimit.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
+    }
+
+    [Fact(DisplayName = "esc: intermediate limit")]
+    public void Intermediate_Limit()
+    {
+        // Given, When
+        var atLimit = AnsiParserFixture.Parse("\e$(C");
+        var overLimit = AnsiParserFixture.Parse("\e$((Ca");
+        var csiOverLimit = AnsiParserFixture.Parse("\e[?1$ pa"); // the private marker counts
+
+        // Then
+        atLimit.Single().ShouldBeOfType<AnsiToken.Esc>().Intermediates.ShouldBe(['$', '(']);
+        overLimit.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
+        csiOverLimit.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
+    }
+
     [Fact(DisplayName = "dcs: ESC P 1 $ r")]
     public void Dcs_Hook_Parameters()
     {
@@ -326,6 +372,17 @@ public sealed class AnsiParserTests
         result[1].ShouldBeOfType<AnsiToken.DcsPut>().And(put => put.Code.ShouldBe('0'));
         result[2].ShouldBeOfType<AnsiToken.DcsPut>().And(put => put.Code.ShouldBe('m'));
         result[3].ShouldBeOfType<AnsiToken.DcsUnhook>();
+    }
+
+    [Fact(DisplayName = "dcs: ignored over the parameter limit")]
+    public void Dcs_Parameter_Limit()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse(
+            "\eP" + string.Join(';', Enumerable.Repeat("1", 33)) + "qdata\e\\a");
+
+        // Then
+        result.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
     }
 
     [Fact(DisplayName = "apc: ignored up to ESC \\")]
@@ -724,6 +781,24 @@ public sealed class AnsiParserTests
         // Then
         result.Exists(t => t is AnsiToken.Osc).ShouldBeFalse();
         result.Exists(t => t is AnsiToken.Execute e && e.Function == '\u0018').ShouldBeTrue();
+    }
+
+    [Fact(DisplayName = "osc: string length limit")]
+    public void Osc_Length_Limit()
+    {
+        // Given
+        var uri = "https://example.com/" + new string('a', 2025); // with "8;;", 2048 characters
+
+        // When
+        var atLimit = AnsiParserFixture.Parse($"\e]8;;{uri}\e\\");
+        var overLimit = AnsiParserFixture.Parse($"\e]8;;{uri}b\e\\a");
+        var unknownOverLimit = AnsiParserFixture.Parse("\e]52;c;" + new string('Q', 3000) + "\aa");
+
+        // Then
+        atLimit.Single().ShouldBeOfType<AnsiToken.Osc>()
+            .Command.ShouldBeOfType<OscCommand.HyperLinkStart>().Uri.ShouldBe(uri);
+        overLimit.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
+        unknownOverLimit.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
     }
 
     [Fact(DisplayName = "print: accented latin")]

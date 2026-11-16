@@ -2,13 +2,14 @@ namespace Spectre.Console.Ansi;
 
 internal sealed class OscParser
 {
-    // Upper bound on an OSC string. Anything longer is silently truncated to this length,
-    // which caps both the OSC 8 URI and the raw data of an unknown OSC command.
+    // Upper bound on an OSC string. A longer string is dropped rather than dispatched cut off,
+    // since a truncated URI or payload would still look valid.
     private const int MaxBufferSize = 2048;
 
     private readonly char[] _buffer = new char[MaxBufferSize];
     private int _length;
     private int _payloadStart;
+    private bool _overflowed;
     private State _state = State.Start;
 
     private enum State
@@ -24,17 +25,21 @@ internal sealed class OscParser
         // Reuse the buffer; every read is bounded by _length, so stale data is never observed.
         _length = 0;
         _payloadStart = 0;
+        _overflowed = false;
         _state = State.Start;
     }
 
     public void Next(char code)
     {
-        // Accumulate the whole string so an unknown OSC command can be reported in full.
-        if (_length < MaxBufferSize)
+        if (_length == MaxBufferSize)
         {
-            _buffer[_length] = code;
-            _length++;
+            _overflowed = true;
+            return;
         }
+
+        // Accumulate the whole string so an unknown OSC command can be reported in full.
+        _buffer[_length] = code;
+        _length++;
 
         switch (_state)
         {
@@ -59,6 +64,11 @@ internal sealed class OscParser
 
     public OscCommand? End()
     {
+        if (_overflowed)
+        {
+            return null;
+        }
+
         switch (_state)
         {
             case State.HyperLink when _length > _payloadStart:

@@ -4,14 +4,25 @@ namespace Spectre.Console.Ansi;
 /// An ANSI/VT input parser based on the VT500-series.
 /// </summary>
 /// <remarks>
+/// <para>
 /// Instances are stateful and not thread-safe: a single parser must not be used from
 /// multiple threads, and the callback must not re-enter <see cref="Next(char)"/> or
 /// <see cref="Next(string)"/> on the same instance.
+/// </para>
+/// <para>
+/// A sequence that goes over a limit is dropped instead of being dispatched cut off. The
+/// limits are 32 parameters (subparameters included) and 256 parameter characters for CSI and
+/// DCS, 2 intermediates (a private marker such as ? counts as one), and 2048 characters for an
+/// OSC string.
+/// </para>
 /// </remarks>
 public sealed class AnsiParser
 {
     private const int ReplacementCodepoint = 0xFFFD;
     private const int MaxParameterValue = 65535;
+    private const int MaxParameterCount = 32;
+    private const int MaxParametersRawLength = 256;
+    private const int MaxIntermediateCount = 2;
     private const char EscapeCharacter = '\u001B';
 
     private readonly Action<AnsiToken> _callback;
@@ -21,6 +32,7 @@ public sealed class AnsiParser
     private readonly StringBuilder _parametersRaw = new();
     private readonly OscParser _oscParser;
     private bool _hasParameter;
+    private bool _ignoring;
     private bool _escapeEndsString;
     private char _highSurrogate;
     private AnsiParserState _currentState;
@@ -83,6 +95,12 @@ public sealed class AnsiParser
 
         var (nextState, action) = AnsiTransitionTable.Shared.GetTransition(_currentState, code);
 
+        // A DCS that went over a limit is ignored up to its terminator
+        if (_ignoring && nextState == AnsiParserState.DcsPassthrough)
+        {
+            nextState = AnsiParserState.DcsIgnore;
+        }
+
         // Perform the exit action of the current state
         if (_currentState != nextState)
         {
@@ -121,9 +139,26 @@ public sealed class AnsiParser
                 _callback(new AnsiToken.Execute(Function: code));
                 break;
             case AnsiTransitionAction.Collect:
-                _intermediates.Add(code);
+                if (_intermediates.Count == MaxIntermediateCount)
+                {
+                    _ignoring = true;
+                }
+                else
+                {
+                    _intermediates.Add(code);
+                }
+
                 break;
             case AnsiTransitionAction.Param:
+                // Past a limit, stop collecting; the sequence is dropped at its final byte
+                if (_ignoring ||
+                    _parametersRaw.Length == MaxParametersRawLength ||
+                    ((code is ';' or ':') && _parameters.Count == MaxParameterCount))
+                {
+                    _ignoring = true;
+                    break;
+                }
+
                 _parametersRaw.Append(code);
 
                 // A separator marks a parameter position, so set this for separators too.
@@ -147,16 +182,24 @@ public sealed class AnsiParser
 
                 break;
             case AnsiTransitionAction.EscDispatch:
-                _callback(new AnsiToken.Esc(
-                    Intermediates: [.. _intermediates],
-                    Final: code));
+                if (!_ignoring)
+                {
+                    _callback(new AnsiToken.Esc(
+                        Intermediates: [.. _intermediates],
+                        Final: code));
+                }
+
                 break;
             case AnsiTransitionAction.CsiDispatch:
-                _callback(new AnsiToken.Csi(
-                    Intermediates: [.. _intermediates],
-                    Params: GetParameters(),
-                    Final: code,
-                    ParamsRaw: _parametersRaw.ToString()));
+                if (!_ignoring)
+                {
+                    _callback(new AnsiToken.Csi(
+                        Intermediates: [.. _intermediates],
+                        Params: GetParameters(),
+                        Final: code,
+                        ParamsRaw: _parametersRaw.ToString()));
+                }
+
                 break;
             case AnsiTransitionAction.OscPut:
                 _oscParser.Next(code);
@@ -237,6 +280,7 @@ public sealed class AnsiParser
     private void Clear()
     {
         _hasParameter = false;
+        _ignoring = false;
         _parametersRaw.Clear();
         _parameters.Clear();
         _parameters.Add(0);
