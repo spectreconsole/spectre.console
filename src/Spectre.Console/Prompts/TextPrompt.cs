@@ -167,6 +167,13 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
 
                     if (!AllowEmpty)
                     {
+                        // Erase the whitespace that was echoed, so that the next
+                        // input starts at the original cursor position.
+                        if (!IsSecret || Mask != null)
+                        {
+                            console.Write("\b \b".Repeat(input.Length), promptStyle);
+                        }
+
                         continue;
                     }
                 }
