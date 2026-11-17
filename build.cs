@@ -1,4 +1,4 @@
-#:sdk Cake.Sdk@6.2.0
+#:sdk Cake.Sdk@7.0.0
 
 var solution = "./src/Spectre.Console.slnx";
 
