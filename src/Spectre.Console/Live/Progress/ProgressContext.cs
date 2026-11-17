@@ -13,7 +13,8 @@ public sealed class ProgressContext
     private int _taskId;
 
     /// <summary>
-    /// Gets a value indicating whether or not all started tasks have completed.
+    /// Gets a value indicating whether or not all tasks have completed.
+    /// Tasks that have not been started and are indeterminate are ignored.
     /// </summary>
     public bool IsFinished
     {
@@ -21,7 +22,7 @@ public sealed class ProgressContext
         {
             lock (_taskLock)
             {
-                return _tasks.Where(x => x.IsStarted).All(task => task.IsFinished);
+                return _tasks.Where(t => t.IsStarted || !t.IsIndeterminate).All(t => t.IsFinished);
             }
         }
     }
