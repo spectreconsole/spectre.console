@@ -50,5 +50,3 @@ To see `Spectre.Console` in action, please see the
 Copyright © Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi
 
 Spectre.Console é fornecido no estado em que se encontra sob a licença do MIT. Para obter mais informações, consulte o arquivo [LICENSE](LICENSE.md).
-
-* Para SixLabors.ImageSharp, consulte https://github.com/SixLabors/ImageSharp/blob/master/LICENSE

@@ -46,5 +46,3 @@ To see `Spectre.Console` in action, please see the
 版权所有 © Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi
 
 Spectre.Console 基于 MIT 协议提供。查看 LICENSE 文件了解更多信息。
-
-* SixLabors.ImageSharp 的协议请查看 https://github.com/SixLabors/ImageSharp/blob/master/LICENSE

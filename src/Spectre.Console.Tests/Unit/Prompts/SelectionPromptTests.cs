@@ -482,7 +482,8 @@ public sealed class SelectionPromptTests
     }
 
     [Fact]
-    public void Should_Initially_Select_The_First_Item_When_No_Default_Is_Specified() {
+    public void Should_Initially_Select_The_First_Item_When_No_Default_Is_Specified()
+    {
         // Given
         var console = new TestConsole();
         console.Profile.Capabilities.Interactive = true;
@@ -506,7 +507,8 @@ public sealed class SelectionPromptTests
     }
 
     [Fact]
-    public void Should_Initially_Select_The_Default_Item_When_It_Exists_In_The_Choices() {
+    public void Should_Initially_Select_The_Default_Item_When_It_Exists_In_The_Choices()
+    {
         // Given
         var console = new TestConsole();
         console.Profile.Capabilities.Interactive = true;
@@ -531,7 +533,8 @@ public sealed class SelectionPromptTests
     }
 
     [Fact]
-    public void Should_Initially_Select_The_First_Item_When_Default_Does_Not_Exist_In_The_Choices() {
+    public void Should_Initially_Select_The_First_Item_When_Default_Does_Not_Exist_In_The_Choices()
+    {
         // Given
         var console = new TestConsole();
         console.Profile.Capabilities.Interactive = true;
@@ -611,7 +614,8 @@ public sealed class SelectionPromptTests
     }
 
     [Fact]
-    public void Should_Initially_Select_The_Default_Item_When_Scrolling_Is_Required_And_Item_Is_Not_Last() {
+    public void Should_Initially_Select_The_Default_Item_When_Scrolling_Is_Required_And_Item_Is_Not_Last()
+    {
         // Given
         var console = new TestConsole();
         console.Profile.Capabilities.Interactive = true;
@@ -639,7 +643,8 @@ public sealed class SelectionPromptTests
     }
 
     [Fact]
-    public void Should_Initially_Select_The_Default_Item_When_Scrolling_Is_Required_And_Item_Is_Last() {
+    public void Should_Initially_Select_The_Default_Item_When_Scrolling_Is_Required_And_Item_Is_Last()
+    {
         // Given
         var console = new TestConsole();
         console.Profile.Capabilities.Interactive = true;
@@ -667,7 +672,8 @@ public sealed class SelectionPromptTests
     }
 
     [Fact]
-    public void Should_Initially_Select_The_Default_Value_When_Skipping_Unselectable_Items_And_Default_Value_Is_Leaf() {
+    public void Should_Initially_Select_The_Default_Value_When_Skipping_Unselectable_Items_And_Default_Value_Is_Leaf()
+    {
         // Given
         var console = new TestConsole();
         console.Profile.Capabilities.Interactive = true;
@@ -697,7 +703,8 @@ public sealed class SelectionPromptTests
     }
 
     [Fact]
-    public void Should_Initially_Select_The_First_Leaf_When_Skipping_Unselectable_Items_And_Default_Value_Is_Not_Leaf() {
+    public void Should_Initially_Select_The_First_Leaf_When_Skipping_Unselectable_Items_And_Default_Value_Is_Not_Leaf()
+    {
         // Given
         var console = new TestConsole();
         console.Profile.Capabilities.Interactive = true;

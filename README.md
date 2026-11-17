@@ -74,5 +74,3 @@ This project is supported by the [.NET Foundation](https://dotnetfoundation.org)
 Copyright © Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi
 
 `Spectre.Console` is provided as-is under the MIT license. For more information see LICENSE.
-
-* SixLabors.ImageSharp, a library which `Spectre.Console` relies upon, is licensed under Apache 2.0 when distributed as part of `Spectre.Console`. The Six Labors Split License covers all other usage, see: https://github.com/SixLabors/ImageSharp/blob/master/LICENSE 

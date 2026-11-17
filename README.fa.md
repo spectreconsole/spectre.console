@@ -55,6 +55,4 @@ Copyright © Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi
 
 همانطور که Spectre.Console تحت مجوز MIT ارائه شده است؛ برای کسب اطلاعات بیشتر به مجوز مراجعه کنید.
 
-* برای SixLabors.ImageSharp، مشاهده کنید: https://github.com/SixLabors/ImageSharp/blob/master/LICENSE
-
 </div>

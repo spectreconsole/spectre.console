@@ -214,7 +214,7 @@ public sealed class FigletText : Renderable, IHasJustification
         // Rule 6 (Hardblank smushing)
         if (left == hardblank && right == hardblank)
         {
-            return rules == 0 || (rules & 32) != 0 ? hardblank : (char?)null;
+            return rules == 0 || (rules & 32) != 0 ? hardblank : null;
         }
 
         // A hardblank at the smushing boundary was already within the fitting/overlap

@@ -566,7 +566,7 @@ public sealed class TextPromptTests
             {
                 secondInvoked = true;
                 return s.Contains("a") ? ValidationResult.Success() : ValidationResult.Error("missing a");
-            } );
+            });
 
         // When
         var result = prompt.Validator?.Invoke("ab");
@@ -589,7 +589,7 @@ public sealed class TextPromptTests
             {
                 secondInvoked = true;
                 return s.Contains("a") ? ValidationResult.Success() : ValidationResult.Error("missing a");
-            } );
+            });
 
         // When
         var result = prompt.Validator?.Invoke("bbc");
@@ -607,7 +607,7 @@ public sealed class TextPromptTests
 
         prompt
             .Validate(s => s.Length < 3 ? ValidationResult.Error("too short") : ValidationResult.Success())
-            .Validate(s => s.Contains("a") ? ValidationResult.Success() : ValidationResult.Error("missing a") );
+            .Validate(s => s.Contains("a") ? ValidationResult.Success() : ValidationResult.Error("missing a"));
 
         // When
         var result = prompt.Validator?.Invoke("abc");
@@ -624,11 +624,12 @@ public sealed class TextPromptTests
         var secondInvoked = false;
 
         prompt
-            .Validate(s => s.Length >= 3, "too short")            .Validate(s =>
+            .Validate(s => s.Length >= 3, "too short")
+            .Validate(s =>
             {
                 secondInvoked = true;
                 return s.Contains("a") ? ValidationResult.Success() : ValidationResult.Error("missing a");
-            } );
+            });
 
         // When
         var result = prompt.Validator?.Invoke("ab");
@@ -651,7 +652,7 @@ public sealed class TextPromptTests
             {
                 secondInvoked = true;
                 return s.Contains("a") ? ValidationResult.Success() : ValidationResult.Error("missing a");
-            } );
+            });
 
         // When
         var result = prompt.Validator?.Invoke("bbc");
@@ -669,7 +670,7 @@ public sealed class TextPromptTests
 
         prompt
             .Validate(s => s.Length >= 3, "too short")
-            .Validate(s => s.Contains("a") ? ValidationResult.Success() : ValidationResult.Error("missing a") );
+            .Validate(s => s.Contains("a") ? ValidationResult.Success() : ValidationResult.Error("missing a"));
 
         // When
         var result = prompt.Validator?.Invoke("abc");

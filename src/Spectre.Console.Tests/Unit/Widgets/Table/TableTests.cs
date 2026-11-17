@@ -1079,4 +1079,31 @@ public sealed class TableTests
             console.Output.ShouldNotBeNullOrEmpty();
         });
     }
+
+    [Fact(Timeout = 3000)]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2193")]
+    public Task Should_Terminate_When_Nested_Table_Column_Is_Narrower_Than_A_Wide_Cluster()
+    {
+        return Task.Run(() =>
+        {
+            // Given
+            var console = new TestConsole().Width(10);
+
+            var paragraphFrame = new Table().NoBorder().HideHeaders().AddColumn(string.Empty);
+            paragraphFrame.AddRow(new Markup("Hello 😄 world 😃"));
+
+            var listFrame = new Table().NoBorder().HideHeaders().AddColumn(string.Empty).AddColumn(string.Empty);
+            listFrame.Columns[0].RightAligned();
+            listFrame.AddRow(new Markup("-"), paragraphFrame);
+
+            var rootFrame = new Table().NoBorder().HideHeaders().AddColumn(string.Empty);
+            rootFrame.AddRow(listFrame);
+
+            // When
+            console.Write(rootFrame);
+
+            // Then
+            console.Output.ShouldNotBeNullOrEmpty();
+        });
+    }
 }
