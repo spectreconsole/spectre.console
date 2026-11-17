@@ -631,6 +631,18 @@ public sealed class AnsiParserTests
         var result = AnsiParserFixture.Parse("\e]8;id=foo;\e\\");
 
         // Then
+        result.Count.ShouldBe(1);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.HyperLinkEnd>();
+    }
+
+    [Fact(DisplayName = "osc 8: Hyperlink without the URI separator")]
+    public void Osc_Hyperlink_Without_Uri_Separator()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]8;id=foo\e\\");
+
+        // Then
         result.ShouldBeEmpty();
     }
 

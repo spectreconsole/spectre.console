@@ -11,11 +11,18 @@ internal static class OscHyperLinkParser
         var separator = buffer.IndexOf(';');
         if (separator < 0)
         {
-            return new OscCommand.HyperLinkStart(null, buffer.ToString());
+            // OSC 8 requires the params section, even an empty one, so there's no URI here
+            return null;
         }
 
         var parameters = buffer[..separator];
         var uri = buffer[(separator + 1)..];
+
+        // An empty URI closes the hyperlink, whatever the params say
+        if (uri.IsEmpty)
+        {
+            return new OscCommand.HyperLinkEnd();
+        }
 
         // Params are a ':'-separated list of key=value pairs.
         while (!parameters.IsEmpty)
@@ -38,13 +45,6 @@ internal static class OscHyperLinkParser
             parameters = parameters[(colonIndex + 1)..];
         }
 
-        if (id == null && uri.Length == 0)
-        {
-            return new OscCommand.HyperLinkEnd();
-        }
-
-        return uri.Length != 0
-            ? new OscCommand.HyperLinkStart(Id: id, Uri: uri.ToString())
-            : null;
+        return new OscCommand.HyperLinkStart(Id: id, Uri: uri.ToString());
     }
 }
