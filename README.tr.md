@@ -68,5 +68,3 @@ Bu proje [.NET Foundation](https://dotnetfoundation.org) tarafından desteklenme
 Telif Hakkı © Patrik Svensson, Phil Scott, Nils Andresen, Cédric Luthi
 
 `Spectre.Console` MIT lisansı altında olduğu gibi sunulmaktadır. Daha fazla bilgi için LICENSE dosyasına bakınız.
-
-* `Spectre.Console` bünyesinde dağıtılan SixLabors.ImageSharp kütüphanesi Apache 2.0 lisanslıdır. Diğer tüm kullanımlar Six Labors Split License kapsamındadır, bkz: https://github.com/SixLabors/ImageSharp/blob/master/LICENSE
