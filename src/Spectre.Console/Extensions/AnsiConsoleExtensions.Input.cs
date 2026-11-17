@@ -5,8 +5,7 @@ namespace Spectre.Console;
 /// </summary>
 public static partial class AnsiConsoleExtensions
 {
-    internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, char? mask,
-        IEnumerable<string>? items = null, string? initialInput = null, CancellationToken cancellationToken = default)
+    internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, char? mask, IEnumerable<string>? items = null, CancellationToken cancellationToken = default, string? initialInput = null, PromptHistory? history = null)
     {
         ArgumentNullException.ThrowIfNull(console);
 
@@ -14,6 +13,9 @@ public static partial class AnsiConsoleExtensions
         var text = string.Empty;
 
         var autocomplete = new List<string>(items ?? []);
+        var historyEntries = history?.Enabled == true ? history.Entries : Array.Empty<string>();
+        var historyIndex = -1;
+        string? pendingText = null;
 
         Queue<ConsoleKeyInfo>? injectedQueue = null;
         if (!string.IsNullOrEmpty(initialInput))
@@ -51,6 +53,48 @@ public static partial class AnsiConsoleExtensions
                 return text;
             }
 
+            if (key.Key == ConsoleKey.UpArrow && historyEntries.Count > 0)
+            {
+                if (historyIndex == -1)
+                {
+                    pendingText = text;
+                    historyIndex = historyEntries.Count - 1;
+                }
+                else if (historyIndex > 0)
+                {
+                    historyIndex--;
+                }
+
+                var replace = historyEntries[historyIndex];
+                ReplaceLine(console, style, text, replace, secret, mask);
+                text = replace;
+                continue;
+            }
+
+            if (key.Key == ConsoleKey.DownArrow && historyEntries.Count > 0)
+            {
+                if (historyIndex == -1)
+                {
+                    continue;
+                }
+
+                if (historyIndex < historyEntries.Count - 1)
+                {
+                    historyIndex++;
+                    var replace = historyEntries[historyIndex];
+                    ReplaceLine(console, style, text, replace, secret, mask);
+                    text = replace;
+                    continue;
+                }
+
+                var restore = pendingText ?? string.Empty;
+                ReplaceLine(console, style, text, restore, secret, mask);
+                text = restore;
+                pendingText = null;
+                historyIndex = -1;
+                continue;
+            }
+
             if (key.Key == ConsoleKey.Tab && autocomplete.Count > 0)
             {
                 var autoCompleteDirection = key.Modifiers.HasFlag(ConsoleModifiers.Shift)
@@ -69,6 +113,9 @@ public static partial class AnsiConsoleExtensions
 
             if (key.Key == ConsoleKey.Backspace)
             {
+                historyIndex = -1;
+                pendingText = null;
+
                 if (text.Length > 0)
                 {
                     var lastChar = text.Last();
@@ -92,6 +139,8 @@ public static partial class AnsiConsoleExtensions
 
             if (!char.IsControl(key.KeyChar))
             {
+                historyIndex = -1;
+                pendingText = null;
                 text += key.KeyChar.ToString();
                 var output = key.KeyChar.ToString();
                 console.Write(secret ? output.Mask(mask) : output, style);
@@ -99,8 +148,7 @@ public static partial class AnsiConsoleExtensions
         }
     }
 
-    private static string AutoComplete(List<string> autocomplete, string text,
-        AutoCompleteDirection autoCompleteDirection)
+    private static string AutoComplete(List<string> autocomplete, string text, AutoCompleteDirection autoCompleteDirection)
     {
         var found = autocomplete.Find(i => i == text);
         var replace = string.Empty;
@@ -128,8 +176,37 @@ public static partial class AnsiConsoleExtensions
         return replace;
     }
 
-    private static string GetAutocompleteValue(AutoCompleteDirection autoCompleteDirection, IList<string> autocomplete,
-        string found)
+    private static void ReplaceLine(IAnsiConsole console, Style? style, string currentText, string replace, bool secret, char? mask)
+    {
+        if (!string.IsNullOrEmpty(currentText) && !(secret && mask is null))
+        {
+            if (mask is null)
+            {
+                console.Write("\b \b".Repeat(currentText.Length), style);
+            }
+            else
+            {
+                foreach (var c in currentText)
+                {
+                    if (UnicodeCalculator.GetWidth(c) == 1)
+                    {
+                        console.Write("\b \b", style);
+                    }
+                    else if (UnicodeCalculator.GetWidth(c) == 2)
+                    {
+                        console.Write("\b \b\b \b", style);
+                    }
+                }
+            }
+        }
+
+        if (!string.IsNullOrEmpty(replace) && !(secret && mask is null))
+        {
+            console.Write(secret ? replace.Mask(mask) : replace, style);
+        }
+    }
+
+    private static string GetAutocompleteValue(AutoCompleteDirection autoCompleteDirection, IList<string> autocomplete, string found)
     {
         var foundAutocompleteIndex = autocomplete.IndexOf(found);
         var index = autoCompleteDirection switch
