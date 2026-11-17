@@ -585,6 +585,16 @@ public class Segment
         {
             var cluster = splitEnumerator.GetTextElement();
             var clusterWidth = Cell.GetCellLength(cluster);
+
+            // A single cluster (e.g. a wide emoji) can be wider than maxCellLength
+            // on its own and can't be reduced any further, so replace it with an ellipsis
+            // instead of letting it overflow.
+            if (clusterWidth > maxCellLength)
+            {
+                cluster = "…";
+                clusterWidth = 1;
+            }
+
             if (length + clusterWidth > maxCellLength)
             {
                 list.Add(sb.ToString());
