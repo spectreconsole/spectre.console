@@ -109,6 +109,24 @@ public sealed class TextPromptTests
     }
 
     [Fact]
+    public void Should_Escape_Markup_In_Choices()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Input.PushTextWithEnter("[b]");
+
+        // When
+        var result = console.Prompt(
+            new TextPrompt<string>("Option?")
+                .AddChoice("[a]")
+                .AddChoice("[b]"));
+
+        // Then
+        result.ShouldBe("[b]");
+        console.Output.ShouldContain("[[a]/[b]]");
+    }
+
+    [Fact]
     [Expectation("AutoComplete_Empty")]
     public Task Should_Auto_Complete_To_First_Choice_If_Pressing_Tab_On_Empty_String()
     {
