@@ -17,7 +17,6 @@
     <File Path="../.github/workflows/publish.yaml" />
   </Folder>
   <Folder Name="/Extensions/">
-    <Project Path="Extensions/Spectre.Console.ImageSharp/Spectre.Console.ImageSharp.csproj" />
     <Project Path="Extensions/Spectre.Console.Json/Spectre.Console.Json.csproj" />
   </Folder>
   <Project Path="Benchmarks/Benchmarks.csproj" />
