@@ -778,4 +778,34 @@ public sealed class ProgressTests
                 "          \n" + // Bottom padding
                 "\e[?25h"); // show cursor
     }
+
+    [Fact]
+    public void Should_Use_Custom_Fallback_Milestones_And_Formatter()
+    {
+        // Given
+        var console = new TestConsole().Width(40);
+        var time = new FakeTimeProvider(new DateTime(2024, 1, 1, 12, 0, 0));
+        var progress = new Progress(console, time)
+            .AutoRefresh(false)
+            .FallbackMilestones(80, 40)
+            .UseFallbackFormatter(task => $"{task.Description} {(int)task.Percentage}");
+
+        // When
+        progress.Start(ctx =>
+        {
+            var task = ctx.AddTask("foo");
+            ctx.Refresh();
+            task.Value = 30;
+            ctx.Refresh();
+            task.Value = 50;
+            ctx.Refresh();
+            task.Value = 70;
+            ctx.Refresh();
+            task.Value = 90;
+            ctx.Refresh();
+        });
+
+        // Then
+        console.Lines.ShouldBe(["foo 0", "foo 50", "foo 90"]);
+    }
 }

@@ -46,6 +46,18 @@ public sealed class Progress
     /// </summary>
     public TimeSpan RefreshRate { get; set; } = TimeSpan.FromMilliseconds(100);
 
+    /// <summary>
+    /// Gets or sets the percentage milestones at which task progress is reported
+    /// when the console is not interactive.
+    /// </summary>
+    public IReadOnlyList<double> FallbackMilestones { get; set; } = [25, 50, 75, 95, 96, 97, 98, 99, 100];
+
+    /// <summary>
+    /// Gets or sets the function that creates the markup for a task
+    /// when the console is not interactive.
+    /// </summary>
+    public Func<ProgressTask, string> FallbackFormatter { get; set; } = task => $"[blue]{task.Description}[/]: {(int)task.Percentage}%";
+
     internal List<ProgressColumn> Columns { get; }
 
     internal ProgressRenderer? FallbackRenderer { get; set; }
@@ -171,7 +183,7 @@ public sealed class Progress
         }
         else
         {
-            return FallbackRenderer ?? new FallbackProgressRenderer(_timeProvider);
+            return FallbackRenderer ?? new FallbackProgressRenderer(_timeProvider, FallbackMilestones, FallbackFormatter);
         }
     }
 }
@@ -213,6 +225,40 @@ public static class ProgressExtensions
     public static Progress UseRenderHook(this Progress progress, Func<IRenderable, IReadOnlyList<ProgressTask>, IRenderable> renderHook)
     {
         progress.RenderHook = renderHook;
+
+        return progress;
+    }
+
+    /// <summary>
+    /// Sets the percentage milestones at which task progress is reported
+    /// when the console is not interactive.
+    /// </summary>
+    /// <param name="progress">The <see cref="Progress"/> instance.</param>
+    /// <param name="milestones">The percentage milestones.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Progress FallbackMilestones(this Progress progress, params double[] milestones)
+    {
+        ArgumentNullException.ThrowIfNull(progress);
+        ArgumentNullException.ThrowIfNull(milestones);
+
+        progress.FallbackMilestones = milestones;
+
+        return progress;
+    }
+
+    /// <summary>
+    /// Sets the function that creates the markup for a task
+    /// when the console is not interactive.
+    /// </summary>
+    /// <param name="progress">The <see cref="Progress"/> instance.</param>
+    /// <param name="formatter">The function that creates the markup for a task.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static Progress UseFallbackFormatter(this Progress progress, Func<ProgressTask, string> formatter)
+    {
+        ArgumentNullException.ThrowIfNull(progress);
+        ArgumentNullException.ThrowIfNull(formatter);
+
+        progress.FallbackFormatter = formatter;
 
         return progress;
     }
