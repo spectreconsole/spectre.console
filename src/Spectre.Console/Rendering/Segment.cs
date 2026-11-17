@@ -109,7 +109,7 @@ public class Segment
             return 0;
         }
 
-        if (Text == "\n") 
+        if (Text == "\n")
         {
             return 1;
         }

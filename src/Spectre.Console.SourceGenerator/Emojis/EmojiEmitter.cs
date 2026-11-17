@@ -1,6 +1,4 @@
-using System;
 using System.CodeDom.Compiler;
-using System.Globalization;
 using System.IO;
 
 namespace Spectre.Console.SourceGenerator.Emojis;
