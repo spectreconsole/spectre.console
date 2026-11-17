@@ -226,7 +226,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
         {
             hasPromptDetails = true;
             var converter = Converter ?? TypeConverterHelper.ConvertToString;
-            var choices = string.Join("/", Choices.Select(choice => converter(choice)));
+            var choices = string.Join("/", Choices.Select(choice => converter(choice))).EscapeMarkup();
             var choicesStyle = ChoicesStyle?.ToMarkup() ?? "blue";
             builder.AppendFormat(CultureInfo.InvariantCulture, " [{0}][[{1}]][/]", choicesStyle, choices);
         }
@@ -242,7 +242,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
                 CultureInfo.InvariantCulture,
                 " [{0}]({1})[/]",
                 defaultValueStyle,
-                IsSecret ? defaultValue.Mask(Mask) : defaultValue);
+                (IsSecret ? defaultValue.Mask(Mask) : defaultValue).EscapeMarkup());
         }
 
         var markup = builder.ToString().Trim();
