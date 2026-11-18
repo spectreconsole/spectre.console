@@ -1,30 +1,28 @@
-using System.Reflection;
+using System.Threading;
 
 namespace Spectre.Console.Tests.Unit;
 
 public sealed class MultiSelectionPromptTests
 {
     [Fact]
-    public void Should_Show_Cursor_When_Hiding_It_Throws()
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2168")]
+    public async Task Should_Clear_Prompt_And_Show_Cursor_When_Cancelled()
     {
         // Given
-        var console = new TestConsole();
+        var console = new TestConsole().EmitAnsiSequences();
         console.Profile.Capabilities.Interactive = true;
-        console.Profile.Capabilities.Ansi = true;
+        using var cancellation = new CancellationTokenSource();
+        cancellation.Cancel();
 
-        var cursor = new ThrowingCursor();
-        var setCursorMethod = typeof(TestConsole).GetMethod("SetCursor", BindingFlags.Instance | BindingFlags.NonPublic);
-        setCursorMethod!.Invoke(console, [cursor]);
-
-        var prompt = new MultiSelectionPrompt<string>();
-        prompt.AddChoices(["A", "B", "C"]);
+        var prompt = new MultiSelectionPrompt<string>().AddChoices("First", "Second");
 
         // When
-        Action action = () => prompt.Show(console);
+        await Should.ThrowAsync<OperationCanceledException>(
+            () => prompt.ShowAsync(console, cancellation.Token));
 
         // Then
-        action.ShouldThrow<InvalidOperationException>();
-        cursor.Calls.ShouldContain("show");
+        console.Output.ShouldContain("\e[?25l");
+        console.Output.ShouldEndWith("\e[2K\e[?25h");
     }
 
     [Fact]
