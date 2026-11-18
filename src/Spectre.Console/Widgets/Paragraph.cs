@@ -4,6 +4,7 @@ namespace Spectre.Console;
 /// A paragraph of text where different parts
 /// of the paragraph can have individual styling.
 /// </summary>
+[DebuggerDisplay("{DebuggerDisplay(),nq}")]
 public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
 {
     private readonly List<SegmentLine> _lines;
@@ -260,5 +261,10 @@ public sealed class Paragraph : Renderable, IHasJustification, IOverflowable
         }
 
         return lines;
+    }
+
+    private string DebuggerDisplay()
+    {
+        return string.Join(" ", _lines.Select(x => string.Concat(x.Select(y => y.Text))));
     }
 }
