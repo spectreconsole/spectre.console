@@ -3,8 +3,14 @@ namespace Spectre.Console.Ansi;
 /// <summary>
 /// Represents a parsed ANSI/VT token.
 /// </summary>
+[Experimental(Constants.ExperimentalParserId)]
 public abstract record AnsiToken
 {
+    // Only the nested token types derive from this
+    private AnsiToken()
+    {
+    }
+
     /// <summary>
     /// Prints a Unicode scalar value (codepoint) to the screen.
     /// </summary>
@@ -12,7 +18,7 @@ public abstract record AnsiToken
     /// The Unicode codepoint to print. Astral codepoints, encoded as UTF-16
     /// surrogate pairs in the input, are combined into a single scalar value.
     /// </param>
-    public record Print(int Codepoint) : AnsiToken
+    public sealed record Print(int Codepoint) : AnsiToken
     {
         /// <summary>
         /// Converts the <see cref="Codepoint"/> to its UTF-16 representation, suitable
@@ -36,7 +42,7 @@ public abstract record AnsiToken
     /// The C0/C1 function to execute. An ESC (0x1B) that doesn't start a sequence, such as a
     /// single press of the Escape key, is reported this way too.
     /// </param>
-    public record Execute(char Function) : AnsiToken;
+    public sealed record Execute(char Function) : AnsiToken;
 
     /// <summary>
     /// Execute an ESC command.
@@ -46,10 +52,10 @@ public abstract record AnsiToken
     /// The final character identifying the ESC command. An Alt-modified key arrives as ESC and
     /// the character, so in interactive input this can also be a character outside ASCII.
     /// </param>
-    public record Esc(IReadOnlyList<char> Intermediates, char Final) : AnsiToken
+    public sealed record Esc(IReadOnlyList<char> Intermediates, char Final) : AnsiToken
     {
         /// <inheritdoc/>
-        public virtual bool Equals(Esc? other)
+        public bool Equals(Esc? other)
         {
             return other is not null
                 && base.Equals(other)
@@ -81,14 +87,14 @@ public abstract record AnsiToken
     /// <param name="Params">The parameters, each with its colon-separated subparameters.</param>
     /// <param name="Final">The final byte identifying the CSI command.</param>
     /// <param name="ParamsRaw">The raw parameters.</param>
-    public record Csi(
+    public sealed record Csi(
         IReadOnlyList<char> Intermediates,
         IReadOnlyList<AnsiParameter> Params,
         char Final,
         string ParamsRaw) : AnsiToken
     {
         /// <inheritdoc/>
-        public virtual bool Equals(Csi? other)
+        public bool Equals(Csi? other)
         {
             return other is not null
                 && base.Equals(other)
@@ -125,7 +131,7 @@ public abstract record AnsiToken
     /// Executes an OSC command.
     /// </summary>
     /// <param name="Command">The command to execute.</param>
-    public record Osc(OscCommand Command) : AnsiToken;
+    public sealed record Osc(OscCommand Command) : AnsiToken;
 
     /// <summary>
     /// Sets up a DCS handler.
@@ -134,14 +140,14 @@ public abstract record AnsiToken
     /// <param name="Params">The parameters, each with its colon-separated subparameters.</param>
     /// <param name="Final">The final byte identifying the DCS command.</param>
     /// <param name="ParamsRaw">The raw parameters.</param>
-    public record DcsHook(
+    public sealed record DcsHook(
         IReadOnlyList<char> Intermediates,
         IReadOnlyList<AnsiParameter> Params,
         char Final,
         string ParamsRaw) : AnsiToken
     {
         /// <inheritdoc/>
-        public virtual bool Equals(DcsHook? other)
+        public bool Equals(DcsHook? other)
         {
             return other is not null
                 && base.Equals(other)
@@ -178,10 +184,10 @@ public abstract record AnsiToken
     /// Puts a byte into the selected handler.
     /// </summary>
     /// <param name="Code">The byte to put.</param>
-    public record DcsPut(char Code) : AnsiToken;
+    public sealed record DcsPut(char Code) : AnsiToken;
 
     /// <summary>
     /// Unselects the current specified DCS handler.
     /// </summary>
-    public record DcsUnhook : AnsiToken;
+    public sealed record DcsUnhook : AnsiToken;
 }

@@ -1,5 +1,6 @@
 namespace Spectre.Console.Ansi;
 
+[Experimental(Constants.ExperimentalParserId)]
 internal sealed class OscParser
 {
     // Upper bound on an OSC string. A longer string is dropped rather than dispatched cut off,

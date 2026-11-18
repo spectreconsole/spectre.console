@@ -16,6 +16,7 @@ namespace Spectre.Console.Ansi;
 /// OSC string.
 /// </para>
 /// </remarks>
+[Experimental(Constants.ExperimentalParserId)]
 public sealed class AnsiParser
 {
     private const int ReplacementCodepoint = 0xFFFD;

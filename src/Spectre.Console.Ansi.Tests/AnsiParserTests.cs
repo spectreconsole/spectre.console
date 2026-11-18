@@ -431,6 +431,26 @@ public sealed class AnsiParserTests
         a.GetHashCode().ShouldBe(b.GetHashCode());
     }
 
+    [Fact(DisplayName = "token: token types are sealed")]
+    public void Token_Types_Are_Sealed()
+    {
+        // Given
+        Type[] bases = [typeof(AnsiToken), typeof(OscCommand)];
+
+        // When
+        var nested = bases.SelectMany(type => type.GetNestedTypes()).ToList();
+        var constructors = bases
+            .Select(type => type.GetConstructor(
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic,
+                Type.EmptyTypes))
+            .ToList();
+
+        // Then
+        nested.Count.ShouldBe(11);
+        nested.ShouldAllBe(type => type.IsSealed);
+        constructors.ShouldAllBe(constructor => constructor != null && constructor.IsPrivate);
+    }
+
     [Fact(DisplayName = "flush: emits a trailing lone high surrogate")]
     public void Flush_Trailing_High_Surrogate()
     {

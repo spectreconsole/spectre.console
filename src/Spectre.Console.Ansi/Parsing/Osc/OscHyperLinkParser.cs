@@ -1,5 +1,6 @@
 namespace Spectre.Console.Ansi;
 
+[Experimental(Constants.ExperimentalParserId)]
 internal static class OscHyperLinkParser
 {
     public static OscCommand? Parse(ReadOnlySpan<char> buffer)

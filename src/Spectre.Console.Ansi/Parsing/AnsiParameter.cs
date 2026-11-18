@@ -8,6 +8,7 @@ namespace Spectre.Console.Ansi;
 /// The colon-separated subparameters after the value, such as 3 in <c>CSI 4:3 m</c>.
 /// An omitted subparameter is 0.
 /// </param>
+[Experimental(Constants.ExperimentalParserId)]
 public sealed record AnsiParameter(int Value, IReadOnlyList<int> Subparameters)
 {
     /// <summary>
