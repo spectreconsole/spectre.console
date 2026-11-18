@@ -4,11 +4,21 @@ internal sealed class LegacyConsoleCursor : IAnsiConsoleCursor
 {
     public void Show(bool show)
     {
+        if (System.Console.IsOutputRedirected)
+        {
+            return;
+        }
+
         System.Console.CursorVisible = show;
     }
 
     public void Move(CursorDirection direction, int steps)
     {
+        if (System.Console.IsOutputRedirected)
+        {
+            return;
+        }
+
         if (steps == 0)
         {
             return;
@@ -33,6 +43,11 @@ internal sealed class LegacyConsoleCursor : IAnsiConsoleCursor
 
     public void SetPosition(int x, int y)
     {
+        if (System.Console.IsOutputRedirected)
+        {
+            return;
+        }
+
         System.Console.CursorLeft = x;
         System.Console.CursorTop = y;
     }
