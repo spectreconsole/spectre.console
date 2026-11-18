@@ -27,6 +27,7 @@ internal sealed class AnsiConsoleFactory
 
         return new AnsiConsoleFacade(
             profile,
+            settings.In,
             settings.ExclusivityMode ?? new DefaultExclusivityMode());
     }
 }

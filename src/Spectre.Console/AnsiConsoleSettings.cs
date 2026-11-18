@@ -22,6 +22,17 @@ public sealed class AnsiConsoleSettings
     public IAnsiConsoleOutput? Out { get; set; }
 
     /// <summary>
+    /// Gets or sets the input.
+    /// If no value is provided the default input will be used.
+    /// </summary>
+    /// <remarks>
+    /// Interactivity is still detected from the process's standard input, so when
+    /// supplying a custom input you will most likely also want to set
+    /// <see cref="Interactive"/> to <see cref="InteractionSupport.Yes"/>.
+    /// </remarks>
+    public IAnsiConsoleInput? In { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether or not the
     /// terminal is interactive or not.
     /// </summary>
