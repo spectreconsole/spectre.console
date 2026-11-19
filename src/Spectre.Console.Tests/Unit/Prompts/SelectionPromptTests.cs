@@ -1,8 +1,31 @@
+using System.Threading;
+
 namespace Spectre.Console.Tests.Unit;
 
 public sealed class SelectionPromptTests
 {
     private const string ESC = "\u001b";
+
+    [Fact]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2168")]
+    public async Task Should_Clear_Prompt_And_Show_Cursor_When_Cancelled()
+    {
+        // Given
+        var console = new TestConsole().EmitAnsiSequences();
+        console.Profile.Capabilities.Interactive = true;
+        using var cancellation = new CancellationTokenSource();
+        cancellation.Cancel();
+
+        var prompt = new SelectionPrompt<string>().AddChoices("First", "Second");
+
+        // When
+        await Should.ThrowAsync<OperationCanceledException>(
+            () => prompt.ShowAsync(console, cancellation.Token));
+
+        // Then
+        console.Output.ShouldContain($"{ESC}[?25l");
+        console.Output.ShouldEndWith($"{ESC}[2K{ESC}[?25h");
+    }
 
     [Fact]
     public void Should_Not_Apply_Link_To_Text_After_Link_Close_Tag()

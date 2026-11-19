@@ -55,41 +55,46 @@ internal sealed class ListPrompt<T>
             _strategy.CalculateInitialIndex(nodes));
         var hook = new ListPromptRenderHook(_console, () => BuildRenderable(state));
 
-        using (new RenderHookScope(_console, hook))
+        try
         {
-            _console.Cursor.Hide();
-            hook.Refresh();
-
-            while (true)
+            using (new RenderHookScope(_console, hook))
             {
-                cancellationToken.ThrowIfCancellationRequested();
-                var rawKey = await _console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
-                if (rawKey == null)
-                {
-                    continue;
-                }
+                _console.Cursor.Hide();
+                hook.Refresh();
 
-                var key = rawKey.Value;
-                var result = _strategy.HandleInput(key, state);
-                if (result == ListPromptInputResult.Submit)
+                while (true)
                 {
-                    break;
-                }
-                else if (result == ListPromptInputResult.Abort)
-                {
-                    state.Cancel();
-                    break;
-                }
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var rawKey = await _console.Input.ReadKeyAsync(true, cancellationToken).ConfigureAwait(false);
+                    if (rawKey == null)
+                    {
+                        continue;
+                    }
 
-                if (state.Update(key) || result == ListPromptInputResult.Refresh)
-                {
-                    hook.Refresh();
+                    var key = rawKey.Value;
+                    var result = _strategy.HandleInput(key, state);
+                    if (result == ListPromptInputResult.Submit)
+                    {
+                        break;
+                    }
+                    else if (result == ListPromptInputResult.Abort)
+                    {
+                        state.Cancel();
+                        break;
+                    }
+
+                    if (state.Update(key) || result == ListPromptInputResult.Refresh)
+                    {
+                        hook.Refresh();
+                    }
                 }
             }
         }
-
-        hook.Clear();
-        _console.Cursor.Show();
+        finally
+        {
+            hook.Clear();
+            _console.Cursor.Show();
+        }
 
         return state;
     }

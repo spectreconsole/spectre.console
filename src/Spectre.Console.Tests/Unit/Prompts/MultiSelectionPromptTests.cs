@@ -1,7 +1,30 @@
+using System.Threading;
+
 namespace Spectre.Console.Tests.Unit;
 
 public sealed class MultiSelectionPromptTests
 {
+    [Fact]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2168")]
+    public async Task Should_Clear_Prompt_And_Show_Cursor_When_Cancelled()
+    {
+        // Given
+        var console = new TestConsole().EmitAnsiSequences();
+        console.Profile.Capabilities.Interactive = true;
+        using var cancellation = new CancellationTokenSource();
+        cancellation.Cancel();
+
+        var prompt = new MultiSelectionPrompt<string>().AddChoices("First", "Second");
+
+        // When
+        await Should.ThrowAsync<OperationCanceledException>(
+            () => prompt.ShowAsync(console, cancellation.Token));
+
+        // Then
+        console.Output.ShouldContain("\e[?25l");
+        console.Output.ShouldEndWith("\e[2K\e[?25h");
+    }
+
     [Fact]
     public void Should_Not_Mark_Item_As_Selected_By_Default()
     {
