@@ -11,5 +11,5 @@ internal enum AnsiTransitionAction
     EscDispatch,
     CsiDispatch,
     OscPut,
-    DscPut,
+    DcsPut,
 }

@@ -24,7 +24,7 @@ public abstract record OscCommand
     public sealed record HyperLinkEnd : OscCommand;
 
     /// <summary>
-    /// Represent an unknown OSC command.
+    /// Represents an unknown OSC command.
     /// </summary>
     /// <param name="Data">The OSC command data.</param>
     public sealed record Unknown(string Data) : OscCommand;

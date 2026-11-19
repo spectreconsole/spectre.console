@@ -2,8 +2,8 @@ namespace Spectre.Console.Ansi.Tests;
 
 public sealed class AnsiParserTests
 {
-    [Fact(DisplayName = "esc: ESC ( B")]
-    public void Esc_Sequence_1()
+    [Fact]
+    public void Should_Parse_Esc_With_Intermediate()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e(B");
@@ -18,8 +18,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "esc: ESC ESC [ A")]
-    public void Esc_Repeated_Escape()
+    [Fact]
+    public void Should_Report_First_Esc_When_Another_Esc_Follows()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e\e[A");
@@ -30,8 +30,8 @@ public sealed class AnsiParserTests
         result[1].ShouldBeOfType<AnsiToken.Csi>().And(csi => csi.Final.ShouldBe('A'));
     }
 
-    [Fact(DisplayName = "esc: ESC that ends an OSC string, then ESC \\")]
-    public void Esc_Repeated_After_Osc()
+    [Fact]
+    public void Should_Drop_Osc_Terminator_Esc_When_Another_Esc_Follows()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]0;title\e\e\\");
@@ -42,8 +42,8 @@ public sealed class AnsiParserTests
         result[1].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('\\'));
     }
 
-    [Fact(DisplayName = "esc: ESC \\ without a string")]
-    public void Esc_Bare_String_Terminator()
+    [Fact]
+    public void Should_Parse_String_Terminator_Without_String_As_Esc()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e\\"); // Alt+\ in interactive input
@@ -53,8 +53,8 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('\\'));
     }
 
-    [Fact(DisplayName = "esc: ESC ä")]
-    public void Esc_Non_Ascii_Final()
+    [Fact]
+    public void Should_Use_Non_Ascii_Character_After_Esc_As_Final()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\eäb"); // Alt+ä, then b
@@ -70,8 +70,8 @@ public sealed class AnsiParserTests
         result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('b'));
     }
 
-    [Fact(DisplayName = "esc: ESC before an astral codepoint")]
-    public void Esc_Astral_Codepoint()
+    [Fact]
+    public void Should_Report_Esc_Before_Astral_Codepoint()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e\U0001F600b");
@@ -83,8 +83,8 @@ public sealed class AnsiParserTests
         result[2].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('b'));
     }
 
-    [Fact(DisplayName = "esc: ESC before a lone low surrogate")]
-    public void Esc_Lone_Low_Surrogate()
+    [Fact]
+    public void Should_Report_Esc_Before_Lone_Low_Surrogate()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e\uDE00b");
@@ -96,8 +96,8 @@ public sealed class AnsiParserTests
         result[2].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('b'));
     }
 
-    [Fact(DisplayName = "csi: ESC [ H")]
-    public void Csi_Sequence_1()
+    [Fact]
+    public void Should_Parse_Csi_Without_Parameters()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e[H");
@@ -114,8 +114,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "csi: ESC [ 1 ; 4 H")]
-    public void Csi_Sequence_2()
+    [Fact]
+    public void Should_Parse_Csi_Parameters()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e[1;4H");
@@ -134,8 +134,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "csi: ESC [ 38 : 2 m")]
-    public void Csi_Sequence_3()
+    [Fact]
+    public void Should_Parse_Csi_Subparameter()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e[38:2m");
@@ -154,8 +154,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "csi: ESC [ 38 ; 2 m")]
-    public void Csi_Sequence_4()
+    [Fact]
+    public void Should_Parse_Semicolon_Separated_Csi_Parameters()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e[38;2m");
@@ -174,8 +174,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "csi: ESC [ ? 2026 $ p")]
-    public void Csi_Sequence_5()
+    [Fact]
+    public void Should_Parse_Csi_Private_Marker_And_Intermediate()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e[?2026$p");
@@ -196,8 +196,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "csi: ESC [ ; H")]
-    public void Csi_Empty_Params()
+    [Fact]
+    public void Should_Parse_Empty_Csi_Parameters_As_Zero()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e[;H");
@@ -213,8 +213,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "csi: ESC [ ;; H")]
-    public void Csi_Multiple_Empty_Params()
+    [Fact]
+    public void Should_Parse_Multiple_Empty_Csi_Parameters_As_Zero()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e[;;H");
@@ -230,8 +230,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "csi: parameter overflow saturates")]
-    public void Csi_Parameter_Overflow_Saturates()
+    [Fact]
+    public void Should_Saturate_Csi_Parameter_Overflow()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e[99999999999m");
@@ -246,8 +246,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "csi: ESC [ 4 : 3 m differs from ESC [ 4 ; 3 m")]
-    public void Csi_Subparameter_Differs_From_Parameter()
+    [Fact]
+    public void Should_Distinguish_Csi_Subparameters_From_Parameters()
     {
         // Given, When
         var curly = AnsiParserFixture.Parse("\e[4:3m")[0]; // curly underline
@@ -258,8 +258,8 @@ public sealed class AnsiParserTests
         italic.ShouldBeOfType<AnsiToken.Csi>().Params.ShouldBe([new(4), new(3)]);
     }
 
-    [Fact(DisplayName = "csi: ESC [ 97 ; 5 : 1 u")]
-    public void Csi_Kitty_Keyboard_Subparameters()
+    [Fact]
+    public void Should_Parse_Kitty_Keyboard_Subparameters()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e[97;5:1u"); // kitty keyboard: Ctrl+a pressed
@@ -274,8 +274,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "csi: ESC [ 38 : 2 : : 255 : 0 : 0 m")]
-    public void Csi_Empty_Subparameter()
+    [Fact]
+    public void Should_Parse_Empty_Csi_Subparameter_As_Zero()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e[38:2::255:0:0m"); // RGB without a color space ID
@@ -286,8 +286,8 @@ public sealed class AnsiParserTests
             .And(csi => csi.Params.ShouldBe([new(38, [2, 0, 255, 0, 0])]));
     }
 
-    [Fact(DisplayName = "csi: ESC [ : 3 m")]
-    public void Csi_Leading_Subparameter()
+    [Fact]
+    public void Should_Parse_Leading_Csi_Subparameter()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e[:3m");
@@ -298,8 +298,47 @@ public sealed class AnsiParserTests
             .And(csi => csi.Params.ShouldBe([new(0, [3])]));
     }
 
-    [Fact(DisplayName = "csi: parameter limit")]
-    public void Csi_Parameter_Limit()
+    [Fact]
+    public void Should_Ignore_Malformed_Csi()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e[1?ma"); // a private marker after a parameter
+
+        // Then
+        result.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
+    }
+
+    [Fact]
+    public void Should_Execute_C0_Control_Inside_Csi()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e[1\nm");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Execute>().And(e => e.Function.ShouldBe('\n'));
+        result[1].ShouldBeOfType<AnsiToken.Csi>()
+            .And(csi =>
+            {
+                csi.Params.ShouldBe([new(1)]);
+                csi.Final.ShouldBe('m');
+            });
+    }
+
+    [Fact]
+    public void Should_Abort_Csi_On_Can()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e[1\u0018m");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Execute>().And(e => e.Function.ShouldBe('\u0018'));
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('m'));
+    }
+
+    [Fact]
+    public void Should_Drop_Csi_Over_Parameter_Limit()
     {
         // Given
         static string Sequence(int count, char separator)
@@ -318,8 +357,8 @@ public sealed class AnsiParserTests
         overLimitWithSubparameters.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
     }
 
-    [Fact(DisplayName = "csi: parameter character limit")]
-    public void Csi_Parameter_Character_Limit()
+    [Fact]
+    public void Should_Drop_Csi_Over_Parameter_Character_Limit()
     {
         // Given, When
         var atLimit = AnsiParserFixture.Parse("\e[" + new string('1', 256) + "m");
@@ -330,8 +369,8 @@ public sealed class AnsiParserTests
         overLimit.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
     }
 
-    [Fact(DisplayName = "esc: intermediate limit")]
-    public void Intermediate_Limit()
+    [Fact]
+    public void Should_Drop_Sequence_Over_Intermediate_Limit()
     {
         // Given, When
         var atLimit = AnsiParserFixture.Parse("\e$(C");
@@ -344,8 +383,8 @@ public sealed class AnsiParserTests
         csiOverLimit.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
     }
 
-    [Fact(DisplayName = "dcs: ESC P 1 $ r")]
-    public void Dcs_Hook_Parameters()
+    [Fact]
+    public void Should_Parse_Dcs_Hook_Parameters()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\eP1$r0m\e\\"); // DECRPSS reply
@@ -360,8 +399,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "dcs: terminated by ESC \\")]
-    public void Dcs_Terminated_By_String_Terminator()
+    [Fact]
+    public void Should_Consume_Dcs_String_Terminator()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\eP1$r0m\e\\");
@@ -374,8 +413,8 @@ public sealed class AnsiParserTests
         result[3].ShouldBeOfType<AnsiToken.DcsUnhook>();
     }
 
-    [Fact(DisplayName = "dcs: ignored over the parameter limit")]
-    public void Dcs_Parameter_Limit()
+    [Fact]
+    public void Should_Ignore_Dcs_Over_Parameter_Limit()
     {
         // Given, When
         var result = AnsiParserFixture.Parse(
@@ -385,8 +424,8 @@ public sealed class AnsiParserTests
         result.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
     }
 
-    [Fact(DisplayName = "apc: ignored up to ESC \\")]
-    public void Apc_Ignored()
+    [Fact]
+    public void Should_Ignore_Apc_String()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e_Gi=31;OK\e\\a"); // kitty graphics reply, then a
@@ -396,8 +435,65 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('a'));
     }
 
-    [Fact(DisplayName = "token: identical CSI tokens are equal")]
-    public void Token_Csi_Value_Equality()
+    [Fact]
+    public void Should_Ignore_Sos_And_Pm_Strings()
+    {
+        // Given, When
+        var sos = AnsiParserFixture.Parse("\eXstring\e\\a");
+        var pm = AnsiParserFixture.Parse("\e^string\e\\a");
+
+        // Then
+        sos.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
+        pm.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
+    }
+
+    [Fact]
+    public void Should_Parse_C1_Csi_Introducer()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\u009b1m"); // U+009B is CSI
+
+        // Then
+        result.Single().ShouldBeOfType<AnsiToken.Csi>()
+            .And(csi =>
+            {
+                csi.Params.ShouldBe([new(1)]);
+                csi.Final.ShouldBe('m');
+            });
+    }
+
+    [Fact]
+    public void Should_Parse_C1_Osc_Introducer_And_String_Terminator()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\u009d0;title\u009ca"); // U+009D is OSC, U+009C is ST
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.Unknown>()
+            .And(osc => osc.Data.ShouldBe("0;title"));
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('a'));
+    }
+
+    [Fact]
+    public void Should_Start_New_Osc_String_On_C1_Osc_Introducer()
+    {
+        // Given, When
+        var result = AnsiParserFixture.Parse("\e]0;a\u009d2;b\a");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.Unknown>()
+            .And(osc => osc.Data.ShouldBe("0;a"));
+        result[1].ShouldBeOfType<AnsiToken.Osc>()
+            .And().Command.ShouldBeOfType<OscCommand.Unknown>()
+            .And(osc => osc.Data.ShouldBe("2;b"));
+    }
+
+    [Fact]
+    public void Should_Consider_Identical_Csi_Tokens_Equal()
     {
         // Given, When
         var a = AnsiParserFixture.Parse("\e[1;2m")[0];
@@ -408,8 +504,8 @@ public sealed class AnsiParserTests
         a.GetHashCode().ShouldBe(b.GetHashCode());
     }
 
-    [Fact(DisplayName = "token: differing CSI tokens are not equal")]
-    public void Token_Csi_Value_Inequality()
+    [Fact]
+    public void Should_Not_Consider_Different_Csi_Tokens_Equal()
     {
         // Given, When
         var a = AnsiParserFixture.Parse("\e[1;2m")[0];
@@ -419,8 +515,8 @@ public sealed class AnsiParserTests
         a.ShouldNotBe(b);
     }
 
-    [Fact(DisplayName = "token: identical ESC tokens are equal")]
-    public void Token_Esc_Value_Equality()
+    [Fact]
+    public void Should_Consider_Identical_Esc_Tokens_Equal()
     {
         // Given, When
         var a = AnsiParserFixture.Parse("\e(B")[0];
@@ -431,8 +527,8 @@ public sealed class AnsiParserTests
         a.GetHashCode().ShouldBe(b.GetHashCode());
     }
 
-    [Fact(DisplayName = "token: token types are sealed")]
-    public void Token_Types_Are_Sealed()
+    [Fact]
+    public void Should_Seal_Token_Types()
     {
         // Given
         Type[] bases = [typeof(AnsiToken), typeof(OscCommand)];
@@ -451,8 +547,26 @@ public sealed class AnsiParserTests
         constructors.ShouldAllBe(constructor => constructor != null && constructor.IsPrivate);
     }
 
-    [Fact(DisplayName = "flush: emits a trailing lone high surrogate")]
-    public void Flush_Trailing_High_Surrogate()
+    [Fact]
+    public void Should_Print_List_Items_In_ToString()
+    {
+        // Given, When
+        var esc = AnsiParserFixture.Parse("\e(B").Single();
+        var csi = AnsiParserFixture.Parse("\e[?38:2;1$p").Single();
+        var hook = AnsiParserFixture.Parse("\eP1$r\e\\").First();
+
+        // Then
+        esc.ToString().ShouldBe("Esc { Intermediates = [(], Final = B }");
+        csi.ToString().ShouldBe(
+            "Csi { Intermediates = [?, $], Params = [AnsiParameter { Value = 38, Subparameters = [2] }, " +
+            "AnsiParameter { Value = 1, Subparameters = [] }], Final = p, ParamsRaw = 38:2;1 }");
+        hook.ToString().ShouldBe(
+            "DcsHook { Intermediates = [$], Params = [AnsiParameter { Value = 1, Subparameters = [] }], " +
+            "Final = r, ParamsRaw = 1 }");
+    }
+
+    [Fact]
+    public void Should_Flush_Trailing_High_Surrogate()
     {
         // Given
         var result = new List<AnsiToken>();
@@ -468,8 +582,8 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0xFFFD));
     }
 
-    [Fact(DisplayName = "flush: emits a lone ESC")]
-    public void Flush_Lone_Escape()
+    [Fact]
+    public void Should_Flush_Lone_Esc()
     {
         // Given
         var result = new List<AnsiToken>();
@@ -486,8 +600,8 @@ public sealed class AnsiParserTests
         result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('a'));
     }
 
-    [Fact(DisplayName = "flush: keeps a partial CSI")]
-    public void Flush_Keeps_Partial_Csi()
+    [Fact]
+    public void Should_Keep_Partial_Csi_On_Flush()
     {
         // Given
         var result = new List<AnsiToken>();
@@ -508,8 +622,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "flush: keeps the ESC that ends an OSC string")]
-    public void Flush_Keeps_Osc_Terminator()
+    [Fact]
+    public void Should_Keep_Osc_Terminator_Esc_On_Flush()
     {
         // Given
         var result = new List<AnsiToken>();
@@ -525,8 +639,8 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Osc>();
     }
 
-    [Fact(DisplayName = "reset: recovers mid-sequence")]
-    public void Reset_Mid_Sequence()
+    [Fact]
+    public void Should_Recover_From_Partial_Sequence_On_Reset()
     {
         // Given
         var result = new List<AnsiToken>();
@@ -543,8 +657,8 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('A'));
     }
 
-    [Fact(DisplayName = "reset: discards a pending high surrogate")]
-    public void Reset_Discards_Pending_Surrogate()
+    [Fact]
+    public void Should_Discard_Pending_Surrogate_On_Reset()
     {
         // Given
         var result = new List<AnsiToken>();
@@ -559,8 +673,21 @@ public sealed class AnsiParserTests
         result.ShouldBeEmpty();
     }
 
-    [Fact(DisplayName = "osc 8: Hyperlink")]
-    public void Osc_Sequence_1()
+    [Fact]
+    public void Should_Throw_If_Text_Is_Null()
+    {
+        // Given
+        var parser = new AnsiParser(_ => { });
+
+        // When
+        var result = Record.Exception(() => parser.Next(null!));
+
+        // Then
+        result.ShouldBeOfType<ArgumentNullException>().ParamName.ShouldBe("text");
+    }
+
+    [Fact]
+    public void Should_Parse_Hyperlink()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]8;;https://example.com\e\\");
@@ -576,8 +703,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "osc 8: Hyperlink with ID")]
-    public void Osc_Sequence_2()
+    [Fact]
+    public void Should_Parse_Hyperlink_With_Id()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]8;id=123;https://example.com\e\\");
@@ -593,8 +720,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "osc 8: Hyperlink with empty ID")]
-    public void Osc_Sequence_3()
+    [Fact]
+    public void Should_Parse_Hyperlink_With_Empty_Id()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]8;id=;https://example.com\e\\");
@@ -610,8 +737,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "osc 8: Hyperlink with empty key")]
-    public void Osc_Sequence_4()
+    [Fact]
+    public void Should_Ignore_Hyperlink_Parameter_Without_Value()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]8;id;https://example.com\e\\");
@@ -627,8 +754,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "osc 8: Hyperlink with empty key but id set")]
-    public void Osc_Sequence_5()
+    [Fact]
+    public void Should_Parse_Hyperlink_Id_After_Parameter_Without_Key()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]8;=value:id=foo;https://example.com\e\\");
@@ -644,8 +771,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "osc 8: Hyperlink with empty url")]
-    public void Osc_Sequence_6()
+    [Fact]
+    public void Should_End_Hyperlink_On_Empty_Uri_With_Id()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]8;id=foo;\e\\");
@@ -656,8 +783,8 @@ public sealed class AnsiParserTests
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkEnd>();
     }
 
-    [Fact(DisplayName = "osc 8: Hyperlink without the URI separator")]
-    public void Osc_Hyperlink_Without_Uri_Separator()
+    [Fact]
+    public void Should_Drop_Hyperlink_Without_Uri_Separator()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]8;id=foo\e\\");
@@ -666,8 +793,8 @@ public sealed class AnsiParserTests
         result.ShouldBeEmpty();
     }
 
-    [Fact(DisplayName = "osc 8: Hyperlink end")]
-    public void Osc_Sequence_7()
+    [Fact]
+    public void Should_Parse_Hyperlink_End()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]8;;\e\\");
@@ -678,8 +805,8 @@ public sealed class AnsiParserTests
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkEnd>();
     }
 
-    [Fact(DisplayName = "osc 8: Hyperlink start and end")]
-    public void Osc_Sequence_8()
+    [Fact]
+    public void Should_Parse_Hyperlink_Start_And_End()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]8;;https://example.com\e\\TEXT\e]8;;\e\\");
@@ -696,8 +823,8 @@ public sealed class AnsiParserTests
             .And().Command.ShouldBeOfType<OscCommand.HyperLinkEnd>();
     }
 
-    [Fact(DisplayName = "osc 123: Unknown")]
-    public void Osc_Sequence_9()
+    [Fact]
+    public void Should_Parse_Unknown_Osc_Command()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]123;;lol\e\\");
@@ -712,8 +839,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "osc 8: Hyperlink with semicolon in URI")]
-    public void Osc_Hyperlink_Semicolon_In_Uri()
+    [Fact]
+    public void Should_Parse_Hyperlink_With_Semicolon_In_Uri()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]8;;http://example.com/a;b\e\\");
@@ -729,8 +856,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "osc 8: Hyperlink with colon-separated params")]
-    public void Osc_Hyperlink_Colon_Separated_Params()
+    [Fact]
+    public void Should_Parse_Hyperlink_With_Colon_Separated_Parameters()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]8;id=abc:foo=bar;http://x\e\\");
@@ -746,8 +873,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "osc 0: terminated by BEL")]
-    public void Osc_Terminated_By_BEL()
+    [Fact]
+    public void Should_Parse_Osc_Terminated_By_Bel()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]0;title\a"); // OSC 0 window title, BEL terminator
@@ -759,8 +886,8 @@ public sealed class AnsiParserTests
             .And(osc => osc.Data.ShouldBe("0;title"));
     }
 
-    [Fact(DisplayName = "osc 8: Hyperlink terminated by BEL")]
-    public void Osc_Hyperlink_Terminated_By_BEL()
+    [Fact]
+    public void Should_Parse_Hyperlink_Terminated_By_Bel()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]8;;https://example.com\a");
@@ -776,8 +903,8 @@ public sealed class AnsiParserTests
             });
     }
 
-    [Fact(DisplayName = "osc: BEL terminator returns to ground")]
-    public void Osc_BEL_Returns_To_Ground()
+    [Fact]
+    public void Should_Return_To_Ground_After_Bel()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]0;t\aX"); // OSC ... BEL, then a printable
@@ -788,8 +915,8 @@ public sealed class AnsiParserTests
         result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('X'));
     }
 
-    [Fact(DisplayName = "osc: buffers are reused across sequences without leaking")]
-    public void Osc_Reuses_Buffers_Without_Leaking()
+    [Fact]
+    public void Should_Not_Leak_Data_Between_Osc_Strings()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]123;longlonglong\a\e]9;x\a");
@@ -804,8 +931,8 @@ public sealed class AnsiParserTests
             .And(osc => osc.Data.ShouldBe("9;x"));
     }
 
-    [Fact(DisplayName = "osc: CAN aborts without dispatching")]
-    public void Osc_Can_Aborts()
+    [Fact]
+    public void Should_Abort_Osc_On_Can()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e]0;title\u0018"); // CAN mid-OSC
@@ -815,8 +942,8 @@ public sealed class AnsiParserTests
         result.Exists(t => t is AnsiToken.Execute e && e.Function == '\u0018').ShouldBeTrue();
     }
 
-    [Fact(DisplayName = "osc: string length limit")]
-    public void Osc_Length_Limit()
+    [Fact]
+    public void Should_Drop_Osc_Over_Length_Limit()
     {
         // Given
         var uri = "https://example.com/" + new string('a', 2025); // with "8;;", 2048 characters
@@ -833,8 +960,8 @@ public sealed class AnsiParserTests
         unknownOverLimit.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe('a');
     }
 
-    [Fact(DisplayName = "print: accented latin")]
-    public void Print_Accented_Latin()
+    [Fact]
+    public void Should_Print_Accented_Latin_Character()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("aä"); // "aä"
@@ -845,8 +972,8 @@ public sealed class AnsiParserTests
         result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0x00E4));
     }
 
-    [Fact(DisplayName = "print: box-drawing characters")]
-    public void Print_Box_Drawing()
+    [Fact]
+    public void Should_Print_Box_Drawing_Characters()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("─│┌"); // "─│┌"
@@ -858,8 +985,8 @@ public sealed class AnsiParserTests
         result[2].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0x250C));
     }
 
-    [Fact(DisplayName = "print: CJK character")]
-    public void Print_Cjk()
+    [Fact]
+    public void Should_Print_Cjk_Character()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("日"); // "日"
@@ -869,8 +996,8 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0x65E5));
     }
 
-    [Fact(DisplayName = "print: astral codepoint combines surrogate pair")]
-    public void Print_Astral()
+    [Fact]
+    public void Should_Combine_Surrogate_Pair_Into_Astral_Codepoint()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\U0001F600"); // "😀"
@@ -880,8 +1007,8 @@ public sealed class AnsiParserTests
         result[0].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0x1F600));
     }
 
-    [Fact(DisplayName = "print: astral codepoint between ascii")]
-    public void Print_Astral_Between_Ascii()
+    [Fact]
+    public void Should_Print_Astral_Codepoint_Between_Ascii()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("a\U0001F600b");
@@ -893,8 +1020,8 @@ public sealed class AnsiParserTests
         result[2].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('b'));
     }
 
-    [Fact(DisplayName = "print: non-ascii resumes after CSI")]
-    public void Print_Resumes_After_Csi()
+    [Fact]
+    public void Should_Print_Non_Ascii_After_Csi()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\e[0m─"); // SGR reset, then "─"
@@ -905,8 +1032,8 @@ public sealed class AnsiParserTests
         result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe(0x2500));
     }
 
-    [Fact(DisplayName = "print: ToUtf16 encodes a BMP codepoint as one char")]
-    public void Print_ToUtf16_Bmp()
+    [Fact]
+    public void Should_Encode_Bmp_Codepoint_As_One_Char()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("─"); // "─"
@@ -917,8 +1044,8 @@ public sealed class AnsiParserTests
         print.ToUtf16().Length.ShouldBe(1);
     }
 
-    [Fact(DisplayName = "print: ToUtf16 encodes an astral codepoint as a surrogate pair")]
-    public void Print_ToUtf16_Astral()
+    [Fact]
+    public void Should_Encode_Astral_Codepoint_As_Surrogate_Pair()
     {
         // Given, When
         var result = AnsiParserFixture.Parse("\U0001F600"); // "😀"

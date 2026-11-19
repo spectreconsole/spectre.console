@@ -11,6 +11,12 @@ public abstract record AnsiToken
     {
     }
 
+    // A record prints a list as its type name, so print the items instead
+    private static string FormatList<T>(IEnumerable<T> items)
+    {
+        return "[" + string.Join(", ", items) + "]";
+    }
+
     /// <summary>
     /// Prints a Unicode scalar value (codepoint) to the screen.
     /// </summary>
@@ -26,9 +32,12 @@ public abstract record AnsiToken
         /// </summary>
         /// <returns>
         /// A string of one or two <see cref="char"/> values; an astral codepoint is
-        /// returned as a UTF-16 surrogate pair. The parser only ever emits valid Unicode
-        /// scalar values, so this never throws.
+        /// returned as a UTF-16 surrogate pair.
         /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <see cref="Codepoint"/> isn't a valid Unicode scalar value. Tokens from the parser
+        /// always hold a valid one.
+        /// </exception>
         public string ToUtf16()
         {
             return char.ConvertFromUtf32(Codepoint);
@@ -78,6 +87,15 @@ public abstract record AnsiToken
                 return hash;
             }
         }
+
+        /// <inheritdoc/>
+        protected override bool PrintMembers(StringBuilder builder)
+        {
+            builder.Append("Intermediates = ").Append(FormatList(Intermediates))
+                .Append(", Final = ").Append(Final);
+
+            return true;
+        }
     }
 
     /// <summary>
@@ -124,6 +142,17 @@ public abstract record AnsiToken
 
                 return hash;
             }
+        }
+
+        /// <inheritdoc/>
+        protected override bool PrintMembers(StringBuilder builder)
+        {
+            builder.Append("Intermediates = ").Append(FormatList(Intermediates))
+                .Append(", Params = ").Append(FormatList(Params))
+                .Append(", Final = ").Append(Final)
+                .Append(", ParamsRaw = ").Append(ParamsRaw);
+
+            return true;
         }
     }
 
@@ -177,6 +206,17 @@ public abstract record AnsiToken
 
                 return hash;
             }
+        }
+
+        /// <inheritdoc/>
+        protected override bool PrintMembers(StringBuilder builder)
+        {
+            builder.Append("Intermediates = ").Append(FormatList(Intermediates))
+                .Append(", Params = ").Append(FormatList(Params))
+                .Append(", Final = ").Append(Final)
+                .Append(", ParamsRaw = ").Append(ParamsRaw);
+
+            return true;
         }
     }
 

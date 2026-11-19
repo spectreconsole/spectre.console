@@ -10,6 +10,9 @@ internal sealed class AnsiTransitionTable
     {
         _transitions = [];
 
+        // The ranges below include their end, as in the VT500 state diagram,
+        // so 0x20..0x7F covers 0x7F. A C# range would leave it out.
+
         // Anywhere
         foreach (var state in EnumUtils.GetValues<AnsiParserState>())
         {
@@ -141,7 +144,7 @@ internal sealed class AnsiTransitionTable
                 AnsiTransitionAction.Ignore);
             Add(0x7F, AnsiParserState.DcsIntermediate, AnsiParserState.DcsIntermediate, AnsiTransitionAction.Ignore);
 
-            // -> DscIgnore
+            // -> DcsIgnore
             Add(0x30..0x3F, AnsiParserState.DcsIntermediate, AnsiParserState.DcsIgnore, AnsiTransitionAction.None);
 
             // -> DcsPassthrough
@@ -165,7 +168,7 @@ internal sealed class AnsiTransitionTable
             Add(0x3B, AnsiParserState.DcsParam, AnsiParserState.DcsParam, AnsiTransitionAction.Param);
             Add(0x7F, AnsiParserState.DcsParam, AnsiParserState.DcsParam, AnsiTransitionAction.Ignore);
 
-            // -> DcsParam
+            // -> DcsIgnore
             Add(0x3A, AnsiParserState.DcsParam, AnsiParserState.DcsIgnore, AnsiTransitionAction.None);
             Add(0x3C..0x3F, AnsiParserState.DcsParam, AnsiParserState.DcsIgnore, AnsiTransitionAction.None);
 
@@ -178,13 +181,13 @@ internal sealed class AnsiTransitionTable
 
         // DcsPassthrough
         {
-            Add(0x19, AnsiParserState.DcsPassthrough, AnsiParserState.DcsPassthrough, AnsiTransitionAction.DscPut);
+            Add(0x19, AnsiParserState.DcsPassthrough, AnsiParserState.DcsPassthrough, AnsiTransitionAction.DcsPut);
             Add(0x00..0x17, AnsiParserState.DcsPassthrough, AnsiParserState.DcsPassthrough,
-                AnsiTransitionAction.DscPut);
+                AnsiTransitionAction.DcsPut);
             Add(0x1C..0x1F, AnsiParserState.DcsPassthrough, AnsiParserState.DcsPassthrough,
-                AnsiTransitionAction.DscPut);
+                AnsiTransitionAction.DcsPut);
             Add(0x20..0x7E, AnsiParserState.DcsPassthrough, AnsiParserState.DcsPassthrough,
-                AnsiTransitionAction.DscPut);
+                AnsiTransitionAction.DcsPut);
             Add(0x7F, AnsiParserState.DcsPassthrough, AnsiParserState.DcsPassthrough, AnsiTransitionAction.Ignore);
         }
 
@@ -300,7 +303,7 @@ internal sealed class AnsiTransitionTable
             AnsiParserState.Ground => new(state, AnsiTransitionAction.Print),
             AnsiParserState.Escape => new(AnsiParserState.Ground, AnsiTransitionAction.EscDispatch),
             AnsiParserState.OscString => new(state, AnsiTransitionAction.OscPut),
-            AnsiParserState.DcsPassthrough => new(state, AnsiTransitionAction.DscPut),
+            AnsiParserState.DcsPassthrough => new(state, AnsiTransitionAction.DcsPut),
             _ => new(state, AnsiTransitionAction.Ignore),
         };
     }
@@ -318,11 +321,12 @@ internal sealed class AnsiTransitionTable
         lookup[fromState] = new AnsiTransition(toState, action);
     }
 
+    // Unlike a C# range, the end of the range is included
     private void Add(
         Range codes, AnsiParserState fromState,
         AnsiParserState toState, AnsiTransitionAction action)
     {
-        for (var code = codes.Start.Value; code < codes.End.Value + 1; code++)
+        for (var code = codes.Start.Value; code <= codes.End.Value; code++)
         {
             Add((byte)code, fromState, toState, action);
         }

@@ -55,6 +55,8 @@ public sealed class AnsiParser
     /// <param name="text">The text to process.</param>
     public void Next(string text)
     {
+        ArgumentNullException.ThrowIfNull(text);
+
         foreach (var character in text)
         {
             Next(character);
@@ -102,8 +104,12 @@ public sealed class AnsiParser
             nextState = AnsiParserState.DcsIgnore;
         }
 
+        // A C1 control that starts a sequence leaves the current state even when it
+        // starts the same kind of sequence again, so the exit and entry actions run
+        var changesState = _currentState != nextState || StartsSequence(code);
+
         // Perform the exit action of the current state
-        if (_currentState != nextState)
+        if (changesState)
         {
             switch (_currentState)
             {
@@ -205,13 +211,13 @@ public sealed class AnsiParser
             case AnsiTransitionAction.OscPut:
                 _oscParser.Next(code);
                 break;
-            case AnsiTransitionAction.DscPut:
+            case AnsiTransitionAction.DcsPut:
                 _callback(new AnsiToken.DcsPut(Code: code));
                 break;
         }
 
         // Perform the entry action of the next state
-        if (_currentState != nextState)
+        if (changesState)
         {
             switch (nextState)
             {
@@ -377,5 +383,11 @@ public sealed class AnsiParser
         // CAN (0x18) and SUB (0x1A) abort any in-progress
         // sequence per the VT500 state machine
         return code is '\u0018' or '\u001A';
+    }
+
+    private static bool StartsSequence(char code)
+    {
+        // The C1 forms of DCS, SOS, CSI, OSC, PM and APC
+        return code is '\u0090' or '\u0098' or '\u009B' or '\u009D' or '\u009E' or '\u009F';
     }
 }

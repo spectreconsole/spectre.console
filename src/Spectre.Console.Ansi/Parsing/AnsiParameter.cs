@@ -43,4 +43,13 @@ public sealed record AnsiParameter(int Value, IReadOnlyList<int> Subparameters)
             return hash;
         }
     }
+
+    // A record prints a list as its type name, so print the items instead
+    private bool PrintMembers(StringBuilder builder)
+    {
+        builder.Append("Value = ").Append(Value.ToString(CultureInfo.InvariantCulture))
+            .Append(", Subparameters = [").Append(string.Join(", ", Subparameters)).Append(']');
+
+        return true;
+    }
 }
