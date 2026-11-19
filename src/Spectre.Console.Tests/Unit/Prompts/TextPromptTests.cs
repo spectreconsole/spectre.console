@@ -18,13 +18,21 @@ public sealed class TextPromptTests
     }
 
     [Theory]
-    [InlineData("   ")]
-    [InlineData(" ")]
-    public void Should_Erase_Whitespace_And_Reprompt_On_Same_Line_If_Empty_Is_Not_Allowed(string whitespace)
+    [InlineData("   ", 3)]
+    [InlineData(" ", 1)]
+    [InlineData("\u3000", 2)]
+    [InlineData(" \u3000 ", 4)]
+    public void Should_Erase_Whitespace_And_Reprompt_On_Same_Line_If_Empty_Is_Not_Allowed(string whitespace, int cells)
     {
         // Given
         var console = new TestConsole();
-        console.Input.PushTextWithEnter(whitespace);
+        foreach (var character in whitespace)
+        {
+            // Pushed as space key presses, since the test input can't map characters such as U+3000.
+            console.Input.PushKey(new ConsoleKeyInfo(character, ConsoleKey.Spacebar, false, false, false));
+        }
+
+        console.Input.PushKey(ConsoleKey.Enter);
         console.Input.PushTextWithEnter("Hello");
 
         // When
@@ -32,7 +40,7 @@ public sealed class TextPromptTests
 
         // Then
         result.ShouldBe("Hello");
-        console.Output.ShouldContain("Enter text: " + whitespace + "\b \b".Repeat(whitespace.Length) + "Hello");
+        console.Output.ShouldContain("Enter text: " + whitespace + "\b \b".Repeat(cells) + "Hello");
     }
 
     [Fact]
