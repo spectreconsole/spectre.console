@@ -862,6 +862,25 @@ public sealed class TextPromptTests
     }
 
     [Fact]
+    public void Should_Return_CancelResult_On_Cancel_ValueVersion_Null()
+    {
+        // Given
+        const string? Expected = null;
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        // When
+        var prompt = new TextPrompt<string?>("Title")
+                .AddCancelResult(Expected);
+
+        var result = prompt.Show(console);
+
+        // Then
+        result.ShouldBeNull();
+    }
+
+    [Fact]
     public void Should_Ignore_Escape_If_CancelResult_Not_Set()
     {
         // Given
