@@ -1,7 +1,7 @@
 namespace Spectre.Console.Ansi;
 
 /// <summary>
-/// An ANSI/VT input parser based on the VT500-series.
+/// An ANSI/VT parser based on the VT500 series.
 /// </summary>
 /// <remarks>
 /// <para>
@@ -25,16 +25,21 @@ public sealed class AnsiParser
     private const int MaxParametersRawLength = 256;
     private const int MaxIntermediateCount = 2;
     private const char EscapeCharacter = '\u001B';
+    private const string PasteEnd = "\u001B[201~";
 
     private readonly Action<AnsiToken> _callback;
+    private readonly AnsiParserMode _mode;
     private readonly List<char> _intermediates = [];
     private readonly List<int> _parameters = [0];
     private readonly List<bool> _isSubparameter = [false];
     private readonly StringBuilder _parametersRaw = new();
+    private readonly StringBuilder _paste = new();
     private readonly OscParser _oscParser;
     private bool _hasParameter;
     private bool _ignoring;
     private bool _escapeEndsString;
+    private bool _pasting;
+    private char _pendingIntroducer;
     private char _highSurrogate;
     private AnsiParserState _currentState;
 
@@ -42,9 +47,11 @@ public sealed class AnsiParser
     /// Initializes a new instance of the <see cref="AnsiParser"/> class.
     /// </summary>
     /// <param name="callback">The callback to be used for parsed tokens.</param>
-    public AnsiParser(Action<AnsiToken> callback)
+    /// <param name="mode">The kind of stream to parse.</param>
+    public AnsiParser(Action<AnsiToken> callback, AnsiParserMode mode = AnsiParserMode.Output)
     {
         _callback = callback ?? throw new ArgumentNullException(nameof(callback));
+        _mode = mode;
         _currentState = AnsiParserState.Ground;
         _oscParser = new OscParser();
     }
@@ -75,6 +82,14 @@ public sealed class AnsiParser
         {
             _highSurrogate = '\0';
             _callback(new AnsiToken.Print(ReplacementCodepoint));
+        }
+
+        // An introducer with nothing after it, such as ESC [, can be a key until more arrives
+        _pendingIntroducer = '\0';
+
+        if (_mode == AnsiParserMode.Input && NextInput(code))
+        {
+            return;
         }
 
         if (_currentState == AnsiParserState.Escape)
@@ -198,7 +213,12 @@ public sealed class AnsiParser
 
                 break;
             case AnsiTransitionAction.CsiDispatch:
-                if (!_ignoring)
+                if (_mode == AnsiParserMode.Input && !_ignoring && IsPasteStart(code))
+                {
+                    // The text up to CSI 201 ~ is pasted, not parsed
+                    _pasting = true;
+                }
+                else if (!_ignoring)
                 {
                     _callback(new AnsiToken.Csi(
                         Intermediates: [.. _intermediates],
@@ -240,6 +260,16 @@ public sealed class AnsiParser
                         ParamsRaw: _parametersRaw.ToString()));
                     break;
             }
+
+            // In terminal input, ESC and an introducer is also a key pressed with Alt, such as
+            // Alt+[. Remember the introducer, so Flush can report the key if nothing follows
+            if (_mode == AnsiParserMode.Input &&
+                _currentState == AnsiParserState.Escape && !_escapeEndsString &&
+                nextState is AnsiParserState.CsiEntry or AnsiParserState.DcsEntry
+                    or AnsiParserState.OscString or AnsiParserState.SosPmApcString)
+            {
+                _pendingIntroducer = code;
+            }
         }
 
         _currentState = nextState;
@@ -252,9 +282,11 @@ public sealed class AnsiParser
     /// </summary>
     /// <remarks>
     /// Call this at the end of the input, or when an interactive input source has nothing more
-    /// to read, so that a single press of the Escape key is reported. A partially parsed
-    /// sequence, such as ESC [ or the ESC that ends an OSC string, is kept so the rest of it can
-    /// still arrive.
+    /// to read, so that a single press of the Escape key is reported. In
+    /// <see cref="AnsiParserMode.Input"/>, ESC and an introducer with nothing after it, such as
+    /// ESC [, comes out as the key it is: an <see cref="AnsiToken.Esc"/> token for Alt+[. Any
+    /// other partially parsed sequence, a bracketed paste, and the ESC that ends an OSC string
+    /// are kept so the rest can still arrive.
     /// </remarks>
     public void Flush()
     {
@@ -269,6 +301,15 @@ public sealed class AnsiParser
         {
             AbandonEscape();
         }
+
+        if (_pendingIntroducer == '\0')
+        {
+            return;
+        }
+
+        _currentState = AnsiParserState.Ground;
+        _callback(new AnsiToken.Esc(Intermediates: [], Final: _pendingIntroducer));
+        _pendingIntroducer = '\0';
     }
 
     /// <summary>
@@ -280,8 +321,87 @@ public sealed class AnsiParser
     {
         _currentState = AnsiParserState.Ground;
         _highSurrogate = '\0';
+        _pendingIntroducer = '\0';
+        _pasting = false;
+        _paste.Clear();
         _oscParser.Reset();
+
         Clear();
+    }
+
+    private bool NextInput(char code)
+    {
+        // Terminal input differs from output where a key pressed with Alt arrives as ESC and the
+        // key, and for SS3 keys, Backspace and bracketed paste. Returns whether the code is handled
+
+        while (true)
+        {
+            if (_pasting)
+            {
+                CollectPaste(code);
+                return true;
+            }
+
+            switch (_currentState)
+            {
+                case AnsiParserState.Escape when IsAltKey(code):
+                    _currentState = AnsiParserState.Ground;
+
+                    // An ESC that ended a string isn't a key, so handle the code without it
+                    if (_escapeEndsString)
+                    {
+                        continue;
+                    }
+
+                    _callback(new AnsiToken.Esc(Intermediates: [], Final: code));
+                    return true;
+                case AnsiParserState.Escape when code == 'O' && !_escapeEndsString:
+                    // SS3, which arrow keys, F1 to F4 and the keypad can send
+                    _currentState = AnsiParserState.Ss3;
+                    _pendingIntroducer = code;
+                    return true;
+                case AnsiParserState.Ss3:
+                    _currentState = AnsiParserState.Ground;
+                    if (code is >= '@' and <= '~')
+                    {
+                        _callback(new AnsiToken.Ss3(Final: code));
+                        return true;
+                    }
+
+                    // Without a final, it was Alt+O; handle the code from the ground state
+                    _callback(new AnsiToken.Esc(Intermediates: [], Final: 'O'));
+                    continue;
+                case AnsiParserState.Ground when code == '\u007F':
+                    // DEL is what the Backspace key sends
+                    _callback(new AnsiToken.Execute(Function: code));
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    }
+
+    private void CollectPaste(char code)
+    {
+        _paste.Append(code);
+
+        // The paste ends at CSI 201 ~, which isn't part of the pasted text
+        if (code == '~' && EndsWith(_paste, PasteEnd))
+        {
+            _paste.Length -= PasteEnd.Length;
+            _pasting = false;
+            _callback(new AnsiToken.Paste(Text: _paste.ToString()));
+            _paste.Clear();
+        }
+    }
+
+    private bool IsPasteStart(char final)
+    {
+        // CSI 200 ~ starts a bracketed paste
+        return final == '~'
+               && _intermediates.Count == 0
+               && _parameters.Count == 1
+               && _parameters[0] == 200;
     }
 
     private void Clear()
@@ -354,10 +474,10 @@ public sealed class AnsiParser
         _callback(new AnsiToken.Print(code));
     }
 
-    // Leaves an ESC that starts no sequence. A lone ESC, such as a press of the Escape key, is
-    // reported. An ESC that ended a string was the start of its terminator, so it's dropped
     private void AbandonEscape()
     {
+        // Leaves an ESC that starts no sequence. A lone ESC, such as a press of the Escape key, is
+        // reported. An ESC that ended a string was the start of its terminator, so it's dropped
         _currentState = AnsiParserState.Ground;
 
         if (!_escapeEndsString)
@@ -369,7 +489,8 @@ public sealed class AnsiParser
     private static bool EndsString(AnsiParserState state)
     {
         // An ESC inside a string normally starts the string terminator (ESC \)
-        return state is AnsiParserState.OscString
+        return state
+            is AnsiParserState.OscString
             or AnsiParserState.SosPmApcString
             or AnsiParserState.DcsEntry
             or AnsiParserState.DcsParam
@@ -380,14 +501,51 @@ public sealed class AnsiParser
 
     private static bool IsAbort(char code)
     {
-        // CAN (0x18) and SUB (0x1A) abort any in-progress
-        // sequence per the VT500 state machine
-        return code is '\u0018' or '\u001A';
+        // CAN and SUB abort any in-progress sequence
+        return code
+            is '\u0018' // CAN (0x18)
+            or '\u001A'; // SUB (0x1A)
     }
 
     private static bool StartsSequence(char code)
     {
-        // The C1 forms of DCS, SOS, CSI, OSC, PM and APC
-        return code is '\u0090' or '\u0098' or '\u009B' or '\u009D' or '\u009E' or '\u009F';
+        return code
+            is '\u0090' // DCS
+            or '\u0098' // SOS
+            or '\u009B' // CSI
+            or '\u009D' // OSC
+            or '\u009E' // PM
+            or '\u009F'; // APC
+    }
+
+    private static bool IsAltKey(char code)
+    {
+        // In terminal input, these start no sequence after ESC: the controls (but ESC), the
+        // characters 0x20 to 0x2F, DEL, and the SOS and PM introducers, which no reply uses
+        return code
+            is (< ' ' and not EscapeCharacter)
+            or (>= ' ' and <= '/')
+            or '\u007F'
+            or 'X'
+            or '^';
+    }
+
+    private static bool EndsWith(StringBuilder builder, string value)
+    {
+        if (builder.Length < value.Length)
+        {
+            return false;
+        }
+
+        var start = builder.Length - value.Length;
+        for (var index = 0; index < value.Length; index++)
+        {
+            if (builder[start + index] != value[index])
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

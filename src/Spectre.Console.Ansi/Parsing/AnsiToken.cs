@@ -49,7 +49,8 @@ public abstract record AnsiToken
     /// </summary>
     /// <param name="Function">
     /// The C0/C1 function to execute. An ESC (0x1B) that doesn't start a sequence, such as a
-    /// single press of the Escape key, is reported this way too.
+    /// single press of the Escape key, is reported this way too, and so is DEL (0x7F), the
+    /// Backspace key, in <see cref="AnsiParserMode.Input"/>.
     /// </param>
     public sealed record Execute(char Function) : AnsiToken;
 
@@ -58,8 +59,9 @@ public abstract record AnsiToken
     /// </summary>
     /// <param name="Intermediates">Intermediate bytes.</param>
     /// <param name="Final">
-    /// The final character identifying the ESC command. An Alt-modified key arrives as ESC and
-    /// the character, so in interactive input this can also be a character outside ASCII.
+    /// The final character identifying the ESC command. A key pressed with Alt arrives as ESC
+    /// and the key, so in terminal input this can be any character, such as ä for Alt+ä, or
+    /// CR for Alt+Enter in <see cref="AnsiParserMode.Input"/>.
     /// </param>
     public sealed record Esc(IReadOnlyList<char> Intermediates, char Final) : AnsiToken
     {
@@ -230,4 +232,18 @@ public abstract record AnsiToken
     /// Unselects the current specified DCS handler.
     /// </summary>
     public sealed record DcsUnhook : AnsiToken;
+
+    /// <summary>
+    /// A key that the terminal sent as SS3 (ESC O), such as an arrow key or F1 to F4. Only
+    /// <see cref="AnsiParserMode.Input"/> reports these.
+    /// </summary>
+    /// <param name="Final">The character identifying the key, such as A for the up arrow.</param>
+    public sealed record Ss3(char Final) : AnsiToken;
+
+    /// <summary>
+    /// Text that was pasted with bracketed paste turned on. Only
+    /// <see cref="AnsiParserMode.Input"/> reports these.
+    /// </summary>
+    /// <param name="Text">The pasted text, without the CSI 200 ~ and CSI 201 ~ markers.</param>
+    public sealed record Paste(string Text) : AnsiToken;
 }

@@ -542,7 +542,7 @@ public sealed class AnsiParserTests
             .ToList();
 
         // Then
-        nested.Count.ShouldBe(11);
+        nested.Count.ShouldBe(13);
         nested.ShouldAllBe(type => type.IsSealed);
         constructors.ShouldAllBe(constructor => constructor != null && constructor.IsPrivate);
     }
@@ -1054,5 +1054,210 @@ public sealed class AnsiParserTests
         var print = result[0].ShouldBeOfType<AnsiToken.Print>();
         print.ToUtf16().ShouldBe("\U0001F600");
         print.ToUtf16().Length.ShouldBe(2);
+    }
+
+    [Fact]
+    public void Should_Parse_Alt_Enter_In_Input_Mode()
+    {
+        // Given, When
+        var result = AnsiParserFixture.ParseInput("\e\ra");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('\r'));
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('a'));
+    }
+
+    [Fact]
+    public void Should_Parse_Alt_Backspace_In_Input_Mode()
+    {
+        // Given, When
+        var delete = AnsiParserFixture.ParseInput("\e\u007f");
+        var backspace = AnsiParserFixture.ParseInput("\e\b");
+
+        // Then
+        delete.Single().ShouldBeOfType<AnsiToken.Esc>().Final.ShouldBe('\u007f');
+        backspace.Single().ShouldBeOfType<AnsiToken.Esc>().Final.ShouldBe('\b');
+    }
+
+    [Fact]
+    public void Should_Parse_Ctrl_Alt_Key_In_Input_Mode()
+    {
+        // Given, When
+        var result = AnsiParserFixture.ParseInput("\e\u0018\e\u001a"); // Ctrl+Alt+X, Ctrl+Alt+Z
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('\u0018'));
+        result[1].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('\u001a'));
+    }
+
+    [Fact]
+    public void Should_Parse_Alt_Space_In_Input_Mode()
+    {
+        // Given, When
+        var result = AnsiParserFixture.ParseInput("\e b");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Esc>()
+            .And(esc =>
+            {
+                esc.Intermediates.ShouldBeEmpty();
+                esc.Final.ShouldBe(' ');
+            });
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('b'));
+    }
+
+    [Fact]
+    public void Should_Parse_Alt_X_And_Alt_Caret_In_Input_Mode()
+    {
+        // Given, When
+        var result = AnsiParserFixture.ParseInput("\eX\e^a"); // no reply uses SOS or PM
+
+        // Then
+        result.Count.ShouldBe(3);
+        result[0].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('X'));
+        result[1].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('^'));
+        result[2].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('a'));
+    }
+
+    [Theory]
+    [InlineData('[')]
+    [InlineData('O')]
+    [InlineData('P')]
+    [InlineData(']')]
+    [InlineData('_')]
+    public void Should_Flush_Alt_Introducer_In_Input_Mode(char introducer)
+    {
+        // Given
+        var result = new List<AnsiToken>();
+        var parser = new AnsiParser(result.Add, AnsiParserMode.Input);
+        parser.Next($"\e{introducer}");
+
+        // When
+        parser.Flush();
+        parser.Next("a"); // prints, since the parser is back in ground
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe(introducer));
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('a'));
+    }
+
+    [Fact]
+    public void Should_Keep_Partial_Csi_On_Flush_In_Input_Mode()
+    {
+        // Given
+        var result = new List<AnsiToken>();
+        var parser = new AnsiParser(result.Add, AnsiParserMode.Input);
+        parser.Next("\e[1");
+
+        // When
+        parser.Flush();
+        parser.Next("A");
+
+        // Then
+        result.Single().ShouldBeOfType<AnsiToken.Csi>()
+            .And(csi =>
+            {
+                csi.Params.ShouldBe([new(1)]);
+                csi.Final.ShouldBe('A');
+            });
+    }
+
+    [Fact]
+    public void Should_Parse_Ss3_Keys_In_Input_Mode()
+    {
+        // Given, When
+        var result = AnsiParserFixture.ParseInput("\eOA\eOP"); // up arrow, F1
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Ss3>().And(ss3 => ss3.Final.ShouldBe('A'));
+        result[1].ShouldBeOfType<AnsiToken.Ss3>().And(ss3 => ss3.Final.ShouldBe('P'));
+    }
+
+    [Fact]
+    public void Should_Report_Alt_O_Before_A_Non_Final_In_Input_Mode()
+    {
+        // Given, When
+        var result = AnsiParserFixture.ParseInput("\eO5");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('O'));
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('5'));
+    }
+
+    [Fact]
+    public void Should_Parse_Backspace_As_Execute_In_Input_Mode()
+    {
+        // Given, When
+        var result = AnsiParserFixture.ParseInput("\u007f");
+
+        // Then
+        result.Single().ShouldBeOfType<AnsiToken.Execute>().Function.ShouldBe('\u007f');
+    }
+
+    [Fact]
+    public void Should_Parse_Bracketed_Paste_In_Input_Mode()
+    {
+        // Given, When
+        var result = AnsiParserFixture.ParseInput("\e[200~a\e[31mb\e[201~c");
+
+        // Then
+        result.Count.ShouldBe(2);
+        result[0].ShouldBeOfType<AnsiToken.Paste>().And(paste => paste.Text.ShouldBe("a\e[31mb"));
+        result[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('c'));
+    }
+
+    [Fact]
+    public void Should_Collect_Bracketed_Paste_Across_Reads_In_Input_Mode()
+    {
+        // Given
+        var result = new List<AnsiToken>();
+        var parser = new AnsiParser(result.Add, AnsiParserMode.Input);
+
+        // When
+        parser.Next("\e[200~ab");
+        parser.Flush();
+        parser.Next("c\e[20");
+        parser.Flush();
+        parser.Next("1~");
+
+        // Then
+        result.Single().ShouldBeOfType<AnsiToken.Paste>().Text.ShouldBe("abc");
+    }
+
+    [Fact]
+    public void Should_Parse_Replies_In_Input_Mode()
+    {
+        // Given, When
+        var result = AnsiParserFixture.ParseInput("\e[12;40R\eP>|xterm\e\\"); // cursor position, XTVERSION
+
+        // Then
+        result.Count.ShouldBe(8);
+        result[0].ShouldBeOfType<AnsiToken.Csi>().And(csi => csi.Params.ShouldBe([new(12), new(40)]));
+        result[1].ShouldBeOfType<AnsiToken.DcsHook>().And(hook => hook.Final.ShouldBe('|'));
+        result[7].ShouldBeOfType<AnsiToken.DcsUnhook>();
+    }
+
+    [Fact]
+    public void Should_Keep_Vt500_Behaviour_In_Output_Mode()
+    {
+        // Given, When
+        var altEnter = AnsiParserFixture.Parse("\e\ra");
+        var ss3 = AnsiParserFixture.Parse("\eOA");
+        var delete = AnsiParserFixture.Parse("\u007f");
+
+        // Then
+        altEnter.Count.ShouldBe(2);
+        altEnter[0].ShouldBeOfType<AnsiToken.Execute>().And(e => e.Function.ShouldBe('\r'));
+        altEnter[1].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('a'));
+        ss3.Count.ShouldBe(2);
+        ss3[0].ShouldBeOfType<AnsiToken.Esc>().And(esc => esc.Final.ShouldBe('O'));
+        ss3[1].ShouldBeOfType<AnsiToken.Print>().And(p => p.Codepoint.ShouldBe('A'));
+        delete.Single().ShouldBeOfType<AnsiToken.Print>().Codepoint.ShouldBe(0x7F);
     }
 }

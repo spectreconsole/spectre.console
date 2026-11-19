@@ -16,4 +16,7 @@ internal enum AnsiParserState
     DcsIgnore,
     OscString,
     SosPmApcString,
+
+    // Only in input mode, after ESC O
+    Ss3,
 }

@@ -25,8 +25,8 @@ public sealed record AnsiParameter(int Value, IReadOnlyList<int> Subparameters)
     public bool Equals(AnsiParameter? other)
     {
         return other is not null
-            && Value == other.Value
-            && Subparameters.SequenceEqual(other.Subparameters);
+               && Value == other.Value
+               && Subparameters.SequenceEqual(other.Subparameters);
     }
 
     /// <inheritdoc/>

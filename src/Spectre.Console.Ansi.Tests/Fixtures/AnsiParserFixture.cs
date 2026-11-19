@@ -11,4 +11,14 @@ public sealed class AnsiParserFixture
 
         return result;
     }
+
+    public static List<AnsiToken> ParseInput(string text)
+    {
+        var result = new List<AnsiToken>();
+        var parser = new AnsiParser(result.Add, AnsiParserMode.Input);
+
+        parser.Next(text);
+
+        return result;
+    }
 }
