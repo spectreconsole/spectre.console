@@ -158,9 +158,14 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
                 }
 
                 // input == null => 'Esc' pressed
-                if (input is null && CancelResult is not null)
+                if (input is null)
                 {
-                    return CancelResult();
+                    if (CancelResult is not null)
+                    {
+                        return CancelResult();
+                    }
+                    // Fallback to empty string if CancelResult not set
+                    input = string.Empty;
                 }
 
                 // Nothing entered?
