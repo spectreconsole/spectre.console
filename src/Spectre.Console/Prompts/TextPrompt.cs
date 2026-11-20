@@ -100,6 +100,11 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
     internal TextPromptInputHandler? InputHandler { get; set; }
 
     /// <summary>
+    /// Gets or sets a Func that will be triggered if Cancel is triggered by the 'ESC' key.
+    /// </summary>
+    public Func<T>? CancelResult { get; set; }
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="TextPrompt{T}"/> class.
     /// </summary>
     /// <param name="prompt">The prompt markup text.</param>
@@ -133,23 +138,30 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
             var choices = Choices.Select(choice => converter(choice)).ToList();
             var choiceMap = Choices.ToDictionary(choice => converter(choice), choice => choice, _comparer);
             var inputhandler = InputHandler ?? AnsiConsoleExtensions.ReadLine;
+            var isCancelConfigured = CancelResult is not null;
 
             WritePrompt(console);
 
             while (true)
             {
-                string input;
+                string? input;
                 if (EditableDefaultValue && DefaultValue != null)
                 {
                     input = await inputhandler(console, promptStyle, IsSecret, Mask, choices,
-                            converter(DefaultValue.Value), cancellationToken)
+                            converter(DefaultValue.Value), isCancelConfigured, cancellationToken)
                         .ConfigureAwait(false);
                 }
                 else
                 {
                     input = await inputhandler(console, promptStyle, IsSecret, Mask, choices,
-                            null, cancellationToken)
+                            null, isCancelConfigured, cancellationToken)
                         .ConfigureAwait(false);
+                }
+
+                // input == null => 'Esc' pressed
+                if (input is null && isCancelConfigured)
+                {
+                    return CancelResult!();
                 }
 
                 // Nothing entered?
@@ -176,7 +188,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
                 T? result;
                 if (Choices.Count > 0)
                 {
-                    if (choiceMap.TryGetValue(input, out result) && result != null)
+                    if (choiceMap.TryGetValue(input!, out result) && result != null)
                     {
                         ClearPromptLine(console);
                         return result;
@@ -188,7 +200,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
                         continue;
                     }
                 }
-                else if (!TypeConverterHelper.TryConvertFromStringWithCulture<T>(input, Culture, out result) ||
+                else if (!TypeConverterHelper.TryConvertFromStringWithCulture<T>(input!, Culture, out result) ||
                          result == null)
                 {
                     console.MarkupLine(ValidationErrorMessage);

@@ -777,4 +777,118 @@ public sealed class TextPromptTests
         secondInvoked.ShouldBeTrue();
         thirdInvoked.ShouldBeTrue();
     }
+
+    [Fact]
+    public void Should_Return_CancelResult_On_Cancel_DirectFuncVersion()
+    {
+        // Given
+        const string Expected = "Cancelled";
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        // When
+        var prompt = new TextPrompt<string>("Title");
+
+        prompt.CancelResult = () => Expected;
+
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe(Expected);
+    }
+
+    [Fact]
+    public void Should_Return_CancelResult_On_Cancel_FuncVersion()
+    {
+        // Given
+        const string Expected = "Cancelled";
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        // When
+        var prompt = new TextPrompt<string>("Title")
+                .AddCancelResult(() => Expected);
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe(Expected);
+    }
+
+    [Fact]
+    public void Should_Return_CancelResult_On_Cancel_ValueVersion()
+    {
+        // Given
+        const string Expected = "Cancelled";
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        // When
+        var prompt = new TextPrompt<string>("Title")
+                .AddCancelResult(Expected);
+
+        var result = prompt.Show(console);
+
+        // Then
+        result.ShouldBe(Expected);
+    }
+
+    [Fact]
+    public void Should_Return_CancelResult_On_Cancel_ValueVersion_Null()
+    {
+        // Given
+        const string? Expected = null;
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        // When
+        var prompt = new TextPrompt<string?>("Title")
+                .AddCancelResult(Expected);
+
+        var result = prompt.Show(console);
+
+        // Then
+        result.ShouldBeNull();
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("abc")]
+    public void Should_Ignore_Escape_If_CancelResult_Not_Set(string input)
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushText(input);
+        console.Input.PushKey(ConsoleKey.Escape);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new TextPrompt<string>("Title").AllowEmpty();
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe(input);
+    }
+
+    [Fact]
+    public void Should_Ignore_Escape_If_CancelResult_Not_Set_But_DefaultValue_Is()
+    {
+        // Given
+        const string Expected = "default";
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new TextPrompt<string>("Title").DefaultValue(Expected);
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe(Expected);
+    }
 }
