@@ -880,12 +880,15 @@ public sealed class TextPromptTests
         result.ShouldBeNull();
     }
 
-    [Fact]
-    public void Should_Ignore_Escape_If_CancelResult_Not_Set()
+    [Theory]
+    [InlineData("")]
+    [InlineData("abc")]
+    public void Should_Ignore_Escape_If_CancelResult_Not_Set(string input)
     {
         // Given
         var console = new TestConsole();
         console.Profile.Capabilities.Interactive = true;
+        console.Input.PushText(input);
         console.Input.PushKey(ConsoleKey.Escape);
         console.Input.PushKey(ConsoleKey.Enter);
 
@@ -894,6 +897,24 @@ public sealed class TextPromptTests
         var selection = prompt.Show(console);
 
         // Then
-        selection.ShouldBe(string.Empty);
+        selection.ShouldBe(input);
+    }
+
+    [Fact]
+    public void Should_Ignore_Escape_If_CancelResult_Not_Set_But_DefaultValue_Is()
+    {
+        // Given
+        const string Expected = "default";
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Escape);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        // When
+        var prompt = new TextPrompt<string>("Title").DefaultValue(Expected);
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe(Expected);
     }
 }

@@ -138,6 +138,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
             var choices = Choices.Select(choice => converter(choice)).ToList();
             var choiceMap = Choices.ToDictionary(choice => converter(choice), choice => choice, _comparer);
             var inputhandler = InputHandler ?? AnsiConsoleExtensions.ReadLine;
+            var isCancelConfigured = CancelResult is not null;
 
             WritePrompt(console);
 
@@ -147,25 +148,20 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
                 if (EditableDefaultValue && DefaultValue != null)
                 {
                     input = await inputhandler(console, promptStyle, IsSecret, Mask, choices,
-                            converter(DefaultValue.Value), cancellationToken)
+                            converter(DefaultValue.Value), isCancelConfigured, cancellationToken)
                         .ConfigureAwait(false);
                 }
                 else
                 {
                     input = await inputhandler(console, promptStyle, IsSecret, Mask, choices,
-                            null, cancellationToken)
+                            null, isCancelConfigured, cancellationToken)
                         .ConfigureAwait(false);
                 }
 
                 // input == null => 'Esc' pressed
-                if (input is null)
+                if (input is null && isCancelConfigured)
                 {
-                    if (CancelResult is not null)
-                    {
-                        return CancelResult();
-                    }
-                    // Fallback to empty string if CancelResult not set
-                    input = string.Empty;
+                    return CancelResult!();
                 }
 
                 // Nothing entered?
@@ -202,7 +198,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
                 T? result;
                 if (Choices.Count > 0)
                 {
-                    if (choiceMap.TryGetValue(input, out result) && result != null)
+                    if (choiceMap.TryGetValue(input!, out result) && result != null)
                     {
                         ClearPromptLine(console);
                         return result;
@@ -214,7 +210,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
                         continue;
                     }
                 }
-                else if (!TypeConverterHelper.TryConvertFromStringWithCulture<T>(input, Culture, out result) ||
+                else if (!TypeConverterHelper.TryConvertFromStringWithCulture<T>(input!, Culture, out result) ||
                          result == null)
                 {
                     console.MarkupLine(ValidationErrorMessage);
