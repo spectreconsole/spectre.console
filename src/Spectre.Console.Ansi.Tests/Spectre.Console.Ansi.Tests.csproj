@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFrameworks>net11.0;net10.0</TargetFrameworks>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- The VT500 parser is experimental -->
+    <NoWarn>$(NoWarn);SPECTRE001</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
