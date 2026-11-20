@@ -1,4 +1,4 @@
-namespace Spectre.Console
+﻿namespace Spectre.Console
 {
     public sealed class Align : Spectre.Console.Rendering.Renderable
     {

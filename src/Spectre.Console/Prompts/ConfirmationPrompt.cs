@@ -107,6 +107,7 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
         IAnsiConsole console, Style? style, bool secret,
         char? mask, IEnumerable<string>? items = null,
         string? initialInput = null,
+        bool isCancelConfigured = false,
         CancellationToken cancellationToken = default)
     {
         var key = await console.Input.ReadKeyAsync(true, cancellationToken);
