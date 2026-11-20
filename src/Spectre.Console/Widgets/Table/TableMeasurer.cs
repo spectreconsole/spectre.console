@@ -59,6 +59,14 @@ internal sealed class TableMeasurer : TableAccessor
         var widths = width_ranges.Select(range => range.Max).ToList();
         ApplyProportionalWidths(widths, maxWidth);
 
+        for (var index = 0; index < widths.Count; index++)
+        {
+            if (Columns[index].ProportionalWidth != null)
+            {
+                widths[index] = Math.Max(widths[index], width_ranges[index].Min);
+            }
+        }
+
         var tableWidth = widths.Sum();
         if (tableWidth > maxWidth)
         {

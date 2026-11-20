@@ -1098,6 +1098,48 @@ public sealed class TableTests
         console.Lines.ShouldAllBe(line => line.Length <= 5);
     }
 
+    [Fact]
+    public void Should_Preserve_Proportional_Content_When_Fixed_Column_Consumes_Available_Width()
+    {
+        // Given
+        var console = new TestConsole().Width(30);
+        var table = new Table();
+        table.AddColumn(new TableColumn("Fixed").Width(26));
+        table.AddColumn(new TableColumn("Prop").Width(new ProportionalWidth(1)));
+        table.AddRow("x", "hello world");
+
+        // When
+        console.Write(table);
+
+        // Then
+        console.Output.ShouldContain("Prop");
+        console.Output.ShouldContain("hello");
+        console.Output.ShouldContain("world");
+        console.Lines.ShouldAllBe(line => line.Length <= 30);
+    }
+
+    [Fact]
+    public void Should_Preserve_Proportional_Content_In_Non_Expanding_Panel()
+    {
+        // Given
+        var console = new TestConsole().Width(30);
+        var table = new Table();
+        table.AddColumn(new TableColumn("Name").Width(new ProportionalWidth(1)));
+        table.AddColumn(new TableColumn("Task").Width(new ProportionalWidth(2)));
+        table.AddRow("Build", "Run");
+        var panel = new Panel(table);
+
+        // When
+        console.Write(panel);
+
+        // Then
+        console.Output.ShouldContain("Name");
+        console.Output.ShouldContain("Build");
+        console.Output.ShouldContain("Task");
+        console.Output.ShouldContain("Run");
+        console.Lines.ShouldAllBe(line => line.Length <= 30);
+    }
+
     [Fact(Timeout = 3000)]
     [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2131")]
     public Task CollapseWidths_Should_Terminate_When_Wrappable_Columns_Collapse_To_Zero()
