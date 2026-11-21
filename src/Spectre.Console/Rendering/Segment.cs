@@ -215,6 +215,13 @@ public class Segment
     {
         ArgumentNullException.ThrowIfNull(segments);
 
+        if (maxWidth <= 0)
+        {
+            // Nothing fits. The loop below would never make
+            // progress on a segment that takes up any cells.
+            return [];
+        }
+
         var lines = new List<SegmentLine>();
         var line = new SegmentLine();
 

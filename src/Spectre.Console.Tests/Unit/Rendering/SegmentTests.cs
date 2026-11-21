@@ -141,6 +141,30 @@ public sealed class SegmentTests
 
     public sealed class TheSplitLinesWithMaxWidthMethod
     {
+        [Theory(Timeout = 3000)]
+        [InlineData(0)]
+        [InlineData(-1)]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2257")]
+        public Task Should_Return_No_Lines_If_Max_Width_Is_Zero_Or_Less(int maxWidth)
+        {
+            return Task.Run(() =>
+            {
+                // Given
+                var segments = new List<Segment>
+                {
+                    new("…"),
+                    Segment.LineBreak,
+                    new("Foo"),
+                };
+
+                // When
+                var lines = Segment.SplitLines(segments, maxWidth);
+
+                // Then
+                lines.ShouldBeEmpty();
+            });
+        }
+
         [Fact]
         [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2033")]
         public void Should_Split_Fullwidth_Segment_Without_Exception()
