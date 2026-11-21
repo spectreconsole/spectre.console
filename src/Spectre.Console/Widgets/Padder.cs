@@ -42,6 +42,12 @@ public sealed class Padder : Renderable, IPaddable, IExpandable
     /// <inheritdoc/>
     protected override IEnumerable<Segment> Render(RenderOptions options, int maxWidth)
     {
+        if (maxWidth <= 0)
+        {
+            // Nothing fits, not even the padding.
+            return [];
+        }
+
         var paddingWidth = Padding?.GetWidth() ?? 0;
         var childWidth = maxWidth - paddingWidth;
 

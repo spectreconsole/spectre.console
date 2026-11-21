@@ -3,6 +3,24 @@ namespace Spectre.Console.Tests.Unit;
 [ExpectationPath("Widgets/Padder")]
 public sealed class PadderTests
 {
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+    public void Should_Not_Throw_When_Panel_Gives_Less_Width_Than_The_Padding(int width)
+    {
+        // Given
+        var console = new TestConsole().Width(width);
+        var padder = new Padder(new Markup("Hello"), new Padding(2));
+
+        // When
+        var result = Record.Exception(() => console.Write(new Panel(padder)));
+
+        // Then
+        result.ShouldBeNull();
+    }
+
     [Fact]
     [Expectation("Render")]
     public Task Should_Render_Padded_Object_Correctly()
