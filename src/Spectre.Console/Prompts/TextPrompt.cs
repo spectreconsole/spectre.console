@@ -167,6 +167,16 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
 
                     if (!AllowEmpty)
                     {
+                        // Erase the whitespace that was echoed, so that the next
+                        // input starts at the original cursor position.
+                        if (!IsSecret || Mask != null)
+                        {
+                            // Masked input echoes one cell per character, otherwise use the cell width
+                            // (a full-width space such as U+3000 takes two cells).
+                            var cells = IsSecret ? input.Length : Cell.GetCellLength(input);
+                            console.Write("\b \b".Repeat(cells), promptStyle);
+                        }
+
                         continue;
                     }
                 }

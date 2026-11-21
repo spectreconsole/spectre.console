@@ -17,6 +17,32 @@ public sealed class TextPromptTests
         result.ShouldBe("Hello World");
     }
 
+    [Theory]
+    [InlineData("   ", 3)]
+    [InlineData(" ", 1)]
+    [InlineData("\u3000", 2)]
+    [InlineData(" \u3000 ", 4)]
+    public void Should_Erase_Whitespace_And_Reprompt_On_Same_Line_If_Empty_Is_Not_Allowed(string whitespace, int cells)
+    {
+        // Given
+        var console = new TestConsole();
+        foreach (var character in whitespace)
+        {
+            // Pushed as space key presses, since the test input can't map characters such as U+3000.
+            console.Input.PushKey(new ConsoleKeyInfo(character, ConsoleKey.Spacebar, false, false, false));
+        }
+
+        console.Input.PushKey(ConsoleKey.Enter);
+        console.Input.PushTextWithEnter("Hello");
+
+        // When
+        var result = console.Prompt(new TextPrompt<string>("Enter text:"));
+
+        // Then
+        result.ShouldBe("Hello");
+        console.Output.ShouldContain("Enter text: " + whitespace + "\b \b".Repeat(cells) + "Hello");
+    }
+
     [Fact]
     public void Should_Escape_Markup_In_Default_Value()
     {
