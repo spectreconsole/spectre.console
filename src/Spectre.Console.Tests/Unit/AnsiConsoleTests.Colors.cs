@@ -21,6 +21,38 @@ public partial class AnsiConsoleTests
         console.Profile.Capabilities.ColorSystem.ShouldBe(expected);
     }
 
+    [Collection(nameof(SystemConsoleCollection))]
+    public sealed class SystemConsole
+    {
+        [Fact]
+        [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2246")]
+        public void Should_Not_Change_Colors_When_Colors_Are_Disabled()
+        {
+            // Given
+            var console = AnsiConsole.Create(new AnsiConsoleSettings
+            {
+                Ansi = AnsiSupport.No,
+                ColorSystem = ColorSystemSupport.NoColors,
+                Out = new AnsiConsoleOutput(new StringWriter()),
+            });
+
+            System.Console.ForegroundColor = ConsoleColor.Red;
+
+            try
+            {
+                // When
+                console.Write("Hello", new Style(foreground: Color.Blue));
+
+                // Then
+                System.Console.ForegroundColor.ShouldBe(ConsoleColor.Red);
+            }
+            finally
+            {
+                System.Console.ResetColor();
+            }
+        }
+    }
+
     public sealed class TrueColor
     {
         [Theory]
