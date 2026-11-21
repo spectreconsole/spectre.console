@@ -253,7 +253,8 @@ internal sealed class TableMeasurer : TableAccessor
                     .Where(x => x.allowWrap)
                     .Max(x => x.width);
 
-                var secondMaxColumn = widths.Zip(wrappable, (width, allowWrap) => allowWrap && width != maxColumn ? width : 0).Max();
+                // The widest wrappable column shrinks to the next widest one, but never below one cell.
+                var secondMaxColumn = widths.Zip(wrappable, (width, allowWrap) => allowWrap && width != maxColumn ? width : 1).Max();
                 var columnDifference = maxColumn - secondMaxColumn;
 
                 var ratios = widths.Zip(wrappable, (width, allowWrap) => width == maxColumn && allowWrap ? 1 : 0).ToList();
