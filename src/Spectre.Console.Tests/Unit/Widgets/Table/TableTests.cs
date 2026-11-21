@@ -1099,6 +1099,24 @@ public sealed class TableTests
     }
 
     [Fact]
+    public void Should_Render_Ellipsis_When_Borders_And_Padding_Do_Not_Fit()
+    {
+        // Given
+        var console = new TestConsole().Width(80);
+        var table = new Table().Width(6);
+        table.AddColumn("A");
+        table.AddColumn("B");
+        table.AddColumn("C");
+        table.AddRow("1", "2", "3");
+
+        // When
+        console.Write(table);
+
+        // Then
+        console.Output.Trim().ShouldBe("…");
+    }
+
+    [Fact]
     public void Should_Preserve_Proportional_Content_When_Fixed_Column_Consumes_Available_Width()
     {
         // Given

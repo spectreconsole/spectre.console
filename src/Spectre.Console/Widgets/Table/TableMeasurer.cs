@@ -24,7 +24,7 @@ internal sealed class TableMeasurer : TableAccessor
             totalCellWidth = Math.Min(_explicitWidth.Value, maxWidth);
         }
 
-        return Math.Max(0, totalCellWidth - GetNonColumnWidth());
+        return totalCellWidth - GetNonColumnWidth();
     }
 
     /// <summary>
