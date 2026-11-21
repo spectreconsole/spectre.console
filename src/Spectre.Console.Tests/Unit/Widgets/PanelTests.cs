@@ -3,6 +3,32 @@ namespace Spectre.Console.Tests.Unit;
 [ExpectationPath("Widgets/Panel")]
 public sealed class PanelTests
 {
+    [Theory(Timeout = 3000)]
+    [InlineData("table")]
+    [InlineData("panel")]
+    [InlineData("grid")]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2257")]
+    public Task Should_Terminate_When_Content_Gets_No_Width(string content)
+    {
+        return Task.Run(() =>
+        {
+            // Given
+            var console = new TestConsole().Width(2);
+            IRenderable child = content switch
+            {
+                "table" => new Table().AddColumn("x").AddRow("y"),
+                "panel" => new Panel("x"),
+                _ => new Grid().AddColumn().AddRow("y"),
+            };
+
+            // When
+            console.Write(new Panel(child));
+
+            // Then
+            console.Output.ShouldBe("┌┐\n└┘\n");
+        });
+    }
+
     [Fact]
     [Expectation("Render")]
     public Task Should_Render_Panel()
