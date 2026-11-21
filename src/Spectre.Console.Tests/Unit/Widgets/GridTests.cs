@@ -149,6 +149,26 @@ public sealed class GridTests
     }
 
     [Fact]
+    public void Should_Render_Grid_With_Proportional_Columns()
+    {
+        // Given
+        var console = new TestConsole().Width(9);
+        var firstColumn = new GridColumn().Width(new ProportionalWidth(1));
+        var secondColumn = new GridColumn().Width(new ProportionalWidth(2));
+        var grid = new Grid()
+            .AddColumns(firstColumn, secondColumn)
+            .AddRow(new Text("A"), new Text("B").RightJustified());
+
+        // When
+        console.Write(grid);
+
+        // Then
+        console.Lines.ShouldContain("A       B");
+        ((IHasDirtyState)firstColumn).IsDirty.ShouldBeTrue();
+        ((IHasDirtyState)secondColumn).IsDirty.ShouldBeTrue();
+    }
+
+    [Fact]
     [Expectation("Render_Alignment")]
     public Task Should_Render_Grid_Column_Alignment_Correctly()
     {

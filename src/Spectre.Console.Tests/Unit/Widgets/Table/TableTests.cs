@@ -1054,6 +1054,110 @@ public sealed class TableTests
         return Verifier.Verify(console.Output);
     }
 
+    [Theory]
+    [InlineData(Overflow.Crop, "0123456789", 1)]
+    [InlineData(Overflow.Ellipsis, "012345678\u2026", 1)]
+    [InlineData(Overflow.Fold, "0123456789", 2)]
+    public void Should_Respect_Cell_Overflow_In_Proportional_Column(
+        Overflow overflow,
+        string expectedFirstLine,
+        int expectedLineCount)
+    {
+        // Given
+        var console = new TestConsole().Width(10);
+        var table = new Table()
+            .NoBorder()
+            .HideHeaders()
+            .AddColumn(new TableColumn("").Padding(0, 0).NoWrap().Width(new ProportionalWidth(1)))
+            .AddRow(new Text("0123456789ABC").Overflow(overflow));
+
+        // When
+        console.Write(table);
+
+        // Then
+        console.Lines[0].ShouldBe(expectedFirstLine);
+        console.Lines.Count(line => line.Length > 0).ShouldBe(expectedLineCount);
+    }
+
+    [Fact]
+    public void Should_Wrap_Content_In_Proportional_Column()
+    {
+        // Given
+        var console = new TestConsole().Width(5);
+        var table = new Table()
+            .NoBorder()
+            .HideHeaders()
+            .AddColumn(new TableColumn("").Padding(0, 0).Width(new ProportionalWidth(1)))
+            .AddRow("Hello world");
+
+        // When
+        console.Write(table);
+
+        // Then
+        console.Lines.Count(line => line.Length > 0).ShouldBeGreaterThan(1);
+        console.Lines.ShouldAllBe(line => line.Length <= 5);
+    }
+
+    [Fact]
+    public void Should_Render_Ellipsis_When_Borders_And_Padding_Do_Not_Fit()
+    {
+        // Given
+        var console = new TestConsole().Width(80);
+        var table = new Table().Width(6);
+        table.AddColumn("A");
+        table.AddColumn("B");
+        table.AddColumn("C");
+        table.AddRow("1", "2", "3");
+
+        // When
+        console.Write(table);
+
+        // Then
+        console.Output.Trim().ShouldBe("…");
+    }
+
+    [Fact]
+    public void Should_Preserve_Proportional_Content_When_Fixed_Column_Consumes_Available_Width()
+    {
+        // Given
+        var console = new TestConsole().Width(30);
+        var table = new Table();
+        table.AddColumn(new TableColumn("Fixed").Width(26));
+        table.AddColumn(new TableColumn("Prop").Width(new ProportionalWidth(1)));
+        table.AddRow("x", "hello world");
+
+        // When
+        console.Write(table);
+
+        // Then
+        console.Output.ShouldContain("Prop");
+        console.Output.ShouldContain("hello");
+        console.Output.ShouldContain("world");
+        console.Lines.ShouldAllBe(line => line.Length <= 30);
+    }
+
+    [Fact]
+    public void Should_Preserve_Proportional_Content_In_Non_Expanding_Panel()
+    {
+        // Given
+        var console = new TestConsole().Width(30);
+        var table = new Table();
+        table.AddColumn(new TableColumn("Name").Width(new ProportionalWidth(1)));
+        table.AddColumn(new TableColumn("Task").Width(new ProportionalWidth(2)));
+        table.AddRow("Build", "Run");
+        var panel = new Panel(table);
+
+        // When
+        console.Write(panel);
+
+        // Then
+        console.Output.ShouldContain("Name");
+        console.Output.ShouldContain("Build");
+        console.Output.ShouldContain("Task");
+        console.Output.ShouldContain("Run");
+        console.Lines.ShouldAllBe(line => line.Length <= 30);
+    }
+
     [Fact(Timeout = 3000)]
     [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2131")]
     public Task CollapseWidths_Should_Terminate_When_Wrappable_Columns_Collapse_To_Zero()

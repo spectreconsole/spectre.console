@@ -52,4 +52,34 @@ public static class ColumnExtensions
         obj.Width = width;
         return obj;
     }
+
+    /// <summary>
+    /// Sets the relative weight used to divide the width remaining after
+    /// fixed and content-sized table columns have been measured.
+    /// </summary>
+    /// <param name="column">The table column.</param>
+    /// <param name="width">The proportional width.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static TableColumn Width(this TableColumn column, ProportionalWidth width)
+    {
+        ArgumentNullException.ThrowIfNull(column);
+
+        column.SetProportionalWidth(width);
+        return column;
+    }
+
+    /// <summary>
+    /// Sets the relative weight used to divide the width remaining after
+    /// fixed and content-sized grid columns have been measured.
+    /// </summary>
+    /// <param name="column">The grid column.</param>
+    /// <param name="width">The proportional width.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static GridColumn Width(this GridColumn column, ProportionalWidth width)
+    {
+        ArgumentNullException.ThrowIfNull(column);
+
+        column.SetProportionalWidth(width);
+        return column;
+    }
 }

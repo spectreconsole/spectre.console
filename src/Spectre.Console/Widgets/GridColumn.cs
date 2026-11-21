@@ -7,6 +7,7 @@ public sealed class GridColumn : IColumn, IHasDirtyState
 {
     private bool _isDirty;
     private int? _width;
+    private ProportionalWidth? _proportionalWidth;
     private bool _noWrap;
     private Padding? _padding;
     private Justify? _alignment;
@@ -16,13 +17,20 @@ public sealed class GridColumn : IColumn, IHasDirtyState
 
     /// <summary>
     /// Gets or sets the width of the column.
-    /// If <c>null</c>, the column will adapt to its contents.
+    /// If <c>null</c> and no proportional width has been configured,
+    /// the column will adapt to its contents.
     /// </summary>
     public int? Width
     {
         get => _width;
-        set => MarkAsDirty(() => _width = value);
+        set => MarkAsDirty(() =>
+        {
+            _width = value;
+            _proportionalWidth = null;
+        });
     }
+
+    internal ProportionalWidth? ProportionalWidth => _proportionalWidth;
 
     /// <summary>
     /// Gets or sets a value indicating whether wrapping of
@@ -58,6 +66,16 @@ public sealed class GridColumn : IColumn, IHasDirtyState
     /// has set an explicit padding for this column.
     /// </summary>
     internal bool HasExplicitPadding => Padding != null;
+
+    internal void SetProportionalWidth(ProportionalWidth width)
+    {
+        width.Validate();
+        MarkAsDirty(() =>
+        {
+            _width = null;
+            _proportionalWidth = width;
+        });
+    }
 
     private void MarkAsDirty(Action action)
     {
