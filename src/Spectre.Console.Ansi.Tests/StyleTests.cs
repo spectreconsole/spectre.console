@@ -84,6 +84,23 @@ public sealed class StyleTests
         result.ShouldBeFalse();
     }
 
+    [Theory]
+    [InlineData(Decoration.None, "")]
+    [InlineData(Decoration.Bold, "bold")]
+    [InlineData(Decoration.Underline | Decoration.Bold, "bold underline")]
+    [InlineData(Decoration.Strikethrough | Decoration.Italic | Decoration.Dim, "dim italic strike")]
+    public void Should_Convert_Decorations_To_Markup_In_Value_Order(Decoration decoration, string expected)
+    {
+        // Given
+        var style = new Style(decoration: decoration);
+
+        // When
+        var result = style.ToMarkup();
+
+        // Then
+        result.ShouldBe(expected);
+    }
+
     public sealed class TheParseMethod
     {
         [Fact]
