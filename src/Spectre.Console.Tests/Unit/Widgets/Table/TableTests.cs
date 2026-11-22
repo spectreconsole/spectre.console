@@ -1184,6 +1184,24 @@ public sealed class TableTests
         });
     }
 
+    [Fact]
+    public void Should_Not_Collapse_A_Wrappable_Column_Below_One_Cell()
+    {
+        // Given
+        var console = new TestConsole().Width(10);
+        var table = new Table();
+        table.AddColumn(new TableColumn("Name").Width(21));
+        table.AddColumn(new TableColumn("Supercalifragilistic").NoWrap());
+        table.AddRow("hello", "a");
+
+        // When
+        console.Write(table);
+
+        // Then
+        console.Output.ShouldContain("│ h │");
+        console.Output.ShouldContain("│ o │");
+    }
+
     [Fact(Timeout = 3000)]
     [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2193")]
     public Task Should_Terminate_When_Nested_Table_Column_Is_Narrower_Than_A_Wide_Cluster()
