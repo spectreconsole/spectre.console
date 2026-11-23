@@ -161,6 +161,8 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
                 // input == null => 'Esc' pressed
                 if (input is null && isCancelConfigured)
                 {
+                    console.WriteLine();
+                    ClearPromptLine(console);
                     return CancelResult!();
                 }
 
