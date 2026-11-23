@@ -328,6 +328,83 @@ public sealed class TableTests
     }
 
     [Fact]
+    public void Should_Preserve_Long_Spanned_Content_Without_Borders()
+    {
+        var console = new TestConsole().Width(80);
+        var table = new Table().AddColumns("A", "B", "C").NoBorder()
+            .AddRow(new TableCell("abcdefghijklmnopqrstuvwxyz").Span(3));
+
+        console.Write(table);
+
+        console.Output.ShouldContain("abcdefghijklmnopqrstuvwxyz");
+    }
+
+    [Fact]
+    public void Should_Use_Intermediate_Padding_In_Spanned_Cells()
+    {
+        var console = new TestConsole().Width(80);
+        var table = new Table()
+            .AddColumn(new TableColumn("A") { Padding = new Padding(1, 0, 4, 0) })
+            .AddColumn(new TableColumn("B") { Padding = new Padding(2, 0, 0, 0) })
+            .AddColumn(new TableColumn("C") { Padding = new Padding(3, 0, 1, 0) })
+            .AddRow(new TableCell("123456789").Span(2), new Text("Z"));
+
+        console.Write(table);
+
+        console.Output.ShouldContain("123456789");
+        var lines = console.Output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        lines.Select(line => line.Length).Distinct().Count().ShouldBe(1);
+    }
+
+    [Theory]
+    [InlineData("123456789")]
+    [InlineData("1234567890")]
+    [InlineData("12345678901")]
+    public void Should_Not_Truncate_Adjacent_Spanned_Rows(string text)
+    {
+        var console = new TestConsole().Width(50);
+        var table = new Table().AddColumns("1", "2", "3").HideHeaders()
+            .AddRow(new TableCell(text).Span(3))
+            .AddRow(new TableCell(text).Span(3))
+            .ShowRowSeparators();
+
+        console.Write(table);
+
+        console.Output.ShouldContain(text);
+        console.Output.ShouldNotContain("┬");
+        console.Output.ShouldNotContain("┴");
+        console.Output.ShouldNotContain("┼");
+        console.Output.Split(text).Length.ShouldBe(3);
+    }
+
+    [Fact]
+    public void Should_Render_Spanned_Cell_Widths_And_Junctions()
+    {
+        var console = new TestConsole().Width(50);
+        var table = new Table().AddColumns("1", "2", "3")
+            .AddRow(new TableCell("123456789").Span(3))
+            .AddRow("4", "5", "6")
+            .AddRow(new TableCell("987654321").Span(3))
+            .AddRow("7", "8", "9")
+            .ShowRowSeparators();
+
+        console.Write(table);
+
+        console.Output.Replace("\r\n", "\n").ShouldBe(
+            "┌───┬───┬───┐\n" +
+            "│ 1 │ 2 │ 3 │\n" +
+            "├───┴───┴───┤\n" +
+            "│ 123456789 │\n" +
+            "├───┬───┬───┤\n" +
+            "│ 4 │ 5 │ 6 │\n" +
+            "├───┴───┴───┤\n" +
+            "│ 987654321 │\n" +
+            "├───┬───┬───┤\n" +
+            "│ 7 │ 8 │ 9 │\n" +
+            "└───┴───┴───┘\n");
+    }
+
+    [Fact]
     [Expectation("Render_Row_Separators")]
     public Task Should_Render_Table_With_Row_Separators_Correctly()
     {
