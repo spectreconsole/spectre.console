@@ -5,8 +5,8 @@ namespace Spectre.Console;
 /// </summary>
 public static partial class AnsiConsoleExtensions
 {
-    internal static async Task<string> ReadLine(this IAnsiConsole console, Style? style, bool secret, char? mask,
-        IEnumerable<string>? items = null, string? initialInput = null, CancellationToken cancellationToken = default)
+    internal static async Task<string?> ReadLine(this IAnsiConsole console, Style? style, bool secret, char? mask,
+        IEnumerable<string>? items = null, string? initialInput = null, bool cancelConfigured = false, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(console);
 
@@ -46,6 +46,11 @@ public static partial class AnsiConsoleExtensions
             }
 
             var key = rawKey.Value;
+            if (cancelConfigured && key.Key == ConsoleKey.Escape)
+            {
+                return null;
+            }
+
             if (key.Key == ConsoleKey.Enter)
             {
                 return text;

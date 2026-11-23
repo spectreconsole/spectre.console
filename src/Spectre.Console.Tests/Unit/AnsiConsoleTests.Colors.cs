@@ -38,13 +38,16 @@ public partial class AnsiConsoleTests
 
             System.Console.ForegroundColor = ConsoleColor.Red;
 
+            // Keep in variable to avoid issues when ForegroundColor is ignored
+            var expected = System.Console.ForegroundColor;
+
             try
             {
                 // When
                 console.Write("Hello", new Style(foreground: Color.Blue));
 
                 // Then
-                System.Console.ForegroundColor.ShouldBe(ConsoleColor.Red);
+                System.Console.ForegroundColor.ShouldBe(expected);
             }
             finally
             {

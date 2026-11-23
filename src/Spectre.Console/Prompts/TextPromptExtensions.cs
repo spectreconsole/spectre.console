@@ -360,6 +360,35 @@ public static class TextPromptExtensions
         return obj;
     }
 
+    /// <summary>
+    /// Sets the value that will be returned if the prompt is cancelled with 'ESC'.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="cancelResultFunc">A Func that is returning a value on cancel.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static TextPrompt<T> AddCancelResult<T>(this TextPrompt<T> obj, Func<T> cancelResultFunc)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+
+        obj.CancelResult = cancelResultFunc;
+        return obj;
+    }
+
+    /// <summary>
+    /// Sets a Func that will be triggered if the prompt is cancelled with 'ESC'.
+    /// </summary>
+    /// <typeparam name="T">The prompt result type.</typeparam>
+    /// <param name="obj">The prompt.</param>
+    /// <param name="cancelResult">The value to be returned on cancel.</param>
+    /// <returns>The same instance so that multiple calls can be chained.</returns>
+    public static TextPrompt<T> AddCancelResult<T>(this TextPrompt<T> obj, T cancelResult)
+    {
+        ArgumentNullException.ThrowIfNull(obj);
+
+        return obj.AddCancelResult(() => cancelResult);
+    }
+
     internal static TextPrompt<T> UseInputHandler<T>(
         this TextPrompt<T> obj, TextPromptInputHandler? inputHandler)
     {

@@ -1,0 +1,2 @@
+﻿Cancel should set newline: 
+On a new line?

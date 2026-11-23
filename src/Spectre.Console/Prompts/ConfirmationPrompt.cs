@@ -103,10 +103,11 @@ public sealed class ConfirmationPrompt : IPrompt<bool>
         return comparer.Compare(Yes.ToString(), result.ToString()) == 0;
     }
 
-    private static async Task<string> SingleKeyInputHandler(
+    private static async Task<string?> SingleKeyInputHandler(
         IAnsiConsole console, Style? style, bool secret,
         char? mask, IEnumerable<string>? items = null,
         string? initialInput = null,
+        bool isCancelConfigured = false,
         CancellationToken cancellationToken = default)
     {
         var key = await console.Input.ReadKeyAsync(true, cancellationToken);
