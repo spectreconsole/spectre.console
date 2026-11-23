@@ -46,6 +46,7 @@ public static class SpinnerExtensions
         style ??= Style.Plain;
         var currentFrame = 0;
         var cancellationTokenSource = new CancellationTokenSource();
+        var maxWidth = spinner.Frames.Max(frame => Cell.GetCellLength(frame));
 
         // Start spinner animation in background
         var spinnerTask = Task.Run(
@@ -56,10 +57,13 @@ public static class SpinnerExtensions
                     ansiConsole.Cursor.Show(false);
 
                     var spinnerFrame = spinner.Frames[currentFrame];
+                    var padding = maxWidth - Cell.GetCellLength(spinnerFrame);
 
-                    // Write the spinner frame
+                    // Write the spinner frame, padded to the widest frame so that
+                    // shorter frames erase whatever a longer frame left behind
                     ansiConsole.Write(new Text(spinnerFrame, style));
-                    ansiConsole.WriteAnsi(w => w.CursorLeft(spinnerFrame.Length));
+                    ansiConsole.Write(new string(' ', padding));
+                    ansiConsole.WriteAnsi(w => w.CursorLeft(maxWidth));
 
                     currentFrame = (currentFrame + 1) % spinner.Frames.Count;
                     await Task.Delay(spinner.Interval, cancellationTokenSource.Token);
@@ -88,10 +92,10 @@ public static class SpinnerExtensions
         }
         finally
         {
-            var spinnerFrame = spinner.Frames[currentFrame];
-
-            ansiConsole.Write(new string(' ', spinnerFrame.Length));
-            ansiConsole.WriteAnsi(w => w.CursorLeft(spinnerFrame.Length));
+            // Every frame occupies maxWidth columns, so this clears
+            // the spinner regardless of which frame is on screen
+            ansiConsole.Write(new string(' ', maxWidth));
+            ansiConsole.WriteAnsi(w => w.CursorLeft(maxWidth));
             ansiConsole.Cursor.Show();
             await cancellationTokenSource.CancelAsync();
         }
