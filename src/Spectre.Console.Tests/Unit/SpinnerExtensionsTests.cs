@@ -4,7 +4,7 @@ public sealed class SpinnerExtensionsTests
 {
     private sealed class WideSpinner : Spinner
     {
-        public override TimeSpan Interval => TimeSpan.FromMilliseconds(10);
+        public override TimeSpan Interval => TimeSpan.FromSeconds(10);
         public override bool IsUnicode => true;
 
         // "＊＊" is 2 chars but 4 cells wide, "x" is 1 cell wide
