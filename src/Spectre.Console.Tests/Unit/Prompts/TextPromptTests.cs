@@ -917,4 +917,22 @@ public sealed class TextPromptTests
         // Then
         selection.ShouldBe(Expected);
     }
+
+    [Fact]
+    [Expectation("CancelResult")]
+    public Task Should_Continue_On_NewLine_If_Cancel_Triggered()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Input.PushKey(ConsoleKey.Escape);
+
+        // When
+        console.Prompt(
+            new TextPrompt<string?>("Cancel should set newline")
+                .AddCancelResult((string?)null));
+        console.WriteLine("On a new line?");
+
+        // Then
+        return Verifier.Verify(console.Output);
+    }
 }
