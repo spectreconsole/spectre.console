@@ -36,7 +36,7 @@ public partial class AnsiConsoleTests
                 Out = new AnsiConsoleOutput(new StringWriter()),
             });
 
-            System.Console.ForegroundColor = ConsoleColor.Red;
+            System.Console.ForegroundColor = ConsoleColor.Gray;
 
             try
             {
@@ -44,7 +44,7 @@ public partial class AnsiConsoleTests
                 console.Write("Hello", new Style(foreground: Color.Blue));
 
                 // Then
-                System.Console.ForegroundColor.ShouldBe(ConsoleColor.Red);
+                System.Console.ForegroundColor.ShouldBe(ConsoleColor.Gray);
             }
             finally
             {
