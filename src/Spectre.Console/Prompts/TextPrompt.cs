@@ -187,7 +187,7 @@ public sealed class TextPrompt<T> : IPrompt<T>, IHasCulture
                         {
                             // Masked input echoes one cell per character, otherwise use the cell width
                             // (a full-width space such as U+3000 takes two cells).
-                            var cells = IsSecret ? input.Length : Cell.GetCellLength(input);
+                            var cells = IsSecret ? input!.Length : Cell.GetCellLength(input!);
                             console.Write("\b \b".Repeat(cells), promptStyle);
                         }
 
