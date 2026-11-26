@@ -41,6 +41,16 @@ public static class SpinnerExtensions
     private static async Task<T?> SpinnerInternal<T>(Task task, Spinner spinner, Style? style = null,
         IAnsiConsole? ansiConsole = null)
     {
+        if (spinner.Interval <= TimeSpan.Zero)
+        {
+            throw new ArgumentException("Spinner interval must be positive.", nameof(spinner));
+        }
+
+        if (spinner.Frames is null || spinner.Frames.Count == 0)
+        {
+            throw new ArgumentException("Spinner must have at least one frame.", nameof(spinner));
+        }
+
         ansiConsole ??= AnsiConsole.Console;
 
         style ??= Style.Plain;
