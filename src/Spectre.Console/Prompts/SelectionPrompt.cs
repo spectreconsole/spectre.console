@@ -151,6 +151,12 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
                 return ListPromptInputResult.None;
             }
 
+            // Selecting a disabled item is not allowed
+            if (state.Current.IsDisabled)
+            {
+                return ListPromptInputResult.None;
+            }
+
             return ListPromptInputResult.Submit;
         }
 
@@ -223,7 +229,7 @@ public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
         {
             var current = item.Index == cursorIndex;
             var prompt = item.Index == cursorIndex ? ListPromptConstants.Arrow : new string(' ', ListPromptConstants.Arrow.Length);
-            var style = item.Node.IsGroup && Mode == SelectionMode.Leaf
+            var style = (item.Node.IsGroup && Mode == SelectionMode.Leaf) || item.Node.IsDisabled
                 ? disabledStyle
                 : current ? highlightStyle : Style.Plain;
 
