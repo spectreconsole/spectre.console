@@ -27,7 +27,9 @@ public sealed class SpinnerColumn : ProgressColumn
         {
             lock (_lock)
             {
-                _spinner = value ?? Spinner.Known.Default;
+                var spinner = value ?? Spinner.Known.Default;
+                ValidateSpinner(spinner);
+                _spinner = spinner;
                 _maxWidth = null;
             }
         }
@@ -90,8 +92,23 @@ public sealed class SpinnerColumn : ProgressColumn
     /// <param name="spinner">The spinner to use.</param>
     public SpinnerColumn(Spinner spinner)
     {
-        _spinner = spinner ?? throw new ArgumentNullException(nameof(spinner));
+        ArgumentNullException.ThrowIfNull(spinner);
+        ValidateSpinner(spinner);
+        _spinner = spinner;
         _lock = new object();
+    }
+
+    private static void ValidateSpinner(Spinner spinner)
+    {
+        if (spinner.Interval <= TimeSpan.Zero)
+        {
+            throw new ArgumentException("Spinner interval must be positive.", nameof(spinner));
+        }
+
+        if (spinner.Frames is null || spinner.Frames.Count == 0)
+        {
+            throw new ArgumentException("Spinner must have at least one frame.", nameof(spinner));
+        }
     }
 
     /// <inheritdoc/>
