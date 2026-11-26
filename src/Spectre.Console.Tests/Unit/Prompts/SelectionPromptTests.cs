@@ -755,6 +755,99 @@ public sealed class SelectionPromptTests
             "    Fourth  ",
         ]);
     }
+
+    [Fact]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2180")]
+    public void Should_Skip_Disabled_Item_When_Navigating_Down()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.DownArrow);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var prompt = new SelectionPrompt<string>().Title("Select one");
+        prompt.AddChoice("First");
+        prompt.AddChoice("Second").Disable();
+        prompt.AddChoice("Third");
+
+        // When
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe("Third");
+    }
+
+    [Fact]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2180")]
+    public void Should_Skip_Disabled_Item_When_Navigating_Up_With_WrapAround()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.UpArrow);
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var prompt = new SelectionPrompt<string>().Title("Select one").WrapAround();
+        prompt.AddChoice("First");
+        prompt.AddChoice("Second");
+        prompt.AddChoice("Third").Disable();
+
+        // When
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe("Second");
+    }
+
+    [Fact]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2180")]
+    public void Should_Not_Search_Match_A_Disabled_Item()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushText("Del");
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var prompt = new SelectionPrompt<string>().Title("Select one").EnableSearch();
+        prompt.AddChoice("Zeta");
+        prompt.AddChoice("Delta").Disable();
+        prompt.AddChoice("Della");
+
+        // When
+        var selection = prompt.Show(console);
+
+        // Then
+        selection.ShouldBe("Della");
+    }
+
+    [Fact]
+    [GitHubIssue("https://github.com/spectreconsole/spectre.console/issues/2180")]
+    public void Should_Fall_Back_To_First_Enabled_Item_When_Default_Value_Is_Disabled()
+    {
+        // Given
+        var console = new TestConsole();
+        console.Profile.Capabilities.Interactive = true;
+        console.Input.PushKey(ConsoleKey.Enter);
+
+        var prompt = new SelectionPrompt<string>().Title("Select one").DefaultValue("Second");
+        prompt.AddChoice("First");
+        prompt.AddChoice("Second").Disable();
+        prompt.AddChoice("Third");
+
+        // When
+        prompt.Show(console);
+
+        // Then
+        console.Lines.ShouldBe([
+            "Select one",
+            "          ",
+            "> First   ",
+            "  Second  ",
+            "  Third   ",
+        ]);
+    }
 }
 
 file sealed class CustomSelectionItem
